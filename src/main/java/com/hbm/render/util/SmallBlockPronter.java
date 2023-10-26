@@ -28,45 +28,45 @@ public class SmallBlockPronter {
 		
 		Tessellator tesseract = Tessellator.instance;
 		tesseract.startDrawingQuads();
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 1 - 11 * pixel / 2, 1 - 11 * pixel / 2, 1, 0);
-			tesseract.addVertexWithUV(11 * pixel / 2, 1 - 11 * pixel / 2, 1 - 11 * pixel / 2, 0, 0);
-			tesseract.addVertexWithUV(11 * pixel / 2, 11 * pixel / 2, 1 - 11 * pixel / 2, 0, 1);
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 11 * pixel / 2,  1 - 11 * pixel / 2, 1, 1);
+			tesseract.addVertexWithUV(1 - 11 * SmallBlockPronter.pixel / 2, 1 - 11 * SmallBlockPronter.pixel / 2, 1 - 11 * SmallBlockPronter.pixel / 2, 1, 0);
+			tesseract.addVertexWithUV(11 * SmallBlockPronter.pixel / 2, 1 - 11 * SmallBlockPronter.pixel / 2, 1 - 11 * SmallBlockPronter.pixel / 2, 0, 0);
+			tesseract.addVertexWithUV(11 * SmallBlockPronter.pixel / 2, 11 * SmallBlockPronter.pixel / 2, 1 - 11 * SmallBlockPronter.pixel / 2, 0, 1);
+			tesseract.addVertexWithUV(1 - 11 * SmallBlockPronter.pixel / 2, 11 * SmallBlockPronter.pixel / 2,  1 - 11 * SmallBlockPronter.pixel / 2, 1, 1);
 			tesseract.draw();
 
 			tesseract.startDrawingQuads();
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 1 - 11 * pixel / 2, 11 * pixel / 2, 1, 0);
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 1 - 11 * pixel / 2, 1 - 11 * pixel / 2, 0, 0);
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 11 * pixel / 2, 1 - 11 * pixel / 2, 0, 1);
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 11 * pixel / 2,  11 * pixel / 2, 1, 1);
+			tesseract.addVertexWithUV(1 - 11 * SmallBlockPronter.pixel / 2, 1 - 11 * SmallBlockPronter.pixel / 2, 11 * SmallBlockPronter.pixel / 2, 1, 0);
+			tesseract.addVertexWithUV(1 - 11 * SmallBlockPronter.pixel / 2, 1 - 11 * SmallBlockPronter.pixel / 2, 1 - 11 * SmallBlockPronter.pixel / 2, 0, 0);
+			tesseract.addVertexWithUV(1 - 11 * SmallBlockPronter.pixel / 2, 11 * SmallBlockPronter.pixel / 2, 1 - 11 * SmallBlockPronter.pixel / 2, 0, 1);
+			tesseract.addVertexWithUV(1 - 11 * SmallBlockPronter.pixel / 2, 11 * SmallBlockPronter.pixel / 2,  11 * SmallBlockPronter.pixel / 2, 1, 1);
 			tesseract.draw();
 
 			tesseract.startDrawingQuads();
-			tesseract.addVertexWithUV(11 * pixel / 2, 1 - 11 * pixel / 2, 11 * pixel / 2, 1, 0);
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 1 - 11 * pixel / 2, 11 * pixel / 2, 0, 0);
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 11 * pixel / 2,  11 * pixel / 2, 0, 1);
-			tesseract.addVertexWithUV(11 * pixel / 2, 11 * pixel / 2, 11 * pixel / 2, 1, 1);
+			tesseract.addVertexWithUV(11 * SmallBlockPronter.pixel / 2, 1 - 11 * SmallBlockPronter.pixel / 2, 11 * SmallBlockPronter.pixel / 2, 1, 0);
+			tesseract.addVertexWithUV(1 - 11 * SmallBlockPronter.pixel / 2, 1 - 11 * SmallBlockPronter.pixel / 2, 11 * SmallBlockPronter.pixel / 2, 0, 0);
+			tesseract.addVertexWithUV(1 - 11 * SmallBlockPronter.pixel / 2, 11 * SmallBlockPronter.pixel / 2,  11 * SmallBlockPronter.pixel / 2, 0, 1);
+			tesseract.addVertexWithUV(11 * SmallBlockPronter.pixel / 2, 11 * SmallBlockPronter.pixel / 2, 11 * SmallBlockPronter.pixel / 2, 1, 1);
 			tesseract.draw();
 
 			tesseract.startDrawingQuads();
-			tesseract.addVertexWithUV(11 * pixel / 2, 1 - 11 * pixel / 2, 1 - 11 * pixel / 2, 1, 0);
-			tesseract.addVertexWithUV(11 * pixel / 2, 1 - 11 * pixel / 2, 11 * pixel / 2, 0, 0);
-			tesseract.addVertexWithUV(11 * pixel / 2, 11 * pixel / 2,  11 * pixel / 2, 0, 1);
-			tesseract.addVertexWithUV(11 * pixel / 2, 11 * pixel / 2, 1 - 11 * pixel / 2, 1, 1);
+			tesseract.addVertexWithUV(11 * SmallBlockPronter.pixel / 2, 1 - 11 * SmallBlockPronter.pixel / 2, 1 - 11 * SmallBlockPronter.pixel / 2, 1, 0);
+			tesseract.addVertexWithUV(11 * SmallBlockPronter.pixel / 2, 1 - 11 * SmallBlockPronter.pixel / 2, 11 * SmallBlockPronter.pixel / 2, 0, 0);
+			tesseract.addVertexWithUV(11 * SmallBlockPronter.pixel / 2, 11 * SmallBlockPronter.pixel / 2,  11 * SmallBlockPronter.pixel / 2, 0, 1);
+			tesseract.addVertexWithUV(11 * SmallBlockPronter.pixel / 2, 11 * SmallBlockPronter.pixel / 2, 1 - 11 * SmallBlockPronter.pixel / 2, 1, 1);
 			tesseract.draw();
 
 			tesseract.startDrawingQuads();
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 1 - 11 * pixel / 2, 11 * pixel / 2, 1, 0);
-			tesseract.addVertexWithUV(11 * pixel / 2, 1 - 11 * pixel / 2, 11 * pixel / 2, 0, 0);
-			tesseract.addVertexWithUV(11 * pixel / 2, 1 - 11 * pixel / 2,  1 - 11 * pixel / 2, 0, 1);
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 1 - 11 * pixel / 2, 1 - 11 * pixel / 2, 1, 1);
+			tesseract.addVertexWithUV(1 - 11 * SmallBlockPronter.pixel / 2, 1 - 11 * SmallBlockPronter.pixel / 2, 11 * SmallBlockPronter.pixel / 2, 1, 0);
+			tesseract.addVertexWithUV(11 * SmallBlockPronter.pixel / 2, 1 - 11 * SmallBlockPronter.pixel / 2, 11 * SmallBlockPronter.pixel / 2, 0, 0);
+			tesseract.addVertexWithUV(11 * SmallBlockPronter.pixel / 2, 1 - 11 * SmallBlockPronter.pixel / 2,  1 - 11 * SmallBlockPronter.pixel / 2, 0, 1);
+			tesseract.addVertexWithUV(1 - 11 * SmallBlockPronter.pixel / 2, 1 - 11 * SmallBlockPronter.pixel / 2, 1 - 11 * SmallBlockPronter.pixel / 2, 1, 1);
 			tesseract.draw();
 
 			tesseract.startDrawingQuads();
-			tesseract.addVertexWithUV(11 * pixel / 2, 11 * pixel / 2, 11 * pixel / 2, 1, 0);
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 11 * pixel / 2, 11 * pixel / 2, 0, 0);
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 11 * pixel / 2, 1 - 11 * pixel / 2, 0, 1);
-			tesseract.addVertexWithUV(11 * pixel / 2, 11 * pixel / 2,  1 - 11 * pixel / 2, 1, 1);
+			tesseract.addVertexWithUV(11 * SmallBlockPronter.pixel / 2, 11 * SmallBlockPronter.pixel / 2, 11 * SmallBlockPronter.pixel / 2, 1, 0);
+			tesseract.addVertexWithUV(1 - 11 * SmallBlockPronter.pixel / 2, 11 * SmallBlockPronter.pixel / 2, 11 * SmallBlockPronter.pixel / 2, 0, 0);
+			tesseract.addVertexWithUV(1 - 11 * SmallBlockPronter.pixel / 2, 11 * SmallBlockPronter.pixel / 2, 1 - 11 * SmallBlockPronter.pixel / 2, 0, 1);
+			tesseract.addVertexWithUV(11 * SmallBlockPronter.pixel / 2, 11 * SmallBlockPronter.pixel / 2,  1 - 11 * SmallBlockPronter.pixel / 2, 1, 1);
 		tesseract.draw();
 		GL11.glPopMatrix();
 		
@@ -102,34 +102,34 @@ public class SmallBlockPronter {
 		
 		tesseract.setNormal(0F, 1F, 0F);
 		
-		tesseract.addVertexWithUV(x + 1 - 11 * pixel / 2, y + 1 - 11 * pixel / 2, z + 1 - 11 * pixel / 2, iconSouth.getMaxU(), iconSouth.getMinV());
-		tesseract.addVertexWithUV(x + 11 * pixel / 2, y + 1 - 11 * pixel / 2, z + 1 - 11 * pixel / 2, iconSouth.getMinU(), iconSouth.getMinV());
-		tesseract.addVertexWithUV(x + 11 * pixel / 2, y + 11 * pixel / 2, z + 1 - 11 * pixel / 2, iconSouth.getMinU(), iconSouth.getMaxV());
-		tesseract.addVertexWithUV(x + 1 - 11 * pixel / 2, y + 11 * pixel / 2,  z + 1 - 11 * pixel / 2, iconSouth.getMaxU(), iconSouth.getMaxV());
+		tesseract.addVertexWithUV(x + 1 - 11 * SmallBlockPronter.pixel / 2, y + 1 - 11 * SmallBlockPronter.pixel / 2, z + 1 - 11 * SmallBlockPronter.pixel / 2, iconSouth.getMaxU(), iconSouth.getMinV());
+		tesseract.addVertexWithUV(x + 11 * SmallBlockPronter.pixel / 2, y + 1 - 11 * SmallBlockPronter.pixel / 2, z + 1 - 11 * SmallBlockPronter.pixel / 2, iconSouth.getMinU(), iconSouth.getMinV());
+		tesseract.addVertexWithUV(x + 11 * SmallBlockPronter.pixel / 2, y + 11 * SmallBlockPronter.pixel / 2, z + 1 - 11 * SmallBlockPronter.pixel / 2, iconSouth.getMinU(), iconSouth.getMaxV());
+		tesseract.addVertexWithUV(x + 1 - 11 * SmallBlockPronter.pixel / 2, y + 11 * SmallBlockPronter.pixel / 2,  z + 1 - 11 * SmallBlockPronter.pixel / 2, iconSouth.getMaxU(), iconSouth.getMaxV());
 
-		tesseract.addVertexWithUV(x + 1 - 11 * pixel / 2, y + 1 - 11 * pixel / 2, z + 11 * pixel / 2, iconEast.getMaxU(), iconEast.getMinV());
-		tesseract.addVertexWithUV(x + 1 - 11 * pixel / 2, y + 1 - 11 * pixel / 2, z + 1 - 11 * pixel / 2, iconEast.getMinU(), iconEast.getMinV());
-		tesseract.addVertexWithUV(x + 1 - 11 * pixel / 2, y + 11 * pixel / 2, z + 1 - 11 * pixel / 2, iconEast.getMinU(), iconEast.getMaxV());
-		tesseract.addVertexWithUV(x + 1 - 11 * pixel / 2, y + 11 * pixel / 2, z + 11 * pixel / 2, iconEast.getMaxU(), iconEast.getMaxV());
+		tesseract.addVertexWithUV(x + 1 - 11 * SmallBlockPronter.pixel / 2, y + 1 - 11 * SmallBlockPronter.pixel / 2, z + 11 * SmallBlockPronter.pixel / 2, iconEast.getMaxU(), iconEast.getMinV());
+		tesseract.addVertexWithUV(x + 1 - 11 * SmallBlockPronter.pixel / 2, y + 1 - 11 * SmallBlockPronter.pixel / 2, z + 1 - 11 * SmallBlockPronter.pixel / 2, iconEast.getMinU(), iconEast.getMinV());
+		tesseract.addVertexWithUV(x + 1 - 11 * SmallBlockPronter.pixel / 2, y + 11 * SmallBlockPronter.pixel / 2, z + 1 - 11 * SmallBlockPronter.pixel / 2, iconEast.getMinU(), iconEast.getMaxV());
+		tesseract.addVertexWithUV(x + 1 - 11 * SmallBlockPronter.pixel / 2, y + 11 * SmallBlockPronter.pixel / 2, z + 11 * SmallBlockPronter.pixel / 2, iconEast.getMaxU(), iconEast.getMaxV());
 
-		tesseract.addVertexWithUV(x + 11 * pixel / 2, y + 1 - 11 * pixel / 2, z + 11 * pixel / 2, iconNorth.getMaxU(), iconNorth.getMinV());
-		tesseract.addVertexWithUV(x + 1 - 11 * pixel / 2, y + 1 - 11 * pixel / 2, z + 11 * pixel / 2, iconNorth.getMinU(), iconNorth.getMinV());
-		tesseract.addVertexWithUV(x + 1 - 11 * pixel / 2,y +  11 * pixel / 2, z + 11 * pixel / 2, iconNorth.getMinU(), iconNorth.getMaxV());
-		tesseract.addVertexWithUV(x + 11 * pixel / 2, y + 11 * pixel / 2, z + 11 * pixel / 2, iconNorth.getMaxU(), iconNorth.getMaxV());
+		tesseract.addVertexWithUV(x + 11 * SmallBlockPronter.pixel / 2, y + 1 - 11 * SmallBlockPronter.pixel / 2, z + 11 * SmallBlockPronter.pixel / 2, iconNorth.getMaxU(), iconNorth.getMinV());
+		tesseract.addVertexWithUV(x + 1 - 11 * SmallBlockPronter.pixel / 2, y + 1 - 11 * SmallBlockPronter.pixel / 2, z + 11 * SmallBlockPronter.pixel / 2, iconNorth.getMinU(), iconNorth.getMinV());
+		tesseract.addVertexWithUV(x + 1 - 11 * SmallBlockPronter.pixel / 2,y +  11 * SmallBlockPronter.pixel / 2, z + 11 * SmallBlockPronter.pixel / 2, iconNorth.getMinU(), iconNorth.getMaxV());
+		tesseract.addVertexWithUV(x + 11 * SmallBlockPronter.pixel / 2, y + 11 * SmallBlockPronter.pixel / 2, z + 11 * SmallBlockPronter.pixel / 2, iconNorth.getMaxU(), iconNorth.getMaxV());
 
-		tesseract.addVertexWithUV(x + 11 * pixel / 2, y + 1 - 11 * pixel / 2, z + 1 - 11 * pixel / 2, iconWest.getMaxU(), iconWest.getMinV());
-		tesseract.addVertexWithUV(x + 11 * pixel / 2, y + 1 - 11 * pixel / 2, z + 11 * pixel / 2, iconWest.getMinU(), iconWest.getMinV());
-		tesseract.addVertexWithUV(x + 11 * pixel / 2, y + 11 * pixel / 2, z + 11 * pixel / 2, iconWest.getMinU(), iconWest.getMaxV());
-		tesseract.addVertexWithUV(x + 11 * pixel / 2, y + 11 * pixel / 2, z + 1 - 11 * pixel / 2, iconWest.getMaxU(), iconWest.getMaxV());
+		tesseract.addVertexWithUV(x + 11 * SmallBlockPronter.pixel / 2, y + 1 - 11 * SmallBlockPronter.pixel / 2, z + 1 - 11 * SmallBlockPronter.pixel / 2, iconWest.getMaxU(), iconWest.getMinV());
+		tesseract.addVertexWithUV(x + 11 * SmallBlockPronter.pixel / 2, y + 1 - 11 * SmallBlockPronter.pixel / 2, z + 11 * SmallBlockPronter.pixel / 2, iconWest.getMinU(), iconWest.getMinV());
+		tesseract.addVertexWithUV(x + 11 * SmallBlockPronter.pixel / 2, y + 11 * SmallBlockPronter.pixel / 2, z + 11 * SmallBlockPronter.pixel / 2, iconWest.getMinU(), iconWest.getMaxV());
+		tesseract.addVertexWithUV(x + 11 * SmallBlockPronter.pixel / 2, y + 11 * SmallBlockPronter.pixel / 2, z + 1 - 11 * SmallBlockPronter.pixel / 2, iconWest.getMaxU(), iconWest.getMaxV());
 
-		tesseract.addVertexWithUV(x + 1 - 11 * pixel / 2, y + 1 - 11 * pixel / 2, z + 11 * pixel / 2, iconTop.getMaxU(), iconTop.getMinV());
-		tesseract.addVertexWithUV(x + 11 * pixel / 2, y + 1 - 11 * pixel / 2, z + 11 * pixel / 2, iconTop.getMinU(), iconTop.getMinV());
-		tesseract.addVertexWithUV(x + 11 * pixel / 2, y + 1 - 11 * pixel / 2,  z + 1 - 11 * pixel / 2, iconTop.getMinU(), iconTop.getMaxV());
-		tesseract.addVertexWithUV(x + 1 - 11 * pixel / 2, y + 1 - 11 * pixel / 2, z + 1 - 11 * pixel / 2, iconTop.getMaxU(), iconTop.getMaxV());
+		tesseract.addVertexWithUV(x + 1 - 11 * SmallBlockPronter.pixel / 2, y + 1 - 11 * SmallBlockPronter.pixel / 2, z + 11 * SmallBlockPronter.pixel / 2, iconTop.getMaxU(), iconTop.getMinV());
+		tesseract.addVertexWithUV(x + 11 * SmallBlockPronter.pixel / 2, y + 1 - 11 * SmallBlockPronter.pixel / 2, z + 11 * SmallBlockPronter.pixel / 2, iconTop.getMinU(), iconTop.getMinV());
+		tesseract.addVertexWithUV(x + 11 * SmallBlockPronter.pixel / 2, y + 1 - 11 * SmallBlockPronter.pixel / 2,  z + 1 - 11 * SmallBlockPronter.pixel / 2, iconTop.getMinU(), iconTop.getMaxV());
+		tesseract.addVertexWithUV(x + 1 - 11 * SmallBlockPronter.pixel / 2, y + 1 - 11 * SmallBlockPronter.pixel / 2, z + 1 - 11 * SmallBlockPronter.pixel / 2, iconTop.getMaxU(), iconTop.getMaxV());
 
-		tesseract.addVertexWithUV(x + 11 * pixel / 2, y + 11 * pixel / 2, z + 11 * pixel / 2, iconBottom.getMaxU(), iconBottom.getMinV());
-		tesseract.addVertexWithUV(x + 1 - 11 * pixel / 2, y + 11 * pixel / 2, z + 11 * pixel / 2, iconBottom.getMinU(), iconBottom.getMinV());
-		tesseract.addVertexWithUV(x + 1 - 11 * pixel / 2, y + 11 * pixel / 2, z + 1 - 11 * pixel / 2, iconBottom.getMinU(), iconBottom.getMaxV());
-		tesseract.addVertexWithUV(x + 11 * pixel / 2, y + 11 * pixel / 2, z + 1 - 11 * pixel / 2, iconBottom.getMaxU(), iconBottom.getMaxV());
+		tesseract.addVertexWithUV(x + 11 * SmallBlockPronter.pixel / 2, y + 11 * SmallBlockPronter.pixel / 2, z + 11 * SmallBlockPronter.pixel / 2, iconBottom.getMaxU(), iconBottom.getMinV());
+		tesseract.addVertexWithUV(x + 1 - 11 * SmallBlockPronter.pixel / 2, y + 11 * SmallBlockPronter.pixel / 2, z + 11 * SmallBlockPronter.pixel / 2, iconBottom.getMinU(), iconBottom.getMinV());
+		tesseract.addVertexWithUV(x + 1 - 11 * SmallBlockPronter.pixel / 2, y + 11 * SmallBlockPronter.pixel / 2, z + 1 - 11 * SmallBlockPronter.pixel / 2, iconBottom.getMinU(), iconBottom.getMaxV());
+		tesseract.addVertexWithUV(x + 11 * SmallBlockPronter.pixel / 2, y + 11 * SmallBlockPronter.pixel / 2, z + 1 - 11 * SmallBlockPronter.pixel / 2, iconBottom.getMaxU(), iconBottom.getMaxV());
 	}
 }

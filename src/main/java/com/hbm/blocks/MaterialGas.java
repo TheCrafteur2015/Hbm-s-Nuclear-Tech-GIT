@@ -7,18 +7,21 @@ public class MaterialGas extends Material {
 
 	public MaterialGas() {
 		super(MapColor.airColor);
-		this.setNoPushMobility();
-		this.setReplaceable();
+		setNoPushMobility();
+		setReplaceable();
 	}
 
+	@Override
 	public boolean isSolid() {
 		return true;
 	}
 
+	@Override
 	public boolean getCanBlockGrass() {
 		return false;
 	}
 
+	@Override
 	public boolean blocksMovement() {
 		return false;
 	}

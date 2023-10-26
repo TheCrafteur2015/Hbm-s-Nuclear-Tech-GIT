@@ -9,6 +9,6 @@ public interface IBlockSideRotation {
 
 	public static int renderID = RenderingRegistry.getNextAvailableRenderId();
 	public static int getRenderType() {
-		return renderID;
+		return IBlockSideRotation.renderID;
 	}
 }

@@ -38,7 +38,7 @@ public class ColorUtil {
 	public static int getAverageColorFromStack(ItemStack stack) {
 		
 		try {
-			BufferedImage tex = getImageFromStack(stack);
+			BufferedImage tex = ColorUtil.getImageFromStack(stack);
 			
 			int r = 0;
 			int g = 0;
@@ -74,10 +74,10 @@ public class ColorUtil {
 	public static int getMedianBrightnessColorFromStack(ItemStack stack) {
 		
 		try {
-			BufferedImage tex = getImageFromStack(stack);
+			BufferedImage tex = ColorUtil.getImageFromStack(stack);
 			
-			HashMap<Integer, Color> brightMap = new HashMap();
-			List<Integer> brightnesses = new ArrayList();
+			HashMap<Integer, Color> brightMap = new HashMap<>();
+			List<Integer> brightnesses = new ArrayList<>();
 			
 			for(int i = 0; i < tex.getWidth(); i++) {
 				for(int j = 0; j < tex.getHeight(); j++) {
@@ -154,7 +154,7 @@ public class ColorUtil {
 	 * @return
 	 */
 	public static int amplifyColor(int hex) {
-		return amplifyColor(hex, 255);
+		return ColorUtil.amplifyColor(hex, 255);
 	}
 	
 	/**

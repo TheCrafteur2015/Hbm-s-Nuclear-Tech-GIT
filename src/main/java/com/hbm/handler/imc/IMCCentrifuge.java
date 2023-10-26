@@ -26,7 +26,7 @@ public class IMCCentrifuge extends IMCHandler {
 			ItemStack out = ItemStack.loadItemStackFromNBT(output);
 			
 			if(out == null) {
-				this.printError(message, "Output stack could not be read!");
+				printError(message, "Output stack could not be read!");
 				return;
 			}
 			
@@ -37,14 +37,14 @@ public class IMCCentrifuge extends IMCHandler {
 		ItemStack in = ItemStack.loadItemStackFromNBT(input);
 		
 		if(in != null) {
-			buffer.put(new RecipesCommon.ComparableStack(in), outs);
+			IMCCentrifuge.buffer.put(new RecipesCommon.ComparableStack(in), outs);
 		} else {
 			String dict = data.getString("oredict");
 			
 			if(!dict.isEmpty()) {
-				buffer.put(new OreDictStack(dict), outs);
+				IMCCentrifuge.buffer.put(new OreDictStack(dict), outs);
 			} else {
-				this.printError(message, "Input stack could not be read!");
+				printError(message, "Input stack could not be read!");
 			}
 		}
 	}

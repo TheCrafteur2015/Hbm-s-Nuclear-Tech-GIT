@@ -12,17 +12,17 @@ public class TileEntityChimneyBrick extends TileEntityChimneyBase {
 	@Override
 	public void spawnParticles() {
 
-		if(worldObj.getTotalWorldTime() % 2 == 0) {
+		if(this.worldObj.getTotalWorldTime() % 2 == 0) {
 			NBTTagCompound fx = new NBTTagCompound();
 			fx.setString("type", "tower");
 			fx.setFloat("lift", 10F);
 			fx.setFloat("base", 0.5F);
 			fx.setFloat("max", 3F);
-			fx.setInteger("life", 250 + worldObj.rand.nextInt(50));
+			fx.setInteger("life", 250 + this.worldObj.rand.nextInt(50));
 			fx.setInteger("color",0x404040);
-			fx.setDouble("posX", xCoord + 0.5);
-			fx.setDouble("posY", yCoord + 12);
-			fx.setDouble("posZ", zCoord + 0.5);
+			fx.setDouble("posX", this.xCoord + 0.5);
+			fx.setDouble("posY", this.yCoord + 12);
+			fx.setDouble("posZ", this.zCoord + 0.5);
 			MainRegistry.proxy.effectNT(fx);
 		}
 	}
@@ -37,18 +37,18 @@ public class TileEntityChimneyBrick extends TileEntityChimneyBase {
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 1,
-					yCoord,
-					zCoord - 1,
-					xCoord + 2,
-					yCoord + 13,
-					zCoord + 2
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 1,
+					this.yCoord,
+					this.zCoord - 1,
+					this.xCoord + 2,
+					this.yCoord + 13,
+					this.zCoord + 2
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override

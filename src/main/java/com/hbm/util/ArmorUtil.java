@@ -64,9 +64,9 @@ public class ArmorUtil {
 		ArmorRegistry.registerHazard(ModItems.rpa_helmet, HazardClass.PARTICLE_COARSE, HazardClass.PARTICLE_FINE, HazardClass.GAS_CHLORINE, HazardClass.BACTERIA, HazardClass.GAS_MONOXIDE, HazardClass.LIGHT, HazardClass.SAND);
 		
 		//Ob ihr wirklich richtig steht, seht ihr wenn das Licht angeht!
-		registerIfExists(Compat.MOD_GT6, "gt.armor.hazmat.universal.head", HazardClass.PARTICLE_COARSE, HazardClass.PARTICLE_FINE, HazardClass.GAS_CHLORINE, HazardClass.BACTERIA, HazardClass.GAS_MONOXIDE, HazardClass.LIGHT, HazardClass.SAND);
-		registerIfExists(Compat.MOD_GT6, "gt.armor.hazmat.biochemgas.head", HazardClass.PARTICLE_COARSE, HazardClass.PARTICLE_FINE, HazardClass.GAS_CHLORINE, HazardClass.BACTERIA, HazardClass.GAS_MONOXIDE, HazardClass.LIGHT, HazardClass.SAND);
-		registerIfExists(Compat.MOD_GT6, "gt.armor.hazmat.radiation.head", HazardClass.PARTICLE_COARSE, HazardClass.PARTICLE_FINE, HazardClass.GAS_CHLORINE, HazardClass.BACTERIA, HazardClass.GAS_MONOXIDE, HazardClass.LIGHT, HazardClass.SAND);
+		ArmorUtil.registerIfExists(Compat.MOD_GT6, "gt.armor.hazmat.universal.head", HazardClass.PARTICLE_COARSE, HazardClass.PARTICLE_FINE, HazardClass.GAS_CHLORINE, HazardClass.BACTERIA, HazardClass.GAS_MONOXIDE, HazardClass.LIGHT, HazardClass.SAND);
+		ArmorUtil.registerIfExists(Compat.MOD_GT6, "gt.armor.hazmat.biochemgas.head", HazardClass.PARTICLE_COARSE, HazardClass.PARTICLE_FINE, HazardClass.GAS_CHLORINE, HazardClass.BACTERIA, HazardClass.GAS_MONOXIDE, HazardClass.LIGHT, HazardClass.SAND);
+		ArmorUtil.registerIfExists(Compat.MOD_GT6, "gt.armor.hazmat.radiation.head", HazardClass.PARTICLE_COARSE, HazardClass.PARTICLE_FINE, HazardClass.GAS_CHLORINE, HazardClass.BACTERIA, HazardClass.GAS_MONOXIDE, HazardClass.LIGHT, HazardClass.SAND);
 	}
 	
 	private static void registerIfExists(String domain, String name, HazardClass... classes) {
@@ -78,7 +78,7 @@ public class ArmorUtil {
 	public static boolean checkArmor(EntityLivingBase entity, Item... armor) {
 		
 		for(int i = 0; i < 4; i++) {
-			if(!checkArmorPiece(entity, armor[i], 3 - i))
+			if(!ArmorUtil.checkArmorPiece(entity, armor[i], 3 - i))
 				return false;
 		}
 		
@@ -86,7 +86,7 @@ public class ArmorUtil {
 	}
 	
 	public static boolean checkArmorPiece(EntityLivingBase entity, Item armor, int slot) {
-		return !checkArmorNull(entity, slot) && entity.getEquipmentInSlot(slot + 1).getItem() == armor;
+		return !ArmorUtil.checkArmorNull(entity, slot) && entity.getEquipmentInSlot(slot + 1).getItem() == armor;
 	}
 	
 	public static boolean checkArmorNull(EntityLivingBase player, int slot) {
@@ -118,12 +118,12 @@ public class ArmorUtil {
 	 */
 	public static boolean checkForHazmat(EntityLivingBase player) {
 		
-		if(checkArmor(player, ModItems.hazmat_helmet, ModItems.hazmat_plate, ModItems.hazmat_legs, ModItems.hazmat_boots) || 
-				checkArmor(player, ModItems.hazmat_helmet_red, ModItems.hazmat_plate_red, ModItems.hazmat_legs_red, ModItems.hazmat_boots_red) || 
-				checkArmor(player, ModItems.hazmat_helmet_grey, ModItems.hazmat_plate_grey, ModItems.hazmat_legs_grey, ModItems.hazmat_boots_grey) || 
-				checkArmor(player, ModItems.t45_helmet, ModItems.t45_plate, ModItems.t45_legs, ModItems.t45_boots) || 
-				checkArmor(player, ModItems.schrabidium_helmet, ModItems.schrabidium_plate, ModItems.schrabidium_legs, ModItems.schrabidium_boots) || 
-				checkForHaz2(player)) {
+		if(ArmorUtil.checkArmor(player, ModItems.hazmat_helmet, ModItems.hazmat_plate, ModItems.hazmat_legs, ModItems.hazmat_boots) || 
+				ArmorUtil.checkArmor(player, ModItems.hazmat_helmet_red, ModItems.hazmat_plate_red, ModItems.hazmat_legs_red, ModItems.hazmat_boots_red) || 
+				ArmorUtil.checkArmor(player, ModItems.hazmat_helmet_grey, ModItems.hazmat_plate_grey, ModItems.hazmat_legs_grey, ModItems.hazmat_boots_grey) || 
+				ArmorUtil.checkArmor(player, ModItems.t45_helmet, ModItems.t45_plate, ModItems.t45_legs, ModItems.t45_boots) || 
+				ArmorUtil.checkArmor(player, ModItems.schrabidium_helmet, ModItems.schrabidium_plate, ModItems.schrabidium_legs, ModItems.schrabidium_boots) || 
+				ArmorUtil.checkForHaz2(player)) {
 			
 			return true;
 		}
@@ -136,12 +136,12 @@ public class ArmorUtil {
 	
 	public static boolean checkForHaz2(EntityLivingBase player) {
 		
-		if(checkArmor(player, ModItems.hazmat_paa_helmet, ModItems.hazmat_paa_plate, ModItems.hazmat_paa_legs, ModItems.hazmat_paa_boots) || 
-				checkArmor(player, ModItems.liquidator_helmet, ModItems.liquidator_plate, ModItems.liquidator_legs, ModItems.liquidator_boots) || 
-				checkArmor(player, ModItems.euphemium_helmet, ModItems.euphemium_plate, ModItems.euphemium_legs, ModItems.euphemium_boots) || 
-				checkArmor(player, ModItems.rpa_helmet, ModItems.rpa_plate, ModItems.rpa_legs, ModItems.rpa_boots) || 
-				checkArmor(player, ModItems.fau_helmet, ModItems.fau_plate, ModItems.fau_legs, ModItems.fau_boots) || 
-				checkArmor(player, ModItems.dns_helmet, ModItems.dns_plate, ModItems.dns_legs, ModItems.dns_boots))
+		if(ArmorUtil.checkArmor(player, ModItems.hazmat_paa_helmet, ModItems.hazmat_paa_plate, ModItems.hazmat_paa_legs, ModItems.hazmat_paa_boots) || 
+				ArmorUtil.checkArmor(player, ModItems.liquidator_helmet, ModItems.liquidator_plate, ModItems.liquidator_legs, ModItems.liquidator_boots) || 
+				ArmorUtil.checkArmor(player, ModItems.euphemium_helmet, ModItems.euphemium_plate, ModItems.euphemium_legs, ModItems.euphemium_boots) || 
+				ArmorUtil.checkArmor(player, ModItems.rpa_helmet, ModItems.rpa_plate, ModItems.rpa_legs, ModItems.rpa_boots) || 
+				ArmorUtil.checkArmor(player, ModItems.fau_helmet, ModItems.fau_plate, ModItems.fau_legs, ModItems.fau_boots) || 
+				ArmorUtil.checkArmor(player, ModItems.dns_helmet, ModItems.dns_plate, ModItems.dns_legs, ModItems.dns_boots))
 		{
 			return true;
 		}
@@ -151,7 +151,7 @@ public class ArmorUtil {
 	
 	public static boolean checkForAsbestos(EntityLivingBase player) {
 		
-		if(checkArmor(player, ModItems.asbestos_helmet, ModItems.asbestos_plate, ModItems.asbestos_legs, ModItems.asbestos_boots))
+		if(ArmorUtil.checkArmor(player, ModItems.asbestos_helmet, ModItems.asbestos_plate, ModItems.asbestos_legs, ModItems.asbestos_boots))
 			return true;
 
 		return false;
@@ -159,13 +159,7 @@ public class ArmorUtil {
 	
 	public static boolean checkForDigamma(EntityPlayer player) {
 		
-		if(checkArmor(player, ModItems.fau_helmet, ModItems.fau_plate, ModItems.fau_legs, ModItems.fau_boots))
-			return true;
-		
-		if(checkArmor(player, ModItems.dns_helmet, ModItems.dns_plate, ModItems.dns_legs, ModItems.dns_boots))
-			return true;
-		
-		if(player.isPotionActive(HbmPotion.stability.id))
+		if(ArmorUtil.checkArmor(player, ModItems.fau_helmet, ModItems.fau_plate, ModItems.fau_legs, ModItems.fau_boots) || ArmorUtil.checkArmor(player, ModItems.dns_helmet, ModItems.dns_plate, ModItems.dns_legs, ModItems.dns_boots) || player.isPotionActive(HbmPotion.stability.id))
 			return true; 
 		
 		return false;
@@ -173,7 +167,7 @@ public class ArmorUtil {
 	
 	public static boolean checkForDigamma2(EntityPlayer player) {
 		
-		if(!checkArmor(player, ModItems.robes_helmet, ModItems.robes_plate, ModItems.robes_legs, ModItems.robes_boots))
+		if(!ArmorUtil.checkArmor(player, ModItems.robes_helmet, ModItems.robes_plate, ModItems.robes_legs, ModItems.robes_boots))
 			return false;
 		
 		if(player.isPotionActive(HbmPotion.stability.id))
@@ -201,7 +195,7 @@ public class ArmorUtil {
 		
 		if(armor[0] == null || armor[1] == null || armor[2] == null || armor[3] == null) return false;
 		
-		if(isFaradayArmor(armor[0]) && isFaradayArmor(armor[1]) && isFaradayArmor(armor[2]) && isFaradayArmor(armor[3]))
+		if(ArmorUtil.isFaradayArmor(armor[0]) && ArmorUtil.isFaradayArmor(armor[1]) && ArmorUtil.isFaradayArmor(armor[2]) && ArmorUtil.isFaradayArmor(armor[3]))
 			return true;
 		
 		return false;
@@ -240,7 +234,7 @@ public class ArmorUtil {
 		
 		String name = item.getUnlocalizedName();
 		
-		for(String metal : metals) {
+		for(String metal : ArmorUtil.metals) {
 			
 			if(name.toLowerCase(Locale.US).contains(metal))
 				return true;
@@ -254,12 +248,12 @@ public class ArmorUtil {
 	
 	public static boolean checkForFiend(EntityPlayer player) {
 		
-		return checkArmorPiece(player, ModItems.jackt, 2) && Library.checkForHeld(player, ModItems.shimmer_sledge);
+		return ArmorUtil.checkArmorPiece(player, ModItems.jackt, 2) && Library.checkForHeld(player, ModItems.shimmer_sledge);
 	}
 	
 	public static boolean checkForFiend2(EntityPlayer player) {
 		
-		return checkArmorPiece(player, ModItems.jackt2, 2) && Library.checkForHeld(player, ModItems.shimmer_axe);
+		return ArmorUtil.checkArmorPiece(player, ModItems.jackt2, 2) && Library.checkForHeld(player, ModItems.shimmer_axe);
 	}
 	
 	/*
@@ -278,18 +272,15 @@ public class ArmorUtil {
 		NBTTagCompound attach = new NBTTagCompound();
 		filter.writeToNBT(attach);
 		
-		mask.stackTagCompound.setTag(FILTERK_KEY, attach);
+		mask.stackTagCompound.setTag(ArmorUtil.FILTERK_KEY, attach);
 	}
 	
 	public static void removeFilter(ItemStack mask) {
 		
-		if(mask == null)
+		if((mask == null) || !mask.hasTagCompound())
 			return;
 		
-		if(!mask.hasTagCompound())
-			return;
-		
-		mask.stackTagCompound.removeTag(FILTERK_KEY);
+		mask.stackTagCompound.removeTag(ArmorUtil.FILTERK_KEY);
 	}
 	
 	/**
@@ -300,7 +291,7 @@ public class ArmorUtil {
 	 */
 	public static ItemStack getGasMaskFilterRecursively(ItemStack mask, EntityLivingBase entity) {
 		
-		ItemStack filter = getGasMaskFilter(mask);
+		ItemStack filter = ArmorUtil.getGasMaskFilter(mask);
 		
 		if(filter == null && ArmorModHandler.hasMods(mask)) {
 			
@@ -315,13 +306,10 @@ public class ArmorUtil {
 	
 	public static ItemStack getGasMaskFilter(ItemStack mask) {
 		
-		if(mask == null)
+		if((mask == null) || !mask.hasTagCompound())
 			return null;
 		
-		if(!mask.hasTagCompound())
-			return null;
-		
-		NBTTagCompound attach = mask.stackTagCompound.getCompoundTag(FILTERK_KEY);
+		NBTTagCompound attach = mask.stackTagCompound.getCompoundTag(ArmorUtil.FILTERK_KEY);
 		ItemStack filter = ItemStack.loadItemStackFromNBT(attach);
 		
 		return filter;
@@ -346,18 +334,18 @@ public class ArmorUtil {
 		}
 		
 		if(mask != null)
-			damageGasMaskFilter(mask, damage);
+			ArmorUtil.damageGasMaskFilter(mask, damage);
 	}
 	
 	public static void damageGasMaskFilter(ItemStack mask, int damage) {
-		ItemStack filter = getGasMaskFilter(mask);
+		ItemStack filter = ArmorUtil.getGasMaskFilter(mask);
 		
 		if(filter == null) {
 			if(ArmorModHandler.hasMods(mask)) {
 				ItemStack mods[] = ArmorModHandler.pryMods(mask);
 				
 				if(mods[ArmorModHandler.helmet_only] != null && mods[ArmorModHandler.helmet_only].getItem() instanceof IGasMask)
-					filter = getGasMaskFilter(mods[ArmorModHandler.helmet_only]);
+					filter = ArmorUtil.getGasMaskFilter(mods[ArmorModHandler.helmet_only]);
 			}
 		}
 		
@@ -367,12 +355,12 @@ public class ArmorUtil {
 		filter.setItemDamage(filter.getItemDamage() + damage);
 		
 		if(filter.getItemDamage() > filter.getMaxDamage())
-			removeFilter(mask);
+			ArmorUtil.removeFilter(mask);
 		else
-			installGasMaskFilter(mask, filter);
+			ArmorUtil.installGasMaskFilter(mask, filter);
 	}
 	
-	public static void addGasMaskTooltip(ItemStack mask, EntityPlayer player, List list, boolean ext) {
+	public static void addGasMaskTooltip(ItemStack mask, EntityPlayer player, List<String> list, boolean ext) {
 		
 		if(mask == null || !(mask.getItem() instanceof IGasMask))
 			return;
@@ -395,7 +383,7 @@ public class ArmorUtil {
 			append = " (" + ((max - meta) * 100 / max) + "%)";
 		}
 		
-		List<String> lore = new ArrayList();
+		List<String> lore = new ArrayList<>();
 		list.add("  " + filter.getDisplayName() + append);
 		filter.getItem().addInformation(filter, player, lore, ext);
 		ForgeEventFactory.onItemTooltip(filter, player, lore, ext);
@@ -410,13 +398,13 @@ public class ArmorUtil {
 			return false;
 		
 		if(mask.getItem() instanceof IGasMask) {
-			return getGasMaskFilter(mask) == null;
+			return ArmorUtil.getGasMaskFilter(mask) == null;
 		}
 		
 		ItemStack mod = ArmorModHandler.pryMods(mask)[ArmorModHandler.helmet_only];
 		
 		if(mod != null && mod.getItem() instanceof IGasMask) {
-			return getGasMaskFilter(mod) == null;
+			return ArmorUtil.getGasMaskFilter(mod) == null;
 		}
 		
 		return false;

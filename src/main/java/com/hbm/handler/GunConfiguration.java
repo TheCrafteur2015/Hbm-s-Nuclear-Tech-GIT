@@ -79,10 +79,10 @@ public class GunConfiguration implements Cloneable {
 	
 	public String name = "";
 	public EnumGunManufacturer manufacturer = EnumGunManufacturer.NONE;
-	public List<String> comment = new ArrayList();
+	public List<String> comment = new ArrayList<>();
 
 	//bullet configs for main and alt fire
-	public List<Integer> config = new ArrayList();
+	public List<Integer> config = new ArrayList<>();
 
 	//crosshair
 	public Crosshair crosshair;

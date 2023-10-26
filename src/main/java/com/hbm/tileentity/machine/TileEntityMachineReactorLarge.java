@@ -54,17 +54,17 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 	public int rods;
 	public final int rodsMax = 100;
 	public int age = 0;
-	public List<IFluidAcceptor> list = new ArrayList();
+	public List<IFluidAcceptor> list = new ArrayList<>();
 	public FluidTank[] tanks;
 	public ReactorFuelType type;
 	public int fuel;
-	public int maxFuel = 240 * fuelMult;
+	public int maxFuel = 240 * TileEntityMachineReactorLarge.fuelMult;
 	public int waste;
-	public int maxWaste = 240 * fuelMult;
+	public int maxWaste = 240 * TileEntityMachineReactorLarge.fuelMult;
 
 	public static int fuelMult = 1000;
 	public static int cycleDuration = 24000;
-	private static int fuelBase = 240 * fuelMult;
+	private static int fuelBase = 240 * TileEntityMachineReactorLarge.fuelMult;
 	private static int waterBase = 128 * 1000;
 	private static int coolantBase = 64 * 1000;
 	private static int steamBase = 32 * 1000;
@@ -76,29 +76,29 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 	private String customName;
 
 	public TileEntityMachineReactorLarge() {
-		slots = new ItemStack[8];
-		tanks = new FluidTank[3];
-		tanks[0] = new FluidTank(Fluids.WATER, 128000, 0);
-		tanks[1] = new FluidTank(Fluids.COOLANT, 64000, 1);
-		tanks[2] = new FluidTank(Fluids.STEAM, 32000, 2);
-		type = ReactorFuelType.URANIUM;
+		this.slots = new ItemStack[8];
+		this.tanks = new FluidTank[3];
+		this.tanks[0] = new FluidTank(Fluids.WATER, 128000, 0);
+		this.tanks[1] = new FluidTank(Fluids.COOLANT, 64000, 1);
+		this.tanks[2] = new FluidTank(Fluids.STEAM, 32000, 2);
+		this.type = ReactorFuelType.URANIUM;
 	}
 
 	@Override
 	public int getSizeInventory() {
-		return slots.length;
+		return this.slots.length;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		return slots[i];
+		return this.slots[i];
 	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
-		if (slots[i] != null) {
-			ItemStack itemStack = slots[i];
-			slots[i] = null;
+		if (this.slots[i] != null) {
+			ItemStack itemStack = this.slots[i];
+			this.slots[i] = null;
 			return itemStack;
 		} else {
 			return null;
@@ -107,7 +107,7 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemStack) {
-		slots[i] = itemStack;
+		this.slots[i] = itemStack;
 		if (itemStack != null && itemStack.stackSize > getInventoryStackLimit()) {
 			itemStack.stackSize = getInventoryStackLimit();
 		}
@@ -115,7 +115,7 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 
 	@Override
 	public String getInventoryName() {
-		return this.hasCustomInventoryName() ? this.customName : "container.reactorLarge";
+		return hasCustomInventoryName() ? this.customName : "container.reactorLarge";
 	}
 
 	@Override
@@ -134,10 +134,10 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		if (worldObj.getTileEntity(xCoord, yCoord, zCoord) != this) {
+		if (this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this) {
 			return false;
 		} else {
-			return player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64;
+			return player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64;
 		}
 	}
 
@@ -157,15 +157,15 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		if (slots[i] != null) {
-			if (slots[i].stackSize <= j) {
-				ItemStack itemStack = slots[i];
-				slots[i] = null;
+		if (this.slots[i] != null) {
+			if (this.slots[i].stackSize <= j) {
+				ItemStack itemStack = this.slots[i];
+				this.slots[i] = null;
 				return itemStack;
 			}
-			ItemStack itemStack1 = slots[i].splitStack(j);
-			if (slots[i].stackSize == 0) {
-				slots[i] = null;
+			ItemStack itemStack1 = this.slots[i].splitStack(j);
+			if (this.slots[i].stackSize == 0) {
+				this.slots[i] = null;
 			}
 
 			return itemStack1;
@@ -179,22 +179,22 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 		super.readFromNBT(nbt);
 		NBTTagList list = nbt.getTagList("items", 10);
 
-		coreHeat = nbt.getInteger("heat");
-		hullHeat = nbt.getInteger("hullHeat");
-		rods = nbt.getInteger("rods");
-		fuel = nbt.getInteger("fuel");
-		waste = nbt.getInteger("waste");
-		slots = new ItemStack[getSizeInventory()];
-		tanks[0].readFromNBT(nbt, "water");
-		tanks[1].readFromNBT(nbt, "coolant");
-		tanks[2].readFromNBT(nbt, "steam");
-		type = ReactorFuelType.getEnum(nbt.getInteger("type"));
+		this.coreHeat = nbt.getInteger("heat");
+		this.hullHeat = nbt.getInteger("hullHeat");
+		this.rods = nbt.getInteger("rods");
+		this.fuel = nbt.getInteger("fuel");
+		this.waste = nbt.getInteger("waste");
+		this.slots = new ItemStack[getSizeInventory()];
+		this.tanks[0].readFromNBT(nbt, "water");
+		this.tanks[1].readFromNBT(nbt, "coolant");
+		this.tanks[2].readFromNBT(nbt, "steam");
+		this.type = ReactorFuelType.getEnum(nbt.getInteger("type"));
 
 		for (int i = 0; i < list.tagCount(); i++) {
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("slot");
-			if (b0 >= 0 && b0 < slots.length) {
-				slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
+			if (b0 >= 0 && b0 < this.slots.length) {
+				this.slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
 			}
 		}
 	}
@@ -202,22 +202,22 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setInteger("heat", coreHeat);
-		nbt.setInteger("hullHeat", hullHeat);
-		nbt.setInteger("rods", rods);
-		nbt.setInteger("fuel", fuel);
-		nbt.setInteger("waste", waste);
+		nbt.setInteger("heat", this.coreHeat);
+		nbt.setInteger("hullHeat", this.hullHeat);
+		nbt.setInteger("rods", this.rods);
+		nbt.setInteger("fuel", this.fuel);
+		nbt.setInteger("waste", this.waste);
 		NBTTagList list = new NBTTagList();
-		tanks[0].writeToNBT(nbt, "water");
-		tanks[1].writeToNBT(nbt, "coolant");
-		tanks[2].writeToNBT(nbt, "steam");
-		nbt.setInteger("type", type.getID());
+		this.tanks[0].writeToNBT(nbt, "water");
+		this.tanks[1].writeToNBT(nbt, "coolant");
+		this.tanks[2].writeToNBT(nbt, "steam");
+		nbt.setInteger("type", this.type.getID());
 
-		for (int i = 0; i < slots.length; i++) {
-			if (slots[i] != null) {
+		for (int i = 0; i < this.slots.length; i++) {
+			if (this.slots[i] != null) {
 				NBTTagCompound nbt1 = new NBTTagCompound();
 				nbt1.setByte("slot", (byte) i);
-				slots[i].writeToNBT(nbt1);
+				this.slots[i].writeToNBT(nbt1);
 				list.appendTag(nbt1);
 			}
 		}
@@ -226,7 +226,7 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(int p_94128_1_) {
-		return p_94128_1_ == 0 ? slots_bottom : (p_94128_1_ == 1 ? slots_top : slots_side);
+		return p_94128_1_ == 0 ? TileEntityMachineReactorLarge.slots_bottom : (p_94128_1_ == 1 ? TileEntityMachineReactorLarge.slots_top : TileEntityMachineReactorLarge.slots_side);
 	}
 
 	@Override
@@ -241,56 +241,56 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 	}
 
 	public int getCoreHeatScaled(int i) {
-		return (coreHeat * i) / maxCoreHeat;
+		return (this.coreHeat * i) / this.maxCoreHeat;
 	}
 
 	public int getHullHeatScaled(int i) {
-		return (hullHeat * i) / maxHullHeat;
+		return (this.hullHeat * i) / this.maxHullHeat;
 	}
 
 	public int getFuelScaled(int i) {
-		return (fuel * i) / maxFuel;
+		return (this.fuel * i) / this.maxFuel;
 	}
 
 	public int getWasteScaled(int i) {
-		return (waste * i) / maxWaste;
+		return (this.waste * i) / this.maxWaste;
 	}
 
 	public int getSteamScaled(int i) {
-		return (tanks[2].getFill() * i) / tanks[2].getMaxFill();
+		return (this.tanks[2].getFill() * i) / this.tanks[2].getMaxFill();
 	}
 
 	public boolean hasCoreHeat() {
-		return coreHeat > 0;
+		return this.coreHeat > 0;
 	}
 
 	public boolean hasHullHeat() {
-		return hullHeat > 0;
+		return this.hullHeat > 0;
 	}
 	
 	public boolean checkBody() {
 		
-		return worldObj.getBlock(xCoord + 1, yCoord, zCoord + 1) == ModBlocks.reactor_element &&
-				worldObj.getBlock(xCoord - 1, yCoord, zCoord + 1) == ModBlocks.reactor_element &&
-				worldObj.getBlock(xCoord - 1, yCoord, zCoord - 1) == ModBlocks.reactor_element &&
-				worldObj.getBlock(xCoord + 1, yCoord, zCoord - 1) == ModBlocks.reactor_element &&
-				worldObj.getBlock(xCoord + 1, yCoord, zCoord) == ModBlocks.reactor_control &&
-				worldObj.getBlock(xCoord - 1, yCoord, zCoord) == ModBlocks.reactor_control &&
-				worldObj.getBlock(xCoord, yCoord, zCoord + 1) == ModBlocks.reactor_control &&
-				worldObj.getBlock(xCoord, yCoord, zCoord - 1) == ModBlocks.reactor_control;
+		return this.worldObj.getBlock(this.xCoord + 1, this.yCoord, this.zCoord + 1) == ModBlocks.reactor_element &&
+				this.worldObj.getBlock(this.xCoord - 1, this.yCoord, this.zCoord + 1) == ModBlocks.reactor_element &&
+				this.worldObj.getBlock(this.xCoord - 1, this.yCoord, this.zCoord - 1) == ModBlocks.reactor_element &&
+				this.worldObj.getBlock(this.xCoord + 1, this.yCoord, this.zCoord - 1) == ModBlocks.reactor_element &&
+				this.worldObj.getBlock(this.xCoord + 1, this.yCoord, this.zCoord) == ModBlocks.reactor_control &&
+				this.worldObj.getBlock(this.xCoord - 1, this.yCoord, this.zCoord) == ModBlocks.reactor_control &&
+				this.worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord + 1) == ModBlocks.reactor_control &&
+				this.worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord - 1) == ModBlocks.reactor_control;
 	}
 	
 	public boolean checkSegment(int offset) {
 		
-		return worldObj.getBlock(xCoord + 1, yCoord + offset, zCoord + 1) == ModBlocks.reactor_element &&
-				worldObj.getBlock(xCoord - 1, yCoord + offset, zCoord + 1) == ModBlocks.reactor_element &&
-				worldObj.getBlock(xCoord - 1, yCoord + offset, zCoord - 1) == ModBlocks.reactor_element &&
-				worldObj.getBlock(xCoord + 1, yCoord + offset, zCoord - 1) == ModBlocks.reactor_element &&
-				worldObj.getBlock(xCoord + 1, yCoord + offset, zCoord) == ModBlocks.reactor_control &&
-				worldObj.getBlock(xCoord - 1, yCoord + offset, zCoord) == ModBlocks.reactor_control &&
-				worldObj.getBlock(xCoord, yCoord + offset, zCoord + 1) == ModBlocks.reactor_control &&
-				worldObj.getBlock(xCoord, yCoord + offset, zCoord - 1) == ModBlocks.reactor_control &&
-				worldObj.getBlock(xCoord, yCoord + offset, zCoord) == ModBlocks.reactor_conductor;
+		return this.worldObj.getBlock(this.xCoord + 1, this.yCoord + offset, this.zCoord + 1) == ModBlocks.reactor_element &&
+				this.worldObj.getBlock(this.xCoord - 1, this.yCoord + offset, this.zCoord + 1) == ModBlocks.reactor_element &&
+				this.worldObj.getBlock(this.xCoord - 1, this.yCoord + offset, this.zCoord - 1) == ModBlocks.reactor_element &&
+				this.worldObj.getBlock(this.xCoord + 1, this.yCoord + offset, this.zCoord - 1) == ModBlocks.reactor_element &&
+				this.worldObj.getBlock(this.xCoord + 1, this.yCoord + offset, this.zCoord) == ModBlocks.reactor_control &&
+				this.worldObj.getBlock(this.xCoord - 1, this.yCoord + offset, this.zCoord) == ModBlocks.reactor_control &&
+				this.worldObj.getBlock(this.xCoord, this.yCoord + offset, this.zCoord + 1) == ModBlocks.reactor_control &&
+				this.worldObj.getBlock(this.xCoord, this.yCoord + offset, this.zCoord - 1) == ModBlocks.reactor_control &&
+				this.worldObj.getBlock(this.xCoord, this.yCoord + offset, this.zCoord) == ModBlocks.reactor_conductor;
 	}
 	
 	private float checkHull() {
@@ -298,34 +298,34 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 		float max = getSize() * 12;
 		float count = 0;
 		
-		for(int y = yCoord - depth; y <= yCoord + height; y++) {
+		for(int y = this.yCoord - this.depth; y <= this.yCoord + this.height; y++) {
 
-			if(blocksRad(xCoord - 1, y, zCoord + 2))
+			if(blocksRad(this.xCoord - 1, y, this.zCoord + 2))
 				count++;
-			if(blocksRad(xCoord, y, zCoord + 2))
+			if(blocksRad(this.xCoord, y, this.zCoord + 2))
 				count++;
-			if(blocksRad(xCoord + 1, y, zCoord + 2))
-				count++;
-
-			if(blocksRad(xCoord - 1, y, zCoord - 2))
-				count++;
-			if(blocksRad(xCoord, y, zCoord - 2))
-				count++;
-			if(blocksRad(xCoord + 1, y, zCoord - 2))
+			if(blocksRad(this.xCoord + 1, y, this.zCoord + 2))
 				count++;
 
-			if(blocksRad(xCoord + 2, y, zCoord - 1))
+			if(blocksRad(this.xCoord - 1, y, this.zCoord - 2))
 				count++;
-			if(blocksRad(xCoord + 2, y, zCoord))
+			if(blocksRad(this.xCoord, y, this.zCoord - 2))
 				count++;
-			if(blocksRad(xCoord + 2, y, zCoord + 1))
+			if(blocksRad(this.xCoord + 1, y, this.zCoord - 2))
+				count++;
+
+			if(blocksRad(this.xCoord + 2, y, this.zCoord - 1))
+				count++;
+			if(blocksRad(this.xCoord + 2, y, this.zCoord))
+				count++;
+			if(blocksRad(this.xCoord + 2, y, this.zCoord + 1))
 				count++;
 			
-			if(blocksRad(xCoord - 2, y, zCoord - 1))
+			if(blocksRad(this.xCoord - 2, y, this.zCoord - 1))
 				count++;
-			if(blocksRad(xCoord - 2, y, zCoord))
+			if(blocksRad(this.xCoord - 2, y, this.zCoord))
 				count++;
-			if(blocksRad(xCoord - 2, y, zCoord + 1))
+			if(blocksRad(this.xCoord - 2, y, this.zCoord + 1))
 				count++;
 		}
 		
@@ -339,12 +339,9 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 	
 	private boolean blocksRad(int x, int y, int z) {
 		
-		Block b = worldObj.getBlock(x, y, z);
+		Block b = this.worldObj.getBlock(x, y, z);
 		
-		if(b == ModBlocks.block_lead || b == ModBlocks.block_desh || b == ModBlocks.brick_concrete)
-			return true;
-		
-		if(b.getExplosionResistance(null) >= 100)
+		if(b == ModBlocks.block_lead || b == ModBlocks.block_desh || b == ModBlocks.brick_concrete || (b.getExplosionResistance(null) >= 100))
 			return true;
 		
 		return false;
@@ -356,13 +353,13 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 	
 	private void caluclateSize() {
 		
-		height = 0;
-		depth = 0;
+		this.height = 0;
+		this.depth = 0;
 		
 		for(int i = 0; i < 7; i++) {
 			
 			if(checkSegment(i + 1))
-				height++;
+				this.height++;
 			else
 				break;
 		}
@@ -370,32 +367,32 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 		for(int i = 0; i < 7; i++) {
 			
 			if(checkSegment(-i - 1))
-				depth++;
+				this.depth++;
 			else
 				break;
 		}
 		
-		size = height + depth + 1;
+		this.size = this.height + this.depth + 1;
 	}
 	
 	private int getSize() {
-		return size;
+		return this.size;
 	}
 	
 	private void generate() {
 		
-		int consumption = (int) (((double)maxFuel / cycleDuration) * rods / 100);
+		int consumption = (int) (((double)this.maxFuel / TileEntityMachineReactorLarge.cycleDuration) * this.rods / 100);
 		
-		if(consumption > fuel)
-			consumption = fuel;
+		if(consumption > this.fuel)
+			consumption = this.fuel;
 		
-		if(consumption + waste > maxWaste)
-			consumption = maxWaste - waste;
+		if(consumption + this.waste > this.maxWaste)
+			consumption = this.maxWaste - this.waste;
 		
-		fuel -= consumption;
-		waste += consumption;
+		this.fuel -= consumption;
+		this.waste += consumption;
 		
-		int heat = (int) (((double)consumption / size) * type.heat / fuelMult);
+		int heat = (int) (((double)consumption / this.size) * this.type.heat / TileEntityMachineReactorLarge.fuelMult);
 		
 		this.coreHeat += heat;
 		
@@ -404,109 +401,109 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 	@Override
 	public void updateEntity() {
 
-		if (!worldObj.isRemote && checkBody()) {
+		if (!this.worldObj.isRemote && checkBody()) {
 
-			age++;
-			if (age >= 20) {
-				age = 0;
+			this.age++;
+			if (this.age >= 20) {
+				this.age = 0;
 			}
 			
-			fillFluidInit(tanks[2].getTankType());
+			fillFluidInit(this.tanks[2].getTankType());
 			
 			caluclateSize();
-			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(xCoord, yCoord, zCoord, size, 3), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 50));
+			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(this.xCoord, this.yCoord, this.zCoord, this.size, 3), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 50));
 		}
 
-		tanks[0].changeTankSize(waterBase * getSize());
-		tanks[1].changeTankSize(coolantBase * getSize());
-		tanks[2].changeTankSize(steamBase * getSize());
+		this.tanks[0].changeTankSize(TileEntityMachineReactorLarge.waterBase * getSize());
+		this.tanks[1].changeTankSize(TileEntityMachineReactorLarge.coolantBase * getSize());
+		this.tanks[2].changeTankSize(TileEntityMachineReactorLarge.steamBase * getSize());
 		
-		maxWaste = maxFuel = fuelBase * getSize();
+		this.maxWaste = this.maxFuel = TileEntityMachineReactorLarge.fuelBase * getSize();
 			
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			if(waste > maxWaste)
-				waste = maxWaste;
+			if(this.waste > this.maxWaste)
+				this.waste = this.maxWaste;
 			
-			if(fuel > maxFuel)
-				fuel = maxFuel;
+			if(this.fuel > this.maxFuel)
+				this.fuel = this.maxFuel;
 			
-			tanks[0].loadTank(0, 1, slots);
-			tanks[1].loadTank(2, 3, slots);
+			this.tanks[0].loadTank(0, 1, this.slots);
+			this.tanks[1].loadTank(2, 3, this.slots);
 			
 			//Change fuel type if empty
-			if(fuel == 0) {
+			if(this.fuel == 0) {
 				
-				if(slots[4] != null && !getFuelType(slots[4].getItem()).toString().equals(ReactorFuelType.UNKNOWN.toString())) {
+				if(this.slots[4] != null && !TileEntityMachineReactorLarge.getFuelType(this.slots[4].getItem()).toString().equals(ReactorFuelType.UNKNOWN.toString())) {
 					
-					this.type = getFuelType(slots[4].getItem());
+					this.type = TileEntityMachineReactorLarge.getFuelType(this.slots[4].getItem());
 					this.waste = 0;
 					
 				}
 			}
 			
 			//Meteorite sword
-			if(slots[4] != null && coreHeat > 0 && slots[4].getItem() == ModItems.meteorite_sword_bred)
-				slots[4] = new ItemStack(ModItems.meteorite_sword_irradiated);
+			if(this.slots[4] != null && this.coreHeat > 0 && this.slots[4].getItem() == ModItems.meteorite_sword_bred)
+				this.slots[4] = new ItemStack(ModItems.meteorite_sword_irradiated);
 			
 			//Load fuel
-			if(slots[4] != null && getFuelContent(slots[4], type) > 0) {
+			if(this.slots[4] != null && TileEntityMachineReactorLarge.getFuelContent(this.slots[4], this.type) > 0) {
 				
-				int cont = getFuelContent(slots[4], type) * fuelMult;
+				int cont = TileEntityMachineReactorLarge.getFuelContent(this.slots[4], this.type) * TileEntityMachineReactorLarge.fuelMult;
 				
-				if(fuel + cont <= maxFuel) {
+				if(this.fuel + cont <= this.maxFuel) {
 					
-					if(!slots[4].getItem().hasContainerItem()) {
+					if(!this.slots[4].getItem().hasContainerItem()) {
 						
-						slots[4].stackSize--;
-						fuel += cont;
+						this.slots[4].stackSize--;
+						this.fuel += cont;
 						
-					} else if(slots[5] == null) {
+					} else if(this.slots[5] == null) {
 						
-						slots[5] = new ItemStack(slots[4].getItem().getContainerItem());
-						slots[4].stackSize--;
-						fuel += cont;
+						this.slots[5] = new ItemStack(this.slots[4].getItem().getContainerItem());
+						this.slots[4].stackSize--;
+						this.fuel += cont;
 						
-					} else if(slots[4].getItem().getContainerItem() == slots[5].getItem() && slots[5].stackSize < slots[5].getMaxStackSize()) {
+					} else if(this.slots[4].getItem().getContainerItem() == this.slots[5].getItem() && this.slots[5].stackSize < this.slots[5].getMaxStackSize()) {
 						
-						slots[4].stackSize--;
-						slots[5].stackSize++;
-						fuel += cont;
+						this.slots[4].stackSize--;
+						this.slots[5].stackSize++;
+						this.fuel += cont;
 						
 					}
 					
-					if(slots[4].stackSize == 0)
-						slots[4] = null;
+					if(this.slots[4].stackSize == 0)
+						this.slots[4] = null;
 				}
 			}
 			
 			//Unload waste
-			if(slots[6] != null && getWasteAbsorbed(slots[6].getItem(), type) > 0) {
+			if(this.slots[6] != null && TileEntityMachineReactorLarge.getWasteAbsorbed(this.slots[6].getItem(), this.type) > 0) {
 				
-				int absorbed = getWasteAbsorbed(slots[6].getItem(), type) * fuelMult;
+				int absorbed = TileEntityMachineReactorLarge.getWasteAbsorbed(this.slots[6].getItem(), this.type) * TileEntityMachineReactorLarge.fuelMult;
 				
-				if(absorbed <= waste) {
+				if(absorbed <= this.waste) {
 					
-					if(slots[7] == null) {
+					if(this.slots[7] == null) {
 
-						waste -= absorbed;
-						slots[7] = new ItemStack(getWaste(slots[6].getItem(), type));
-						slots[6].stackSize--;
+						this.waste -= absorbed;
+						this.slots[7] = new ItemStack(TileEntityMachineReactorLarge.getWaste(this.slots[6].getItem(), this.type));
+						this.slots[6].stackSize--;
 						
-					} else if(slots[7] != null && slots[7].getItem() == getWaste(slots[6].getItem(), type) && slots[7].stackSize < slots[7].getMaxStackSize()) {
+					} else if(this.slots[7] != null && this.slots[7].getItem() == TileEntityMachineReactorLarge.getWaste(this.slots[6].getItem(), this.type) && this.slots[7].stackSize < this.slots[7].getMaxStackSize()) {
 
-						waste -= absorbed;
-						slots[7].stackSize++;
-						slots[6].stackSize--;
+						this.waste -= absorbed;
+						this.slots[7].stackSize++;
+						this.slots[6].stackSize--;
 					}
 					
-					if(slots[6].stackSize == 0)
-						slots[6] = null;
+					if(this.slots[6].stackSize == 0)
+						this.slots[6] = null;
 				}
 				
 			}
 			
-			if(rods > 0)
+			if(this.rods > 0)
 				generate();
 
 			if (this.coreHeat > 0 && this.tanks[1].getFill() > 0 && this.hullHeat < this.maxHullHeat) {
@@ -519,8 +516,8 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 					this.tanks[1].setFill(0);
 			}
 
-			if (this.hullHeat > maxHullHeat) {
-				this.hullHeat = maxHullHeat;
+			if (this.hullHeat > this.maxHullHeat) {
+				this.hullHeat = this.maxHullHeat;
 			}
 
 			if (this.hullHeat > 0 && this.tanks[0].getFill() > 0) {
@@ -528,55 +525,55 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 				this.hullHeat -= this.hullHeat * 0.085;
 			}
 
-			if (this.coreHeat > maxCoreHeat) {
-				this.explode();
+			if (this.coreHeat > this.maxCoreHeat) {
+				explode();
 			}
 
-			if (rods > 0 && coreHeat > 0 && age == 5) {
+			if (this.rods > 0 && this.coreHeat > 0 && this.age == 5) {
 
-				float rad = (float)coreHeat / (float)maxCoreHeat * 50F;
+				float rad = (float)this.coreHeat / (float)this.maxCoreHeat * 50F;
 				rad *= checkHull();
-				ChunkRadiationManager.proxy.incrementRad(worldObj, xCoord, yCoord, zCoord, rad);
+				ChunkRadiationManager.proxy.incrementRad(this.worldObj, this.xCoord, this.yCoord, this.zCoord, rad);
 			}
 
 			for (int i = 0; i < 3; i++)
-				tanks[i].updateTank(xCoord, yCoord, zCoord, worldObj.provider.dimensionId);
+				this.tanks[i].updateTank(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId);
 
-			if(worldObj.getBlock(xCoord, yCoord, zCoord - 2) == ModBlocks.reactor_ejector && worldObj.getBlockMetadata(xCoord, yCoord, zCoord - 2) == 2)
-				tryEjectInto(xCoord, yCoord, zCoord - 3);
-			if(worldObj.getBlock(xCoord, yCoord, zCoord + 2) == ModBlocks.reactor_ejector && worldObj.getBlockMetadata(xCoord, yCoord, zCoord + 2) == 3)
-				tryEjectInto(xCoord, yCoord, zCoord + 3);
-			if(worldObj.getBlock(xCoord - 2, yCoord, zCoord) == ModBlocks.reactor_ejector && worldObj.getBlockMetadata(xCoord - 2, yCoord, zCoord) == 4)
-				tryEjectInto(xCoord - 3, yCoord, zCoord);
-			if(worldObj.getBlock(xCoord + 2, yCoord, zCoord) == ModBlocks.reactor_ejector && worldObj.getBlockMetadata(xCoord + 2, yCoord, zCoord) == 5)
-				tryEjectInto(xCoord + 3, yCoord, zCoord);
+			if(this.worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord - 2) == ModBlocks.reactor_ejector && this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord - 2) == 2)
+				tryEjectInto(this.xCoord, this.yCoord, this.zCoord - 3);
+			if(this.worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord + 2) == ModBlocks.reactor_ejector && this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord + 2) == 3)
+				tryEjectInto(this.xCoord, this.yCoord, this.zCoord + 3);
+			if(this.worldObj.getBlock(this.xCoord - 2, this.yCoord, this.zCoord) == ModBlocks.reactor_ejector && this.worldObj.getBlockMetadata(this.xCoord - 2, this.yCoord, this.zCoord) == 4)
+				tryEjectInto(this.xCoord - 3, this.yCoord, this.zCoord);
+			if(this.worldObj.getBlock(this.xCoord + 2, this.yCoord, this.zCoord) == ModBlocks.reactor_ejector && this.worldObj.getBlockMetadata(this.xCoord + 2, this.yCoord, this.zCoord) == 5)
+				tryEjectInto(this.xCoord + 3, this.yCoord, this.zCoord);
 
-			if(worldObj.getBlock(xCoord, yCoord, zCoord - 2) == ModBlocks.reactor_inserter && worldObj.getBlockMetadata(xCoord, yCoord, zCoord - 2) == 2)
-				tryInsertFrom(xCoord, yCoord, zCoord - 3);
-			if(worldObj.getBlock(xCoord, yCoord, zCoord + 2) == ModBlocks.reactor_inserter && worldObj.getBlockMetadata(xCoord, yCoord, zCoord + 2) == 3)
-				tryInsertFrom(xCoord, yCoord, zCoord + 3);
-			if(worldObj.getBlock(xCoord - 2, yCoord, zCoord) == ModBlocks.reactor_inserter && worldObj.getBlockMetadata(xCoord - 2, yCoord, zCoord) == 4)
-				tryInsertFrom(xCoord - 3, yCoord, zCoord);
-			if(worldObj.getBlock(xCoord + 2, yCoord, zCoord) == ModBlocks.reactor_inserter && worldObj.getBlockMetadata(xCoord + 2, yCoord, zCoord) == 5)
-				tryInsertFrom(xCoord + 3, yCoord, zCoord);
+			if(this.worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord - 2) == ModBlocks.reactor_inserter && this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord - 2) == 2)
+				tryInsertFrom(this.xCoord, this.yCoord, this.zCoord - 3);
+			if(this.worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord + 2) == ModBlocks.reactor_inserter && this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord + 2) == 3)
+				tryInsertFrom(this.xCoord, this.yCoord, this.zCoord + 3);
+			if(this.worldObj.getBlock(this.xCoord - 2, this.yCoord, this.zCoord) == ModBlocks.reactor_inserter && this.worldObj.getBlockMetadata(this.xCoord - 2, this.yCoord, this.zCoord) == 4)
+				tryInsertFrom(this.xCoord - 3, this.yCoord, this.zCoord);
+			if(this.worldObj.getBlock(this.xCoord + 2, this.yCoord, this.zCoord) == ModBlocks.reactor_inserter && this.worldObj.getBlockMetadata(this.xCoord + 2, this.yCoord, this.zCoord) == 5)
+				tryInsertFrom(this.xCoord + 3, this.yCoord, this.zCoord);
 
-			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(xCoord, yCoord, zCoord, rods, 0), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 50));
-			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(xCoord, yCoord, zCoord, coreHeat, 1), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 50));
-			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(xCoord, yCoord, zCoord, hullHeat, 2), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 50));
-			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(xCoord, yCoord, zCoord, fuel, 4), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 50));
-			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(xCoord, yCoord, zCoord, waste, 5), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 50));
-			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(xCoord, yCoord, zCoord, type.getID(), 6), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 50));
+			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(this.xCoord, this.yCoord, this.zCoord, this.rods, 0), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 50));
+			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(this.xCoord, this.yCoord, this.zCoord, this.coreHeat, 1), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 50));
+			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(this.xCoord, this.yCoord, this.zCoord, this.hullHeat, 2), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 50));
+			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(this.xCoord, this.yCoord, this.zCoord, this.fuel, 4), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 50));
+			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(this.xCoord, this.yCoord, this.zCoord, this.waste, 5), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 50));
+			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(this.xCoord, this.yCoord, this.zCoord, this.type.getID(), 6), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 50));
 		}
 	}
 	
 	private void tryEjectInto(int x, int y, int z) {
 		
-		int wSize = type.toString().equals(ReactorFuelType.SCHRABIDIUM.toString()) ? 60 * fuelMult : 6 * fuelMult;
+		int wSize = this.type.toString().equals(ReactorFuelType.SCHRABIDIUM.toString()) ? 60 * TileEntityMachineReactorLarge.fuelMult : 6 * TileEntityMachineReactorLarge.fuelMult;
 		
-		if(waste < wSize)
+		if(this.waste < wSize)
 			return;
 		
-		TileEntity te = worldObj.getTileEntity(x, y, z);
+		TileEntity te = this.worldObj.getTileEntity(x, y, z);
 		
 		if(te instanceof IInventory) {
 			
@@ -584,7 +581,7 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 			
 			Item waste = ModItems.waste_uranium;
 			
-			switch(type) {
+			switch(this.type) {
 			case PLUTONIUM:
 				waste = ModItems.waste_plutonium;
 				break;
@@ -624,24 +621,24 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 	
 	private void tryInsertFrom(int x, int y, int z) {
 		
-		TileEntity te = worldObj.getTileEntity(x, y, z);
+		TileEntity te = this.worldObj.getTileEntity(x, y, z);
 		
 		if(te instanceof IInventory) {
 			
 			IInventory chest = (IInventory)te;
 			
-			if(fuel > 0) {
+			if(this.fuel > 0) {
 				for(int i = 0; i < chest.getSizeInventory(); i++) {
 					
 					if(chest.getStackInSlot(i) != null) {
-						int cont = getFuelContent(chest.getStackInSlot(i), type) * fuelMult;
+						int cont = TileEntityMachineReactorLarge.getFuelContent(chest.getStackInSlot(i), this.type) * TileEntityMachineReactorLarge.fuelMult;
 						
-						if(cont > 0 && fuel + cont <= maxFuel) {
+						if(cont > 0 && this.fuel + cont <= this.maxFuel) {
 							
 							Item container =  chest.getStackInSlot(i).getItem().getContainerItem();
 							
 							chest.decrStackSize(i, 1);
-							fuel += cont;
+							this.fuel += cont;
 							
 							if(chest.getStackInSlot(i) == null && container != null)
 								chest.setInventorySlotContents(i, new ItemStack(container));
@@ -652,15 +649,15 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 				for(int i = 0; i < chest.getSizeInventory(); i++) {
 					
 					if(chest.getStackInSlot(i) != null) {
-						int cont = getFuelContent(chest.getStackInSlot(i), getFuelType(chest.getStackInSlot(i).getItem())) * fuelMult;
+						int cont = TileEntityMachineReactorLarge.getFuelContent(chest.getStackInSlot(i), TileEntityMachineReactorLarge.getFuelType(chest.getStackInSlot(i).getItem())) * TileEntityMachineReactorLarge.fuelMult;
 						
-						if(cont > 0 && fuel + cont <= maxFuel) {
+						if(cont > 0 && this.fuel + cont <= this.maxFuel) {
 							
 							Item container =  chest.getStackInSlot(i).getItem().getContainerItem();
 							
-							type = getFuelType(chest.getStackInSlot(i).getItem());
+							this.type = TileEntityMachineReactorLarge.getFuelType(chest.getStackInSlot(i).getItem());
 							chest.decrStackSize(i, 1);
-							fuel += cont;
+							this.fuel += cont;
 							
 							if(chest.getStackInSlot(i) == null && container != null)
 								chest.setInventorySlotContents(i, new ItemStack(container));
@@ -678,89 +675,90 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 		
 		double statSteMaFiFiLe = 8000;
 		
-		double steam = (((double)hullHeat / (double)maxHullHeat) * (/*(double)tanks[2].getMaxFill()*/statSteMaFiFiLe / 50D)) * size;
+		double steam = (((double)this.hullHeat / (double)this.maxHullHeat) * (/*(double)tanks[2].getMaxFill()*/statSteMaFiFiLe / 50D)) * this.size;
 		
 		double water = steam;
 		
-		FluidType type = tanks[2].getTankType();
+		FluidType type = this.tanks[2].getTankType();
 		if(type == Fluids.STEAM) water /= 100D;
 		if(type == Fluids.HOTSTEAM) water /= 10;
 		
-		tanks[0].setFill(tanks[0].getFill() - (int)Math.ceil(water));
-		tanks[2].setFill(tanks[2].getFill() + (int)Math.floor(steam));
+		this.tanks[0].setFill(this.tanks[0].getFill() - (int)Math.ceil(water));
+		this.tanks[2].setFill(this.tanks[2].getFill() + (int)Math.floor(steam));
 		
-		if(tanks[0].getFill() < 0)
-			tanks[0].setFill(0);
+		if(this.tanks[0].getFill() < 0)
+			this.tanks[0].setFill(0);
 		
-		if(tanks[2].getFill() > tanks[2].getMaxFill())
-			tanks[2].setFill(tanks[2].getMaxFill());
+		if(this.tanks[2].getFill() > this.tanks[2].getMaxFill())
+			this.tanks[2].setFill(this.tanks[2].getMaxFill());
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	private void explode() {
-		for (int i = 0; i < slots.length; i++) {
+		for (int i = 0; i < this.slots.length; i++) {
 			this.slots[i] = null;
 		}
 
-		int rad = (int)(((long)fuel) * 25000L / (fuelBase * 15L));
+		int rad = (int)((this.fuel) * 25000L / (TileEntityMachineReactorLarge.fuelBase * 15L));
 		
-		ChunkRadiationManager.proxy.incrementRad(worldObj, xCoord, yCoord, zCoord, rad);
+		ChunkRadiationManager.proxy.incrementRad(this.worldObj, this.xCoord, this.yCoord, this.zCoord, rad);
 
-		worldObj.createExplosion(null, this.xCoord, this.yCoord, this.zCoord, 7.5F, true);
-		ExplosionNukeGeneric.waste(worldObj, this.xCoord, this.yCoord, this.zCoord, 35);
+		this.worldObj.createExplosion(null, this.xCoord, this.yCoord, this.zCoord, 7.5F, true);
+		ExplosionNukeGeneric.waste(this.worldObj, this.xCoord, this.yCoord, this.zCoord, 35);
 		
-		for(int i = yCoord - depth; i <= yCoord + height; i++) {
+		for(int i = this.yCoord - this.depth; i <= this.yCoord + this.height; i++) {
 
-			if(worldObj.rand.nextInt(2) == 0) {
+			if(this.worldObj.rand.nextInt(2) == 0) {
 				randomizeRadBlock(this.xCoord + 1, i, this.zCoord + 1);
 			}
-			if(worldObj.rand.nextInt(2) == 0) {
+			if(this.worldObj.rand.nextInt(2) == 0) {
 				randomizeRadBlock(this.xCoord + 1, i, this.zCoord - 1);
 			}
-			if(worldObj.rand.nextInt(2) == 0) {
+			if(this.worldObj.rand.nextInt(2) == 0) {
 				randomizeRadBlock(this.xCoord - 1, i, this.zCoord - 1);
 			}
-			if(worldObj.rand.nextInt(2) == 0) {
+			if(this.worldObj.rand.nextInt(2) == 0) {
 				randomizeRadBlock(this.xCoord - 1, i, this.zCoord + 1);
 			}
 			
-			if(worldObj.rand.nextInt(5) == 0) {
-				worldObj.createExplosion(null, this.xCoord, this.yCoord, this.zCoord, 5.0F, true);
+			if(this.worldObj.rand.nextInt(5) == 0) {
+				this.worldObj.createExplosion(null, this.xCoord, this.yCoord, this.zCoord, 5.0F, true);
 			}
 		}
 		
-		worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, ModBlocks.sellafield, 5, 3);
+		this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, ModBlocks.sellafield, 5, 3);
 		
 		if(MobConfig.enableElementals) {
-			List<EntityPlayer> players = worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5).expand(100, 100, 100));
+			List<EntityPlayer> players = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5).expand(100, 100, 100));
 			
 			for(EntityPlayer player : players) {
-				player.getEntityData().getCompoundTag(player.PERSISTED_NBT_TAG).setBoolean("radMark", true);
+				player.getEntityData().getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).setBoolean("radMark", true);
 			}
 		}
 	}
 	
 	private void randomizeRadBlock(int x, int y, int z) {
 		
-		int rand = worldObj.rand.nextInt(20);
+		int rand = this.worldObj.rand.nextInt(20);
 		
 		if(rand < 7)
-			worldObj.setBlock(x, y, z, ModBlocks.toxic_block);
+			this.worldObj.setBlock(x, y, z, ModBlocks.toxic_block);
 		else if(rand < 10)
-			worldObj.setBlock(x, y, z, ModBlocks.sellafield, 0, 3);
+			this.worldObj.setBlock(x, y, z, ModBlocks.sellafield, 0, 3);
 		else if(rand < 14)
-			worldObj.setBlock(x, y, z, ModBlocks.sellafield, 1, 3);
+			this.worldObj.setBlock(x, y, z, ModBlocks.sellafield, 1, 3);
 		else if(rand < 17)
-			worldObj.setBlock(x, y, z, ModBlocks.sellafield, 2, 3);
+			this.worldObj.setBlock(x, y, z, ModBlocks.sellafield, 2, 3);
 		else if(rand < 19)
-			worldObj.setBlock(x, y, z, ModBlocks.sellafield, 3, 3);
+			this.worldObj.setBlock(x, y, z, ModBlocks.sellafield, 3, 3);
 		else
-			worldObj.setBlock(x, y, z, ModBlocks.sellafield, 4, 3);
+			this.worldObj.setBlock(x, y, z, ModBlocks.sellafield, 4, 3);
 	}
 
 	@Override
 	public void fillFluid(int x, int y, int z, boolean newTact, FluidType type) {
-		Library.transmitFluid(x, y, z, newTact, this, worldObj, type);
+		Library.transmitFluid(x, y, z, newTact, this, this.worldObj, type);
 	}
 
 	@Override
@@ -768,20 +766,20 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 		
 		for(ForgeDirection dir : new ForgeDirection[] {Library.POS_X, Library.NEG_X, Library.POS_Z, Library.NEG_Z}) {
 			
-			if(worldObj.getBlock(xCoord + dir.offsetX * 2, yCoord, zCoord + dir.offsetZ * 2) == ModBlocks.reactor_hatch) {
+			if(this.worldObj.getBlock(this.xCoord + dir.offsetX * 2, this.yCoord, this.zCoord + dir.offsetZ * 2) == ModBlocks.reactor_hatch) {
 				fillFluid(this.xCoord + dir.offsetX * 3, this.yCoord, this.zCoord + dir.offsetZ * 3, getTact(), type);
-				for(int i = 0; i < 2; i++) this.trySubscribe(tanks[i].getTankType(), worldObj, this.xCoord + dir.offsetX * 3, this.yCoord, this.zCoord + dir.offsetZ * 3, Library.NEG_X);
-				this.sendFluid(tanks[2], worldObj, this.xCoord + dir.offsetX * 3, this.yCoord, this.zCoord + dir.offsetZ * 3, Library.NEG_X);
+				for(int i = 0; i < 2; i++) trySubscribe(this.tanks[i].getTankType(), this.worldObj, this.xCoord + dir.offsetX * 3, this.yCoord, this.zCoord + dir.offsetZ * 3, Library.NEG_X);
+				this.sendFluid(this.tanks[2], this.worldObj, this.xCoord + dir.offsetX * 3, this.yCoord, this.zCoord + dir.offsetZ * 3, Library.NEG_X);
 			} else {
-				for(int i = 0; i < 2; i++) this.tryUnsubscribe(tanks[i].getTankType(), worldObj, this.xCoord + dir.offsetX * 3, this.yCoord, this.zCoord + dir.offsetZ * 3);
+				for(int i = 0; i < 2; i++) tryUnsubscribe(this.tanks[i].getTankType(), this.worldObj, this.xCoord + dir.offsetX * 3, this.yCoord, this.zCoord + dir.offsetZ * 3);
 			}
 		}
 
-		fillFluid(this.xCoord, this.yCoord + height + 1, this.zCoord, getTact(), type);
-		fillFluid(this.xCoord, this.yCoord - depth - 1, this.zCoord, getTact(), type);
+		fillFluid(this.xCoord, this.yCoord + this.height + 1, this.zCoord, getTact(), type);
+		fillFluid(this.xCoord, this.yCoord - this.depth - 1, this.zCoord, getTact(), type);
 		
-		this.sendFluid(tanks[2], worldObj, this.xCoord, this.yCoord + height + 1, this.zCoord, Library.POS_Y);
-		this.sendFluid(tanks[2], worldObj, this.xCoord, this.yCoord - depth - 1, this.zCoord, Library.NEG_Y);
+		this.sendFluid(this.tanks[2], this.worldObj, this.xCoord, this.yCoord + this.height + 1, this.zCoord, Library.POS_Y);
+		this.sendFluid(this.tanks[2], this.worldObj, this.xCoord, this.yCoord - this.depth - 1, this.zCoord, Library.NEG_Y);
 	}
 
 	@Override
@@ -791,56 +789,56 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		if (type.name().equals(tanks[0].getTankType().name()))
-			return tanks[0].getMaxFill();
-		else if (type.name().equals(tanks[1].getTankType().name()))
-			return tanks[1].getMaxFill();
+		if (type.name().equals(this.tanks[0].getTankType().name()))
+			return this.tanks[0].getMaxFill();
+		else if (type.name().equals(this.tanks[1].getTankType().name()))
+			return this.tanks[1].getMaxFill();
 		else
 			return 0;
 	}
 
 	@Override
 	public void setFluidFill(int i, FluidType type) {
-		if (type.name().equals(tanks[0].getTankType().name()))
-			tanks[0].setFill(i);
-		else if (type.name().equals(tanks[1].getTankType().name()))
-			tanks[1].setFill(i);
-		else if (type.name().equals(tanks[2].getTankType().name()))
-			tanks[2].setFill(i);
+		if (type.name().equals(this.tanks[0].getTankType().name()))
+			this.tanks[0].setFill(i);
+		else if (type.name().equals(this.tanks[1].getTankType().name()))
+			this.tanks[1].setFill(i);
+		else if (type.name().equals(this.tanks[2].getTankType().name()))
+			this.tanks[2].setFill(i);
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		if (type.name().equals(tanks[0].getTankType().name()))
-			return tanks[0].getFill();
-		else if (type.name().equals(tanks[1].getTankType().name()))
-			return tanks[1].getFill();
-		else if (type.name().equals(tanks[2].getTankType().name()))
-			return tanks[2].getFill();
+		if (type.name().equals(this.tanks[0].getTankType().name()))
+			return this.tanks[0].getFill();
+		else if (type.name().equals(this.tanks[1].getTankType().name()))
+			return this.tanks[1].getFill();
+		else if (type.name().equals(this.tanks[2].getTankType().name()))
+			return this.tanks[2].getFill();
 		else
 			return 0;
 	}
 
 	@Override
 	public void setFillForSync(int fill, int index) {
-		if (index < 3 && tanks[index] != null)
-			tanks[index].setFill(fill);
+		if (index < 3 && this.tanks[index] != null)
+			this.tanks[index].setFill(fill);
 	}
 
 	@Override
 	public void setTypeForSync(FluidType type, int index) {
-		if (index < 3 && tanks[index] != null)
-			tanks[index].setTankType(type);
+		if (index < 3 && this.tanks[index] != null)
+			this.tanks[index].setTankType(type);
 	}
 
 	@Override
 	public List<IFluidAcceptor> getFluidList(FluidType type) {
-		return list;
+		return this.list;
 	}
 
 	@Override
 	public void clearFluidList(FluidType type) {
-		list.clear();
+		this.list.clear();
 	}
 	
 	public enum ReactorFuelType {
@@ -853,14 +851,14 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 		UNKNOWN(1);
 		
 		private ReactorFuelType(int i) {
-			heat = i;
+			this.heat = i;
 		}
 		
 		//Heat per nugget burned
 		private int heat;
 		
 		public int getHeat() {
-			return heat;
+			return this.heat;
 		}
 		
 		public int getID() {
@@ -904,8 +902,8 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 	}
 
 	//TODO: turn this steaming hot garbage into hashmaps
-	static List<ReactorFuelEntry> fuels = new ArrayList();
-	static List<ReactorWasteEntry> wastes = new ArrayList();
+	static List<ReactorFuelEntry> fuels = new ArrayList<>();
+	static List<ReactorWasteEntry> wastes = new ArrayList<>();
 	
 	public static void registerAll() {
 
@@ -927,12 +925,12 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 	
 	public static void registerFuelEntry(int nuggets, ReactorFuelType type, Item fuel) {
 		
-		fuels.add(new ReactorFuelEntry(nuggets, type, fuel));
+		TileEntityMachineReactorLarge.fuels.add(new ReactorFuelEntry(nuggets, type, fuel));
 	}
 	
 	public static void registerWasteEntry(int nuggets, ReactorFuelType type, Item in, Item out) {
 		
-		wastes.add(new ReactorWasteEntry(nuggets, type, in, out));
+		TileEntityMachineReactorLarge.wastes.add(new ReactorWasteEntry(nuggets, type, in, out));
 	}
 	
 	public static int getFuelContent(ItemStack item, ReactorFuelType type) {
@@ -940,7 +938,7 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 		if(item == null)
 			return 0;
 		
-		for(ReactorFuelEntry ent : fuels) {
+		for(ReactorFuelEntry ent : TileEntityMachineReactorLarge.fuels) {
 			if(ent.item == item.getItem() && type.toString().equals(ent.type.toString())) {
 				
 				int value = ent.value;
@@ -961,7 +959,7 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 	
 	public static ReactorFuelType getFuelType(Item item) {
 		
-		for(ReactorFuelEntry ent : fuels) {
+		for(ReactorFuelEntry ent : TileEntityMachineReactorLarge.fuels) {
 			if(ent.item == item)
 				return ent.type;
 		}
@@ -971,7 +969,7 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 	
 	public static Item getWaste(Item item, ReactorFuelType type) {
 		
-		for(ReactorWasteEntry ent : wastes) {
+		for(ReactorWasteEntry ent : TileEntityMachineReactorLarge.wastes) {
 			if(ent.in == item && type.toString().equals(ent.type.toString()))
 				return ent.out;
 		}
@@ -981,7 +979,7 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 	
 	public static int getWasteAbsorbed(Item item, ReactorFuelType type) {
 		
-		for(ReactorWasteEntry ent : wastes) {
+		for(ReactorWasteEntry ent : TileEntityMachineReactorLarge.wastes) {
 			if(ent.in == item && type.toString().equals(ent.type.toString()))
 				return ent.value;
 		}
@@ -991,17 +989,17 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return tanks;
+		return this.tanks;
 	}
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return new FluidTank[] {tanks[2]};
+		return new FluidTank[] {this.tanks[2]};
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] {tanks[0], tanks[1]};
+		return new FluidTank[] {this.tanks[0], this.tanks[1]};
 	}
 
 	@Override

@@ -25,14 +25,14 @@ public class EntityBeamVortex extends EntityBeamBase {
 	public void onUpdate() {
 		
 		if(this.ticksExisted > 10)
-			this.setDead();
+			setDead();
 		
 		if(this.ticksExisted > 1)
 			return;
 		
 		int range = 100;
 		
-		EntityPlayer player = worldObj.getPlayerEntityByName(this.dataWatcher.getWatchableObjectString(20));
+		EntityPlayer player = this.worldObj.getPlayerEntityByName(this.dataWatcher.getWatchableObjectString(20));
 		
 		if(player != null) {
 			
@@ -41,10 +41,10 @@ public class EntityBeamVortex extends EntityBeamBase {
 			if(pos == null)
 				return;
 			
-			worldObj.spawnParticle("cloud", pos.hitVec.xCoord, pos.hitVec.yCoord, pos.hitVec.zCoord, 0, 0, 0);
-			worldObj.playSound(pos.hitVec.xCoord, pos.hitVec.yCoord, pos.hitVec.zCoord, "random.fizz", 1, 1, true);
+			this.worldObj.spawnParticle("cloud", pos.hitVec.xCoord, pos.hitVec.yCoord, pos.hitVec.zCoord, 0, 0, 0);
+			this.worldObj.playSound(pos.hitVec.xCoord, pos.hitVec.yCoord, pos.hitVec.zCoord, "random.fizz", 1, 1, true);
 			
-			List<Entity> list = worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(pos.hitVec.xCoord - 1, pos.hitVec.yCoord - 1, pos.hitVec.zCoord - 1, pos.hitVec.xCoord + 1, pos.hitVec.yCoord + 1, pos.hitVec.zCoord + 1));
+			List<Entity> list = this.worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(pos.hitVec.xCoord - 1, pos.hitVec.yCoord - 1, pos.hitVec.zCoord - 1, pos.hitVec.xCoord + 1, pos.hitVec.yCoord + 1, pos.hitVec.zCoord + 1));
 			
 			for(Entity e : list)
 				e.attackEntityFrom(ModDamageSource.radiation, 5);

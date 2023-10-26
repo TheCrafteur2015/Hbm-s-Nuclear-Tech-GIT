@@ -49,47 +49,47 @@ public class Guide extends Block implements ILookOverlay {
 	public IIcon getIcon(int side, int metadata) {
 		if(metadata == 5)
 		{
-			if(side == 0) return blockIcon;
-			if(side == 1) return iconTop;
-			if(side == 2) return iconFront;
-			if(side == 3) return iconBack;
-			if(side == 4) return iconRight;
-			if(side == 5) return iconLeft;
+			if(side == 0) return this.blockIcon;
+			if(side == 1) return this.iconTop;
+			if(side == 2) return this.iconFront;
+			if(side == 3) return this.iconBack;
+			if(side == 4) return this.iconRight;
+			if(side == 5) return this.iconLeft;
 		}
 		if(metadata == 3)
 		{
-			if(side == 0) return blockIcon;
-			if(side == 1) return iconTop;
-			if(side == 2) return iconRight;
-			if(side == 3) return iconLeft;
-			if(side == 4) return iconBack;
-			if(side == 5) return iconFront;
+			if(side == 0) return this.blockIcon;
+			if(side == 1) return this.iconTop;
+			if(side == 2) return this.iconRight;
+			if(side == 3) return this.iconLeft;
+			if(side == 4) return this.iconBack;
+			if(side == 5) return this.iconFront;
 		}
 		if(metadata == 4)
 		{
-			if(side == 0) return blockIcon;
-			if(side == 1) return iconTop;
-			if(side == 2) return iconBack;
-			if(side == 3) return iconFront;
-			if(side == 4) return iconLeft;
-			if(side == 5) return iconRight;
+			if(side == 0) return this.blockIcon;
+			if(side == 1) return this.iconTop;
+			if(side == 2) return this.iconBack;
+			if(side == 3) return this.iconFront;
+			if(side == 4) return this.iconLeft;
+			if(side == 5) return this.iconRight;
 		}
 		if(metadata == 2)
 		{
-			if(side == 0) return blockIcon;
-			if(side == 1) return iconTop;
-			if(side == 2) return iconLeft;
-			if(side == 3) return iconRight;
-			if(side == 4) return iconFront;
-			if(side == 5) return iconBack;
+			if(side == 0) return this.blockIcon;
+			if(side == 1) return this.iconTop;
+			if(side == 2) return this.iconLeft;
+			if(side == 3) return this.iconRight;
+			if(side == 4) return this.iconFront;
+			if(side == 5) return this.iconBack;
 		}
 
-		if(side == 0) return blockIcon;
-		if(side == 1) return iconTop;
-		if(side == 2) return iconRight;
-		if(side == 3) return iconLeft;
-		if(side == 4) return iconBack;
-		if(side == 5) return iconFront;
+		if(side == 0) return this.blockIcon;
+		if(side == 1) return this.iconTop;
+		if(side == 2) return this.iconRight;
+		if(side == 3) return this.iconLeft;
+		if(side == 4) return this.iconBack;
+		if(side == 5) return this.iconFront;
 		
 		return null;
 	}

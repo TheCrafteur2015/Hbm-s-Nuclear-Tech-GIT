@@ -25,9 +25,9 @@ public class EntityGrenadeTau extends EntityGrenadeBouncyBase {
 	public void explode() {
 
 		if(!this.worldObj.isRemote) {
-			this.setDead();
+			setDead();
 			this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 2.0F, true);
-			ExplosionChaos.tauMeSinPi(this.worldObj, this.posX, this.posY, this.posZ, 100, this.getThrower(), this);
+			ExplosionChaos.tauMeSinPi(this.worldObj, this.posX, this.posY, this.posZ, 100, getThrower(), this);
 		}
 	}
 

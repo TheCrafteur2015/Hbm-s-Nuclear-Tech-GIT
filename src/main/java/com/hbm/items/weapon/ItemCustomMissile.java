@@ -6,6 +6,7 @@ import com.hbm.handler.MissileStruct;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.ItemMissile.FuelType;
 import com.hbm.items.weapon.ItemMissile.WarheadType;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -17,9 +18,9 @@ public class ItemCustomMissile extends Item {
 	public static ItemStack buildMissile(Item chip, Item warhead, Item fuselage, Item stability, Item thruster) {
 		
 		if(stability == null) {
-			return buildMissile(new ItemStack(chip), new ItemStack(warhead), new ItemStack(fuselage), null, new ItemStack(thruster));
+			return ItemCustomMissile.buildMissile(new ItemStack(chip), new ItemStack(warhead), new ItemStack(fuselage), null, new ItemStack(thruster));
 		} else {
-			return buildMissile(new ItemStack(chip), new ItemStack(warhead), new ItemStack(fuselage), new ItemStack(stability), new ItemStack(thruster));
+			return ItemCustomMissile.buildMissile(new ItemStack(chip), new ItemStack(warhead), new ItemStack(fuselage), new ItemStack(stability), new ItemStack(thruster));
 		}
 	}
 	
@@ -27,13 +28,13 @@ public class ItemCustomMissile extends Item {
 		
 		ItemStack missile = new ItemStack(ModItems.missile_custom);
 
-		writeToNBT(missile, "chip", Item.getIdFromItem(chip.getItem()));
-		writeToNBT(missile, "warhead", Item.getIdFromItem(warhead.getItem()));
-		writeToNBT(missile, "fuselage", Item.getIdFromItem(fuselage.getItem()));
-		writeToNBT(missile, "thruster", Item.getIdFromItem(thruster.getItem()));
+		ItemCustomMissile.writeToNBT(missile, "chip", Item.getIdFromItem(chip.getItem()));
+		ItemCustomMissile.writeToNBT(missile, "warhead", Item.getIdFromItem(warhead.getItem()));
+		ItemCustomMissile.writeToNBT(missile, "fuselage", Item.getIdFromItem(fuselage.getItem()));
+		ItemCustomMissile.writeToNBT(missile, "thruster", Item.getIdFromItem(thruster.getItem()));
 		
 		if(stability != null)
-			writeToNBT(missile, "stability", Item.getIdFromItem(stability.getItem()));
+			ItemCustomMissile.writeToNBT(missile, "stability", Item.getIdFromItem(stability.getItem()));
 		
 		return missile;
 	}
@@ -50,6 +51,7 @@ public class ItemCustomMissile extends Item {
 		return stack.stackTagCompound.getInteger(key);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		
@@ -57,16 +59,16 @@ public class ItemCustomMissile extends Item {
 			return;
 		
 		try {
-			ItemMissile chip = (ItemMissile) Item.getItemById(readFromNBT(stack, "chip"));
-			ItemMissile warhead = (ItemMissile) Item.getItemById(readFromNBT(stack, "warhead"));
-			ItemMissile fuselage = (ItemMissile) Item.getItemById(readFromNBT(stack, "fuselage"));
-			ItemMissile stability = (ItemMissile) Item.getItemById(readFromNBT(stack, "stability"));
-			ItemMissile thruster = (ItemMissile) Item.getItemById(readFromNBT(stack, "thruster"));
+			ItemMissile chip = (ItemMissile) Item.getItemById(ItemCustomMissile.readFromNBT(stack, "chip"));
+			ItemMissile warhead = (ItemMissile) Item.getItemById(ItemCustomMissile.readFromNBT(stack, "warhead"));
+			ItemMissile fuselage = (ItemMissile) Item.getItemById(ItemCustomMissile.readFromNBT(stack, "fuselage"));
+			ItemMissile stability = (ItemMissile) Item.getItemById(ItemCustomMissile.readFromNBT(stack, "stability"));
+			ItemMissile thruster = (ItemMissile) Item.getItemById(ItemCustomMissile.readFromNBT(stack, "thruster"));
 	
 			list.add(EnumChatFormatting.BOLD + "Warhead: " + EnumChatFormatting.GRAY + warhead.getWarhead((WarheadType)warhead.attributes[0]));
-			list.add(EnumChatFormatting.BOLD + "Strength: " + EnumChatFormatting.GRAY + (Float)warhead.attributes[1]);
+			list.add(EnumChatFormatting.BOLD + "Strength: " + EnumChatFormatting.GRAY + warhead.attributes[1]);
 			list.add(EnumChatFormatting.BOLD + "Fuel Type: " + EnumChatFormatting.GRAY + fuselage.getFuel((FuelType)fuselage.attributes[0]));
-			list.add(EnumChatFormatting.BOLD + "Fuel amount: " + EnumChatFormatting.GRAY + (Float)fuselage.attributes[1] + "l");
+			list.add(EnumChatFormatting.BOLD + "Fuel amount: " + EnumChatFormatting.GRAY + fuselage.attributes[1] + "l");
 			list.add(EnumChatFormatting.BOLD + "Chip inaccuracy: " + EnumChatFormatting.GRAY + (Float)chip.attributes[0] * 100 + "%");
 			
 			if(stability != null)
@@ -92,10 +94,10 @@ public class ItemCustomMissile extends Item {
 		if(stack == null || !(stack.getItem() instanceof ItemCustomMissile))
 			return null;
 		
-		ItemMissile warhead = (ItemMissile) Item.getItemById(readFromNBT(stack, "warhead"));
-		ItemMissile fuselage = (ItemMissile) Item.getItemById(readFromNBT(stack, "fuselage"));
-		ItemMissile stability = (ItemMissile) Item.getItemById(readFromNBT(stack, "stability"));
-		ItemMissile thruster = (ItemMissile) Item.getItemById(readFromNBT(stack, "thruster"));
+		ItemMissile warhead = (ItemMissile) Item.getItemById(ItemCustomMissile.readFromNBT(stack, "warhead"));
+		ItemMissile fuselage = (ItemMissile) Item.getItemById(ItemCustomMissile.readFromNBT(stack, "fuselage"));
+		ItemMissile stability = (ItemMissile) Item.getItemById(ItemCustomMissile.readFromNBT(stack, "stability"));
+		ItemMissile thruster = (ItemMissile) Item.getItemById(ItemCustomMissile.readFromNBT(stack, "thruster"));
 		
 		MissileStruct missile = new MissileStruct(warhead, fuselage, stability, thruster);
 		

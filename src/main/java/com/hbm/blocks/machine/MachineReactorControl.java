@@ -58,18 +58,18 @@ public class MachineReactorControl extends BlockContainer {
 			metadata = 3;
 		
 		if(metadata == side)
-			return iconFront;
+			return this.iconFront;
 		
 		if(side == 0 || side == 1)
-			return iconTop;
+			return this.iconTop;
 		
 		if(metadata == 2 && side == 3 ||
 				metadata == 3 && side == 2 ||
 				metadata == 4 && side == 5 ||
 				metadata == 5 && side == 4)
-			return iconBack;
+			return this.iconBack;
 		
-		return blockIcon;
+		return this.blockIcon;
 	}
 	
 	@Override
@@ -113,7 +113,7 @@ public class MachineReactorControl extends BlockContainer {
 	@Override
 	public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_)
     {
-        if (!keepInventory)
+        if (!MachineReactorControl.keepInventory)
         {
         	ISidedInventory tileentityfurnace = (ISidedInventory)p_149749_1_.getTileEntity(p_149749_2_, p_149749_3_, p_149749_4_);
 

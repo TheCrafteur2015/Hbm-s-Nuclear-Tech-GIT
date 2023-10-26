@@ -15,23 +15,23 @@ public class ContainerMachineKeyForge extends Container {
 	
 	public ContainerMachineKeyForge(InventoryPlayer invPlayer, TileEntityMachineKeyForge tedf) {
 		
-		diFurnace = tedf;
+		this.diFurnace = tedf;
 
-		this.addSlotToContainer(new Slot(tedf, 0, 44, 35));
-		this.addSlotToContainer(new Slot(tedf, 1, 80, 35));
-		this.addSlotToContainer(new Slot(tedf, 2, 116, 35));
+		addSlotToContainer(new Slot(tedf, 0, 44, 35));
+		addSlotToContainer(new Slot(tedf, 1, 80, 35));
+		addSlotToContainer(new Slot(tedf, 2, 116, 35));
 		
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++)
 		{
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
 		}
 	}
 	
@@ -52,12 +52,12 @@ public class ContainerMachineKeyForge extends Container {
 			var3 = var5.copy();
 			
             if (par2 <= 0) {
-				if (!this.mergeItemStack(var5, 1, this.inventorySlots.size(), true))
+				if (!mergeItemStack(var5, 1, this.inventorySlots.size(), true))
 				{
 					return null;
 				}
 			}
-			else if (!this.mergeItemStack(var5, 0, 1, false))
+			else if (!mergeItemStack(var5, 0, 1, false))
 			{
 				return null;
 			}
@@ -77,6 +77,6 @@ public class ContainerMachineKeyForge extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return diFurnace.isUseableByPlayer(player);
+		return this.diFurnace.isUseableByPlayer(player);
 	}
 }

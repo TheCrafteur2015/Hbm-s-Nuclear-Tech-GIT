@@ -44,18 +44,18 @@ public class TileEntityMachineRadiolysis extends TileEntityMachineBase implement
 	public int heat;
 
 	public FluidTank[] tanks;
-	public List<IFluidAcceptor> list1 = new ArrayList();
-	public List<IFluidAcceptor> list2 = new ArrayList();
+	public List<IFluidAcceptor> list1 = new ArrayList<>();
+	public List<IFluidAcceptor> list2 = new ArrayList<>();
 	
 	private static final int[] slot_io = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 12, 13 };
 	private static final int[] slot_rtg = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 	
 	public TileEntityMachineRadiolysis() {
 		super(15); //10 rtg slots, 2 fluid ID slots (io), 2 irradiation slots (io), battery slot
-		tanks = new FluidTank[3];
-		tanks[0] = new FluidTank(Fluids.NONE, 2000, 0);
-		tanks[1] = new FluidTank(Fluids.NONE, 2000, 1);
-		tanks[2] = new FluidTank(Fluids.NONE, 2000, 2);
+		this.tanks = new FluidTank[3];
+		this.tanks[0] = new FluidTank(Fluids.NONE, 2000, 0);
+		this.tanks[1] = new FluidTank(Fluids.NONE, 2000, 1);
+		this.tanks[2] = new FluidTank(Fluids.NONE, 2000, 2);
 	}
 	
 	@Override
@@ -71,7 +71,7 @@ public class TileEntityMachineRadiolysis extends TileEntityMachineBase implement
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
-		return slot_io;
+		return TileEntityMachineRadiolysis.slot_io;
 	}
 	
 	@Override
@@ -87,23 +87,24 @@ public class TileEntityMachineRadiolysis extends TileEntityMachineBase implement
 		this.power = nbt.getLong("power");
 		this.heat = nbt.getInteger("heat");
 		
-		tanks[0].readFromNBT(nbt, "input");
-		tanks[1].readFromNBT(nbt, "output1");
-		tanks[2].readFromNBT(nbt, "output2");
+		this.tanks[0].readFromNBT(nbt, "input");
+		this.tanks[1].readFromNBT(nbt, "output1");
+		this.tanks[2].readFromNBT(nbt, "output2");
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		
-		nbt.setLong("power", power);
-		nbt.setInteger("heat", heat);
+		nbt.setLong("power", this.power);
+		nbt.setInteger("heat", this.heat);
 		
-		tanks[0].writeToNBT(nbt, "input");
-		tanks[1].writeToNBT(nbt, "output1");
-		tanks[2].writeToNBT(nbt, "output2");
+		this.tanks[0].writeToNBT(nbt, "input");
+		this.tanks[1].writeToNBT(nbt, "output1");
+		this.tanks[2].writeToNBT(nbt, "output2");
 	}
 	
+	@Override
 	public void networkUnpack(NBTTagCompound data) {
 		this.power = data.getLong("power");
 		this.heat = data.getInteger("heat");
@@ -112,142 +113,136 @@ public class TileEntityMachineRadiolysis extends TileEntityMachineBase implement
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
-			power = Library.chargeItemsFromTE(slots, 14, power, maxPower);
+		if(!this.worldObj.isRemote) {
+			this.power = Library.chargeItemsFromTE(this.slots, 14, this.power, TileEntityMachineRadiolysis.maxPower);
 			
-			heat = RTGUtil.updateRTGs(slots, slot_rtg);
-			power += heat * 10;
+			this.heat = RTGUtil.updateRTGs(this.slots, TileEntityMachineRadiolysis.slot_rtg);
+			this.power += this.heat * 10;
 			
-			if(power > maxPower)
-				power = maxPower;
+			if(this.power > TileEntityMachineRadiolysis.maxPower)
+				this.power = TileEntityMachineRadiolysis.maxPower;
 			
-			tanks[0].setType(10, 11, slots);
+			this.tanks[0].setType(10, 11, this.slots);
 			setupTanks();
 			
-			if(heat > 100) {
-				int crackTime = (int) Math.max(-0.1 * (heat - 100) + 30, 5);
+			if(this.heat > 100) {
+				int crackTime = (int) Math.max(-0.1 * (this.heat - 100) + 30, 5);
 				
-				if(worldObj.getTotalWorldTime() % crackTime == 0)
+				if(this.worldObj.getTotalWorldTime() % crackTime == 0)
 					crack();
 				
-				if(heat >= 200 && worldObj.getTotalWorldTime() % 100 == 0)
+				if(this.heat >= 200 && this.worldObj.getTotalWorldTime() % 100 == 0)
 					sterilize();
 			}
 			
-			if(worldObj.getTotalWorldTime() % 10 == 0) {
-					fillFluidInit(tanks[1].getTankType());
-					fillFluidInit(tanks[2].getTankType());
+			if(this.worldObj.getTotalWorldTime() % 10 == 0) {
+					fillFluidInit(this.tanks[1].getTankType());
+					fillFluidInit(this.tanks[2].getTankType());
 			}
 			
 			for(DirPos pos : getConPos()) {
-				this.sendPower(worldObj, pos.getX(), pos.getY(),pos.getZ(), pos.getDir());
-				this.trySubscribe(tanks[0].getTankType(), worldObj, pos.getX(), pos.getY(),pos.getZ(), pos.getDir());
-				if(tanks[1].getFill() > 0) this.sendFluid(tanks[1], worldObj, pos.getX(), pos.getY(),pos.getZ(), pos.getDir());
-				if(tanks[2].getFill() > 0) this.sendFluid(tanks[2], worldObj, pos.getX(), pos.getY(),pos.getZ(), pos.getDir());
+				sendPower(this.worldObj, pos.getX(), pos.getY(),pos.getZ(), pos.getDir());
+				this.trySubscribe(this.tanks[0].getTankType(), this.worldObj, pos.getX(), pos.getY(),pos.getZ(), pos.getDir());
+				if(this.tanks[1].getFill() > 0) this.sendFluid(this.tanks[1], this.worldObj, pos.getX(), pos.getY(),pos.getZ(), pos.getDir());
+				if(this.tanks[2].getFill() > 0) this.sendFluid(this.tanks[2], this.worldObj, pos.getX(), pos.getY(),pos.getZ(), pos.getDir());
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setLong("power", power);
-			data.setInteger("heat", heat);
-			this.networkPack(data, 50);
+			data.setLong("power", this.power);
+			data.setInteger("heat", this.heat);
+			networkPack(data, 50);
 			
 			for(byte i = 0; i < 3; i++)
-				tanks[i].updateTank(xCoord, yCoord, zCoord, worldObj.provider.dimensionId);
+				this.tanks[i].updateTank(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId);
 		}
 	}
 	
 	protected DirPos[] getConPos() {
 		return new DirPos[] {
-				new DirPos(xCoord + 2, yCoord, zCoord, Library.POS_X),
-				new DirPos(xCoord - 2, yCoord, zCoord, Library.NEG_X),
-				new DirPos(xCoord, yCoord, zCoord + 2, Library.POS_Z),
-				new DirPos(xCoord, yCoord, zCoord - 2, Library.NEG_Z)
+				new DirPos(this.xCoord + 2, this.yCoord, this.zCoord, Library.POS_X),
+				new DirPos(this.xCoord - 2, this.yCoord, this.zCoord, Library.NEG_X),
+				new DirPos(this.xCoord, this.yCoord, this.zCoord + 2, Library.POS_Z),
+				new DirPos(this.xCoord, this.yCoord, this.zCoord - 2, Library.NEG_Z)
 		};
 	}
 	
 	/* Processing Methods */
 	private void crack() {
 		
-		Pair<FluidStack, FluidStack> quart = RadiolysisRecipes.getRadiolysis(tanks[0].getTankType());
+		Pair<FluidStack, FluidStack> quart = RadiolysisRecipes.getRadiolysis(this.tanks[0].getTankType());
 		
 		if(quart != null) {
 			
 			int left = quart.getKey().fill;
 			int right = quart.getValue().fill;
 			
-			if(tanks[0].getFill() >= 100 && hasSpace(left, right)) {
-				tanks[0].setFill(tanks[0].getFill() - 100);
-				tanks[1].setFill(tanks[1].getFill() + left);
-				tanks[2].setFill(tanks[2].getFill() + right);
+			if(this.tanks[0].getFill() >= 100 && hasSpace(left, right)) {
+				this.tanks[0].setFill(this.tanks[0].getFill() - 100);
+				this.tanks[1].setFill(this.tanks[1].getFill() + left);
+				this.tanks[2].setFill(this.tanks[2].getFill() + right);
 			}
 		}
 	}
 	
 	private boolean hasSpace(int left, int right) {
-		return tanks[1].getFill() + left <= tanks[1].getMaxFill() && tanks[2].getFill() + right <= tanks[2].getMaxFill();
+		return this.tanks[1].getFill() + left <= this.tanks[1].getMaxFill() && this.tanks[2].getFill() + right <= this.tanks[2].getMaxFill();
 	}
 	
 	private void setupTanks() {
 		
-		Pair<FluidStack, FluidStack> quart = RadiolysisRecipes.getRadiolysis(tanks[0].getTankType());
+		Pair<FluidStack, FluidStack> quart = RadiolysisRecipes.getRadiolysis(this.tanks[0].getTankType());
 				
 		if(quart != null) {
-			tanks[1].setTankType(quart.getKey().type);
-			tanks[2].setTankType(quart.getValue().type);
+			this.tanks[1].setTankType(quart.getKey().type);
+			this.tanks[2].setTankType(quart.getValue().type);
 		} else {
-			tanks[0].setTankType(Fluids.NONE);
-			tanks[1].setTankType(Fluids.NONE);
-			tanks[2].setTankType(Fluids.NONE);
+			this.tanks[0].setTankType(Fluids.NONE);
+			this.tanks[1].setTankType(Fluids.NONE);
+			this.tanks[2].setTankType(Fluids.NONE);
 		}
 		
 	}
 	
 	// Code: pressure, sword, sterilize.
 	private void sterilize() {
-		if(slots[12] != null) {
-			if(slots[12].getItem() instanceof ItemFood && !(slots[12].getItem() == ModItems.pancake)) {
-				slots[12].stackSize -= 1;
-				if(slots[12].stackSize <= 0)
-					slots[12] = null;
+		if(this.slots[12] != null) {
+			if(this.slots[12].getItem() instanceof ItemFood && !(this.slots[12].getItem() == ModItems.pancake)) {
+				this.slots[12].stackSize -= 1;
+				if(this.slots[12].stackSize <= 0)
+					this.slots[12] = null;
 			}
 			
 			if(!checkIfValid())
 				return;
 			
-			ItemStack output = slots[12].copy();
+			ItemStack output = this.slots[12].copy();
 			output.stackSize = 1;
 			
-			if(slots[13] == null) {
-				slots[12].stackSize -= output.stackSize;
-				if(slots[12].stackSize <= 0)
-					slots[12] = null;
-				slots[13] = output;
-				slots[13].stackTagCompound.removeTag("ntmContagion");
-				if(slots[13].stackTagCompound.hasNoTags()) {
-					slots[13].stackTagCompound = null;
+			if(this.slots[13] == null) {
+				this.slots[12].stackSize -= output.stackSize;
+				if(this.slots[12].stackSize <= 0)
+					this.slots[12] = null;
+				this.slots[13] = output;
+				this.slots[13].stackTagCompound.removeTag("ntmContagion");
+				if(this.slots[13].stackTagCompound.hasNoTags()) {
+					this.slots[13].stackTagCompound = null;
 				}
-			} else if(slots[13].isItemEqual(output) && slots[13].stackSize + output.stackSize <= slots[13].getMaxStackSize()) {
-				slots[12].stackSize -= output.stackSize;
-				if(slots[12].stackSize <= 0)
-					slots[12] = null;
+			} else if(this.slots[13].isItemEqual(output) && this.slots[13].stackSize + output.stackSize <= this.slots[13].getMaxStackSize()) {
+				this.slots[12].stackSize -= output.stackSize;
+				if(this.slots[12].stackSize <= 0)
+					this.slots[12] = null;
 			
-				slots[13].stackSize += output.stackSize;
-				slots[13].stackTagCompound.removeTag("ntmContagion");
-				if(slots[13].stackTagCompound.hasNoTags()) {
-					slots[13].stackTagCompound = null;
+				this.slots[13].stackSize += output.stackSize;
+				this.slots[13].stackTagCompound.removeTag("ntmContagion");
+				if(this.slots[13].stackTagCompound.hasNoTags()) {
+					this.slots[13].stackTagCompound = null;
 				}
 			}
 		}
 	}
 	
 	private boolean checkIfValid() {
-		if(slots[12] == null)
-			return false;
-		
-		if(!slots[12].hasTagCompound())
-			return false;
-		
-		if(!slots[12].getTagCompound().getBoolean("ntmContagion"))
+		if((this.slots[12] == null) || !this.slots[12].hasTagCompound() || !this.slots[12].getTagCompound().getBoolean("ntmContagion"))
 			return false;
 		
 		return true;
@@ -261,24 +256,24 @@ public class TileEntityMachineRadiolysis extends TileEntityMachineBase implement
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 
 	@Override
 	public long getMaxPower() {
-		return maxPower;
+		return TileEntityMachineRadiolysis.maxPower;
 	}
 	
 	/* Fluid Methods */
 	@Override
 	public void setFillForSync(int fill, int index) {
-		if(index < 3 && tanks[index] != null)
-			tanks[index].setFill(fill);
+		if(index < 3 && this.tanks[index] != null)
+			this.tanks[index].setFill(fill);
 	}
 
 	@Override
 	public void setFluidFill(int fill, FluidType type) {
-		for(FluidTank tank : tanks) {
+		for(FluidTank tank : this.tanks) {
 			if(tank.getTankType() == type) {
 				tank.setFill(fill);
 			}
@@ -292,7 +287,7 @@ public class TileEntityMachineRadiolysis extends TileEntityMachineBase implement
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		for(FluidTank tank : tanks) {
+		for(FluidTank tank : this.tanks) {
 			if(tank.getTankType() == type) {
 				return tank.getFill();
 			}
@@ -302,60 +297,60 @@ public class TileEntityMachineRadiolysis extends TileEntityMachineBase implement
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		if(tanks[0].getTankType() == type) {
-			return tanks[0].getMaxFill();
+		if(this.tanks[0].getTankType() == type) {
+			return this.tanks[0].getMaxFill();
 		}
 		return 0;
 	}
 
 	@Override
 	public void fillFluidInit(FluidType type) {
-		fillFluid(this.xCoord + 2, this.yCoord, this.zCoord, this.getTact(), type);
-		fillFluid(this.xCoord - 2, this.yCoord, this.zCoord, this.getTact(), type);
-		fillFluid(this.xCoord, this.yCoord, this.zCoord + 2, this.getTact(), type);
-		fillFluid(this.xCoord, this.yCoord, this.zCoord - 2, this.getTact(), type);
+		fillFluid(this.xCoord + 2, this.yCoord, this.zCoord, getTact(), type);
+		fillFluid(this.xCoord - 2, this.yCoord, this.zCoord, getTact(), type);
+		fillFluid(this.xCoord, this.yCoord, this.zCoord + 2, getTact(), type);
+		fillFluid(this.xCoord, this.yCoord, this.zCoord - 2, getTact(), type);
 	}
 
 	@Override
 	public void fillFluid(int x, int y, int z, boolean newTact, FluidType type) {
-		Library.transmitFluid(x, y, z, newTact, this, worldObj, type);
+		Library.transmitFluid(x, y, z, newTact, this, this.worldObj, type);
 	}
 
 	@Override
 	public boolean getTact() {
-		return worldObj.getTotalWorldTime() % 20 < 10;
+		return this.worldObj.getTotalWorldTime() % 20 < 10;
 	}
 
 	@Override
 	public List<IFluidAcceptor> getFluidList(FluidType type) {
-		if(type == tanks[1].getTankType())
-			return list1;
-		if(type == tanks[2].getTankType())
-			return list2;
-		return new ArrayList<IFluidAcceptor>();
+		if(type == this.tanks[1].getTankType())
+			return this.list1;
+		if(type == this.tanks[2].getTankType())
+			return this.list2;
+		return new ArrayList<>();
 	}
 
 	@Override
 	public void clearFluidList(FluidType type) {
-		if(type == tanks[1].getTankType())
-			list1.clear();
-		if(type == tanks[2].getTankType())
-			list2.clear();
+		if(type == this.tanks[1].getTankType())
+			this.list1.clear();
+		if(type == this.tanks[2].getTankType())
+			this.list2.clear();
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return tanks;
+		return this.tanks;
 	}
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return new FluidTank[] {tanks[1], tanks[2]};
+		return new FluidTank[] {this.tanks[1], this.tanks[2]};
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] {tanks[0]};
+		return new FluidTank[] {this.tanks[0]};
 	}
 
 	@Override
@@ -363,10 +358,12 @@ public class TileEntityMachineRadiolysis extends TileEntityMachineBase implement
 		return dir != ForgeDirection.UNKNOWN && dir != ForgeDirection.DOWN;
 	}
 	
+	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
-		return AxisAlignedBB.getBoundingBox(xCoord - 1, yCoord, zCoord - 1, xCoord + 2, yCoord + 3, zCoord + 2);
+		return AxisAlignedBB.getBoundingBox(this.xCoord - 1, this.yCoord, this.zCoord - 1, this.xCoord + 2, this.yCoord + 3, this.zCoord + 2);
 	}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public double getMaxRenderDistanceSquared() {
 		return 65536.0D;

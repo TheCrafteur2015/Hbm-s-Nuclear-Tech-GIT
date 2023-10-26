@@ -36,7 +36,7 @@ public abstract class EntityBurrowingBase extends EntityCreature {
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
 		
-		if(this.isEntityInvulnerable() || source == DamageSource.drown || source == DamageSource.inWall) {
+		if(isEntityInvulnerable() || source == DamageSource.drown || source == DamageSource.inWall) {
 			return false;
 		}
 		

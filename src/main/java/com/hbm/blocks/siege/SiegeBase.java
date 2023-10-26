@@ -19,7 +19,7 @@ public abstract class SiegeBase extends BlockBase {
 
 	public SiegeBase(Material material, int icons) {
 		super(material);
-		this.setTickRandomly(true);
+		setTickRandomly(true);
 		this.icons = new IIcon[icons];
 	}
 
@@ -40,15 +40,15 @@ public abstract class SiegeBase extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
-		return icons[side % this.icons.length];
+		return this.icons[side % this.icons.length];
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister reg) {
 		
-		for(int i = 0; i < icons.length; i++) {
-			icons[i] = reg.registerIcon(this.getTextureName() + "_" + i);
+		for(int i = 0; i < this.icons.length; i++) {
+			this.icons[i] = reg.registerIcon(getTextureName() + "_" + i);
 		}
 	}
 	

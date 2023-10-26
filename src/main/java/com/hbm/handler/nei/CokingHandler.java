@@ -20,8 +20,8 @@ public class CokingHandler extends NEIUniversalHandler {
 	@Override
 	public void loadTransferRects() {
 		super.loadTransferRects();
-		transferRectsGui.add(new RecipeTransferRect(new Rectangle(55, 15, 36, 18), "ntmCoking"));
-		guiGui.add(GUIMachineCoker.class);
-		RecipeTransferRectHandler.registerRectsToGuis(guiGui, transferRectsGui);
+		this.transferRectsGui.add(new RecipeTransferRect(new Rectangle(55, 15, 36, 18), "ntmCoking"));
+		this.guiGui.add(GUIMachineCoker.class);
+		RecipeTransferRectHandler.registerRectsToGuis(this.guiGui, this.transferRectsGui);
 	}
 }

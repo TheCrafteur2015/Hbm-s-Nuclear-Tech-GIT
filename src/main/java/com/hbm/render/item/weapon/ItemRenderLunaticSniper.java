@@ -68,7 +68,7 @@ public class ItemRenderLunaticSniper implements IItemRenderer {
 			GL11.glRotatef(-58.5F, 0F, 1F, 0F);
 			GL11.glRotatef(90F, 0F, 0F, 1F);
 			GL11.glTranslatef(-0.5F, 0F, 0F);
-			GL11.glScalef(scale1, scale1, scale1);
+			GL11.glScalef(ItemRenderLunaticSniper.scale1, ItemRenderLunaticSniper.scale1, ItemRenderLunaticSniper.scale1);
 			
 			/// Begin animations ///
 			
@@ -80,20 +80,20 @@ public class ItemRenderLunaticSniper implements IItemRenderer {
 			GL11.glRotated(tilt[0] * 2, 0, 0, 1);
 			GL11.glRotated(-tilt[1] * 2, 0, 1, 0);
 			GL11.glTranslated(0, 0, -tilt[1] / 8);
-			ResourceManager.lunatic_sniper.renderPart(everythingElse);
+			ResourceManager.lunatic_sniper.renderPart(ItemRenderLunaticSniper.everythingElse);
 			GL11.glPopMatrix();
 			// Release slide
 			GL11.glPushMatrix();
 			GL11.glRotated(tilt[0] * 2, 0, 0, 1);
 			GL11.glRotated(-tilt[1] * 2, 0, 1, 0);
 			GL11.glTranslated(0, 0, -tilt[2] * 15);
-			ResourceManager.lunatic_sniper.renderPart(slide);
+			ResourceManager.lunatic_sniper.renderPart(ItemRenderLunaticSniper.slide);
 			GL11.glPopMatrix();
 			// Drop in new round
 			GL11.glPushMatrix();
 			GL11.glRotated(tilt[0], 0, 0, 1);
 			GL11.glTranslated(0, tilt[1], tilt[2]);
-			ResourceManager.lunatic_sniper.renderPart(fullRound);
+			ResourceManager.lunatic_sniper.renderPart(ItemRenderLunaticSniper.fullRound);
 			GL11.glPopMatrix();
 			// Eject casing
 			GL11.glPushMatrix();
@@ -108,27 +108,27 @@ public class ItemRenderLunaticSniper implements IItemRenderer {
 			GL11.glRotatef(-50F, 0F, 1F, 0F);
 			GL11.glRotatef(90F, 0F, 0F, 1F);
 			GL11.glTranslatef(-0.05F, -0.2F, -0.75F);
-			GL11.glScalef(scale2 - scale2 * 2, scale2, scale2);
+			GL11.glScalef(ItemRenderLunaticSniper.scale2 - ItemRenderLunaticSniper.scale2 * 2, ItemRenderLunaticSniper.scale2, ItemRenderLunaticSniper.scale2);
 			GL11.glPushMatrix();
 //			GL11.glTranslated(eject[0] / 2, 0, -5);
 //			ResourceManager.lunatic_sniper.renderPart(spentShell);
 			GL11.glPopMatrix();
 			break;
 		case ENTITY:// Dropped item
-			GL11.glScalef(scale3, scale3, scale3);
+			GL11.glScalef(ItemRenderLunaticSniper.scale3, ItemRenderLunaticSniper.scale3, ItemRenderLunaticSniper.scale3);
 			break;
 		case INVENTORY:
 			GL11.glTranslatef(10F, 11.5F, 0F);
 			GL11.glRotatef(-90F, 0.0F, 1.0F, 0.0F);
 			GL11.glRotatef(-135F, 1.0F, 0.0F, 0.0F);
-			GL11.glScalef(-scale4, scale4, scale4);
+			GL11.glScalef(-ItemRenderLunaticSniper.scale4, ItemRenderLunaticSniper.scale4, ItemRenderLunaticSniper.scale4);
 			break;
 		default:
 			break;
 		}
 		
 		if(type != ItemRenderType.EQUIPPED_FIRST_PERSON) {
-			ResourceManager.lunatic_sniper.renderAllExcept(fullRound, spentShell);
+			ResourceManager.lunatic_sniper.renderAllExcept(ItemRenderLunaticSniper.fullRound, ItemRenderLunaticSniper.spentShell);
 		}
 		
 		GL11.glShadeModel(GL11.GL_FLAT);

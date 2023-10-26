@@ -1,16 +1,16 @@
 package com.hbm.crafting;
 
-import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.BlockEnums.EnumStoneType;
+import com.hbm.blocks.ModBlocks;
+import com.hbm.inventory.OreDictManager;
+import com.hbm.inventory.OreDictManager.DictFrame;
 import com.hbm.items.ItemEnums.EnumCokeType;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemRTGPelletDepleted.DepletedRTGMaterial;
+import com.hbm.items.special.ItemByproduct.EnumByproduct;
 import com.hbm.items.special.ItemWasteLong;
 import com.hbm.items.special.ItemWasteShort;
-import com.hbm.items.special.ItemByproduct.EnumByproduct;
 import com.hbm.main.CraftingManager;
-
-import static com.hbm.inventory.OreDictManager.*;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
@@ -29,124 +29,124 @@ public class MineralRecipes {
 	
 	public static void register() {
 		
-		add1To9Pair(ModItems.dust, ModItems.dust_tiny);
-		add1To9Pair(ModItems.powder_coal, ModItems.powder_coal_tiny);
-		add1To9Pair(ModItems.ingot_mercury, ModItems.nugget_mercury);
+		MineralRecipes.add1To9Pair(ModItems.dust, ModItems.dust_tiny);
+		MineralRecipes.add1To9Pair(ModItems.powder_coal, ModItems.powder_coal_tiny);
+		MineralRecipes.add1To9Pair(ModItems.ingot_mercury, ModItems.nugget_mercury);
 
-		add1To9Pair(ModBlocks.sand_gold, ModItems.powder_gold);
-		add1To9Pair(ModBlocks.sand_gold198, ModItems.powder_au198);
+		MineralRecipes.add1To9Pair(ModBlocks.sand_gold, ModItems.powder_gold);
+		MineralRecipes.add1To9Pair(ModBlocks.sand_gold198, ModItems.powder_au198);
 		
-		add1To9Pair(ModBlocks.block_aluminium, ModItems.ingot_aluminium);
-		add1To9Pair(ModBlocks.block_graphite, ModItems.ingot_graphite);
-		add1To9Pair(ModBlocks.block_boron, ModItems.ingot_boron);
-		add1To9Pair(ModBlocks.block_schraranium, ModItems.ingot_schraranium);
-		add1To9Pair(ModBlocks.block_lanthanium, ModItems.ingot_lanthanium);
-		add1To9Pair(ModBlocks.block_ra226, ModItems.ingot_ra226);
-		add1To9Pair(ModBlocks.block_actinium, ModItems.ingot_actinium);
-		add1To9Pair(ModBlocks.block_schrabidate, ModItems.ingot_schrabidate);
-		add1To9Pair(ModBlocks.block_coltan, ModItems.fragment_coltan);
-		add1To9Pair(ModBlocks.block_smore, ModItems.ingot_smore);
-		add1To9Pair(ModBlocks.block_niobium, ModItems.ingot_niobium);
-		add1To9Pair(ModBlocks.block_semtex, ModItems.ingot_semtex);
-		add1To9Pair(ModBlocks.block_c4, ModItems.ingot_c4);
-		add1To9Pair(ModBlocks.block_polymer, ModItems.ingot_polymer);
-		add1To9Pair(ModBlocks.block_bakelite, ModItems.ingot_bakelite);
-		add1To9Pair(ModBlocks.block_rubber, ModItems.ingot_rubber);
-		add1To9Pair(ModBlocks.block_cadmium, ModItems.ingot_cadmium);
-		add1To9Pair(ModBlocks.block_tcalloy, ModItems.ingot_tcalloy);
-		add1To9Pair(ModBlocks.block_cdalloy, ModItems.ingot_cdalloy);
+		MineralRecipes.add1To9Pair(ModBlocks.block_aluminium, ModItems.ingot_aluminium);
+		MineralRecipes.add1To9Pair(ModBlocks.block_graphite, ModItems.ingot_graphite);
+		MineralRecipes.add1To9Pair(ModBlocks.block_boron, ModItems.ingot_boron);
+		MineralRecipes.add1To9Pair(ModBlocks.block_schraranium, ModItems.ingot_schraranium);
+		MineralRecipes.add1To9Pair(ModBlocks.block_lanthanium, ModItems.ingot_lanthanium);
+		MineralRecipes.add1To9Pair(ModBlocks.block_ra226, ModItems.ingot_ra226);
+		MineralRecipes.add1To9Pair(ModBlocks.block_actinium, ModItems.ingot_actinium);
+		MineralRecipes.add1To9Pair(ModBlocks.block_schrabidate, ModItems.ingot_schrabidate);
+		MineralRecipes.add1To9Pair(ModBlocks.block_coltan, ModItems.fragment_coltan);
+		MineralRecipes.add1To9Pair(ModBlocks.block_smore, ModItems.ingot_smore);
+		MineralRecipes.add1To9Pair(ModBlocks.block_niobium, ModItems.ingot_niobium);
+		MineralRecipes.add1To9Pair(ModBlocks.block_semtex, ModItems.ingot_semtex);
+		MineralRecipes.add1To9Pair(ModBlocks.block_c4, ModItems.ingot_c4);
+		MineralRecipes.add1To9Pair(ModBlocks.block_polymer, ModItems.ingot_polymer);
+		MineralRecipes.add1To9Pair(ModBlocks.block_bakelite, ModItems.ingot_bakelite);
+		MineralRecipes.add1To9Pair(ModBlocks.block_rubber, ModItems.ingot_rubber);
+		MineralRecipes.add1To9Pair(ModBlocks.block_cadmium, ModItems.ingot_cadmium);
+		MineralRecipes.add1To9Pair(ModBlocks.block_tcalloy, ModItems.ingot_tcalloy);
+		MineralRecipes.add1To9Pair(ModBlocks.block_cdalloy, ModItems.ingot_cdalloy);
 		
 		for(int i = 0; i < EnumCokeType.values().length; i++) {
-			add1To9PairSameMeta(Item.getItemFromBlock(ModBlocks.block_coke), ModItems.coke, i);
+			MineralRecipes.add1To9PairSameMeta(Item.getItemFromBlock(ModBlocks.block_coke), ModItems.coke, i);
 		}
 
-		addMineralSet(ModItems.nugget_bismuth, ModItems.ingot_bismuth, ModBlocks.block_bismuth);
-		addMineralSet(ModItems.nugget_tantalium, ModItems.ingot_tantalium, ModBlocks.block_tantalium);
-		addMineralSet(ModItems.nugget_zirconium, ModItems.ingot_zirconium, ModBlocks.block_zirconium);
-		addMineralSet(ModItems.nugget_dineutronium, ModItems.ingot_dineutronium, ModBlocks.block_dineutronium);
-		addMineralSet(ModItems.nuclear_waste_vitrified_tiny, ModItems.nuclear_waste_vitrified, ModBlocks.block_waste_vitrified);
+		MineralRecipes.addMineralSet(ModItems.nugget_bismuth, ModItems.ingot_bismuth, ModBlocks.block_bismuth);
+		MineralRecipes.addMineralSet(ModItems.nugget_tantalium, ModItems.ingot_tantalium, ModBlocks.block_tantalium);
+		MineralRecipes.addMineralSet(ModItems.nugget_zirconium, ModItems.ingot_zirconium, ModBlocks.block_zirconium);
+		MineralRecipes.addMineralSet(ModItems.nugget_dineutronium, ModItems.ingot_dineutronium, ModBlocks.block_dineutronium);
+		MineralRecipes.addMineralSet(ModItems.nuclear_waste_vitrified_tiny, ModItems.nuclear_waste_vitrified, ModBlocks.block_waste_vitrified);
 
-		add1To9Pair(ModItems.powder_boron, ModItems.powder_boron_tiny);
-		add1To9Pair(ModItems.powder_sr90, ModItems.powder_sr90_tiny);
-		add1To9Pair(ModItems.powder_xe135, ModItems.powder_xe135_tiny);
-		add1To9Pair(ModItems.powder_cs137, ModItems.powder_cs137_tiny);
-		add1To9Pair(ModItems.powder_i131, ModItems.powder_i131_tiny);
+		MineralRecipes.add1To9Pair(ModItems.powder_boron, ModItems.powder_boron_tiny);
+		MineralRecipes.add1To9Pair(ModItems.powder_sr90, ModItems.powder_sr90_tiny);
+		MineralRecipes.add1To9Pair(ModItems.powder_xe135, ModItems.powder_xe135_tiny);
+		MineralRecipes.add1To9Pair(ModItems.powder_cs137, ModItems.powder_cs137_tiny);
+		MineralRecipes.add1To9Pair(ModItems.powder_i131, ModItems.powder_i131_tiny);
 
-		add1To9Pair(ModItems.ingot_technetium, ModItems.nugget_technetium);
-		add1To9Pair(ModItems.ingot_co60, ModItems.nugget_co60);
-		add1To9Pair(ModItems.ingot_sr90, ModItems.nugget_sr90);
-		add1To9Pair(ModItems.ingot_au198, ModItems.nugget_au198);
-		add1To9Pair(ModItems.ingot_pb209, ModItems.nugget_pb209);
-		add1To9Pair(ModItems.ingot_ra226, ModItems.nugget_ra226);
-		add1To9Pair(ModItems.ingot_actinium, ModItems.nugget_actinium);
-		add1To9Pair(ModItems.ingot_arsenic, ModItems.nugget_arsenic);
+		MineralRecipes.add1To9Pair(ModItems.ingot_technetium, ModItems.nugget_technetium);
+		MineralRecipes.add1To9Pair(ModItems.ingot_co60, ModItems.nugget_co60);
+		MineralRecipes.add1To9Pair(ModItems.ingot_sr90, ModItems.nugget_sr90);
+		MineralRecipes.add1To9Pair(ModItems.ingot_au198, ModItems.nugget_au198);
+		MineralRecipes.add1To9Pair(ModItems.ingot_pb209, ModItems.nugget_pb209);
+		MineralRecipes.add1To9Pair(ModItems.ingot_ra226, ModItems.nugget_ra226);
+		MineralRecipes.add1To9Pair(ModItems.ingot_actinium, ModItems.nugget_actinium);
+		MineralRecipes.add1To9Pair(ModItems.ingot_arsenic, ModItems.nugget_arsenic);
 
-		add1To9Pair(ModItems.ingot_pu241, ModItems.nugget_pu241);
-		add1To9Pair(ModItems.ingot_am241, ModItems.nugget_am241);
-		add1To9Pair(ModItems.ingot_am242, ModItems.nugget_am242);
-		add1To9Pair(ModItems.ingot_am_mix, ModItems.nugget_am_mix);
-		add1To9Pair(ModItems.ingot_americium_fuel, ModItems.nugget_americium_fuel);
+		MineralRecipes.add1To9Pair(ModItems.ingot_pu241, ModItems.nugget_pu241);
+		MineralRecipes.add1To9Pair(ModItems.ingot_am241, ModItems.nugget_am241);
+		MineralRecipes.add1To9Pair(ModItems.ingot_am242, ModItems.nugget_am242);
+		MineralRecipes.add1To9Pair(ModItems.ingot_am_mix, ModItems.nugget_am_mix);
+		MineralRecipes.add1To9Pair(ModItems.ingot_americium_fuel, ModItems.nugget_americium_fuel);
 		
-		add1To9Pair(ModItems.ingot_gh336, ModItems.nugget_gh336);
+		MineralRecipes.add1To9Pair(ModItems.ingot_gh336, ModItems.nugget_gh336);
 
 		for(int i = 0; i < ItemWasteLong.WasteClass.values().length; i++) {
-			add1To9PairSameMeta(ModItems.nuclear_waste_long, ModItems.nuclear_waste_long_tiny, i);
-			add1To9PairSameMeta(ModItems.nuclear_waste_long_depleted, ModItems.nuclear_waste_long_depleted_tiny, i);
+			MineralRecipes.add1To9PairSameMeta(ModItems.nuclear_waste_long, ModItems.nuclear_waste_long_tiny, i);
+			MineralRecipes.add1To9PairSameMeta(ModItems.nuclear_waste_long_depleted, ModItems.nuclear_waste_long_depleted_tiny, i);
 		}
 
 		for(int i = 0; i < ItemWasteShort.WasteClass.values().length; i++) {
-			add1To9PairSameMeta(ModItems.nuclear_waste_short, ModItems.nuclear_waste_short_tiny, i);
-			add1To9PairSameMeta(ModItems.nuclear_waste_short_depleted, ModItems.nuclear_waste_short_depleted_tiny, i);
+			MineralRecipes.add1To9PairSameMeta(ModItems.nuclear_waste_short, ModItems.nuclear_waste_short_tiny, i);
+			MineralRecipes.add1To9PairSameMeta(ModItems.nuclear_waste_short_depleted, ModItems.nuclear_waste_short_depleted_tiny, i);
 		}
 		
-		add1To9Pair(ModBlocks.block_fallout, ModItems.fallout);
+		MineralRecipes.add1To9Pair(ModBlocks.block_fallout, ModItems.fallout);
 		GameRegistry.addRecipe(new ItemStack(ModBlocks.fallout, 2), new Object[] { "##", '#', ModItems.fallout });
 
-		addMineralSet(ModItems.nugget_pu_mix, ModItems.ingot_pu_mix, ModBlocks.block_pu_mix);
-		add1To9Pair(ModItems.ingot_neptunium_fuel, ModItems.nugget_neptunium_fuel);
+		MineralRecipes.addMineralSet(ModItems.nugget_pu_mix, ModItems.ingot_pu_mix, ModBlocks.block_pu_mix);
+		MineralRecipes.add1To9Pair(ModItems.ingot_neptunium_fuel, ModItems.nugget_neptunium_fuel);
 		
-		addBillet(ModItems.billet_cobalt,				ModItems.ingot_cobalt,				ModItems.nugget_cobalt);
-		addBillet(ModItems.billet_co60,					ModItems.ingot_co60,				ModItems.nugget_co60);
-		addBillet(ModItems.billet_sr90,					ModItems.ingot_sr90,				ModItems.nugget_sr90, SR90.allNuggets());
-		addBillet(ModItems.billet_uranium,				ModItems.ingot_uranium,				ModItems.nugget_uranium, U.allNuggets());
-		addBillet(ModItems.billet_u233,					ModItems.ingot_u233,				ModItems.nugget_u233, U233.allNuggets());
-		addBillet(ModItems.billet_u235,					ModItems.ingot_u235,				ModItems.nugget_u235, U235.allNuggets());
-		addBillet(ModItems.billet_u238,					ModItems.ingot_u238,				ModItems.nugget_u238, U238.allNuggets());
-		addBillet(ModItems.billet_th232,				ModItems.ingot_th232,				ModItems.nugget_th232, TH232.allNuggets());
-		addBillet(ModItems.billet_plutonium,			ModItems.ingot_plutonium,			ModItems.nugget_plutonium, PU.allNuggets());
-		addBillet(ModItems.billet_pu238,				ModItems.ingot_pu238,				ModItems.nugget_pu238, PU238.allNuggets());
-		addBillet(ModItems.billet_pu239,				ModItems.ingot_pu239,				ModItems.nugget_pu239, PU239.allNuggets());
-		addBillet(ModItems.billet_pu240,				ModItems.ingot_pu240,				ModItems.nugget_pu240, PU240.allNuggets());
-		addBillet(ModItems.billet_pu241,				ModItems.ingot_pu241,				ModItems.nugget_pu241, PU241.allNuggets());
-		addBillet(ModItems.billet_pu_mix,				ModItems.ingot_pu_mix,				ModItems.nugget_pu_mix);
-		addBillet(ModItems.billet_am241,				ModItems.ingot_am241,				ModItems.nugget_am241, AM241.allNuggets());
-		addBillet(ModItems.billet_am242,				ModItems.ingot_am242,				ModItems.nugget_am242, AM242.allNuggets());
-		addBillet(ModItems.billet_am_mix,				ModItems.ingot_am_mix,				ModItems.nugget_am_mix);
-		addBillet(ModItems.billet_neptunium,			ModItems.ingot_neptunium,			ModItems.nugget_neptunium, NP237.allNuggets());
-		addBillet(ModItems.billet_polonium,				ModItems.ingot_polonium,			ModItems.nugget_polonium, PO210.allNuggets());
-		addBillet(ModItems.billet_technetium,			ModItems.ingot_technetium,			ModItems.nugget_technetium, TC99.allNuggets());
-		addBillet(ModItems.billet_au198,				ModItems.ingot_au198,				ModItems.nugget_au198, AU198.allNuggets());
-		addBillet(ModItems.billet_pb209,				ModItems.ingot_pb209,				ModItems.nugget_pb209, PB209.allNuggets()); //and so forth
-		addBillet(ModItems.billet_ra226,				ModItems.ingot_ra226,				ModItems.nugget_ra226, RA226.allNuggets());
-		addBillet(ModItems.billet_actinium,				ModItems.ingot_actinium,			ModItems.nugget_actinium, AC227.allNuggets());
-		addBillet(ModItems.billet_schrabidium,			ModItems.ingot_schrabidium,			ModItems.nugget_schrabidium, "nuggetSchrabidium");
-		addBillet(ModItems.billet_solinium,				ModItems.ingot_solinium,			ModItems.nugget_solinium, "nuggetSolinium");
-		addBillet(ModItems.billet_gh336,				ModItems.ingot_gh336,				ModItems.nugget_gh336, GH336.allNuggets());
-		addBillet(ModItems.billet_uranium_fuel,			ModItems.ingot_uranium_fuel,		ModItems.nugget_uranium_fuel);
-		addBillet(ModItems.billet_thorium_fuel,			ModItems.ingot_thorium_fuel,		ModItems.nugget_thorium_fuel);
-		addBillet(ModItems.billet_plutonium_fuel,		ModItems.ingot_plutonium_fuel,		ModItems.nugget_plutonium_fuel);
-		addBillet(ModItems.billet_neptunium_fuel,		ModItems.ingot_neptunium_fuel,		ModItems.nugget_neptunium_fuel);
-		addBillet(ModItems.billet_mox_fuel,				ModItems.ingot_mox_fuel,			ModItems.nugget_mox_fuel);
-		addBillet(ModItems.billet_les,					ModItems.ingot_les,					ModItems.nugget_les);
-		addBillet(ModItems.billet_schrabidium_fuel,		ModItems.ingot_schrabidium_fuel,	ModItems.nugget_schrabidium_fuel);
-		addBillet(ModItems.billet_hes,					ModItems.ingot_hes,					ModItems.nugget_hes);
-		addBillet(ModItems.billet_australium,			ModItems.ingot_australium,			ModItems.nugget_australium, "nuggetAustralium");
-		addBillet(ModItems.billet_australium_greater,										ModItems.nugget_australium_greater);
-		addBillet(ModItems.billet_australium_lesser,										ModItems.nugget_australium_lesser);
-		addBillet(ModItems.billet_nuclear_waste,		ModItems.nuclear_waste,				ModItems.nuclear_waste_tiny);
-		addBillet(ModItems.billet_beryllium,			ModItems.ingot_beryllium,			ModItems.nugget_beryllium, BE.nugget());
-		addBillet(ModItems.billet_zirconium,			ModItems.ingot_zirconium,			ModItems.nugget_zirconium, ZR.nugget());
-		addBillet(ModItems.billet_bismuth,				ModItems.ingot_bismuth,				ModItems.nugget_bismuth);
+		MineralRecipes.addBillet(ModItems.billet_cobalt,				ModItems.ingot_cobalt,				ModItems.nugget_cobalt);
+		MineralRecipes.addBillet(ModItems.billet_co60,					ModItems.ingot_co60,				ModItems.nugget_co60);
+		MineralRecipes.addBillet(ModItems.billet_sr90,					ModItems.ingot_sr90,				ModItems.nugget_sr90, OreDictManager.SR90.allNuggets());
+		MineralRecipes.addBillet(ModItems.billet_uranium,				ModItems.ingot_uranium,				ModItems.nugget_uranium, OreDictManager.U.allNuggets());
+		MineralRecipes.addBillet(ModItems.billet_u233,					ModItems.ingot_u233,				ModItems.nugget_u233, OreDictManager.U233.allNuggets());
+		MineralRecipes.addBillet(ModItems.billet_u235,					ModItems.ingot_u235,				ModItems.nugget_u235, OreDictManager.U235.allNuggets());
+		MineralRecipes.addBillet(ModItems.billet_u238,					ModItems.ingot_u238,				ModItems.nugget_u238, OreDictManager.U238.allNuggets());
+		MineralRecipes.addBillet(ModItems.billet_th232,				ModItems.ingot_th232,				ModItems.nugget_th232, OreDictManager.TH232.allNuggets());
+		MineralRecipes.addBillet(ModItems.billet_plutonium,			ModItems.ingot_plutonium,			ModItems.nugget_plutonium, OreDictManager.PU.allNuggets());
+		MineralRecipes.addBillet(ModItems.billet_pu238,				ModItems.ingot_pu238,				ModItems.nugget_pu238, OreDictManager.PU238.allNuggets());
+		MineralRecipes.addBillet(ModItems.billet_pu239,				ModItems.ingot_pu239,				ModItems.nugget_pu239, OreDictManager.PU239.allNuggets());
+		MineralRecipes.addBillet(ModItems.billet_pu240,				ModItems.ingot_pu240,				ModItems.nugget_pu240, OreDictManager.PU240.allNuggets());
+		MineralRecipes.addBillet(ModItems.billet_pu241,				ModItems.ingot_pu241,				ModItems.nugget_pu241, OreDictManager.PU241.allNuggets());
+		MineralRecipes.addBillet(ModItems.billet_pu_mix,				ModItems.ingot_pu_mix,				ModItems.nugget_pu_mix);
+		MineralRecipes.addBillet(ModItems.billet_am241,				ModItems.ingot_am241,				ModItems.nugget_am241, OreDictManager.AM241.allNuggets());
+		MineralRecipes.addBillet(ModItems.billet_am242,				ModItems.ingot_am242,				ModItems.nugget_am242, OreDictManager.AM242.allNuggets());
+		MineralRecipes.addBillet(ModItems.billet_am_mix,				ModItems.ingot_am_mix,				ModItems.nugget_am_mix);
+		MineralRecipes.addBillet(ModItems.billet_neptunium,			ModItems.ingot_neptunium,			ModItems.nugget_neptunium, OreDictManager.NP237.allNuggets());
+		MineralRecipes.addBillet(ModItems.billet_polonium,				ModItems.ingot_polonium,			ModItems.nugget_polonium, OreDictManager.PO210.allNuggets());
+		MineralRecipes.addBillet(ModItems.billet_technetium,			ModItems.ingot_technetium,			ModItems.nugget_technetium, OreDictManager.TC99.allNuggets());
+		MineralRecipes.addBillet(ModItems.billet_au198,				ModItems.ingot_au198,				ModItems.nugget_au198, OreDictManager.AU198.allNuggets());
+		MineralRecipes.addBillet(ModItems.billet_pb209,				ModItems.ingot_pb209,				ModItems.nugget_pb209, OreDictManager.PB209.allNuggets()); //and so forth
+		MineralRecipes.addBillet(ModItems.billet_ra226,				ModItems.ingot_ra226,				ModItems.nugget_ra226, OreDictManager.RA226.allNuggets());
+		MineralRecipes.addBillet(ModItems.billet_actinium,				ModItems.ingot_actinium,			ModItems.nugget_actinium, OreDictManager.AC227.allNuggets());
+		MineralRecipes.addBillet(ModItems.billet_schrabidium,			ModItems.ingot_schrabidium,			ModItems.nugget_schrabidium, "nuggetSchrabidium");
+		MineralRecipes.addBillet(ModItems.billet_solinium,				ModItems.ingot_solinium,			ModItems.nugget_solinium, "nuggetSolinium");
+		MineralRecipes.addBillet(ModItems.billet_gh336,				ModItems.ingot_gh336,				ModItems.nugget_gh336, OreDictManager.GH336.allNuggets());
+		MineralRecipes.addBillet(ModItems.billet_uranium_fuel,			ModItems.ingot_uranium_fuel,		ModItems.nugget_uranium_fuel);
+		MineralRecipes.addBillet(ModItems.billet_thorium_fuel,			ModItems.ingot_thorium_fuel,		ModItems.nugget_thorium_fuel);
+		MineralRecipes.addBillet(ModItems.billet_plutonium_fuel,		ModItems.ingot_plutonium_fuel,		ModItems.nugget_plutonium_fuel);
+		MineralRecipes.addBillet(ModItems.billet_neptunium_fuel,		ModItems.ingot_neptunium_fuel,		ModItems.nugget_neptunium_fuel);
+		MineralRecipes.addBillet(ModItems.billet_mox_fuel,				ModItems.ingot_mox_fuel,			ModItems.nugget_mox_fuel);
+		MineralRecipes.addBillet(ModItems.billet_les,					ModItems.ingot_les,					ModItems.nugget_les);
+		MineralRecipes.addBillet(ModItems.billet_schrabidium_fuel,		ModItems.ingot_schrabidium_fuel,	ModItems.nugget_schrabidium_fuel);
+		MineralRecipes.addBillet(ModItems.billet_hes,					ModItems.ingot_hes,					ModItems.nugget_hes);
+		MineralRecipes.addBillet(ModItems.billet_australium,			ModItems.ingot_australium,			ModItems.nugget_australium, "nuggetAustralium");
+		MineralRecipes.addBillet(ModItems.billet_australium_greater,										ModItems.nugget_australium_greater);
+		MineralRecipes.addBillet(ModItems.billet_australium_lesser,										ModItems.nugget_australium_lesser);
+		MineralRecipes.addBillet(ModItems.billet_nuclear_waste,		ModItems.nuclear_waste,				ModItems.nuclear_waste_tiny);
+		MineralRecipes.addBillet(ModItems.billet_beryllium,			ModItems.ingot_beryllium,			ModItems.nugget_beryllium, OreDictManager.BE.nugget());
+		MineralRecipes.addBillet(ModItems.billet_zirconium,			ModItems.ingot_zirconium,			ModItems.nugget_zirconium, OreDictManager.ZR.nugget());
+		MineralRecipes.addBillet(ModItems.billet_bismuth,				ModItems.ingot_bismuth,				ModItems.nugget_bismuth);
 
 		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.billet_thorium_fuel, 6), new Object[] { ModItems.billet_th232, ModItems.billet_th232, ModItems.billet_th232, ModItems.billet_th232, ModItems.billet_th232, ModItems.billet_u233 });
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.billet_thorium_fuel, 1), new Object[] { "nuggetThorium232", "nuggetThorium232", "nuggetThorium232", "nuggetThorium232", "nuggetThorium232", "nuggetUranium233" }));
@@ -185,12 +185,12 @@ public class MineralRecipes {
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.billet_pu238be, 6), new Object[] { ModItems.billet_pu238, ModItems.billet_pu238, ModItems.billet_pu238,  ModItems.billet_beryllium, ModItems.billet_beryllium, ModItems.billet_beryllium }));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.billet_ra226be, 6), new Object[] { ModItems.billet_ra226, ModItems.billet_ra226, ModItems.billet_ra226,  ModItems.billet_beryllium, ModItems.billet_beryllium, ModItems.billet_beryllium }));
 		
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.billet_zfb_bismuth, 1), new Object[] { ZR.nugget(), ZR.nugget(), ZR.nugget(), U.nugget(), PU241.nugget(), BI.nugget() }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.billet_zfb_pu241, 1), new Object[] {  ZR.nugget(), ZR.nugget(), ZR.nugget(), U235.nugget(), PU240.nugget(), PU241.nugget() }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.billet_zfb_am_mix, 1), new Object[] {  ZR.nugget(), ZR.nugget(), ZR.nugget(), PU241.nugget(), PU241.nugget(), AMRG.nugget() }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.billet_zfb_bismuth, 6), new Object[] { ZR.billet(), ZR.billet(), ZR.billet(), U.billet(), PU241.billet(), BI.billet() }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.billet_zfb_pu241, 6), new Object[] { ZR.billet(), ZR.billet(), ZR.billet(), U235.billet(), PU240.billet(), PU241.billet() }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.billet_zfb_am_mix, 6), new Object[] { ZR.billet(), ZR.billet(), ZR.billet(), PU241.billet(), PU241.billet(), AMRG.billet() }));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.billet_zfb_bismuth, 1), new Object[] { OreDictManager.ZR.nugget(), OreDictManager.ZR.nugget(), OreDictManager.ZR.nugget(), OreDictManager.U.nugget(), OreDictManager.PU241.nugget(), OreDictManager.BI.nugget() }));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.billet_zfb_pu241, 1), new Object[] {  OreDictManager.ZR.nugget(), OreDictManager.ZR.nugget(), OreDictManager.ZR.nugget(), OreDictManager.U235.nugget(), OreDictManager.PU240.nugget(), OreDictManager.PU241.nugget() }));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.billet_zfb_am_mix, 1), new Object[] {  OreDictManager.ZR.nugget(), OreDictManager.ZR.nugget(), OreDictManager.ZR.nugget(), OreDictManager.PU241.nugget(), OreDictManager.PU241.nugget(), OreDictManager.AMRG.nugget() }));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.billet_zfb_bismuth, 6), new Object[] { OreDictManager.ZR.billet(), OreDictManager.ZR.billet(), OreDictManager.ZR.billet(), OreDictManager.U.billet(), OreDictManager.PU241.billet(), OreDictManager.BI.billet() }));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.billet_zfb_pu241, 6), new Object[] { OreDictManager.ZR.billet(), OreDictManager.ZR.billet(), OreDictManager.ZR.billet(), OreDictManager.U235.billet(), OreDictManager.PU240.billet(), OreDictManager.PU241.billet() }));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.billet_zfb_am_mix, 6), new Object[] { OreDictManager.ZR.billet(), OreDictManager.ZR.billet(), OreDictManager.ZR.billet(), OreDictManager.PU241.billet(), OreDictManager.PU241.billet(), OreDictManager.AMRG.billet() }));
 
 
 		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.billet_uranium, 2), new Object[] { ModItems.billet_uranium_fuel, ModItems.billet_u238 });
@@ -228,16 +228,16 @@ public class MineralRecipes {
 		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.billet_balefire_gold, 1), new Object[] { ModItems.billet_au198, ModItems.cell_antimatter, ModItems.pellet_charged });
 		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.billet_flashlead, 2), new Object[] { ModItems.billet_balefire_gold, ModItems.billet_pb209, ModItems.cell_antimatter });
 		
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.pellet_rtg), new Object[] { ModItems.billet_pu238, ModItems.billet_pu238, ModItems.billet_pu238, IRON.plate() }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.pellet_rtg_radium), new Object[] { ModItems.billet_ra226, ModItems.billet_ra226, ModItems.billet_ra226, IRON.plate() }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.pellet_rtg_weak), new Object[] { ModItems.billet_u238, ModItems.billet_u238, ModItems.billet_pu238, IRON.plate() }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.pellet_rtg_strontium), new Object[] { ModItems.billet_sr90, ModItems.billet_sr90, ModItems.billet_sr90, IRON.plate() }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.pellet_rtg_cobalt), new Object[] { ModItems.billet_co60, ModItems.billet_co60, ModItems.billet_co60, IRON.plate() }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.pellet_rtg_actinium), new Object[] { ModItems.billet_actinium, ModItems.billet_actinium, ModItems.billet_actinium, IRON.plate() }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.pellet_rtg_polonium), new Object[] { ModItems.billet_polonium, ModItems.billet_polonium, ModItems.billet_polonium, IRON.plate() }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.pellet_rtg_lead), new Object[] { ModItems.billet_pb209, ModItems.billet_pb209, ModItems.billet_pb209, IRON.plate() }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.pellet_rtg_gold), new Object[] { ModItems.billet_au198, ModItems.billet_au198, ModItems.billet_au198, IRON.plate() }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.pellet_rtg_americium), new Object[] { ModItems.billet_am241, ModItems.billet_am241, ModItems.billet_am241, IRON.plate() }));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.pellet_rtg), new Object[] { ModItems.billet_pu238, ModItems.billet_pu238, ModItems.billet_pu238, OreDictManager.IRON.plate() }));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.pellet_rtg_radium), new Object[] { ModItems.billet_ra226, ModItems.billet_ra226, ModItems.billet_ra226, OreDictManager.IRON.plate() }));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.pellet_rtg_weak), new Object[] { ModItems.billet_u238, ModItems.billet_u238, ModItems.billet_pu238, OreDictManager.IRON.plate() }));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.pellet_rtg_strontium), new Object[] { ModItems.billet_sr90, ModItems.billet_sr90, ModItems.billet_sr90, OreDictManager.IRON.plate() }));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.pellet_rtg_cobalt), new Object[] { ModItems.billet_co60, ModItems.billet_co60, ModItems.billet_co60, OreDictManager.IRON.plate() }));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.pellet_rtg_actinium), new Object[] { ModItems.billet_actinium, ModItems.billet_actinium, ModItems.billet_actinium, OreDictManager.IRON.plate() }));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.pellet_rtg_polonium), new Object[] { ModItems.billet_polonium, ModItems.billet_polonium, ModItems.billet_polonium, OreDictManager.IRON.plate() }));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.pellet_rtg_lead), new Object[] { ModItems.billet_pb209, ModItems.billet_pb209, ModItems.billet_pb209, OreDictManager.IRON.plate() }));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.pellet_rtg_gold), new Object[] { ModItems.billet_au198, ModItems.billet_au198, ModItems.billet_au198, OreDictManager.IRON.plate() }));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.pellet_rtg_americium), new Object[] { ModItems.billet_am241, ModItems.billet_am241, ModItems.billet_am241, OreDictManager.IRON.plate() }));
 		
 		//There's no need for anvil recycling recipes if you simply set the container item
 		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.billet_bismuth, 3), new Object[] { new ItemStack(ModItems.pellet_rtg_depleted, 1, DepletedRTGMaterial.BISMUTH.ordinal()) });
@@ -418,13 +418,13 @@ public class MineralRecipes {
 		GameRegistry.addRecipe(new ItemStack(ModItems.ingot_mercury, 8), new Object[] { "#", '#', ModItems.bottle_mercury });
 		GameRegistry.addRecipe(new ItemStack(ModItems.egg_balefire, 1), new Object[] { "###", "###", "###", '#', ModItems.egg_balefire_shard });
 		GameRegistry.addRecipe(new ItemStack(ModItems.egg_balefire_shard, 9), new Object[] { "#", '#', ModItems.egg_balefire });
-		add1To9Pair(ModItems.powder_paleogenite, ModItems.powder_paleogenite_tiny);
-		add1To9Pair(ModItems.ingot_osmiridium, ModItems.nugget_osmiridium);
+		MineralRecipes.add1To9Pair(ModItems.powder_paleogenite, ModItems.powder_paleogenite_tiny);
+		MineralRecipes.add1To9Pair(ModItems.ingot_osmiridium, ModItems.nugget_osmiridium);
 
 		GameRegistry.addRecipe(new ItemStack(ModBlocks.hazmat, 8), new Object[] { "###", "# #", "###", '#', ModItems.hazmat_cloth });
 		GameRegistry.addRecipe(new ItemStack(ModItems.hazmat_cloth, 1), new Object[] { "#", '#', ModBlocks.hazmat });
 		GameRegistry.addRecipe(new ItemStack(ModItems.egg_balefire_shard, 1), new Object[] { "##", "##", '#', ModItems.powder_balefire });
-		add9To1(ModItems.cell_balefire, ModItems.egg_balefire_shard);
+		MineralRecipes.add9To1(ModItems.cell_balefire, ModItems.egg_balefire_shard);
 		
 		GameRegistry.addRecipe(new ItemStack(ModItems.ingot_euphemium, 1), new Object[] { "###", "###", "###", '#', ModItems.nugget_euphemium });
 		GameRegistry.addRecipe(new ItemStack(ModItems.nugget_euphemium, 9), new Object[] { "#", '#', ModItems.ingot_euphemium });
@@ -445,61 +445,61 @@ public class MineralRecipes {
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.ingot_am_mix, 1), new Object[] { "nuggetAmericium241", "nuggetAmericium241", "nuggetAmericium241", "nuggetAmericium242", "nuggetAmericium242", "nuggetAmericium242", "nuggetAmericium242", "nuggetAmericium242", "nuggetAmericium242" }));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.ingot_am_mix, 1), new Object[] { "tinyAm241", "tinyAm241", "tinyAm241", "tinyAm242", "tinyAm242", "tinyAm242", "tinyAm242", "tinyAm242", "tinyAm242" }));
 		
-		CraftingManager.addShapelessAuto(new ItemStack(ModItems.ball_fireclay, 4), new Object[] { Items.clay_ball, Items.clay_ball, Items.clay_ball, AL.dust() });
-		CraftingManager.addShapelessAuto(new ItemStack(ModItems.ball_fireclay, 4), new Object[] { Items.clay_ball, Items.clay_ball, Items.clay_ball, AL.ore() });
-		CraftingManager.addShapelessAuto(new ItemStack(ModItems.ball_fireclay, 4), new Object[] { Items.clay_ball, Items.clay_ball, DictFrame.fromOne(ModBlocks.stone_resource, EnumStoneType.LIMESTONE), KEY_SAND });
+		CraftingManager.addShapelessAuto(new ItemStack(ModItems.ball_fireclay, 4), new Object[] { Items.clay_ball, Items.clay_ball, Items.clay_ball, OreDictManager.AL.dust() });
+		CraftingManager.addShapelessAuto(new ItemStack(ModItems.ball_fireclay, 4), new Object[] { Items.clay_ball, Items.clay_ball, Items.clay_ball, OreDictManager.AL.ore() });
+		CraftingManager.addShapelessAuto(new ItemStack(ModItems.ball_fireclay, 4), new Object[] { Items.clay_ball, Items.clay_ball, DictFrame.fromOne(ModBlocks.stone_resource, EnumStoneType.LIMESTONE), OreDictManager.KEY_SAND });
 
-		add9To1(DictFrame.fromOne(ModItems.ore_byproduct, EnumByproduct.B_IRON), new ItemStack(ModItems.powder_iron));
-		add9To1(DictFrame.fromOne(ModItems.ore_byproduct, EnumByproduct.B_COPPER), new ItemStack(ModItems.powder_copper));
-		add9To1(DictFrame.fromOne(ModItems.ore_byproduct, EnumByproduct.B_LITHIUM), new ItemStack(ModItems.powder_lithium));
-		add9To1(DictFrame.fromOne(ModItems.ore_byproduct, EnumByproduct.B_SILICON), new ItemStack(ModItems.powder_quartz));
-		add9To1(DictFrame.fromOne(ModItems.ore_byproduct, EnumByproduct.B_LEAD), new ItemStack(ModItems.powder_lead));
-		add9To1(DictFrame.fromOne(ModItems.ore_byproduct, EnumByproduct.B_TITANIUM), new ItemStack(ModItems.powder_titanium));
-		add9To1(DictFrame.fromOne(ModItems.ore_byproduct, EnumByproduct.B_ALUMINIUM), new ItemStack(ModItems.powder_aluminium));
-		add9To1(DictFrame.fromOne(ModItems.ore_byproduct, EnumByproduct.B_SULFUR), new ItemStack(ModItems.sulfur));
-		add9To1(DictFrame.fromOne(ModItems.ore_byproduct, EnumByproduct.B_CALCIUM), new ItemStack(ModItems.powder_calcium));
-		add9To1(DictFrame.fromOne(ModItems.ore_byproduct, EnumByproduct.B_BISMUTH), new ItemStack(ModItems.powder_bismuth));
-		add9To1(DictFrame.fromOne(ModItems.ore_byproduct, EnumByproduct.B_RADIUM), new ItemStack(ModItems.powder_ra226));
-		add9To1(DictFrame.fromOne(ModItems.ore_byproduct, EnumByproduct.B_TECHNETIUM), new ItemStack(ModItems.billet_technetium));
-		add9To1(DictFrame.fromOne(ModItems.ore_byproduct, EnumByproduct.B_POLONIUM), new ItemStack(ModItems.billet_polonium));
-		add9To1(DictFrame.fromOne(ModItems.ore_byproduct, EnumByproduct.B_URANIUM), new ItemStack(ModItems.powder_uranium));
+		MineralRecipes.add9To1(DictFrame.fromOne(ModItems.ore_byproduct, EnumByproduct.B_IRON), new ItemStack(ModItems.powder_iron));
+		MineralRecipes.add9To1(DictFrame.fromOne(ModItems.ore_byproduct, EnumByproduct.B_COPPER), new ItemStack(ModItems.powder_copper));
+		MineralRecipes.add9To1(DictFrame.fromOne(ModItems.ore_byproduct, EnumByproduct.B_LITHIUM), new ItemStack(ModItems.powder_lithium));
+		MineralRecipes.add9To1(DictFrame.fromOne(ModItems.ore_byproduct, EnumByproduct.B_SILICON), new ItemStack(ModItems.powder_quartz));
+		MineralRecipes.add9To1(DictFrame.fromOne(ModItems.ore_byproduct, EnumByproduct.B_LEAD), new ItemStack(ModItems.powder_lead));
+		MineralRecipes.add9To1(DictFrame.fromOne(ModItems.ore_byproduct, EnumByproduct.B_TITANIUM), new ItemStack(ModItems.powder_titanium));
+		MineralRecipes.add9To1(DictFrame.fromOne(ModItems.ore_byproduct, EnumByproduct.B_ALUMINIUM), new ItemStack(ModItems.powder_aluminium));
+		MineralRecipes.add9To1(DictFrame.fromOne(ModItems.ore_byproduct, EnumByproduct.B_SULFUR), new ItemStack(ModItems.sulfur));
+		MineralRecipes.add9To1(DictFrame.fromOne(ModItems.ore_byproduct, EnumByproduct.B_CALCIUM), new ItemStack(ModItems.powder_calcium));
+		MineralRecipes.add9To1(DictFrame.fromOne(ModItems.ore_byproduct, EnumByproduct.B_BISMUTH), new ItemStack(ModItems.powder_bismuth));
+		MineralRecipes.add9To1(DictFrame.fromOne(ModItems.ore_byproduct, EnumByproduct.B_RADIUM), new ItemStack(ModItems.powder_ra226));
+		MineralRecipes.add9To1(DictFrame.fromOne(ModItems.ore_byproduct, EnumByproduct.B_TECHNETIUM), new ItemStack(ModItems.billet_technetium));
+		MineralRecipes.add9To1(DictFrame.fromOne(ModItems.ore_byproduct, EnumByproduct.B_POLONIUM), new ItemStack(ModItems.billet_polonium));
+		MineralRecipes.add9To1(DictFrame.fromOne(ModItems.ore_byproduct, EnumByproduct.B_URANIUM), new ItemStack(ModItems.powder_uranium));
 	}
 	
 	//Bundled 1/9 recipes
 	public static void add1To9Pair(Item one, Item nine) {
-		add1To9(new ItemStack(one), new ItemStack(nine, 9));
-		add9To1(new ItemStack(nine), new ItemStack(one));
+		MineralRecipes.add1To9(new ItemStack(one), new ItemStack(nine, 9));
+		MineralRecipes.add9To1(new ItemStack(nine), new ItemStack(one));
 	}
 
 	public static void add1To9Pair(Block one, Item nine) {
-		add1To9(new ItemStack(one), new ItemStack(nine, 9));
-		add9To1(new ItemStack(nine), new ItemStack(one));
+		MineralRecipes.add1To9(new ItemStack(one), new ItemStack(nine, 9));
+		MineralRecipes.add9To1(new ItemStack(nine), new ItemStack(one));
 	}
 	
 	public static void add1To9PairSameMeta(Item one, Item nine, int meta) {
-		add1To9SameMeta(one, nine, meta);
-		add9To1SameMeta(nine, one, meta);
+		MineralRecipes.add1To9SameMeta(one, nine, meta);
+		MineralRecipes.add9To1SameMeta(nine, one, meta);
 	}
 	
 	//Full set of nugget, ingot and block
 	public static void addMineralSet(Item nugget, Item ingot, Block block) {
-		add1To9(new ItemStack(ingot), new ItemStack(nugget, 9));
-		add9To1(new ItemStack(nugget), new ItemStack(ingot));
-		add1To9(new ItemStack(block), new ItemStack(ingot, 9));
-		add9To1(new ItemStack(ingot), new ItemStack(block));
+		MineralRecipes.add1To9(new ItemStack(ingot), new ItemStack(nugget, 9));
+		MineralRecipes.add9To1(new ItemStack(nugget), new ItemStack(ingot));
+		MineralRecipes.add1To9(new ItemStack(block), new ItemStack(ingot, 9));
+		MineralRecipes.add9To1(new ItemStack(ingot), new ItemStack(block));
 	}
 
 	//Decompress one item into nine
 	public static void add1To9(Block one, Item nine) {
-		add1To9(new ItemStack(one), new ItemStack(nine, 9));
+		MineralRecipes.add1To9(new ItemStack(one), new ItemStack(nine, 9));
 	}
 
 	public static void add1To9(Item one, Item nine) {
-		add1To9(new ItemStack(one), new ItemStack(nine, 9));
+		MineralRecipes.add1To9(new ItemStack(one), new ItemStack(nine, 9));
 	}
 
 	public static void add1To9SameMeta(Item one, Item nine, int meta) {
-		add1To9(new ItemStack(one, 1, meta), new ItemStack(nine, 9, meta));
+		MineralRecipes.add1To9(new ItemStack(one, 1, meta), new ItemStack(nine, 9, meta));
 	}
 
 	public static void add1To9(ItemStack one, ItemStack nine) {
@@ -508,15 +508,15 @@ public class MineralRecipes {
 
 	//Compress nine items into one
 	public static void add9To1(Item nine, Block one) {
-		add9To1(new ItemStack(nine), new ItemStack(one));
+		MineralRecipes.add9To1(new ItemStack(nine), new ItemStack(one));
 	}
 
 	public static void add9To1(Item nine, Item one) {
-		add9To1(new ItemStack(nine), new ItemStack(one));
+		MineralRecipes.add9To1(new ItemStack(nine), new ItemStack(one));
 	}
 
 	public static void add9To1SameMeta(Item nine, Item one, int meta) {
-		add9To1(new ItemStack(nine, 1, meta), new ItemStack(one, 1, meta));
+		MineralRecipes.add9To1(new ItemStack(nine, 1, meta), new ItemStack(one, 1, meta));
 	}
 
 	public static void add9To1(ItemStack nine, ItemStack one) {
@@ -525,12 +525,12 @@ public class MineralRecipes {
 
 	public static void addBillet(Item billet, Item nugget, String... ore) {
 		for(String o : ore) GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(billet), new Object[] { "###", "###", '#', o }));
-		addBillet(billet, nugget);
+		MineralRecipes.addBillet(billet, nugget);
 	}
 
 	public static void addBillet(Item billet, Item ingot, Item nugget, String... ore) {
 		for(String o : ore) GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(billet), new Object[] { "###", "###", '#', o }));
-		addBillet(billet, ingot, nugget);
+		MineralRecipes.addBillet(billet, ingot, nugget);
 	}
 
 	public static void addBillet(Item billet, Item nugget) {
@@ -541,7 +541,7 @@ public class MineralRecipes {
 	public static void addBillet(Item billet, Item ingot, Item nugget) {
 		GameRegistry.addRecipe(new ItemStack(billet), new Object[] { "###", "###", '#', nugget });
 		GameRegistry.addShapelessRecipe(new ItemStack(nugget, 6), new Object[] { billet });
-		addBilletToIngot(billet, ingot);
+		MineralRecipes.addBilletToIngot(billet, ingot);
 	}
 
 	public static void addBilletToIngot(Item billet, Item ingot) {

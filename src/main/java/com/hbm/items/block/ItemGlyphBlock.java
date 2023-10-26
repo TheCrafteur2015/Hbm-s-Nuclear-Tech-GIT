@@ -11,8 +11,8 @@ public class ItemGlyphBlock extends ItemBlock {
 
 	public ItemGlyphBlock(Block block) {
 		super(block);
-        this.setMaxDamage(0);
-        this.setHasSubtypes(true);
+        setMaxDamage(0);
+        setHasSubtypes(true);
 	}
 	
 	@Override
@@ -38,7 +38,8 @@ public class ItemGlyphBlock extends ItemBlock {
 		}
 	}
 	
-    public int getMetadata(int meta)
+    @Override
+	public int getMetadata(int meta)
     {
         return meta;
     }

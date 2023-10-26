@@ -18,17 +18,17 @@ public class TileEntityRBMKRodReaSim extends TileEntityRBMKRod {
 	@Override
 	protected void spreadFlux(NType type, double fluxOut) {
 
-		int range = RBMKDials.getReaSimRange(worldObj);
-		int count = RBMKDials.getReaSimCount(worldObj);
+		int range = RBMKDials.getReaSimRange(this.worldObj);
+		int count = RBMKDials.getReaSimCount(this.worldObj);
 		
 		Vec3 dir = Vec3.createVectorHelper(1, 0, 0);
 		
 		for(int i = 0; i < count; i++) {
 			
-			stream = type;
-			double flux = fluxOut * RBMKDials.getReaSimOutputMod(worldObj);
+			TileEntityRBMKRod.stream = type;
+			double flux = fluxOut * RBMKDials.getReaSimOutputMod(this.worldObj);
 			
-			dir.rotateAroundY((float)(Math.PI * 2D * worldObj.rand.nextDouble()));
+			dir.rotateAroundY((float)(Math.PI * 2D * this.worldObj.rand.nextDouble()));
 			
 			for(int j = 1; j <= range; j++) {
 
@@ -38,14 +38,11 @@ public class TileEntityRBMKRodReaSim extends TileEntityRBMKRod {
 				int lastZ = (int)Math.floor(0.5 + dir.zCoord * (j - 1));
 				
 				//skip if the position is on the rod itself
-				if(x == 0 && z == 0)
-					continue;
-				
 				//skip if the current position is equal to the last position
-				if(x == lastX && z == lastZ)
+				if((x == 0 && z == 0) || (x == lastX && z == lastZ))
 					continue;
 				
-				flux = runInteraction(xCoord + x, yCoord, zCoord + z, flux);
+				flux = runInteraction(this.xCoord + x, this.yCoord, this.zCoord + z, flux);
 				
 				if(flux <= 0)
 					break;

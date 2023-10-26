@@ -18,7 +18,7 @@ public class GunDGKFactory {
 		
 		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 		bullet.ammo = new ComparableStack(ModItems.ammo_dgk);
-		bullet.spentCasing = CASINGDGK.register("DGK");
+		bullet.spentCasing = GunDGKFactory.CASINGDGK.register("DGK");
 		return bullet;
 	}
 

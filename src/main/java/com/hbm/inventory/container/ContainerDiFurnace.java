@@ -15,21 +15,21 @@ public class ContainerDiFurnace extends Container {
 
 	public ContainerDiFurnace(InventoryPlayer invPlayer, TileEntityDiFurnace tedf) {
 
-		diFurnace = tedf;
+		this.diFurnace = tedf;
 
-		this.addSlotToContainer(new Slot(tedf, 0, 80, 18));
-		this.addSlotToContainer(new Slot(tedf, 1, 80, 54));
-		this.addSlotToContainer(new Slot(tedf, 2, 8, 36));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 3, 134, 36));
+		addSlotToContainer(new Slot(tedf, 0, 80, 18));
+		addSlotToContainer(new Slot(tedf, 1, 80, 54));
+		addSlotToContainer(new Slot(tedf, 2, 8, 36));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 3, 134, 36));
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
 		}
 	}
 
@@ -37,14 +37,14 @@ public class ContainerDiFurnace extends Container {
 	public ItemStack slotClick(int index, int button, int mode, EntityPlayer player) {
 		
 		if(index >= 0 && index < 3 && button == 1 && mode == 0) {
-			Slot slot = this.getSlot(index);
+			Slot slot = getSlot(index);
 			if(!slot.getHasStack() && player.inventory.getItemStack() == null) {
 				if(!player.worldObj.isRemote) {
-					if(index == 0) diFurnace.sideUpper = (byte) ((diFurnace.sideUpper + 1) % 6);
-					if(index == 1) diFurnace.sideLower = (byte) ((diFurnace.sideLower + 1) % 6);
-					if(index == 2) diFurnace.sideFuel = (byte) ((diFurnace.sideFuel + 1) % 6);
+					if(index == 0) this.diFurnace.sideUpper = (byte) ((this.diFurnace.sideUpper + 1) % 6);
+					if(index == 1) this.diFurnace.sideLower = (byte) ((this.diFurnace.sideLower + 1) % 6);
+					if(index == 2) this.diFurnace.sideFuel = (byte) ((this.diFurnace.sideFuel + 1) % 6);
 					
-					diFurnace.markDirty();
+					this.diFurnace.markDirty();
 				}
 				return null;
 			}
@@ -63,10 +63,10 @@ public class ContainerDiFurnace extends Container {
 			var3 = var5.copy();
 
 			if(par2 <= 3) {
-				if(!this.mergeItemStack(var5, 4, this.inventorySlots.size(), true)) {
+				if(!mergeItemStack(var5, 4, this.inventorySlots.size(), true)) {
 					return null;
 				}
-			} else if(!this.mergeItemStack(var5, 0, 3, false)) {
+			} else if(!mergeItemStack(var5, 0, 3, false)) {
 				return null;
 			}
 
@@ -82,6 +82,6 @@ public class ContainerDiFurnace extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return diFurnace.isUseableByPlayer(player);
+		return this.diFurnace.isUseableByPlayer(player);
 	}
 }

@@ -33,12 +33,12 @@ public class RenderChemical extends Render {
 			renderAmatBeam(chem, f1);
 		
 		if(style == ChemicalStyle.GAS) {
-			this.bindEntityTexture(chem);
+			bindEntityTexture(chem);
 			renderGasCloud(chem, f1);
 		}
 		
 		if(style == ChemicalStyle.GASFLAME) {
-			this.bindEntityTexture(chem);
+			bindEntityTexture(chem);
 			renderGasFire(chem, f1);
 		}
 
@@ -175,6 +175,6 @@ public class RenderChemical extends Render {
 
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity) {
-		return gas;
+		return RenderChemical.gas;
 	}
 }

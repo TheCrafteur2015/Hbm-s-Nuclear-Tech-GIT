@@ -75,14 +75,14 @@ public abstract class EntityMinecartDeobf extends Entity {
 
 	/* Instance versions of the above physics properties */
 	private float currentSpeedRail = getMaxCartSpeedOnRail();
-	protected float maxSpeedAirLateral = defaultMaxSpeedAirLateral;
-	protected float maxSpeedAirVertical = defaultMaxSpeedAirVertical;
-	protected double dragAir = defaultDragAir;
+	protected float maxSpeedAirLateral = EntityMinecartDeobf.defaultMaxSpeedAirLateral;
+	protected float maxSpeedAirVertical = EntityMinecartDeobf.defaultMaxSpeedAirVertical;
+	protected double dragAir = EntityMinecartDeobf.defaultDragAir;
 
 	public EntityMinecartDeobf(World p_i1712_1_) {
 		super(p_i1712_1_);
 		this.preventEntitySpawning = true;
-		this.setSize(0.98F, 0.7F);
+		setSize(0.98F, 0.7F);
 		this.yOffset = this.height / 2.0F;
 	}
 
@@ -117,10 +117,12 @@ public abstract class EntityMinecartDeobf extends Entity {
 	 * returns if this entity triggers Block.onEntityWalking on the blocks they
 	 * walk on. used for spiders and wolves to prevent them from trampling crops
 	 */
+	@Override
 	protected boolean canTriggerWalking() {
 		return false;
 	}
 
+	@Override
 	protected void entityInit() {
 		this.dataWatcher.addObject(17, new Integer(0));
 		this.dataWatcher.addObject(18, new Integer(1));
@@ -135,6 +137,7 @@ public abstract class EntityMinecartDeobf extends Entity {
 	 * blocks. This enables the entity to be pushable on contact, like boats or
 	 * minecarts.
 	 */
+	@Override
 	public AxisAlignedBB getCollisionBox(Entity entity) {
 		return entity.canBePushed() ? entity.boundingBox : null;
 	}
@@ -142,6 +145,7 @@ public abstract class EntityMinecartDeobf extends Entity {
 	/**
 	 * returns the bounding box for this entity
 	 */
+	@Override
 	public AxisAlignedBB getBoundingBox() {
 		return null;
 	}
@@ -150,13 +154,14 @@ public abstract class EntityMinecartDeobf extends Entity {
 	 * Returns true if this entity should push and be pushed by other entities
 	 * when colliding.
 	 */
+	@Override
 	public boolean canBePushed() {
-		return canBePushed;
+		return this.canBePushed;
 	}
 
 	public EntityMinecartDeobf(World p_i1713_1_, double p_i1713_2_, double p_i1713_4_, double p_i1713_6_) {
 		this(p_i1713_1_);
-		this.setPosition(p_i1713_2_, p_i1713_4_, p_i1713_6_);
+		setPosition(p_i1713_2_, p_i1713_4_, p_i1713_6_);
 		this.motionX = 0.0D;
 		this.motionY = 0.0D;
 		this.motionZ = 0.0D;
@@ -169,6 +174,7 @@ public abstract class EntityMinecartDeobf extends Entity {
 	 * Returns the Y offset from the entity's position for any entity riding
 	 * this one.
 	 */
+	@Override
 	public double getMountedYOffset() {
 		return (double) this.height * 0.0D - 0.3D;
 	}
@@ -176,26 +182,27 @@ public abstract class EntityMinecartDeobf extends Entity {
 	/**
 	 * Called when the entity is attacked.
 	 */
+	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
 		if(!this.worldObj.isRemote && !this.isDead) {
-			if(this.isEntityInvulnerable()) {
+			if(isEntityInvulnerable()) {
 				return false;
 			} else {
-				this.setRollingDirection(-this.getRollingDirection());
-				this.setRollingAmplitude(10);
-				this.setBeenAttacked();
-				this.setDamage(this.getDamage() + amount * 10.0F);
+				setRollingDirection(-getRollingDirection());
+				setRollingAmplitude(10);
+				setBeenAttacked();
+				setDamage(getDamage() + amount * 10.0F);
 				boolean flag = source.getEntity() instanceof EntityPlayer && ((EntityPlayer) source.getEntity()).capabilities.isCreativeMode;
 
-				if(flag || this.getDamage() > 40.0F) {
+				if(flag || getDamage() > 40.0F) {
 					if(this.riddenByEntity != null) {
 						this.riddenByEntity.mountEntity(this);
 					}
 
-					if(flag && !this.hasCustomInventoryName()) {
-						this.setDead();
+					if(flag && !hasCustomInventoryName()) {
+						setDead();
 					} else {
-						this.killMinecart(source);
+						killMinecart(source);
 					}
 				}
 
@@ -207,31 +214,33 @@ public abstract class EntityMinecartDeobf extends Entity {
 	}
 
 	public void killMinecart(DamageSource source) {
-		this.setDead();
+		setDead();
 		ItemStack itemstack = new ItemStack(Items.minecart, 1);
 
 		if(this.entityName != null) {
 			itemstack.setStackDisplayName(this.entityName);
 		}
 
-		this.entityDropItem(itemstack, 0.0F);
+		entityDropItem(itemstack, 0.0F);
 	}
 
 	/**
 	 * Setups the entity to do the hurt animation. Only used by packets in
 	 * multiplayer.
 	 */
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void performHurtAnimation() {
-		this.setRollingDirection(-this.getRollingDirection());
-		this.setRollingAmplitude(10);
-		this.setDamage(this.getDamage() + this.getDamage() * 10.0F);
+		setRollingDirection(-getRollingDirection());
+		setRollingAmplitude(10);
+		setDamage(getDamage() + getDamage() * 10.0F);
 	}
 
 	/**
 	 * Returns true if other Entities should be prevented from moving through
 	 * this Entity.
 	 */
+	@Override
 	public boolean canBeCollidedWith() {
 		return !this.isDead;
 	}
@@ -239,6 +248,7 @@ public abstract class EntityMinecartDeobf extends Entity {
 	/**
 	 * Will get destroyed next tick.
 	 */
+	@Override
 	public void setDead() {
 		super.setDead();
 	}
@@ -246,29 +256,30 @@ public abstract class EntityMinecartDeobf extends Entity {
 	/**
 	 * Called to update the entity's position/logic.
 	 */
+	@Override
 	public void onUpdate() {
-		if(this.getRollingAmplitude() > 0) {
-			this.setRollingAmplitude(this.getRollingAmplitude() - 1);
+		if(getRollingAmplitude() > 0) {
+			setRollingAmplitude(getRollingAmplitude() - 1);
 		}
 
-		if(this.getDamage() > 0.0F) {
-			this.setDamage(this.getDamage() - 1.0F);
+		if(getDamage() > 0.0F) {
+			setDamage(getDamage() - 1.0F);
 		}
 
 		if(this.posY < -64.0D) {
-			this.kill();
+			kill();
 		}
 
 		if(!this.worldObj.isRemote && this.worldObj instanceof WorldServer) {
 			this.worldObj.theProfiler.startSection("portal");
 			MinecraftServer minecraftserver = ((WorldServer) this.worldObj).func_73046_m();
-			int portalTime = this.getMaxInPortalTime();
+			int portalTime = getMaxInPortalTime();
 
 			if(this.inPortal) {
 				if(minecraftserver.getAllowNether()) {
 					if(this.ridingEntity == null && this.portalCounter++ >= portalTime) {
 						this.portalCounter = portalTime;
-						this.timeUntilPortal = this.getPortalCooldown();
+						this.timeUntilPortal = getPortalCooldown();
 						byte destination;
 
 						if(this.worldObj.provider.dimensionId == -1) {
@@ -277,7 +288,7 @@ public abstract class EntityMinecartDeobf extends Entity {
 							destination = -1;
 						}
 
-						this.travelToDimension(destination);
+						travelToDimension(destination);
 					}
 
 					this.inPortal = false;
@@ -313,11 +324,11 @@ public abstract class EntityMinecartDeobf extends Entity {
 				this.rotationYaw = (float) ((double) this.rotationYaw + deltaYaw / (double) this.turnProgress);
 				this.rotationPitch = (float) ((double) this.rotationPitch + (this.minecartPitch - (double) this.rotationPitch) / (double) this.turnProgress);
 				--this.turnProgress;
-				this.setPosition(interpX, interpY, interpZ);
-				this.setRotation(this.rotationYaw, this.rotationPitch);
+				setPosition(interpX, interpY, interpZ);
+				setRotation(this.rotationYaw, this.rotationPitch);
 			} else {
-				this.setPosition(this.posX, this.posY, this.posZ);
-				this.setRotation(this.rotationYaw, this.rotationPitch);
+				setPosition(this.posX, this.posY, this.posZ);
+				setRotation(this.rotationYaw, this.rotationPitch);
 			}
 		} else {
 			this.prevPosX = this.posX;
@@ -341,16 +352,16 @@ public abstract class EntityMinecartDeobf extends Entity {
 				 */
 				float railMaxSpeed = 1F; //((BlockRailBase) block).getRailMaxSpeed(worldObj, this, l, i, i1);
 				double maxSpeed = Math.min(railMaxSpeed, getCurrentCartSpeedCapOnRail());
-				this.useRail(railX, railY, railZ, maxSpeed, getSlopeAdjustment(), block, worldObj.getBlockMetadata(railX, railY, railZ));
+				useRail(railX, railY, railZ, maxSpeed, getSlopeAdjustment(), block, this.worldObj.getBlockMetadata(railX, railY, railZ));
 
 				if(block == Blocks.activator_rail) {
-					this.onActivatorRailPass(railX, railY, railZ, (worldObj.getBlockMetadata(railX, railY, railZ) & 8) != 0);
+					onActivatorRailPass(railX, railY, railZ, (this.worldObj.getBlockMetadata(railX, railY, railZ) & 8) != 0);
 				}
 			} else {
-				this.limitSpeedApplyDragAndMoveWithoutRail(onGround ? groundSpeedNoRail : getMaxSpeedAirLateral());
+				limitSpeedApplyDragAndMoveWithoutRail(this.onGround ? groundSpeedNoRail : getMaxSpeedAirLateral());
 			}
 
-			this.func_145775_I(); //collide with blocks (Entity.class)
+			func_145775_I(); //collide with blocks (Entity.class)
 			this.rotationPitch = 0.0F;
 			double d8 = this.prevPosX - this.posX;
 			double d4 = this.prevPosZ - this.posZ;
@@ -370,15 +381,15 @@ public abstract class EntityMinecartDeobf extends Entity {
 				this.isInReverse = !this.isInReverse;
 			}
 
-			this.setRotation(this.rotationYaw, this.rotationPitch);
+			setRotation(this.rotationYaw, this.rotationPitch);
 
-			AxisAlignedBB box = boundingBox.expand(0.2D, 0.0D, 0.2D);
+			AxisAlignedBB box = this.boundingBox.expand(0.2D, 0.0D, 0.2D);
 
 			List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, box);
 
 			if(list != null && !list.isEmpty()) {
-				for(int k = 0; k < list.size(); ++k) {
-					Entity entity = (Entity) list.get(k);
+				for (Object element : list) {
+					Entity entity = (Entity) element;
 
 					if(entity != this.riddenByEntity && entity.canBePushed() && entity instanceof EntityMinecart) {
 						entity.applyEntityCollision(this);
@@ -421,12 +432,12 @@ public abstract class EntityMinecartDeobf extends Entity {
 			this.motionZ = maxSpeed;
 		}
 
-		double moveY = motionY;
-		if(getMaxSpeedAirVertical() > 0 && motionY > getMaxSpeedAirVertical()) {
+		double moveY = this.motionY;
+		if(getMaxSpeedAirVertical() > 0 && this.motionY > getMaxSpeedAirVertical()) {
 			moveY = getMaxSpeedAirVertical();
-			if(Math.abs(motionX) < 0.3f && Math.abs(motionZ) < 0.3f) {
+			if(Math.abs(this.motionX) < 0.3f && Math.abs(this.motionZ) < 0.3f) {
 				moveY = 0.15f;
-				motionY = moveY;
+				this.motionY = moveY;
 			}
 		}
 
@@ -436,7 +447,7 @@ public abstract class EntityMinecartDeobf extends Entity {
 			this.motionZ *= 0.5D;
 		}
 
-		this.moveEntity(this.motionX, moveY, this.motionZ);
+		moveEntity(this.motionX, moveY, this.motionZ);
 
 		if(!this.onGround) {
 			this.motionX *= getDragAir();
@@ -447,13 +458,13 @@ public abstract class EntityMinecartDeobf extends Entity {
 
 	protected void useRail(int railX, int railY, int railZ, double maxSpeed, double slopeAdjustment, Block rail, int meta) {
 		this.fallDistance = 0.0F;
-		Vec3 vec3 = this.getClosestPositionOnRail(this.posX, this.posY, this.posZ);
+		Vec3 vec3 = getClosestPositionOnRail(this.posX, this.posY, this.posZ);
 		this.posY = (double) railY;
 		boolean flag = false;
 		boolean flag1 = false;
 
 		if(rail == Blocks.golden_rail) {
-			flag = (worldObj.getBlockMetadata(railX, railY, railZ) & 8) != 0;
+			flag = (this.worldObj.getBlockMetadata(railX, railY, railZ) & 8) != 0;
 			flag1 = !flag;
 		}
 
@@ -481,7 +492,7 @@ public abstract class EntityMinecartDeobf extends Entity {
 			this.motionZ -= slopeAdjustment;
 		}
 
-		int[][] curveData = matrix[meta];
+		int[][] curveData = EntityMinecartDeobf.matrix[meta];
 		double sideDeltaX = (double) (curveData[1][0] - curveData[0][0]);
 		double sideDeltaZ = (double) (curveData[1][2] - curveData[0][2]);
 		double sideDelta = Math.sqrt(sideDeltaX * sideDeltaX + sideDeltaZ * sideDeltaZ);
@@ -559,18 +570,18 @@ public abstract class EntityMinecartDeobf extends Entity {
 
 		this.posX = d8 + sideDeltaX * motion;
 		this.posZ = d9 + sideDeltaZ * motion;
-		this.setPosition(this.posX, this.posY + (double) this.yOffset, this.posZ);
+		setPosition(this.posX, this.posY + (double) this.yOffset, this.posZ);
 
 		moveMinecartOnRail(railX, railY, railZ, maxSpeed);
 
 		if(curveData[0][1] != 0 && MathHelper.floor_double(this.posX) - railX == curveData[0][0] && MathHelper.floor_double(this.posZ) - railZ == curveData[0][2]) {
-			this.setPosition(this.posX, this.posY + (double) curveData[0][1], this.posZ);
+			setPosition(this.posX, this.posY + (double) curveData[0][1], this.posZ);
 		} else if(curveData[1][1] != 0 && MathHelper.floor_double(this.posX) - railX == curveData[1][0] && MathHelper.floor_double(this.posZ) - railZ == curveData[1][2]) {
-			this.setPosition(this.posX, this.posY + (double) curveData[1][1], this.posZ);
+			setPosition(this.posX, this.posY + (double) curveData[1][1], this.posZ);
 		}
 
-		this.applyDrag();
-		Vec3 vec31 = this.getClosestPositionOnRail(this.posX, this.posY, this.posZ);
+		applyDrag();
+		Vec3 vec31 = getClosestPositionOnRail(this.posX, this.posY, this.posZ);
 
 		if(vec31 != null && vec3 != null) {
 			double d14 = (vec3.yCoord - vec31.yCoord) * 0.05D;
@@ -581,7 +592,7 @@ public abstract class EntityMinecartDeobf extends Entity {
 				this.motionZ = this.motionZ / d6 * (d6 + d14);
 			}
 
-			this.setPosition(this.posX, vec31.yCoord, this.posZ);
+			setPosition(this.posX, vec31.yCoord, this.posZ);
 		}
 
 		int j1 = MathHelper.floor_double(this.posX);
@@ -647,7 +658,7 @@ public abstract class EntityMinecartDeobf extends Entity {
 		if(!BlockRailBase.func_150051_a(block)) {
 			return null;
 		} else {
-			int meta = worldObj.getBlockMetadata(x, y, z);
+			int meta = this.worldObj.getBlockMetadata(x, y, z);
 
 			interpY = (double) y;
 
@@ -655,7 +666,7 @@ public abstract class EntityMinecartDeobf extends Entity {
 				interpY = (double) (y + 1);
 			}
 
-			int[][] curveData = matrix[meta];
+			int[][] curveData = EntityMinecartDeobf.matrix[meta];
 			double curveX = (double) (curveData[1][0] - curveData[0][0]);
 			double curveZ = (double) (curveData[1][2] - curveData[0][2]);
 			double curveSq = Math.sqrt(curveX * curveX + curveZ * curveZ);
@@ -670,7 +681,7 @@ public abstract class EntityMinecartDeobf extends Entity {
 				interpY += (double) curveData[1][1];
 			}
 
-			return this.getClosestPositionOnRail(interpX, interpY, interpZ);
+			return getClosestPositionOnRail(interpX, interpY, interpZ);
 		}
 	}
 
@@ -686,14 +697,14 @@ public abstract class EntityMinecartDeobf extends Entity {
 		Block block = this.worldObj.getBlock(railX, railY, railZ);
 
 		if(BlockRailBase.func_150051_a(block)) {
-			int l = worldObj.getBlockMetadata(railX, railY, railZ);
+			int l = this.worldObj.getBlockMetadata(railX, railY, railZ);
 			y = (double) railY;
 
 			if(l >= 2 && l <= 5) {
 				y = (double) (railY + 1);
 			}
 
-			int[][] aint = matrix[l];
+			int[][] aint = EntityMinecartDeobf.matrix[l];
 			double delta = 0.0D;
 			double side1X = (double) railX + 0.5D + (double) aint[0][0] * 0.5D;
 			double side1Y = (double) railY + 0.5D + (double) aint[0][1] * 0.5D;
@@ -738,11 +749,12 @@ public abstract class EntityMinecartDeobf extends Entity {
 	/**
 	 * (abstract) Protected helper method to read subclass entity data from NBT.
 	 */
+	@Override
 	protected void readEntityFromNBT(NBTTagCompound p_70037_1_) {
 		if(p_70037_1_.getBoolean("CustomDisplayTile")) {
-			this.func_145819_k(p_70037_1_.getInteger("DisplayTile"));
-			this.setDisplayTileData(p_70037_1_.getInteger("DisplayData"));
-			this.setDisplayTileOffset(p_70037_1_.getInteger("DisplayOffset"));
+			func_145819_k(p_70037_1_.getInteger("DisplayTile"));
+			setDisplayTileData(p_70037_1_.getInteger("DisplayData"));
+			setDisplayTileOffset(p_70037_1_.getInteger("DisplayOffset"));
 		}
 
 		if(p_70037_1_.hasKey("CustomName", 8) && p_70037_1_.getString("CustomName").length() > 0) {
@@ -753,12 +765,13 @@ public abstract class EntityMinecartDeobf extends Entity {
 	/**
 	 * (abstract) Protected helper method to write subclass entity data to NBT.
 	 */
+	@Override
 	protected void writeEntityToNBT(NBTTagCompound p_70014_1_) {
-		if(this.hasDisplayTile()) {
+		if(hasDisplayTile()) {
 			p_70014_1_.setBoolean("CustomDisplayTile", true);
-			p_70014_1_.setInteger("DisplayTile", this.func_145820_n().getMaterial() == Material.air ? 0 : Block.getIdFromBlock(this.func_145820_n()));
-			p_70014_1_.setInteger("DisplayData", this.getDisplayTileData());
-			p_70014_1_.setInteger("DisplayOffset", this.getDisplayTileOffset());
+			p_70014_1_.setInteger("DisplayTile", func_145820_n().getMaterial() == Material.air ? 0 : Block.getIdFromBlock(func_145820_n()));
+			p_70014_1_.setInteger("DisplayData", getDisplayTileData());
+			p_70014_1_.setInteger("DisplayOffset", getDisplayTileOffset());
 		}
 
 		if(this.entityName != null && this.entityName.length() > 0) {
@@ -766,6 +779,7 @@ public abstract class EntityMinecartDeobf extends Entity {
 		}
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public float getShadowSize() {
 		return 0.0F;
@@ -775,6 +789,7 @@ public abstract class EntityMinecartDeobf extends Entity {
 	 * Applies a velocity to each of the entities pushing them away from each
 	 * other. Args: entity
 	 */
+	@Override
 	public void applyEntityCollision(Entity entity) {
 		//MinecraftForge.EVENT_BUS.post(new MinecartCollisionEvent(this, p_70108_1_));
 		if(!this.worldObj.isRemote) {
@@ -828,7 +843,7 @@ public abstract class EntityMinecartDeobf extends Entity {
 						if(((EntityMinecart) entity).isPoweredCart() && !isPoweredCart()) {
 							this.motionX *= 0.2D;
 							this.motionZ *= 0.2D;
-							this.addVelocity(entity.motionX - deltaX, 0.0D, entity.motionZ - deltaZ);
+							addVelocity(entity.motionX - deltaX, 0.0D, entity.motionZ - deltaZ);
 							entity.motionX *= 0.95D;
 							entity.motionZ *= 0.95D;
 						//the same condition again for some reason. might make sense if the conditions were swapped
@@ -843,13 +858,13 @@ public abstract class EntityMinecartDeobf extends Entity {
 							totalMotionZ /= 2.0D;
 							this.motionX *= 0.2D;
 							this.motionZ *= 0.2D;
-							this.addVelocity(totalMotionX - deltaX, 0.0D, totalMotionZ - deltaZ);
+							addVelocity(totalMotionX - deltaX, 0.0D, totalMotionZ - deltaZ);
 							entity.motionX *= 0.2D;
 							entity.motionZ *= 0.2D;
 							entity.addVelocity(totalMotionX + deltaX, 0.0D, totalMotionZ + deltaZ);
 						}
 					} else {
-						this.addVelocity(-deltaX, 0.0D, -deltaZ);
+						addVelocity(-deltaX, 0.0D, -deltaZ);
 						entity.addVelocity(deltaX / 4.0D, 0.0D, deltaZ / 4.0D);
 					}
 				}
@@ -861,6 +876,7 @@ public abstract class EntityMinecartDeobf extends Entity {
 	 * Sets the position and rotation. Only difference from the other one is no
 	 * bounding on the rotation. Args: posX, posY, posZ, yaw, pitch
 	 */
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int theNumberThree) {
 		this.syncPosX = x;
@@ -887,6 +903,7 @@ public abstract class EntityMinecartDeobf extends Entity {
 	/**
 	 * Sets the velocity to the args. Args: x, y, z
 	 */
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void setVelocity(double p_70016_1_, double p_70016_3_, double p_70016_5_) {
 		this.velocityX = this.motionX = p_70016_1_;
@@ -935,10 +952,10 @@ public abstract class EntityMinecartDeobf extends Entity {
 	public abstract int getMinecartType();
 
 	public Block func_145820_n() {
-		if(!this.hasDisplayTile()) {
-			return this.func_145817_o();
+		if(!hasDisplayTile()) {
+			return func_145817_o();
 		} else {
-			int i = this.getDataWatcher().getWatchableObjectInt(20) & 65535;
+			int i = getDataWatcher().getWatchableObjectInt(20) & 65535;
 			return Block.getBlockById(i);
 		}
 	}
@@ -948,7 +965,7 @@ public abstract class EntityMinecartDeobf extends Entity {
 	}
 
 	public int getDisplayTileData() {
-		return !this.hasDisplayTile() ? this.getDefaultDisplayTileData() : this.getDataWatcher().getWatchableObjectInt(20) >> 16;
+		return !hasDisplayTile() ? getDefaultDisplayTileData() : getDataWatcher().getWatchableObjectInt(20) >> 16;
 	}
 
 	public int getDefaultDisplayTileData() {
@@ -956,7 +973,7 @@ public abstract class EntityMinecartDeobf extends Entity {
 	}
 
 	public int getDisplayTileOffset() {
-		return !this.hasDisplayTile() ? this.getDefaultDisplayTileOffset() : this.getDataWatcher().getWatchableObjectInt(21);
+		return !hasDisplayTile() ? getDefaultDisplayTileOffset() : getDataWatcher().getWatchableObjectInt(21);
 	}
 
 	public int getDefaultDisplayTileOffset() {
@@ -964,26 +981,26 @@ public abstract class EntityMinecartDeobf extends Entity {
 	}
 
 	public void func_145819_k(int p_145819_1_) {
-		this.getDataWatcher().updateObject(20, Integer.valueOf(p_145819_1_ & 65535 | this.getDisplayTileData() << 16));
-		this.setHasDisplayTile(true);
+		getDataWatcher().updateObject(20, Integer.valueOf(p_145819_1_ & 65535 | getDisplayTileData() << 16));
+		setHasDisplayTile(true);
 	}
 
 	public void setDisplayTileData(int p_94092_1_) {
-		this.getDataWatcher().updateObject(20, Integer.valueOf(Block.getIdFromBlock(this.func_145820_n()) & 65535 | p_94092_1_ << 16));
-		this.setHasDisplayTile(true);
+		getDataWatcher().updateObject(20, Integer.valueOf(Block.getIdFromBlock(func_145820_n()) & 65535 | p_94092_1_ << 16));
+		setHasDisplayTile(true);
 	}
 
 	public void setDisplayTileOffset(int p_94086_1_) {
-		this.getDataWatcher().updateObject(21, Integer.valueOf(p_94086_1_));
-		this.setHasDisplayTile(true);
+		getDataWatcher().updateObject(21, Integer.valueOf(p_94086_1_));
+		setHasDisplayTile(true);
 	}
 
 	public boolean hasDisplayTile() {
-		return this.getDataWatcher().getWatchableObjectByte(22) == 1;
+		return getDataWatcher().getWatchableObjectByte(22) == 1;
 	}
 
 	public void setHasDisplayTile(boolean p_94096_1_) {
-		this.getDataWatcher().updateObject(22, Byte.valueOf((byte) (p_94096_1_ ? 1 : 0)));
+		getDataWatcher().updateObject(22, Byte.valueOf((byte) (p_94096_1_ ? 1 : 0)));
 	}
 
 	/**
@@ -997,6 +1014,7 @@ public abstract class EntityMinecartDeobf extends Entity {
 	 * Gets the name of this command sender (usually username, but possibly
 	 * "Rcon")
 	 */
+	@Override
 	public String getCommandSenderName() {
 		return this.entityName != null ? this.entityName : super.getCommandSenderName();
 	}
@@ -1045,7 +1063,7 @@ public abstract class EntityMinecartDeobf extends Entity {
 			motionZ = maxSpeed;
 		}
 
-		this.moveEntity(motionX, 0.0D, motionZ);
+		moveEntity(motionX, 0.0D, motionZ);
 	}
 
 	/**
@@ -1055,7 +1073,7 @@ public abstract class EntityMinecartDeobf extends Entity {
 	 * @return The collision handler or null
 	 */
 	public static IMinecartCollisionHandler getCollisionHandler() {
-		return collisionHandler;
+		return EntityMinecartDeobf.collisionHandler;
 	}
 
 	/**
@@ -1066,7 +1084,7 @@ public abstract class EntityMinecartDeobf extends Entity {
 	 *            The new handler
 	 */
 	public static void setCollisionHandler(IMinecartCollisionHandler handler) {
-		collisionHandler = handler;
+		EntityMinecartDeobf.collisionHandler = handler;
 	}
 
 	/**
@@ -1087,7 +1105,7 @@ public abstract class EntityMinecartDeobf extends Entity {
 	 * @return True if the minecart can use rails.
 	 */
 	public boolean canUseRail() {
-		return canUseRail;
+		return this.canUseRail;
 	}
 
 	/**
@@ -1098,7 +1116,7 @@ public abstract class EntityMinecartDeobf extends Entity {
 	 *            Whether the minecart can currently use rails.
 	 */
 	public void setCanUseRail(boolean use) {
-		canUseRail = use;
+		this.canUseRail = use;
 	}
 
 	/**
@@ -1130,12 +1148,12 @@ public abstract class EntityMinecartDeobf extends Entity {
 	}
 
 	public final float getCurrentCartSpeedCapOnRail() {
-		return currentSpeedRail;
+		return this.currentSpeedRail;
 	}
 
 	public final void setCurrentCartSpeedCapOnRail(float value) {
 		value = Math.min(value, getMaxCartSpeedOnRail());
-		currentSpeedRail = value;
+		this.currentSpeedRail = value;
 	}
 
 	/**
@@ -1156,27 +1174,27 @@ public abstract class EntityMinecartDeobf extends Entity {
 	}
 
 	public float getMaxSpeedAirLateral() {
-		return maxSpeedAirLateral;
+		return this.maxSpeedAirLateral;
 	}
 
 	public void setMaxSpeedAirLateral(float value) {
-		maxSpeedAirLateral = value;
+		this.maxSpeedAirLateral = value;
 	}
 
 	public float getMaxSpeedAirVertical() {
-		return maxSpeedAirVertical;
+		return this.maxSpeedAirVertical;
 	}
 
 	public void setMaxSpeedAirVertical(float value) {
-		maxSpeedAirVertical = value;
+		this.maxSpeedAirVertical = value;
 	}
 
 	public double getDragAir() {
-		return dragAir;
+		return this.dragAir;
 	}
 
 	public void setDragAir(double value) {
-		dragAir = value;
+		this.dragAir = value;
 	}
 
 	public double getSlopeAdjustment() {

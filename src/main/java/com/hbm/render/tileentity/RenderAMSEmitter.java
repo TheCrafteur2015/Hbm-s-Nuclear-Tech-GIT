@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL11;
 import com.hbm.main.ResourceManager;
 import com.hbm.tileentity.machine.TileEntityAMSBase;
 import com.hbm.tileentity.machine.TileEntityAMSEmitter;
+
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -65,8 +66,8 @@ public class RenderAMSEmitter extends TileEntitySpecialRenderer {
 		
 				for(int i = 7; i > 0; i -= distance) {
 					
-					double posX = rand.nextDouble() - 0.5;
-					double posZ = rand.nextDouble() - 0.5;
+					double posX = this.rand.nextDouble() - 0.5;
+					double posZ = this.rand.nextDouble() - 0.5;
 					
 					for(int j = 1; j <= layers; j++) {
 		

@@ -13,11 +13,11 @@ public class UVLamp extends BlockDummyable {
 
 	public UVLamp(boolean isOn) {
 		super(Material.iron);
-		this.setStepSound(Block.soundTypeMetal);
-		this.setHardness(3.0F);
-		this.setBlockTextureName(RefStrings.MODID + ":block_steel");
+		setStepSound(Block.soundTypeMetal);
+		setHardness(3.0F);
+		setBlockTextureName(RefStrings.MODID + ":block_steel");
 		
-		if(isOn) this.setLightLevel(5F/15F);
+		if(isOn) setLightLevel(5F/15F);
 	}
 
 	@Override

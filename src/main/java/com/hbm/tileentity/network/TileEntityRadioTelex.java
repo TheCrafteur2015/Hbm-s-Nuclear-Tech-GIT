@@ -49,7 +49,7 @@ public class TileEntityRadioTelex extends TileEntity implements INBTPacketReceiv
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			this.sendingChar = ' ';
 			
@@ -57,30 +57,30 @@ public class TileEntityRadioTelex extends TileEntity implements INBTPacketReceiv
 			
 			if(this.isSending) {
 				
-				if(sendingWait > 0) {
-					sendingWait--;
+				if(this.sendingWait > 0) {
+					this.sendingWait--;
 				} else {
 					
-					String line = txBuffer[sendingLine];
+					String line = this.txBuffer[this.sendingLine];
 					
-					if(line.length() > sendingIndex) {
-						char c = line.charAt(sendingIndex);
-						sendingIndex++;
-						if(c == pause) {
-							sendingWait = 20;
+					if(line.length() > this.sendingIndex) {
+						char c = line.charAt(this.sendingIndex);
+						this.sendingIndex++;
+						if(c == TileEntityRadioTelex.pause) {
+							this.sendingWait = 20;
 						} else {
-							RTTYSystem.broadcast(worldObj, this.txChannel, c);
+							RTTYSystem.broadcast(this.worldObj, this.txChannel, c);
 							this.sendingChar = c;
 						}
 					} else {
 						
-						if(sendingLine >= 4) {
+						if(this.sendingLine >= 4) {
 							this.isSending = false;
-							RTTYSystem.broadcast(worldObj, this.txChannel, eot);
+							RTTYSystem.broadcast(this.worldObj, this.txChannel, TileEntityRadioTelex.eot);
 							this.sendingLine = 0;
 							this.sendingIndex = 0;
 						} else {
-							RTTYSystem.broadcast(worldObj, this.txChannel, eol);
+							RTTYSystem.broadcast(this.worldObj, this.txChannel, TileEntityRadioTelex.eol);
 							this.sendingLine++;
 							this.sendingIndex = 0;
 						}
@@ -89,9 +89,9 @@ public class TileEntityRadioTelex extends TileEntity implements INBTPacketReceiv
 			}
 			
 			if(!this.rxChannel.isEmpty()) {
-				RTTYChannel chan = RTTYSystem.listen(worldObj, this.rxChannel);
+				RTTYChannel chan = RTTYSystem.listen(this.worldObj, this.rxChannel);
 				
-				if(chan != null && chan.signal instanceof Character && (chan.timeStamp > worldObj.getTotalWorldTime() - 2 && chan.timeStamp != -1)) {
+				if(chan != null && chan.signal instanceof Character && (chan.timeStamp > this.worldObj.getTotalWorldTime() - 2 && chan.timeStamp != -1)) {
 					char c = (char) chan.signal;
 					
 					if(this.deleteOnReceive) {
@@ -100,37 +100,37 @@ public class TileEntityRadioTelex extends TileEntity implements INBTPacketReceiv
 						this.writingLine = 0;
 					}
 					
-					if(c == eot) {
+					if(c == TileEntityRadioTelex.eot) {
 						if(this.printAfterRx) {
 							this.printAfterRx = false;
-							this.print();
+							print();
 						}
 						this.deleteOnReceive = true;
-					} else if(c == eol) {
+					} else if(c == TileEntityRadioTelex.eol) {
 						if(this.writingLine < 4) this.writingLine++;
-						this.markDirty();
-					} else if(c == bell) {
-						worldObj.playSoundEffect(xCoord, yCoord, zCoord, "random.orb", 2F, 0.5F);
-					} else if(c == print) {
+						markDirty();
+					} else if(c == TileEntityRadioTelex.bell) {
+						this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "random.orb", 2F, 0.5F);
+					} else if(c == TileEntityRadioTelex.print) {
 						this.printAfterRx = true;
-					} else if(c == clear) {
+					} else if(c == TileEntityRadioTelex.clear) {
 						for(int i = 0; i < 5; i++) this.rxBuffer[i] = "";
 						this.writingLine = 0;
 					} else {
 						this.rxBuffer[this.writingLine] += c;
-						this.markDirty();
+						markDirty();
 					}
 				}
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
 			for(int i = 0; i < 5; i++) {
-				data.setString("tx" + i, txBuffer[i]);
-				data.setString("rx" + i, rxBuffer[i]);
+				data.setString("tx" + i, this.txBuffer[i]);
+				data.setString("rx" + i, this.rxBuffer[i]);
 			}
-			data.setString("txChan", txChannel);
-			data.setString("rxChan", rxChannel);
-			data.setInteger("sending", sendingChar);
+			data.setString("txChan", this.txChannel);
+			data.setString("rxChan", this.rxChannel);
+			data.setInteger("sending", this.sendingChar);
 			INBTPacketReceiver.networkPack(this, data, 16);
 		}
 	}
@@ -139,8 +139,8 @@ public class TileEntityRadioTelex extends TileEntity implements INBTPacketReceiv
 	public void networkUnpack(NBTTagCompound nbt) {
 
 		for(int i = 0; i < 5; i++) {
-			txBuffer[i] = nbt.getString("tx" + i);
-			rxBuffer[i] = nbt.getString("rx" + i);
+			this.txBuffer[i] = nbt.getString("tx" + i);
+			this.rxBuffer[i] = nbt.getString("rx" + i);
 		}
 		this.txChannel = nbt.getString("txChan");
 		this.rxChannel = nbt.getString("rxChan");
@@ -174,24 +174,24 @@ public class TileEntityRadioTelex extends TileEntity implements INBTPacketReceiv
 		if("sve".equals(cmd)) {
 			this.txChannel = data.getString("txChan");
 			this.rxChannel = data.getString("rxChan");
-			this.markDirty();
+			markDirty();
 		}
 	}
 	
 	public void print() {
 		ItemStack stack = new ItemStack(Items.paper);
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		for(int i = 0; i < 5; i++) {
-			if(!rxBuffer[i].isEmpty()) text.add(rxBuffer[i]);
+			if(!this.rxBuffer[i].isEmpty()) text.add(this.rxBuffer[i]);
 		}
 		ItemStackUtil.addTooltipToStack(stack, text.toArray(new String[0]));
 		stack.setStackDisplayName("Message");
-		worldObj.spawnEntityInWorld(new EntityItem(worldObj, xCoord + 0.5, yCoord + 1, zCoord + 0.5, stack));
+		this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.xCoord + 0.5, this.yCoord + 1, this.zCoord + 0.5, stack));
 	}
 
 	@Override
 	public boolean hasPermission(EntityPlayer player) {
-		return player.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 16 * 16;
+		return player.getDistanceSq(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5) < 16 * 16;
 	}
 
 	@Override
@@ -199,8 +199,8 @@ public class TileEntityRadioTelex extends TileEntity implements INBTPacketReceiv
 		super.readFromNBT(nbt);
 
 		for(int i = 0; i < 5; i++) {
-			txBuffer[i] = nbt.getString("tx" + i);
-			rxBuffer[i] = nbt.getString("rx" + i);
+			this.txBuffer[i] = nbt.getString("tx" + i);
+			this.rxBuffer[i] = nbt.getString("rx" + i);
 		}
 		this.txChannel = nbt.getString("txChan");
 		this.rxChannel = nbt.getString("rxChan");
@@ -211,11 +211,11 @@ public class TileEntityRadioTelex extends TileEntity implements INBTPacketReceiv
 		super.writeToNBT(nbt);
 		
 		for(int i = 0; i < 5; i++) {
-			nbt.setString("tx" + i, txBuffer[i]);
-			nbt.setString("rx" + i, rxBuffer[i]);
+			nbt.setString("tx" + i, this.txBuffer[i]);
+			nbt.setString("rx" + i, this.rxBuffer[i]);
 		}
-		nbt.setString("txChan", txChannel);
-		nbt.setString("rxChan", rxChannel);
+		nbt.setString("txChan", this.txChannel);
+		nbt.setString("rxChan", this.rxChannel);
 	}
 
 	@Override public Container provideContainer(int ID, EntityPlayer player, World world, int x, int y, int z) { return null; }
@@ -231,18 +231,18 @@ public class TileEntityRadioTelex extends TileEntity implements INBTPacketReceiv
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 1,
-					yCoord,
-					zCoord - 1,
-					xCoord + 2,
-					yCoord + 2,
-					zCoord + 2
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 1,
+					this.yCoord,
+					this.zCoord - 1,
+					this.xCoord + 2,
+					this.yCoord + 2,
+					this.zCoord + 2
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override

@@ -1,6 +1,7 @@
 package com.hbm.packet;
 
 import com.hbm.tileentity.machine.TileEntityForceField;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -42,30 +43,30 @@ public class TEFFPacket implements IMessage {
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		x = buf.readInt();
-		y = buf.readInt();
-		z = buf.readInt();
-		rad = buf.readFloat();
-		health = buf.readInt();
-		maxHealth = buf.readInt();
-		power = buf.readInt();
-		isOn = buf.readBoolean();
-		color = buf.readInt();
-		cooldown = buf.readInt();
+		this.x = buf.readInt();
+		this.y = buf.readInt();
+		this.z = buf.readInt();
+		this.rad = buf.readFloat();
+		this.health = buf.readInt();
+		this.maxHealth = buf.readInt();
+		this.power = buf.readInt();
+		this.isOn = buf.readBoolean();
+		this.color = buf.readInt();
+		this.cooldown = buf.readInt();
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeInt(x);
-		buf.writeInt(y);
-		buf.writeInt(z);
-		buf.writeFloat(rad);
-		buf.writeInt(health);
-		buf.writeInt(maxHealth);
-		buf.writeInt(power);
-		buf.writeBoolean(isOn);
-		buf.writeInt(color);
-		buf.writeInt(cooldown);
+		buf.writeInt(this.x);
+		buf.writeInt(this.y);
+		buf.writeInt(this.z);
+		buf.writeFloat(this.rad);
+		buf.writeInt(this.health);
+		buf.writeInt(this.maxHealth);
+		buf.writeInt(this.power);
+		buf.writeBoolean(this.isOn);
+		buf.writeInt(this.color);
+		buf.writeInt(this.cooldown);
 	}
 
 	public static class Handler implements IMessageHandler<TEFFPacket, IMessage> {

@@ -38,7 +38,7 @@ public class BlockPipe extends Block implements ITooltipProvider {
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		super.registerBlockIcons(iconRegister);
-		this.sideIcon = iconRegister.registerIcon(sideString);
+		this.sideIcon = iconRegister.registerIcon(this.sideString);
 		this.frameIcon = iconRegister.registerIcon(RefStrings.MODID + ":pipe_frame");
 		this.meshIcon = iconRegister.registerIcon(RefStrings.MODID + ":pipe_mesh");
 	}
@@ -53,7 +53,7 @@ public class BlockPipe extends Block implements ITooltipProvider {
 
 	@Override
 	public int getRenderType() {
-		return renderID;
+		return BlockPipe.renderID;
 	}
 
 	@Override
@@ -88,6 +88,7 @@ public class BlockPipe extends Block implements ITooltipProvider {
 		return j1 | b0;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		list.add("Purely decorative");

@@ -37,14 +37,14 @@ public class RenderNTMSkyboxChainloader extends IRenderHandler { //why an abstra
 	@Override
 	public void render(float partialTicks, WorldClient world, Minecraft mc) {
 		
-		if(parent != null) {
+		if(this.parent != null) {
 			
 			//basically a recursion-brake to prevent endless rendering loops from other mods' chainloaders.
 			//do other mods' skyboxes even employ chainloading?
-			if(!didLastRender) {
-				didLastRender = true;
-				parent.render(partialTicks, world, mc);
-				didLastRender = false;
+			if(!RenderNTMSkyboxChainloader.didLastRender) {
+				RenderNTMSkyboxChainloader.didLastRender = true;
+				this.parent.render(partialTicks, world, mc);
+				RenderNTMSkyboxChainloader.didLastRender = false;
 			}
 			
 		} else{
@@ -74,7 +74,7 @@ public class RenderNTMSkyboxChainloader extends IRenderHandler { //why an abstra
 		GL11.glRotatef(140.0F, 1.0F, 0.0F, 0.0F);
 		GL11.glRotatef(-40.0F, 0.0F, 0.0F, 1.0F);
 		
-		FMLClientHandler.instance().getClient().renderEngine.bindTexture(digammaStar);
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(RenderNTMSkyboxChainloader.digammaStar);
 		
 		float digamma = HbmLivingProps.getDigamma(Minecraft.getMinecraft().thePlayer);
 		float var12 = 1F * (1 + digamma * 0.25F);
@@ -94,7 +94,7 @@ public class RenderNTMSkyboxChainloader extends IRenderHandler { //why an abstra
 		GL11.glRotatef((System.currentTimeMillis() % (360 * 1000) / 1000F), 0.0F, 1.0F, 0.0F);
 		GL11.glRotatef((System.currentTimeMillis() % (360 * 100) / 100F), 1.0F, 0.0F, 0.0F);
 		
-		FMLClientHandler.instance().getClient().renderEngine.bindTexture(bobmazonSat);
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(RenderNTMSkyboxChainloader.bobmazonSat);
 		
 		var12 = 0.5F;
 		dist = 100D;

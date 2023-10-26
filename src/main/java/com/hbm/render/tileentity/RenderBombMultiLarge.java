@@ -18,8 +18,8 @@ public class RenderBombMultiLarge extends TileEntitySpecialRenderer {
 	
 	public RenderBombMultiLarge()
     {
-		bombModelC = AdvancedModelLoader.loadModel(bombModel);
-		bombTexture = new ResourceLocation(RefStrings.MODID, "textures/models/BombGenericLargeLayout.png");
+		this.bombModelC = AdvancedModelLoader.loadModel(RenderBombMultiLarge.bombModel);
+		this.bombTexture = new ResourceLocation(RefStrings.MODID, "textures/models/BombGenericLargeLayout.png");
     }
 
     @Override
@@ -40,8 +40,8 @@ public class RenderBombMultiLarge extends TileEntitySpecialRenderer {
 			GL11.glRotatef(0, 0F, 1F, 0F); break;
 		}
 
-        bindTexture(bombTexture);
-        bombModelC.renderAll();
+        bindTexture(this.bombTexture);
+        this.bombModelC.renderAll();
 
         GL11.glPopMatrix();
     }

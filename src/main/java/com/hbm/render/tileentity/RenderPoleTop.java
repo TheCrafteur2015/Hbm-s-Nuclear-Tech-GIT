@@ -25,7 +25,7 @@ public class RenderPoleTop extends TileEntitySpecialRenderer {
 			GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
 			GL11.glRotatef(180, 0F, 0F, 1F);
 			
-			this.bindTexture(texture);
+			bindTexture(RenderPoleTop.texture);
 			
 			GL11.glPushMatrix();
 				this.model.renderModel(0.0625F);

@@ -48,26 +48,27 @@ public class FluidDuctBox extends FluidDuctBase implements IBlockMulti, ILookOve
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		super.registerBlockIcons(iconRegister);
 
-		int count = materials.length;
-		iconStraight = new IIcon[count];
-		iconEnd = new IIcon[count];
-		iconCurveTL = new IIcon[count];
-		iconCurveTR = new IIcon[count];
-		iconCurveBL = new IIcon[count];
-		iconCurveBR = new IIcon[count];
-		iconJunction = new IIcon[count];
+		int count = FluidDuctBox.materials.length;
+		this.iconStraight = new IIcon[count];
+		this.iconEnd = new IIcon[count];
+		this.iconCurveTL = new IIcon[count];
+		this.iconCurveTR = new IIcon[count];
+		this.iconCurveBL = new IIcon[count];
+		this.iconCurveBR = new IIcon[count];
+		this.iconJunction = new IIcon[count];
 
 		for(int i = 0; i < count; i++) {
-			iconStraight[i] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_" + materials[i] + "_straight");
-			iconEnd[i] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_" + materials[i] + "_end");
-			iconCurveTL[i] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_" + materials[i] + "_curve_tl");
-			iconCurveTR[i] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_" + materials[i] + "_curve_tr");
-			iconCurveBL[i] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_" + materials[i] + "_curve_bl");
-			iconCurveBR[i] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_" + materials[i] + "_curve_br");
-			iconJunction[i] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_" + materials[i] + "_junction");
+			this.iconStraight[i] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_" + FluidDuctBox.materials[i] + "_straight");
+			this.iconEnd[i] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_" + FluidDuctBox.materials[i] + "_end");
+			this.iconCurveTL[i] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_" + FluidDuctBox.materials[i] + "_curve_tl");
+			this.iconCurveTR[i] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_" + FluidDuctBox.materials[i] + "_curve_tr");
+			this.iconCurveBL[i] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_" + FluidDuctBox.materials[i] + "_curve_bl");
+			this.iconCurveBR[i] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_" + FluidDuctBox.materials[i] + "_curve_br");
+			this.iconJunction[i] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_" + FluidDuctBox.materials[i] + "_junction");
 		}
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
 
@@ -86,38 +87,40 @@ public class FluidDuctBox extends FluidDuctBase implements IBlockMulti, ILookOve
 		int m = rectify(world.getBlockMetadata(x, y, z));
 		
 		if((mask & 0b001111) == 0 && mask > 0) {
-			return (side == 4 || side == 5) ? iconEnd[m] : iconStraight[m];
+			return (side == 4 || side == 5) ? this.iconEnd[m] : this.iconStraight[m];
 		} else if((mask & 0b111100) == 0 && mask > 0) {
-			return (side == 2 || side == 3) ? iconEnd[m] : iconStraight[m];
+			return (side == 2 || side == 3) ? this.iconEnd[m] : this.iconStraight[m];
 		} else if((mask & 0b110011) == 0 && mask > 0) {
-			return (side == 0 || side == 1) ? iconEnd[m] : iconStraight[m];
+			return (side == 0 || side == 1) ? this.iconEnd[m] : this.iconStraight[m];
 		} else if(count == 2) {
 
 			if(side == 0 && nY || side == 1 && pY || side == 2 && nZ || side == 3 && pZ || side == 4 && nX || side == 5 && pX)
-				return iconEnd[m];
+				return this.iconEnd[m];
 			if(side == 1 && nY || side == 0 && pY || side == 3 && nZ || side == 2 && pZ || side == 5 && nX || side == 4 && pX)
-				return iconStraight[m];
+				return this.iconStraight[m];
 
-			if(nY && pZ) return side == 4 ? iconCurveBR[m] : iconCurveBL[m];
-			if(nY && nZ) return side == 5 ? iconCurveBR[m] : iconCurveBL[m];
-			if(nY && pX) return side == 3 ? iconCurveBR[m] : iconCurveBL[m];
-			if(nY && nX) return side == 2 ? iconCurveBR[m] : iconCurveBL[m];
-			if(pY && pZ) return side == 4 ? iconCurveTR[m] : iconCurveTL[m];
-			if(pY && nZ) return side == 5 ? iconCurveTR[m] : iconCurveTL[m];
-			if(pY && pX) return side == 3 ? iconCurveTR[m] : iconCurveTL[m];
-			if(pY && nX) return side == 2 ? iconCurveTR[m] : iconCurveTL[m];
+			if(nY && pZ) return side == 4 ? this.iconCurveBR[m] : this.iconCurveBL[m];
+			if(nY && nZ) return side == 5 ? this.iconCurveBR[m] : this.iconCurveBL[m];
+			if(nY && pX) return side == 3 ? this.iconCurveBR[m] : this.iconCurveBL[m];
+			if(nY && nX) return side == 2 ? this.iconCurveBR[m] : this.iconCurveBL[m];
+			if(pY && pZ) return side == 4 ? this.iconCurveTR[m] : this.iconCurveTL[m];
+			if(pY && nZ) return side == 5 ? this.iconCurveTR[m] : this.iconCurveTL[m];
+			if(pY && pX) return side == 3 ? this.iconCurveTR[m] : this.iconCurveTL[m];
+			if(pY && nX) return side == 2 ? this.iconCurveTR[m] : this.iconCurveTL[m];
 
-			if(pX && nZ) return side == 0 ? iconCurveTR[m] : iconCurveTR[m];
-			if(pX && pZ) return side == 0 ? iconCurveBR[m] : iconCurveBR[m];
-			if(nX && nZ) return side == 0 ? iconCurveTL[m] : iconCurveTL[m];
-			if(nX && pZ) return side == 0 ? iconCurveBL[m] : iconCurveBL[m];
+			if(pX && nZ) return side == 0 ? this.iconCurveTR[m] : this.iconCurveTR[m];
+			if(pX && pZ) return side == 0 ? this.iconCurveBR[m] : this.iconCurveBR[m];
+			if(nX && nZ) return side == 0 ? this.iconCurveTL[m] : this.iconCurveTL[m];
+			if(nX && pZ) return side == 0 ? this.iconCurveBL[m] : this.iconCurveBL[m];
 			
-			return iconJunction[m];
+			return this.iconJunction[m];
 		}
 		
-		return iconJunction[m];
+		return this.iconJunction[m];
 	}
 	
+	@SuppressWarnings("unchecked")
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 		for(int i = 0; i < 15; ++i) {
@@ -125,6 +128,7 @@ public class FluidDuctBox extends FluidDuctBase implements IBlockMulti, ILookOve
 		}
 	}
 	
+	@Override
 	public int damageDropped(int meta) {
 		return meta % 15;
 	}
@@ -133,7 +137,7 @@ public class FluidDuctBox extends FluidDuctBase implements IBlockMulti, ILookOve
 
 	@Override
 	public int getRenderType() {
-		return renderID;
+		return FluidDuctBox.renderID;
 	}
 	
 	@Override
@@ -157,10 +161,11 @@ public class FluidDuctBox extends FluidDuctBase implements IBlockMulti, ILookOve
 		return 3;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB entityBounding, List list, Entity entity) {
 		
-		List<AxisAlignedBB> bbs = new ArrayList();
+		List<AxisAlignedBB> bbs = new ArrayList<>();
 
 		TileEntity te = world.getTileEntity(x, y, z);
 
@@ -258,17 +263,17 @@ public class FluidDuctBox extends FluidDuctBase implements IBlockMulti, ILookOve
 		int count = 0 + (pX ? 1 : 0) + (nX ? 1 : 0) + (pY ? 1 : 0) + (nY ? 1 : 0) + (pZ ? 1 : 0) + (nZ ? 1 : 0);
 		
 		if(mask == 0) {
-			this.setBlockBounds(jLower, jLower, jLower, jUpper, jUpper, jUpper);
+			setBlockBounds(jLower, jLower, jLower, jUpper, jUpper, jUpper);
 		} else if(mask == 0b100000 || mask == 0b010000 || mask == 0b110000) {
-			this.setBlockBounds(0F, lower, lower, 1F, upper, upper);
+			setBlockBounds(0F, lower, lower, 1F, upper, upper);
 		} else if(mask == 0b001000 || mask == 0b000100 || mask == 0b001100) {
-			this.setBlockBounds(lower, 0F, lower, upper, 1F, upper);
+			setBlockBounds(lower, 0F, lower, upper, 1F, upper);
 		} else if(mask == 0b000010 || mask == 0b000001 || mask == 0b000011) {
-			this.setBlockBounds(lower, lower, 0F, upper, upper, 1F);
+			setBlockBounds(lower, lower, 0F, upper, upper, 1F);
 		} else {
 			
 			if(count != 2) {
-				this.setBlockBounds(
+				setBlockBounds(
 						nX ? 0F : jLower,
 						nY ? 0F : jLower,
 						nZ ? 0F : jLower,
@@ -276,7 +281,7 @@ public class FluidDuctBox extends FluidDuctBase implements IBlockMulti, ILookOve
 						pY ? 1F : jUpper,
 						pZ ? 1F : jUpper);
 			} else {
-				this.setBlockBounds(
+				setBlockBounds(
 						nX ? 0F : lower,
 						nY ? 0F : lower,
 						nZ ? 0F : lower,
@@ -304,7 +309,7 @@ public class FluidDuctBox extends FluidDuctBase implements IBlockMulti, ILookOve
 		
 		TileEntityPipeBaseNT duct = (TileEntityPipeBaseNT) te;
 		
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		text.add("&[" + duct.getType().getColor() + "&]" + duct.getType().getLocalizedName());
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}
@@ -314,6 +319,6 @@ public class FluidDuctBox extends FluidDuctBase implements IBlockMulti, ILookOve
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int colorMultiplier(IBlockAccess world, int x, int y, int z) {
-		return cachedColor;
+		return FluidDuctBox.cachedColor;
 	}
 }

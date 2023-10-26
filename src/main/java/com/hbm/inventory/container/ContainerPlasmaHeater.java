@@ -2,6 +2,7 @@ package com.hbm.inventory.container;
 
 import com.hbm.inventory.SlotTakeOnly;
 import com.hbm.tileentity.machine.TileEntityMachinePlasmaHeater;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -14,22 +15,22 @@ public class ContainerPlasmaHeater extends Container {
 
 	public ContainerPlasmaHeater(InventoryPlayer invPlayer, TileEntityMachinePlasmaHeater tedf) {
 
-		microwave = tedf;
+		this.microwave = tedf;
 
-		this.addSlotToContainer(new Slot(tedf, 0, 8, 53));
-		this.addSlotToContainer(new Slot(tedf, 1, 44, 17));
-		this.addSlotToContainer(new SlotTakeOnly(tedf, 2, 44, 53));
-		this.addSlotToContainer(new Slot(tedf, 3, 152, 17));
-		this.addSlotToContainer(new SlotTakeOnly(tedf, 4, 152, 53));
+		addSlotToContainer(new Slot(tedf, 0, 8, 53));
+		addSlotToContainer(new Slot(tedf, 1, 44, 17));
+		addSlotToContainer(new SlotTakeOnly(tedf, 2, 44, 53));
+		addSlotToContainer(new Slot(tedf, 3, 152, 17));
+		addSlotToContainer(new SlotTakeOnly(tedf, 4, 152, 53));
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
 		}
 	}
 
@@ -43,11 +44,11 @@ public class ContainerPlasmaHeater extends Container {
 			var3 = var5.copy();
 
 			if(par2 <= 4) {
-				if(!this.mergeItemStack(var5, 5, this.inventorySlots.size(), true)) {
+				if(!mergeItemStack(var5, 5, this.inventorySlots.size(), true)) {
 					return null;
 				}
 			} else {
-				if(!this.mergeItemStack(var5, 0, 1, true))
+				if(!mergeItemStack(var5, 0, 1, true))
 					return null;
 			}
 
@@ -63,6 +64,6 @@ public class ContainerPlasmaHeater extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return microwave.isUseableByPlayer(player);
+		return this.microwave.isUseableByPlayer(player);
 	}
 }

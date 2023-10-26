@@ -40,15 +40,15 @@ public abstract class TileEntityOilDrillBase extends TileEntityMachineBase imple
 	
 	public long power;
 	
-	public List<IFluidAcceptor> list1 = new ArrayList();
-	public List<IFluidAcceptor> list2 = new ArrayList();
+	public List<IFluidAcceptor> list1 = new ArrayList<>();
+	public List<IFluidAcceptor> list2 = new ArrayList<>();
 	public FluidTank[] tanks;
 
 	public TileEntityOilDrillBase() {
 		super(8);
-		tanks = new FluidTank[2];
-		tanks[0] = new FluidTank(Fluids.OIL, 64_000, 0);
-		tanks[1] = new FluidTank(Fluids.GAS, 64_000, 1);
+		this.tanks = new FluidTank[2];
+		this.tanks[0] = new FluidTank(Fluids.OIL, 64_000, 0);
+		this.tanks[1] = new FluidTank(Fluids.GAS, 64_000, 1);
 	}
 	
 	@Override
@@ -64,7 +64,7 @@ public abstract class TileEntityOilDrillBase extends TileEntityMachineBase imple
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		
-		nbt.setLong("power", power);
+		nbt.setLong("power", this.power);
 		for(int i = 0; i < this.tanks.length; i++)
 			this.tanks[i].writeToNBT(nbt, "t" + i);
 	}
@@ -72,11 +72,11 @@ public abstract class TileEntityOilDrillBase extends TileEntityMachineBase imple
 	@Override
 	public void writeNBT(NBTTagCompound nbt) {
 		
-		boolean empty = power == 0;
-		for(FluidTank tank : tanks) if(tank.getFill() > 0) empty = false;
+		boolean empty = this.power == 0;
+		for(FluidTank tank : this.tanks) if(tank.getFill() > 0) empty = false;
 		
 		if(!empty) {
-			nbt.setLong("power", power);
+			nbt.setLong("power", this.power);
 			for(int i = 0; i < this.tanks.length; i++) {
 				this.tanks[i].writeToNBT(nbt, "t" + i);
 			}
@@ -97,55 +97,55 @@ public abstract class TileEntityOilDrillBase extends TileEntityMachineBase imple
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			this.updateConnections();
+			updateConnections();
 			
-			this.tanks[0].unloadTank(1, 2, slots);
-			this.tanks[1].unloadTank(3, 4, slots);
+			this.tanks[0].unloadTank(1, 2, this.slots);
+			this.tanks[1].unloadTank(3, 4, this.slots);
 			
-			UpgradeManager.eval(slots, 5, 7);
+			UpgradeManager.eval(this.slots, 5, 7);
 			this.speedLevel = Math.min(UpgradeManager.getLevel(UpgradeType.SPEED), 3);
 			this.energyLevel = Math.min(UpgradeManager.getLevel(UpgradeType.POWER), 3);
 			this.overLevel = Math.min(UpgradeManager.getLevel(UpgradeType.OVERDRIVE), 3) + 1;
 			int abLevel = Math.min(UpgradeManager.getLevel(UpgradeType.AFTERBURN), 3);
 			
-			for(int i = 0; i < tanks.length; i++) {
-				tanks[i].updateTank(xCoord, yCoord, zCoord, worldObj.provider.dimensionId);
+			for (FluidTank tank : this.tanks) {
+				tank.updateTank(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId);
 			}
 			
-			int toBurn = Math.min(tanks[1].getFill(), abLevel * 10);
+			int toBurn = Math.min(this.tanks[1].getFill(), abLevel * 10);
 			
 			if(toBurn > 0) {
-				tanks[1].setFill(tanks[1].getFill() - toBurn);
+				this.tanks[1].setFill(this.tanks[1].getFill() - toBurn);
 				this.power += toBurn * 5;
 				
-				if(this.power > this.getMaxPower())
-					this.power = this.getMaxPower();
+				if(this.power > getMaxPower())
+					this.power = getMaxPower();
 			}
 			
-			power = Library.chargeTEFromItems(slots, 0, power, this.getMaxPower());
+			this.power = Library.chargeTEFromItems(this.slots, 0, this.power, getMaxPower());
 
 			if(this.worldObj.getTotalWorldTime() % 10 == 0)
-				this.fillFluidInit(tanks[0].getTankType());
+				fillFluidInit(this.tanks[0].getTankType());
 			if(this.worldObj.getTotalWorldTime() % 10 == 5)
-				this.fillFluidInit(tanks[1].getTankType());
+				fillFluidInit(this.tanks[1].getTankType());
 			
 			for(DirPos pos : getConPos()) {
-				if(tanks[0].getFill() > 0) this.sendFluid(tanks[0], worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
-				if(tanks[1].getFill() > 0) this.sendFluid(tanks[1], worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+				if(this.tanks[0].getFill() > 0) this.sendFluid(this.tanks[0], this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+				if(this.tanks[1].getFill() > 0) this.sendFluid(this.tanks[1], this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 			}
 			
-			if(this.power >= this.getPowerReqEff() && this.tanks[0].getFill() < this.tanks[0].getMaxFill() && this.tanks[1].getFill() < this.tanks[1].getMaxFill()) {
+			if(this.power >= getPowerReqEff() && this.tanks[0].getFill() < this.tanks[0].getMaxFill() && this.tanks[1].getFill() < this.tanks[1].getMaxFill()) {
 				
-				this.power -= this.getPowerReqEff();
+				this.power -= getPowerReqEff();
 				
-				if(worldObj.getTotalWorldTime() % getDelayEff() == 0) {
+				if(this.worldObj.getTotalWorldTime() % getDelayEff() == 0) {
 					this.indicator = 0;
 					
-					for(int y = yCoord - 1; y >= getDrillDepth(); y--) {
+					for(int y = this.yCoord - 1; y >= getDrillDepth(); y--) {
 						
-						if(worldObj.getBlock(xCoord, y, zCoord) != ModBlocks.oil_pipe) {
+						if(this.worldObj.getBlock(this.xCoord, y, this.zCoord) != ModBlocks.oil_pipe) {
 						
 							if(trySuck(y)) {
 								break;
@@ -164,17 +164,18 @@ public abstract class TileEntityOilDrillBase extends TileEntityMachineBase imple
 				this.indicator = 2;
 			}
 			
-			this.sendUpdate();
+			sendUpdate();
 		}
 	}
 	
 	public void sendUpdate() {
 		NBTTagCompound data = new NBTTagCompound();
-		data.setLong("power", power);
+		data.setLong("power", this.power);
 		data.setInteger("indicator", this.indicator);
-		this.networkPack(data, 25);
+		networkPack(data, 25);
 	}
 	
+	@Override
 	public void networkUnpack(NBTTagCompound nbt) {
 		this.power = nbt.getLong("power");
 		this.indicator = nbt.getInteger("indicator");
@@ -189,11 +190,11 @@ public abstract class TileEntityOilDrillBase extends TileEntityMachineBase imple
 		super.setInventorySlotContents(i, stack);
 		
 		if(stack != null && i >= 5 && i <= 7 && stack.getItem() instanceof ItemMachineUpgrade)
-			worldObj.playSoundEffect(xCoord + 0.5, yCoord + 1.5, zCoord + 0.5, "hbm:item.upgradePlug", 1.0F, 1.0F);
+			this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 1.5, this.zCoord + 0.5, "hbm:item.upgradePlug", 1.0F, 1.0F);
 	}
 	
 	public int getPowerReqEff() {
-		int req = this.getPowerReq();
+		int req = getPowerReq();
 		return (req + (req / 4 * this.speedLevel) - (req / 4 * this.energyLevel)) * this.overLevel;
 	}
 	
@@ -206,11 +207,11 @@ public abstract class TileEntityOilDrillBase extends TileEntityMachineBase imple
 	public abstract int getDelay();
 	
 	public void tryDrill(int y) {
-		Block b = worldObj.getBlock(xCoord, y, zCoord);
+		Block b = this.worldObj.getBlock(this.xCoord, y, this.zCoord);
 		
 		if(b.getExplosionResistance(null) < 1000) {
 			onDrill(y);
-			worldObj.setBlock(xCoord, y, zCoord, ModBlocks.oil_pipe);
+			this.worldObj.setBlock(this.xCoord, y, this.zCoord, ModBlocks.oil_pipe);
 		} else {
 			this.indicator = 2;
 		}
@@ -224,38 +225,38 @@ public abstract class TileEntityOilDrillBase extends TileEntityMachineBase imple
 	
 	public boolean trySuck(int y) {
 		
-		Block b = worldObj.getBlock(xCoord, y, zCoord);
+		Block b = this.worldObj.getBlock(this.xCoord, y, this.zCoord);
 		
 		if(!canSuckBlock(b))
 			return false;
 		
-		if(!this.canPump())
+		if(!canPump())
 			return true;
 		
-		trace.clear();
+		this.trace.clear();
 		
-		return suckRec(xCoord, y, zCoord, 0);
+		return suckRec(this.xCoord, y, this.zCoord, 0);
 	}
 	
 	public boolean canSuckBlock(Block b) {
 		return b == ModBlocks.ore_oil || b == ModBlocks.ore_oil_empty;
 	}
 	
-	protected HashSet<Tuple.Triplet<Integer, Integer, Integer>> trace = new HashSet();
+	protected HashSet<Tuple.Triplet<Integer, Integer, Integer>> trace = new HashSet<>();
 	
 	public boolean suckRec(int x, int y, int z, int layer) {
 		
-		Triplet<Integer, Integer, Integer> pos = new Triplet(x, y, z);
+		Triplet<Integer, Integer, Integer> pos = new Triplet<>(x, y, z);
 		
-		if(trace.contains(pos))
+		if(this.trace.contains(pos))
 			return false;
 		
-		trace.add(pos);
+		this.trace.add(pos);
 		
 		if(layer > 64)
 			return false;
 		
-		Block b = worldObj.getBlock(x, y, z);
+		Block b = this.worldObj.getBlock(x, y, z);
 		
 		if(b == ModBlocks.ore_oil || b == ModBlocks.ore_bedrock_oil) {
 			doSuck(x, y, z);
@@ -276,7 +277,7 @@ public abstract class TileEntityOilDrillBase extends TileEntityMachineBase imple
 	
 	public void doSuck(int x, int y, int z) {
 		
-		if(worldObj.getBlock(x, y, z) == ModBlocks.ore_oil) {
+		if(this.worldObj.getBlock(x, y, z) == ModBlocks.ore_oil) {
 			onSuck(x, y, z);
 		}
 	}
@@ -290,12 +291,12 @@ public abstract class TileEntityOilDrillBase extends TileEntityMachineBase imple
 
 	@Override
 	public void fillFluid(int x, int y, int z, boolean newTact, FluidType type) {
-		Library.transmitFluid(x, y, z, newTact, this, worldObj, type);
+		Library.transmitFluid(x, y, z, newTact, this, this.worldObj, type);
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		for(FluidTank tank : tanks) {
+		for(FluidTank tank : this.tanks) {
 			if(type == tank.getTankType()) {
 				return tank.getFill();
 			}
@@ -306,7 +307,7 @@ public abstract class TileEntityOilDrillBase extends TileEntityMachineBase imple
 
 	@Override
 	public void setFluidFill(int i, FluidType type) {
-		for(FluidTank tank : tanks) {
+		for(FluidTank tank : this.tanks) {
 			if(type == tank.getTankType()) {
 				tank.setFill(i);
 				return;
@@ -316,27 +317,27 @@ public abstract class TileEntityOilDrillBase extends TileEntityMachineBase imple
 
 	@Override
 	public List<IFluidAcceptor> getFluidList(FluidType type) {
-		if(type == tanks[0].getTankType()) return this.list1;
-		if(type == tanks[1].getTankType()) return this.list2;
-		return new ArrayList<IFluidAcceptor>();
+		if(type == this.tanks[0].getTankType()) return this.list1;
+		if(type == this.tanks[1].getTankType()) return this.list2;
+		return new ArrayList<>();
 	}
 
 	@Override
 	public void clearFluidList(FluidType type) {
-		if(type == tanks[0].getTankType()) list1.clear();
-		if(type == tanks[1].getTankType()) list2.clear();
+		if(type == this.tanks[0].getTankType()) this.list1.clear();
+		if(type == this.tanks[1].getTankType()) this.list2.clear();
 	}
 
 	@Override
 	public void setFillForSync(int fill, int index) {
-		if(index < tanks.length && tanks[index] != null)
-			tanks[index].setFill(fill);
+		if(index < this.tanks.length && this.tanks[index] != null)
+			this.tanks[index].setFill(fill);
 	}
 
 	@Override
 	public void setTypeForSync(FluidType type, int index) {
-		if(index < tanks.length && tanks[index] != null)
-			tanks[index].setTankType(type);
+		if(index < this.tanks.length && this.tanks[index] != null)
+			this.tanks[index].setTankType(type);
 	}
 
 	@Override
@@ -362,7 +363,7 @@ public abstract class TileEntityOilDrillBase extends TileEntityMachineBase imple
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return tanks;
+		return this.tanks;
 	}
 
 	@Override
@@ -372,14 +373,14 @@ public abstract class TileEntityOilDrillBase extends TileEntityMachineBase imple
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return tanks;
+		return this.tanks;
 	}
 	
 	public abstract DirPos[] getConPos();
 
 	protected void updateConnections() {
 		for(DirPos pos : getConPos()) {
-			this.trySubscribe(worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			this.trySubscribe(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 		}
 	}
 }

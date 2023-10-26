@@ -18,12 +18,12 @@ public class MissileMultipart {
 		
 		double height = 0;
 
-		if(warhead != null && warhead.type == PartType.WARHEAD)
-			height += warhead.height;
-		if(fuselage != null && fuselage.type == PartType.FUSELAGE)
-			height += fuselage.height;
-		if(thruster != null && thruster.type == PartType.THRUSTER)
-			height += thruster.height;
+		if(this.warhead != null && this.warhead.type == PartType.WARHEAD)
+			height += this.warhead.height;
+		if(this.fuselage != null && this.fuselage.type == PartType.FUSELAGE)
+			height += this.fuselage.height;
+		if(this.thruster != null && this.thruster.type == PartType.THRUSTER)
+			height += this.thruster.height;
 		
 		return height;
 	}

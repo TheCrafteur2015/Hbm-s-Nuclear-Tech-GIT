@@ -27,7 +27,7 @@ import net.minecraft.world.World;
 
 public class FalloutConfigJSON {
 	
-	public static final List<FalloutEntry> entries = new ArrayList();
+	public static final List<FalloutEntry> entries = new ArrayList<>();
 	public static Random rand = new Random();
 
 	public static final Gson gson = new Gson();
@@ -38,102 +38,103 @@ public class FalloutConfigJSON {
 		File config = new File(folder.getAbsolutePath() + File.separatorChar + "hbmFallout.json");
 		File template = new File(folder.getAbsolutePath() + File.separatorChar + "_hbmFallout.json");
 		
-		initDefault();
+		FalloutConfigJSON.initDefault();
 		
 		if(!config.exists()) {
-			writeDefault(template);
+			FalloutConfigJSON.writeDefault(template);
 		} else {
-			List<FalloutEntry> conf = readConfig(config);
+			List<FalloutEntry> conf = FalloutConfigJSON.readConfig(config);
 			
 			if(conf != null) {
-				entries.clear();
-				entries.addAll(conf);
+				FalloutConfigJSON.entries.clear();
+				FalloutConfigJSON.entries.addAll(conf);
 			}
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private static void initDefault() {
 		
 		double woodEffectRange = 65D;
 		/* destroy all leaves within the radios, kill all leaves outside of it */
-		entries.add(new FalloutEntry()	.mB(Blocks.leaves)			.prim(new Triplet(Blocks.air, 0, 1))				.max(woodEffectRange));
-		entries.add(new FalloutEntry()	.mB(Blocks.leaves2)			.prim(new Triplet(Blocks.air, 0, 1))				.max(woodEffectRange));
-		entries.add(new FalloutEntry()	.mB(ModBlocks.waste_leaves)	.prim(new Triplet(Blocks.air, 0, 1))				.max(woodEffectRange));
-		entries.add(new FalloutEntry()	.mB(Blocks.leaves)			.prim(new Triplet(ModBlocks.waste_leaves, 0, 1))	.min(woodEffectRange));
-		entries.add(new FalloutEntry()	.mB(Blocks.leaves2)			.prim(new Triplet(ModBlocks.waste_leaves, 0, 1))	.min(woodEffectRange));
+		FalloutConfigJSON.entries.add(new FalloutEntry()	.mB(Blocks.leaves)			.prim(new Triplet<>(Blocks.air, 0, 1))				.max(woodEffectRange));
+		FalloutConfigJSON.entries.add(new FalloutEntry()	.mB(Blocks.leaves2)			.prim(new Triplet<>(Blocks.air, 0, 1))				.max(woodEffectRange));
+		FalloutConfigJSON.entries.add(new FalloutEntry()	.mB(ModBlocks.waste_leaves)	.prim(new Triplet<>(Blocks.air, 0, 1))				.max(woodEffectRange));
+		FalloutConfigJSON.entries.add(new FalloutEntry()	.mB(Blocks.leaves)			.prim(new Triplet<>(ModBlocks.waste_leaves, 0, 1))	.min(woodEffectRange));
+		FalloutConfigJSON.entries.add(new FalloutEntry()	.mB(Blocks.leaves2)			.prim(new Triplet<>(ModBlocks.waste_leaves, 0, 1))	.min(woodEffectRange));
 		
-		entries.add(new FalloutEntry()	.mB(Blocks.log)							.prim(new Triplet(ModBlocks.waste_log, 0, 1))		.max(woodEffectRange));
-		entries.add(new FalloutEntry()	.mB(Blocks.log2)						.prim(new Triplet(ModBlocks.waste_log, 0, 1))		.max(woodEffectRange));
-		entries.add(new FalloutEntry()	.mB(Blocks.red_mushroom_block).mM(10)	.prim(new Triplet(ModBlocks.waste_log, 0, 1))		.max(woodEffectRange));
-		entries.add(new FalloutEntry()	.mB(Blocks.brown_mushroom_block).mM(10)	.prim(new Triplet(ModBlocks.waste_log, 0, 1))		.max(woodEffectRange));
-		entries.add(new FalloutEntry()	.mB(Blocks.red_mushroom_block)			.prim(new Triplet(Blocks.air, 0, 1))				.max(woodEffectRange));
-		entries.add(new FalloutEntry()	.mB(Blocks.brown_mushroom_block)		.prim(new Triplet(Blocks.air, 0, 1))				.max(woodEffectRange));
-		entries.add(new FalloutEntry()	.mB(Blocks.planks)						.prim(new Triplet(ModBlocks.waste_planks, 0, 1))	.max(woodEffectRange));
+		FalloutConfigJSON.entries.add(new FalloutEntry()	.mB(Blocks.log)							.prim(new Triplet(ModBlocks.waste_log, 0, 1))		.max(woodEffectRange));
+		FalloutConfigJSON.entries.add(new FalloutEntry()	.mB(Blocks.log2)						.prim(new Triplet(ModBlocks.waste_log, 0, 1))		.max(woodEffectRange));
+		FalloutConfigJSON.entries.add(new FalloutEntry()	.mB(Blocks.red_mushroom_block).mM(10)	.prim(new Triplet(ModBlocks.waste_log, 0, 1))		.max(woodEffectRange));
+		FalloutConfigJSON.entries.add(new FalloutEntry()	.mB(Blocks.brown_mushroom_block).mM(10)	.prim(new Triplet(ModBlocks.waste_log, 0, 1))		.max(woodEffectRange));
+		FalloutConfigJSON.entries.add(new FalloutEntry()	.mB(Blocks.red_mushroom_block)			.prim(new Triplet(Blocks.air, 0, 1))				.max(woodEffectRange));
+		FalloutConfigJSON.entries.add(new FalloutEntry()	.mB(Blocks.brown_mushroom_block)		.prim(new Triplet(Blocks.air, 0, 1))				.max(woodEffectRange));
+		FalloutConfigJSON.entries.add(new FalloutEntry()	.mB(Blocks.planks)						.prim(new Triplet(ModBlocks.waste_planks, 0, 1))	.max(woodEffectRange));
 
 		FalloutEntry stoneCore = new FalloutEntry().prim(new Triplet(ModBlocks.sellafield, 1, 1)).max(5).sol(true);
 		FalloutEntry stoneInner = new FalloutEntry().prim(new Triplet(ModBlocks.sellafield, 0, 1)).min(5).max(15).sol(true);
 		FalloutEntry stoneOuter = new FalloutEntry().prim(new Triplet(ModBlocks.sellafield_slaked, 0, 1)).min(15).max(50).sol(true);
 		
-		entries.add(stoneCore.clone().mB(Blocks.stone));
-		entries.add(stoneInner.clone().mB(Blocks.stone));
-		entries.add(stoneOuter.clone().mB(Blocks.stone));
-		entries.add(stoneCore.clone().mB(Blocks.gravel));
-		entries.add(stoneInner.clone().mB(Blocks.gravel));
-		entries.add(stoneOuter.clone().mB(Blocks.gravel));
+		FalloutConfigJSON.entries.add(stoneCore.clone().mB(Blocks.stone));
+		FalloutConfigJSON.entries.add(stoneInner.clone().mB(Blocks.stone));
+		FalloutConfigJSON.entries.add(stoneOuter.clone().mB(Blocks.stone));
+		FalloutConfigJSON.entries.add(stoneCore.clone().mB(Blocks.gravel));
+		FalloutConfigJSON.entries.add(stoneInner.clone().mB(Blocks.gravel));
+		FalloutConfigJSON.entries.add(stoneOuter.clone().mB(Blocks.gravel));
 		/* recontaminate slaked sellafield */
-		entries.add(stoneCore.clone().mB(ModBlocks.sellafield_slaked));
-		entries.add(stoneInner.clone().mB(ModBlocks.sellafield_slaked));
+		FalloutConfigJSON.entries.add(stoneCore.clone().mB(ModBlocks.sellafield_slaked));
+		FalloutConfigJSON.entries.add(stoneInner.clone().mB(ModBlocks.sellafield_slaked));
 		
-		entries.add(new FalloutEntry()
+		FalloutConfigJSON.entries.add(new FalloutEntry()
 				.mB(Blocks.grass)
 				.prim(new Triplet(ModBlocks.waste_earth, 0, 1)));
-		entries.add(new FalloutEntry()
+		FalloutConfigJSON.entries.add(new FalloutEntry()
 				.mB(Blocks.mycelium)
 				.prim(new Triplet(ModBlocks.waste_mycelium, 0, 1)));
-		entries.add(new FalloutEntry()
+		FalloutConfigJSON.entries.add(new FalloutEntry()
 				.mB(Blocks.sand).mM(0)
 				.prim(new Triplet(ModBlocks.waste_trinitite, 0, 1))
 				.c(0.05));
-		entries.add(new FalloutEntry()
+		FalloutConfigJSON.entries.add(new FalloutEntry()
 				.mB(Blocks.sand).mM(1)
 				.prim(new Triplet(ModBlocks.waste_trinitite_red, 0, 1))
 				.c(0.05));
-		entries.add(new FalloutEntry()
+		FalloutConfigJSON.entries.add(new FalloutEntry()
 				.mB(Blocks.clay)
 				.prim(new Triplet(Blocks.hardened_clay, 0, 1)));
-		entries.add(new FalloutEntry()
+		FalloutConfigJSON.entries.add(new FalloutEntry()
 				.mB(Blocks.mossy_cobblestone)
 				.prim(new Triplet(Blocks.coal_ore, 0, 1)));
-		entries.add(new FalloutEntry()
+		FalloutConfigJSON.entries.add(new FalloutEntry()
 				.mB(Blocks.coal_ore)
 				.prim(new Triplet(Blocks.diamond_ore, 0, 3), new Triplet(Blocks.emerald_ore, 0, 2))
 				.c(0.5));
-		entries.add(new FalloutEntry()
+		FalloutConfigJSON.entries.add(new FalloutEntry()
 				.mB(ModBlocks.ore_lignite)
 				.prim(new Triplet(Blocks.diamond_ore, 0, 1))
 				.c(0.2));
-		entries.add(new FalloutEntry()
+		FalloutConfigJSON.entries.add(new FalloutEntry()
 				.mB(ModBlocks.ore_uranium)
 				.prim(new Triplet(ModBlocks.ore_schrabidium, 0, 1), new Triplet(ModBlocks.ore_uranium_scorched, 0, 99)));
-		entries.add(new FalloutEntry()
+		FalloutConfigJSON.entries.add(new FalloutEntry()
 				.mB(ModBlocks.ore_nether_uranium)
 				.prim(new Triplet(ModBlocks.ore_nether_schrabidium, 0, 1), new Triplet(ModBlocks.ore_nether_uranium_scorched, 0, 99)));
-		entries.add(new FalloutEntry()
+		FalloutConfigJSON.entries.add(new FalloutEntry()
 				.mB(ModBlocks.ore_gneiss_uranium)
 				.prim(new Triplet(ModBlocks.ore_gneiss_schrabidium, 0, 1), new Triplet(ModBlocks.ore_gneiss_uranium_scorched, 0, 99)));
 		
 		/// COMPAT ///
 		Block deepslate = Compat.tryLoadBlock(Compat.MOD_EF, "deepslate");
 		if(deepslate != null) { //identical to stone
-			entries.add(stoneCore.clone().mB(deepslate));
-			entries.add(stoneInner.clone().mB(deepslate));
-			entries.add(stoneOuter.clone().mB(deepslate));
+			FalloutConfigJSON.entries.add(stoneCore.clone().mB(deepslate));
+			FalloutConfigJSON.entries.add(stoneInner.clone().mB(deepslate));
+			FalloutConfigJSON.entries.add(stoneOuter.clone().mB(deepslate));
 		}
 		Block stone = Compat.tryLoadBlock(Compat.MOD_EF, "stone");
 		if(stone != null) { //identical to stone
-			entries.add(stoneCore.clone().mB(stone));
-			entries.add(stoneInner.clone().mB(stone));
-			entries.add(stoneOuter.clone().mB(stone));
+			FalloutConfigJSON.entries.add(stoneCore.clone().mB(stone));
+			FalloutConfigJSON.entries.add(stoneInner.clone().mB(stone));
+			FalloutConfigJSON.entries.add(stoneOuter.clone().mB(stone));
 		}
 	}
 	
@@ -145,7 +146,7 @@ public class FalloutConfigJSON {
 			writer.beginObject();					//initial '{'
 			writer.name("entries").beginArray();	//all recipes are stored in an array called "entries"
 			
-			for(FalloutEntry entry : entries) {
+			for(FalloutEntry entry : FalloutConfigJSON.entries) {
 				writer.beginObject();				//begin object for a single recipe
 				entry.write(writer);				//serialize here
 				writer.endObject();					//end recipe object
@@ -162,9 +163,9 @@ public class FalloutConfigJSON {
 	private static List<FalloutEntry> readConfig(File config) {
 		
 		try {
-			JsonObject json = gson.fromJson(new FileReader(config), JsonObject.class);
+			JsonObject json = FalloutConfigJSON.gson.fromJson(new FileReader(config), JsonObject.class);
 			JsonArray recipes = json.get("entries").getAsJsonArray();
-			List<FalloutEntry> conf = new ArrayList();
+			List<FalloutEntry> conf = new ArrayList<>();
 			
 			for(JsonElement recipe : recipes) {
 				conf.add(FalloutEntry.readEntry(recipe));
@@ -193,17 +194,18 @@ public class FalloutConfigJSON {
 		
 		private boolean isSolid = false;
 		
+		@Override
 		public FalloutEntry clone() {
 			FalloutEntry entry = new FalloutEntry();
-			entry.mB(matchesBlock);
-			entry.mM(matchesMeta);
-			entry.mMa(matchesMaterial);
-			entry.mO(matchesOpaque);
-			entry.prim(primaryBlocks);
-			entry.sec(secondaryBlocks);
-			entry.min(minDist);
-			entry.max(maxDist);
-			entry.sol(isSolid);
+			entry.mB(this.matchesBlock);
+			entry.mM(this.matchesMeta);
+			entry.mMa(this.matchesMaterial);
+			entry.mO(this.matchesOpaque);
+			entry.prim(this.primaryBlocks);
+			entry.sec(this.secondaryBlocks);
+			entry.min(this.minDist);
+			entry.max(this.maxDist);
+			entry.sol(this.isSolid);
 			
 			return entry;
 		}
@@ -213,7 +215,9 @@ public class FalloutConfigJSON {
 		public FalloutEntry mMa(Material mat) { this.matchesMaterial = mat; return this; }
 		public FalloutEntry mO(boolean opaque) { this.matchesOpaque = opaque; return this; }
 
+		@SuppressWarnings("unchecked")
 		public FalloutEntry prim(Triplet<Block, Integer, Integer>... blocks) { this.primaryBlocks = blocks; return this; }
+		@SuppressWarnings("unchecked")
 		public FalloutEntry sec(Triplet<Block, Integer, Integer>... blocks) { this.secondaryBlocks = blocks; return this; }
 		public FalloutEntry c(double chance) { this.primaryChance = chance; return this; }
 		public FalloutEntry min(double min) { this.minDist = min; return this; }
@@ -222,25 +226,24 @@ public class FalloutConfigJSON {
 		
 		public boolean eval(World world, int x, int y, int z, Block b, int meta, double dist) {
 			
-			if(matchesBlock != null && b != matchesBlock) return false;
-			if(matchesMaterial != null && b.getMaterial() != matchesMaterial) return false;
-			if(matchesMeta != -1 && meta != matchesMeta) return false;
-			if(matchesOpaque && !b.isOpaqueCube()) return false;
-			if(dist > maxDist || dist < minDist) return false;
+			if((this.matchesBlock != null && b != this.matchesBlock) || (this.matchesMaterial != null && b.getMaterial() != this.matchesMaterial)) return false;
+			if(this.matchesMeta != -1 && meta != this.matchesMeta) return false;
+			if(this.matchesOpaque && !b.isOpaqueCube()) return false;
+			if(dist > this.maxDist || dist < this.minDist) return false;
 			
-			if(primaryChance == 1D || rand.nextDouble() < primaryChance) {
+			if(this.primaryChance == 1D || FalloutConfigJSON.rand.nextDouble() < this.primaryChance) {
 				
-				if(primaryBlocks == null) return false;
+				if(this.primaryBlocks == null) return false;
 				
-				MetaBlock block = chooseRandomOutcome(primaryBlocks);
+				MetaBlock block = chooseRandomOutcome(this.primaryBlocks);
 				world.setBlock(x, y, z, block.block, block.meta, 3);
 				return true;
 				
 			} else {
 				
-				if(secondaryBlocks == null) return false;
+				if(this.secondaryBlocks == null) return false;
 				
-				MetaBlock block = chooseRandomOutcome(secondaryBlocks);
+				MetaBlock block = chooseRandomOutcome(this.secondaryBlocks);
 				world.setBlock(x, y, z, block.block, block.meta, 3);
 				return true;
 			}
@@ -254,7 +257,7 @@ public class FalloutConfigJSON {
 				weight += choice.getZ();
 			}
 			
-			int r = rand.nextInt(weight);
+			int r = FalloutConfigJSON.rand.nextInt(weight);
 			
 			for(Triplet<Block, Integer, Integer> choice : blocks) {
 				r -= choice.getZ();
@@ -272,25 +275,25 @@ public class FalloutConfigJSON {
 		}
 		
 		public void write(JsonWriter writer) throws IOException {
-			if(matchesBlock != null) writer.name("matchesBlock").value(Block.blockRegistry.getNameForObject(matchesBlock));
-			if(matchesMeta != -1) writer.name("matchesMeta").value(matchesMeta);
-			if(matchesOpaque) writer.name("mustBeOpaque").value(true);
+			if(this.matchesBlock != null) writer.name("matchesBlock").value(Block.blockRegistry.getNameForObject(this.matchesBlock));
+			if(this.matchesMeta != -1) writer.name("matchesMeta").value(this.matchesMeta);
+			if(this.matchesOpaque) writer.name("mustBeOpaque").value(true);
 			
-			if(matchesMaterial != null) {
-				String matName = matNames.inverse().get(matchesMaterial);
+			if(this.matchesMaterial != null) {
+				String matName = FalloutConfigJSON.matNames.inverse().get(this.matchesMaterial);
 				if(matName != null) {
 					writer.name("matchesMaterial").value(matName);
 				}
 			}
-			if(isSolid) writer.name("restrictDepth").value(true);
+			if(this.isSolid) writer.name("restrictDepth").value(true);
 
-			if(primaryBlocks != null) { writer.name("primarySubstitution"); writeMetaArray(writer, primaryBlocks); }
-			if(secondaryBlocks != null) { writer.name("secondarySubstitutions"); writeMetaArray(writer, secondaryBlocks); }
+			if(this.primaryBlocks != null) { writer.name("primarySubstitution"); FalloutEntry.writeMetaArray(writer, this.primaryBlocks); }
+			if(this.secondaryBlocks != null) { writer.name("secondarySubstitutions"); FalloutEntry.writeMetaArray(writer, this.secondaryBlocks); }
 
-			if(primaryChance != 1D) writer.name("chance").value(primaryChance);
+			if(this.primaryChance != 1D) writer.name("chance").value(this.primaryChance);
 
-			if(minDist != 0.0D) writer.name("minimumDistancePercent").value(minDist);
-			if(maxDist != 100.0D) writer.name("maximumDistancePercent").value(maxDist);
+			if(this.minDist != 0.0D) writer.name("minimumDistancePercent").value(this.minDist);
+			if(this.maxDist != 100.0D) writer.name("maximumDistancePercent").value(this.maxDist);
 			
 		}
 		
@@ -303,11 +306,11 @@ public class FalloutConfigJSON {
 			if(obj.has("matchesBlock")) entry.mB((Block) Block.blockRegistry.getObject(obj.get("matchesBlock").getAsString()));
 			if(obj.has("matchesMeta")) entry.mM(obj.get("matchesMeta").getAsInt());
 			if(obj.has("mustBeOpaque")) entry.mO(obj.get("mustBeOpaque").getAsBoolean());
-			if(obj.has("matchesMaterial")) entry.mMa(matNames.get(obj.get("mustBeOpaque").getAsString()));
+			if(obj.has("matchesMaterial")) entry.mMa(FalloutConfigJSON.matNames.get(obj.get("mustBeOpaque").getAsString()));
 			if(obj.has("restrictDepth")) entry.sol(obj.get("restrictDepth").getAsBoolean());
 
-			if(obj.has("primarySubstitution")) entry.prim(readMetaArray(obj.get("primarySubstitution")));
-			if(obj.has("secondarySubstitutions")) entry.sec(readMetaArray(obj.get("secondarySubstitutions")));
+			if(obj.has("primarySubstitution")) entry.prim(FalloutEntry.readMetaArray(obj.get("primarySubstitution")));
+			if(obj.has("secondarySubstitutions")) entry.sec(FalloutEntry.readMetaArray(obj.get("secondarySubstitutions")));
 
 			if(obj.has("chance")) entry.c(obj.get("chance").getAsDouble());
 
@@ -333,6 +336,7 @@ public class FalloutConfigJSON {
 			writer.setIndent("  ");
 		}
 		
+		@SuppressWarnings("unchecked")
 		private static Triplet<Block, Integer, Integer>[] readMetaArray(JsonElement jsonElement) {
 			
 			if(!jsonElement.isJsonArray()) return null;
@@ -359,36 +363,36 @@ public class FalloutConfigJSON {
 	public static HashBiMap<String, Material> matNames = HashBiMap.create();
 	
 	static {
-		matNames.put("grass", Material.grass);
-		matNames.put("ground", Material.ground);
-		matNames.put("wood", Material.wood);
-		matNames.put("rock", Material.rock);
-		matNames.put("iron", Material.iron);
-		matNames.put("anvil", Material.anvil);
-		matNames.put("water", Material.water);
-		matNames.put("lava", Material.lava);
-		matNames.put("leaves", Material.leaves);
-		matNames.put("plants", Material.plants);
-		matNames.put("vine", Material.vine);
-		matNames.put("sponge", Material.sponge);
-		matNames.put("cloth", Material.cloth);
-		matNames.put("fire", Material.fire);
-		matNames.put("sand", Material.sand);
-		matNames.put("circuits", Material.circuits);
-		matNames.put("carpet", Material.carpet);
-		matNames.put("redstoneLight", Material.redstoneLight);
-		matNames.put("tnt", Material.tnt);
-		matNames.put("coral", Material.coral);
-		matNames.put("ice", Material.ice);
-		matNames.put("packedIce", Material.packedIce);
-		matNames.put("snow", Material.snow);
-		matNames.put("craftedSnow", Material.craftedSnow);
-		matNames.put("cactus", Material.cactus);
-		matNames.put("clay", Material.clay);
-		matNames.put("gourd", Material.gourd);
-		matNames.put("dragonEgg", Material.dragonEgg);
-		matNames.put("portal", Material.portal);
-		matNames.put("cake", Material.cake);
-		matNames.put("web", Material.web);
+		FalloutConfigJSON.matNames.put("grass", Material.grass);
+		FalloutConfigJSON.matNames.put("ground", Material.ground);
+		FalloutConfigJSON.matNames.put("wood", Material.wood);
+		FalloutConfigJSON.matNames.put("rock", Material.rock);
+		FalloutConfigJSON.matNames.put("iron", Material.iron);
+		FalloutConfigJSON.matNames.put("anvil", Material.anvil);
+		FalloutConfigJSON.matNames.put("water", Material.water);
+		FalloutConfigJSON.matNames.put("lava", Material.lava);
+		FalloutConfigJSON.matNames.put("leaves", Material.leaves);
+		FalloutConfigJSON.matNames.put("plants", Material.plants);
+		FalloutConfigJSON.matNames.put("vine", Material.vine);
+		FalloutConfigJSON.matNames.put("sponge", Material.sponge);
+		FalloutConfigJSON.matNames.put("cloth", Material.cloth);
+		FalloutConfigJSON.matNames.put("fire", Material.fire);
+		FalloutConfigJSON.matNames.put("sand", Material.sand);
+		FalloutConfigJSON.matNames.put("circuits", Material.circuits);
+		FalloutConfigJSON.matNames.put("carpet", Material.carpet);
+		FalloutConfigJSON.matNames.put("redstoneLight", Material.redstoneLight);
+		FalloutConfigJSON.matNames.put("tnt", Material.tnt);
+		FalloutConfigJSON.matNames.put("coral", Material.coral);
+		FalloutConfigJSON.matNames.put("ice", Material.ice);
+		FalloutConfigJSON.matNames.put("packedIce", Material.packedIce);
+		FalloutConfigJSON.matNames.put("snow", Material.snow);
+		FalloutConfigJSON.matNames.put("craftedSnow", Material.craftedSnow);
+		FalloutConfigJSON.matNames.put("cactus", Material.cactus);
+		FalloutConfigJSON.matNames.put("clay", Material.clay);
+		FalloutConfigJSON.matNames.put("gourd", Material.gourd);
+		FalloutConfigJSON.matNames.put("dragonEgg", Material.dragonEgg);
+		FalloutConfigJSON.matNames.put("portal", Material.portal);
+		FalloutConfigJSON.matNames.put("cake", Material.cake);
+		FalloutConfigJSON.matNames.put("web", Material.web);
 	}
 }

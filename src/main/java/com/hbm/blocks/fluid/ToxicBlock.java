@@ -34,23 +34,23 @@ public class ToxicBlock extends BlockFluidClassic {
 
 	public ToxicBlock(Fluid fluid, Material material, DamageSource damage) {
 		super(fluid, material);
-		damageSource = damage;
+		ToxicBlock.damageSource = damage;
 		setQuantaPerBlock(4);
 		setCreativeTab(null);
-		displacements.put(this, false);
+		this.displacements.put(this, false);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
-		return (side == 0 || side == 1) ? stillIcon : flowingIcon;
+		return (side == 0 || side == 1) ? ToxicBlock.stillIcon : ToxicBlock.flowingIcon;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister register) {
-		stillIcon = register.registerIcon(RefStrings.MODID + ":toxic_still");
-		flowingIcon = register.registerIcon(RefStrings.MODID + ":toxic_flowing");
+		ToxicBlock.stillIcon = register.registerIcon(RefStrings.MODID + ":toxic_still");
+		ToxicBlock.flowingIcon = register.registerIcon(RefStrings.MODID + ":toxic_flowing");
 	}
 
 	@Override

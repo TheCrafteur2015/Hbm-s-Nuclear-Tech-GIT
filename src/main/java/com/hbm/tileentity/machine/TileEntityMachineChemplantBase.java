@@ -47,26 +47,26 @@ public abstract class TileEntityMachineChemplantBase extends TileEntityMachineBa
 	public TileEntityMachineChemplantBase(int scount) {
 		super(scount);
 		
-		int count = this.getRecipeCount();
+		int count = getRecipeCount();
 
-		progress = new int[count];
-		maxProgress = new int[count];
+		this.progress = new int[count];
+		this.maxProgress = new int[count];
 		
-		tanks = new FluidTank[4 * count];
+		this.tanks = new FluidTank[4 * count];
 		for(int i = 0; i < 4 * count; i++) {
-			tanks[i] = new FluidTank(Fluids.NONE, getTankCapacity(), i);
+			this.tanks[i] = new FluidTank(Fluids.NONE, getTankCapacity(), i);
 		}
 	}
 
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			int count = this.getRecipeCount();
+			int count = getRecipeCount();
 			
 			this.isProgressing = false;
-			this.power = Library.chargeTEFromItems(slots, 0, power, this.getMaxPower());
+			this.power = Library.chargeTEFromItems(this.slots, 0, this.power, getMaxPower());
 			
 			for(int i = 0; i < count; i++) {
 				loadItems(i);
@@ -78,7 +78,7 @@ public abstract class TileEntityMachineChemplantBase extends TileEntityMachineBa
 				if(!canProcess(i)) {
 					this.progress[i] = 0;
 				} else {
-					isProgressing = true;
+					this.isProgressing = true;
 					process(i);
 				}
 			}
@@ -89,52 +89,47 @@ public abstract class TileEntityMachineChemplantBase extends TileEntityMachineBa
 		
 		int template = getTemplateIndex(index);
 		
-		if(slots[template] == null || slots[template].getItem() != ModItems.chemistry_template)
+		if(this.slots[template] == null || this.slots[template].getItem() != ModItems.chemistry_template)
 			return false;
 		
-		ChemRecipe recipe = ChemplantRecipes.indexMapping.get(slots[template].getItemDamage());
+		ChemRecipe recipe = ChemplantRecipes.indexMapping.get(this.slots[template].getItemDamage());
 		
 		if(recipe == null)
 			return false;
 		
 		setupTanks(recipe, index);
 		
-		if(this.power < this.consumption) return false;
-		if(!hasRequiredFluids(recipe, index)) return false;
-		if(!hasSpaceForFluids(recipe, index)) return false;
-		if(!hasRequiredItems(recipe, index)) return false;
+		if((this.power < this.consumption) || !hasRequiredFluids(recipe, index) || !hasSpaceForFluids(recipe, index) || !hasRequiredItems(recipe, index)) return false;
 		if(!hasSpaceForItems(recipe, index)) return false;
 		
 		return true;
 	}
 	
 	private void setupTanks(ChemRecipe recipe, int index) {
-		if(recipe.inputFluids[0] != null) tanks[index * 4].withPressure(recipe.inputFluids[0].pressure).setTankType(recipe.inputFluids[0].type);		else tanks[index * 4].setTankType(Fluids.NONE);
-		if(recipe.inputFluids[1] != null) tanks[index * 4 + 1].withPressure(recipe.inputFluids[1].pressure).setTankType(recipe.inputFluids[1].type);	else tanks[index * 4 + 1].setTankType(Fluids.NONE);
-		if(recipe.outputFluids[0] != null) tanks[index * 4 + 2].withPressure(recipe.outputFluids[0].pressure).setTankType(recipe.outputFluids[0].type);	else tanks[index * 4 + 2].setTankType(Fluids.NONE);
-		if(recipe.outputFluids[1] != null) tanks[index * 4 + 3].withPressure(recipe.outputFluids[1].pressure).setTankType(recipe.outputFluids[1].type);	else tanks[index * 4 + 3].setTankType(Fluids.NONE);
+		if(recipe.inputFluids[0] != null) this.tanks[index * 4].withPressure(recipe.inputFluids[0].pressure).setTankType(recipe.inputFluids[0].type);		else this.tanks[index * 4].setTankType(Fluids.NONE);
+		if(recipe.inputFluids[1] != null) this.tanks[index * 4 + 1].withPressure(recipe.inputFluids[1].pressure).setTankType(recipe.inputFluids[1].type);	else this.tanks[index * 4 + 1].setTankType(Fluids.NONE);
+		if(recipe.outputFluids[0] != null) this.tanks[index * 4 + 2].withPressure(recipe.outputFluids[0].pressure).setTankType(recipe.outputFluids[0].type);	else this.tanks[index * 4 + 2].setTankType(Fluids.NONE);
+		if(recipe.outputFluids[1] != null) this.tanks[index * 4 + 3].withPressure(recipe.outputFluids[1].pressure).setTankType(recipe.outputFluids[1].type);	else this.tanks[index * 4 + 3].setTankType(Fluids.NONE);
 	}
 	
 	private boolean hasRequiredFluids(ChemRecipe recipe, int index) {
-		if(recipe.inputFluids[0] != null && tanks[index * 4].getFill() < recipe.inputFluids[0].fill) return false;
-		if(recipe.inputFluids[1] != null && tanks[index * 4 + 1].getFill() < recipe.inputFluids[1].fill) return false;
+		if((recipe.inputFluids[0] != null && this.tanks[index * 4].getFill() < recipe.inputFluids[0].fill) || (recipe.inputFluids[1] != null && this.tanks[index * 4 + 1].getFill() < recipe.inputFluids[1].fill)) return false;
 		return true;
 	}
 	
 	private boolean hasSpaceForFluids(ChemRecipe recipe, int index) {
-		if(recipe.outputFluids[0] != null && tanks[index * 4 + 2].getFill() + recipe.outputFluids[0].fill > tanks[index * 4 + 2].getMaxFill()) return false;
-		if(recipe.outputFluids[1] != null && tanks[index * 4 + 3].getFill() + recipe.outputFluids[1].fill > tanks[index * 4 + 3].getMaxFill()) return false;
+		if((recipe.outputFluids[0] != null && this.tanks[index * 4 + 2].getFill() + recipe.outputFluids[0].fill > this.tanks[index * 4 + 2].getMaxFill()) || (recipe.outputFluids[1] != null && this.tanks[index * 4 + 3].getFill() + recipe.outputFluids[1].fill > this.tanks[index * 4 + 3].getMaxFill())) return false;
 		return true;
 	}
 	
 	private boolean hasRequiredItems(ChemRecipe recipe, int index) {
 		int[] indices = getSlotIndicesFromIndex(index);
-		return InventoryUtil.doesArrayHaveIngredients(slots, indices[0], indices[1], recipe.inputs);
+		return InventoryUtil.doesArrayHaveIngredients(this.slots, indices[0], indices[1], recipe.inputs);
 	}
 	
 	private boolean hasSpaceForItems(ChemRecipe recipe, int index) {
 		int[] indices = getSlotIndicesFromIndex(index);
-		return InventoryUtil.doesArrayHaveSpace(slots, indices[2], indices[3], recipe.outputs);
+		return InventoryUtil.doesArrayHaveSpace(this.slots, indices[2], indices[3], recipe.outputs);
 	}
 	
 	protected void process(int index) {
@@ -142,15 +137,15 @@ public abstract class TileEntityMachineChemplantBase extends TileEntityMachineBa
 		this.power -= this.consumption;
 		this.progress[index]++;
 		
-		if(slots[0] != null && slots[0].getItem() == ModItems.meteorite_sword_machined)
-			slots[0] = new ItemStack(ModItems.meteorite_sword_treated); //fisfndmoivndlmgindgifgjfdnblfm
+		if(this.slots[0] != null && this.slots[0].getItem() == ModItems.meteorite_sword_machined)
+			this.slots[0] = new ItemStack(ModItems.meteorite_sword_treated); //fisfndmoivndlmgindgifgjfdnblfm
 		
 		int template = getTemplateIndex(index);
-		ChemRecipe recipe = ChemplantRecipes.indexMapping.get(slots[template].getItemDamage());
+		ChemRecipe recipe = ChemplantRecipes.indexMapping.get(this.slots[template].getItemDamage());
 		
 		this.maxProgress[index] = recipe.getDuration() * this.speed / 100;
 		
-		if(maxProgress[index] <= 0) maxProgress[index] = 1;
+		if(this.maxProgress[index] <= 0) this.maxProgress[index] = 1;
 		
 		if(this.progress[index] >= this.maxProgress[index]) {
 			consumeFluids(recipe, index);
@@ -158,18 +153,18 @@ public abstract class TileEntityMachineChemplantBase extends TileEntityMachineBa
 			consumeItems(recipe, index);
 			produceItems(recipe, index);
 			this.progress[index] = 0;
-			this.markDirty();
+			markDirty();
 		}
 	}
 	
 	private void consumeFluids(ChemRecipe recipe, int index) {
-		if(recipe.inputFluids[0] != null) tanks[index * 4].setFill(tanks[index * 4].getFill() - recipe.inputFluids[0].fill);
-		if(recipe.inputFluids[1] != null) tanks[index * 4 + 1].setFill(tanks[index * 4 + 1].getFill() - recipe.inputFluids[1].fill);
+		if(recipe.inputFluids[0] != null) this.tanks[index * 4].setFill(this.tanks[index * 4].getFill() - recipe.inputFluids[0].fill);
+		if(recipe.inputFluids[1] != null) this.tanks[index * 4 + 1].setFill(this.tanks[index * 4 + 1].getFill() - recipe.inputFluids[1].fill);
 	}
 	
 	private void produceFluids(ChemRecipe recipe, int index) {
-		if(recipe.outputFluids[0] != null) tanks[index * 4 + 2].setFill(tanks[index * 4 + 2].getFill() + recipe.outputFluids[0].fill);
-		if(recipe.outputFluids[1] != null) tanks[index * 4 + 3].setFill(tanks[index * 4 + 3].getFill() + recipe.outputFluids[1].fill);
+		if(recipe.outputFluids[0] != null) this.tanks[index * 4 + 2].setFill(this.tanks[index * 4 + 2].getFill() + recipe.outputFluids[0].fill);
+		if(recipe.outputFluids[1] != null) this.tanks[index * 4 + 3].setFill(this.tanks[index * 4 + 3].getFill() + recipe.outputFluids[1].fill);
 	}
 	
 	private void consumeItems(ChemRecipe recipe, int index) {
@@ -178,7 +173,7 @@ public abstract class TileEntityMachineChemplantBase extends TileEntityMachineBa
 		
 		for(AStack in : recipe.inputs) {
 			if(in != null)
-				InventoryUtil.tryConsumeAStack(slots, indices[0], indices[1], in);
+				InventoryUtil.tryConsumeAStack(this.slots, indices[0], indices[1], in);
 		}
 	}
 	
@@ -188,17 +183,17 @@ public abstract class TileEntityMachineChemplantBase extends TileEntityMachineBa
 		
 		for(ItemStack out : recipe.outputs) {
 			if(out != null)
-				InventoryUtil.tryAddItemToInventory(slots, indices[2], indices[3], out.copy());
+				InventoryUtil.tryAddItemToInventory(this.slots, indices[2], indices[3], out.copy());
 		}
 	}
 	
 	private void loadItems(int index) {
 		
 		int template = getTemplateIndex(index);
-		if(slots[template] == null || slots[template].getItem() != ModItems.chemistry_template)
+		if(this.slots[template] == null || this.slots[template].getItem() != ModItems.chemistry_template)
 			return;
 		
-		ChemRecipe recipe = ChemplantRecipes.indexMapping.get(slots[template].getItemDamage());
+		ChemRecipe recipe = ChemplantRecipes.indexMapping.get(this.slots[template].getItemDamage());
 		
 		if(recipe != null) {
 			
@@ -207,7 +202,7 @@ public abstract class TileEntityMachineChemplantBase extends TileEntityMachineBa
 			
 			for(DirPos coord : positions) {
 
-				TileEntity te = worldObj.getTileEntity(coord.getX(), coord.getY(), coord.getZ());
+				TileEntity te = this.worldObj.getTileEntity(coord.getX(), coord.getY(), coord.getZ());
 				
 				if(te instanceof IInventory) {
 					
@@ -218,7 +213,7 @@ public abstract class TileEntityMachineChemplantBase extends TileEntityMachineBa
 					for(AStack ingredient : recipe.inputs) {
 						
 						outer:
-						while(!InventoryUtil.doesArrayHaveIngredients(slots, indices[0], indices[1], ingredient)) {
+						while(!InventoryUtil.doesArrayHaveIngredients(this.slots, indices[0], indices[1], ingredient)) {
 							
 							boolean found = false;
 							
@@ -230,18 +225,18 @@ public abstract class TileEntityMachineChemplantBase extends TileEntityMachineBa
 									
 									for(int j = indices[0]; j <= indices[1]; j++) {
 										
-										if(slots[j] != null && slots[j].stackSize < slots[j].getMaxStackSize() & InventoryUtil.doesStackDataMatch(slots[j], stack)) {
+										if(this.slots[j] != null && this.slots[j].stackSize < this.slots[j].getMaxStackSize() & InventoryUtil.doesStackDataMatch(this.slots[j], stack)) {
 											inv.decrStackSize(slot, 1);
-											slots[j].stackSize++;
+											this.slots[j].stackSize++;
 											continue outer;
 										}
 									}
 									
 									for(int j = indices[0]; j <= indices[1]; j++) {
 										
-										if(slots[j] == null) {
-											slots[j] = stack.copy();
-											slots[j].stackSize = 1;
+										if(this.slots[j] == null) {
+											this.slots[j] = stack.copy();
+											this.slots[j].stackSize = 1;
 											inv.decrStackSize(slot, 1);
 											continue outer;
 										}
@@ -264,7 +259,7 @@ public abstract class TileEntityMachineChemplantBase extends TileEntityMachineBa
 		
 		for(DirPos coord : positions) {
 
-			TileEntity te = worldObj.getTileEntity(coord.getX(), coord.getY(), coord.getZ());
+			TileEntity te = this.worldObj.getTileEntity(coord.getX(), coord.getY(), coord.getZ());
 			
 			if(te instanceof IInventory) {
 				
@@ -274,7 +269,7 @@ public abstract class TileEntityMachineChemplantBase extends TileEntityMachineBa
 				
 				for(int i = indices[2]; i <= indices[3]; i++) {
 					
-					ItemStack out = slots[i];
+					ItemStack out = this.slots[i];
 					
 					if(out != null) {
 						
@@ -288,7 +283,7 @@ public abstract class TileEntityMachineChemplantBase extends TileEntityMachineBa
 							ItemStack target = inv.getStackInSlot(slot);
 							
 							if(InventoryUtil.doesStackDataMatch(out, target) && target.stackSize < target.getMaxStackSize() && target.stackSize < inv.getInventoryStackLimit()) {
-								this.decrStackSize(i, 1);
+								decrStackSize(i, 1);
 								target.stackSize++;
 								return;
 							}
@@ -305,7 +300,7 @@ public abstract class TileEntityMachineChemplantBase extends TileEntityMachineBa
 								ItemStack copy = out.copy();
 								copy.stackSize = 1;
 								inv.setInventorySlotContents(slot, copy);
-								this.decrStackSize(i, 1);
+								decrStackSize(i, 1);
 								return;
 							}
 						}
@@ -360,10 +355,9 @@ public abstract class TileEntityMachineChemplantBase extends TileEntityMachineBa
 	
 	protected List<FluidTank> inTanks() {
 
-		List<FluidTank> inTanks = new ArrayList();
+		List<FluidTank> inTanks = new ArrayList<>();
 		
-		for(int i = 0; i < tanks.length; i++) {
-			FluidTank tank = tanks[i];
+		for (FluidTank tank : this.tanks) {
 			if(tank.index % 4 < 2) {
 				inTanks.add(tank);
 			}
@@ -377,7 +371,7 @@ public abstract class TileEntityMachineChemplantBase extends TileEntityMachineBa
 		if(amount <= 0)
 			return;
 		
-		List<FluidTank> rec = new ArrayList();
+		List<FluidTank> rec = new ArrayList<>();
 		
 		for(FluidTank tank : inTanks()) {
 			if(tank.getTankType() == type) {
@@ -389,7 +383,7 @@ public abstract class TileEntityMachineChemplantBase extends TileEntityMachineBa
 			return;
 		
 		int demand = 0;
-		List<Integer> weight = new ArrayList();
+		List<Integer> weight = new ArrayList<>();
 		
 		for(FluidTank tank : rec) {
 			int fillWeight = tank.getMaxFill() - tank.getFill();
@@ -434,7 +428,7 @@ public abstract class TileEntityMachineChemplantBase extends TileEntityMachineBa
 		if(amount <= 0)
 			return;
 		
-		List<FluidTank> send = new ArrayList();
+		List<FluidTank> send = new ArrayList<>();
 		
 		for(FluidTank tank : outTanks()) {
 			if(tank.getTankType() == type && tank.getPressure() == pressure) {
@@ -446,7 +440,7 @@ public abstract class TileEntityMachineChemplantBase extends TileEntityMachineBa
 			return;
 		
 		int offer = 0;
-		List<Integer> weight = new ArrayList();
+		List<Integer> weight = new ArrayList<>();
 		
 		for(FluidTank tank : send) {
 			int fillWeight = tank.getFill();
@@ -481,10 +475,9 @@ public abstract class TileEntityMachineChemplantBase extends TileEntityMachineBa
 	
 	protected List<FluidTank> outTanks() {
 		
-		List<FluidTank> outTanks = new ArrayList();
+		List<FluidTank> outTanks = new ArrayList<>();
 		
-		for(int i = 0; i < tanks.length; i++) {
-			FluidTank tank = tanks[i];
+		for (FluidTank tank : this.tanks) {
 			if(tank.index % 4 > 1) {
 				outTanks.add(tank);
 			}
@@ -495,7 +488,7 @@ public abstract class TileEntityMachineChemplantBase extends TileEntityMachineBa
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return tanks;
+		return this.tanks;
 	}
 
 	@Override
@@ -505,7 +498,7 @@ public abstract class TileEntityMachineChemplantBase extends TileEntityMachineBa
 		if(amount <= 0)
 			return 0;
 		
-		List<FluidTank> rec = new ArrayList();
+		List<FluidTank> rec = new ArrayList<>();
 		
 		for(FluidTank tank : inTanks()) {
 			if(tank.getTankType() == type && tank.getPressure() == pressure) {
@@ -517,7 +510,7 @@ public abstract class TileEntityMachineChemplantBase extends TileEntityMachineBa
 			return fluid;
 		
 		int demand = 0;
-		List<Integer> weight = new ArrayList();
+		List<Integer> weight = new ArrayList<>();
 		
 		for(FluidTank tank : rec) {
 			int fillWeight = tank.getMaxFill() - tank.getFill();
@@ -563,11 +556,11 @@ public abstract class TileEntityMachineChemplantBase extends TileEntityMachineBa
 		this.power = nbt.getLong("power");
 		this.progress = nbt.getIntArray("progress");
 		
-		if(progress.length == 0)
-			progress = new int[this.getRecipeCount()];
+		if(this.progress.length == 0)
+			this.progress = new int[getRecipeCount()];
 		
-		for(int i = 0; i < tanks.length; i++) {
-			tanks[i].readFromNBT(nbt, "t" + i);
+		for(int i = 0; i < this.tanks.length; i++) {
+			this.tanks[i].readFromNBT(nbt, "t" + i);
 		}
 	}
 	
@@ -575,11 +568,11 @@ public abstract class TileEntityMachineChemplantBase extends TileEntityMachineBa
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		
-		nbt.setLong("power", power);
-		nbt.setIntArray("progress", progress);
+		nbt.setLong("power", this.power);
+		nbt.setIntArray("progress", this.progress);
 		
-		for(int i = 0; i < tanks.length; i++) {
-			tanks[i].writeToNBT(nbt, "t" + i);
+		for(int i = 0; i < this.tanks.length; i++) {
+			this.tanks[i].writeToNBT(nbt, "t" + i);
 		}
 	}
 

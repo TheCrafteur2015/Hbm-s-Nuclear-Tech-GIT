@@ -1,6 +1,7 @@
 package com.hbm.render.item.weapon;
 
 import org.lwjgl.opengl.GL11;
+
 import com.hbm.items.tool.ItemToolAbilityFueled;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.anim.HbmAnimations;

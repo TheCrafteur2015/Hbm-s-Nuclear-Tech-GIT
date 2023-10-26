@@ -42,16 +42,16 @@ public class EntityFogFX extends EntityModFX {
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
         
-        if(maxAge < 400)
+        if(this.maxAge < 400)
         {
-        	maxAge = 400;
+        	this.maxAge = 400;
         }
 
         this.particleAge++;
         
-        if (this.particleAge >= maxAge)
+        if (this.particleAge >= this.maxAge)
         {
-            this.setDead();
+            setDead();
         }
 
         this.motionX *= 0.9599999785423279D;

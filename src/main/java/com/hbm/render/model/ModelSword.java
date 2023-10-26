@@ -28,51 +28,51 @@ public class ModelSword extends ModelBase
   
   public ModelSword()
   {
-    textureWidth = 64;
-    textureHeight = 32;
+    this.textureWidth = 64;
+    this.textureHeight = 32;
     
-      GripBottom = new ModelRenderer(this, 0, 17);
-      GripBottom.addBox(0F, 0F, 0F, 3, 3, 1);
-      GripBottom.setRotationPoint(0F, 0F, 0F);
-      GripBottom.setTextureSize(64, 32);
-      GripBottom.mirror = true;
-      setRotation(GripBottom, 0F, 0F, 0F);
-      GripHandle = new ModelRenderer(this, 8, 2);
-      GripHandle.addBox(0F, 0F, 0F, 2, 5, 1);
-      GripHandle.setRotationPoint(0.5F, -5F, 0F);
-      GripHandle.setTextureSize(64, 32);
-      GripHandle.mirror = true;
-      setRotation(GripHandle, 0F, 0F, 0F);
-      Shield = new ModelRenderer(this, 14, 5);
-      Shield.addBox(0F, 0F, 0F, 6, 1, 3);
-      Shield.setRotationPoint(-1.5F, -6F, -1F);
-      Shield.setTextureSize(64, 32);
-      Shield.mirror = true;
-      setRotation(Shield, 0F, 0F, 0F);
-      Blade = new ModelRenderer(this, 0, 0);
-      Blade.addBox(0F, 0F, 0F, 3, 16, 1);
-      Blade.setRotationPoint(0F, -22F, 0F);
-      Blade.setTextureSize(64, 32);
-      Blade.mirror = true;
-      setRotation(Blade, 0F, 0F, 0F);
-      BladeTip = new ModelRenderer(this, 8, 0);
-      BladeTip.addBox(0F, 0F, 0F, 2, 1, 1);
-      BladeTip.setRotationPoint(0.5F, -23F, 0F);
-      BladeTip.setTextureSize(64, 32);
-      BladeTip.mirror = true;
-      setRotation(BladeTip, 0F, 0F, 0F);
-      Shield1 = new ModelRenderer(this, 14, 0);
-      Shield1.addBox(0F, 0F, 0F, 1, 1, 4);
-      Shield1.setRotationPoint(-2F, -6.5F, -1.5F);
-      Shield1.setTextureSize(64, 32);
-      Shield1.mirror = true;
-      setRotation(Shield1, 0F, 0F, 0F);
-      Shield2 = new ModelRenderer(this, 24, 0);
-      Shield2.addBox(0F, 0F, 0F, 1, 1, 4);
-      Shield2.setRotationPoint(4F, -6.5F, -1.5F);
-      Shield2.setTextureSize(64, 32);
-      Shield2.mirror = true;
-      setRotation(Shield2, 0F, 0F, 0F);
+      this.GripBottom = new ModelRenderer(this, 0, 17);
+      this.GripBottom.addBox(0F, 0F, 0F, 3, 3, 1);
+      this.GripBottom.setRotationPoint(0F, 0F, 0F);
+      this.GripBottom.setTextureSize(64, 32);
+      this.GripBottom.mirror = true;
+      setRotation(this.GripBottom, 0F, 0F, 0F);
+      this.GripHandle = new ModelRenderer(this, 8, 2);
+      this.GripHandle.addBox(0F, 0F, 0F, 2, 5, 1);
+      this.GripHandle.setRotationPoint(0.5F, -5F, 0F);
+      this.GripHandle.setTextureSize(64, 32);
+      this.GripHandle.mirror = true;
+      setRotation(this.GripHandle, 0F, 0F, 0F);
+      this.Shield = new ModelRenderer(this, 14, 5);
+      this.Shield.addBox(0F, 0F, 0F, 6, 1, 3);
+      this.Shield.setRotationPoint(-1.5F, -6F, -1F);
+      this.Shield.setTextureSize(64, 32);
+      this.Shield.mirror = true;
+      setRotation(this.Shield, 0F, 0F, 0F);
+      this.Blade = new ModelRenderer(this, 0, 0);
+      this.Blade.addBox(0F, 0F, 0F, 3, 16, 1);
+      this.Blade.setRotationPoint(0F, -22F, 0F);
+      this.Blade.setTextureSize(64, 32);
+      this.Blade.mirror = true;
+      setRotation(this.Blade, 0F, 0F, 0F);
+      this.BladeTip = new ModelRenderer(this, 8, 0);
+      this.BladeTip.addBox(0F, 0F, 0F, 2, 1, 1);
+      this.BladeTip.setRotationPoint(0.5F, -23F, 0F);
+      this.BladeTip.setTextureSize(64, 32);
+      this.BladeTip.mirror = true;
+      setRotation(this.BladeTip, 0F, 0F, 0F);
+      this.Shield1 = new ModelRenderer(this, 14, 0);
+      this.Shield1.addBox(0F, 0F, 0F, 1, 1, 4);
+      this.Shield1.setRotationPoint(-2F, -6.5F, -1.5F);
+      this.Shield1.setTextureSize(64, 32);
+      this.Shield1.mirror = true;
+      setRotation(this.Shield1, 0F, 0F, 0F);
+      this.Shield2 = new ModelRenderer(this, 24, 0);
+      this.Shield2.addBox(0F, 0F, 0F, 1, 1, 4);
+      this.Shield2.setRotationPoint(4F, -6.5F, -1.5F);
+      this.Shield2.setTextureSize(64, 32);
+      this.Shield2.mirror = true;
+      setRotation(this.Shield2, 0F, 0F, 0F);
   }
   
   @Override
@@ -80,13 +80,13 @@ public void render(Entity entity, float f, float f1, float f2, float f3, float f
   {
     super.render(entity, f, f1, f2, f3, f4, f5);
     setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-    GripBottom.render(f5);
-    GripHandle.render(f5);
-    Shield.render(f5);
-    Blade.render(f5);
-    BladeTip.render(f5);
-    Shield1.render(f5);
-    Shield2.render(f5);
+    this.GripBottom.render(f5);
+    this.GripHandle.render(f5);
+    this.Shield.render(f5);
+    this.Blade.render(f5);
+    this.BladeTip.render(f5);
+    this.Shield1.render(f5);
+    this.Shield2.render(f5);
   }
   
   private void setRotation(ModelRenderer model, float x, float y, float z)

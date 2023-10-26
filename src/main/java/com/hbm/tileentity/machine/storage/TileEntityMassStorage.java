@@ -42,47 +42,47 @@ public class TileEntityMassStorage extends TileEntityCrateBase implements INBTPa
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			int newRed = this.getStockpile() * 15 / this.capacity;
+			int newRed = getStockpile() * 15 / this.capacity;
 			
 			if(newRed != this.redstone) {
 				this.redstone = newRed;
-				this.markDirty();
+				markDirty();
 			}
 			
-			if(slots[0] != null && slots[0].getItem() == ModItems.fluid_barrel_infinite) {
-				this.stack = this.getCapacity();
+			if(this.slots[0] != null && this.slots[0].getItem() == ModItems.fluid_barrel_infinite) {
+				this.stack = getCapacity();
 			}
 			
-			if(this.getType() == null)
+			if(getType() == null)
 				this.stack = 0;
 			
-			if(getType() != null && getStockpile() < getCapacity() && slots[0] != null && slots[0].isItemEqual(getType()) && ItemStack.areItemStackTagsEqual(slots[0], getType())) {
+			if(getType() != null && getStockpile() < getCapacity() && this.slots[0] != null && this.slots[0].isItemEqual(getType()) && ItemStack.areItemStackTagsEqual(this.slots[0], getType())) {
 				
 				int remaining = getCapacity() - getStockpile();
-				int toRemove = Math.min(remaining, slots[0].stackSize);
-				this.decrStackSize(0, toRemove);
+				int toRemove = Math.min(remaining, this.slots[0].stackSize);
+				decrStackSize(0, toRemove);
 				this.stack += toRemove;
 				this.worldObj.markTileEntityChunkModified(this.xCoord, this.yCoord, this.zCoord, this);
 			}
 			
-			if(output && getType() != null) {
+			if(this.output && getType() != null) {
 				
-				if(slots[2] != null && !(slots[2].isItemEqual(getType()) && ItemStack.areItemStackTagsEqual(slots[2], getType()))) {
+				if(this.slots[2] != null && !(this.slots[2].isItemEqual(getType()) && ItemStack.areItemStackTagsEqual(this.slots[2], getType()))) {
 					return;
 				}
 				
 				int amount = Math.min(getStockpile(), getType().getMaxStackSize());
 				
 				if(amount > 0) {
-					if(slots[2] == null) {
-						slots[2] = slots[1].copy();
-						slots[2].stackSize = amount;
+					if(this.slots[2] == null) {
+						this.slots[2] = this.slots[1].copy();
+						this.slots[2].stackSize = amount;
 						this.stack -= amount;
 					} else {
-						amount = Math.min(amount, slots[2].getMaxStackSize() - slots[2].stackSize);
-						slots[2].stackSize += amount;
+						amount = Math.min(amount, this.slots[2].getMaxStackSize() - this.slots[2].stackSize);
+						this.slots[2].stackSize += amount;
 						this.stack -= amount;
 					}
 				}
@@ -90,8 +90,8 @@ public class TileEntityMassStorage extends TileEntityCrateBase implements INBTPa
 			
 			NBTTagCompound data = new NBTTagCompound();
 			data.setInteger("stack", getStockpile());
-			data.setBoolean("output", output);
-			if(slots[1] != null) slots[1].writeToNBT(data);
+			data.setBoolean("output", this.output);
+			if(this.slots[1] != null) this.slots[1].writeToNBT(data);
 			INBTPacketReceiver.networkPack(this, data, 15);
 		}
 	}
@@ -104,15 +104,15 @@ public class TileEntityMassStorage extends TileEntityCrateBase implements INBTPa
 	}
 	
 	public int getCapacity() {
-		return capacity;
+		return this.capacity;
 	}
 	
 	public ItemStack getType() {
-		return slots[1] == null ? null : slots[1].copy();
+		return this.slots[1] == null ? null : this.slots[1].copy();
 	}
 	
 	public int getStockpile() {
-		return stack;
+		return this.stack;
 	}
 	
 	public void setStockpile(int stack) {
@@ -121,17 +121,17 @@ public class TileEntityMassStorage extends TileEntityCrateBase implements INBTPa
 
 	@Override
 	public boolean hasPermission(EntityPlayer player) {
-		return Vec3.createVectorHelper(xCoord - player.posX, yCoord - player.posY, zCoord - player.posZ).lengthVector() < 20;
+		return Vec3.createVectorHelper(this.xCoord - player.posX, this.yCoord - player.posY, this.zCoord - player.posZ).lengthVector() < 20;
 	}
 
 	@Override
 	public void openInventory() {
-		this.worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "hbm:block.storageOpen", 1.0F, 1.0F);
+		this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, "hbm:block.storageOpen", 1.0F, 1.0F);
 	}
 
 	@Override
 	public void closeInventory() {
-		this.worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "hbm:block.storageClose", 1.0F, 1.0F);
+		this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, "hbm:block.storageClose", 1.0F, 1.0F);
 	}
 
 	@Override
@@ -150,51 +150,51 @@ public class TileEntityMassStorage extends TileEntityCrateBase implements INBTPa
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setInteger("stack", stack);
-		nbt.setBoolean("output", output);
-		nbt.setInteger("capacity", capacity);
-		nbt.setByte("redstone", (byte) redstone);
+		nbt.setInteger("stack", this.stack);
+		nbt.setBoolean("output", this.output);
+		nbt.setInteger("capacity", this.capacity);
+		nbt.setByte("redstone", (byte) this.redstone);
 	}
 
 	@Override
 	public void receiveControl(NBTTagCompound data) {
-		if(data.hasKey("provide") && slots[1] != null) {
+		if(data.hasKey("provide") && this.slots[1] != null) {
 			
-			if(this.getStockpile() == 0) {
+			if(getStockpile() == 0) {
 				return;
 			}
 			
-			int amount = data.getBoolean("provide") ? slots[1].getMaxStackSize() : 1;
+			int amount = data.getBoolean("provide") ? this.slots[1].getMaxStackSize() : 1;
 			amount = Math.min(amount, getStockpile());
 			
-			if(slots[2] != null && !(slots[2].isItemEqual(getType()) && ItemStack.areItemStackTagsEqual(slots[2], getType()))) {
+			if(this.slots[2] != null && !(this.slots[2].isItemEqual(getType()) && ItemStack.areItemStackTagsEqual(this.slots[2], getType()))) {
 				return;
 			}
 			
-			if(slots[2] == null) {
-				slots[2] = slots[1].copy();
-				slots[2].stackSize = amount;
+			if(this.slots[2] == null) {
+				this.slots[2] = this.slots[1].copy();
+				this.slots[2].stackSize = amount;
 				this.stack -= amount;
 			} else {
-				amount = Math.min(amount, slots[2].getMaxStackSize() - slots[2].stackSize);
-				slots[2].stackSize += amount;
+				amount = Math.min(amount, this.slots[2].getMaxStackSize() - this.slots[2].stackSize);
+				this.slots[2].stackSize += amount;
 				this.stack -= amount;
 			}
 		}
 		
 		if(data.hasKey("toggle")) {
-			this.output = !output;
+			this.output = !this.output;
 		}
 	}
 
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemStack, int j) {
-		return !this.isLocked() && i == 0 && (this.getType() == null || (getType().isItemEqual(itemStack) && ItemStack.areItemStackTagsEqual(itemStack, getType())));
+		return !isLocked() && i == 0 && (getType() == null || (getType().isItemEqual(itemStack) && ItemStack.areItemStackTagsEqual(itemStack, getType())));
 	}
 
 	@Override
 	public boolean canExtractItem(int i, ItemStack itemStack, int j) {
-		return !this.isLocked() && i == 2;
+		return !isLocked() && i == 2;
 	}
 
 	@Override

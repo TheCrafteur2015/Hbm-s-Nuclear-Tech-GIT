@@ -22,7 +22,8 @@ public class RenderTaintCrab extends RenderLiving {
 		this.shadowOpaque = 0.0F;
 	}
 	
-    public void doRender(EntityLiving entity, double x, double y, double z, float p_76986_8_, float p_76986_9_) {
+    @Override
+	public void doRender(EntityLiving entity, double x, double y, double z, float p_76986_8_, float p_76986_9_) {
     	
     	if(entity instanceof EntityTaintCrab) {
     		GL11.glPushMatrix();

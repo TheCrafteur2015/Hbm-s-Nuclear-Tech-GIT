@@ -34,13 +34,14 @@ public class ArmorBJJetpack extends ArmorBJ {
 	@SideOnly(Side.CLIENT)
 	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot) {
 		
-		if(model == null) {
-			model = new ModelArmorBJ(5);
+		if(this.model == null) {
+			this.model = new ModelArmorBJ(5);
 		}
 		
-		return model;
+		return this.model;
 	}
 
+	@Override
 	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
 		
 		super.onArmorTick(world, player, stack);
@@ -49,7 +50,7 @@ public class ArmorBJJetpack extends ArmorBJ {
 		
 		if(!world.isRemote) {
 			
-			if(this.hasFSBArmor(player) && props.isJetpackActive()) {
+			if(hasFSBArmor(player) && props.isJetpackActive()) {
 
 				NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "jetpack_bj");
@@ -58,7 +59,7 @@ public class ArmorBJJetpack extends ArmorBJ {
 			}
 		}
 
-		if(this.hasFSBArmor(player)) {
+		if(hasFSBArmor(player)) {
 			
 			ArmorUtil.resetFlightTime(player);
 			
@@ -91,6 +92,7 @@ public class ArmorBJJetpack extends ArmorBJ {
 		}
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		super.addInformation(stack, player, list, ext);

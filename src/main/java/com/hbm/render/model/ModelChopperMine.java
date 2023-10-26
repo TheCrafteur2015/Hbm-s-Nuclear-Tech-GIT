@@ -9,22 +9,22 @@ public class ModelChopperMine extends ModelBase {
 	ModelRenderer bullet;
 
 	public ModelChopperMine() {
-		textureWidth = 32;
-		textureHeight = 16;
+		this.textureWidth = 32;
+		this.textureHeight = 16;
 
-		bullet = new ModelRenderer(this, 0, 0);
-		bullet.addBox(0F, 0F, 0F, 8, 8, 8);
-		bullet.setRotationPoint(-4F, -4F, -4F);
-		bullet.setTextureSize(32, 16);
-		bullet.mirror = true;
-		setRotation(bullet, 0F, 0F, 0F);
+		this.bullet = new ModelRenderer(this, 0, 0);
+		this.bullet.addBox(0F, 0F, 0F, 8, 8, 8);
+		this.bullet.setRotationPoint(-4F, -4F, -4F);
+		this.bullet.setTextureSize(32, 16);
+		this.bullet.mirror = true;
+		setRotation(this.bullet, 0F, 0F, 0F);
 	}
 
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-		bullet.render(f5);
+		this.bullet.render(f5);
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -39,7 +39,7 @@ public class ModelChopperMine extends ModelBase {
 	}
 
 	public void renderAll(float f5) {
-		bullet.render(f5);
+		this.bullet.render(f5);
 	}
 
 }

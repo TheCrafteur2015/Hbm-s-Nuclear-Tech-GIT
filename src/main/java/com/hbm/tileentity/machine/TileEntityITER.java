@@ -49,7 +49,7 @@ public class TileEntityITER extends TileEntityMachineBase implements IEnergyUser
 	public static final long maxPower = 10000000;
 	public static final int powerReq = 100000;
 	public int age = 0;
-	public List<IFluidAcceptor> list = new ArrayList();
+	public List<IFluidAcceptor> list = new ArrayList<>();
 	public FluidTank[] tanks;
 	public FluidTank plasma;
 	
@@ -65,10 +65,10 @@ public class TileEntityITER extends TileEntityMachineBase implements IEnergyUser
 
 	public TileEntityITER() {
 		super(5);
-		tanks = new FluidTank[2];
-		tanks[0] = new FluidTank(Fluids.WATER, 1280000, 0);
-		tanks[1] = new FluidTank(Fluids.ULTRAHOTSTEAM, 128000, 1);
-		plasma = new FluidTank(Fluids.PLASMA_DT, 16000, 2);
+		this.tanks = new FluidTank[2];
+		this.tanks[0] = new FluidTank(Fluids.WATER, 1280000, 0);
+		this.tanks[1] = new FluidTank(Fluids.ULTRAHOTSTEAM, 128000, 1);
+		this.plasma = new FluidTank(Fluids.PLASMA_DT, 16000, 2);
 	}
 
 	@Override
@@ -79,68 +79,68 @@ public class TileEntityITER extends TileEntityMachineBase implements IEnergyUser
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			age++;
-			if (age >= 20) {
-				age = 0;
+			this.age++;
+			if (this.age >= 20) {
+				this.age = 0;
 			}
 
-			if (age == 9 || age == 19)
-				fillFluidInit(tanks[1].getTankType());
+			if (this.age == 9 || this.age == 19)
+				fillFluidInit(this.tanks[1].getTankType());
 			
-			this.updateConnections();
-			power = Library.chargeTEFromItems(slots, 0, power, maxPower);
+			updateConnections();
+			this.power = Library.chargeTEFromItems(this.slots, 0, this.power, TileEntityITER.maxPower);
 
 			/// START Processing part ///
 			
-			if(!isOn) {
-				plasma.setFill(0);	//jettison plasma if the thing is turned off
+			if(!this.isOn) {
+				this.plasma.setFill(0);	//jettison plasma if the thing is turned off
 			}
 			
 			//explode either if there's plasma that is too hot or if the reactor is turned on but the magnets have no power
-			if(plasma.getFill() > 0 && (this.plasma.getTankType().temperature >= this.getShield() || (this.isOn && this.power < this.powerReq))) {
-				this.explode();
+			if(this.plasma.getFill() > 0 && (this.plasma.getTankType().temperature >= getShield() || (this.isOn && this.power < TileEntityITER.powerReq))) {
+				explode();
 			}
 			
-			if(isOn && power >= powerReq) {
-				power -= powerReq;
+			if(this.isOn && this.power >= TileEntityITER.powerReq) {
+				this.power -= TileEntityITER.powerReq;
 				
-				if(plasma.getFill() > 0) {
+				if(this.plasma.getFill() > 0) {
 					
-					int chance = FusionRecipes.getByproductChance(plasma.getTankType());
+					int chance = FusionRecipes.getByproductChance(this.plasma.getTankType());
 					
-					if(chance > 0 && worldObj.rand.nextInt(chance) == 0)
+					if(chance > 0 && this.worldObj.rand.nextInt(chance) == 0)
 						produceByproduct();
 				}
 				
-				if(plasma.getFill() > 0 && this.getShield() != 0) {
+				if(this.plasma.getFill() > 0 && getShield() != 0) {
 					
-					ItemFusionShield.setShieldDamage(slots[3], ItemFusionShield.getShieldDamage(slots[3]) + 1);
+					ItemFusionShield.setShieldDamage(this.slots[3], ItemFusionShield.getShieldDamage(this.slots[3]) + 1);
 					
-					if(ItemFusionShield.getShieldDamage(slots[3]) > ((ItemFusionShield)slots[3].getItem()).maxDamage) {
-						slots[3] = null;
-						worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "hbm:block.shutdown", 5F, 1F);
+					if(ItemFusionShield.getShieldDamage(this.slots[3]) > ((ItemFusionShield)this.slots[3].getItem()).maxDamage) {
+						this.slots[3] = null;
+						this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, "hbm:block.shutdown", 5F, 1F);
 						this.isOn = false;
-						this.markDirty();
+						markDirty();
 					}
 				}
 				
-				int prod = FusionRecipes.getSteamProduction(plasma.getTankType());
+				int prod = FusionRecipes.getSteamProduction(this.plasma.getTankType());
 				
 				for(int i = 0; i < 20; i++) {
 					
-					if(plasma.getFill() > 0) {
+					if(this.plasma.getFill() > 0) {
 						
-						if(tanks[0].getFill() >= prod * 10) {
-							tanks[0].setFill(tanks[0].getFill() - prod * 10);
-							tanks[1].setFill(tanks[1].getFill() + prod);
+						if(this.tanks[0].getFill() >= prod * 10) {
+							this.tanks[0].setFill(this.tanks[0].getFill() - prod * 10);
+							this.tanks[1].setFill(this.tanks[1].getFill() + prod);
 							
-							if(tanks[1].getFill() > tanks[1].getMaxFill())
-								tanks[1].setFill(tanks[1].getMaxFill());
+							if(this.tanks[1].getFill() > this.tanks[1].getMaxFill())
+								this.tanks[1].setFill(this.tanks[1].getMaxFill());
 						}
 						
-						plasma.setFill(plasma.getFill() - 1);
+						this.plasma.setFill(this.plasma.getFill() - 1);
 					}
 				}
 			}
@@ -150,41 +150,41 @@ public class TileEntityITER extends TileEntityMachineBase implements IEnergyUser
 			/// END Processing part ///
 
 			/// START Notif packets ///
-			for(int i = 0; i < tanks.length; i++)
-				tanks[i].updateTank(xCoord, yCoord, zCoord, worldObj.provider.dimensionId);
-			plasma.updateTank(xCoord, yCoord, zCoord, worldObj.provider.dimensionId);
+			for (FluidTank tank : this.tanks)
+				tank.updateTank(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId);
+			this.plasma.updateTank(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId);
 			
 			for(DirPos pos : getConPos()) {
-				if(tanks[1].getFill() > 0) {
-					this.sendFluid(tanks[1], worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+				if(this.tanks[1].getFill() > 0) {
+					this.sendFluid(this.tanks[1], this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 				}
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setBoolean("isOn", isOn);
-			data.setLong("power", power);
-			data.setInteger("progress", progress);
+			data.setBoolean("isOn", this.isOn);
+			data.setLong("power", this.power);
+			data.setInteger("progress", this.progress);
 			
-			if(slots[3] == null) {
+			if(this.slots[3] == null) {
 				data.setInteger("blanket", 0);
-			} else if(slots[3].getItem() == ModItems.fusion_shield_tungsten) {
+			} else if(this.slots[3].getItem() == ModItems.fusion_shield_tungsten) {
 				data.setInteger("blanket", 1);
-			} else if(slots[3].getItem() == ModItems.fusion_shield_desh) {
+			} else if(this.slots[3].getItem() == ModItems.fusion_shield_desh) {
 				data.setInteger("blanket", 2);
-			} else if(slots[3].getItem() == ModItems.fusion_shield_chlorophyte) {
+			} else if(this.slots[3].getItem() == ModItems.fusion_shield_chlorophyte) {
 				data.setInteger("blanket", 3);
-			} else if(slots[3].getItem() == ModItems.fusion_shield_vaporwave) {
+			} else if(this.slots[3].getItem() == ModItems.fusion_shield_vaporwave) {
 				data.setInteger("blanket", 4);
 			}
 			
-			this.networkPack(data, 250);
+			networkPack(data, 250);
 			/// END Notif packets ///
 			
 		} else {
 			
 			this.lastRotor = this.rotor;
 			
-			if(this.isOn && this.power >= this.powerReq) {
+			if(this.isOn && this.power >= TileEntityITER.powerReq) {
 				
 				this.rotor += 15F;
 				
@@ -201,40 +201,40 @@ public class TileEntityITER extends TileEntityMachineBase implements IEnergyUser
 	private void updateConnections() {
 		
 		for(DirPos pos : getConPos()) {
-			this.trySubscribe(worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
-			this.trySubscribe(tanks[0].getTankType(), worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			this.trySubscribe(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			this.trySubscribe(this.tanks[0].getTankType(), this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 		}
 	}
 	
 	protected List<DirPos> getConPos() {
-		if(connections != null && !connections.isEmpty())
-			return connections;
+		if(this.connections != null && !this.connections.isEmpty())
+			return this.connections;
 		
-		connections = new ArrayList();
+		this.connections = new ArrayList<>();
 
-		connections.add(new DirPos(xCoord, yCoord + 3, zCoord, ForgeDirection.UP));
-		connections.add(new DirPos(xCoord, yCoord - 3, zCoord, ForgeDirection.DOWN));
+		this.connections.add(new DirPos(this.xCoord, this.yCoord + 3, this.zCoord, ForgeDirection.UP));
+		this.connections.add(new DirPos(this.xCoord, this.yCoord - 3, this.zCoord, ForgeDirection.DOWN));
 		
 		Vec3 vec = Vec3.createVectorHelper(5.75, 0, 0);
 		
 		for(int i = 0; i < 16; i++) {
 			vec.rotateAroundY((float) (Math.PI / 8));
-			connections.add(new DirPos(xCoord + (int)vec.xCoord, yCoord + 3, zCoord + (int)vec.zCoord, ForgeDirection.UP));
-			connections.add(new DirPos(xCoord + (int)vec.xCoord, yCoord - 3, zCoord + (int)vec.zCoord, ForgeDirection.DOWN));
+			this.connections.add(new DirPos(this.xCoord + (int)vec.xCoord, this.yCoord + 3, this.zCoord + (int)vec.zCoord, ForgeDirection.UP));
+			this.connections.add(new DirPos(this.xCoord + (int)vec.xCoord, this.yCoord - 3, this.zCoord + (int)vec.zCoord, ForgeDirection.DOWN));
 		}
 		
-		return connections;
+		return this.connections;
 	}
 	
 	private void explode() {
-		this.disassemble();
+		disassemble();
 		
 		if(this.plasma.getTankType() == Fluids.PLASMA_BF) {
 			
-			worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "hbm:weapon.mukeExplosion", 15.0F, 1.0F);
-			ExplosionLarge.spawnShrapnels(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, 50);
+			this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, "hbm:weapon.mukeExplosion", 15.0F, 1.0F);
+			ExplosionLarge.spawnShrapnels(this.worldObj, this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, 50);
 			
-			ExplosionNT exp = new ExplosionNT(worldObj, null, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, 20F)
+			ExplosionNT exp = new ExplosionNT(this.worldObj, null, this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, 20F)
 					.addAttrib(ExAttrib.BALEFIRE)
 					.addAttrib(ExAttrib.NOPARTICLE)
 					.addAttrib(ExAttrib.NOSOUND)
@@ -246,67 +246,62 @@ public class TileEntityITER extends TileEntityMachineBase implements IEnergyUser
 			NBTTagCompound data = new NBTTagCompound();
 			data.setString("type", "muke");
 			data.setBoolean("balefire", true);
-			PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 250));
+			PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 250));
 			
 		} else {
 			Vec3 vec = Vec3.createVectorHelper(5.5, 0, 0);
-			vec.rotateAroundY(worldObj.rand.nextFloat() * (float)Math.PI * 2F);
+			vec.rotateAroundY(this.worldObj.rand.nextFloat() * (float)Math.PI * 2F);
 			
-			worldObj.newExplosion(null, xCoord + 0.5 + vec.xCoord, yCoord + 0.5 + worldObj.rand.nextGaussian() * 1.5D, zCoord + 0.5 + vec.zCoord, 2.5F, true, true);
+			this.worldObj.newExplosion(null, this.xCoord + 0.5 + vec.xCoord, this.yCoord + 0.5 + this.worldObj.rand.nextGaussian() * 1.5D, this.zCoord + 0.5 + vec.zCoord, 2.5F, true, true);
 		}
 		
 	}
 
 	private void doBreederStuff() {
 		
-		if(plasma.getFill() == 0) {
+		if(this.plasma.getFill() == 0) {
 			this.progress = 0;
 			return;
 		}
 		
-		BreederRecipe out = BreederRecipes.getOutput(slots[1]);
+		BreederRecipe out = BreederRecipes.getOutput(this.slots[1]);
 		
-		if(slots[1] != null && slots[1].getItem() == ModItems.meteorite_sword_irradiated)
+		if(this.slots[1] != null && this.slots[1].getItem() == ModItems.meteorite_sword_irradiated)
 			out = new BreederRecipe(ModItems.meteorite_sword_fused, 1000);
 		
-		if(slots[1] != null && slots[1].getItem() == ModItems.meteorite_sword_fused)
+		if(this.slots[1] != null && this.slots[1].getItem() == ModItems.meteorite_sword_fused)
 			out = new BreederRecipe(ModItems.meteorite_sword_baleful, 4000);
 		
-		if(out == null) {
+		if((out == null) || (this.slots[2] != null && this.slots[2].stackSize >= this.slots[2].getMaxStackSize())) {
 			this.progress = 0;
 			return;
 		}
 		
-		if(slots[2] != null && slots[2].stackSize >= slots[2].getMaxStackSize()) {
-			this.progress = 0;
-			return;
-		}
-		
-		int level = FusionRecipes.getBreedingLevel(plasma.getTankType());
+		int level = FusionRecipes.getBreedingLevel(this.plasma.getTankType());
 		
 		if(out.flux > level) {
 			this.progress = 0;
 			return;
 		}
 		
-		progress++;
+		this.progress++;
 		
-		if(progress > this.duration) {
+		if(this.progress > TileEntityITER.duration) {
 			
 			this.progress = 0;
 			
-			if(slots[2] != null) {
-				slots[2].stackSize++;
+			if(this.slots[2] != null) {
+				this.slots[2].stackSize++;
 			} else {
-				slots[2] = out.output.copy();
+				this.slots[2] = out.output.copy();
 			}
 			
-			slots[1].stackSize--;
+			this.slots[1].stackSize--;
 			
-			if(slots[1].stackSize <= 0)
-				slots[1] = null;
+			if(this.slots[1].stackSize <= 0)
+				this.slots[1] = null;
 			
-			this.markDirty();
+			markDirty();
 		}
 	}
 
@@ -331,27 +326,27 @@ public class TileEntityITER extends TileEntityMachineBase implements IEnergyUser
 	
 	private void produceByproduct() {
 		
-		ItemStack by = FusionRecipes.getByproduct(plasma.getTankType());
+		ItemStack by = FusionRecipes.getByproduct(this.plasma.getTankType());
 		
 		if(by == null)
 			return;
 		
-		if(slots[4] == null) {
-			slots[4] = by;
+		if(this.slots[4] == null) {
+			this.slots[4] = by;
 			return;
 		}
 		
-		if(slots[4].getItem() == by.getItem() && slots[4].getItemDamage() == by.getItemDamage() && slots[4].stackSize < slots[4].getMaxStackSize()) {
-			slots[4].stackSize++;
+		if(this.slots[4].getItem() == by.getItem() && this.slots[4].getItemDamage() == by.getItemDamage() && this.slots[4].stackSize < this.slots[4].getMaxStackSize()) {
+			this.slots[4].stackSize++;
 		}
 	}
 	
 	public int getShield() {
 		
-		if(slots[3] == null || !(slots[3].getItem() instanceof ItemFusionShield))
+		if(this.slots[3] == null || !(this.slots[3].getItem() instanceof ItemFusionShield))
 			return 0;
 		
-		return ((ItemFusionShield)slots[3].getItem()).maxTemp;
+		return ((ItemFusionShield)this.slots[3].getItem()).maxTemp;
 	}
 
 	@Override
@@ -371,11 +366,11 @@ public class TileEntityITER extends TileEntityMachineBase implements IEnergyUser
 	}
 
 	public long getPowerScaled(long i) {
-		return (power * i) / maxPower;
+		return (this.power * i) / TileEntityITER.maxPower;
 	}
 
 	public long getProgressScaled(long i) {
-		return (progress * i) / duration;
+		return (this.progress * i) / TileEntityITER.duration;
 	}
 
 	@Override
@@ -385,68 +380,68 @@ public class TileEntityITER extends TileEntityMachineBase implements IEnergyUser
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 
 	@Override
 	public long getMaxPower() {
-		return maxPower;
+		return TileEntityITER.maxPower;
 	}
 
 	@Override
 	public void setFillForSync(int fill, int index) {
-		if (index < 2 && tanks[index] != null)
-			tanks[index].setFill(fill);
+		if (index < 2 && this.tanks[index] != null)
+			this.tanks[index].setFill(fill);
 		
 		if(index == 2)
-			plasma.setFill(fill);
+			this.plasma.setFill(fill);
 	}
 
 	@Override
 	public void setFluidFill(int i, FluidType type) {
-		if (type.name().equals(tanks[0].getTankType().name()))
-			tanks[0].setFill(i);
-		else if (type.name().equals(tanks[1].getTankType().name()))
-			tanks[1].setFill(i);
-		else if (type.name().equals(plasma.getTankType().name()))
-			plasma.setFill(i);
+		if (type.name().equals(this.tanks[0].getTankType().name()))
+			this.tanks[0].setFill(i);
+		else if (type.name().equals(this.tanks[1].getTankType().name()))
+			this.tanks[1].setFill(i);
+		else if (type.name().equals(this.plasma.getTankType().name()))
+			this.plasma.setFill(i);
 	}
 
 	@Override
 	public void setTypeForSync(FluidType type, int index) {
-		if (index < 2 && tanks[index] != null)
-			tanks[index].setTankType(type);
+		if (index < 2 && this.tanks[index] != null)
+			this.tanks[index].setTankType(type);
 		
 		if(index == 2)
-			plasma.setTankType(type);
+			this.plasma.setTankType(type);
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		if (type.name().equals(tanks[0].getTankType().name()))
-			return tanks[0].getFill();
-		else if (type.name().equals(tanks[1].getTankType().name()))
-			return tanks[1].getFill();
-		else if (type.name().equals(plasma.getTankType().name()))
-			return plasma.getFill();
+		if (type.name().equals(this.tanks[0].getTankType().name()))
+			return this.tanks[0].getFill();
+		else if (type.name().equals(this.tanks[1].getTankType().name()))
+			return this.tanks[1].getFill();
+		else if (type.name().equals(this.plasma.getTankType().name()))
+			return this.plasma.getFill();
 		else
 			return 0;
 	}
 
 	@Override
 	public void fillFluidInit(FluidType type) {
-		fillFluid(xCoord, yCoord - 3, zCoord, getTact(), type);
-		fillFluid(xCoord, yCoord + 3, zCoord, getTact(), type);
+		fillFluid(this.xCoord, this.yCoord - 3, this.zCoord, getTact(), type);
+		fillFluid(this.xCoord, this.yCoord + 3, this.zCoord, getTact(), type);
 	}
 
 	@Override
 	public void fillFluid(int x, int y, int z, boolean newTact, FluidType type) {
-		Library.transmitFluid(x, y, z, newTact, this, worldObj, type);
+		Library.transmitFluid(x, y, z, newTact, this, this.worldObj, type);
 	}
 
 	@Override
 	public boolean getTact() {
-		if (age >= 0 && age < 10) {
+		if (this.age >= 0 && this.age < 10) {
 			return true;
 		}
 
@@ -455,22 +450,22 @@ public class TileEntityITER extends TileEntityMachineBase implements IEnergyUser
 
 	@Override
 	public List<IFluidAcceptor> getFluidList(FluidType type) {
-		return list;
+		return this.list;
 	}
 
 	@Override
 	public void clearFluidList(FluidType type) {
-		list.clear();
+		this.list.clear();
 	}
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		if (type.name().equals(tanks[0].getTankType().name()))
-			return tanks[0].getMaxFill();
-		else if (type.name().equals(tanks[1].getTankType().name()))
-			return tanks[1].getMaxFill();
-		else if (type.name().equals(plasma.getTankType().name()))
-			return plasma.getMaxFill();
+		if (type.name().equals(this.tanks[0].getTankType().name()))
+			return this.tanks[0].getMaxFill();
+		else if (type.name().equals(this.tanks[1].getTankType().name()))
+			return this.tanks[1].getMaxFill();
+		else if (type.name().equals(this.plasma.getTankType().name()))
+			return this.plasma.getMaxFill();
 		else
 			return 0;
 	}
@@ -482,9 +477,9 @@ public class TileEntityITER extends TileEntityMachineBase implements IEnergyUser
 		this.power = nbt.getLong("power");
 		this.isOn = nbt.getBoolean("isOn");
 
-		tanks[0].readFromNBT(nbt, "water");
-		tanks[1].readFromNBT(nbt, "steam");
-		plasma.readFromNBT(nbt, "plasma");
+		this.tanks[0].readFromNBT(nbt, "water");
+		this.tanks[1].readFromNBT(nbt, "steam");
+		this.plasma.readFromNBT(nbt, "plasma");
 	}
 	
 	@Override
@@ -492,11 +487,11 @@ public class TileEntityITER extends TileEntityMachineBase implements IEnergyUser
 		super.writeToNBT(nbt);
 		
 		nbt.setLong("power", this.power);
-		nbt.setBoolean("isOn", isOn);
+		nbt.setBoolean("isOn", this.isOn);
 
-		tanks[0].writeToNBT(nbt, "water");
-		tanks[1].writeToNBT(nbt, "steam");
-		plasma.writeToNBT(nbt, "plasma");
+		this.tanks[0].writeToNBT(nbt, "water");
+		this.tanks[1].writeToNBT(nbt, "steam");
+		this.plasma.writeToNBT(nbt, "plasma");
 	}
 	
 	AxisAlignedBB bb = null;
@@ -504,18 +499,18 @@ public class TileEntityITER extends TileEntityMachineBase implements IEnergyUser
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord + 0.5 - 8,
-					yCoord + 0.5 - 3,
-					zCoord + 0.5 - 8,
-					xCoord + 0.5 + 8,
-					yCoord + 0.5 + 3,
-					zCoord + 0.5 + 8
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord + 0.5 - 8,
+					this.yCoord + 0.5 - 3,
+					this.zCoord + 0.5 - 8,
+					this.xCoord + 0.5 + 8,
+					this.yCoord + 0.5 + 3,
+					this.zCoord + 0.5 + 8
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override
@@ -524,6 +519,7 @@ public class TileEntityITER extends TileEntityMachineBase implements IEnergyUser
 		return 65536.0D;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void disassemble() {
 		
 		MachineITER.drop = false;
@@ -544,21 +540,21 @@ public class TileEntityITER extends TileEntityMachineBase implements IEnergyUser
 					int b = layout[ly][x][z];
 					
 					switch(b) {
-					case 1: worldObj.setBlock(xCoord - width + x, yCoord + y - 2, zCoord - width + z, ModBlocks.fusion_conductor, 1, 3); break;
-					case 2: worldObj.setBlock(xCoord - width + x, yCoord + y - 2, zCoord - width + z, ModBlocks.fusion_center); break;
-					case 3: worldObj.setBlock(xCoord - width + x, yCoord + y - 2, zCoord - width + z, ModBlocks.fusion_motor); break;
-					case 4: worldObj.setBlock(xCoord - width + x, yCoord + y - 2, zCoord - width + z, ModBlocks.reinforced_glass); break;
+					case 1: this.worldObj.setBlock(this.xCoord - width + x, this.yCoord + y - 2, this.zCoord - width + z, ModBlocks.fusion_conductor, 1, 3); break;
+					case 2: this.worldObj.setBlock(this.xCoord - width + x, this.yCoord + y - 2, this.zCoord - width + z, ModBlocks.fusion_center); break;
+					case 3: this.worldObj.setBlock(this.xCoord - width + x, this.yCoord + y - 2, this.zCoord - width + z, ModBlocks.fusion_motor); break;
+					case 4: this.worldObj.setBlock(this.xCoord - width + x, this.yCoord + y - 2, this.zCoord - width + z, ModBlocks.reinforced_glass); break;
 					}
 				}
 			}
 		}
 		
-		worldObj.setBlock(xCoord, yCoord - 2, zCoord, ModBlocks.struct_iter_core);
+		this.worldObj.setBlock(this.xCoord, this.yCoord - 2, this.zCoord, ModBlocks.struct_iter_core);
 		
 		MachineITER.drop = true;
 		
-		List<EntityPlayer> players = worldObj.getEntitiesWithinAABB(EntityPlayer.class,
-				AxisAlignedBB.getBoundingBox(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5).expand(50, 10, 50));
+		List<EntityPlayer> players = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class,
+				AxisAlignedBB.getBoundingBox(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5).expand(50, 10, 50));
 		
 		for(EntityPlayer player : players) {
 			player.triggerAchievement(MainRegistry.achMeltdown);
@@ -567,17 +563,17 @@ public class TileEntityITER extends TileEntityMachineBase implements IEnergyUser
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return new FluidTank[] {tanks[1]};
+		return new FluidTank[] {this.tanks[1]};
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] {tanks[0]};
+		return new FluidTank[] {this.tanks[0]};
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return tanks;
+		return this.tanks;
 	}
 
 	@Override

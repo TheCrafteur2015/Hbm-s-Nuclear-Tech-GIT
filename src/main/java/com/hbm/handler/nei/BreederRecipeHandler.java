@@ -33,12 +33,12 @@ public class BreederRecipeHandler extends TemplateRecipeHandler {
 
 		@Override
 		public List<PositionedStack> getIngredients() {
-			return getCycledIngredients(cycleticks / 48, Arrays.asList(new PositionedStack[] { input }));
+			return getCycledIngredients(BreederRecipeHandler.this.cycleticks / 48, Arrays.asList(new PositionedStack[] { this.input }));
 		}
 		
 		@Override
 		public PositionedStack getResult() {
-			return result;
+			return this.result;
 		}
 	}
 
@@ -105,7 +105,7 @@ public class BreederRecipeHandler extends TemplateRecipeHandler {
 
 	@Override
 	public void loadTransferRects() {
-		transferRects.add(new RecipeTransferRect(new Rectangle(68, 9, 30, 37), "breeding"));
+		this.transferRects.add(new RecipeTransferRect(new Rectangle(68, 9, 30, 37), "breeding"));
 	}
 
 	@Override

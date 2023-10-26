@@ -28,12 +28,12 @@ public class EntityMissileRain extends EntityMissileBaseAdvanced {
 	
 	@Override
 	public void cluster() {
-		this.onImpact();
+		onImpact();
 	}
 
 	@Override
 	public List<ItemStack> getDebris() {
-		List<ItemStack> list = new ArrayList<ItemStack>();
+		List<ItemStack> list = new ArrayList<>();
 
 		list.add(new ItemStack(ModItems.plate_steel, 16));
 		list.add(new ItemStack(ModItems.plate_titanium, 10));

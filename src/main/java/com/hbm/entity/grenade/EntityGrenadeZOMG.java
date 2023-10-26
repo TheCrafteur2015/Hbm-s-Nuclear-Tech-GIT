@@ -25,8 +25,8 @@ public class EntityGrenadeZOMG extends EntityGrenadeBouncyBase {
 	public void explode() {
 
 		if(!this.worldObj.isRemote) {
-			this.setDead();
-			ExplosionChaos.zomgMeSinPi(this.worldObj, this.posX, this.posY, this.posZ, 20, this.getThrower(), this);
+			setDead();
+			ExplosionChaos.zomgMeSinPi(this.worldObj, this.posX, this.posY, this.posZ, 20, getThrower(), this);
 		}
 	}
 

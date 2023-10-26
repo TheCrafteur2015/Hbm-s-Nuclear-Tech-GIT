@@ -50,11 +50,12 @@ public class RBMKDebrisBurning extends RBMKDebris {
 			if(rand.nextInt(chance) == 0) {
 				world.setBlock(x, y, z, ModBlocks.pribris);
 			} else {
-				world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
+				world.scheduleBlockUpdate(x, y, z, this, tickRate(world));
 			}
 		}
 	}
 
+	@Override
 	public void onBlockAdded(World world, int x, int y, int z) {
 		super.onBlockAdded(world, x, y, z);
 
@@ -68,6 +69,6 @@ public class RBMKDebrisBurning extends RBMKDebris {
 			}
 		}
 
-		world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
+		world.scheduleBlockUpdate(x, y, z, this, tickRate(world));
 	}
 }

@@ -19,19 +19,19 @@ public class ContainerCraneRouter extends Container {
 		for(int j = 0; j < 2; j++) {
 			for(int i = 0; i < 3; i++) {
 				for(int k = 0; k < 5; k++) {
-					this.addSlotToContainer(new SlotPattern(router, k + j * 15 + i * 5, 34 + k * 18 + j * 98, 17 + i * 26));
+					addSlotToContainer(new SlotPattern(router, k + j * 15 + i * 5, 34 + k * 18 + j * 98, 17 + i * 26));
 				}
 			}
 		}
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 47 + j * 18, 119 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 47 + j * 18, 119 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 47 + i * 18, 177));
+			addSlotToContainer(new Slot(invPlayer, i, 47 + i * 18, 177));
 		}
 	}
 
@@ -47,7 +47,7 @@ public class ContainerCraneRouter extends Container {
 			return super.slotClick(index, button, mode, player);
 		}
 
-		Slot slot = this.getSlot(index);
+		Slot slot = getSlot(index);
 		
 		ItemStack ret = null;
 		ItemStack held = player.inventory.getItemStack();
@@ -56,7 +56,7 @@ public class ContainerCraneRouter extends Container {
 			ret = slot.getStack().copy();
 		
 		if(button == 1 && mode == 0 && slot.getHasStack()) {
-			router.nextMode(index);
+			this.router.nextMode(index);
 			return ret;
 			
 		} else {
@@ -68,7 +68,7 @@ public class ContainerCraneRouter extends Container {
 			}
 			
 			slot.onSlotChanged();
-			router.initPattern(slot.getStack(), index);
+			this.router.initPattern(slot.getStack(), index);
 			
 			return ret;
 		}
@@ -81,6 +81,6 @@ public class ContainerCraneRouter extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return router.isUseableByPlayer(player);
+		return this.router.isUseableByPlayer(player);
 	}
 }

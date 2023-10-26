@@ -31,7 +31,7 @@ public class RenderGlyphid extends RenderLiving {
 
 		@Override
 		public void setLivingAnimations(EntityLivingBase entity, float limbSwing, float limbSwingAmount, float interp) {
-			bite = entity.getSwingProgress(interp);
+			this.bite = entity.getSwingProgress(interp);
 		}
 
 		@Override

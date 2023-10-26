@@ -1,6 +1,7 @@
 package com.hbm.entity.projectile;
 
 import com.hbm.main.MainRegistry;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,22 +30,22 @@ public class EntityWaterSplash extends EntityThrowable {
 	public void onUpdate() {
 		super.onUpdate();
 
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 
 			if(this.ticksExisted > 200) {
-				this.setDead();
+				setDead();
 			}
 		} else {
 			
-			MainRegistry.proxy.particleControl(posX, posY, posZ, 0);
+			MainRegistry.proxy.particleControl(this.posX, this.posY, this.posZ, 0);
 		}
 	}
 
 	@Override
 	protected void onImpact(MovingObjectPosition p_70184_1_) {
 		if(this.ticksExisted > 5) {
-			worldObj.spawnParticle("splash", posX, posY, posZ, 0.0D, 0.0D, 0.0D);
-			this.setDead();
+			this.worldObj.spawnParticle("splash", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+			setDead();
 		}
 	}
 
@@ -56,6 +57,6 @@ public class EntityWaterSplash extends EntityThrowable {
 	@Override
 	public void readEntityFromNBT(NBTTagCompound nbt) {
 		super.readEntityFromNBT(nbt);
-		this.setDead();
+		setDead();
 	}
 }

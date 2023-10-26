@@ -28,9 +28,9 @@ import net.minecraft.world.World;
 public class ItemBlowtorch extends Item implements IFillableItem {
 
 	public ItemBlowtorch() {
-		this.setMaxStackSize(1);
-		this.setFull3D();
-		this.setCreativeTab(MainRegistry.controlTab);
+		setMaxStackSize(1);
+		setFull3D();
+		setCreativeTab(MainRegistry.controlTab);
 		
 		ToolType.TORCH.register(new ItemStack(this));
 	}
@@ -38,7 +38,7 @@ public class ItemBlowtorch extends Item implements IFillableItem {
 	@Override
 	public Item setUnlocalizedName(String unlocalizedName) {
 		super.setUnlocalizedName(unlocalizedName);
-		this.setTextureName(RefStrings.MODID + ":"+ unlocalizedName);
+		setTextureName(RefStrings.MODID + ":"+ unlocalizedName);
 		return this;
 	}
 
@@ -58,8 +58,8 @@ public class ItemBlowtorch extends Item implements IFillableItem {
 			return amount;
 		
 		int toFill = Math.min(amount, 50);
-		toFill = Math.min(toFill, getMaxFill(type) - this.getFill(stack, type));
-		this.setFill(stack, type, this.getFill(stack, type) + toFill);
+		toFill = Math.min(toFill, getMaxFill(type) - getFill(stack, type));
+		setFill(stack, type, getFill(stack, type) + toFill);
 		
 		return amount - toFill;
 	}
@@ -93,11 +93,11 @@ public class ItemBlowtorch extends Item implements IFillableItem {
 		stack.stackTagCompound = new NBTTagCompound();
 
 		if(this == ModItems.blowtorch) {
-			this.setFill(stack, Fluids.GAS, this.getMaxFill(Fluids.GAS));
+			setFill(stack, Fluids.GAS, getMaxFill(Fluids.GAS));
 		}
 		if(this == ModItems.acetylene_torch) {
-			this.setFill(stack, Fluids.UNSATURATEDS, this.getMaxFill(Fluids.UNSATURATEDS));
-			this.setFill(stack, Fluids.OXYGEN, this.getMaxFill(Fluids.OXYGEN));
+			setFill(stack, Fluids.UNSATURATEDS, getMaxFill(Fluids.UNSATURATEDS));
+			setFill(stack, Fluids.OXYGEN, getMaxFill(Fluids.OXYGEN));
 		}
 	}
 	
@@ -124,12 +124,11 @@ public class ItemBlowtorch extends Item implements IFillableItem {
 		if(b instanceof IToolable) {
 			
 			if(this == ModItems.blowtorch) {
-				if(this.getFill(stack, Fluids.GAS) < 1000) return false;
+				if(getFill(stack, Fluids.GAS) < 1000) return false;
 			}
 			
 			if(this == ModItems.acetylene_torch) {
-				if(this.getFill(stack, Fluids.UNSATURATEDS) < 20) return false;
-				if(this.getFill(stack, Fluids.OXYGEN) < 10) return false;
+				if((getFill(stack, Fluids.UNSATURATEDS) < 20) || (getFill(stack, Fluids.OXYGEN) < 10)) return false;
 			}
 			
 			if(((IToolable)b).onScrew(world, player, x, y, z, side, fX, fY, fZ, ToolType.TORCH)) {
@@ -137,12 +136,12 @@ public class ItemBlowtorch extends Item implements IFillableItem {
 				if(!world.isRemote) {
 					
 					if(this == ModItems.blowtorch) {
-						this.setFill(stack, Fluids.GAS, this.getFill(stack, Fluids.GAS) - 250);
+						setFill(stack, Fluids.GAS, getFill(stack, Fluids.GAS) - 250);
 					}
 					
 					if(this == ModItems.acetylene_torch) {
-						this.setFill(stack, Fluids.UNSATURATEDS, this.getFill(stack, Fluids.UNSATURATEDS) - 20);
-						this.setFill(stack, Fluids.OXYGEN, this.getFill(stack, Fluids.OXYGEN) - 10);
+						setFill(stack, Fluids.UNSATURATEDS, getFill(stack, Fluids.UNSATURATEDS) - 20);
+						setFill(stack, Fluids.OXYGEN, getFill(stack, Fluids.OXYGEN) - 10);
 					}
 					
 					player.inventoryContainer.detectAndSendChanges();
@@ -171,19 +170,20 @@ public class ItemBlowtorch extends Item implements IFillableItem {
 		double frac = 0D;
 		
 		if(this == ModItems.blowtorch) {
-			frac = (double) this.getFill(stack, Fluids.GAS) / (double) this.getMaxFill(Fluids.GAS);
+			frac = (double) getFill(stack, Fluids.GAS) / (double) getMaxFill(Fluids.GAS);
 		}
 		
 		if(this == ModItems.acetylene_torch) {
 			frac = Math.min(
-					(double) this.getFill(stack, Fluids.UNSATURATEDS) / (double) this.getMaxFill(Fluids.UNSATURATEDS),
-					(double) this.getFill(stack, Fluids.OXYGEN) / (double) this.getMaxFill(Fluids.OXYGEN)
+					(double) getFill(stack, Fluids.UNSATURATEDS) / (double) getMaxFill(Fluids.UNSATURATEDS),
+					(double) getFill(stack, Fluids.OXYGEN) / (double) getMaxFill(Fluids.OXYGEN)
 					);
 		}
 		
 		return 1 - frac;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
@@ -199,7 +199,7 @@ public class ItemBlowtorch extends Item implements IFillableItem {
 
 	@SideOnly(Side.CLIENT)
 	private String getFillGauge(ItemStack stack, FluidType type) {
-		return type.getLocalizedName() + ": " + String.format(Locale.US, "%,d", this.getFill(stack, type)) + " / " + String.format(Locale.US, "%,d", this.getMaxFill(type));
+		return type.getLocalizedName() + ": " + String.format(Locale.US, "%,d", getFill(stack, type)) + " / " + String.format(Locale.US, "%,d", getMaxFill(type));
 	}
 
 	@Override public boolean providesFluid(FluidType type, ItemStack stack) { return false; }

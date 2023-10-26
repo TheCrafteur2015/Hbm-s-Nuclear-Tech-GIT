@@ -7,6 +7,7 @@ import com.hbm.handler.radiation.ChunkRadiationManager;
 import com.hbm.main.MainRegistry;
 import com.hbm.packet.AuxParticlePacketNT;
 import com.hbm.packet.PacketDispatcher;
+
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -45,11 +46,11 @@ public class ExplosionNukeSmall {
 		}
 	}
 
-	public static MukeParams PARAMS_SAFE = new MukeParams() {{ safe = true; killRadius = 45F; radiationLevel = 2F; }};
-	public static MukeParams PARAMS_TOTS = new MukeParams() {{ blastRadius = 10F; killRadius = 30F; particle = "tinytot"; shrapnelCount = 0; resolution = 32; radiationLevel = 1; }};
-	public static MukeParams PARAMS_LOW = new MukeParams() {{ blastRadius = 15F; killRadius = 45F; radiationLevel = 2; }};
-	public static MukeParams PARAMS_MEDIUM = new MukeParams() {{ blastRadius = 20F; killRadius = 55F; radiationLevel = 3; }};
-	public static MukeParams PARAMS_HIGH = new MukeParams() {{ miniNuke = false; blastRadius = BombConfig.fatmanRadius; shrapnelCount = 0; radiationLevel = 4; }};
+	public static MukeParams PARAMS_SAFE = new MukeParams() {{ this.safe = true; this.killRadius = 45F; this.radiationLevel = 2F; }};
+	public static MukeParams PARAMS_TOTS = new MukeParams() {{ this.blastRadius = 10F; this.killRadius = 30F; this.particle = "tinytot"; this.shrapnelCount = 0; this.resolution = 32; this.radiationLevel = 1; }};
+	public static MukeParams PARAMS_LOW = new MukeParams() {{ this.blastRadius = 15F; this.killRadius = 45F; this.radiationLevel = 2; }};
+	public static MukeParams PARAMS_MEDIUM = new MukeParams() {{ this.blastRadius = 20F; this.killRadius = 55F; this.radiationLevel = 3; }};
+	public static MukeParams PARAMS_HIGH = new MukeParams() {{ this.miniNuke = false; this.blastRadius = BombConfig.fatmanRadius; this.shrapnelCount = 0; this.radiationLevel = 4; }};
 	
 	/* more sensible approach with more customization options, idea shamelessly stolen from Martin */
 	public static class MukeParams {

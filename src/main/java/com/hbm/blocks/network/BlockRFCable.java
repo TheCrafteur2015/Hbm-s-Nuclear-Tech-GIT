@@ -14,7 +14,7 @@ public class BlockRFCable extends BlockContainer {
 	public BlockRFCable(Material p_i45386_1_) {
 		super(p_i45386_1_);
 		float p = 1F/16F;
-		this.setBlockBounds(11 * p / 2, 11 * p / 2, 11 * p / 2, 1 - 11 * p / 2, 1 - 11 * p / 2, 1 - 11 * p / 2);
+		setBlockBounds(11 * p / 2, 11 * p / 2, 11 * p / 2, 1 - 11 * p / 2, 1 - 11 * p / 2, 1 - 11 * p / 2);
 		this.useNeighborBrightness = true;
 	}
 	
@@ -33,7 +33,7 @@ public class BlockRFCable extends BlockContainer {
 			float maxY = 1 - 11 * p / 2 + (cable.connections[0] != null ? (11 * p / 2) : 0);
 			float maxZ = 1 - 11 * p / 2 + (cable.connections[4] != null ? (11 * p / 2) : 0);
 			
-			this.setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
+			setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
 		}
 		}
 		return AxisAlignedBB.getBoundingBox(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
@@ -54,7 +54,7 @@ public class BlockRFCable extends BlockContainer {
 			float maxY = 1 - 11 * p / 2 + (cable.connections[0] != null ? (11 * p / 2) : 0);
 			float maxZ = 1 - 11 * p / 2 + (cable.connections[4] != null ? (11 * p / 2) : 0);
 			
-			this.setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
+			setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
 		}
 		}
 	}

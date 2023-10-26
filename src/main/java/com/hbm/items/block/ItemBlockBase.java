@@ -24,14 +24,14 @@ public class ItemBlockBase extends ItemBlock {
 		super(block);
 		
 		if(block instanceof IBlockMulti) {
-			this.setMaxDamage(0);
-			this.setHasSubtypes(true);
+			setMaxDamage(0);
+			setHasSubtypes(true);
 		}
 	}
 	
 	@Override
 	public int getMetadata(int meta) {
-		if(field_150939_a instanceof IBlockMulti)
+		if(this.field_150939_a instanceof IBlockMulti)
 			return meta;
 		else
 			return super.getMetadata(meta);
@@ -40,8 +40,8 @@ public class ItemBlockBase extends ItemBlock {
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 		
-		if(field_150939_a instanceof BlockMulti) {
-			return ((BlockMulti)field_150939_a).getUnlocalizedName(stack);
+		if(this.field_150939_a instanceof BlockMulti) {
+			return ((BlockMulti)this.field_150939_a).getUnlocalizedName(stack);
 		} else {
 			return super.getUnlocalizedName(stack);
 		}
@@ -50,16 +50,17 @@ public class ItemBlockBase extends ItemBlock {
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		
-		if(field_150939_a instanceof ITooltipProvider) {
-			((ITooltipProvider) field_150939_a).addInformation(stack, player, list, bool);
+		if(this.field_150939_a instanceof ITooltipProvider) {
+			((ITooltipProvider) this.field_150939_a).addInformation(stack, player, list, bool);
 		}
 		
-		if(field_150939_a instanceof IPersistentInfoProvider && stack.hasTagCompound() && stack.getTagCompound().hasKey(IPersistentNBT.NBT_PERSISTENT_KEY)) {
+		if(this.field_150939_a instanceof IPersistentInfoProvider && stack.hasTagCompound() && stack.getTagCompound().hasKey(IPersistentNBT.NBT_PERSISTENT_KEY)) {
 			NBTTagCompound data = stack.getTagCompound().getCompoundTag(IPersistentNBT.NBT_PERSISTENT_KEY);
-			((IPersistentInfoProvider) field_150939_a).addInformation(stack, data, player, list, bool);
+			((IPersistentInfoProvider) this.field_150939_a).addInformation(stack, data, player, list, bool);
 		}
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIconFromDamage(int meta) {
 		return this.field_150939_a.getIcon(1, meta); //fuck you mojang
@@ -68,8 +69,8 @@ public class ItemBlockBase extends ItemBlock {
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
 		
-		if(field_150939_a instanceof ITooltipProvider) {
-			return ((ITooltipProvider) field_150939_a).getRarity(stack);
+		if(this.field_150939_a instanceof ITooltipProvider) {
+			return ((ITooltipProvider) this.field_150939_a).getRarity(stack);
 		}
 		
 		return EnumRarity.common;

@@ -18,9 +18,9 @@ public class BlockChargeC4 extends BlockChargeBase {
 	public BombReturnCode explode(World world, int x, int y, int z) {
 		
 		if(!world.isRemote) {
-			safe = true;
+			BlockChargeBase.safe = true;
 			world.setBlockToAir(x, y, z);
-			safe = false;
+			BlockChargeBase.safe = false;
 			
 			ExplosionVNT xnt = new ExplosionVNT(world, x + 0.5, y + 0.5, z + 0.5, 15F).makeStandard();
 			xnt.setBlockAllocator(new BlockAllocatorStandard(32));
@@ -37,11 +37,11 @@ public class BlockChargeC4 extends BlockChargeBase {
 
 	@Override
 	public int getRenderType() {
-		return renderID;
+		return BlockChargeC4.renderID;
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean ext) {
 		super.addInformation(stack, player, list, ext);
 		list.add(EnumChatFormatting.BLUE + "Does not drop blocks.");
 	}

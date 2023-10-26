@@ -14,23 +14,23 @@ public class ContainerCore extends Container {
 	
 	public ContainerCore(InventoryPlayer invPlayer, TileEntityCore tedf) {
 		
-		nukeBoy = tedf;
+		this.nukeBoy = tedf;
 
-		this.addSlotToContainer(new Slot(tedf, 0, 62, 53));
-		this.addSlotToContainer(new Slot(tedf, 1, 80, 53));
-		this.addSlotToContainer(new Slot(tedf, 2, 98, 53));
+		addSlotToContainer(new Slot(tedf, 0, 62, 53));
+		addSlotToContainer(new Slot(tedf, 1, 80, 53));
+		addSlotToContainer(new Slot(tedf, 2, 98, 53));
 		
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++)
 		{
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
 		}
 	}
 	
@@ -45,13 +45,13 @@ public class ContainerCore extends Container {
 			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 			
-            if (par2 <= nukeBoy.getSizeInventory() - 1) {
-				if (!this.mergeItemStack(var5, nukeBoy.getSizeInventory(), this.inventorySlots.size(), true))
+            if (par2 <= this.nukeBoy.getSizeInventory() - 1) {
+				if (!mergeItemStack(var5, this.nukeBoy.getSizeInventory(), this.inventorySlots.size(), true))
 				{
 					return null;
 				}
 			}
-			else if (!this.mergeItemStack(var5, 0, nukeBoy.getSizeInventory(), false))
+			else if (!mergeItemStack(var5, 0, this.nukeBoy.getSizeInventory(), false))
 			{
 					return null;
 			}
@@ -71,6 +71,6 @@ public class ContainerCore extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return nukeBoy.isUseableByPlayer(player);
+		return this.nukeBoy.isUseableByPlayer(player);
 	}
 }

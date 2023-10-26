@@ -29,18 +29,21 @@ public class BlockChain extends Block {
 		super(mat);
 	}
 	
-    public boolean isOpaqueCube() {
+    @Override
+	public boolean isOpaqueCube() {
         return false;
     }
     
-    public boolean renderAsNormalBlock() {
+    @Override
+	public boolean renderAsNormalBlock() {
         return false;
     }
     
     public static int renderID = RenderingRegistry.getNextAvailableRenderId();
 
-    public int getRenderType() {
-        return renderID;
+    @Override
+	public int getRenderType() {
+        return BlockChain.renderID;
     }
 
     @Override
@@ -55,7 +58,8 @@ public class BlockChain extends Block {
 		super.registerBlockIcons(iconRegister);
 	}
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
 
     	if(world.isSideSolid(x, y - 1, z, ForgeDirection.UP, false) || (world.getBlock(x, y - 1, z) == this && world.getBlockMetadata(x, y, z) == world.getBlockMetadata(x, y - 1, z)))
@@ -64,11 +68,13 @@ public class BlockChain extends Block {
     	return this.iconEnd;
     }
     
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+    @Override
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
         return null;
     }
     
-    public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
+    @Override
+	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
     	func_149797_b(world.getBlockMetadata(x, y, z));
 
     	if(!(world.isSideSolid(x, y - 1, z, ForgeDirection.UP, false) || (world.getBlock(x, y - 1, z) == this && world.getBlockMetadata(x, y, z) == world.getBlockMetadata(x, y - 1, z))))
@@ -91,32 +97,34 @@ public class BlockChain extends Block {
 
         if (meta == 2)
         {
-            this.setBlockBounds(3 * f, 0.0F, 1.0F - f, 5 * f, 1.0F, 1.0F);
+            setBlockBounds(3 * f, 0.0F, 1.0F - f, 5 * f, 1.0F, 1.0F);
         }
 
         if (meta == 3)
         {
-            this.setBlockBounds(3 * f, 0.0F, 0.0F, 5 * f, 1.0F, f);
+            setBlockBounds(3 * f, 0.0F, 0.0F, 5 * f, 1.0F, f);
         }
 
         if (meta == 4)
         {
-            this.setBlockBounds(1.0F - f, 0.0F, 3 * f, 1.0F, 1.0F, 5 * f);
+            setBlockBounds(1.0F - f, 0.0F, 3 * f, 1.0F, 1.0F, 5 * f);
         }
 
         if (meta == 5)
         {
-            this.setBlockBounds(0.0F, 0.0F, 3 * f, f, 1.0F, 5 * f);
+            setBlockBounds(0.0F, 0.0F, 3 * f, f, 1.0F, 5 * f);
         }
     }
     
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
-        this.setBlockBoundsBasedOnState(world, x, y, z);
+        setBlockBoundsBasedOnState(world, x, y, z);
         return super.getSelectedBoundingBoxFromPool(world, x, y, z);
     }
     
-    public boolean canPlaceBlockAt(World world, int x, int y, int z) {
+    @Override
+	public boolean canPlaceBlockAt(World world, int x, int y, int z) {
     	
     	if(world.isSideSolid(x, y + 1, z, ForgeDirection.DOWN) || world.getBlock(x, y + 1, z) == this)
     		return true;
@@ -127,7 +135,8 @@ public class BlockChain extends Block {
     			world.isSideSolid(x, y, z + 1, NORTH);
     }
     
-    public int onBlockPlaced(World world, int x, int y, int z, int side, float p_149660_6_, float p_149660_7_, float p_149660_8_, int meta)
+    @Override
+	public int onBlockPlaced(World world, int x, int y, int z, int side, float p_149660_6_, float p_149660_7_, float p_149660_8_, int meta)
     {
         int j1 = meta;
 
@@ -169,17 +178,13 @@ public class BlockChain extends Block {
         return j1;
     }
     
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
+    @Override
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
     	
         int l = world.getBlockMetadata(x, y, z);
         boolean flag = false;
         
-        if(world.getBlock(x, y + 1, z) == this && world.getBlockMetadata(x, y, z) == world.getBlockMetadata(x, y + 1, z)) {
-            super.onNeighborBlockChange(world, x, y, z, block);
-            return;
-        }
-        
-        if(world.isSideSolid(x, y + 1, z, ForgeDirection.DOWN) && world.getBlockMetadata(x, y, z) == 0) {
+        if((world.getBlock(x, y + 1, z) == this && world.getBlockMetadata(x, y, z) == world.getBlockMetadata(x, y + 1, z)) || (world.isSideSolid(x, y + 1, z, ForgeDirection.DOWN) && world.getBlockMetadata(x, y, z) == 0)) {
             super.onNeighborBlockChange(world, x, y, z, block);
             return;
         }

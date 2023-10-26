@@ -42,14 +42,11 @@ public interface IRTGUser
 		int newHeat = 0;
 		for(int slot : rtgIn) {
 			
-			if(inventory[slot] == null)
-				continue;
-			
-			if(!isItemValid(inventory[slot].getItem()))
+			if((inventory[slot] == null) || !isItemValid(inventory[slot].getItem()))
 				continue;
 			
 			final IRadioisotopeFuel pellet = (IRadioisotopeFuel) inventory[slot].getItem();
-			newHeat += getPower(pellet, inventory[slot]);
+			newHeat += IRTGUser.getPower(pellet, inventory[slot]);
 			inventory[slot] = IRadioisotopeFuel.handleDecay(inventory[slot], pellet);
 		}
 		
@@ -65,12 +62,10 @@ public interface IRTGUser
 		int newHeat = 0;
 		for (int slot = 0; slot < inventory.length; slot++)
 		{
-			if (inventory[slot] == null)
-				continue;
-			if (!isItemValid(inventory[slot].getItem()))
+			if ((inventory[slot] == null) || !isItemValid(inventory[slot].getItem()))
 				continue;
 			final IRadioisotopeFuel pellet = (IRadioisotopeFuel) inventory[slot].getItem();
-			newHeat += getPower(pellet, inventory[slot]);
+			newHeat += IRTGUser.getPower(pellet, inventory[slot]);
 			inventory[slot] = IRadioisotopeFuel.handleDecay(inventory[slot], pellet);
 		}
 		return newHeat;
@@ -89,7 +84,7 @@ public interface IRTGUser
 		for (ItemStack pellet : rtgList)
 		{
 			final IRadioisotopeFuel fuel = (IRadioisotopeFuel) pellet.getItem();
-			newHeat += getPower(fuel, pellet);
+			newHeat += IRTGUser.getPower(fuel, pellet);
 			if (fuel.getDoesDecay())
 			{
 				if (fuel.getLifespan(pellet) <= 0)
@@ -116,7 +111,7 @@ public interface IRTGUser
 		for (ItemStack pellet : rtgList)
 		{
 			final IRadioisotopeFuel fuel = (IRadioisotopeFuel) pellet.getItem();
-			newHeat += getPower(fuel, pellet);
+			newHeat += IRTGUser.getPower(fuel, pellet);
 			if (fuel.getDoesDecay())
 			{
 				if (fuel.getLifespan(pellet) <= 0)
@@ -124,11 +119,10 @@ public interface IRTGUser
 					rtgList.remove(pellet);
 					boolean alreadyExists = false;
 					final ItemStack decayItem = fuel.getDecayItem();
-					for (int i = 0; i < deplList.size(); i++)
-					{
-						if (deplList.get(i).getItem() == decayItem.getItem() && deplList.get(i).getItemDamage() == decayItem.getItemDamage() && deplList.get(i).stackSize + decayItem.stackSize <= decayItem.getMaxStackSize())
+					for (ItemStack element : deplList) {
+						if (element.getItem() == decayItem.getItem() && element.getItemDamage() == decayItem.getItemDamage() && element.stackSize + decayItem.stackSize <= decayItem.getMaxStackSize())
 							alreadyExists = true;
-						else if (deplList.get(i).stackSize + decayItem.stackSize > decayItem.getMaxStackSize())
+						else if (element.stackSize + decayItem.stackSize > decayItem.getMaxStackSize())
 							continue;
 						
 						if (alreadyExists)
@@ -136,9 +130,9 @@ public interface IRTGUser
 					}
 					if (alreadyExists)
 					{
-						for (int i = 0; i < deplList.size(); i++)
-							if (deplList.get(i).getItem() == decayItem.getItem() && deplList.get(i).getItemDamage() == decayItem.getItemDamage() && deplList.get(i).stackSize + decayItem.stackSize <= decayItem.getMaxStackSize())
-								deplList.get(i).stackSize += decayItem.stackSize;
+						for (ItemStack element : deplList)
+							if (element.getItem() == decayItem.getItem() && element.getItemDamage() == decayItem.getItemDamage() && element.stackSize + decayItem.stackSize <= decayItem.getMaxStackSize())
+								element.stackSize += decayItem.stackSize;
 					}
 					else
 						deplList.add(fuel.getDecayItem());
@@ -160,7 +154,7 @@ public interface IRTGUser
 				continue;
 			
 			final IRadioisotopeFuel fuel = IRadioisotopeFuel.getInstance(inventory[slot]);
-			newHeat += getPower(fuel, inventory[slot]);
+			newHeat += IRTGUser.getPower(fuel, inventory[slot]);
 			inventory[slot] = IRadioisotopeFuel.handleDecay(inventory[slot], fuel);
 		}
 		

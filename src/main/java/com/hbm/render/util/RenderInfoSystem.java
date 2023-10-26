@@ -22,41 +22,39 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 public class RenderInfoSystem {
 	
 	private static int nextID = 1000;
-	private static HashMap<Integer, InfoEntry> inbox = new HashMap();
-	private static HashMap<Integer, InfoEntry> messages = new HashMap();
+	private static HashMap<Integer, InfoEntry> inbox = new HashMap<>();
+	private static HashMap<Integer, InfoEntry> messages = new HashMap<>();
 	
 	@SubscribeEvent
 	public void clentTick(ClientTickEvent event) {
-		messages.putAll(inbox);
-		inbox.clear();
+		RenderInfoSystem.messages.putAll(RenderInfoSystem.inbox);
+		RenderInfoSystem.inbox.clear();
 		
-		List<Integer> keys = new ArrayList(messages.keySet());
+		List<Integer> keys = new ArrayList<>(RenderInfoSystem.messages.keySet());
 		
 		for(int i = 0; i < keys.size(); i++) {
 			Integer key = keys.get(i);
-			InfoEntry entry = messages.get(key);
+			InfoEntry entry = RenderInfoSystem.messages.get(key);
 			
 			if(entry.start + entry.millis < System.currentTimeMillis()) {
-				messages.remove(key);
-				keys = new ArrayList(messages.keySet());
+				RenderInfoSystem.messages.remove(key);
+				keys = new ArrayList<>(RenderInfoSystem.messages.keySet());
 				i--;
 			}
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	@SubscribeEvent
 	public void onOverlayRender(RenderGameOverlayEvent.Pre event) {
 		
-		if(event.type != ElementType.CROSSHAIRS)
-			return;
-		
-		if(this.messages.isEmpty()) 
+		if((event.type != ElementType.CROSSHAIRS) || RenderInfoSystem.messages.isEmpty()) 
 			return;
 		
 		Minecraft mc = Minecraft.getMinecraft();
 		ScaledResolution resolution = event.resolution;
 		
-		List<InfoEntry> entries = new ArrayList(messages.values());
+		List<InfoEntry> entries = new ArrayList<>(RenderInfoSystem.messages.values());
 		Collections.sort(entries);
 
 		GL11.glPushMatrix();
@@ -65,7 +63,7 @@ public class RenderInfoSystem {
 		
 		int longest = 0;
 		
-		for(InfoEntry entry : messages.values()) {
+		for(InfoEntry entry : RenderInfoSystem.messages.values()) {
 			int length = mc.fontRenderer.getStringWidth(entry.text);
 			
 			if(length > longest)
@@ -78,7 +76,7 @@ public class RenderInfoSystem {
 		int pZ = mode == 0 ? 15 : mode == 1 ? 15 : resolution.getScaledHeight() / 2 + 7;
 		
 		int side = pX + 5 + longest;
-		int height = messages.size() * 10 + pZ + 2;
+		int height = RenderInfoSystem.messages.size() * 10 + pZ + 2;
 		int z = 0;
 		
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -95,7 +93,7 @@ public class RenderInfoSystem {
 		int off = 0;
 		long now = System.currentTimeMillis();
 		
-		for(InfoEntry entry : messages.values()) {
+		for(InfoEntry entry : RenderInfoSystem.messages.values()) {
 			
 			int elapsed = (int) (now - entry.start);
 			
@@ -133,11 +131,11 @@ public class RenderInfoSystem {
 	}
 	
 	public static void push(InfoEntry entry) {
-		push(entry, nextID++); //range is so large, collisions are unlikely and if they do occur, not a big deal
+		RenderInfoSystem.push(entry, RenderInfoSystem.nextID++); //range is so large, collisions are unlikely and if they do occur, not a big deal
 	}
 	
 	public static void push(InfoEntry entry, int id) {
-		inbox.put(id, entry);
+		RenderInfoSystem.inbox.put(id, entry);
 	}
 
 	public static class InfoEntry implements Comparable {

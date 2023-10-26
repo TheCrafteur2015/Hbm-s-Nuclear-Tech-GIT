@@ -15,15 +15,16 @@ import net.minecraft.world.EnumSkyBlock;
 
 public class ItemAlexandrite extends Item {
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister register) {
 		if(register instanceof TextureMap) {
 			TextureMap map = (TextureMap) register;
-			TextureAlexandrite gemTexture = new TextureAlexandrite(this.getIconString());
-			map.setTextureEntry(this.getIconString(), gemTexture);
+			TextureAlexandrite gemTexture = new TextureAlexandrite(getIconString());
+			map.setTextureEntry(getIconString(), gemTexture);
 			this.itemIcon = gemTexture;
 		} else {
-			this.itemIcon = register.registerIcon(this.getIconString());
+			this.itemIcon = register.registerIcon(getIconString());
 		}
 	}
 
@@ -53,8 +54,8 @@ public class ItemAlexandrite extends Item {
 			
 			int light = player.worldObj.getSavedLightValue(EnumSkyBlock.Block, x, y, z);
 
-			if(light != lastLight) {
-				lastLight = light;
+			if(light != this.lastLight) {
+				this.lastLight = light;
 
 				this.frameCounter = light;
 				TextureUtil.uploadTextureMipmap((int[][]) this.framesTextureData.get(this.frameCounter), this.width, this.height, this.originX, this.originY, false, false);

@@ -55,14 +55,14 @@ public class MachineHephaestus extends BlockDummyable implements ILookOverlay {
 		x -= dir.offsetX;
 		z -= dir.offsetZ;
 
-		this.makeExtra(world, x + 1, y, z);
-		this.makeExtra(world, x - 1, y, z);
-		this.makeExtra(world, x, y, z + 1);
-		this.makeExtra(world, x, y, z - 1);
-		this.makeExtra(world, x + 1, y + 11, z);
-		this.makeExtra(world, x - 1, y + 11, z);
-		this.makeExtra(world, x, y + 11, z + 1);
-		this.makeExtra(world, x, y + 11, z - 1);
+		makeExtra(world, x + 1, y, z);
+		makeExtra(world, x - 1, y, z);
+		makeExtra(world, x, y, z + 1);
+		makeExtra(world, x, y, z - 1);
+		makeExtra(world, x + 1, y + 11, z);
+		makeExtra(world, x - 1, y + 11, z);
+		makeExtra(world, x, y + 11, z + 1);
+		makeExtra(world, x, y + 11, z - 1);
 	}
 	
 	@Override
@@ -71,7 +71,7 @@ public class MachineHephaestus extends BlockDummyable implements ILookOverlay {
 		if(!world.isRemote && !player.isSneaking()) {
 				
 			if(player.getHeldItem() != null && player.getHeldItem().getItem() instanceof IItemFluidIdentifier) {
-				int[] pos = this.findCore(world, x, y, z);
+				int[] pos = findCore(world, x, y, z);
 					
 				if(pos == null)
 					return false;
@@ -99,7 +99,7 @@ public class MachineHephaestus extends BlockDummyable implements ILookOverlay {
 
 	@Override
 	public void printHook(Pre event, World world, int x, int y, int z) {
-		int[] pos = this.findCore(world, x, y, z);
+		int[] pos = findCore(world, x, y, z);
 		
 		if(pos == null)
 			return;
@@ -111,7 +111,7 @@ public class MachineHephaestus extends BlockDummyable implements ILookOverlay {
 		
 		TileEntityMachineHephaestus heatex = (TileEntityMachineHephaestus) te;
 		
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		text.add(String.format(Locale.US, "%,d", heatex.bufferedHeat) + " TU");
 
 		for(int i = 0; i < heatex.getAllTanks().length; i++) {

@@ -18,7 +18,7 @@ public class GUIRBMKOutgasser extends GuiInfoContainer {
 
 	public GUIRBMKOutgasser(InventoryPlayer invPlayer, TileEntityRBMKOutgasser tedf) {
 		super(new ContainerRBMKOutgasser(invPlayer, tedf));
-		rod = tedf;
+		this.rod = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 186;
@@ -28,7 +28,7 @@ public class GUIRBMKOutgasser extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 		
-		rod.gas.renderTankInfo(this, mouseX, mouseY, guiLeft + 112, guiTop + 21, 16, 48);
+		this.rod.gas.renderTankInfo(this, mouseX, mouseY, this.guiLeft + 112, this.guiTop + 21, 16, 48);
 	}
 	
 	@Override
@@ -42,13 +42,13 @@ public class GUIRBMKOutgasser extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIRBMKOutgasser.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		int progress = (int) (rod.progress * 13 / rod.duration);
-		drawTexturedModalRect(guiLeft + 82, guiTop + 50, 176, 0, progress, 6);
+		int progress = (int) (this.rod.progress * 13 / TileEntityRBMKOutgasser.duration);
+		drawTexturedModalRect(this.guiLeft + 82, this.guiTop + 50, 176, 0, progress, 6);
 		
-		int gas = (int) (rod.gas.getFill() * 42 / rod.gas.getMaxFill());
-		drawTexturedModalRect(guiLeft + 115, guiTop + 66 - gas, 188, 42 - gas, 10, gas);
+		int gas = (int) (this.rod.gas.getFill() * 42 / this.rod.gas.getMaxFill());
+		drawTexturedModalRect(this.guiLeft + 115, this.guiTop + 66 - gas, 188, 42 - gas, 10, gas);
 	}
 }

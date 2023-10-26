@@ -1,11 +1,12 @@
 package com.hbm.tileentity.network;
 
-import api.hbm.conveyor.IConveyorBelt;
 import com.hbm.entity.item.EntityMovingItem;
 import com.hbm.inventory.container.ContainerCraneUnboxer;
 import com.hbm.inventory.gui.GUICraneUnboxer;
 import com.hbm.items.ModItems;
 import com.hbm.tileentity.IGUIProvider;
+
+import api.hbm.conveyor.IConveyorBelt;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -31,12 +32,12 @@ public class TileEntityCraneUnboxer extends TileEntityCraneBase implements IGUIP
 	@Override
 	public void updateEntity() {
 		super.updateEntity();
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			int delay = 20;
 			
-			if(slots[22] != null && slots[22].getItem() == ModItems.upgrade_ejector) {
-				switch(slots[22].getItemDamage()) {
+			if(this.slots[22] != null && this.slots[22].getItem() == ModItems.upgrade_ejector) {
+				switch(this.slots[22].getItemDamage()) {
 				case 0: delay = 10; break;
 				case 1: delay = 5; break;
 				case 2: delay = 2; break;
@@ -52,11 +53,11 @@ public class TileEntityCraneUnboxer extends TileEntityCraneBase implements IGUIP
 				}
 			}*/
 			
-			if(worldObj.getTotalWorldTime() % delay == 0 && !worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)) {
+			if(this.worldObj.getTotalWorldTime() % delay == 0 && !this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord)) {
 				int amount = 1;
 				
-				if(slots[21] != null && slots[21].getItem() == ModItems.upgrade_stack) {
-					switch(slots[21].getItemDamage()) {
+				if(this.slots[21] != null && this.slots[21].getItem() == ModItems.upgrade_stack) {
+					switch(this.slots[21].getItemDamage()) {
 					case 0: amount = 4; break;
 					case 1: amount = 16; break;
 					case 2: amount = 64; break;
@@ -64,14 +65,14 @@ public class TileEntityCraneUnboxer extends TileEntityCraneBase implements IGUIP
 				}
 	
 				ForgeDirection outputSide = getInputSide(); // note the switcheroo!
-				Block b = worldObj.getBlock(xCoord + outputSide.offsetX, yCoord + outputSide.offsetY, zCoord + outputSide.offsetZ);
+				Block b = this.worldObj.getBlock(this.xCoord + outputSide.offsetX, this.yCoord + outputSide.offsetY, this.zCoord + outputSide.offsetZ);
 				
 				if(b instanceof IConveyorBelt) {
 					
 					IConveyorBelt belt = (IConveyorBelt) b;
 					
 					for(int i = 0; i < 21; i++) {
-						ItemStack stack = slots[i];
+						ItemStack stack = this.slots[i];
 						
 						if(stack != null){
 							stack = stack.copy();
@@ -79,12 +80,12 @@ public class TileEntityCraneUnboxer extends TileEntityCraneBase implements IGUIP
 							decrStackSize(i, toSend);
 							stack.stackSize = toSend;
 							
-							EntityMovingItem moving = new EntityMovingItem(worldObj);
-							Vec3 pos = Vec3.createVectorHelper(xCoord + 0.5 + outputSide.offsetX * 0.55, yCoord + 0.5 + outputSide.offsetY * 0.55, zCoord + 0.5 + outputSide.offsetZ * 0.55);
-							Vec3 snap = belt.getClosestSnappingPosition(worldObj, xCoord + outputSide.offsetX, yCoord + outputSide.offsetY, zCoord + outputSide.offsetZ, pos);
+							EntityMovingItem moving = new EntityMovingItem(this.worldObj);
+							Vec3 pos = Vec3.createVectorHelper(this.xCoord + 0.5 + outputSide.offsetX * 0.55, this.yCoord + 0.5 + outputSide.offsetY * 0.55, this.zCoord + 0.5 + outputSide.offsetZ * 0.55);
+							Vec3 snap = belt.getClosestSnappingPosition(this.worldObj, this.xCoord + outputSide.offsetX, this.yCoord + outputSide.offsetY, this.zCoord + outputSide.offsetZ, pos);
 							moving.setPosition(snap.xCoord, snap.yCoord, snap.zCoord);
 							moving.setItemStack(stack);
-							worldObj.spawnEntityInWorld(moving);
+							this.worldObj.spawnEntityInWorld(moving);
 							break;
 						}
 					}

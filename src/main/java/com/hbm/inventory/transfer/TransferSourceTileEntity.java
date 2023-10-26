@@ -21,16 +21,16 @@ public class TransferSourceTileEntity extends TransferSourceSided {
 	@Override
 	public List<ItemStack> offer() {
 		
-		List<ItemStack> list = new ArrayList();
+		List<ItemStack> list = new ArrayList<>();
 		
-		if(tile instanceof ISidedInventory) {
-			ISidedInventory inventory = (ISidedInventory) tile;
-			int[] access = masquerade(inventory, fromSide.ordinal());
+		if(this.tile instanceof ISidedInventory) {
+			ISidedInventory inventory = (ISidedInventory) this.tile;
+			int[] access = TransferSourceTileEntity.masquerade(inventory, this.fromSide.ordinal());
 			
 			for(int i : access) {
 				ItemStack stack = inventory.getStackInSlot(i);
 				
-				if(stack != null && inventory.canExtractItem(i, stack, fromSide.ordinal())) {
+				if(stack != null && inventory.canExtractItem(i, stack, this.fromSide.ordinal())) {
 					list.add(stack.copy());
 				}
 			}
@@ -38,8 +38,8 @@ public class TransferSourceTileEntity extends TransferSourceSided {
 			return list;
 		}
 		
-		if(tile instanceof IInventory) {
-			IInventory inventory = (IInventory) tile;
+		if(this.tile instanceof IInventory) {
+			IInventory inventory = (IInventory) this.tile;
 			
 			for(int i = 0; i < inventory.getSizeInventory(); i++) {
 				ItemStack stack = inventory.getStackInSlot(i);

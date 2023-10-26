@@ -16,17 +16,17 @@ public class ContainerCounterTorch extends Container {
 		this.radio = radio;
 		
 		for(int i = 0; i < 3; i++) {
-			this.addSlotToContainer(new Slot(radio, i, 138, 18 + 44 * i));
+			addSlotToContainer(new Slot(radio, i, 138, 18 + 44 * i));
 		}
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 12 + j * 18, 156 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 12 + j * 18, 156 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 12 + i * 18, 214));
+			addSlotToContainer(new Slot(invPlayer, i, 12 + i * 18, 214));
 		}
 	}
 
@@ -34,7 +34,7 @@ public class ContainerCounterTorch extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return radio.isUseableByPlayer(player);
+		return this.radio.isUseableByPlayer(player);
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class ContainerCounterTorch extends Container {
 			return super.slotClick(index, button, mode, player);
 		}
 
-		Slot slot = this.getSlot(index);
+		Slot slot = getSlot(index);
 		
 		ItemStack ret = null;
 		ItemStack held = player.inventory.getItemStack();
@@ -57,7 +57,7 @@ public class ContainerCounterTorch extends Container {
 			ret = slot.getStack().copy();
 		
 		if(button == 1 && mode == 0 && slot.getHasStack()) {
-			radio.matcher.nextMode(radio.getWorldObj(), slot.getStack(), index);
+			this.radio.matcher.nextMode(this.radio.getWorldObj(), slot.getStack(), index);
 			return ret;
 			
 		} else {
@@ -68,7 +68,7 @@ public class ContainerCounterTorch extends Container {
 			}
 			
 			slot.onSlotChanged();
-			radio.matcher.initPatternStandard(radio.getWorldObj(), slot.getStack(), index);
+			this.radio.matcher.initPatternStandard(this.radio.getWorldObj(), slot.getStack(), index);
 			
 			return ret;
 		}

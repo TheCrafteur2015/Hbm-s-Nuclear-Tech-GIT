@@ -44,16 +44,16 @@ public class BlockMotherOfAllOres extends BlockContainer implements IBlockMultiP
 	public static int override = -1;
 	
 	public static void shuffleOverride(Random rand) {
-		override = rand.nextInt(uniqueItems.size());
+		BlockMotherOfAllOres.override = rand.nextInt(BlockMotherOfAllOres.uniqueItems.size());
 	}
 	
 	public static void resetOverride() {
-		override = -1;
+		BlockMotherOfAllOres.override = -1;
 	}
 
 	public BlockMotherOfAllOres() {
 		super(Material.rock);
-		this.setBlockTextureName("stone");
+		setBlockTextureName("stone");
 	}
 
 	@Override
@@ -61,11 +61,12 @@ public class BlockMotherOfAllOres extends BlockContainer implements IBlockMultiP
 		return new TileEntityRandomOre();
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 		
-		for(int i = 0; i < uniqueItems.size(); i++)
+		for(int i = 0; i < BlockMotherOfAllOres.uniqueItems.size(); i++)
 			list.add(new ItemStack(item, 1, i));
 	}
 	
@@ -84,7 +85,7 @@ public class BlockMotherOfAllOres extends BlockContainer implements IBlockMultiP
 	
 	@Override
 	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+		ArrayList<ItemStack> ret = new ArrayList<>();
 		
 		if(fortune == 0xFECE00) {
 			TileEntity te = world.getTileEntity(x, y, z);
@@ -102,7 +103,7 @@ public class BlockMotherOfAllOres extends BlockContainer implements IBlockMultiP
 	
 	@Override
 	public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-		this.dropBlockAsItemWithChance(world, x, y, z, meta, 1, 0xFECE00);
+		dropBlockAsItemWithChance(world, x, y, z, meta, 1, 0xFECE00);
 	}
 
 	@Override
@@ -128,8 +129,8 @@ public class BlockMotherOfAllOres extends BlockContainer implements IBlockMultiP
 	public void registerBlockIcons(IIconRegister reg) {
 		
 		this.blockIcon = reg.registerIcon("stone");
-		for(int i = 0; i < overlays.length; i++) {
-			overlays[i] = reg.registerIcon(RefStrings.MODID + ":ore_random_" + (i + 1));
+		for(int i = 0; i < this.overlays.length; i++) {
+			this.overlays[i] = reg.registerIcon(RefStrings.MODID + ":ore_random_" + (i + 1));
 		}
 	}
 	
@@ -144,21 +145,22 @@ public class BlockMotherOfAllOres extends BlockContainer implements IBlockMultiP
 		
 		if(te instanceof TileEntityRandomOre) {
 			TileEntityRandomOre ore = (TileEntityRandomOre) te;
-			int index = ore.getStackId() % overlays.length;
-			return overlays[index];
+			int index = ore.getStackId() % this.overlays.length;
+			return this.overlays[index];
 		}
 
 		return Blocks.stone.getIcon(0, 0);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
 
 		if(RenderBlockMultipass.currentPass == 0)
 			return Blocks.stone.getIcon(0, 0);
 		
-		int index = meta % overlays.length;
-		return overlays[index];
+		int index = meta % this.overlays.length;
+		return this.overlays[index];
 	}
 
 	@Override
@@ -181,7 +183,8 @@ public class BlockMotherOfAllOres extends BlockContainer implements IBlockMultiP
 			int g = col.getGreen();
 			int b = col.getBlue();
 			
-			float[] hsb = new Color(color).RGBtoHSB(r, g, b, new float[3]);
+			new Color(color);
+			float[] hsb = Color.RGBtoHSB(r, g, b, new float[3]);
 			
 			if(hsb[1] > 0F && hsb[1] < 0.75F)
 				hsb[1] = 0.75F;
@@ -199,13 +202,13 @@ public class BlockMotherOfAllOres extends BlockContainer implements IBlockMultiP
 		private ComparableStack stack;
 		
 		public TileEntityRandomOre() {
-			if(override != -1) {
-				setItem(override);
+			if(BlockMotherOfAllOres.override != -1) {
+				setItem(BlockMotherOfAllOres.override);
 			}
 		}
 		
 		public void setItem(int id) {
-			ComparableStack comp = itemMap.get(id);
+			ComparableStack comp = BlockMotherOfAllOres.itemMap.get(id);
 			this.stack = comp != null ? ((ComparableStack) comp.copy()) : null;
 			
 			if(this.worldObj != null)
@@ -213,7 +216,7 @@ public class BlockMotherOfAllOres extends BlockContainer implements IBlockMultiP
 		}
 		
 		public int getStackId() {
-			return itemMap.inverse().get(getCompStack());
+			return BlockMotherOfAllOres.itemMap.inverse().get(getCompStack());
 		}
 		
 		public ItemStack getStack() {
@@ -222,13 +225,13 @@ public class BlockMotherOfAllOres extends BlockContainer implements IBlockMultiP
 		
 		public ComparableStack getCompStack() {
 			
-			if(stack == null) {
-				int rand = worldObj.rand.nextInt(uniqueItems.size());
-				stack = (ComparableStack) itemMap.get(rand).copy();
+			if(this.stack == null) {
+				int rand = this.worldObj.rand.nextInt(BlockMotherOfAllOres.uniqueItems.size());
+				this.stack = (ComparableStack) BlockMotherOfAllOres.itemMap.get(rand).copy();
 				this.worldObj.markTileEntityChunkModified(this.xCoord, this.yCoord, this.zCoord, this);
 			}
 			
-			return stack != null ? stack : new ComparableStack(ModItems.nothing);
+			return this.stack != null ? this.stack : new ComparableStack(ModItems.nothing);
 		}
 
 		@Override
@@ -240,7 +243,7 @@ public class BlockMotherOfAllOres extends BlockContainer implements IBlockMultiP
 		public void readFromNBT(NBTTagCompound nbt) {
 			super.readFromNBT(nbt);
 			int key = nbt.getInteger("item");
-			this.setItem(key);
+			setItem(key);
 		}
 		
 		@Override
@@ -248,7 +251,7 @@ public class BlockMotherOfAllOres extends BlockContainer implements IBlockMultiP
 			super.writeToNBT(nbt);
 			
 			try {
-				Integer key = itemMap.inverse().get(getCompStack());
+				Integer key = BlockMotherOfAllOres.itemMap.inverse().get(getCompStack());
 				nbt.setInteger("item", key != null ? key : 0);
 			} catch(Exception ex) { }
 		}
@@ -256,13 +259,13 @@ public class BlockMotherOfAllOres extends BlockContainer implements IBlockMultiP
 		@Override
 		public Packet getDescriptionPacket() {
 			NBTTagCompound nbt = new NBTTagCompound();
-			this.writeToNBT(nbt);
+			writeToNBT(nbt);
 			return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, nbt);
 		}
 		
 		@Override
 		public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-			this.readFromNBT(pkt.func_148857_g());
+			readFromNBT(pkt.func_148857_g());
 		}
 	}
 	
@@ -270,13 +273,13 @@ public class BlockMotherOfAllOres extends BlockContainer implements IBlockMultiP
 
 		public ItemRandomOreBlock(Block block) {
 			super(block);
-			this.setHasSubtypes(true);
-			this.setMaxDamage(0);
+			setHasSubtypes(true);
+			setMaxDamage(0);
 		}
 		
 		@Override
 		public String getItemStackDisplayName(ItemStack stack) {
-			ComparableStack comp = itemMap.get(stack.getItemDamage());
+			ComparableStack comp = BlockMotherOfAllOres.itemMap.get(stack.getItemDamage());
 			ItemStack name = comp != null ? comp.toStack() : new ItemStack(ModItems.nothing);
 			if(name.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
 				name.setItemDamage(0);
@@ -285,7 +288,7 @@ public class BlockMotherOfAllOres extends BlockContainer implements IBlockMultiP
 		}
 	}
 	
-	public static HashSet<ComparableStack> uniqueItems = new HashSet();
+	public static HashSet<ComparableStack> uniqueItems = new HashSet<>();
 	public static HashBiMap<Integer, ComparableStack> itemMap = HashBiMap.create();
 	
 	public static void init() {
@@ -294,26 +297,26 @@ public class BlockMotherOfAllOres extends BlockContainer implements IBlockMultiP
 			for(Object b : Block.blockRegistry.getKeys()) {
 				Block block = Block.getBlockFromName((String) b);
 				if(block != null && Item.getItemFromBlock(block) != null)
-					uniqueItems.add(new ComparableStack(block));
+					BlockMotherOfAllOres.uniqueItems.add(new ComparableStack(block));
 			}
 			
 			for(Object i : Item.itemRegistry.getKeys()) {
 				Item item = (Item) Item.itemRegistry.getObject((String) i);
-				uniqueItems.add(new ComparableStack(item));
+				BlockMotherOfAllOres.uniqueItems.add(new ComparableStack(item));
 			}
 			
 			for(String i : OreDictionary.getOreNames()) {
 				for(ItemStack stack : OreDictionary.getOres(i)) {
-					uniqueItems.add(new ComparableStack(stack));
+					BlockMotherOfAllOres.uniqueItems.add(new ComparableStack(stack));
 				}
 			}
 		} else {
-			uniqueItems.add(new ComparableStack(ModItems.nothing));
+			BlockMotherOfAllOres.uniqueItems.add(new ComparableStack(ModItems.nothing));
 		}
 		
 		int i = 0;
-		for(ComparableStack stack : uniqueItems) {
-			itemMap.put(i++, stack);
+		for(ComparableStack stack : BlockMotherOfAllOres.uniqueItems) {
+			BlockMotherOfAllOres.itemMap.put(i++, stack);
 		}
 	}
 }

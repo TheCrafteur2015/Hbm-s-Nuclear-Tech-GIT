@@ -54,11 +54,13 @@ public class RenderDieselGen extends TileEntitySpecialRenderer implements IItemR
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase() {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(0, -2.5, 0);
 				double scale = 5;
 				GL11.glScaled(scale, scale, scale);
 			}
+			@Override
 			public void renderCommon() {
 				GL11.glScaled(2, 2, 2);
 				GL11.glShadeModel(GL11.GL_SMOOTH);

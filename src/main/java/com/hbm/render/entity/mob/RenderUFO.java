@@ -35,7 +35,7 @@ public class RenderUFO extends Render {
 		
 		double scale = 2D;
 		
-		this.bindTexture(getEntityTexture(entity));
+		bindTexture(getEntityTexture(entity));
 		
 		GL11.glPushMatrix();
 		double rot = (entity.ticksExisted + f1) * 5 % 360D;

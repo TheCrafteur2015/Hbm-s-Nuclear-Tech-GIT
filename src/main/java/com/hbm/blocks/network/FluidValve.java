@@ -37,7 +37,7 @@ public class FluidValve extends FluidDuctBase implements ILookOverlay {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int metadata) {
-		return metadata == 1 ? iconOn : blockIcon;
+		return metadata == 1 ? this.iconOn : this.blockIcon;
 	}
 
 	@Override
@@ -48,9 +48,7 @@ public class FluidValve extends FluidDuctBase implements ILookOverlay {
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
 		
-		if(world.isRemote) return true;
-		
-		if(super.onBlockActivated(world, x, y, z, player, side, hitX, hitY, hitZ)) return true;
+		if(world.isRemote || super.onBlockActivated(world, x, y, z, player, side, hitX, hitY, hitZ)) return true;
 		
 		if(!player.isSneaking()) {
 			int meta = world.getBlockMetadata(x, y, z);
@@ -81,7 +79,7 @@ public class FluidValve extends FluidDuctBase implements ILookOverlay {
 		
 		TileEntityFluidValve duct = (TileEntityFluidValve) te;
 		
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		text.add("&[" + duct.getType().getColor() + "&]" + duct.getType().getLocalizedName());
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}

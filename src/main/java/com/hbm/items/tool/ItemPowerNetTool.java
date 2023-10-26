@@ -77,7 +77,7 @@ public class ItemPowerNetTool extends Item {
 				data.setInteger("color", errored ? 0xff0000 : 0xffff00);
 				data.setFloat("scale", 0.5F);
 				data.setString("text", id);
-				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, pos.xCoord, pos.yCoord, pos.zCoord), new TargetPoint(world.provider.dimensionId, pos.xCoord, pos.yCoord, pos.zCoord, radius));
+				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, pos.xCoord, pos.yCoord, pos.zCoord), new TargetPoint(world.provider.dimensionId, pos.xCoord, pos.yCoord, pos.zCoord, ItemPowerNetTool.radius));
 			}
 			
 			for(IEnergyConnector subscriber : network.getSubscribers()) {
@@ -88,7 +88,7 @@ public class ItemPowerNetTool extends Item {
 				data.setInteger("color", 0x0000ff);
 				data.setFloat("scale", 1.5F);
 				data.setString("text", id);
-				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, pos.xCoord, pos.yCoord, pos.zCoord), new TargetPoint(world.provider.dimensionId, pos.xCoord, pos.yCoord, pos.zCoord, radius));
+				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, pos.xCoord, pos.yCoord, pos.zCoord), new TargetPoint(world.provider.dimensionId, pos.xCoord, pos.yCoord, pos.zCoord, ItemPowerNetTool.radius));
 			}
 			
 			return true;
@@ -99,6 +99,7 @@ public class ItemPowerNetTool extends Item {
 	
 	private static final int radius = 20;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		list.add(EnumChatFormatting.RED + "Right-click cable to analyze the power net.");
@@ -107,6 +108,6 @@ public class ItemPowerNetTool extends Item {
 		list.add(EnumChatFormatting.RED + "Links with mismatching network info (BUGGED!) are RED");
 		list.add(EnumChatFormatting.RED + "Displays stats such as link and subscriber count");
 		list.add(EnumChatFormatting.RED + "Proxies are connection points for multiblock links (e.g. 4 for substations)");
-		list.add(EnumChatFormatting.RED + "Particles only spawn in a " + radius + " block radius!");
+		list.add(EnumChatFormatting.RED + "Particles only spawn in a " + ItemPowerNetTool.radius + " block radius!");
 	}
 }

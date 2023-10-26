@@ -17,18 +17,18 @@ public class TileEntitySpacer extends TileEntity {
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 1,
-					yCoord,
-					zCoord - 1,
-					xCoord + 2,
-					yCoord + 1,
-					zCoord + 2
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 1,
+					this.yCoord,
+					this.zCoord - 1,
+					this.xCoord + 2,
+					this.yCoord + 1,
+					this.zCoord + 2
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override

@@ -53,11 +53,13 @@ public class RenderFan extends TileEntitySpecialRenderer implements IItemRendere
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase() {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(0, -2.5, 0);
 				double scale = 5;
 				GL11.glScaled(scale, scale, scale);
 			}
+			@Override
 			public void renderCommon() {
 				GL11.glScaled(2, 2, 2);
 				bindTexture(ResourceManager.fan_tex);

@@ -105,24 +105,24 @@ public class Radiobox extends BlockContainer {
 		int te = p_149719_1_.getBlockMetadata(p_149719_2_, p_149719_3_, p_149719_4_);
         float f = 0.0625F;
         
-        this.setBlockBounds(0.0F, 0.0F, 2*f, 1.0F, 1.0F, 14*f);
+        setBlockBounds(0.0F, 0.0F, 2*f, 1.0F, 1.0F, 14*f);
         switch(te)
 		{
 		case 4:
 		case 8:
-	        this.setBlockBounds(11*f, 1*f, 4*f, 16*f, 15*f, 12*f);
+	        setBlockBounds(11*f, 1*f, 4*f, 16*f, 15*f, 12*f);
             break;
 		case 2:
 		case 6:
-	        this.setBlockBounds(4*f, 1*f, 11*f, 12*f, 15*f, 16*f);
+	        setBlockBounds(4*f, 1*f, 11*f, 12*f, 15*f, 16*f);
             break;
 		case 5:
 		case 9:
-	        this.setBlockBounds(0*f, 1*f, 4*f, 5*f, 15*f, 12*f);
+	        setBlockBounds(0*f, 1*f, 4*f, 5*f, 15*f, 12*f);
             break;
 		case 3:
 		case 7:
-	        this.setBlockBounds(4*f, 1*f, 0*f, 12*f, 15*f, 5*f);
+	        setBlockBounds(4*f, 1*f, 0*f, 12*f, 15*f, 5*f);
             break;
 		}
     }
@@ -133,31 +133,32 @@ public class Radiobox extends BlockContainer {
 		int te = world.getBlockMetadata(x, y, z);
         float f = 0.0625F;
         
-        this.setBlockBounds(0.0F, 0.0F, 2*f, 1.0F, 1.0F, 14*f);
+        setBlockBounds(0.0F, 0.0F, 2*f, 1.0F, 1.0F, 14*f);
         switch(te)
 		{
 		case 4:
 		case 8:
-	        this.setBlockBounds(11*f, 1*f, 4*f, 16*f, 15*f, 12*f);
+	        setBlockBounds(11*f, 1*f, 4*f, 16*f, 15*f, 12*f);
             break;
 		case 2:
 		case 6:
-	        this.setBlockBounds(4*f, 1*f, 11*f, 12*f, 15*f, 16*f);
+	        setBlockBounds(4*f, 1*f, 11*f, 12*f, 15*f, 16*f);
             break;
 		case 5:
 		case 9:
-	        this.setBlockBounds(0*f, 1*f, 4*f, 5*f, 15*f, 12*f);
+	        setBlockBounds(0*f, 1*f, 4*f, 5*f, 15*f, 12*f);
             break;
 		case 3:
 		case 7:
-	        this.setBlockBounds(4*f, 1*f, 0*f, 12*f, 15*f, 5*f);
+	        setBlockBounds(4*f, 1*f, 0*f, 12*f, 15*f, 5*f);
             break;
 		}
         
 		return AxisAlignedBB.getBoundingBox(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
 	}
 
-    public void breakBlock(World world, int x, int y, int z, Block b, int m) {
+    @Override
+	public void breakBlock(World world, int x, int y, int z, Block b, int m) {
     	
 		TileEntityRadiobox box = (TileEntityRadiobox)world.getTileEntity(x, y, z);
 		

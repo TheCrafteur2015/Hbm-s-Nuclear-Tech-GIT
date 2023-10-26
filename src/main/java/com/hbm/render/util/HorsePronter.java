@@ -52,65 +52,65 @@ public class HorsePronter {
 
 	public static void reset() {
 		
-		wings = false;
-		horn = false;
+		HorsePronter.wings = false;
+		HorsePronter.horn = false;
 		
-		for(Vec3 angles : pose) {
+		for(Vec3 angles : HorsePronter.pose) {
 			angles.xCoord = 0;
 			angles.yCoord = 0;
 			angles.zCoord = 0;
 		}
 	}
 	
-	public static void enableHorn() { horn = true; }
-	public static void enableWings() { wings = true; }
-	public static void setMaleSnoot() { maleSnoot = true; }
+	public static void enableHorn() { HorsePronter.horn = true; }
+	public static void enableWings() { HorsePronter.wings = true; }
+	public static void setMaleSnoot() { HorsePronter.maleSnoot = true; }
 	
 	public static void setAlicorn() {
-		enableHorn();
-		enableWings();
+		HorsePronter.enableHorn();
+		HorsePronter.enableWings();
 	}
 	
 	public static void poseStandardSit() {
 		double r = 60;
-		pose(HorsePronter.id_body, 0, -r, 0);
-		pose(HorsePronter.id_tail, 0, 45, 90);
-		pose(HorsePronter.id_lbl, 0, -90 + r, 35);
-		pose(HorsePronter.id_rbl, 0, -90 + r, -35);
-		pose(HorsePronter.id_lfl, 0, r - 10, 5);
-		pose(HorsePronter.id_rfl, 0, r - 10, -5);
-		pose(HorsePronter.id_head, 0, r, 0);
+		HorsePronter.pose(HorsePronter.id_body, 0, -r, 0);
+		HorsePronter.pose(HorsePronter.id_tail, 0, 45, 90);
+		HorsePronter.pose(HorsePronter.id_lbl, 0, -90 + r, 35);
+		HorsePronter.pose(HorsePronter.id_rbl, 0, -90 + r, -35);
+		HorsePronter.pose(HorsePronter.id_lfl, 0, r - 10, 5);
+		HorsePronter.pose(HorsePronter.id_rfl, 0, r - 10, -5);
+		HorsePronter.pose(HorsePronter.id_head, 0, r, 0);
 	}
 	
 	public static void pose(int id, double yaw, double pitch, double roll) {
-		pose[id].xCoord = yaw;
-		pose[id].yCoord = pitch;
-		pose[id].zCoord = roll;
+		HorsePronter.pose[id].xCoord = yaw;
+		HorsePronter.pose[id].yCoord = pitch;
+		HorsePronter.pose[id].zCoord = roll;
 	}
 	
 	public static void pront() {
 		
 		GL11.glPushMatrix();
 		GL11.glDisable(GL11.GL_CULL_FACE);
-		doTransforms(id_body);
+		HorsePronter.doTransforms(HorsePronter.id_body);
 		
-		horse.renderPart("Body");
+		HorsePronter.horse.renderPart("Body");
 		
-		if(horn) {
-			renderWithTransform(id_head, "Head", "Mane", maleSnoot ? "NoseMale" : "NoseFemale", "HornPointy");
+		if(HorsePronter.horn) {
+			HorsePronter.renderWithTransform(HorsePronter.id_head, "Head", "Mane", HorsePronter.maleSnoot ? "NoseMale" : "NoseFemale", "HornPointy");
 		} else {
-			renderWithTransform(id_head, "Head", "Mane", maleSnoot ? "NoseMale" : "NoseFemale");
+			HorsePronter.renderWithTransform(HorsePronter.id_head, "Head", "Mane", HorsePronter.maleSnoot ? "NoseMale" : "NoseFemale");
 		}
 		
-		renderWithTransform(id_lfl, "LeftFrontLeg");
-		renderWithTransform(id_rfl, "RightFrontLeg");
-		renderWithTransform(id_lbl, "LeftBackLeg");
-		renderWithTransform(id_rbl, "RightBackLeg");
-		renderWithTransform(id_tail, "Tail");
+		HorsePronter.renderWithTransform(HorsePronter.id_lfl, "LeftFrontLeg");
+		HorsePronter.renderWithTransform(HorsePronter.id_rfl, "RightFrontLeg");
+		HorsePronter.renderWithTransform(HorsePronter.id_lbl, "LeftBackLeg");
+		HorsePronter.renderWithTransform(HorsePronter.id_rbl, "RightBackLeg");
+		HorsePronter.renderWithTransform(HorsePronter.id_tail, "Tail");
 		
-		if(wings) {
-			horse.renderPart("LeftWing");
-			horse.renderPart("RightWing");
+		if(HorsePronter.wings) {
+			HorsePronter.horse.renderPart("LeftWing");
+			HorsePronter.horse.renderPart("RightWing");
 		}
 
 		GL11.glEnable(GL11.GL_CULL_FACE);
@@ -118,8 +118,8 @@ public class HorsePronter {
 	}
 	
 	private static void doTransforms(int id) {
-		Vec3 rotation = pose[id];
-		Vec3 offset = offsets[id];
+		Vec3 rotation = HorsePronter.pose[id];
+		Vec3 offset = HorsePronter.offsets[id];
 		GL11.glTranslated(offset.xCoord, offset.yCoord, offset.zCoord);
 		GL11.glRotated(rotation.xCoord, 0, 1, 0);
 		GL11.glRotated(rotation.yCoord, 1, 0, 0);
@@ -129,8 +129,8 @@ public class HorsePronter {
 	
 	private static void renderWithTransform(int id, String... parts) {
 		GL11.glPushMatrix();
-		doTransforms(id);
-		for(String part : parts) horse.renderPart(part);
+		HorsePronter.doTransforms(id);
+		for(String part : parts) HorsePronter.horse.renderPart(part);
 		GL11.glPopMatrix();
 	}
 }

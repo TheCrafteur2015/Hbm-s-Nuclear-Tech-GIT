@@ -27,8 +27,8 @@ public class FT_Combustible extends FluidTrait {
 
 		info.add(EnumChatFormatting.GOLD + "[Combustible]");
 		
-		if(combustionEnergy > 0) {
-			info.add(EnumChatFormatting.GOLD + "Provides " + EnumChatFormatting.RED + "" + BobMathUtil.getShortNumber(combustionEnergy) + "HE " + EnumChatFormatting.GOLD + "per bucket");
+		if(this.combustionEnergy > 0) {
+			info.add(EnumChatFormatting.GOLD + "Provides " + EnumChatFormatting.RED + "" + BobMathUtil.getShortNumber(this.combustionEnergy) + "HE " + EnumChatFormatting.GOLD + "per bucket");
 			info.add(EnumChatFormatting.GOLD + "Fuel grade: " + EnumChatFormatting.RED + this.fuelGrade.getGrade());
 		}
 	}
@@ -61,8 +61,8 @@ public class FT_Combustible extends FluidTrait {
 
 	@Override
 	public void serializeJSON(JsonWriter writer) throws IOException {
-		writer.name("energy").value(combustionEnergy);
-		writer.name("grade").value(fuelGrade.name());
+		writer.name("energy").value(this.combustionEnergy);
+		writer.name("grade").value(this.fuelGrade.name());
 	}
 	
 	@Override

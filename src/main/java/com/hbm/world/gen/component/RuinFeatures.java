@@ -34,57 +34,57 @@ public class RuinFeatures {
 		public boolean addComponentParts(World world, Random rand, StructureBoundingBox box) {
 			
 			//System.out.println(this.coordBaseMode);
-			if(!this.setAverageHeight(world, box, this.boundingBox.minY)) {
+			if(!setAverageHeight(world, box, this.boundingBox.minY)) {
 				return false;
 			}
 			//System.out.println("" + this.boundingBox.minX + ", " + this.boundingBox.minY + ", " + this.boundingBox.minZ);
 			
-			placeFoundationUnderneath(world, Blocks.stonebrick, 0, 0, 0, sizeX, sizeZ, -1, box);
+			placeFoundationUnderneath(world, Blocks.stonebrick, 0, 0, 0, this.sizeX, this.sizeZ, -1, box);
 			
-			int pillarMetaWE = this.getPillarMeta(4);
-			int pillarMetaNS = this.getPillarMeta(8);
+			int pillarMetaWE = getPillarMeta(4);
+			int pillarMetaNS = getPillarMeta(8);
 			
-			this.fillWithBlocks(world, box, 0, 0, 0, 0, sizeY, 0, ModBlocks.concrete_pillar, Blocks.air, false); //Back Wall
+			this.fillWithBlocks(world, box, 0, 0, 0, 0, this.sizeY, 0, ModBlocks.concrete_pillar, Blocks.air, false); //Back Wall
 			this.fillWithMetadataBlocks(world, box, 1, 3, 0, 3, 3, 0, ModBlocks.concrete_pillar, pillarMetaWE, Blocks.air, 0, false);
-			this.fillWithBlocks(world, box, 4, 0, 0, 4, sizeY - 1, 0, ModBlocks.concrete_pillar, Blocks.air, false);
-			this.fillWithMetadataBlocks(world, box, 5, 3, 0, sizeX - 1, 3, 0, ModBlocks.concrete_pillar, pillarMetaWE, Blocks.air, 0, false);
-			this.fillWithBlocks(world, box, sizeX, 0, 0, sizeX, sizeY - 1, 0, ModBlocks.concrete_pillar, Blocks.air, false);
-			this.fillWithRandomizedBlocks(world, box, 1, 0, 0, 3, 0, 0, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 5, 0, 0, sizeX - 1, 0, 0, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 1, 1, 0, 1, 2, 0, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 3, 1, 0, 3, 2, 0, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 5, 1, 0, 5, 2, 0, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, sizeX - 1, 1, 0, sizeX - 1, 2, 0, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 1, 4, 0, 3, 4, 0, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 5, 4, 0, sizeX - 1, 4, 0, false, rand, RandomConcreteBricks);
-			this.fillWithMetadataBlocks(world, box, 0, 3, 1, 0, 3, sizeZ - 1, ModBlocks.concrete_pillar, pillarMetaNS, Blocks.air, 0, false); //Left Wall
-			this.fillWithBlocks(world, box, 0, 0, sizeZ, 0, sizeY - 1, sizeZ, ModBlocks.concrete_pillar, Blocks.air, false);
-			this.fillWithRandomizedBlocks(world, box, 0, 0, 1, 0, 0, sizeZ - 1, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 0, 1, 1, 0, 2, 2, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 0, 1, 4, 0, 2, 6, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 0, 1, sizeZ - 2, 0, 2, sizeZ - 1, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 0, 4, 1, 0, 4, 5, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 0, 5, 1, 0, 5, 2, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 0, 4, sizeZ - 2, 0, 4, sizeZ - 1, false, rand, RandomConcreteBricks);
-			this.fillWithMetadataBlocks(world, box, 1, 3, sizeZ, 3, 3, sizeZ, ModBlocks.concrete_pillar, pillarMetaWE, Blocks.air, 0, false); //Front Wall
-			this.fillWithBlocks(world, box, 4, 0, sizeZ, 4, sizeY - 2, sizeZ, ModBlocks.concrete_pillar, Blocks.air, false);
-			this.fillWithMetadataBlocks(world, box, 5, 3, sizeZ, sizeX - 1, 3, sizeZ, ModBlocks.concrete_pillar, pillarMetaWE, Blocks.air, 0, false);
-			this.fillWithBlocks(world, box, sizeX, 0, sizeZ, sizeX, sizeY - 2, sizeZ, ModBlocks.concrete_pillar, Blocks.air, false);
-			this.fillWithRandomizedBlocks(world, box, 1, 0, sizeZ, 3, 0, sizeZ, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 5, 0, sizeZ, sizeX - 1, 0, sizeZ, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 1, 1, sizeZ, 1, 2, sizeZ, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 3, 1, sizeZ, 3, 2, sizeZ, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 5, 1, sizeZ, 5, 2, sizeZ, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, sizeX - 1, 1, sizeZ, sizeX - 1, 2, sizeZ, false, rand, RandomConcreteBricks);
-			this.fillWithMetadataBlocks(world, box, sizeX, 3, 1, sizeX, 3, 2, ModBlocks.concrete_pillar, pillarMetaNS, Blocks.air, 0, false); //Right Wall
-			this.fillWithMetadataBlocks(world, box, sizeX, 3, sizeZ - 1, sizeX, 3, sizeZ - 1, ModBlocks.concrete_pillar, pillarMetaNS, Blocks.air, 0, false);
-			this.fillWithRandomizedBlocks(world, box, sizeX, 0, 1, sizeX, 0, 4, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, sizeX, 1, 1, sizeX, 2, 2, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, sizeX, 0, 6, sizeX, 0, 6, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, sizeX, 0, sizeZ - 2, sizeX, 1, sizeZ - 1, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, sizeX, 2, sizeZ - 1, sizeX, 2, sizeZ - 1, false, rand, RandomConcreteBricks);
+			this.fillWithBlocks(world, box, 4, 0, 0, 4, this.sizeY - 1, 0, ModBlocks.concrete_pillar, Blocks.air, false);
+			this.fillWithMetadataBlocks(world, box, 5, 3, 0, this.sizeX - 1, 3, 0, ModBlocks.concrete_pillar, pillarMetaWE, Blocks.air, 0, false);
+			this.fillWithBlocks(world, box, this.sizeX, 0, 0, this.sizeX, this.sizeY - 1, 0, ModBlocks.concrete_pillar, Blocks.air, false);
+			this.fillWithRandomizedBlocks(world, box, 1, 0, 0, 3, 0, 0, false, rand, NTMRuin1.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 5, 0, 0, this.sizeX - 1, 0, 0, false, rand, NTMRuin1.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 1, 1, 0, 1, 2, 0, false, rand, NTMRuin1.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 3, 1, 0, 3, 2, 0, false, rand, NTMRuin1.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 5, 1, 0, 5, 2, 0, false, rand, NTMRuin1.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, this.sizeX - 1, 1, 0, this.sizeX - 1, 2, 0, false, rand, NTMRuin1.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 1, 4, 0, 3, 4, 0, false, rand, NTMRuin1.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 5, 4, 0, this.sizeX - 1, 4, 0, false, rand, NTMRuin1.RandomConcreteBricks);
+			this.fillWithMetadataBlocks(world, box, 0, 3, 1, 0, 3, this.sizeZ - 1, ModBlocks.concrete_pillar, pillarMetaNS, Blocks.air, 0, false); //Left Wall
+			this.fillWithBlocks(world, box, 0, 0, this.sizeZ, 0, this.sizeY - 1, this.sizeZ, ModBlocks.concrete_pillar, Blocks.air, false);
+			this.fillWithRandomizedBlocks(world, box, 0, 0, 1, 0, 0, this.sizeZ - 1, false, rand, NTMRuin1.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 0, 1, 1, 0, 2, 2, false, rand, NTMRuin1.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 0, 1, 4, 0, 2, 6, false, rand, NTMRuin1.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 0, 1, this.sizeZ - 2, 0, 2, this.sizeZ - 1, false, rand, NTMRuin1.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 0, 4, 1, 0, 4, 5, false, rand, NTMRuin1.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 0, 5, 1, 0, 5, 2, false, rand, NTMRuin1.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 0, 4, this.sizeZ - 2, 0, 4, this.sizeZ - 1, false, rand, NTMRuin1.RandomConcreteBricks);
+			this.fillWithMetadataBlocks(world, box, 1, 3, this.sizeZ, 3, 3, this.sizeZ, ModBlocks.concrete_pillar, pillarMetaWE, Blocks.air, 0, false); //Front Wall
+			this.fillWithBlocks(world, box, 4, 0, this.sizeZ, 4, this.sizeY - 2, this.sizeZ, ModBlocks.concrete_pillar, Blocks.air, false);
+			this.fillWithMetadataBlocks(world, box, 5, 3, this.sizeZ, this.sizeX - 1, 3, this.sizeZ, ModBlocks.concrete_pillar, pillarMetaWE, Blocks.air, 0, false);
+			this.fillWithBlocks(world, box, this.sizeX, 0, this.sizeZ, this.sizeX, this.sizeY - 2, this.sizeZ, ModBlocks.concrete_pillar, Blocks.air, false);
+			this.fillWithRandomizedBlocks(world, box, 1, 0, this.sizeZ, 3, 0, this.sizeZ, false, rand, NTMRuin1.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 5, 0, this.sizeZ, this.sizeX - 1, 0, this.sizeZ, false, rand, NTMRuin1.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 1, 1, this.sizeZ, 1, 2, this.sizeZ, false, rand, NTMRuin1.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 3, 1, this.sizeZ, 3, 2, this.sizeZ, false, rand, NTMRuin1.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 5, 1, this.sizeZ, 5, 2, this.sizeZ, false, rand, NTMRuin1.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, this.sizeX - 1, 1, this.sizeZ, this.sizeX - 1, 2, this.sizeZ, false, rand, NTMRuin1.RandomConcreteBricks);
+			this.fillWithMetadataBlocks(world, box, this.sizeX, 3, 1, this.sizeX, 3, 2, ModBlocks.concrete_pillar, pillarMetaNS, Blocks.air, 0, false); //Right Wall
+			this.fillWithMetadataBlocks(world, box, this.sizeX, 3, this.sizeZ - 1, this.sizeX, 3, this.sizeZ - 1, ModBlocks.concrete_pillar, pillarMetaNS, Blocks.air, 0, false);
+			this.fillWithRandomizedBlocks(world, box, this.sizeX, 0, 1, this.sizeX, 0, 4, false, rand, NTMRuin1.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, this.sizeX, 1, 1, this.sizeX, 2, 2, false, rand, NTMRuin1.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, this.sizeX, 0, 6, this.sizeX, 0, 6, false, rand, NTMRuin1.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, this.sizeX, 0, this.sizeZ - 2, this.sizeX, 1, this.sizeZ - 1, false, rand, NTMRuin1.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, this.sizeX, 2, this.sizeZ - 1, this.sizeX, 2, this.sizeZ - 1, false, rand, NTMRuin1.RandomConcreteBricks);
 			
-			this.randomlyFillWithBlocks(world, box, rand, 0.25F, 1, 0, 1, sizeX - 1, 0, sizeZ - 1, Blocks.gravel, Blocks.air, false);
+			this.randomlyFillWithBlocks(world, box, rand, 0.25F, 1, 0, 1, this.sizeX - 1, 0, this.sizeZ - 1, Blocks.gravel, Blocks.air, false);
 			
 			return true;
 		}
@@ -106,48 +106,48 @@ public class RuinFeatures {
 		public boolean addComponentParts(World world, Random rand, StructureBoundingBox box) {
 			
 			//System.out.println(this.coordBaseMode);
-			if(!this.setAverageHeight(world, box, this.boundingBox.minY)) {
+			if(!setAverageHeight(world, box, this.boundingBox.minY)) {
 				return false;
 			}
 			//System.out.println("" + this.boundingBox.minX + ", " + this.boundingBox.minY + ", " + this.boundingBox.minZ);
 			
-			placeFoundationUnderneath(world, Blocks.stonebrick, 0, 0, 0, sizeX, sizeZ, -1, box);
+			placeFoundationUnderneath(world, Blocks.stonebrick, 0, 0, 0, this.sizeX, this.sizeZ, -1, box);
 			
-			int pillarMetaWE = this.getPillarMeta(4);
-			int pillarMetaNS = this.getPillarMeta(8);
+			int pillarMetaWE = getPillarMeta(4);
+			int pillarMetaNS = getPillarMeta(8);
 			
 			this.fillWithBlocks(world, box, 0, 0, 0, 0, 3, 0, ModBlocks.concrete_pillar, Blocks.air, false); //Back Wall
-			this.fillWithMetadataBlocks(world, box, 1, 3, 0, sizeX - 1, 3, 0, ModBlocks.concrete_pillar, pillarMetaWE, Blocks.air, 0, false);
-			this.fillWithBlocks(world, box, sizeX, 0, 0, sizeX, sizeY, 0, ModBlocks.concrete_pillar, Blocks.air, false);
-			this.fillWithRandomizedBlocks(world, box, 1, 0, 0, sizeX - 1, 0, 0, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 1, 1, 0, 1, 2, 0, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 3, 1, 0, 4, 2, 0, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, sizeX - 1, 1, 0, sizeX - 1, 2, 0, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 3, 4, 0, sizeX - 1, 4, 0, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, sizeX - 1, sizeY, 0, sizeX - 1, sizeY, 0, false, rand, RandomConcreteBricks);
+			this.fillWithMetadataBlocks(world, box, 1, 3, 0, this.sizeX - 1, 3, 0, ModBlocks.concrete_pillar, pillarMetaWE, Blocks.air, 0, false);
+			this.fillWithBlocks(world, box, this.sizeX, 0, 0, this.sizeX, this.sizeY, 0, ModBlocks.concrete_pillar, Blocks.air, false);
+			this.fillWithRandomizedBlocks(world, box, 1, 0, 0, this.sizeX - 1, 0, 0, false, rand, NTMRuin2.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 1, 1, 0, 1, 2, 0, false, rand, NTMRuin2.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 3, 1, 0, 4, 2, 0, false, rand, NTMRuin2.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, this.sizeX - 1, 1, 0, this.sizeX - 1, 2, 0, false, rand, NTMRuin2.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 3, 4, 0, this.sizeX - 1, 4, 0, false, rand, NTMRuin2.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, this.sizeX - 1, this.sizeY, 0, this.sizeX - 1, this.sizeY, 0, false, rand, NTMRuin2.RandomConcreteBricks);
 			this.fillWithMetadataBlocks(world, box, 0, 3, 1, 0, 3, 4, ModBlocks.concrete_pillar, pillarMetaNS, Blocks.air, 0, false); //Left Wall
 			this.fillWithBlocks(world, box, 0, 0, 5, 0, 0, 5, ModBlocks.concrete_pillar, Blocks.air, false);
-			this.fillWithBlocks(world, box, 0, 0, sizeZ, 0, 2, sizeZ, ModBlocks.concrete_pillar, Blocks.air, false);
-			this.fillWithRandomizedBlocks(world, box, 0, 0, 1, 0, 2, 3, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 0, 0, sizeZ - 3, 0, 0, sizeZ - 1, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 0, 1, sizeZ - 1, 0, 1, sizeZ - 1, false, rand, RandomConcreteBricks);
-			this.fillWithMetadataBlocks(world, box, sizeX - 1, 3, sizeZ, sizeX - 1, 3, sizeZ, ModBlocks.concrete_pillar, pillarMetaWE, Blocks.air, 0, false); //Front Wall
-			this.fillWithBlocks(world, box, sizeX, 0, sizeZ, sizeX, 3, sizeZ, ModBlocks.concrete_pillar, Blocks.air, false);
-			this.fillWithRandomizedBlocks(world, box, 1, 0, sizeZ, sizeX - 1, 0, sizeZ, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 1, 1, sizeZ, 1, 2, sizeZ, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, sizeX - 1, 1, sizeZ, sizeX - 1, 2, sizeZ, false, rand, RandomConcreteBricks);
-			this.fillWithMetadataBlocks(world, box, sizeX, 3, 1, sizeX, 3, 4, ModBlocks.concrete_pillar, pillarMetaNS, Blocks.air, 0, false); //Right Wall
-			this.fillWithBlocks(world, box, sizeX, 0, 5, sizeX, 4, 5, ModBlocks.concrete_pillar, Blocks.air, false);
-			this.fillWithMetadataBlocks(world, box, sizeX, 3, sizeZ - 2, sizeX, 3, sizeZ - 1, ModBlocks.concrete_pillar, pillarMetaNS, Blocks.air, 0, false);
-			this.fillWithRandomizedBlocks(world, box, sizeX, 0, 1, sizeX, 0, 4, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, sizeX, 1, 1, sizeX, 2, 1, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, sizeX, 1, 3, sizeX, 2, 3, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, sizeX, 1, 4, sizeX, 1, 4, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, sizeX, 0, 6, sizeX, 0, sizeZ - 1, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, sizeX, 1, 6, sizeX, 1, 7, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, sizeX, 1, sizeZ - 1, sizeX, 2, sizeZ - 1, false, rand, RandomConcreteBricks);
+			this.fillWithBlocks(world, box, 0, 0, this.sizeZ, 0, 2, this.sizeZ, ModBlocks.concrete_pillar, Blocks.air, false);
+			this.fillWithRandomizedBlocks(world, box, 0, 0, 1, 0, 2, 3, false, rand, NTMRuin2.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 0, 0, this.sizeZ - 3, 0, 0, this.sizeZ - 1, false, rand, NTMRuin2.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 0, 1, this.sizeZ - 1, 0, 1, this.sizeZ - 1, false, rand, NTMRuin2.RandomConcreteBricks);
+			this.fillWithMetadataBlocks(world, box, this.sizeX - 1, 3, this.sizeZ, this.sizeX - 1, 3, this.sizeZ, ModBlocks.concrete_pillar, pillarMetaWE, Blocks.air, 0, false); //Front Wall
+			this.fillWithBlocks(world, box, this.sizeX, 0, this.sizeZ, this.sizeX, 3, this.sizeZ, ModBlocks.concrete_pillar, Blocks.air, false);
+			this.fillWithRandomizedBlocks(world, box, 1, 0, this.sizeZ, this.sizeX - 1, 0, this.sizeZ, false, rand, NTMRuin2.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 1, 1, this.sizeZ, 1, 2, this.sizeZ, false, rand, NTMRuin2.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, this.sizeX - 1, 1, this.sizeZ, this.sizeX - 1, 2, this.sizeZ, false, rand, NTMRuin2.RandomConcreteBricks);
+			this.fillWithMetadataBlocks(world, box, this.sizeX, 3, 1, this.sizeX, 3, 4, ModBlocks.concrete_pillar, pillarMetaNS, Blocks.air, 0, false); //Right Wall
+			this.fillWithBlocks(world, box, this.sizeX, 0, 5, this.sizeX, 4, 5, ModBlocks.concrete_pillar, Blocks.air, false);
+			this.fillWithMetadataBlocks(world, box, this.sizeX, 3, this.sizeZ - 2, this.sizeX, 3, this.sizeZ - 1, ModBlocks.concrete_pillar, pillarMetaNS, Blocks.air, 0, false);
+			this.fillWithRandomizedBlocks(world, box, this.sizeX, 0, 1, this.sizeX, 0, 4, false, rand, NTMRuin2.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, this.sizeX, 1, 1, this.sizeX, 2, 1, false, rand, NTMRuin2.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, this.sizeX, 1, 3, this.sizeX, 2, 3, false, rand, NTMRuin2.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, this.sizeX, 1, 4, this.sizeX, 1, 4, false, rand, NTMRuin2.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, this.sizeX, 0, 6, this.sizeX, 0, this.sizeZ - 1, false, rand, NTMRuin2.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, this.sizeX, 1, 6, this.sizeX, 1, 7, false, rand, NTMRuin2.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, this.sizeX, 1, this.sizeZ - 1, this.sizeX, 2, this.sizeZ - 1, false, rand, NTMRuin2.RandomConcreteBricks);
 			
-			this.randomlyFillWithBlocks(world, box, rand, 0.25F, 1, 0, 1, sizeX - 1, 0, sizeZ - 1, Blocks.gravel, Blocks.air, false);
+			this.randomlyFillWithBlocks(world, box, rand, 0.25F, 1, 0, 1, this.sizeX - 1, 0, this.sizeZ - 1, Blocks.gravel, Blocks.air, false);
 			
 			return true;
 		}
@@ -169,42 +169,42 @@ public class RuinFeatures {
 		public boolean addComponentParts(World world, Random rand, StructureBoundingBox box) {
 			
 			//System.out.println(this.coordBaseMode);
-			if(!this.setAverageHeight(world, box, this.boundingBox.minY)) {
+			if(!setAverageHeight(world, box, this.boundingBox.minY)) {
 				return false;
 			}
 			//System.out.println("" + this.boundingBox.minX + ", " + this.boundingBox.minY + ", " + this.boundingBox.minZ);
 			
-			placeFoundationUnderneath(world, Blocks.stonebrick, 0, 0, 0, 0, sizeZ, -1, box);
-			placeFoundationUnderneath(world, Blocks.stonebrick, 0, sizeX, 0, sizeX, sizeZ, -1, box);
+			placeFoundationUnderneath(world, Blocks.stonebrick, 0, 0, 0, 0, this.sizeZ, -1, box);
+			placeFoundationUnderneath(world, Blocks.stonebrick, 0, this.sizeX, 0, this.sizeX, this.sizeZ, -1, box);
 			
-			placeFoundationUnderneath(world, Blocks.stonebrick, 0, 1, 0, sizeX, 0, -1, box);
-			placeFoundationUnderneath(world, Blocks.stonebrick, 0, 1, 4, sizeX, 4, -1, box);
+			placeFoundationUnderneath(world, Blocks.stonebrick, 0, 1, 0, this.sizeX, 0, -1, box);
+			placeFoundationUnderneath(world, Blocks.stonebrick, 0, 1, 4, this.sizeX, 4, -1, box);
 			
-			this.fillWithBlocks(world, box, 0, 0, 0, 0, sizeY, 0, ModBlocks.concrete_pillar, Blocks.air, false); //Back Wall
-			this.fillWithBlocks(world, box, sizeX, 0, 0, sizeX, 1, 0, ModBlocks.concrete_pillar, Blocks.air, false);
-			this.fillWithRandomizedBlocks(world, box, 1, 0, 0, sizeX - 1, 0, 0, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 1, 1, 0, 1, 1, 0, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 4, 1, 0, 4, 1, 0, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, sizeX - 1, 1, 0, sizeX - 1, 1, 0, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 1, 2, 0, sizeX - 2, 2, 0, false, rand, RandomConcreteBricks);
+			this.fillWithBlocks(world, box, 0, 0, 0, 0, this.sizeY, 0, ModBlocks.concrete_pillar, Blocks.air, false); //Back Wall
+			this.fillWithBlocks(world, box, this.sizeX, 0, 0, this.sizeX, 1, 0, ModBlocks.concrete_pillar, Blocks.air, false);
+			this.fillWithRandomizedBlocks(world, box, 1, 0, 0, this.sizeX - 1, 0, 0, false, rand, NTMRuin3.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 1, 1, 0, 1, 1, 0, false, rand, NTMRuin3.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 4, 1, 0, 4, 1, 0, false, rand, NTMRuin3.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, this.sizeX - 1, 1, 0, this.sizeX - 1, 1, 0, false, rand, NTMRuin3.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 1, 2, 0, this.sizeX - 2, 2, 0, false, rand, NTMRuin3.RandomConcreteBricks);
 			this.fillWithBlocks(world, box, 0, 0, 4, 0, 1, 4, ModBlocks.concrete_pillar, Blocks.air, false); //Left Wall
-			this.placeBlockAtCurrentPosition(world, ModBlocks.concrete_pillar, 0, 0, 0, sizeZ, box);
-			this.fillWithRandomizedBlocks(world, box, 0, 0, 1, 0, 0, 3, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 0, 0, 5, 0, 0, sizeZ - 1, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 0, 1, 5, 0, 1, 5, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 0, 1, 7, 0, 1, 7, false, rand, RandomConcreteBricks);
-			this.fillWithBlocks(world, box, sizeX, 0, 4, sizeX, 1, 4, ModBlocks.concrete_pillar, Blocks.air, false); //Right Wall
-			this.fillWithBlocks(world, box, sizeX, 0, sizeZ, sizeX, 1, sizeZ, ModBlocks.concrete_pillar, Blocks.air, false);
-			this.fillWithRandomizedBlocks(world, box, sizeX, 0, 1, sizeX, 1, 3, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, sizeX, 0, 5, sizeX, 0, 6, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, sizeX, 0, sizeZ - 1, sizeX, 0, sizeZ - 1, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, sizeX - 1, 0, sizeZ, sizeX - 1, 0, sizeZ, false, rand, RandomConcreteBricks);
+			placeBlockAtCurrentPosition(world, ModBlocks.concrete_pillar, 0, 0, 0, this.sizeZ, box);
+			this.fillWithRandomizedBlocks(world, box, 0, 0, 1, 0, 0, 3, false, rand, NTMRuin3.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 0, 0, 5, 0, 0, this.sizeZ - 1, false, rand, NTMRuin3.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 0, 1, 5, 0, 1, 5, false, rand, NTMRuin3.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 0, 1, 7, 0, 1, 7, false, rand, NTMRuin3.RandomConcreteBricks);
+			this.fillWithBlocks(world, box, this.sizeX, 0, 4, this.sizeX, 1, 4, ModBlocks.concrete_pillar, Blocks.air, false); //Right Wall
+			this.fillWithBlocks(world, box, this.sizeX, 0, this.sizeZ, this.sizeX, 1, this.sizeZ, ModBlocks.concrete_pillar, Blocks.air, false);
+			this.fillWithRandomizedBlocks(world, box, this.sizeX, 0, 1, this.sizeX, 1, 3, false, rand, NTMRuin3.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, this.sizeX, 0, 5, this.sizeX, 0, 6, false, rand, NTMRuin3.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, this.sizeX, 0, this.sizeZ - 1, this.sizeX, 0, this.sizeZ - 1, false, rand, NTMRuin3.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, this.sizeX - 1, 0, this.sizeZ, this.sizeX - 1, 0, this.sizeZ, false, rand, NTMRuin3.RandomConcreteBricks);
 			this.fillWithBlocks(world, box, 4, 0, 4, 4, 2, 4, ModBlocks.concrete_pillar, Blocks.air, false); //Center Wall
-			this.fillWithRandomizedBlocks(world, box, 3, 0, 4, 3, 1, 4, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 5, 0, 4, sizeX - 1, 1, 4, false, rand, RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 3, 0, 4, 3, 1, 4, false, rand, NTMRuin3.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 5, 0, 4, this.sizeX - 1, 1, 4, false, rand, NTMRuin3.RandomConcreteBricks);
 			
-			this.randomlyFillWithBlocks(world, box, rand, 0.05F, 1, 0, 1, sizeX - 1, 0, 3, Blocks.gravel, Blocks.air, false);
-			this.randomlyFillWithBlocks(world, box, rand, 0.05F, 1, 0, 5, sizeX - 1, 0, sizeZ - 1, Blocks.gravel, Blocks.air, false);
+			this.randomlyFillWithBlocks(world, box, rand, 0.05F, 1, 0, 1, this.sizeX - 1, 0, 3, Blocks.gravel, Blocks.air, false);
+			this.randomlyFillWithBlocks(world, box, rand, 0.05F, 1, 0, 5, this.sizeX - 1, 0, this.sizeZ - 1, Blocks.gravel, Blocks.air, false);
 			
 			return true;
 		}
@@ -226,46 +226,46 @@ public class RuinFeatures {
 		public boolean addComponentParts(World world, Random rand, StructureBoundingBox box) {
 			
 			//System.out.println(this.coordBaseMode);
-			if(!this.setAverageHeight(world, box, this.boundingBox.minY)) {
+			if(!setAverageHeight(world, box, this.boundingBox.minY)) {
 				return false;
 			}
 			//System.out.println("" + this.boundingBox.minX + ", " + this.boundingBox.minY + ", " + this.boundingBox.minZ);
 			
 			
-			placeFoundationUnderneath(world, Blocks.stonebrick, 0, 0, 0, 0, sizeZ, -1, box);
-			placeFoundationUnderneath(world, Blocks.stonebrick, 0, sizeX, 5, sizeX, sizeZ, -1, box);
+			placeFoundationUnderneath(world, Blocks.stonebrick, 0, 0, 0, 0, this.sizeZ, -1, box);
+			placeFoundationUnderneath(world, Blocks.stonebrick, 0, this.sizeX, 5, this.sizeX, this.sizeZ, -1, box);
 			placeFoundationUnderneath(world, Blocks.stonebrick, 0, 5, 0, 5, 4, -1, box);
 			
-			placeFoundationUnderneath(world, Blocks.stonebrick, 0, 1, sizeZ, sizeX - 1, sizeZ, -1, box);
+			placeFoundationUnderneath(world, Blocks.stonebrick, 0, 1, this.sizeZ, this.sizeX - 1, this.sizeZ, -1, box);
 			placeFoundationUnderneath(world, Blocks.stonebrick, 0, 1, 0, 4, 0, -1, box);
-			placeFoundationUnderneath(world, Blocks.stonebrick, 0, 5, 5, sizeX - 1, 5, -1, box);
+			placeFoundationUnderneath(world, Blocks.stonebrick, 0, 5, 5, this.sizeX - 1, 5, -1, box);
 			
 			this.fillWithBlocks(world, box, 0, 0, 0, 0, 1, 0, ModBlocks.concrete_pillar, Blocks.air, false); //Back Wall Pt. 1
-			this.fillWithBlocks(world, box, 5, 0, 0, 5, sizeY, 0, ModBlocks.concrete_pillar, Blocks.air, false);
-			this.fillWithRandomizedBlocks(world, box, 1, 0, 0, 4, 0, 0, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 4, 1, 0, 4, 1, 0, false, rand, RandomConcreteBricks);
-			this.fillWithBlocks(world, box, 5, 0, 5, 5, sizeY, 5, ModBlocks.concrete_pillar, Blocks.air, false); //Right Wall Pt. 1
-			this.fillWithRandomizedBlocks(world, box, 5, 0, 1, 5, 0, 4, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 5, 1, 1, 5, 1, 1, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 5, 1, 4, 5, 1, 4, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 5, 2, 1, 5, 2, 4, false, rand, RandomConcreteBricks);
-			this.fillWithBlocks(world, box, sizeX, 0, 5, sizeX, 1, 5, ModBlocks.concrete_pillar, Blocks.air, false); //Back Wall Pt. 2
-			this.fillWithRandomizedBlocks(world, box, 6, 0, 5, sizeX - 1, 0, 5, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 6, 1, 5, 6, 1, 5, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, sizeX - 1, 1, 5, sizeX - 1, 1, 5, false, rand, RandomConcreteBricks);
-			this.fillWithBlocks(world, box, sizeX, 0, sizeZ, sizeX, 1, sizeZ, ModBlocks.concrete_pillar, Blocks.air, false); //Right Wall Pt. 2
-			this.fillWithRandomizedBlocks(world, box, sizeX, 0, 6, sizeX, 0, sizeZ - 1, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, sizeX, 1, 6, sizeX, 1, sizeZ - 3, false, rand, RandomConcreteBricks);
-			this.fillWithBlocks(world, box, 0, 0, sizeZ, 0, 0, sizeZ, ModBlocks.concrete_pillar, Blocks.air, false); //Front Wall
-			this.fillWithRandomizedBlocks(world, box, 1, 0, sizeZ, 1, 0, sizeZ, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 6, 0, sizeZ, 7, 0, sizeZ, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, sizeX - 1, 0, sizeZ, sizeX - 1, 0, sizeZ, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 0, 0, 1, 0, 0, sizeZ - 1, false, rand, RandomConcreteBricks); //Left Wall
-			this.fillWithRandomizedBlocks(world, box, 0, 1, 1, 0, 1, 1, false, rand, RandomConcreteBricks);
-			this.fillWithRandomizedBlocks(world, box, 0, 1, 4, 0, 1, 7, false, rand, RandomConcreteBricks);
+			this.fillWithBlocks(world, box, 5, 0, 0, 5, this.sizeY, 0, ModBlocks.concrete_pillar, Blocks.air, false);
+			this.fillWithRandomizedBlocks(world, box, 1, 0, 0, 4, 0, 0, false, rand, NTMRuin4.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 4, 1, 0, 4, 1, 0, false, rand, NTMRuin4.RandomConcreteBricks);
+			this.fillWithBlocks(world, box, 5, 0, 5, 5, this.sizeY, 5, ModBlocks.concrete_pillar, Blocks.air, false); //Right Wall Pt. 1
+			this.fillWithRandomizedBlocks(world, box, 5, 0, 1, 5, 0, 4, false, rand, NTMRuin4.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 5, 1, 1, 5, 1, 1, false, rand, NTMRuin4.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 5, 1, 4, 5, 1, 4, false, rand, NTMRuin4.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 5, 2, 1, 5, 2, 4, false, rand, NTMRuin4.RandomConcreteBricks);
+			this.fillWithBlocks(world, box, this.sizeX, 0, 5, this.sizeX, 1, 5, ModBlocks.concrete_pillar, Blocks.air, false); //Back Wall Pt. 2
+			this.fillWithRandomizedBlocks(world, box, 6, 0, 5, this.sizeX - 1, 0, 5, false, rand, NTMRuin4.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 6, 1, 5, 6, 1, 5, false, rand, NTMRuin4.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, this.sizeX - 1, 1, 5, this.sizeX - 1, 1, 5, false, rand, NTMRuin4.RandomConcreteBricks);
+			this.fillWithBlocks(world, box, this.sizeX, 0, this.sizeZ, this.sizeX, 1, this.sizeZ, ModBlocks.concrete_pillar, Blocks.air, false); //Right Wall Pt. 2
+			this.fillWithRandomizedBlocks(world, box, this.sizeX, 0, 6, this.sizeX, 0, this.sizeZ - 1, false, rand, NTMRuin4.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, this.sizeX, 1, 6, this.sizeX, 1, this.sizeZ - 3, false, rand, NTMRuin4.RandomConcreteBricks);
+			this.fillWithBlocks(world, box, 0, 0, this.sizeZ, 0, 0, this.sizeZ, ModBlocks.concrete_pillar, Blocks.air, false); //Front Wall
+			this.fillWithRandomizedBlocks(world, box, 1, 0, this.sizeZ, 1, 0, this.sizeZ, false, rand, NTMRuin4.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 6, 0, this.sizeZ, 7, 0, this.sizeZ, false, rand, NTMRuin4.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, this.sizeX - 1, 0, this.sizeZ, this.sizeX - 1, 0, this.sizeZ, false, rand, NTMRuin4.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 0, 0, 1, 0, 0, this.sizeZ - 1, false, rand, NTMRuin4.RandomConcreteBricks); //Left Wall
+			this.fillWithRandomizedBlocks(world, box, 0, 1, 1, 0, 1, 1, false, rand, NTMRuin4.RandomConcreteBricks);
+			this.fillWithRandomizedBlocks(world, box, 0, 1, 4, 0, 1, 7, false, rand, NTMRuin4.RandomConcreteBricks);
 			
 			this.randomlyFillWithBlocks(world, box, rand, 0.05F, 1, 0, 1, 4, 0, 5, Blocks.gravel, Blocks.air, false);
-			this.randomlyFillWithBlocks(world, box, rand, 0.05F, 1, 0, 6, sizeX - 1, 0, sizeZ - 1, Blocks.gravel, Blocks.air, false);
+			this.randomlyFillWithBlocks(world, box, rand, 0.05F, 1, 0, 6, this.sizeX - 1, 0, this.sizeZ - 1, Blocks.gravel, Blocks.air, false);
 			
 			return true;
 		}

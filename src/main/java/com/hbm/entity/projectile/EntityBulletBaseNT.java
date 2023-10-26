@@ -38,6 +38,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
@@ -51,12 +52,12 @@ import net.minecraft.world.World;
  */
 public class EntityBulletBaseNT extends EntityThrowableInterp implements IBulletBase {
 	
-	@Override public double prevX() { return prevRenderX; }
-	@Override public double prevY() { return prevRenderY; }
-	@Override public double prevZ() { return prevRenderZ; }
-	@Override public void prevX(double d) { prevRenderX = d; }
-	@Override public void prevY(double d) { prevRenderY = d; }
-	@Override public void prevZ(double d) { prevRenderZ = d; }
+	@Override public double prevX() { return this.prevRenderX; }
+	@Override public double prevY() { return this.prevRenderY; }
+	@Override public double prevZ() { return this.prevRenderZ; }
+	@Override public void prevX(double d) { this.prevRenderX = d; }
+	@Override public void prevY(double d) { this.prevRenderY = d; }
+	@Override public void prevZ(double d) { this.prevRenderZ = d; }
 	@Override public List<Pair<Vec3, Double>> nodes() { return this.trailNodes; }
 	
 	private BulletConfiguration config;
@@ -65,16 +66,16 @@ public class EntityBulletBaseNT extends EntityThrowableInterp implements IBullet
 	public double prevRenderX;
 	public double prevRenderY;
 	public double prevRenderZ;
-	public final List<Pair<Vec3, Double>> trailNodes = new ArrayList();
+	public final List<Pair<Vec3, Double>> trailNodes = new ArrayList<>();
 	
 	public BulletConfiguration getConfig() {
-		return config;
+		return this.config;
 	}
 
 	public EntityBulletBaseNT(World world) {
 		super(world);
 		this.renderDistanceWeight = 10.0D;
-		this.setSize(0.5F, 0.5F);
+		setSize(0.5F, 0.5F);
 	}
 
 	public EntityBulletBaseNT(World world, int config) {
@@ -86,11 +87,11 @@ public class EntityBulletBaseNT extends EntityThrowableInterp implements IBullet
 		this.renderDistanceWeight = 10.0D;
 		
 		if(this.config == null) {
-			this.setDead();
+			setDead();
 			return;
 		}
 		
-		this.setSize(0.5F, 0.5F);
+		setSize(0.5F, 0.5F);
 	}
 	
 	public EntityBulletBaseNT(World world, int config, EntityLivingBase entity) {
@@ -99,7 +100,7 @@ public class EntityBulletBaseNT extends EntityThrowableInterp implements IBullet
 		this.dataWatcher.updateObject(18, config);
 		this.dataWatcher.updateObject(16, (byte)this.config.style);
 		this.dataWatcher.updateObject(17, (byte)this.config.trail);
-		thrower = entity;
+		this.thrower = entity;
 		
 		ItemStack gun = entity.getHeldItem();
 		boolean offsetShot = true;
@@ -112,7 +113,7 @@ public class EntityBulletBaseNT extends EntityThrowableInterp implements IBullet
 			}
 		}
 
-		this.setLocationAndAngles(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ, entity.rotationYaw, entity.rotationPitch);
+		setLocationAndAngles(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ, entity.rotationYaw, entity.rotationPitch);
 		
 		if(offsetShot) {
 			double sideOffset = 0.16D;
@@ -123,16 +124,16 @@ public class EntityBulletBaseNT extends EntityThrowableInterp implements IBullet
 		} else {
 			this.posY -= 0.1D;
 		}
-		this.setPosition(this.posX, this.posY, this.posZ);
+		setPosition(this.posX, this.posY, this.posZ);
 		
 		this.motionX = -MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
 		this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
 		this.motionY = (-MathHelper.sin(this.rotationPitch / 180.0F * (float) Math.PI));
 
 		this.renderDistanceWeight = 10.0D;
-		this.setSize(0.5F, 0.5F);
+		setSize(0.5F, 0.5F);
 
-		this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, 1.0F, this.config.spread * (offsetShot ? 1F : 0.25F));
+		setThrowableHeading(this.motionX, this.motionY, this.motionZ, 1.0F, this.config.spread * (offsetShot ? 1F : 0.25F));
 	}
 
 	public EntityBulletBaseNT(World world, int config, EntityLivingBase entity, EntityLivingBase target, float motion, float deviation) {
@@ -145,7 +146,7 @@ public class EntityBulletBaseNT extends EntityThrowableInterp implements IBullet
 		this.thrower = entity;
 
 		this.renderDistanceWeight = 10.0D;
-		this.setSize(0.5F, 0.5F);
+		setSize(0.5F, 0.5F);
 
 		this.posY = entity.posY + entity.getEyeHeight() - 0.10000000149011612D;
 		double d0 = target.posX - entity.posX;
@@ -158,9 +159,9 @@ public class EntityBulletBaseNT extends EntityThrowableInterp implements IBullet
 			float f3 = (float) (-(Math.atan2(d1, d3) * 180.0D / Math.PI));
 			double d4 = d0 / d3;
 			double d5 = d2 / d3;
-			this.setLocationAndAngles(entity.posX + d4, this.posY, entity.posZ + d5, f2, f3);
+			setLocationAndAngles(entity.posX + d4, this.posY, entity.posZ + d5, f2, f3);
 			this.yOffset = 0.0F;
-			this.setThrowableHeading(d0, d1, d2, motion, deviation);
+			setThrowableHeading(d0, d1, d2, motion, deviation);
 		}
 	}
 
@@ -172,64 +173,64 @@ public class EntityBulletBaseNT extends EntityThrowableInterp implements IBullet
 		//trail
 		this.dataWatcher.addObject(17, Byte.valueOf((byte) 0));
 		//bullet config sync
-		this.dataWatcher.addObject(18, Integer.valueOf((int) 0));
+		this.dataWatcher.addObject(18, Integer.valueOf(0));
 	}
 	
 	@Override
 	public void onUpdate() {
 		
-		if(config == null) config = BulletConfigSyncingUtil.pullConfig(dataWatcher.getWatchableObjectInt(18));
+		if(this.config == null) this.config = BulletConfigSyncingUtil.pullConfig(this.dataWatcher.getWatchableObjectInt(18));
 
-		if(config == null){
-			this.setDead();
+		if(this.config == null){
+			setDead();
 			return;
 		}
 		
-		if(worldObj.isRemote && config.style == config.STYLE_TAU) {
-			if(trailNodes.isEmpty()) {
+		if(this.worldObj.isRemote && this.config.style == BulletConfiguration.STYLE_TAU) {
+			if(this.trailNodes.isEmpty()) {
 				this.ignoreFrustumCheck = true;
-				trailNodes.add(new Pair<Vec3, Double>(Vec3.createVectorHelper(-motionX * 2, -motionY * 2, -motionZ * 2), 0D));
+				this.trailNodes.add(new Pair<>(Vec3.createVectorHelper(-this.motionX * 2, -this.motionY * 2, -this.motionZ * 2), 0D));
 			} else {
-				trailNodes.add(new Pair<Vec3, Double>(Vec3.createVectorHelper(0, 0, 0), 1D));
+				this.trailNodes.add(new Pair<>(Vec3.createVectorHelper(0, 0, 0), 1D));
 			}
 		}
 		
-		if(worldObj.isRemote && this.config.blackPowder && this.ticksExisted == 1) {
+		if(this.worldObj.isRemote && this.config.blackPowder && this.ticksExisted == 1) {
 			
 			for(int i = 0; i < 15; i++) {
-				double mod = rand.nextDouble();
+				double mod = this.rand.nextDouble();
 				this.worldObj.spawnParticle("smoke", this.posX, this.posY, this.posZ,
-						(this.motionX + rand.nextGaussian() * 0.05) * mod,
-						(this.motionY + rand.nextGaussian() * 0.05) * mod,
-						(this.motionZ + rand.nextGaussian() * 0.05) * mod);
+						(this.motionX + this.rand.nextGaussian() * 0.05) * mod,
+						(this.motionY + this.rand.nextGaussian() * 0.05) * mod,
+						(this.motionZ + this.rand.nextGaussian() * 0.05) * mod);
 			}
 			
 			double mod = 0.5;
 			this.worldObj.spawnParticle("flame", this.posX + this.motionX * mod, this.posY + this.motionY * mod, this.posZ + this.motionZ * mod, 0, 0, 0);
 		}
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			if(config.maxAge == 0) {
+			if(this.config.maxAge == 0) {
 				if(this.config.bntUpdate != null) this.config.bntUpdate.behaveUpdate(this);
-				this.setDead();
+				setDead();
 				return;
 			}
 			
-			if(this.ticksExisted > config.maxAge) this.setDead();
+			if(this.ticksExisted > this.config.maxAge) setDead();
 		}
 		
 		if(this.config.bntUpdate != null) this.config.bntUpdate.behaveUpdate(this);
 
-		this.prevPosX = posX;
-		this.prevPosY = posY;
-		this.prevPosZ = posZ;
+		this.prevPosX = this.posX;
+		this.prevPosY = this.posY;
+		this.prevPosZ = this.posZ;
 		
 		super.onUpdate();
 		
-		if(worldObj.isRemote && !config.vPFX.isEmpty()) {
+		if(this.worldObj.isRemote && !this.config.vPFX.isEmpty()) {
 			
-			Vec3 vec = Vec3.createVectorHelper(posX - prevPosX, posY - prevPosY, posZ - prevPosZ);
+			Vec3 vec = Vec3.createVectorHelper(this.posX - this.prevPosX, this.posY - this.prevPosY, this.posZ - this.prevPosZ);
 			double motion = Math.max(vec.lengthVector(), 0.1);
 			vec = vec.normalize();
 			
@@ -237,7 +238,7 @@ public class EntityBulletBaseNT extends EntityThrowableInterp implements IBullet
 				
 				NBTTagCompound nbt = new NBTTagCompound();
 				nbt.setString("type", "vanillaExt");
-				nbt.setString("mode", config.vPFX);
+				nbt.setString("mode", this.config.vPFX);
 				nbt.setDouble("posX", this.posX - vec.xCoord * d);
 				nbt.setDouble("posY", this.posY - vec.yCoord * d);
 				nbt.setDouble("posZ", this.posZ - vec.zCoord * d);
@@ -249,14 +250,14 @@ public class EntityBulletBaseNT extends EntityThrowableInterp implements IBullet
 	@Override
 	protected void onImpact(MovingObjectPosition mop) {
 		
-		if(mop.typeOfHit == mop.typeOfHit.BLOCK) {
+		if(mop.typeOfHit == MovingObjectType.BLOCK) {
 			
-			boolean hRic = rand.nextInt(100) < config.HBRC;
-			boolean doesRic = config.doesRicochet && hRic;
+			boolean hRic = this.rand.nextInt(100) < this.config.HBRC;
+			boolean doesRic = this.config.doesRicochet && hRic;
 
-			if(!config.isSpectral && !doesRic) {
-				this.setPosition(mop.hitVec.xCoord, mop.hitVec.yCoord, mop.hitVec.zCoord);
-				this.onBlockImpact(mop.blockX, mop.blockY, mop.blockZ, mop.sideHit);
+			if(!this.config.isSpectral && !doesRic) {
+				setPosition(mop.hitVec.xCoord, mop.hitVec.yCoord, mop.hitVec.zCoord);
+				onBlockImpact(mop.blockX, mop.blockY, mop.blockZ, mop.sideHit);
 			}
 
 			if(doesRic) {
@@ -274,35 +275,35 @@ public class EntityBulletBaseNT extends EntityThrowableInterp implements IBullet
 
 				if(face != null) {
 
-					Vec3 vel = Vec3.createVectorHelper(motionX, motionY, motionZ);
+					Vec3 vel = Vec3.createVectorHelper(this.motionX, this.motionY, this.motionZ);
 					vel.normalize();
 
-					boolean lRic = rand.nextInt(100) < config.LBRC;
+					boolean lRic = this.rand.nextInt(100) < this.config.LBRC;
 					double angle = Math.abs(BobMathUtil.getCrossAngle(vel, face) - 90);
 
-					if(hRic || (angle <= config.ricochetAngle && lRic)) {
+					if(hRic || (angle <= this.config.ricochetAngle && lRic)) {
 						switch(mop.sideHit) {
 						case 0:
-						case 1: motionY *= -1; break;
+						case 1: this.motionY *= -1; break;
 						case 2:
-						case 3: motionZ *= -1; break;
+						case 3: this.motionZ *= -1; break;
 						case 4:
-						case 5: motionX *= -1; break;
+						case 5: this.motionX *= -1; break;
 						}
 
-						if(config.plink == 1)
-							worldObj.playSoundAtEntity(this, "hbm:weapon.ricochet", 0.25F, 1.0F);
-						if(config.plink == 2)
-							worldObj.playSoundAtEntity(this, "hbm:weapon.gBounce", 1.0F, 1.0F);
+						if(this.config.plink == 1)
+							this.worldObj.playSoundAtEntity(this, "hbm:weapon.ricochet", 0.25F, 1.0F);
+						if(this.config.plink == 2)
+							this.worldObj.playSoundAtEntity(this, "hbm:weapon.gBounce", 1.0F, 1.0F);
 
-						this.setPosition(mop.hitVec.xCoord, mop.hitVec.yCoord, mop.hitVec.zCoord);
+						setPosition(mop.hitVec.xCoord, mop.hitVec.yCoord, mop.hitVec.zCoord);
 						onRicochet(mop.blockX, mop.blockY, mop.blockZ);
 						
 						//worldObj.setBlock((int) Math.floor(posX), (int) Math.floor(posY), (int) Math.floor(posZ), Blocks.dirt);
 
 					} else {
-						if(!worldObj.isRemote) {
-							this.setPosition(mop.hitVec.xCoord, mop.hitVec.yCoord, mop.hitVec.zCoord);
+						if(!this.worldObj.isRemote) {
+							setPosition(mop.hitVec.xCoord, mop.hitVec.yCoord, mop.hitVec.zCoord);
 							onBlockImpact(mop.blockX, mop.blockY, mop.blockZ, mop.sideHit);
 						}
 					}
@@ -311,9 +312,9 @@ public class EntityBulletBaseNT extends EntityThrowableInterp implements IBullet
 					this.posY += (mop.hitVec.yCoord - this.posY) * 0.6;
 					this.posZ += (mop.hitVec.zCoord - this.posZ) * 0.6;*/
 					
-					this.motionX *= config.bounceMod;
-					this.motionY *= config.bounceMod;
-					this.motionZ *= config.bounceMod;
+					this.motionX *= this.config.bounceMod;
+					this.motionY *= this.config.bounceMod;
+					this.motionZ *= this.config.bounceMod;
 				}
 			}
 			
@@ -324,17 +325,17 @@ public class EntityBulletBaseNT extends EntityThrowableInterp implements IBullet
 			DamageSource damagesource = this.config.getDamage(this, this.thrower);
 			Entity victim = mop.entityHit;
 			
-			if(!config.doesPenetrate) {
-				this.setPosition(mop.hitVec.xCoord, mop.hitVec.yCoord, mop.hitVec.zCoord);
+			if(!this.config.doesPenetrate) {
+				setPosition(mop.hitVec.xCoord, mop.hitVec.yCoord, mop.hitVec.zCoord);
 				onEntityImpact(victim);
 			} else {
 				onEntityHurt(victim);
 			}
 			
-			float damage = rand.nextFloat() * (config.dmgMax - config.dmgMin) + config.dmgMin;
+			float damage = this.rand.nextFloat() * (this.config.dmgMax - this.config.dmgMin) + this.config.dmgMin;
 			
-			if(overrideDamage != 0)
-				damage = overrideDamage;
+			if(this.overrideDamage != 0)
+				damage = this.overrideDamage;
 			
 			boolean headshot = false;
 			
@@ -352,13 +353,13 @@ public class EntityBulletBaseNT extends EntityThrowableInterp implements IBullet
 
 				try {
 					Field lastDamage = ReflectionHelper.findField(EntityLivingBase.class, "lastDamage", "field_110153_bc");
-					float dmg = (float) damage + lastDamage.getFloat(victim);
+					float dmg = damage + lastDamage.getFloat(victim);
 					if(!victim.attackEntityFrom(damagesource, dmg)) headshot = false;
 				} catch (Exception x) { }
 				
 			}
 
-			if(!worldObj.isRemote && headshot) {
+			if(!this.worldObj.isRemote && headshot) {
 				if(victim instanceof EntityLivingBase) {
 					EntityLivingBase living = (EntityLivingBase) victim;
 					double head = living.height - living.getEyeHeight();
@@ -369,7 +370,7 @@ public class EntityBulletBaseNT extends EntityThrowableInterp implements IBullet
 					data.setString("mode", "blockdust");
 					data.setInteger("block", Block.getIdFromBlock(Blocks.redstone_block));
 					PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, living.posX, living.posY + living.height - head, living.posZ), new TargetPoint(living.dimension, living.posX, living.posY, living.posZ, 50));
-					worldObj.playSoundEffect(victim.posX, victim.posY, victim.posZ, "mob.zombie.woodbreak", 1.0F, 0.95F + rand.nextFloat() * 0.2F);
+					this.worldObj.playSoundEffect(victim.posX, victim.posY, victim.posZ, "mob.zombie.woodbreak", 1.0F, 0.95F + this.rand.nextFloat() * 0.2F);
     			}
     		}
 		}
@@ -378,31 +379,31 @@ public class EntityBulletBaseNT extends EntityThrowableInterp implements IBullet
 	//for when a bullet dies by hitting a block
 	private void onBlockImpact(int bX, int bY, int bZ, int sideHit) {
 		
-		if(config.bntImpact != null)
-			config.bntImpact.behaveBlockHit(this, bX, bY, bZ, sideHit);
+		if(this.config.bntImpact != null)
+			this.config.bntImpact.behaveBlockHit(this, bX, bY, bZ, sideHit);
 		
-		if(!worldObj.isRemote) {
-			if(!config.liveAfterImpact && !config.isSpectral && bY > -1 && !this.inGround) this.setDead();
-			if(!config.doesPenetrate && bY == -1) this.setDead();
+		if(!this.worldObj.isRemote) {
+			if(!this.config.liveAfterImpact && !this.config.isSpectral && bY > -1 && !this.inGround) setDead();
+			if(!this.config.doesPenetrate && bY == -1) setDead();
 		}
 		
-		if(config.incendiary > 0 && !this.worldObj.isRemote) {
-			if(worldObj.rand.nextInt(3) == 0 && worldObj.getBlock((int)posX, (int)posY, (int)posZ) == Blocks.air) worldObj.setBlock((int)posX, (int)posY, (int)posZ, Blocks.fire);
-			if(worldObj.rand.nextInt(3) == 0 && worldObj.getBlock((int)posX + 1, (int)posY, (int)posZ) == Blocks.air) worldObj.setBlock((int)posX + 1, (int)posY, (int)posZ, Blocks.fire);
-			if(worldObj.rand.nextInt(3) == 0 && worldObj.getBlock((int)posX - 1, (int)posY, (int)posZ) == Blocks.air) worldObj.setBlock((int)posX - 1, (int)posY, (int)posZ, Blocks.fire);
-			if(worldObj.rand.nextInt(3) == 0 && worldObj.getBlock((int)posX, (int)posY + 1, (int)posZ) == Blocks.air) worldObj.setBlock((int)posX, (int)posY + 1, (int)posZ, Blocks.fire);
-			if(worldObj.rand.nextInt(3) == 0 && worldObj.getBlock((int)posX, (int)posY - 1, (int)posZ) == Blocks.air) worldObj.setBlock((int)posX, (int)posY - 1, (int)posZ, Blocks.fire);
-			if(worldObj.rand.nextInt(3) == 0 && worldObj.getBlock((int)posX, (int)posY, (int)posZ + 1) == Blocks.air) worldObj.setBlock((int)posX, (int)posY, (int)posZ + 1, Blocks.fire);
-			if(worldObj.rand.nextInt(3) == 0 && worldObj.getBlock((int)posX, (int)posY, (int)posZ - 1) == Blocks.air) worldObj.setBlock((int)posX, (int)posY, (int)posZ - 1, Blocks.fire);
+		if(this.config.incendiary > 0 && !this.worldObj.isRemote) {
+			if(this.worldObj.rand.nextInt(3) == 0 && this.worldObj.getBlock((int)this.posX, (int)this.posY, (int)this.posZ) == Blocks.air) this.worldObj.setBlock((int)this.posX, (int)this.posY, (int)this.posZ, Blocks.fire);
+			if(this.worldObj.rand.nextInt(3) == 0 && this.worldObj.getBlock((int)this.posX + 1, (int)this.posY, (int)this.posZ) == Blocks.air) this.worldObj.setBlock((int)this.posX + 1, (int)this.posY, (int)this.posZ, Blocks.fire);
+			if(this.worldObj.rand.nextInt(3) == 0 && this.worldObj.getBlock((int)this.posX - 1, (int)this.posY, (int)this.posZ) == Blocks.air) this.worldObj.setBlock((int)this.posX - 1, (int)this.posY, (int)this.posZ, Blocks.fire);
+			if(this.worldObj.rand.nextInt(3) == 0 && this.worldObj.getBlock((int)this.posX, (int)this.posY + 1, (int)this.posZ) == Blocks.air) this.worldObj.setBlock((int)this.posX, (int)this.posY + 1, (int)this.posZ, Blocks.fire);
+			if(this.worldObj.rand.nextInt(3) == 0 && this.worldObj.getBlock((int)this.posX, (int)this.posY - 1, (int)this.posZ) == Blocks.air) this.worldObj.setBlock((int)this.posX, (int)this.posY - 1, (int)this.posZ, Blocks.fire);
+			if(this.worldObj.rand.nextInt(3) == 0 && this.worldObj.getBlock((int)this.posX, (int)this.posY, (int)this.posZ + 1) == Blocks.air) this.worldObj.setBlock((int)this.posX, (int)this.posY, (int)this.posZ + 1, Blocks.fire);
+			if(this.worldObj.rand.nextInt(3) == 0 && this.worldObj.getBlock((int)this.posX, (int)this.posY, (int)this.posZ - 1) == Blocks.air) this.worldObj.setBlock((int)this.posX, (int)this.posY, (int)this.posZ - 1, Blocks.fire);
 		}
 
-		if(config.emp > 0)
-			ExplosionNukeGeneric.empBlast(this.worldObj, (int)(this.posX + 0.5D), (int)(this.posY + 0.5D), (int)(this.posZ + 0.5D), config.emp);
+		if(this.config.emp > 0)
+			ExplosionNukeGeneric.empBlast(this.worldObj, (int)(this.posX + 0.5D), (int)(this.posY + 0.5D), (int)(this.posZ + 0.5D), this.config.emp);
 		
-		if(config.emp > 3) {
+		if(this.config.emp > 3) {
 			if (!this.worldObj.isRemote) {
 				
-	    		EntityEMPBlast cloud = new EntityEMPBlast(this.worldObj, config.emp);
+	    		EntityEMPBlast cloud = new EntityEMPBlast(this.worldObj, this.config.emp);
 	    		cloud.posX = this.posX;
 	    		cloud.posY = this.posY + 0.5F;
 	    		cloud.posZ = this.posZ;
@@ -411,27 +412,27 @@ public class EntityBulletBaseNT extends EntityThrowableInterp implements IBullet
 			}
 		}
 		
-		if(config.jolt > 0 && !worldObj.isRemote)
-    		ExplosionLarge.jolt(worldObj, posX, posY, posZ, config.jolt, 150, 0.25);
+		if(this.config.jolt > 0 && !this.worldObj.isRemote)
+    		ExplosionLarge.jolt(this.worldObj, this.posX, this.posY, this.posZ, this.config.jolt, 150, 0.25);
 		
-		if(config.explosive > 0 && !worldObj.isRemote)
-			worldObj.newExplosion(this, posX, posY, posZ, config.explosive, config.incendiary > 0, config.blockDamage);
+		if(this.config.explosive > 0 && !this.worldObj.isRemote)
+			this.worldObj.newExplosion(this, this.posX, this.posY, this.posZ, this.config.explosive, this.config.incendiary > 0, this.config.blockDamage);
 		
-		if(config.shrapnel > 0 && !worldObj.isRemote)
-			ExplosionLarge.spawnShrapnels(worldObj, posX, posY, posZ, config.shrapnel);
+		if(this.config.shrapnel > 0 && !this.worldObj.isRemote)
+			ExplosionLarge.spawnShrapnels(this.worldObj, this.posX, this.posY, this.posZ, this.config.shrapnel);
 		
-		if(config.chlorine > 0 && !worldObj.isRemote) {
-			ExplosionChaos.spawnChlorine(worldObj, posX, posY, posZ, config.chlorine, 1.5, 0);
-        	worldObj.playSoundEffect((double)(posX + 0.5F), (double)(posY + 0.5F), (double)(posZ + 0.5F), "random.fizz", 5.0F, 2.6F + (rand.nextFloat() - rand.nextFloat()) * 0.8F);
+		if(this.config.chlorine > 0 && !this.worldObj.isRemote) {
+			ExplosionChaos.spawnChlorine(this.worldObj, this.posX, this.posY, this.posZ, this.config.chlorine, 1.5, 0);
+        	this.worldObj.playSoundEffect(this.posX + 0.5F, this.posY + 0.5F, this.posZ + 0.5F, "random.fizz", 5.0F, 2.6F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.8F);
 		}
 		
-		if(config.rainbow > 0 && !worldObj.isRemote) {
-			EntityNukeExplosionMK3 ex = EntityNukeExplosionMK3.statFacFleija(worldObj, posX, posY, posZ, config.rainbow);
+		if(this.config.rainbow > 0 && !this.worldObj.isRemote) {
+			EntityNukeExplosionMK3 ex = EntityNukeExplosionMK3.statFacFleija(this.worldObj, this.posX, this.posY, this.posZ, this.config.rainbow);
 			if(!ex.isDead) {
 				this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "random.explode", 100.0f, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
-				worldObj.spawnEntityInWorld(ex);
+				this.worldObj.spawnEntityInWorld(ex);
 	
-				EntityCloudFleijaRainbow cloud = new EntityCloudFleijaRainbow(this.worldObj, config.rainbow);
+				EntityCloudFleijaRainbow cloud = new EntityCloudFleijaRainbow(this.worldObj, this.config.rainbow);
 				cloud.posX = this.posX;
 				cloud.posY = this.posY;
 				cloud.posZ = this.posZ;
@@ -439,35 +440,35 @@ public class EntityBulletBaseNT extends EntityThrowableInterp implements IBullet
 			}
 		}
 		
-		if(config.nuke > 0 && !worldObj.isRemote) {
-	    	worldObj.spawnEntityInWorld(EntityNukeExplosionMK5.statFac(worldObj, config.nuke, posX, posY, posZ).mute());
+		if(this.config.nuke > 0 && !this.worldObj.isRemote) {
+	    	this.worldObj.spawnEntityInWorld(EntityNukeExplosionMK5.statFac(this.worldObj, this.config.nuke, this.posX, this.posY, this.posZ).mute());
 			NBTTagCompound data = new NBTTagCompound();
 			data.setString("type", "muke");
-			if(MainRegistry.polaroidID == 11 || rand.nextInt(100) == 0) data.setBoolean("balefire", true);
-			PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, posX, posY + 0.5, posZ), new TargetPoint(dimension, posX, posY, posZ, 250));
-			worldObj.playSoundEffect(posX, posY, posZ, "hbm:weapon.mukeExplosion", 15.0F, 1.0F);
+			if(MainRegistry.polaroidID == 11 || this.rand.nextInt(100) == 0) data.setBoolean("balefire", true);
+			PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, this.posX, this.posY + 0.5, this.posZ), new TargetPoint(this.dimension, this.posX, this.posY, this.posZ, 250));
+			this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "hbm:weapon.mukeExplosion", 15.0F, 1.0F);
 		}
 		
-		if(config.destroysBlocks && !worldObj.isRemote) {
-			if(worldObj.getBlock(bX, bY, bZ).getBlockHardness(worldObj, bX, bY, bZ) <= 120)
-    			worldObj.func_147480_a(bX, bY, bZ, false);
-		} else if(config.doesBreakGlass && !worldObj.isRemote) {
-			if(worldObj.getBlock(bX, bY, bZ) == Blocks.glass || 
-					worldObj.getBlock(bX, bY, bZ) == Blocks.glass_pane || 
-					worldObj.getBlock(bX, bY, bZ) == Blocks.stained_glass || 
-					worldObj.getBlock(bX, bY, bZ) == Blocks.stained_glass_pane)
-				worldObj.func_147480_a(bX, bY, bZ, false);
+		if(this.config.destroysBlocks && !this.worldObj.isRemote) {
+			if(this.worldObj.getBlock(bX, bY, bZ).getBlockHardness(this.worldObj, bX, bY, bZ) <= 120)
+    			this.worldObj.func_147480_a(bX, bY, bZ, false);
+		} else if(this.config.doesBreakGlass && !this.worldObj.isRemote) {
+			if(this.worldObj.getBlock(bX, bY, bZ) == Blocks.glass || 
+					this.worldObj.getBlock(bX, bY, bZ) == Blocks.glass_pane || 
+					this.worldObj.getBlock(bX, bY, bZ) == Blocks.stained_glass || 
+					this.worldObj.getBlock(bX, bY, bZ) == Blocks.stained_glass_pane)
+				this.worldObj.func_147480_a(bX, bY, bZ, false);
 			
-			if(worldObj.getBlock(bX, bY, bZ) == ModBlocks.red_barrel)
-				((RedBarrel) ModBlocks.red_barrel).explode(worldObj, bX, bY, bZ);
+			if(this.worldObj.getBlock(bX, bY, bZ) == ModBlocks.red_barrel)
+				((RedBarrel) ModBlocks.red_barrel).explode(this.worldObj, bX, bY, bZ);
 		}
 	}
 	
 	//for when a bullet dies by hitting a block
 	private void onRicochet(int bX, int bY, int bZ) {
 		
-		if(config.bntRicochet != null)
-			config.bntRicochet.behaveBlockRicochet(this, bX, bY, bZ);
+		if(this.config.bntRicochet != null)
+			this.config.bntRicochet.behaveBlockRicochet(this, bX, bY, bZ);
 	}
 	
 	//for when a bullet dies by hitting an entity
@@ -475,8 +476,8 @@ public class EntityBulletBaseNT extends EntityThrowableInterp implements IBullet
 		onEntityHurt(e);
 		onBlockImpact(-1, -1, -1, -1);
 		
-		if(config.bntHit != null)
-			config.bntHit.behaveEntityHit(this, e);
+		if(this.config.bntHit != null)
+			this.config.bntHit.behaveEntityHit(this, e);
 		
 		//this.setDead();
 	}
@@ -484,35 +485,35 @@ public class EntityBulletBaseNT extends EntityThrowableInterp implements IBullet
 	//for when a bullet hurts an entity, not necessarily dying
 	private void onEntityHurt(Entity e) {
 		
-		if(config.bntHurt != null)
-			config.bntHurt.behaveEntityHurt(this, e);
+		if(this.config.bntHurt != null)
+			this.config.bntHurt.behaveEntityHurt(this, e);
 		
-		if(config.incendiary > 0 && !worldObj.isRemote) {
-			e.setFire(config.incendiary);
+		if(this.config.incendiary > 0 && !this.worldObj.isRemote) {
+			e.setFire(this.config.incendiary);
 		}
 		
-		if(config.leadChance > 0 && !worldObj.isRemote && worldObj.rand.nextInt(100) < config.leadChance && e instanceof EntityLivingBase) {
+		if(this.config.leadChance > 0 && !this.worldObj.isRemote && this.worldObj.rand.nextInt(100) < this.config.leadChance && e instanceof EntityLivingBase) {
 			((EntityLivingBase)e).addPotionEffect(new PotionEffect(HbmPotion.lead.id, 10 * 20, 0));
 		}
 		
-		if(e instanceof EntityLivingBase && config.effects != null && !config.effects.isEmpty() && !worldObj.isRemote) {
+		if(e instanceof EntityLivingBase && this.config.effects != null && !this.config.effects.isEmpty() && !this.worldObj.isRemote) {
 			
-			for(PotionEffect effect : config.effects) {
+			for(PotionEffect effect : this.config.effects) {
 				((EntityLivingBase)e).addPotionEffect(new PotionEffect(effect));
 			}
 		}
 		
-		if(config.instakill && e instanceof EntityLivingBase && !worldObj.isRemote) {
+		if(this.config.instakill && e instanceof EntityLivingBase && !this.worldObj.isRemote) {
 			
 			if(!(e instanceof EntityPlayer && ((EntityPlayer)e).capabilities.isCreativeMode))
 				((EntityLivingBase)e).setHealth(0.0F);
 		}
 		
-		if(config.caustic > 0 && e instanceof EntityPlayer){
-			ArmorUtil.damageSuit((EntityPlayer)e, 0, config.caustic);
-			ArmorUtil.damageSuit((EntityPlayer)e, 1, config.caustic);
-			ArmorUtil.damageSuit((EntityPlayer)e, 2, config.caustic);
-			ArmorUtil.damageSuit((EntityPlayer)e, 3, config.caustic);
+		if(this.config.caustic > 0 && e instanceof EntityPlayer){
+			ArmorUtil.damageSuit((EntityPlayer)e, 0, this.config.caustic);
+			ArmorUtil.damageSuit((EntityPlayer)e, 1, this.config.caustic);
+			ArmorUtil.damageSuit((EntityPlayer)e, 2, this.config.caustic);
+			ArmorUtil.damageSuit((EntityPlayer)e, 3, this.config.caustic);
 		}
 	}
 
@@ -565,7 +566,7 @@ public class EntityBulletBaseNT extends EntityThrowableInterp implements IBullet
 		this.dataWatcher.updateObject(17, (byte)this.config.trail);
 		
 		if(this.config == null) {
-			this.setDead();
+			setDead();
 			return;
 		}
 		
@@ -576,7 +577,7 @@ public class EntityBulletBaseNT extends EntityThrowableInterp implements IBullet
 	@Override
 	public void writeEntityToNBT(NBTTagCompound nbt) {
 		super.writeEntityToNBT(nbt);
-		nbt.setInteger("config", dataWatcher.getWatchableObjectInt(18));
+		nbt.setInteger("config", this.dataWatcher.getWatchableObjectInt(18));
 		nbt.setFloat("damage", this.overrideDamage);
 	}
 	

@@ -14,34 +14,34 @@ private TileEntityNukePrototype nukeTsar;
 	
 	public ContainerNukePrototype(InventoryPlayer invPlayer, TileEntityNukePrototype tedf) {
 		
-		nukeTsar = tedf;
+		this.nukeTsar = tedf;
 		
-		this.addSlotToContainer(new Slot(tedf, 0, 8, 35));
-		this.addSlotToContainer(new Slot(tedf, 1, 26, 35));
-		this.addSlotToContainer(new Slot(tedf, 2, 44, 26));
-		this.addSlotToContainer(new Slot(tedf, 3, 44, 44));
-		this.addSlotToContainer(new Slot(tedf, 4, 62, 26));
-		this.addSlotToContainer(new Slot(tedf, 5, 62, 44));
-		this.addSlotToContainer(new Slot(tedf, 6, 80, 26));
-		this.addSlotToContainer(new Slot(tedf, 7, 80, 44));
-		this.addSlotToContainer(new Slot(tedf, 8, 98, 26));
-		this.addSlotToContainer(new Slot(tedf, 9, 98, 44));
-		this.addSlotToContainer(new Slot(tedf, 10, 116, 26));
-		this.addSlotToContainer(new Slot(tedf, 11, 116, 44));
-		this.addSlotToContainer(new Slot(tedf, 12, 134, 35));
-		this.addSlotToContainer(new Slot(tedf, 13, 152, 35));
+		addSlotToContainer(new Slot(tedf, 0, 8, 35));
+		addSlotToContainer(new Slot(tedf, 1, 26, 35));
+		addSlotToContainer(new Slot(tedf, 2, 44, 26));
+		addSlotToContainer(new Slot(tedf, 3, 44, 44));
+		addSlotToContainer(new Slot(tedf, 4, 62, 26));
+		addSlotToContainer(new Slot(tedf, 5, 62, 44));
+		addSlotToContainer(new Slot(tedf, 6, 80, 26));
+		addSlotToContainer(new Slot(tedf, 7, 80, 44));
+		addSlotToContainer(new Slot(tedf, 8, 98, 26));
+		addSlotToContainer(new Slot(tedf, 9, 98, 44));
+		addSlotToContainer(new Slot(tedf, 10, 116, 26));
+		addSlotToContainer(new Slot(tedf, 11, 116, 44));
+		addSlotToContainer(new Slot(tedf, 12, 134, 35));
+		addSlotToContainer(new Slot(tedf, 13, 152, 35));
 		
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++)
 		{
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
 		}
 	}
 	
@@ -57,7 +57,7 @@ private TileEntityNukePrototype nukeTsar;
 			var3 = var5.copy();
 			
             if (par2 <= 13) {
-				if (!this.mergeItemStack(var5, 14, this.inventorySlots.size(), true))
+				if (!mergeItemStack(var5, 14, this.inventorySlots.size(), true))
 				{
 					return null;
 				}
@@ -80,6 +80,6 @@ private TileEntityNukePrototype nukeTsar;
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return nukeTsar.isUseableByPlayer(player);
+		return this.nukeTsar.isUseableByPlayer(player);
 	}
 }

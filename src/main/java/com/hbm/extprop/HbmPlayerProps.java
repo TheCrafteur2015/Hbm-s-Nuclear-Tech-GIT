@@ -3,6 +3,7 @@ package com.hbm.extprop;
 import com.hbm.entity.train.EntityRailCarBase;
 import com.hbm.handler.HbmKeybinds.EnumKeybind;
 import com.hbm.main.MainRegistry;
+import com.hbm.main.ServerProxy;
 import com.hbm.tileentity.IGUIProvider;
 
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
@@ -46,17 +47,17 @@ public class HbmPlayerProps implements IExtendedEntityProperties {
 	}
 	
 	public static HbmPlayerProps registerData(EntityPlayer player) {
-		player.registerExtendedProperties(key, new HbmPlayerProps(player));
-		return (HbmPlayerProps) player.getExtendedProperties(key);
+		player.registerExtendedProperties(HbmPlayerProps.key, new HbmPlayerProps(player));
+		return (HbmPlayerProps) player.getExtendedProperties(HbmPlayerProps.key);
 	}
 	
 	public static HbmPlayerProps getData(EntityPlayer player) {
-		HbmPlayerProps props = (HbmPlayerProps) player.getExtendedProperties(key);
-		return props != null ? props : registerData(player);
+		HbmPlayerProps props = (HbmPlayerProps) player.getExtendedProperties(HbmPlayerProps.key);
+		return props != null ? props : HbmPlayerProps.registerData(player);
 	}
 	
 	public boolean getKeyPressed(EnumKeybind key) {
-		return keysPressed[key.ordinal()];
+		return this.keysPressed[key.ordinal()];
 	}
 	
 	public boolean isJetpackActive() {
@@ -69,24 +70,24 @@ public class HbmPlayerProps implements IExtendedEntityProperties {
 			
 			if(key == EnumKeybind.TOGGLE_JETPACK) {
 				
-				if(!player.worldObj.isRemote) {
+				if(!this.player.worldObj.isRemote) {
 					this.enableBackpack = !this.enableBackpack;
 					
 					if(this.enableBackpack)
-						MainRegistry.proxy.displayTooltip(EnumChatFormatting.GREEN + "Jetpack ON", MainRegistry.proxy.ID_JETPACK);
+						MainRegistry.proxy.displayTooltip(EnumChatFormatting.GREEN + "Jetpack ON", ServerProxy.ID_JETPACK);
 					else
-						MainRegistry.proxy.displayTooltip(EnumChatFormatting.RED + "Jetpack OFF", MainRegistry.proxy.ID_JETPACK);
+						MainRegistry.proxy.displayTooltip(EnumChatFormatting.RED + "Jetpack OFF", ServerProxy.ID_JETPACK);
 				}
 			}
 			if(key == EnumKeybind.TOGGLE_HEAD) {
 				
-				if(!player.worldObj.isRemote) {
+				if(!this.player.worldObj.isRemote) {
 					this.enableHUD = !this.enableHUD;
 					
 					if(this.enableHUD)
-						MainRegistry.proxy.displayTooltip(EnumChatFormatting.GREEN + "HUD ON", MainRegistry.proxy.ID_HUD);
+						MainRegistry.proxy.displayTooltip(EnumChatFormatting.GREEN + "HUD ON", ServerProxy.ID_HUD);
 					else
-						MainRegistry.proxy.displayTooltip(EnumChatFormatting.RED + "HUD OFF", MainRegistry.proxy.ID_HUD);
+						MainRegistry.proxy.displayTooltip(EnumChatFormatting.RED + "HUD OFF", ServerProxy.ID_HUD);
 				}
 			}
 			
@@ -94,14 +95,14 @@ public class HbmPlayerProps implements IExtendedEntityProperties {
 				
 				if(!this.player.worldObj.isRemote) {
 
-					if(player.ridingEntity != null && player.ridingEntity instanceof EntityRailCarBase && player.ridingEntity instanceof IGUIProvider) {
-						FMLNetworkHandler.openGui(player, MainRegistry.instance, 0, player.worldObj, player.ridingEntity.getEntityId(), 0, 0);
+					if(this.player.ridingEntity != null && this.player.ridingEntity instanceof EntityRailCarBase && this.player.ridingEntity instanceof IGUIProvider) {
+						FMLNetworkHandler.openGui(this.player, MainRegistry.instance, 0, this.player.worldObj, this.player.ridingEntity.getEntityId(), 0, 0);
 					}
 				}
 			}
 		}
 		
-		keysPressed[key.ordinal()] = pressed;
+		this.keysPressed[key.ordinal()] = pressed;
 	}
 	
 	public void setDashCooldown(int cooldown) {
@@ -136,7 +137,7 @@ public class HbmPlayerProps implements IExtendedEntityProperties {
 		
 		if(props.plinkCooldown <= 0) {
 			player.worldObj.playSoundAtEntity(player, sound, volume, pitch);
-			props.plinkCooldown = props.plinkCooldownLength;
+			props.plinkCooldown = HbmPlayerProps.plinkCooldownLength;
 		}
 	}
 	
@@ -152,11 +153,11 @@ public class HbmPlayerProps implements IExtendedEntityProperties {
 		
 		NBTTagCompound props = new NBTTagCompound();
 		
-		props.setBoolean("hasReceivedBook", hasReceivedBook);
-		props.setFloat("shield", shield);
-		props.setFloat("maxShield", maxShield);
-		props.setBoolean("enableBackpack", enableBackpack);
-		props.setBoolean("enableHUD", enableHUD);
+		props.setBoolean("hasReceivedBook", this.hasReceivedBook);
+		props.setFloat("shield", this.shield);
+		props.setFloat("maxShield", this.maxShield);
+		props.setBoolean("enableBackpack", this.enableBackpack);
+		props.setBoolean("enableHUD", this.enableHUD);
 		
 		nbt.setTag("HbmPlayerProps", props);
 	}

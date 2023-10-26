@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 
 public class ItemDyatlov extends Item {
 
+	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int i, float f0, float f1, float f2) {
 		
 		if(!world.isRemote) {

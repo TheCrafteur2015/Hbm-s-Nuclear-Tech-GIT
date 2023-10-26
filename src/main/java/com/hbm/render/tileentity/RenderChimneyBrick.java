@@ -39,10 +39,12 @@ public class RenderChimneyBrick extends TileEntitySpecialRenderer implements IIt
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase() {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(0, -5, 0);
 				GL11.glScaled(2.25, 2.25, 2.25);
 			}
+			@Override
 			public void renderCommon() {
 				GL11.glScaled(0.5, 0.5, 0.5);
 				GL11.glDisable(GL11.GL_CULL_FACE);

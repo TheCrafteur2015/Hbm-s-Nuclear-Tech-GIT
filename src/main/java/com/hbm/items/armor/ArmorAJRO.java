@@ -21,13 +21,13 @@ public class ArmorAJRO extends ArmorFSBPowered {
 	@SideOnly(Side.CLIENT)
 	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot) {
 		
-		if(models == null) {
-			models = new ModelArmorAJRO[4];
+		if(this.models == null) {
+			this.models = new ModelArmorAJRO[4];
 			
 			for(int i = 0; i < 4; i++)
-				models[i] = new ModelArmorAJRO(i);
+				this.models[i] = new ModelArmorAJRO(i);
 		}
 		
-		return models[armorSlot];
+		return this.models[armorSlot];
 	}
 }

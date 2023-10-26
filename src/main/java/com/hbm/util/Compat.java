@@ -36,11 +36,11 @@ public class Compat {
 	public static final String MOD_TC = "tc";
 
 	public static Item tryLoadItem(String domain, String name) {
-		return (Item) Item.itemRegistry.getObject(getReg(domain, name));
+		return (Item) Item.itemRegistry.getObject(Compat.getReg(domain, name));
 	}
 
 	public static Block tryLoadBlock(String domain, String name) {
-		return (Block) Block.blockRegistry.getObject(getReg(domain, name));
+		return (Block) Block.blockRegistry.getObject(Compat.getReg(domain, name));
 	}
 	
 	private static String getReg(String domain, String name) {
@@ -98,7 +98,7 @@ public class Compat {
 	}
 	
 	public static List<ItemStack> scrapeItemFromME(ItemStack meDrive) {
-		List<ItemStack> stacks = new ArrayList();
+		List<ItemStack> stacks = new ArrayList<>();
 		
 		try {
 			if(meDrive != null && meDrive.hasTagCompound()) {
@@ -133,25 +133,25 @@ public class Compat {
 		double p90 = 1.0D; // 90%
 		double p99 = 2D; // 99%
 		
-		tryRegisterHazmat(Compat.MOD_GT6, "gt.armor.hazmat.radiation.head",		p90 * helmet);
-		tryRegisterHazmat(Compat.MOD_GT6, "gt.armor.hazmat.radiation.chest",	p90 * chest);
-		tryRegisterHazmat(Compat.MOD_GT6, "gt.armor.hazmat.radiation.legs",		p90 * legs);
-		tryRegisterHazmat(Compat.MOD_GT6, "gt.armor.hazmat.radiation.boots",	p90 * boots);
+		Compat.tryRegisterHazmat(Compat.MOD_GT6, "gt.armor.hazmat.radiation.head",		p90 * helmet);
+		Compat.tryRegisterHazmat(Compat.MOD_GT6, "gt.armor.hazmat.radiation.chest",	p90 * chest);
+		Compat.tryRegisterHazmat(Compat.MOD_GT6, "gt.armor.hazmat.radiation.legs",		p90 * legs);
+		Compat.tryRegisterHazmat(Compat.MOD_GT6, "gt.armor.hazmat.radiation.boots",	p90 * boots);
 		
-		tryRegisterHazmat(Compat.MOD_GT6, "gt.armor.hazmat.universal.head",		p99 * helmet);
-		tryRegisterHazmat(Compat.MOD_GT6, "gt.armor.hazmat.universal.chest",	p99 * chest);
-		tryRegisterHazmat(Compat.MOD_GT6, "gt.armor.hazmat.universal.legs",		p99 * legs);
-		tryRegisterHazmat(Compat.MOD_GT6, "gt.armor.hazmat.universal.boots",	p99 * boots);
+		Compat.tryRegisterHazmat(Compat.MOD_GT6, "gt.armor.hazmat.universal.head",		p99 * helmet);
+		Compat.tryRegisterHazmat(Compat.MOD_GT6, "gt.armor.hazmat.universal.chest",	p99 * chest);
+		Compat.tryRegisterHazmat(Compat.MOD_GT6, "gt.armor.hazmat.universal.legs",		p99 * legs);
+		Compat.tryRegisterHazmat(Compat.MOD_GT6, "gt.armor.hazmat.universal.boots",	p99 * boots);
 		
-		tryRegisterHazmat(Compat.MOD_REC, "reactorcraft_item_hazhelmet",	p99 * helmet);
-		tryRegisterHazmat(Compat.MOD_REC, "reactorcraft_item_hazchest",		p99 * chest);
-		tryRegisterHazmat(Compat.MOD_REC, "reactorcraft_item_hazlegs",		p99 * legs);
-		tryRegisterHazmat(Compat.MOD_REC, "reactorcraft_item_hazboots",		p99 * boots);
+		Compat.tryRegisterHazmat(Compat.MOD_REC, "reactorcraft_item_hazhelmet",	p99 * helmet);
+		Compat.tryRegisterHazmat(Compat.MOD_REC, "reactorcraft_item_hazchest",		p99 * chest);
+		Compat.tryRegisterHazmat(Compat.MOD_REC, "reactorcraft_item_hazlegs",		p99 * legs);
+		Compat.tryRegisterHazmat(Compat.MOD_REC, "reactorcraft_item_hazboots",		p99 * boots);
 		
-		tryRegisterHazmat(Compat.MOD_EF, "netherite_helmet", 		p90 * helmet);
-		tryRegisterHazmat(Compat.MOD_EF, "netherite_chestplate",	p90 * chest);
-		tryRegisterHazmat(Compat.MOD_EF, "netherite_leggings",		p90 * legs);
-		tryRegisterHazmat(Compat.MOD_EF, "netherite_boots",			p90 * boots);
+		Compat.tryRegisterHazmat(Compat.MOD_EF, "netherite_helmet", 		p90 * helmet);
+		Compat.tryRegisterHazmat(Compat.MOD_EF, "netherite_chestplate",	p90 * chest);
+		Compat.tryRegisterHazmat(Compat.MOD_EF, "netherite_leggings",		p90 * legs);
+		Compat.tryRegisterHazmat(Compat.MOD_EF, "netherite_boots",			p90 * boots);
 	}
 	
 	private static void tryRegisterHazmat(String mod, String name, double resistance) {
@@ -172,7 +172,7 @@ public class Compat {
 	
 	public static void handleRailcraftNonsense() {
 		
-		if(!Loader.isModLoaded(MOD_RC)) return;
+		if(!Loader.isModLoaded(Compat.MOD_RC)) return;
 
 		MainRegistry.logger.info("#######################################################");
 		MainRegistry.logger.info("| Railcraft detected, deploying anti-nonsense measures...");

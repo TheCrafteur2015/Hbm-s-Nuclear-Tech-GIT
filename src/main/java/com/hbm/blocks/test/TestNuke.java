@@ -31,7 +31,7 @@ import net.minecraft.world.World;
 public class TestNuke extends BlockContainer {
 	
 	protected int timer1 = 20;
-	int timer2 = timer1;
+	int timer2 = this.timer1;
 	public TileEntityTestNuke tetn = new TileEntityTestNuke();
 
     private final Random field_149933_a = new Random();
@@ -56,7 +56,7 @@ public class TestNuke extends BlockContainer {
 	@Override
 	public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_)
     {
-        if (!keepInventory)
+        if (!TestNuke.keepInventory)
         {
             TileEntityTestNuke tileentityfurnace = (TileEntityTestNuke)p_149749_1_.getTileEntity(p_149749_2_, p_149749_3_, p_149749_4_);
 
@@ -131,7 +131,7 @@ public class TestNuke extends BlockContainer {
         {
         	if(entity.getNukeTier() > 0)
         	{
-        		this.onBlockDestroyedByPlayer(p_149695_1_, x, y, z, 1);
+        		onBlockDestroyedByPlayer(p_149695_1_, x, y, z, 1);
         		int pootis = entity.getNukeTier();
             	entity.clearSlots();
             	p_149695_1_.setBlockToAir(x, y, z);
@@ -157,6 +157,7 @@ public class TestNuke extends BlockContainer {
 		return false;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void detonateTestBomb(World world, int x, int y, int z, int bombStartStrength)
 	{
 		//Rodol's awesome destruction code
@@ -204,9 +205,8 @@ public class TestNuke extends BlockContainer {
         int j2 = MathHelper.floor_double(z + wat + 1.0D);
         List list = world.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBox(i, k, l, j, i2, j2));
 
-        for (int i1 = 0; i1 < list.size(); ++i1)
-        {
-            Entity entity = (Entity)list.get(i1);
+        for (Object element : list) {
+            Entity entity = (Entity)element;
             double d4 = entity.getDistance(x, y, z) / bombStartStrength;
 
             if (d4 <= 1.0D)

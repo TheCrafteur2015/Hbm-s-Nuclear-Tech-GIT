@@ -37,24 +37,24 @@ public class TERadarPacket implements IMessage {
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		x = buf.readInt();
-		y = buf.readInt();
-		z = buf.readInt();
-		conX = buf.readInt();
-		conY = buf.readInt();
-		conZ = buf.readInt();
-		alt = buf.readInt();
+		this.x = buf.readInt();
+		this.y = buf.readInt();
+		this.z = buf.readInt();
+		this.conX = buf.readInt();
+		this.conY = buf.readInt();
+		this.conZ = buf.readInt();
+		this.alt = buf.readInt();
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeInt(x);
-		buf.writeInt(y);
-		buf.writeInt(z);
-		buf.writeInt(conX);
-		buf.writeInt(conY);
-		buf.writeInt(conZ);
-		buf.writeInt(alt);
+		buf.writeInt(this.x);
+		buf.writeInt(this.y);
+		buf.writeInt(this.z);
+		buf.writeInt(this.conX);
+		buf.writeInt(this.conY);
+		buf.writeInt(this.conZ);
+		buf.writeInt(this.alt);
 	}
 
 	public static class Handler implements IMessageHandler<TERadarPacket, IMessage> {

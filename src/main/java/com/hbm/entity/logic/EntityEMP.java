@@ -29,21 +29,21 @@ public class EntityEMP extends Entity {
 	@Override
 	public void onUpdate() {
 		
-		if(!worldObj.isRemote) {
-			if(machines == null) {
+		if(!this.worldObj.isRemote) {
+			if(this.machines == null) {
 				allocate();
 			} else {
 				shock();
 			}
 			
-			if(this.ticksExisted > life)
-				this.setDead();
+			if(this.ticksExisted > this.life)
+				setDead();
 		}
 	}
 	
 	private void allocate() {
 		
-		machines = new ArrayList();
+		this.machines = new ArrayList<>();
 		
 		int radius = 100;
 		
@@ -60,7 +60,7 @@ public class EntityEMP extends Entity {
 					int z2 = (int) Math.pow(z, 2);
 					
 					if(Math.sqrt(x2 + y2 + z2) <= radius) {
-						add((int)posX + x, (int)posY + y, (int)posZ + z);
+						add((int)this.posX + x, (int)this.posY + y, (int)this.posZ + z);
 					}
 				}
 			}
@@ -69,28 +69,28 @@ public class EntityEMP extends Entity {
 	
 	private void shock() {
 		
-		for(int i = 0; i < machines.size(); i++) {
+		for (int[] element : this.machines) {
 			emp(
-					machines.get(i)[0], 
-					machines.get(i)[1], 
-					machines.get(i)[2]
+					element[0], 
+					element[1], 
+					element[2]
 				);
 		}
 	}
 	
 	private void add(int x, int y, int z) {
-		TileEntity te = worldObj.getTileEntity(x, y, z);
+		TileEntity te = this.worldObj.getTileEntity(x, y, z);
 		
 		if (te != null && te instanceof IEnergyUser) {
-			machines.add(new int[] { x, y, z });
+			this.machines.add(new int[] { x, y, z });
 		} else if (te != null && te instanceof IEnergyProvider) {
-			machines.add(new int[] { x, y, z });
+			this.machines.add(new int[] { x, y, z });
 		}
 	}
 	
 	private void emp(int x, int y, int z) {
 		
-		TileEntity te = worldObj.getTileEntity(x, y, z);
+		TileEntity te = this.worldObj.getTileEntity(x, y, z);
 		
 		boolean flag = false;
 		
@@ -110,9 +110,9 @@ public class EntityEMP extends Entity {
 			flag = true;
 		}
 		
-		if(flag && rand.nextInt(20) == 0) {
+		if(flag && this.rand.nextInt(20) == 0) {
 			
-			PacketDispatcher.wrapper.sendToAllAround(new ParticleBurstPacket(x, y, z, Block.getIdFromBlock(Blocks.stained_glass), 3), new TargetPoint(worldObj.provider.dimensionId, posX, posY, posZ, 50));
+			PacketDispatcher.wrapper.sendToAllAround(new ParticleBurstPacket(x, y, z, Block.getIdFromBlock(Blocks.stained_glass), 3), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 50));
 	        
 		}
 		

@@ -20,7 +20,7 @@ public class MachineSolarBoiler extends BlockDummyable {
 		
 		if(meta >= 12)
 			return new TileEntitySolarBoiler();
-		if(meta >= extra)
+		if(meta >= BlockDummyable.extra)
 			return new TileEntityProxyCombo(false, false, true);
 		
 		return null;
@@ -43,6 +43,6 @@ public class MachineSolarBoiler extends BlockDummyable {
 		x = x + dir.offsetX * o;
 		z = z + dir.offsetZ * o;
 		
-		this.makeExtra(world, x, y + 2, z);
+		makeExtra(world, x, y + 2, z);
 	}
 }

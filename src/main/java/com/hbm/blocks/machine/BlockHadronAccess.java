@@ -33,7 +33,8 @@ public class BlockHadronAccess extends BlockContainer implements IProxyControlle
 		return new TileEntityProxyInventory();
 	}
 	
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
     	
 		ForgeDirection dir = ForgeDirection.getOrientation(meta).getOpposite();
@@ -44,7 +45,8 @@ public class BlockHadronAccess extends BlockContainer implements IProxyControlle
     	return this.blockIcon;
     }
 	
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
+    @Override
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
     	
         int l = BlockPistonBase.determineOrientation(world, x, y, z, player);
 		ForgeDirection dir = ForgeDirection.getOrientation(l).getOpposite();

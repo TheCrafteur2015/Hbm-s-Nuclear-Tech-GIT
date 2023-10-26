@@ -3,7 +3,11 @@ package com.hbm.items.tool;
 import java.util.List;
 import java.util.Locale;
 
-import com.hbm.entity.cart.*;
+import com.hbm.entity.cart.EntityMinecartCrate;
+import com.hbm.entity.cart.EntityMinecartDestroyer;
+import com.hbm.entity.cart.EntityMinecartOre;
+import com.hbm.entity.cart.EntityMinecartPowder;
+import com.hbm.entity.cart.EntityMinecartSemtex;
 import com.hbm.items.ModItems;
 import com.hbm.lib.RefStrings;
 import com.hbm.util.EnumUtil;
@@ -89,15 +93,15 @@ public class ItemModMinecart extends Item {
 	}
 
 	public ItemModMinecart() {
-		this.setMaxStackSize(4);
-		this.setCreativeTab(CreativeTabs.tabTransport);
-		BlockDispenser.dispenseBehaviorRegistry.putObject(this, dispenseBehavior);
+		setMaxStackSize(4);
+		setCreativeTab(CreativeTabs.tabTransport);
+		BlockDispenser.dispenseBehaviorRegistry.putObject(this, ItemModMinecart.dispenseBehavior);
 	}
 	
 	@Override
 	public Item setUnlocalizedName(String unlocalizedName) {
 		super.setUnlocalizedName(unlocalizedName);
-		this.setTextureName(RefStrings.MODID + ":"+ unlocalizedName);
+		setTextureName(RefStrings.MODID + ":"+ unlocalizedName);
 		return this;
 	}
 	
@@ -107,6 +111,7 @@ public class ItemModMinecart extends Item {
 		return super.getUnlocalizedName() + "." + cart.name().toLowerCase(Locale.US);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tab, List list) {
@@ -115,7 +120,7 @@ public class ItemModMinecart extends Item {
 			
 			for(EnumCartBase base : EnumCartBase.values()) {
 				if(cart.supportsBase(base)) {
-					list.add(createCartItem(base, cart));
+					list.add(ItemModMinecart.createCartItem(base, cart));
 				}
 			}
 		}
@@ -127,15 +132,15 @@ public class ItemModMinecart extends Item {
 		
 		for(int i = 0; i < EnumCartBase.values().length; i++) {
 			EnumCartBase base = EnumCartBase.values()[i];
-			bases[i] = reg.registerIcon(this.getIconString() + "." + base.name().toLowerCase(Locale.US));
+			this.bases[i] = reg.registerIcon(getIconString() + "." + base.name().toLowerCase(Locale.US));
 		}
 		
 		EnumMinecart[] enums = EnumMinecart.values();
 		this.icons = new IIcon[enums.length];
 
-		for(int i = 0; i < icons.length; i++) {
+		for(int i = 0; i < this.icons.length; i++) {
 			Enum num = enums[i];
-			this.icons[i] = reg.registerIcon(this.getIconString() + "_overlay." + num.name().toLowerCase(Locale.US));
+			this.icons[i] = reg.registerIcon(getIconString() + "_overlay." + num.name().toLowerCase(Locale.US));
 		}
 	}
 	
@@ -143,14 +148,14 @@ public class ItemModMinecart extends Item {
 		if(!stack.hasTagCompound())
 			return EnumCartBase.VANILLA;
 		
-		int meta = stack.stackTagCompound.getInteger(CART_BASE_NBT);
+		int meta = stack.stackTagCompound.getInteger(ItemModMinecart.CART_BASE_NBT);
 		return EnumUtil.grabEnumSafely(EnumCartBase.class, meta);
 	}
 	
 	public static ItemStack createCartItem(EnumCartBase base, EnumMinecart cart) {
 		ItemStack stack = new ItemStack(ModItems.cart, 1, cart.ordinal());
 		stack.stackTagCompound = new NBTTagCompound();
-		stack.stackTagCompound.setInteger(CART_BASE_NBT, base.ordinal());
+		stack.stackTagCompound.setInteger(ItemModMinecart.CART_BASE_NBT, base.ordinal());
 		return stack;
 	}
 
@@ -165,7 +170,7 @@ public class ItemModMinecart extends Item {
 	public IIcon getIcon(ItemStack stack, int pass) {
 		
 		if(pass == 0) {
-			EnumCartBase base = getBaseType(stack);
+			EnumCartBase base = ItemModMinecart.getBaseType(stack);
 			return this.bases[base.ordinal()];
 		}
 		
@@ -198,7 +203,7 @@ public class ItemModMinecart extends Item {
 				yOffset = -1.0D;
 			}
 
-			EntityMinecart entityminecart = createMinecart(world, x, y + yOffset, z, stack);
+			EntityMinecart entityminecart = ItemModMinecart.createMinecart(world, x, y + yOffset, z, stack);
 
 			if(stack.hasDisplayName()) {
 				entityminecart.setMinecartName(stack.getDisplayName());
@@ -209,6 +214,7 @@ public class ItemModMinecart extends Item {
 			return stack;
 		}
 		
+		@Override
 		protected void playDispenseSound(IBlockSource source) {
 			source.getWorld().playAuxSFX(1000, source.getXInt(), source.getYInt(), source.getZInt(), 0);
 		}
@@ -219,7 +225,7 @@ public class ItemModMinecart extends Item {
 		if(BlockRailBase.func_150051_a(world.getBlock(x, y, z))) {
 			if(!world.isRemote) {
 				
-				EntityMinecart entityminecart = createMinecart(world, x + fx, y + fy, z + fz, stack);
+				EntityMinecart entityminecart = ItemModMinecart.createMinecart(world, x + fx, y + fy, z + fz, stack);
 
 				if(stack.hasDisplayName()) {
 					entityminecart.setMinecartName(stack.getDisplayName());
@@ -236,8 +242,8 @@ public class ItemModMinecart extends Item {
 	}
 	
 	public static EntityMinecart createMinecart(World world, double x, double y, double z, ItemStack stack) {
-		EnumMinecart type = (EnumMinecart) EnumMinecart.values()[stack.getItemDamage()];
-		EnumCartBase base = getBaseType(stack);
+		EnumMinecart type = EnumMinecart.values()[stack.getItemDamage()];
+		EnumCartBase base = ItemModMinecart.getBaseType(stack);
 		switch(type) {
 		case CRATE: return new EntityMinecartCrate(world, x, y, z, base, stack);
 		case DESTROYER: return new EntityMinecartDestroyer(world, x, y, z, base);

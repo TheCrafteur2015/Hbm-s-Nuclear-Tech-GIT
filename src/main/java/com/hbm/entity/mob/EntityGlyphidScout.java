@@ -10,6 +10,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
@@ -23,7 +24,7 @@ public class EntityGlyphidScout extends EntityGlyphid {
 
 	public EntityGlyphidScout(World world) {
 		super(world);
-		this.setSize(1.25F, 0.75F);
+		setSize(1.25F, 0.75F);
 	}
 	
 	@Override
@@ -49,9 +50,9 @@ public class EntityGlyphidScout extends EntityGlyphid {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(16D);
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1.5D);
-		this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(2D);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(16D);
+		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1.5D);
+		getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(2D);
 	}
 
 	@Override
@@ -63,20 +64,20 @@ public class EntityGlyphidScout extends EntityGlyphid {
 	public void onUpdate() {
 		super.onUpdate();
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			if(!this.hasHome) {
-				this.homeX = posX;
-				this.homeY = posY;
-				this.homeZ = posZ;
+				this.homeX = this.posX;
+				this.homeY = this.posY;
+				this.homeZ = this.posZ;
 				this.hasHome = true;
 			}
 			
-			if(rand.nextInt(20) == 0) fleeingTick = 2;
+			if(this.rand.nextInt(20) == 0) this.fleeingTick = 2;
 
-			if(this.ticksExisted > 0 && this.ticksExisted % 1200 == 0 && Vec3.createVectorHelper(posX - homeX, posY - homeY, posZ - homeZ).lengthVector() > 8) {
+			if(this.ticksExisted > 0 && this.ticksExisted % 1200 == 0 && Vec3.createVectorHelper(this.posX - this.homeX, this.posY - this.homeY, this.posZ - this.homeZ).lengthVector() > 8) {
 				
-				Block b = worldObj.getBlock((int) Math.floor(posX), (int) Math.floor(posY - 1), (int) Math.floor(posZ));
+				Block b = this.worldObj.getBlock((int) Math.floor(this.posX), (int) Math.floor(this.posY - 1), (int) Math.floor(this.posZ));
 				
 				int accuracy = 16;
 				for(int i = 0; i < accuracy; i++) {
@@ -87,9 +88,9 @@ public class EntityGlyphidScout extends EntityGlyphid {
 					Vec3 nextPos = Vec3.createVectorHelper(this.posX + rot.xCoord, this.posY + 1, this.posZ + rot.zCoord);
 					MovingObjectPosition mop = this.worldObj.rayTraceBlocks(pos, nextPos);
 					
-					if(mop != null && mop.typeOfHit == mop.typeOfHit.BLOCK) {
+					if(mop != null && mop.typeOfHit == MovingObjectType.BLOCK) {
 						
-						Block block = worldObj.getBlock(mop.blockX, mop.blockY, mop.blockZ);
+						Block block = this.worldObj.getBlock(mop.blockX, mop.blockY, mop.blockZ);
 						
 						if(block == ModBlocks.glyphid_base) {
 							return;
@@ -98,9 +99,9 @@ public class EntityGlyphidScout extends EntityGlyphid {
 				}
 				
 				if(b.getMaterial() != Material.air && b.isNormalCube() && b != ModBlocks.glyphid_base) {
-					this.setDead();
-					worldObj.newExplosion(this, posX, posY, posZ, 5F, false, false);
-					GlyphidHive.generate(worldObj, (int) Math.floor(posX), (int) Math.floor(posY), (int) Math.floor(posZ), rand);
+					setDead();
+					this.worldObj.newExplosion(this, this.posX, this.posY, this.posZ, 5F, false, false);
+					GlyphidHive.generate(this.worldObj, (int) Math.floor(this.posX), (int) Math.floor(this.posY), (int) Math.floor(this.posZ), this.rand);
 				}
 			}
 		}
@@ -119,7 +120,7 @@ public class EntityGlyphidScout extends EntityGlyphid {
 			int x = MathHelper.floor_double(this.posX + (double) this.rand.nextInt(25) - 12.0D);
 			int y = MathHelper.floor_double(this.posY + (double) this.rand.nextInt(11) - 5.0D);
 			int z = MathHelper.floor_double(this.posZ + (double) this.rand.nextInt(25) - 12.0D);
-			float weight = this.getBlockPathWeight(x, y, z);
+			float weight = getBlockPathWeight(x, y, z);
 
 			if(weight > maxWeight) {
 				maxWeight = weight;
@@ -131,7 +132,7 @@ public class EntityGlyphidScout extends EntityGlyphid {
 		}
 
 		if(flag) {
-			this.setPathToEntity(this.worldObj.getEntityPathToXYZ(this, pathX, pathY, pathZ, 10.0F, true, false, false, true));
+			setPathToEntity(this.worldObj.getEntityPathToXYZ(this, pathX, pathY, pathZ, 10.0F, true, false, false, true));
 		}
 
 		this.worldObj.theProfiler.endSection();
@@ -140,10 +141,10 @@ public class EntityGlyphidScout extends EntityGlyphid {
 	@Override
 	public void writeEntityToNBT(NBTTagCompound nbt) {
 		super.writeEntityToNBT(nbt);
-		nbt.setBoolean("hasHome", hasHome);
-		nbt.setDouble("homeX", homeX);
-		nbt.setDouble("homeY", homeY);
-		nbt.setDouble("homeZ", homeZ);
+		nbt.setBoolean("hasHome", this.hasHome);
+		nbt.setDouble("homeX", this.homeX);
+		nbt.setDouble("homeY", this.homeY);
+		nbt.setDouble("homeZ", this.homeZ);
 	}
 
 	@Override

@@ -13,8 +13,8 @@ public class ItemTrapBlock extends ItemBlock {
 
 	public ItemTrapBlock(Block block) {
 		super(block);
-		this.setMaxDamage(0);
-		this.setHasSubtypes(true);
+		setMaxDamage(0);
+		setHasSubtypes(true);
 	}
 
 	@Override
@@ -23,6 +23,7 @@ public class ItemTrapBlock extends ItemBlock {
 		list.add(Trap.get(itemstack.getItemDamage()).toString());
 	}
 
+	@Override
 	public int getMetadata(int meta) {
 		return meta;
 	}

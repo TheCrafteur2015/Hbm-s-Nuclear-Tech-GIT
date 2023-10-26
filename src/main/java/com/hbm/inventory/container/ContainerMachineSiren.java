@@ -1,6 +1,7 @@
 package com.hbm.inventory.container;
 
 import com.hbm.tileentity.machine.TileEntityMachineSiren;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -14,21 +15,21 @@ public class ContainerMachineSiren extends Container {
 	
 	public ContainerMachineSiren(InventoryPlayer invPlayer, TileEntityMachineSiren tedf) {
 		
-		diFurnace = tedf;
+		this.diFurnace = tedf;
 		
-		this.addSlotToContainer(new Slot(tedf, 0, 8, 35));
+		addSlotToContainer(new Slot(tedf, 0, 8, 35));
 		
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++)
 		{
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
 		}
 	}
 	
@@ -49,12 +50,12 @@ public class ContainerMachineSiren extends Container {
 			var3 = var5.copy();
 			
             if (par2 <= 0) {
-				if (!this.mergeItemStack(var5, 1, this.inventorySlots.size(), true))
+				if (!mergeItemStack(var5, 1, this.inventorySlots.size(), true))
 				{
 					return null;
 				}
 			}
-			else if (!this.mergeItemStack(var5, 0, 1, false))
+			else if (!mergeItemStack(var5, 0, 1, false))
 			{
 				return null;
 			}
@@ -74,6 +75,6 @@ public class ContainerMachineSiren extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return diFurnace.isUseableByPlayer(player);
+		return this.diFurnace.isUseableByPlayer(player);
 	}
 }

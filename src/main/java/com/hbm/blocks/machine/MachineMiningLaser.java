@@ -55,7 +55,7 @@ public class MachineMiningLaser extends BlockDummyable implements ITooltipProvid
 			return true;
 		} else if(!player.isSneaking()) {
 			
-			int[] pos = this.findCore(world, x, y, z);
+			int[] pos = findCore(world, x, y, z);
 			
 			if(pos == null)
 				return false;
@@ -67,6 +67,7 @@ public class MachineMiningLaser extends BlockDummyable implements ITooltipProvid
 		}
 	}
 	
+	@Override
 	protected void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
 
 		super.fillSpace(world, x, y, z, dir, o);
@@ -74,12 +75,12 @@ public class MachineMiningLaser extends BlockDummyable implements ITooltipProvid
 		x += dir.offsetX * o;
 		z += dir.offsetZ * o;
 
-		this.makeExtra(world, x + 1, y, z);
-		this.makeExtra(world, x - 1, y, z);
-		this.makeExtra(world, x, y, z + 1);
-		this.makeExtra(world, x, y, z - 1);
+		makeExtra(world, x + 1, y, z);
+		makeExtra(world, x - 1, y, z);
+		makeExtra(world, x, y, z + 1);
+		makeExtra(world, x, y, z - 1);
 		
-		this.makeExtra(world, x, y + 1, z);
+		makeExtra(world, x, y + 1, z);
 	}
 
 	@Override

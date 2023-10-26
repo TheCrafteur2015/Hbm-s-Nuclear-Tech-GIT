@@ -24,6 +24,7 @@ public class RBMKDebrisDigamma extends RBMKDebris {
 		}
 	}
 
+	@Override
 	public void onBlockAdded(World world, int x, int y, int z) {
 		super.onBlockAdded(world, x, y, z);
 		world.scheduleBlockUpdate(x, y, z, this, 2);

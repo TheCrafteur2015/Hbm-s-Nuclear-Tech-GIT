@@ -7,6 +7,7 @@ import com.google.common.collect.Multimap;
 import com.hbm.entity.projectile.EntityBullet;
 import com.hbm.items.ModItems;
 import com.hbm.lib.ModDamageSource;
+
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -27,7 +28,7 @@ public class GunXVL1456 extends Item {
     public GunXVL1456()
     {
         this.maxStackSize = 1;
-        this.setMaxDamage(2500);
+        setMaxDamage(2500);
     }
 
 	@Override
@@ -38,7 +39,7 @@ public class GunXVL1456 extends Item {
 	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityPlayer player, int i) {
 
-		int j = this.getMaxItemUseDuration(stack) - i;
+		int j = getMaxItemUseDuration(stack) - i;
 		ArrowLooseEvent event = new ArrowLooseEvent(player, stack, j);
 		MinecraftForge.EVENT_BUS.post(event);
 		// if (event.isCanceled()) {
@@ -53,7 +54,7 @@ public class GunXVL1456 extends Item {
 			if (flag || player.inventory.hasItem(ModItems.gun_xvl1456_ammo)) {
 				EntityBullet entitybullet = new EntityBullet(world, player, 3.0F, j, j + 5, false, "tauDay");
 
-				entitybullet.setDamage(j + rand.nextInt(6));
+				entitybullet.setDamage(j + this.rand.nextInt(6));
 
 				world.playSoundAtEntity(player, "hbm:weapon.tauShoot", 1.0F, 0.5F);
 
@@ -89,7 +90,7 @@ public class GunXVL1456 extends Item {
 		// }
 		// Made uncancelable to prevent intermod idiocy
 		{
-			p_77659_3_.setItemInUse(p_77659_1_, this.getMaxItemUseDuration(p_77659_1_));
+			p_77659_3_.setItemInUse(p_77659_1_, getMaxItemUseDuration(p_77659_1_));
 			}
 
 		return p_77659_1_;
@@ -106,9 +107,9 @@ public class GunXVL1456 extends Item {
 			if ((player.capabilities.isCreativeMode || player.inventory.hasItem(ModItems.gun_xvl1456_ammo)) && count % 4 == 0) {
 
 				EntityBullet entityarrow = new EntityBullet(world, player, 3.0F, 25, 65, false, "eyyOk");
-				entityarrow.setDamage(25 + rand.nextInt(65 - 25));
+				entityarrow.setDamage(25 + this.rand.nextInt(65 - 25));
 
-				world.playSoundAtEntity(player, "hbm:weapon.tauShoot", 1.0F, 0.8F + (rand.nextFloat() * 0.4F));
+				world.playSoundAtEntity(player, "hbm:weapon.tauShoot", 1.0F, 0.8F + (this.rand.nextFloat() * 0.4F));
 
 				if (flag) {
 					entityarrow.canBePickedUp = 2;
@@ -121,7 +122,7 @@ public class GunXVL1456 extends Item {
 				}
 			}
 		} else {
-			if (count % 20 == 0 && this.getMaxItemUseDuration(stack) - count != 0) {
+			if (count % 20 == 0 && getMaxItemUseDuration(stack) - count != 0) {
 				boolean flag = player.capabilities.isCreativeMode
 						|| EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, stack) > 0;
 				if ((player.capabilities.isCreativeMode || player.inventory.hasItem(ModItems.gun_xvl1456_ammo))) {
@@ -155,6 +156,7 @@ public class GunXVL1456 extends Item {
 		return 0;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
@@ -169,11 +171,12 @@ public class GunXVL1456 extends Item {
 		list.add("Projectiles penetrate walls.");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Multimap getItemAttributeModifiers() {
 		Multimap multimap = super.getItemAttributeModifiers();
 		multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
-				new AttributeModifier(field_111210_e, "Weapon modifier", 6, 0));
+				new AttributeModifier(Item.field_111210_e, "Weapon modifier", 6, 0));
 		return multimap;
 	}
 

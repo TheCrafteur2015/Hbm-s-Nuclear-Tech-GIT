@@ -22,7 +22,7 @@ public class GUIMachineCyclotron extends GuiInfoContainer {
 
 	public GUIMachineCyclotron(InventoryPlayer invPlayer, TileEntityMachineCyclotron tile) {
 		super(new ContainerMachineCyclotron(invPlayer, tile));
-		cyclotron = tile;
+		this.cyclotron = tile;
 
 		this.xSize = 176;
 		this.ySize = 222;
@@ -32,17 +32,17 @@ public class GUIMachineCyclotron extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 80, guiTop + 72, 7, 52, cyclotron.power, cyclotron.maxPower);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 80, this.guiTop + 72, 7, 52, this.cyclotron.power, TileEntityMachineCyclotron.maxPower);
 
-		cyclotron.coolant.renderTankInfo(this, mouseX, mouseY, guiLeft + 53, guiTop + 72, 7, 52);
-		cyclotron.amat.renderTankInfo(this, mouseX, mouseY, guiLeft + 134, guiTop + 90, 7, 34);
+		this.cyclotron.coolant.renderTankInfo(this, mouseX, mouseY, this.guiLeft + 53, this.guiTop + 72, 7, 52);
+		this.cyclotron.amat.renderTankInfo(this, mouseX, mouseY, this.guiLeft + 134, this.guiTop + 90, 7, 34);
 
 		String[] upgradeText = new String[4];
 		upgradeText[0] = I18nUtil.resolveKey("desc.gui.upgrade");
 		upgradeText[1] = I18nUtil.resolveKey("desc.gui.upgrade.speed");
 		upgradeText[2] = I18nUtil.resolveKey("desc.gui.upgrade.effectiveness");
 		upgradeText[3] = I18nUtil.resolveKey("desc.gui.upgrade.power");
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 21, guiTop + 75, 8, 8, mouseX, mouseY, upgradeText);
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 21, this.guiTop + 75, 8, 8, mouseX, mouseY, upgradeText);
 	}
 
 	@Override
@@ -57,31 +57,31 @@ public class GUIMachineCyclotron extends GuiInfoContainer {
 	protected void mouseClicked(int x, int y, int i) {
 		super.mouseClicked(x, y, i);
 
-		if(guiLeft + 97 <= x && guiLeft + 97 + 18 > x && guiTop + 107 < y && guiTop + 107 + 18 >= y) {
+		if(this.guiLeft + 97 <= x && this.guiLeft + 97 + 18 > x && this.guiTop + 107 < y && this.guiTop + 107 + 18 >= y) {
 
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
-			PacketDispatcher.wrapper.sendToServer(new AuxButtonPacket(cyclotron.xCoord, cyclotron.yCoord, cyclotron.zCoord, 0, 0));
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+			PacketDispatcher.wrapper.sendToServer(new AuxButtonPacket(this.cyclotron.xCoord, this.cyclotron.yCoord, this.cyclotron.zCoord, 0, 0));
 		}
 	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIMachineCyclotron.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
-		int k = (int) cyclotron.getPowerScaled(52);
-		drawTexturedModalRect(guiLeft + 80, guiTop + 124 - k, 212, 52 - k, 7, k);
+		int k = (int) this.cyclotron.getPowerScaled(52);
+		drawTexturedModalRect(this.guiLeft + 80, this.guiTop + 124 - k, 212, 52 - k, 7, k);
 
-		int l = cyclotron.getProgressScaled(36);
-		drawTexturedModalRect(guiLeft + 52, guiTop + 26, 176, 0, l, 36);
+		int l = this.cyclotron.getProgressScaled(36);
+		drawTexturedModalRect(this.guiLeft + 52, this.guiTop + 26, 176, 0, l, 36);
 
-		if(cyclotron.isOn)
-			drawTexturedModalRect(guiLeft + 97, guiTop + 107, 219, 0, 18, 18);
+		if(this.cyclotron.isOn)
+			drawTexturedModalRect(this.guiLeft + 97, this.guiTop + 107, 219, 0, 18, 18);
 
-		this.drawInfoPanel(guiLeft + 21, guiTop + 75, 8, 8, 8);
+		drawInfoPanel(this.guiLeft + 21, this.guiTop + 75, 8, 8, 8);
 
-		cyclotron.coolant.renderTank(guiLeft + 53, guiTop + 124, this.zLevel, 7, 52);
-		cyclotron.amat.renderTank(guiLeft + 134, guiTop + 124, this.zLevel, 7, 34);
+		this.cyclotron.coolant.renderTank(this.guiLeft + 53, this.guiTop + 124, this.zLevel, 7, 52);
+		this.cyclotron.amat.renderTank(this.guiLeft + 134, this.guiTop + 124, this.zLevel, 7, 34);
 	}
 }

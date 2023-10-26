@@ -29,11 +29,11 @@ public class SiegeShield extends SiegeBase {
 			Block b = world.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
 			
 			//if the block is already a siege block, do nothing and increment the success counter
-			if(!this.shouldReplace(b)) {
+			if(!shouldReplace(b)) {
 				succ++;
 				
 			//...if not, check if a new shield can be placed, and try to do so
-			} else if(this.solidNeighbors(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ)) {
+			} else if(solidNeighbors(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ)) {
 				succ++;
 				world.setBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, this);
 			}

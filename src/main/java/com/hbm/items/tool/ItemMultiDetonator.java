@@ -20,17 +20,18 @@ import net.minecraft.world.World;
 
 public class ItemMultiDetonator extends Item {
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		list.add("Shift right-click block to add position,");
 		list.add("right-click to detonate!");
 		list.add("Shift right-click in the air to clear postitions.");
 
-		if(itemstack.getTagCompound() == null || getLocations(itemstack) == null) {
+		if(itemstack.getTagCompound() == null || ItemMultiDetonator.getLocations(itemstack) == null) {
 			list.add(EnumChatFormatting.RED + "No position set!");
 		} else {
 
-			int[][] locs = getLocations(itemstack);
+			int[][] locs = ItemMultiDetonator.getLocations(itemstack);
 
 			for(int i = 0; i < locs[0].length; i++) {
 
@@ -46,7 +47,7 @@ public class ItemMultiDetonator extends Item {
 		}
 
 		if(player.isSneaking()) {
-			addLocation(stack, x, y, z);
+			ItemMultiDetonator.addLocation(stack, x, y, z);
 
 			if(!world.isRemote) {
 				player.addChatMessage(ChatBuilder.start("[").color(EnumChatFormatting.DARK_AQUA)
@@ -66,7 +67,7 @@ public class ItemMultiDetonator extends Item {
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
 
-		if(stack.stackTagCompound == null || getLocations(stack) == null) {
+		if(stack.stackTagCompound == null || ItemMultiDetonator.getLocations(stack) == null) {
 			
 			if(!world.isRemote) {
 				player.addChatMessage(ChatBuilder.start("[").color(EnumChatFormatting.DARK_AQUA)
@@ -78,7 +79,7 @@ public class ItemMultiDetonator extends Item {
 		} else {
 
 			if(!player.isSneaking()) {
-				int[][] locs = getLocations(stack);
+				int[][] locs = ItemMultiDetonator.getLocations(stack);
 
 				int succ = 0;
 

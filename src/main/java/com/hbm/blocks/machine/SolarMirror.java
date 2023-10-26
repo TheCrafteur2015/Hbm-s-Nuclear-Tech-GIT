@@ -23,7 +23,7 @@ public class SolarMirror extends BlockContainer {
 
 	@Override
 	public int getRenderType() {
-		return renderID;
+		return SolarMirror.renderID;
 	}
 
 	@Override

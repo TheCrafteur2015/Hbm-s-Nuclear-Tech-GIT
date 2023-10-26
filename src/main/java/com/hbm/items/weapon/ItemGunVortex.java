@@ -1,6 +1,7 @@
 package com.hbm.items.weapon;
 
 import com.hbm.handler.GunConfiguration;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

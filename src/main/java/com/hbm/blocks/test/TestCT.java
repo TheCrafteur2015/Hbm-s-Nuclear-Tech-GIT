@@ -37,18 +37,19 @@ public class TestCT extends Block implements IBlockCT {
 	@SideOnly(Side.CLIENT) protected IIcon secondIcon;
 	@SideOnly(Side.CLIENT) public CTStitchReceiver secondrec;
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister reg) {
-		this.blockIcon = reg.registerIcon(this.getTextureName());
-		this.secondIcon = reg.registerIcon(this.getTextureName() + ".1");
-		this.rec = IBlockCT.primeReceiver(reg, this.getTextureName(), this.blockIcon);
-		this.secondrec = IBlockCT.primeReceiver(reg, this.getTextureName() + ".1", this.secondIcon);
+		this.blockIcon = reg.registerIcon(getTextureName());
+		this.secondIcon = reg.registerIcon(getTextureName() + ".1");
+		this.rec = IBlockCT.primeReceiver(reg, getTextureName(), this.blockIcon);
+		this.secondrec = IBlockCT.primeReceiver(reg, getTextureName() + ".1", this.secondIcon);
 	}
 
 	@Override
 	public IIcon[] getFragments(IBlockAccess world, int x, int y, int z) {
 		if(world.getBlockMetadata(x, y, z) != 0)
-			return secondrec.fragCache;
-		return rec.fragCache;
+			return this.secondrec.fragCache;
+		return this.rec.fragCache;
 	}
 }

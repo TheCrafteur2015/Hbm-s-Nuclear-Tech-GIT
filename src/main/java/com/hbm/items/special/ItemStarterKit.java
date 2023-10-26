@@ -499,7 +499,8 @@ public class ItemStarterKit extends Item {
 		
 	}
 	
-    @SideOnly(Side.CLIENT)
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	@SideOnly(Side.CLIENT)
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean b) {
 

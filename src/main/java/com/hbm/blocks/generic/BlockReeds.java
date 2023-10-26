@@ -25,6 +25,7 @@ public class BlockReeds extends Block {
 		super(Material.plants);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister reg) {
 		this.blockIcon = reg.registerIcon(RefStrings.MODID + ":reeds_top");
@@ -44,17 +45,17 @@ public class BlockReeds extends Block {
 	
 	@Override
 	public boolean canBlockStay(World world, int x, int y, int z) {
-		return this.canPlaceBlockAt(world, x, y, z);
+		return canPlaceBlockAt(world, x, y, z);
 	}
 	
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
 		super.onNeighborBlockChange(world, x, y, z, block);
-		this.checkAndDropBlock(world, x, y, z);
+		checkAndDropBlock(world, x, y, z);
 	}
 
 	protected void checkAndDropBlock(World world, int x, int y, int z) {
-		if(!this.canBlockStay(world, x, y, z)) {
+		if(!canBlockStay(world, x, y, z)) {
 			world.setBlock(x, y, z, Blocks.air);
 		}
 	}
@@ -83,6 +84,6 @@ public class BlockReeds extends Block {
 
 	@Override
 	public int getRenderType() {
-		return renderID;
+		return BlockReeds.renderID;
 	}
 }

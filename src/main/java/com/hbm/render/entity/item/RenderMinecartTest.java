@@ -1,5 +1,10 @@
 package com.hbm.render.entity.item;
 
+import org.lwjgl.opengl.GL11;
+
+import com.hbm.entity.item.EntityMinecartTest;
+import com.hbm.lib.RefStrings;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.entity.RenderMinecart;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -10,11 +15,6 @@ import net.minecraft.util.Vec3;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 
-import org.lwjgl.opengl.GL11;
-
-import com.hbm.entity.item.EntityMinecartTest;
-import com.hbm.lib.RefStrings;
-
 public class RenderMinecartTest extends RenderMinecart
 {
 	
@@ -22,14 +22,14 @@ public class RenderMinecartTest extends RenderMinecart
 	private IModelCustom boyModel;
     private ResourceLocation boyTexture;
     public RenderMinecartTest() {
-		boyModel = AdvancedModelLoader.loadModel(objTesterModelRL);
-		boyTexture = new ResourceLocation(RefStrings.MODID, "textures/models/LilBoy2.png");
+		this.boyModel = AdvancedModelLoader.loadModel(RenderMinecartTest.objTesterModelRL);
+		this.boyTexture = new ResourceLocation(RefStrings.MODID, "textures/models/LilBoy2.png");
     }
     @Override
 	public void doRender(EntityMinecart p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_)
     {
         GL11.glPushMatrix();
-        this.bindEntityTexture(p_76986_1_);
+        bindEntityTexture(p_76986_1_);
         long i = p_76986_1_.getEntityId() * 493286711L;
         i = i * i * 4392167121L + i * 98761L;
         float f2 = (((i >> 16 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
@@ -100,14 +100,14 @@ public class RenderMinecartTest extends RenderMinecart
         if (block.getRenderType() != -1)
         {
             GL11.glPushMatrix();
-            this.bindTexture(TextureMap.locationBlocksTexture);
+            bindTexture(TextureMap.locationBlocksTexture);
             float f6 = 0.75F;
             GL11.glScalef(f6, f6, f6);
             GL11.glTranslatef(0.0F, k / 16.0F, 0.0F);
             this.func_147910_a(p_76986_1_, p_76986_9_, block, j);
             GL11.glPopMatrix();
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            this.bindEntityTexture(p_76986_1_);
+            bindEntityTexture(p_76986_1_);
         }
 
         GL11.glScalef(-1.0F, -1.0F, 1.0F);
@@ -141,8 +141,8 @@ public class RenderMinecartTest extends RenderMinecart
 
         GL11.glPushMatrix();
         //this.field_94145_f.renderBlockAsItem(ModBlocks.crate, 0, 1.0F);
-        bindTexture(boyTexture);
-        boyModel.renderAll();
+        bindTexture(this.boyTexture);
+        this.boyModel.renderAll();
         GL11.glPopMatrix();
         //super.func_147910_a(p_147910_1_, p_147910_2_, p_147910_3_, p_147910_4_);
 
@@ -155,8 +155,8 @@ public class RenderMinecartTest extends RenderMinecart
             GL11.glColor4f(1.0F, 1.0F, 1.0F, (1.0F - (j - p_147910_2_ + 1.0F) / 100.0F) * 0.8F);
             GL11.glPushMatrix();
             //this.field_94145_f.renderBlockAsItem(ModBlocks.crate, 0, 1.0F);
-            bindTexture(boyTexture);
-            boyModel.renderAll();
+            bindTexture(this.boyTexture);
+            this.boyModel.renderAll();
             GL11.glPopMatrix();
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glDisable(GL11.GL_BLEND);

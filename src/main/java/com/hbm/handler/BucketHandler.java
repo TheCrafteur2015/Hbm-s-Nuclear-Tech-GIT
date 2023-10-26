@@ -15,7 +15,7 @@ import net.minecraftforge.event.entity.player.FillBucketEvent;
 public class BucketHandler {
 
 	public static BucketHandler INSTANCE = new BucketHandler();
-	public Map<Block, Item> buckets = new HashMap<Block, Item>();
+	public Map<Block, Item> buckets = new HashMap<>();
 
 	private BucketHandler() {
 	}
@@ -36,7 +36,7 @@ public class BucketHandler {
 
 		Block block = world.getBlock(pos.blockX, pos.blockY, pos.blockZ);
 
-		Item bucket = buckets.get(block);
+		Item bucket = this.buckets.get(block);
 		if (bucket != null && world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0) {
 			world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ);
 			return new ItemStack(bucket);

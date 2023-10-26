@@ -26,10 +26,11 @@ public abstract class TileEntityTickingBase extends TileEntityLoadedBase impleme
 	
 	public void networkPack(NBTTagCompound nbt, int range) {
 
-		if(!worldObj.isRemote)
-			PacketDispatcher.wrapper.sendToAllAround(new NBTPacket(nbt, xCoord, yCoord, zCoord), new TargetPoint(this.worldObj.provider.dimensionId, xCoord, yCoord, zCoord, range));
+		if(!this.worldObj.isRemote)
+			PacketDispatcher.wrapper.sendToAllAround(new NBTPacket(nbt, this.xCoord, this.yCoord, this.zCoord), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, range));
 	}
 	
+	@Override
 	public void networkUnpack(NBTTagCompound nbt) { }
 	
 	@Deprecated

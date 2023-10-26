@@ -64,17 +64,18 @@ public class RBMKDebrisRadiating extends RBMKDebrisBurning {
 				
 				if(meta < 15) {
 					world.setBlockMetadataWithNotify(x, y, z, meta + 1, 2);
-					world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
+					world.scheduleBlockUpdate(x, y, z, this, tickRate(world));
 				} else {
 					world.setBlock(x, y, z, ModBlocks.pribris_burning);
 				}
 				
 			} else {
-				world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
+				world.scheduleBlockUpdate(x, y, z, this, tickRate(world));
 			}
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void radiate(World world, int x, int y, int z) {
 		
 		float rads = 1000000F;
@@ -103,7 +104,7 @@ public class RBMKDebrisRadiating extends RBMKDebrisBurning {
 				res = 1;
 			
 			float eRads = rads;
-			eRads /= (float)res;
+			eRads /= res;
 			eRads /= (float)(len * len);
 			
 			ContaminationUtil.contaminate(e, HazardType.RADIATION, ContaminationType.CREATIVE, eRads);

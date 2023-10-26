@@ -22,19 +22,19 @@ import net.minecraft.item.ItemStack;
 
 public class CrucibleAlloyingHandler extends TemplateRecipeHandler {
 	
-	public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<RecipeTransferRect>();
-	public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<Class<? extends GuiContainer>>();
+	public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<>();
+	public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<>();
 	
 	public class RecipeSet extends TemplateRecipeHandler.CachedRecipe {
 
-		List<PositionedStack> inputs = new ArrayList();
+		List<PositionedStack> inputs = new ArrayList<>();
 		PositionedStack template;
 		PositionedStack crucible;
-		List<PositionedStack> outputs = new ArrayList();
+		List<PositionedStack> outputs = new ArrayList<>();
 		
 		public RecipeSet(CrucibleRecipe recipe) {
-			List<ItemStack> inputs = new ArrayList();
-			List<ItemStack> outputs = new ArrayList();
+			List<ItemStack> inputs = new ArrayList<>();
+			List<ItemStack> outputs = new ArrayList<>();
 			for(MaterialStack stack : recipe.input) inputs.add(ItemScraps.create(stack, true));
 			for(MaterialStack stack : recipe.output) outputs.add(ItemScraps.create(stack, true));
 			
@@ -54,22 +54,22 @@ public class CrucibleAlloyingHandler extends TemplateRecipeHandler {
 
 		@Override
 		public List<PositionedStack> getIngredients() {
-			return getCycledIngredients(cycleticks / 20, inputs);
+			return getCycledIngredients(CrucibleAlloyingHandler.this.cycleticks / 20, this.inputs);
 		}
 
 		@Override
 		public PositionedStack getResult() {
-			return outputs.get(0);
+			return this.outputs.get(0);
 		}
 
 		@Override
 		public List<PositionedStack> getOtherStacks() {
-			List<PositionedStack> other = new ArrayList();
-			other.addAll(inputs);
-			other.add(crucible);
-			other.add(template);
-			other.addAll(outputs);
-			return getCycledIngredients(cycleticks / 20, other);
+			List<PositionedStack> other = new ArrayList<>();
+			other.addAll(this.inputs);
+			other.add(this.crucible);
+			other.add(this.template);
+			other.addAll(this.outputs);
+			return getCycledIngredients(CrucibleAlloyingHandler.this.cycleticks / 20, other);
 		}
 	}
 
@@ -146,7 +146,7 @@ public class CrucibleAlloyingHandler extends TemplateRecipeHandler {
 	
 	@Override
 	public void loadTransferRects() {
-		transferRects.add(new RecipeTransferRect(new Rectangle(65, 23, 36, 18), "ntmCrucibleAlloying"));
-		RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), transferRects);
+		this.transferRects.add(new RecipeTransferRect(new Rectangle(65, 23, 36, 18), "ntmCrucibleAlloying"));
+		RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), this.transferRects);
 	}
 }

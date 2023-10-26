@@ -56,31 +56,31 @@ public class ItemCassette extends Item {
 		private int volume;
 		
 		private TrackType(String name, ResourceLocation loc, SoundType sound, int msa, int intensity) {
-			title = name;
-			location = loc;
-			type = sound;
-			color = msa;
-			volume = intensity;
+			this.title = name;
+			this.location = loc;
+			this.type = sound;
+			this.color = msa;
+			this.volume = intensity;
 		}
 		
 		public String getTrackTitle() {
-			return title;
+			return this.title;
 		}
 		
 		public ResourceLocation getSoundLocation() {
-			return location;
+			return this.location;
 		}
 		
 		public SoundType getType() {
-			return type;
+			return this.type;
 		}
 		
 		public int getColor() {
-			return color;
+			return this.color;
 		}
 		
 		public int getVolume() {
-			return volume;
+			return this.volume;
 		}
 		
 		public static TrackType getEnum(int i) {
@@ -99,8 +99,8 @@ public class ItemCassette extends Item {
 
     public ItemCassette()
     {
-        this.setHasSubtypes(true);
-        this.setMaxDamage(0);
+        setHasSubtypes(true);
+        setMaxDamage(0);
     }
 
     @Override

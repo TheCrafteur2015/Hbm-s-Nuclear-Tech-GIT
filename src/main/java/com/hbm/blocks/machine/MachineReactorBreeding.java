@@ -33,7 +33,7 @@ public class MachineReactorBreeding extends BlockDummyable {
 			return true;
 		} else if(!player.isSneaking())
 		{
-			int[] pos = this.findCore(world, x, y, z);
+			int[] pos = findCore(world, x, y, z);
 			
 			if(pos == null)
 				return false;

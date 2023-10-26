@@ -20,7 +20,7 @@ public class GUINukeSolinium extends GuiContainer {
 	
 	public GUINukeSolinium(InventoryPlayer invPlayer, TileEntityNukeSolinium tedf) {
 		super(new ContainerNukeSolinium(invPlayer, tedf));
-		testNuke = tedf;
+		this.testNuke = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 222;
@@ -37,56 +37,56 @@ public class GUINukeSolinium extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUINukeSolinium.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
 		if(this.testNuke.slots[0] != null && this.testNuke.slots[0].getItem() == ModItems.solinium_igniter)
 		{
-			drawTexturedModalRect(guiLeft + 24, guiTop + 84, 0, 222, 22, 14);
+			drawTexturedModalRect(this.guiLeft + 24, this.guiTop + 84, 0, 222, 22, 14);
 		}
 		
 		if(this.testNuke.slots[1] != null && this.testNuke.slots[1].getItem() == ModItems.solinium_propellant)
 		{
-			drawTexturedModalRect(guiLeft + 46, guiTop + 84, 22, 222, 18, 14);
+			drawTexturedModalRect(this.guiLeft + 46, this.guiTop + 84, 22, 222, 18, 14);
 		}
 		
 		if(this.testNuke.slots[2] != null && this.testNuke.slots[2].getItem() == ModItems.solinium_propellant)
 		{
-			drawTexturedModalRect(guiLeft + 76, guiTop + 84, 52, 222, 18, 14);
+			drawTexturedModalRect(this.guiLeft + 76, this.guiTop + 84, 52, 222, 18, 14);
 		}
 		
 		if(this.testNuke.slots[3] != null && this.testNuke.slots[3].getItem() == ModItems.solinium_igniter)
 		{
-			drawTexturedModalRect(guiLeft + 94, guiTop + 84, 70, 222, 22, 14);
+			drawTexturedModalRect(this.guiLeft + 94, this.guiTop + 84, 70, 222, 22, 14);
 		}
 		
 		if(this.testNuke.slots[4] != null && this.testNuke.slots[4].getItem() == ModItems.solinium_core)
 		{
-			drawTexturedModalRect(guiLeft + 64, guiTop + 84, 40, 222, 12, 28);
+			drawTexturedModalRect(this.guiLeft + 64, this.guiTop + 84, 40, 222, 12, 28);
 		}
 		
 		if(this.testNuke.slots[5] != null && this.testNuke.slots[5].getItem() == ModItems.solinium_igniter)
 		{
-			drawTexturedModalRect(guiLeft + 24, guiTop + 98, 0, 236, 22, 14);
+			drawTexturedModalRect(this.guiLeft + 24, this.guiTop + 98, 0, 236, 22, 14);
 		}
 		
 		if(this.testNuke.slots[6] != null && this.testNuke.slots[6].getItem() == ModItems.solinium_propellant)
 		{
-			drawTexturedModalRect(guiLeft + 46, guiTop + 98, 22, 236, 18, 14);
+			drawTexturedModalRect(this.guiLeft + 46, this.guiTop + 98, 22, 236, 18, 14);
 		}
 		
 		if(this.testNuke.slots[7] != null && this.testNuke.slots[7].getItem() == ModItems.solinium_propellant)
 		{
-			drawTexturedModalRect(guiLeft + 76, guiTop + 98, 52, 236, 18, 14);
+			drawTexturedModalRect(this.guiLeft + 76, this.guiTop + 98, 52, 236, 18, 14);
 		}
 		
 		if(this.testNuke.slots[8] != null && this.testNuke.slots[8].getItem() == ModItems.solinium_igniter)
 		{
-			drawTexturedModalRect(guiLeft + 94, guiTop + 98, 70, 236, 22, 14);
+			drawTexturedModalRect(this.guiLeft + 94, this.guiTop + 98, 70, 236, 22, 14);
 		}
 		
 		if(this.testNuke.isReady()) {
-			drawTexturedModalRect(guiLeft + 134, guiTop + 90, 176, 0, 16, 16);
+			drawTexturedModalRect(this.guiLeft + 134, this.guiTop + 90, 176, 0, 16, 16);
 		}
 	}
 }

@@ -23,17 +23,17 @@ public class ParticleEngine {
 	}
 	
 	private void setupLayers() {
-		layers = new FXLayer[] {
+		this.layers = new FXLayer[] {
 				
 		};
 	}
 	
 	public void updateParticles() {
-		for(FXLayer layer : layers) layer.updateLayer();
+		for(FXLayer layer : this.layers) layer.updateLayer();
 	}
 	
 	public void renderParticles(float interp) {
-		for(FXLayer layer : layers) layer.renderLayer(interp);
+		for(FXLayer layer : this.layers) layer.renderLayer(interp);
 	}
 	
 	public static class FXLayer {

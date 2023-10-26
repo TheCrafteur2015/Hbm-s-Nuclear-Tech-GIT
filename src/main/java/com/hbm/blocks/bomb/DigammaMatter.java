@@ -35,14 +35,14 @@ public class DigammaMatter extends Block {
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
 		float pixel = 0.0625F;
-		this.setBlockBounds(rand.nextInt(9) * pixel, rand.nextInt(9) * pixel, rand.nextInt(9) * pixel, 1.0F - rand.nextInt(9) * pixel, 1.0F - rand.nextInt(9) * pixel, 1.0F - rand.nextInt(9) * pixel);
+		setBlockBounds(DigammaMatter.rand.nextInt(9) * pixel, DigammaMatter.rand.nextInt(9) * pixel, DigammaMatter.rand.nextInt(9) * pixel, 1.0F - DigammaMatter.rand.nextInt(9) * pixel, 1.0F - DigammaMatter.rand.nextInt(9) * pixel, 1.0F - DigammaMatter.rand.nextInt(9) * pixel);
 	}
 	
 	@Override
 	public void onBlockAdded(World world, int x, int y, int z) {
 		
 		if(!world.isRemote)
-			world.scheduleBlockUpdate(x, y, z, this, 10 + rand.nextInt(40));
+			world.scheduleBlockUpdate(x, y, z, this, 10 + DigammaMatter.rand.nextInt(40));
 	}
 
 	@Override

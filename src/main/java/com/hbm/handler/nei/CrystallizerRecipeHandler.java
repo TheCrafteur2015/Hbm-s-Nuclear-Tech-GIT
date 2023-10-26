@@ -20,8 +20,8 @@ public class CrystallizerRecipeHandler extends NEIUniversalHandler {
 	@Override
 	public void loadTransferRects() {
 		super.loadTransferRects();
-		transferRectsGui.add(new RecipeTransferRect(new Rectangle(80 - 5, 47 - 11, 27, 12), "ntmCrystallizer"));
-		guiGui.add(GUICrystallizer.class);
-		RecipeTransferRectHandler.registerRectsToGuis(guiGui, transferRectsGui);
+		this.transferRectsGui.add(new RecipeTransferRect(new Rectangle(80 - 5, 47 - 11, 27, 12), "ntmCrystallizer"));
+		this.guiGui.add(GUICrystallizer.class);
+		RecipeTransferRectHandler.registerRectsToGuis(this.guiGui, this.transferRectsGui);
 	}
 }

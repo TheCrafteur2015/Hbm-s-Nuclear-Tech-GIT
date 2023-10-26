@@ -65,10 +65,12 @@ public class RenderConveyorPress extends TileEntitySpecialRenderer implements II
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase( ) {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(0, -4, 0);
 				GL11.glScaled(4.5, 4.5, 4.5);
 			}
+			@Override
 			public void renderCommon() {
 				bindTexture(ResourceManager.conveyor_press_tex);
 				ResourceManager.conveyor_press.renderPart("Press");

@@ -14,9 +14,9 @@ import net.minecraft.world.World;
 public class Mark5 implements IExplosionLogic {
 
 	//holds rays after being calculated up to where the blocks get removed
-	private List<MVRay> pendingRays = new ArrayList();
+	private List<MVRay> pendingRays = new ArrayList<>();
 	//once a ray has been processed, it will be buffered for extension
-	private List<MVRay> completedRays = new ArrayList();
+	private List<MVRay> completedRays = new ArrayList<>();
 	//buffered blocks marked for deletion
 	private Set<BlockPos> buffer = new HashSet();
 	
@@ -39,7 +39,7 @@ public class Mark5 implements IExplosionLogic {
 		this.originY = y;
 		this.originZ = z;
 		
-		this.initRays();
+		initRays();
 	}
 	
 	private void initRays() {
@@ -47,18 +47,18 @@ public class Mark5 implements IExplosionLogic {
 		float startLen = 0.5F;
 		
 		//top
-		pendingRays.add(new MVRay(strength, originX, originY, originZ, 0F, (float) Math.PI * 0.5F, startLen));
+		this.pendingRays.add(new MVRay(this.strength, this.originX, this.originY, this.originZ, 0F, (float) Math.PI * 0.5F, startLen));
 		//bottom
-		pendingRays.add(new MVRay(strength, originX, originY, originZ, 0F, -(float) Math.PI * 0.5F, startLen));
+		this.pendingRays.add(new MVRay(this.strength, this.originX, this.originY, this.originZ, 0F, -(float) Math.PI * 0.5F, startLen));
 		
 		float pilet = (float) Math.PI * 0.25F;
 		
 		for(int i = 0; i < 8; i++) {
-			pendingRays.add(new MVRay(strength, originX, originY, originZ, pilet * i, 0F, startLen));
+			this.pendingRays.add(new MVRay(this.strength, this.originX, this.originY, this.originZ, pilet * i, 0F, startLen));
 			
 			{//if(i % 2 == 0) {
-				pendingRays.add(new MVRay(strength, originX, originY, originZ, pilet * i, -pilet, startLen));
-				pendingRays.add(new MVRay(strength, originX, originY, originZ, pilet * i, pilet, startLen));
+				this.pendingRays.add(new MVRay(this.strength, this.originX, this.originY, this.originZ, pilet * i, -pilet, startLen));
+				this.pendingRays.add(new MVRay(this.strength, this.originX, this.originY, this.originZ, pilet * i, pilet, startLen));
 			}
 		}
 		
@@ -106,7 +106,7 @@ public class Mark5 implements IExplosionLogic {
 					break;
 				}
 				
-				Block b = world.getBlock(x, y, z);
+				Block b = this.world.getBlock(x, y, z);
 				
 				float res = (b.getMaterial().isLiquid() ? 0 : b.getExplosionResistance(null)) + Blocks.air.getExplosionResistance(null);
 				
@@ -151,10 +151,10 @@ public class Mark5 implements IExplosionLogic {
 		
 		int rem = 0;
 		
-		List<BlockPos> toRem = new ArrayList();
+		List<BlockPos> toRem = new ArrayList<>();
 		
 		for(BlockPos pos : this.buffer) {
-			world.setBlock(pos.x, pos.y, pos.z, Blocks.air, 0, 3);
+			this.world.setBlock(pos.x, pos.y, pos.z, Blocks.air, 0, 3);
 			
 			toRem.add(pos);
 			rem++;
@@ -258,9 +258,9 @@ public class Mark5 implements IExplosionLogic {
 		public int hashCode() {
 			final int prime = 31;
 			int result = 1;
-			result = prime * result + x;
-			result = prime * result + y;
-			result = prime * result + z;
+			result = prime * result + this.x;
+			result = prime * result + this.y;
+			result = prime * result + this.z;
 			return result;
 		}
 
@@ -268,13 +268,12 @@ public class Mark5 implements IExplosionLogic {
 		public boolean equals(Object obj) {
 			
 			if(this == obj) return true;
-			if(obj == null) return false;
-			if(getClass() != obj.getClass()) return false;
+			if((obj == null) || (getClass() != obj.getClass())) return false;
 			
 			BlockPos other = (BlockPos) obj;
-			if(x != other.x) return false;
-			if(y != other.y) return false;
-			if(z != other.z) return false;
+			if(this.x != other.x) return false;
+			if(this.y != other.y) return false;
+			if(this.z != other.z) return false;
 			
 			return true;
 		}

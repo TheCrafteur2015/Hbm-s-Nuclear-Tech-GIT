@@ -28,7 +28,7 @@ public class HeaterOven extends BlockDummyable implements ITooltipProvider {
 	
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-		return this.standardOpenBehavior(world, x, y, z, player, 0);
+		return standardOpenBehavior(world, x, y, z, player, 0);
 	}
 
 	@Override
@@ -43,6 +43,6 @@ public class HeaterOven extends BlockDummyable implements ITooltipProvider {
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		this.addStandardInfo(stack, player, list, ext);
+		addStandardInfo(stack, player, list, ext);
 	}
 }

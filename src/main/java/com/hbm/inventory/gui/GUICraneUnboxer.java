@@ -18,7 +18,7 @@ public class GUICraneUnboxer extends GuiInfoContainer {
 
 	public GUICraneUnboxer(InventoryPlayer invPlayer, TileEntityCraneUnboxer tedf) {
 		super(new ContainerCraneUnboxer(invPlayer, tedf));
-		boxer = tedf;
+		this.boxer = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 185;
@@ -44,7 +44,7 @@ public class GUICraneUnboxer extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float interp, int i, int j) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUICraneUnboxer.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 	}
 }

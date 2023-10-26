@@ -23,75 +23,76 @@ public class ModelCalBarrel extends ModelBase {
 	ModelRenderer Shape7;
 
 	public ModelCalBarrel() {
-		textureWidth = 128;
-		textureHeight = 32;
+		this.textureWidth = 128;
+		this.textureHeight = 32;
 
-		Shape1 = new ModelRenderer(this, 0, 0);
-		Shape1.addBox(0F, 0F, 0F, 30, 6, 3);
-		Shape1.setRotationPoint(-30F, 0F, -1.5F);
-		Shape1.setTextureSize(128, 32);
-		Shape1.mirror = true;
-		setRotation(Shape1, 0F, 0F, 0F);
-		Shape2 = new ModelRenderer(this, 0, 19);
-		Shape2.addBox(0F, 0F, 0F, 30, 3, 6);
-		Shape2.setRotationPoint(-30F, 1.5F, -3F);
-		Shape2.setTextureSize(128, 32);
-		Shape2.mirror = true;
-		setRotation(Shape2, 0F, 0F, 0F);
-		Shape3 = new ModelRenderer(this, 0, 9);
-		Shape3.addBox(0F, 0F, 0F, 30, 5, 5);
-		Shape3.setRotationPoint(-30F, 0.5F, -2.5F);
-		Shape3.setTextureSize(128, 32);
-		Shape3.mirror = true;
-		setRotation(Shape3, 0F, 0F, 0F);
-		Shape4 = new ModelRenderer(this, 0, 28);
-		Shape4.addBox(0F, 0F, 0F, 1, 2, 2);
-		Shape4.setRotationPoint(-30.5F, 0.5F, -1F);
-		Shape4.setTextureSize(128, 32);
-		Shape4.mirror = true;
-		setRotation(Shape4, 0F, 0F, 0F);
-		Shape5 = new ModelRenderer(this, 6, 28);
-		Shape5.addBox(0F, 0F, 0F, 3, 2, 2);
-		Shape5.setRotationPoint(-33F, 3.5F, -1F);
-		Shape5.setTextureSize(128, 32);
-		Shape5.mirror = true;
-		setRotation(Shape5, 0F, 0F, 0F);
-		Shape6 = new ModelRenderer(this, 66, 0);
-		Shape6.addBox(0F, 0F, 0F, 4, 2, 4);
-		Shape6.setRotationPoint(-20F, -1F, -2F);
-		Shape6.setTextureSize(128, 32);
-		Shape6.mirror = true;
-		setRotation(Shape6, 0F, 0F, 0F);
-		Shape7 = new ModelRenderer(this, 82, 0);
-		Shape7.addBox(0F, -1F, -4F, 4, 1, 4);
-		Shape7.setRotationPoint(-20F, -1F, 2F);
-		Shape7.setTextureSize(128, 32);
-		Shape7.mirror = true;
-		setRotation(Shape7, -0.3490659F, 0F, 0F);
+		this.Shape1 = new ModelRenderer(this, 0, 0);
+		this.Shape1.addBox(0F, 0F, 0F, 30, 6, 3);
+		this.Shape1.setRotationPoint(-30F, 0F, -1.5F);
+		this.Shape1.setTextureSize(128, 32);
+		this.Shape1.mirror = true;
+		setRotation(this.Shape1, 0F, 0F, 0F);
+		this.Shape2 = new ModelRenderer(this, 0, 19);
+		this.Shape2.addBox(0F, 0F, 0F, 30, 3, 6);
+		this.Shape2.setRotationPoint(-30F, 1.5F, -3F);
+		this.Shape2.setTextureSize(128, 32);
+		this.Shape2.mirror = true;
+		setRotation(this.Shape2, 0F, 0F, 0F);
+		this.Shape3 = new ModelRenderer(this, 0, 9);
+		this.Shape3.addBox(0F, 0F, 0F, 30, 5, 5);
+		this.Shape3.setRotationPoint(-30F, 0.5F, -2.5F);
+		this.Shape3.setTextureSize(128, 32);
+		this.Shape3.mirror = true;
+		setRotation(this.Shape3, 0F, 0F, 0F);
+		this.Shape4 = new ModelRenderer(this, 0, 28);
+		this.Shape4.addBox(0F, 0F, 0F, 1, 2, 2);
+		this.Shape4.setRotationPoint(-30.5F, 0.5F, -1F);
+		this.Shape4.setTextureSize(128, 32);
+		this.Shape4.mirror = true;
+		setRotation(this.Shape4, 0F, 0F, 0F);
+		this.Shape5 = new ModelRenderer(this, 6, 28);
+		this.Shape5.addBox(0F, 0F, 0F, 3, 2, 2);
+		this.Shape5.setRotationPoint(-33F, 3.5F, -1F);
+		this.Shape5.setTextureSize(128, 32);
+		this.Shape5.mirror = true;
+		setRotation(this.Shape5, 0F, 0F, 0F);
+		this.Shape6 = new ModelRenderer(this, 66, 0);
+		this.Shape6.addBox(0F, 0F, 0F, 4, 2, 4);
+		this.Shape6.setRotationPoint(-20F, -1F, -2F);
+		this.Shape6.setTextureSize(128, 32);
+		this.Shape6.mirror = true;
+		setRotation(this.Shape6, 0F, 0F, 0F);
+		this.Shape7 = new ModelRenderer(this, 82, 0);
+		this.Shape7.addBox(0F, -1F, -4F, 4, 1, 4);
+		this.Shape7.setRotationPoint(-20F, -1F, 2F);
+		this.Shape7.setTextureSize(128, 32);
+		this.Shape7.mirror = true;
+		setRotation(this.Shape7, -0.3490659F, 0F, 0F);
 	}
 
+	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-		Shape1.render(f5);
-		Shape2.render(f5);
-		Shape3.render(f5);
-		Shape4.render(f5);
-		Shape5.render(f5);
-		Shape6.render(f5);
-		Shape7.render(f5);
+		this.Shape1.render(f5);
+		this.Shape2.render(f5);
+		this.Shape3.render(f5);
+		this.Shape4.render(f5);
+		this.Shape5.render(f5);
+		this.Shape6.render(f5);
+		this.Shape7.render(f5);
 	}
 
 	public void renderAll(float f5) {
         GL11.glPushMatrix();
         GL11.glTranslated(0, 1D/16D * 1, 0);
-		Shape1.render(f5);
-		Shape2.render(f5);
-		Shape3.render(f5);
-		Shape4.render(f5);
-		Shape5.render(f5);
-		Shape6.render(f5);
-		Shape7.render(f5);
+		this.Shape1.render(f5);
+		this.Shape2.render(f5);
+		this.Shape3.render(f5);
+		this.Shape4.render(f5);
+		this.Shape5.render(f5);
+		this.Shape6.render(f5);
+		this.Shape7.render(f5);
         GL11.glPopMatrix();
 	}
 
@@ -101,6 +102,7 @@ public class ModelCalBarrel extends ModelBase {
 		model.rotateAngleZ = z;
 	}
 
+	@Override
 	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
 		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 	}

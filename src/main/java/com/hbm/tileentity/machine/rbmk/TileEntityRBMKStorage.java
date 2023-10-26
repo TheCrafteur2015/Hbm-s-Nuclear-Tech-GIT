@@ -4,6 +4,7 @@ import com.hbm.inventory.container.ContainerRBMKStorage;
 import com.hbm.inventory.gui.GUIRBMKStorage;
 import com.hbm.items.machine.ItemRBMKRod;
 import com.hbm.tileentity.machine.rbmk.TileEntityRBMKConsole.ColumnType;
+
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -32,13 +33,13 @@ public class TileEntityRBMKStorage extends TileEntityRBMKSlottedBase implements 
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote && worldObj.getTotalWorldTime() % 10 == 0) {
+		if(!this.worldObj.isRemote && this.worldObj.getTotalWorldTime() % 10 == 0) {
 			
-			for(int i = 0; i < slots.length - 1; i++) {
+			for(int i = 0; i < this.slots.length - 1; i++) {
 				
-				if(slots[i] == null && slots[i + 1] != null) {
-					slots[i] = slots[i + 1];
-					slots[i + 1] = null;
+				if(this.slots[i] == null && this.slots[i + 1] != null) {
+					this.slots[i] = this.slots[i + 1];
+					this.slots[i + 1] = null;
 				}
 			}
 		}
@@ -68,27 +69,27 @@ public class TileEntityRBMKStorage extends TileEntityRBMKSlottedBase implements 
 
 	@Override
 	public boolean canLoad(ItemStack toLoad) {
-		return slots[11] == null;
+		return this.slots[11] == null;
 	}
 
 	@Override
 	public void load(ItemStack toLoad) {
-		slots[11] = toLoad.copy();
+		this.slots[11] = toLoad.copy();
 	}
 
 	@Override
 	public boolean canUnload() {
-		return slots[0] != null;
+		return this.slots[0] != null;
 	}
 
 	@Override
 	public ItemStack provideNext() {
-		return slots[0];
+		return this.slots[0];
 	}
 
 	@Override
 	public void unload() {
-		slots[0] = null;
+		this.slots[0] = null;
 	}
 
 	@Override
@@ -98,26 +99,26 @@ public class TileEntityRBMKStorage extends TileEntityRBMKSlottedBase implements 
 	@Callback(direct = true, limit = 8)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getCoordinates(Context context, Arguments args) {
-		return new Object[] {xCoord, yCoord, zCoord};
+		return new Object[] {this.xCoord, this.yCoord, this.zCoord};
 	}
 
 	@Callback(direct = true, limit = 8)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getHeat(Context context, Arguments args) {
-		return new Object[] {heat};
+		return new Object[] {this.heat};
 	}
 
 
 	@Callback(direct = true, limit = 8)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getStored(Context context, Arguments args) {
-		return new Object[] {slots[0], slots[1], slots[2], slots[3], slots[4], slots[5], slots[6], slots[7], slots[8], slots[9], slots[10], slots[11]};
+		return new Object[] {this.slots[0], this.slots[1], this.slots[2], this.slots[3], this.slots[4], this.slots[5], this.slots[6], this.slots[7], this.slots[8], this.slots[9], this.slots[10], this.slots[11]};
 	}
 
 	@Callback(direct = true, limit = 8)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getInfo(Context context, Arguments args) {
-		return new Object[] {heat, slots[0], slots[1], slots[2], slots[3], slots[4], slots[5], slots[6], slots[7], slots[8], slots[9], slots[10], slots[11], xCoord, yCoord, zCoord};
+		return new Object[] {this.heat, this.slots[0], this.slots[1], this.slots[2], this.slots[3], this.slots[4], this.slots[5], this.slots[6], this.slots[7], this.slots[8], this.slots[9], this.slots[10], this.slots[11], this.xCoord, this.yCoord, this.zCoord};
 	}
 
 	@Override

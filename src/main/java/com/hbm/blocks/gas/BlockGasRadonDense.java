@@ -6,9 +6,9 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.extprop.HbmLivingProps;
 import com.hbm.potion.HbmPotion;
 import com.hbm.util.ArmorRegistry;
+import com.hbm.util.ArmorRegistry.HazardClass;
 import com.hbm.util.ArmorUtil;
 import com.hbm.util.ContaminationUtil;
-import com.hbm.util.ArmorRegistry.HazardClass;
 import com.hbm.util.ContaminationUtil.ContaminationType;
 import com.hbm.util.ContaminationUtil.HazardType;
 
@@ -62,7 +62,7 @@ public class BlockGasRadonDense extends BlockGasBase {
 
 	@Override
 	public ForgeDirection getSecondDirection(World world, int x, int y, int z) {
-		return this.randomHorizontal(world);
+		return randomHorizontal(world);
 	}
 
 	@Override

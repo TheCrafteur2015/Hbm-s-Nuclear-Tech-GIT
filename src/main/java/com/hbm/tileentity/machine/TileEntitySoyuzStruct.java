@@ -1,5 +1,6 @@
 package com.hbm.tileentity.machine;
 
+import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.SoyuzLauncher;
 
@@ -17,97 +18,97 @@ public class TileEntitySoyuzStruct extends TileEntity {
 	@Override
 	public void updateEntity() {
 		
-		if(worldObj.isRemote)
+		if(this.worldObj.isRemote)
 			return;
 		
-		age++;
+		this.age++;
 		
-		if(age < 20)
+		if(this.age < 20)
 			return;
 		
-		age = 0;
+		this.age = 0;
 
 		/// CHECK PAD ///
 		for(int i = -6; i <= 6; i++)
 			for(int j = 3; j <= 4; j++)
 				for(int k = -6; k <= 6; k++)
-					if(worldObj.getBlock(xCoord + i, yCoord + j, zCoord + k) != ModBlocks.struct_launcher)
+					if(this.worldObj.getBlock(this.xCoord + i, this.yCoord + j, this.zCoord + k) != ModBlocks.struct_launcher)
 						return;
 		
 		for(int i = -1; i <= 1; i++)
 			for(int j = 3; j <= 4; j++)
 				for(int k = -8; k <= -7; k++)
-					if(worldObj.getBlock(xCoord + i, yCoord + j, zCoord + k) != ModBlocks.struct_launcher)
+					if(this.worldObj.getBlock(this.xCoord + i, this.yCoord + j, this.zCoord + k) != ModBlocks.struct_launcher)
 						return;
 		
 		for(int i = -2; i <= 2; i++)
 			for(int j = 3; j <= 4; j++)
 				for(int k = 7; k <= 9; k++)
-					if(worldObj.getBlock(xCoord + i, yCoord + j, zCoord + k) != ModBlocks.struct_launcher)
+					if(this.worldObj.getBlock(this.xCoord + i, this.yCoord + j, this.zCoord + k) != ModBlocks.struct_launcher)
 						return;
 		
 		for(int i = -2; i <= 2; i++)
 			for(int k = 5; k <= 9; k++)
-				if(worldObj.getBlock(xCoord + i, yCoord + 51, zCoord + k) != ModBlocks.struct_launcher)
+				if(this.worldObj.getBlock(this.xCoord + i, this.yCoord + 51, this.zCoord + k) != ModBlocks.struct_launcher)
 					return;
 		
 		for(int i = -1; i <= 1; i++)
 			for(int k = -8; k <= -6; k++)
-				if(worldObj.getBlock(xCoord + i, yCoord + 38, zCoord + k) != ModBlocks.struct_launcher)
+				if(this.worldObj.getBlock(this.xCoord + i, this.yCoord + 38, this.zCoord + k) != ModBlocks.struct_launcher)
 					return;
 		
 		/// CHECK LEGS ///
 		for(int i = 3; i <= 6; i++)
 			for(int j = 0; j <= 2; j++)
 				for(int k = 3; k <= 6; k++)
-					if(worldObj.getBlock(xCoord + i, yCoord + j, zCoord + k) != ModBlocks.concrete &&
-							worldObj.getBlock(xCoord + i, yCoord + j, zCoord + k) != ModBlocks.concrete_smooth)
+					if(this.worldObj.getBlock(this.xCoord + i, this.yCoord + j, this.zCoord + k) != ModBlocks.concrete &&
+							this.worldObj.getBlock(this.xCoord + i, this.yCoord + j, this.zCoord + k) != ModBlocks.concrete_smooth)
 						return;
 		
 		for(int i = -6; i <= -3; i++)
 			for(int j = 0; j <= 2; j++)
 				for(int k = 3; k <= 6; k++)
-					if(worldObj.getBlock(xCoord + i, yCoord + j, zCoord + k) != ModBlocks.concrete &&
-					worldObj.getBlock(xCoord + i, yCoord + j, zCoord + k) != ModBlocks.concrete_smooth)
+					if(this.worldObj.getBlock(this.xCoord + i, this.yCoord + j, this.zCoord + k) != ModBlocks.concrete &&
+					this.worldObj.getBlock(this.xCoord + i, this.yCoord + j, this.zCoord + k) != ModBlocks.concrete_smooth)
 				return;
 		
 		for(int i = -6; i <= -3; i++)
 			for(int j = 0; j <= 2; j++)
 				for(int k = -6; k <= -3; k++)
-					if(worldObj.getBlock(xCoord + i, yCoord + j, zCoord + k) != ModBlocks.concrete &&
-					worldObj.getBlock(xCoord + i, yCoord + j, zCoord + k) != ModBlocks.concrete_smooth)
+					if(this.worldObj.getBlock(this.xCoord + i, this.yCoord + j, this.zCoord + k) != ModBlocks.concrete &&
+					this.worldObj.getBlock(this.xCoord + i, this.yCoord + j, this.zCoord + k) != ModBlocks.concrete_smooth)
 				return;
 		
 		for(int i = 3; i <= 6; i++)
 			for(int j = 0; j <= 2; j++)
 				for(int k = -6; k <= -3; k++)
-					if(worldObj.getBlock(xCoord + i, yCoord + j, zCoord + k) != ModBlocks.concrete &&
-					worldObj.getBlock(xCoord + i, yCoord + j, zCoord + k) != ModBlocks.concrete_smooth)
+					if(this.worldObj.getBlock(this.xCoord + i, this.yCoord + j, this.zCoord + k) != ModBlocks.concrete &&
+					this.worldObj.getBlock(this.xCoord + i, this.yCoord + j, this.zCoord + k) != ModBlocks.concrete_smooth)
 				return;
 		
 		for(int i = -1; i <= 1; i++)
 			for(int j = 0; j <= 2; j++)
 				for(int k = -8; k <= -6; k++)
-					if(worldObj.getBlock(xCoord + i, yCoord + j, zCoord + k) != ModBlocks.concrete &&
-					worldObj.getBlock(xCoord + i, yCoord + j, zCoord + k) != ModBlocks.concrete_smooth)
+					if(this.worldObj.getBlock(this.xCoord + i, this.yCoord + j, this.zCoord + k) != ModBlocks.concrete &&
+					this.worldObj.getBlock(this.xCoord + i, this.yCoord + j, this.zCoord + k) != ModBlocks.concrete_smooth)
 				return;
 		
 		for(int i = -2; i <= 2; i++)
 			for(int j = 0; j <= 2; j++)
 				for(int k = 5; k <= 9; k++)
-					if(worldObj.getBlock(xCoord + i, yCoord + j, zCoord + k) != ModBlocks.concrete &&
-					worldObj.getBlock(xCoord + i, yCoord + j, zCoord + k) != ModBlocks.concrete_smooth)
+					if(this.worldObj.getBlock(this.xCoord + i, this.yCoord + j, this.zCoord + k) != ModBlocks.concrete &&
+					this.worldObj.getBlock(this.xCoord + i, this.yCoord + j, this.zCoord + k) != ModBlocks.concrete_smooth)
 				return;
 		
 		/// CHECK SCAFFOLDING ///
 		for(int i = -1; i <= 1; i++)
 			for(int j = 5; j <= 50; j++)
 				for(int k = 6; k <= 8; k++)
-					if(worldObj.getBlock(xCoord + i, yCoord + j, zCoord + k) != ModBlocks.struct_scaffold)
+					if(this.worldObj.getBlock(this.xCoord + i, this.yCoord + j, this.zCoord + k) != ModBlocks.struct_scaffold)
 						return;
 		
 		for(int j = 5; j <= 37; j++)
-			if(worldObj.getBlock(xCoord, yCoord + j, zCoord - 7) != ModBlocks.struct_scaffold)
+			if(this.worldObj.getBlock(this.xCoord, this.yCoord + j, this.zCoord - 7) != ModBlocks.struct_scaffold)
 				return;
 		/// CHECKS COMPLETE ///
 		
@@ -115,32 +116,32 @@ public class TileEntitySoyuzStruct extends TileEntity {
 		
 		for(int i = -2; i <= 2; i++)
 			for(int k = 5; k <= 9; k++)
-				worldObj.setBlock(xCoord + i, yCoord + 51, zCoord + k, Blocks.air);
+				this.worldObj.setBlock(this.xCoord + i, this.yCoord + 51, this.zCoord + k, Blocks.air);
 		
 		for(int i = -1; i <= 1; i++)
 			for(int k = -8; k <= -6; k++)
-				worldObj.setBlock(xCoord + i, yCoord + 38, zCoord + k, Blocks.air);
+				this.worldObj.setBlock(this.xCoord + i, this.yCoord + 38, this.zCoord + k, Blocks.air);
 		
 		for(int i = -2; i <= 2; i++)
 			for(int j = 0; j <= 2; j++)
 				for(int k = 5; k <= 9; k++)
-					worldObj.setBlock(xCoord + i, yCoord + j, zCoord + k, Blocks.air);
+					this.worldObj.setBlock(this.xCoord + i, this.yCoord + j, this.zCoord + k, Blocks.air);
 		
 		for(int i = -1; i <= 1; i++)
 			for(int j = 5; j <= 50; j++)
 				for(int k = 6; k <= 8; k++)
-					worldObj.setBlock(xCoord + i, yCoord + j, zCoord + k, Blocks.air);
+					this.worldObj.setBlock(this.xCoord + i, this.yCoord + j, this.zCoord + k, Blocks.air);
 		
 		for(int j = 5; j <= 37; j++)
-			worldObj.setBlock(xCoord, yCoord + j, zCoord - 7, Blocks.air);
+			this.worldObj.setBlock(this.xCoord, this.yCoord + j, this.zCoord - 7, Blocks.air);
 
 		/// GENERATE LAUNCHER ///
 		
 		ForgeDirection dir = ForgeDirection.EAST;
 		
-		worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.air);
-		worldObj.setBlock(xCoord , yCoord + SoyuzLauncher.height, zCoord, ModBlocks.soyuz_launcher, dir.ordinal() + SoyuzLauncher.offset, 3);
-		((SoyuzLauncher)ModBlocks.soyuz_launcher).fillSpace(worldObj, xCoord, yCoord, zCoord, dir, 0);
+		this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, Blocks.air);
+		this.worldObj.setBlock(this.xCoord , this.yCoord + SoyuzLauncher.height, this.zCoord, ModBlocks.soyuz_launcher, dir.ordinal() + BlockDummyable.offset, 3);
+		((SoyuzLauncher)ModBlocks.soyuz_launcher).fillSpace(this.worldObj, this.xCoord, this.yCoord, this.zCoord, dir, 0);
 	}
 	
 	@Override

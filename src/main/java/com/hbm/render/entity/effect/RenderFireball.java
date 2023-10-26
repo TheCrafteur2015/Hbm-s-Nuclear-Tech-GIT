@@ -41,55 +41,55 @@ public class RenderFireball extends Render {
 
     		if(fx.ticksExisted <= fx.maxAge && fx.ticksExisted >= fx.maxAge / 10 * 9)
     		{
-    			field_94151_a = ModItems.flame_10;
+    			this.field_94151_a = ModItems.flame_10;
     		}
 
     		if(fx.ticksExisted < fx.maxAge / 10 * 9 && fx.ticksExisted >= fx.maxAge / 10 * 8)
     		{
-    			field_94151_a = ModItems.flame_9;
+    			this.field_94151_a = ModItems.flame_9;
     		}
 
     		if(fx.ticksExisted < fx.maxAge / 10 * 8 && fx.ticksExisted >= fx.maxAge / 10 * 7)
     		{
-    			field_94151_a = ModItems.flame_8;
+    			this.field_94151_a = ModItems.flame_8;
     		}
 
     		if(fx.ticksExisted < fx.maxAge / 10 * 7 && fx.ticksExisted >= fx.maxAge / 10 * 6)
     		{
-    			field_94151_a = ModItems.flame_7;
+    			this.field_94151_a = ModItems.flame_7;
     		}
 
     		if(fx.ticksExisted < fx.maxAge / 10 * 6 && fx.ticksExisted >= fx.maxAge / 10 * 5)
     		{
-    			field_94151_a = ModItems.flame_6;
+    			this.field_94151_a = ModItems.flame_6;
     		}
 
     		if(fx.ticksExisted < fx.maxAge / 10 * 5 && fx.ticksExisted >= fx.maxAge / 10 * 4)
     		{
-    			field_94151_a = ModItems.flame_5;
+    			this.field_94151_a = ModItems.flame_5;
     		}
 
     		if(fx.ticksExisted < fx.maxAge / 10 * 4 && fx.ticksExisted >= fx.maxAge / 10 * 3)
     		{
-    			field_94151_a = ModItems.flame_4;
+    			this.field_94151_a = ModItems.flame_4;
     		}
 
     		if(fx.ticksExisted < fx.maxAge / 10 * 3 && fx.ticksExisted >= fx.maxAge / 10 * 2)
     		{
-    			field_94151_a = ModItems.flame_3;
+    			this.field_94151_a = ModItems.flame_3;
     		}
 
     		if(fx.ticksExisted < fx.maxAge / 10 * 2 && fx.ticksExisted >= fx.maxAge / 10 * 1)
     		{
-    			field_94151_a = ModItems.flame_2;
+    			this.field_94151_a = ModItems.flame_2;
     		}
     		
     		if(fx.ticksExisted < fx.maxAge / 10 && fx.ticksExisted >= 0 && !fx.isDead)
     		{
-    			field_94151_a = ModItems.flame_1;
+    			this.field_94151_a = ModItems.flame_1;
     		}
     		
-    		IIcon iicon = field_94151_a.getIconFromDamage(0);
+    		IIcon iicon = this.field_94151_a.getIconFromDamage(0);
 
             if (iicon != null)
             {
@@ -99,10 +99,10 @@ public class RenderFireball extends Render {
                 GL11.glScalef(0.5F, 0.5F, 0.5F);
                 GL11.glScalef(7.5F, 7.5F, 7.5F);
                 GL11.glTranslatef(0.0F, -0.25F, 0.0F);
-                this.bindEntityTexture(p_76986_1_);
+                bindEntityTexture(p_76986_1_);
                 Tessellator tessellator = Tessellator.instance;
 
-                this.func_77026_a(tessellator, iicon);
+                func_77026_a(tessellator, iicon);
                 GL11.glDisable(GL12.GL_RESCALE_NORMAL);
                 GL11.glPopMatrix();
             }

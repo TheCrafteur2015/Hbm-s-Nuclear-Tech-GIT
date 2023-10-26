@@ -20,7 +20,7 @@ public class SiegeHole extends BlockBase {
 	@Override
 	public void onBlockAdded(World world, int x, int y, int z) {
 		super.onBlockAdded(world, x, y, z);
-		world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
+		world.scheduleBlockUpdate(x, y, z, this, tickRate(world));
 	}
 
 	@Override
@@ -28,9 +28,10 @@ public class SiegeHole extends BlockBase {
 		return 90 + world.rand.nextInt(20);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void updateTick(World world, int x, int y, int z, Random rand) {
-		world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
+		world.scheduleBlockUpdate(x, y, z, this, tickRate(world));
 		
 		if(SiegeOrchestrator.spawnThresholdEnabled(world) && SiegeOrchestrator.siegeMobCount > SiegeOrchestrator.getSpawnThreshold(world))
 			return;

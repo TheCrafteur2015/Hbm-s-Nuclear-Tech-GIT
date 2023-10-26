@@ -45,7 +45,7 @@ public class EntityBOTPrimeBody extends EntityBOTPrimeBase {
 
 	@Override
 	protected void updateAITasks() {
-		this.updateEntityActionState();
+		updateEntityActionState();
 		this.targetTasks.onUpdateTasks();
 		
 		updateMovement();
@@ -63,7 +63,7 @@ public class EntityBOTPrimeBody extends EntityBOTPrimeBase {
 			if(canEntityBeSeenThroughNonSolids(getAttackTarget())) {
 				this.attackCounter += 1;
 				if(this.attackCounter == 10) {
-					laserAttack(this.getAttackTarget(), false);
+					laserAttack(getAttackTarget(), false);
 
 					this.attackCounter = -20;
 				}
@@ -75,9 +75,9 @@ public class EntityBOTPrimeBody extends EntityBOTPrimeBase {
 		}
 
 		if(this.targetedEntity != null) {
-			double dx = targetedEntity.posX - posX;
-			double dy = targetedEntity.posY - posY;
-			double dz = targetedEntity.posZ - posZ;
+			double dx = this.targetedEntity.posX - this.posX;
+			double dy = this.targetedEntity.posY - this.posY;
+			double dz = this.targetedEntity.posZ - this.posZ;
 			float f3 = MathHelper.sqrt_double(dx * dx + dz * dz);
 			this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(dx, dz) * 180.0D / Math.PI);
 			this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(dy, f3) * 180.0D / Math.PI);
@@ -90,20 +90,22 @@ public class EntityBOTPrimeBody extends EntityBOTPrimeBase {
 		super.onUpdate();
 
 		if(this.targetedEntity != null) {
-			double dx = targetedEntity.posX - posX;
-			double dy = targetedEntity.posY - posY;
-			double dz = targetedEntity.posZ - posZ;
+			double dx = this.targetedEntity.posX - this.posX;
+			double dy = this.targetedEntity.posY - this.posY;
+			double dz = this.targetedEntity.posZ - this.posZ;
 			float f3 = MathHelper.sqrt_double(dx * dx + dz * dz);
 			this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(dx, dz) * 180.0D / Math.PI);
 			this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(dy, f3) * 180.0D / Math.PI);
 		}
 	}
 
+	@Override
 	public void writeEntityToNBT(NBTTagCompound nbt) {
 		super.writeEntityToNBT(nbt);
-		nbt.setInteger("partID", this.getPartNumber());
+		nbt.setInteger("partID", getPartNumber());
 	}
 
+	@Override
 	public void readEntityFromNBT(NBTTagCompound nbt) {
 		super.readEntityFromNBT(nbt);
 		setPartNumber(nbt.getInteger("partID"));

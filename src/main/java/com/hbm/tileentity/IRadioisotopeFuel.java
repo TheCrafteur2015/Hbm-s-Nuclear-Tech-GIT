@@ -48,7 +48,7 @@ public interface IRadioisotopeFuel
 	@CheckForNull
 	public static IRadioisotopeFuel getInstance(ItemStack stack)
 	{
-		return stack == null ? null : getInstance(stack.getItem());
+		return stack == null ? null : IRadioisotopeFuel.getInstance(stack.getItem());
 	}
 	
 	public default void decay(ItemStack stack)
@@ -58,11 +58,11 @@ public interface IRadioisotopeFuel
 			if (!((IRadioisotopeFuel) stack.getItem()).getDoesDecay())
 				return;
 			if (stack.hasTagCompound())
-				stack.stackTagCompound.setLong(lifeKey, getLifespan(stack) - 1);
+				stack.stackTagCompound.setLong(IRadioisotopeFuel.lifeKey, getLifespan(stack) - 1);
 			else
 			{
 				stack.stackTagCompound = new NBTTagCompound();
-				stack.stackTagCompound.setLong(lifeKey, getMaxLifespan());
+				stack.stackTagCompound.setLong(IRadioisotopeFuel.lifeKey, getMaxLifespan());
 			}
 		}
 	}
@@ -72,11 +72,11 @@ public interface IRadioisotopeFuel
 		if (stack != null && stack.getItem() instanceof IRadioisotopeFuel)
 		{
 			if (stack.hasTagCompound())
-				return stack.stackTagCompound.getLong(lifeKey);
+				return stack.stackTagCompound.getLong(IRadioisotopeFuel.lifeKey);
 			else
 			{
 				stack.stackTagCompound = new NBTTagCompound();
-				stack.stackTagCompound.setLong(lifeKey, getMaxLifespan());
+				stack.stackTagCompound.setLong(IRadioisotopeFuel.lifeKey, getMaxLifespan());
 				return getMaxLifespan();
 			}
 		}
@@ -132,7 +132,7 @@ public interface IRadioisotopeFuel
 	public static void addTooltip(List<String> tooltip, ItemStack stack, boolean showAdv)
 	{
 		final IRadioisotopeFuel instance = (IRadioisotopeFuel) stack.getItem();
-		tooltip.add(I18nUtil.resolveKey("desc.item.rtgHeat", instance.getDoesDecay() && VersatileConfig.scaleRTGPower() ? getScaledPower(instance, stack) : instance.getHeat()));
+		tooltip.add(I18nUtil.resolveKey("desc.item.rtgHeat", instance.getDoesDecay() && VersatileConfig.scaleRTGPower() ? IRadioisotopeFuel.getScaledPower(instance, stack) : instance.getHeat()));
 		if (instance.getDoesDecay())
 		{
 			tooltip.add(I18nUtil.resolveKey("desc.item.rtgDecay", I18nUtil.resolveKey(instance.getDecayItem().getUnlocalizedName() + ".name"), instance.getDecayItem().stackSize));

@@ -32,8 +32,8 @@ import net.minecraft.nbt.NBTTagCompound;
 public class CustomMachineConfigJSON {
 
 	public static final Gson gson = new Gson();
-	public static HashMap<String, MachineConfiguration> customMachines = new HashMap();
-	public static List<MachineConfiguration> niceList = new ArrayList();
+	public static HashMap<String, MachineConfiguration> customMachines = new HashMap<>();
+	public static List<MachineConfiguration> niceList = new ArrayList<>();
 	
 	public static void initialize() {
 		File folder = MainRegistry.configHbmDir;
@@ -41,10 +41,10 @@ public class CustomMachineConfigJSON {
 		File config = new File(folder.getAbsolutePath() + File.separatorChar + "hbmCustomMachines.json");
 		
 		if(!config.exists()) {
-			writeDefault(config);
+			CustomMachineConfigJSON.writeDefault(config);
 		}
 		
-		readConfig(config);
+		CustomMachineConfigJSON.readConfig(config);
 	}
 	
 	public static void writeDefault(File config) {
@@ -139,7 +139,7 @@ public class CustomMachineConfigJSON {
 	public static void readConfig(File config) {
 		
 		try {
-			JsonObject json = gson.fromJson(new FileReader(config), JsonObject.class);
+			JsonObject json = CustomMachineConfigJSON.gson.fromJson(new FileReader(config), JsonObject.class);
 			JsonArray machines = json.get("machines").getAsJsonArray();
 			
 			for(int i = 0; i < machines.size(); i++) {
@@ -193,7 +193,7 @@ public class CustomMachineConfigJSON {
 				}
 				
 				JsonArray components = machineObject.get("components").getAsJsonArray();
-				configuration.components = new ArrayList();
+				configuration.components = new ArrayList<>();
 				
 				for(int j = 0; j < components.size(); j++) {
 					JsonObject compObject = components.get(j).getAsJsonObject();
@@ -202,7 +202,7 @@ public class CustomMachineConfigJSON {
 					compDef.x = compObject.get("x").getAsInt();
 					compDef.y = compObject.get("y").getAsInt();
 					compDef.z = compObject.get("z").getAsInt();
-					compDef.allowedMetas = new HashSet();
+					compDef.allowedMetas = new HashSet<>();
 					compDef.metas = compObject.get("metas").getAsJsonArray();
 					for(int k = 0; k < compDef.metas.size(); k++) {
 						compDef.allowedMetas.add(compDef.metas.get(k).getAsInt());
@@ -211,8 +211,8 @@ public class CustomMachineConfigJSON {
 					configuration.components.add(compDef);
 				}
 				
-				customMachines.put(configuration.unlocalizedName, configuration);
-				niceList.add(configuration);
+				CustomMachineConfigJSON.customMachines.put(configuration.unlocalizedName, configuration);
+				CustomMachineConfigJSON.niceList.add(configuration);
 			}
 			
 		} catch(Exception ex) {

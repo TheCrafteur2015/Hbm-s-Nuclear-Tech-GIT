@@ -1,11 +1,24 @@
 package com.hbm.items.special;
 
-import com.hbm.items.ItemEnumMulti;
-import com.hbm.items.special.ItemByproduct.EnumByproduct;
-import static com.hbm.items.special.ItemByproduct.EnumByproduct.*;
+import static com.hbm.items.special.ItemByproduct.EnumByproduct.B_ALUMINIUM;
+import static com.hbm.items.special.ItemByproduct.EnumByproduct.B_BISMUTH;
+import static com.hbm.items.special.ItemByproduct.EnumByproduct.B_CALCIUM;
+import static com.hbm.items.special.ItemByproduct.EnumByproduct.B_COPPER;
+import static com.hbm.items.special.ItemByproduct.EnumByproduct.B_IRON;
+import static com.hbm.items.special.ItemByproduct.EnumByproduct.B_LEAD;
+import static com.hbm.items.special.ItemByproduct.EnumByproduct.B_LITHIUM;
+import static com.hbm.items.special.ItemByproduct.EnumByproduct.B_POLONIUM;
+import static com.hbm.items.special.ItemByproduct.EnumByproduct.B_RADIUM;
+import static com.hbm.items.special.ItemByproduct.EnumByproduct.B_SILICON;
+import static com.hbm.items.special.ItemByproduct.EnumByproduct.B_SULFUR;
+import static com.hbm.items.special.ItemByproduct.EnumByproduct.B_TECHNETIUM;
+import static com.hbm.items.special.ItemByproduct.EnumByproduct.B_TITANIUM;
+import static com.hbm.items.special.ItemByproduct.EnumByproduct.B_URANIUM;
 
 import java.util.Locale;
 
+import com.hbm.items.ItemEnumMulti;
+import com.hbm.items.special.ItemByproduct.EnumByproduct;
 import com.hbm.lib.RefStrings;
 import com.hbm.util.EnumUtil;
 
@@ -61,7 +74,7 @@ public class ItemBedrockOre extends ItemEnumMulti {
 		
 		EnumBedrockOre ore = EnumUtil.grabEnumSafely(EnumBedrockOre.class, stack.getItemDamage());
 		String oreName = StatCollector.translateToLocal("item.ore." + ore.oreName.toLowerCase(Locale.US));
-		return StatCollector.translateToLocalFormatted(this.getUnlocalizedNameInefficiently(stack) + ".name", oreName);
+		return StatCollector.translateToLocalFormatted(getUnlocalizedNameInefficiently(stack) + ".name", oreName);
 	}
 	
 	/*

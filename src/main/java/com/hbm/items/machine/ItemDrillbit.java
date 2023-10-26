@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 
+@SuppressWarnings("all")
 public class ItemDrillbit extends ItemEnumMulti {
 
 	public ItemDrillbit() {
@@ -23,24 +24,24 @@ public class ItemDrillbit extends ItemEnumMulti {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister reg) {
-		Enum[] enums = theEnum.getEnumConstants();
+		Enum[] enums = this.theEnum.getEnumConstants();
 		this.icons = new IIcon[enums.length];
 		
-		for(int i = 0; i < icons.length; i++) {
+		for(int i = 0; i < this.icons.length; i++) {
 			Enum num = enums[i];
-			this.icons[i] = reg.registerIcon(this.getIconString() + "_" + num.name().toLowerCase(Locale.US));
+			this.icons[i] = reg.registerIcon(getIconString() + "_" + num.name().toLowerCase(Locale.US));
 		}
 	}
 	
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
-		Enum num = EnumUtil.grabEnumSafely(theEnum, stack.getItemDamage());
+		Enum num = EnumUtil.grabEnumSafely(this.theEnum, stack.getItemDamage());
 		return super.getUnlocalizedName() + "_" + num.name().toLowerCase(Locale.US);
 	}
 	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		EnumDrillType type = EnumUtil.grabEnumSafely(theEnum, stack.getItemDamage());
+		EnumDrillType type = EnumUtil.grabEnumSafely(this.theEnum, stack.getItemDamage());
 
 		list.add(EnumChatFormatting.YELLOW + "Speed: " + ((int) (type.speed * 100)) + "%");
 		list.add(EnumChatFormatting.YELLOW + "Tier: " + type.tier);

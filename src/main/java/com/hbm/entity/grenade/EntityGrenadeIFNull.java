@@ -32,14 +32,14 @@ public class EntityGrenadeIFNull extends EntityGrenadeBouncyBase {
     	
         if (!this.worldObj.isRemote)
         {
-            this.setDead();
+            setDead();
 
     		for(int a = -3; a <= 3; a++)
         		for(int b = -3; b <= 3; b++)
             		for(int c = -3; c <= 3; c++)
-            			worldObj.setBlockToAir((int)posX + a, (int)posY + b, (int)posZ + c);
+            			this.worldObj.setBlockToAir((int)this.posX + a, (int)this.posY + b, (int)this.posZ + c);
     		
-    		List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox((int)posX + 0.5 - 3, (int)posY + 0.5 - 3, (int)posZ + 0.5 - 3, (int)posX + 0.5 + 3, (int)posY + 0.5 + 3, (int)posZ + 0.5 + 3));
+    		List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox((int)this.posX + 0.5 - 3, (int)this.posY + 0.5 - 3, (int)this.posZ + 0.5 - 3, (int)this.posX + 0.5 + 3, (int)this.posY + 0.5 + 3, (int)this.posZ + 0.5 + 3));
     		
     		for(Object o : list) {
     			if(o instanceof EntityLivingBase) {

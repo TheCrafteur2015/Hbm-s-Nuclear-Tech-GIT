@@ -18,7 +18,7 @@ public class GUIMachineReactorBreeding extends GuiInfoContainer {
 
 	public GUIMachineReactorBreeding(InventoryPlayer invPlayer, TileEntityMachineReactorBreeding tedf) {
 		super(new ContainerMachineReactorBreeding(invPlayer, tedf));
-		breeder = tedf;
+		this.breeder = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 166;
@@ -33,7 +33,7 @@ public class GUIMachineReactorBreeding extends GuiInfoContainer {
 				"neutron flux from adjacent",
 				"research reactors to breed."
 		};
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 16, 16, 16, guiLeft - 8, guiTop + 16 + 16, text);
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft - 16, this.guiTop + 16, 16, 16, this.guiLeft - 8, this.guiTop + 16 + 16, text);
 	}
 	
 	@Override
@@ -42,14 +42,14 @@ public class GUIMachineReactorBreeding extends GuiInfoContainer {
 		
 		this.fontRendererObj.drawString(name, this.xSize / 2 - this.fontRendererObj.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRendererObj.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
-		this.fontRendererObj.drawString(breeder.flux + "", 88 - this.fontRendererObj.getStringWidth(breeder.flux + "") / 2, 21, 0x08FF00);
+		this.fontRendererObj.drawString(this.breeder.flux + "", 88 - this.fontRendererObj.getStringWidth(this.breeder.flux + "") / 2, 21, 0x08FF00);
 	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIMachineReactorBreeding.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
 		/*
 		 * A dud is a tile entity which did not survive a block state change (i.e. a furnace becoming lit) on the client.
@@ -61,10 +61,10 @@ public class GUIMachineReactorBreeding extends GuiInfoContainer {
 		 * what?
 		 */
 				
-		int i = breeder.getProgressScaled(70);
-		drawTexturedModalRect(guiLeft + 53, guiTop + 32, 176, 0, i, 20);
+		int i = this.breeder.getProgressScaled(70);
+		drawTexturedModalRect(this.guiLeft + 53, this.guiTop + 32, 176, 0, i, 20);
 		
-		this.drawInfoPanel(guiLeft - 16, guiTop + 16, 16, 16, 3);
+		drawInfoPanel(this.guiLeft - 16, this.guiTop + 16, 16, 16, 3);
 	}
 
 }

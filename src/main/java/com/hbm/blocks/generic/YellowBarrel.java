@@ -6,6 +6,7 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.BlockFluidBarrel;
 import com.hbm.explosion.ExplosionNukeGeneric;
 import com.hbm.handler.radiation.ChunkRadiationManager;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -33,7 +34,7 @@ public class YellowBarrel extends Block {
 
 	public void explode(World world, int x, int y, int z) {
 
-		if(rand.nextInt(3) == 0) {
+		if(this.rand.nextInt(3) == 0) {
 			world.setBlock(x, y, z, ModBlocks.toxic_block);
 		} else {
 			world.createExplosion(null, x, y, z, 18.0F, true);
@@ -70,13 +71,13 @@ public class YellowBarrel extends Block {
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess p_149719_1_, int p_149719_2_, int p_149719_3_, int p_149719_4_) {
 		float f = 0.0625F;
-		this.setBlockBounds(2 * f, 0.0F, 2 * f, 14 * f, 1.0F, 14 * f);
+		setBlockBounds(2 * f, 0.0F, 2 * f, 14 * f, 1.0F, 14 * f);
 	}
 
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
 		float f = 0.0625F;
-		this.setBlockBounds(2 * f, 0.0F, 2 * f, 14 * f, 1.0F, 14 * f);
+		setBlockBounds(2 * f, 0.0F, 2 * f, 14 * f, 1.0F, 14 * f);
 		return AxisAlignedBB.getBoundingBox(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
 	}
 
@@ -102,7 +103,7 @@ public class YellowBarrel extends Block {
 		else
 			ChunkRadiationManager.proxy.incrementRad(world, x, y, z, 0.5F);
 
-		world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
+		world.scheduleBlockUpdate(x, y, z, this, tickRate(world));
 	}
 
 	@Override
@@ -110,9 +111,10 @@ public class YellowBarrel extends Block {
 		return 20;
 	}
 
+	@Override
 	public void onBlockAdded(World world, int x, int y, int z) {
 		super.onBlockAdded(world, x, y, z);
-		world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
+		world.scheduleBlockUpdate(x, y, z, this, tickRate(world));
 	}
 
 }

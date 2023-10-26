@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 public class RenderDecoItem extends RenderItem {
 	
 	public RenderDecoItem(TileEntitySpecialRenderer render) {
-		this.setRenderManager(RenderManager.instance);
+		setRenderManager(RenderManager.instance);
 	}
 
 	@Override

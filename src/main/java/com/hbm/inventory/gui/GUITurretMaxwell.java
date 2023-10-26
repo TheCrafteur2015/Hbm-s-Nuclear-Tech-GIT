@@ -14,7 +14,8 @@ public class GUITurretMaxwell extends GUITurretBase {
 		super(invPlayer, tedf);
 	}
 	
+	@Override
 	protected ResourceLocation getTexture() {
-		return texture;
+		return GUITurretMaxwell.texture;
 	}
 }

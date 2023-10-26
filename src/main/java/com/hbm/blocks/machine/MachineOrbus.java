@@ -53,7 +53,7 @@ public class MachineOrbus extends BlockDummyable implements IPersistentInfoProvi
 			return true;
 		} else if(!player.isSneaking()) {
 			
-			int[] pos = this.findCore(world, x, y, z);
+			int[] pos = findCore(world, x, y, z);
 			
 			if(pos == null)
 				return false;
@@ -76,10 +76,10 @@ public class MachineOrbus extends BlockDummyable implements IPersistentInfoProvi
 		dir = dir.getOpposite();
 
 		for(int i = 0; i < 5; i += 4) {
-			this.makeExtra(world, x, y + i, z);
-			this.makeExtra(world, x + dir.offsetX, y + i, z + dir.offsetZ);
-			this.makeExtra(world, x + d2.offsetX, y + i, z + d2.offsetZ);
-			this.makeExtra(world, x + dir.offsetX + d2.offsetX, y + i, z + dir.offsetZ + d2.offsetZ);
+			makeExtra(world, x, y + i, z);
+			makeExtra(world, x + dir.offsetX, y + i, z + dir.offsetZ);
+			makeExtra(world, x + d2.offsetX, y + i, z + d2.offsetZ);
+			makeExtra(world, x + dir.offsetX + d2.offsetX, y + i, z + dir.offsetZ + d2.offsetZ);
 		}
 	}
 	

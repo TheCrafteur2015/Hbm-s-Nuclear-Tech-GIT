@@ -36,7 +36,7 @@ public class GunSuicide extends Item {
         this.maxStackSize = 1;
         //if(this == ModItems.gun_revolver)
         {
-        	this.setMaxDamage(500);
+        	setMaxDamage(500);
         }
         
         this.ammo = ModItems.ammo_357;
@@ -48,7 +48,7 @@ public class GunSuicide extends Item {
     @Override
 	public void onPlayerStoppedUsing(ItemStack p_77615_1_, World p_77615_2_, EntityPlayer p_77615_3_, int p_77615_4_)
     {
-        int j = this.getMaxItemUseDuration(p_77615_1_) - p_77615_4_;
+        int j = getMaxItemUseDuration(p_77615_1_) - p_77615_4_;
 
         ArrowLooseEvent event = new ArrowLooseEvent(p_77615_3_, p_77615_1_, j);
         MinecraftForge.EVENT_BUS.post(event);
@@ -57,7 +57,7 @@ public class GunSuicide extends Item {
         boolean flag = p_77615_3_.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, p_77615_1_) > 0;
 
 
-        if (flag || p_77615_3_.inventory.hasItem(ammo))
+        if (flag || p_77615_3_.inventory.hasItem(this.ammo))
         {
             float f = j / 20.0F;
             f = (f * f + f * 2.0F) / 3.0F;
@@ -79,7 +79,7 @@ public class GunSuicide extends Item {
             { }
             else
             {
-               	p_77615_3_.inventory.consumeInventoryItem(ammo);
+               	p_77615_3_.inventory.consumeInventoryItem(this.ammo);
             }
 
             if (!p_77615_2_.isRemote)
@@ -124,7 +124,7 @@ public class GunSuicide extends Item {
         ArrowNockEvent event = new ArrowNockEvent(p_77659_3_, p_77659_1_);
         MinecraftForge.EVENT_BUS.post(event);
 
-        p_77659_3_.setItemInUse(p_77659_1_, this.getMaxItemUseDuration(p_77659_1_));
+        p_77659_3_.setItemInUse(p_77659_1_, getMaxItemUseDuration(p_77659_1_));
 
         return p_77659_1_;
     }
@@ -138,6 +138,7 @@ public class GunSuicide extends Item {
         return 1;
     }
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
@@ -148,11 +149,12 @@ public class GunSuicide extends Item {
 		list.add("Damage: Infinite");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Multimap getItemAttributeModifiers() {
 		Multimap multimap = super.getItemAttributeModifiers();
 		multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
-				new AttributeModifier(field_111210_e, "Weapon modifier", 2.5, 0));
+				new AttributeModifier(Item.field_111210_e, "Weapon modifier", 2.5, 0));
 		return multimap;
 	}
 }

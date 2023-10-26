@@ -50,24 +50,24 @@ public class TileEntityMachinePress extends TileEntityMachineBase implements IGU
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			boolean preheated = false;
 			
 			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-				if(worldObj.getBlock(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ) == ModBlocks.press_preheater) {
+				if(this.worldObj.getBlock(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ) == ModBlocks.press_preheater) {
 					preheated = true;
 					break;
 				}
 			}
 			
-			boolean canProcess = this.canProcess();
+			boolean canProcess = canProcess();
 			
 			if((canProcess || this.isRetracting) && this.burnTime >= 200) {
 				this.speed += preheated ? 4 : 1;
 				
-				if(this.speed > this.maxSpeed) {
-					this.speed = this.maxSpeed;
+				if(this.speed > TileEntityMachinePress.maxSpeed) {
+					this.speed = TileEntityMachinePress.maxSpeed;
 				}
 			} else {
 				this.speed -= 1;
@@ -76,9 +76,9 @@ public class TileEntityMachinePress extends TileEntityMachineBase implements IGU
 				}
 			}
 			
-			if(delay <= 0) {
+			if(this.delay <= 0) {
 				
-				int stampSpeed = speed * progressAtMax / maxSpeed;
+				int stampSpeed = this.speed * TileEntityMachinePress.progressAtMax / TileEntityMachinePress.maxSpeed;
 				
 				if(this.isRetracting) {
 					this.press -= stampSpeed;
@@ -90,20 +90,20 @@ public class TileEntityMachinePress extends TileEntityMachineBase implements IGU
 				} else if(canProcess) {
 					this.press += stampSpeed;
 					
-					if(this.press >= this.maxPress) {
+					if(this.press >= TileEntityMachinePress.maxPress) {
 						this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:block.pressOperate", 1.5F, 1.0F);
-						ItemStack output = PressRecipes.getOutput(slots[2], slots[1]);
-						if(slots[3] == null) {
-							slots[3] = output.copy();
+						ItemStack output = PressRecipes.getOutput(this.slots[2], this.slots[1]);
+						if(this.slots[3] == null) {
+							this.slots[3] = output.copy();
 						} else {
-							slots[3].stackSize += output.stackSize;
+							this.slots[3].stackSize += output.stackSize;
 						}
-						this.decrStackSize(2, 1);
+						decrStackSize(2, 1);
 						
-						if(slots[1].getMaxDamage() != 0) {
-							slots[1].setItemDamage(slots[1].getItemDamage() + 1);
-							if(slots[1].getItemDamage() >= slots[1].getMaxDamage()) {
-								slots[1] = null;
+						if(this.slots[1].getMaxDamage() != 0) {
+							this.slots[1].setItemDamage(this.slots[1].getItemDamage() + 1);
+							if(this.slots[1].getItemDamage() >= this.slots[1].getMaxDamage()) {
+								this.slots[1] = null;
 							}
 						}
 						
@@ -113,37 +113,37 @@ public class TileEntityMachinePress extends TileEntityMachineBase implements IGU
 							this.burnTime -= 200; // only subtract fuel if operation was actually successful
 						}
 						
-						this.markDirty();
+						markDirty();
 					}
 				} else if(this.press > 0){
 					this.isRetracting = true;
 				}
 			} else {
-				delay--;
+				this.delay--;
 			}
 			
-			if(slots[0] != null && burnTime < 200 && TileEntityFurnace.getItemBurnTime(slots[0]) > 0) { // less than one operation stored? burn more fuel!
-				burnTime += TileEntityFurnace.getItemBurnTime(slots[0]);
+			if(this.slots[0] != null && this.burnTime < 200 && TileEntityFurnace.getItemBurnTime(this.slots[0]) > 0) { // less than one operation stored? burn more fuel!
+				this.burnTime += TileEntityFurnace.getItemBurnTime(this.slots[0]);
 				
-				if(slots[0].stackSize == 1 && slots[0].getItem().hasContainerItem(slots[0])) {
-					slots[0] = slots[0].getItem().getContainerItem(slots[0]).copy();
+				if(this.slots[0].stackSize == 1 && this.slots[0].getItem().hasContainerItem(this.slots[0])) {
+					this.slots[0] = this.slots[0].getItem().getContainerItem(this.slots[0]).copy();
 				} else {
-					this.decrStackSize(0, 1);
+					decrStackSize(0, 1);
 				}
-				this.markChanged();
+				markChanged();
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setInteger("speed", speed);
-			data.setInteger("burnTime", burnTime);
-			data.setInteger("press", press);
-			if(slots[2] != null) {
+			data.setInteger("speed", this.speed);
+			data.setInteger("burnTime", this.burnTime);
+			data.setInteger("press", this.press);
+			if(this.slots[2] != null) {
 				NBTTagCompound stack = new NBTTagCompound();
-				slots[2].writeToNBT(stack);
+				this.slots[2].writeToNBT(stack);
 				data.setTag("stack", stack);
 			}
 			
-			this.networkPack(data, 50);
+			networkPack(data, 50);
 			
 		} else {
 			
@@ -176,15 +176,14 @@ public class TileEntityMachinePress extends TileEntityMachineBase implements IGU
 	}
 	
 	public boolean canProcess() {
-		if(burnTime < 200) return false;
-		if(slots[1] == null || slots[2] == null) return false;
+		if((this.burnTime < 200) || this.slots[1] == null || this.slots[2] == null) return false;
 		
-		ItemStack output = PressRecipes.getOutput(slots[2], slots[1]);
+		ItemStack output = PressRecipes.getOutput(this.slots[2], this.slots[1]);
 		
 		if(output == null) return false;
 		
-		if(slots[3] == null) return true;
-		if(slots[3].stackSize + output.stackSize <= slots[3].getMaxStackSize() && slots[3].getItem() == output.getItem() && slots[3].getItemDamage() == output.getItemDamage()) return true;
+		if(this.slots[3] == null) return true;
+		if(this.slots[3].stackSize + output.stackSize <= this.slots[3].getMaxStackSize() && this.slots[3].getItem() == output.getItem() && this.slots[3].getItemDamage() == output.getItemDamage()) return true;
 		return false;
 	}
 
@@ -207,7 +206,7 @@ public class TileEntityMachinePress extends TileEntityMachineBase implements IGU
 
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemStack, int j) {
-		return this.isItemValidForSlot(i, itemStack);
+		return isItemValidForSlot(i, itemStack);
 	}
 
 	@Override
@@ -218,19 +217,19 @@ public class TileEntityMachinePress extends TileEntityMachineBase implements IGU
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
-		press = nbt.getInteger("press");
-		burnTime = nbt.getInteger("burnTime");
-		speed = nbt.getInteger("speed");
-		isRetracting = nbt.getBoolean("ret");
+		this.press = nbt.getInteger("press");
+		this.burnTime = nbt.getInteger("burnTime");
+		this.speed = nbt.getInteger("speed");
+		this.isRetracting = nbt.getBoolean("ret");
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setInteger("press", press);
-		nbt.setInteger("burnTime", burnTime);
-		nbt.setInteger("speed", speed);
-		nbt.setBoolean("ret", isRetracting);
+		nbt.setInteger("press", this.press);
+		nbt.setInteger("burnTime", this.burnTime);
+		nbt.setInteger("speed", this.speed);
+		nbt.setBoolean("ret", this.isRetracting);
 	}
 	
 	AxisAlignedBB aabb;
@@ -238,11 +237,11 @@ public class TileEntityMachinePress extends TileEntityMachineBase implements IGU
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(aabb != null)
-			return aabb;
+		if(this.aabb != null)
+			return this.aabb;
 		
-		aabb = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 3, zCoord + 1);
-		return aabb;
+		this.aabb = AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 3, this.zCoord + 1);
+		return this.aabb;
 	}
 	
 	@Override

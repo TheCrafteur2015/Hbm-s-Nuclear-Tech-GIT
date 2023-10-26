@@ -19,7 +19,7 @@ public class MultiblockHandlerXR {
 		
 		int count = 0;
 		
-		int[] rot = rotate(dim, dir);
+		int[] rot = MultiblockHandlerXR.rotate(dim, dir);
 
 		for(int a = x - rot[4]; a <= x + rot[5]; a++) {
 			for(int b = y - rot[1]; b <= y + rot[0]; b++) {
@@ -53,7 +53,7 @@ public class MultiblockHandlerXR {
 		
 		int count = 0;
 		
-		int[] rot = rotate(dim, dir);
+		int[] rot = MultiblockHandlerXR.rotate(dim, dir);
 		
 		BlockDummyable.safeRem = true;
 
@@ -106,7 +106,7 @@ public class MultiblockHandlerXR {
 		
 		System.out.println("emptyspace is deprecated and shouldn't even be executed");
 		
-		int[] rot = rotate(dim, dir);
+		int[] rot = MultiblockHandlerXR.rotate(dim, dir);
 
 		for(int a = x - rot[4]; a <= x + rot[5]; a++) {
 			for(int b = y - rot[1]; b <= y + rot[0]; b++) {

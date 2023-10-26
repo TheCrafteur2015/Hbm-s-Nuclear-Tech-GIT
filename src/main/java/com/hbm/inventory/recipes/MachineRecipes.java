@@ -3,6 +3,7 @@ package com.hbm.inventory.recipes;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 import com.hbm.interfaces.Spaghetti;
 import com.hbm.inventory.FluidContainer;
 import com.hbm.inventory.FluidContainerRegistry;
@@ -36,7 +37,7 @@ public class MachineRecipes {
 
 
 	public ArrayList<ItemStack> getAlloyFuels() {
-		ArrayList<ItemStack> fuels = new ArrayList<ItemStack>();
+		ArrayList<ItemStack> fuels = new ArrayList<>();
 		fuels.add(new ItemStack(Items.coal));
 		fuels.add(new ItemStack(Blocks.coal_block));
 		fuels.add(new ItemStack(Items.lava_bucket));
@@ -56,7 +57,7 @@ public class MachineRecipes {
 	 */
 
 	public Map<Object[], Object> getCMBRecipes() {
-		Map<Object[], Object> recipes = new HashMap<Object[], Object>();
+		Map<Object[], Object> recipes = new HashMap<>();
 		recipes.put(new ItemStack[] { new ItemStack(ModItems.ingot_advanced_alloy), new ItemStack(ModItems.ingot_magnetized_tungsten) },
 				new ItemStack(ModItems.ingot_combine_steel, 4));
 		recipes.put(new ItemStack[] { new ItemStack(ModItems.powder_advanced_alloy), new ItemStack(ModItems.powder_magnetized_tungsten) },
@@ -65,7 +66,7 @@ public class MachineRecipes {
 	}
 
 	public ArrayList<ItemStack> getBatteries() {
-		ArrayList<ItemStack> fuels = new ArrayList<ItemStack>();
+		ArrayList<ItemStack> fuels = new ArrayList<>();
 		fuels.add(new ItemStack(ModItems.battery_potato));
 		fuels.add(new ItemStack(ModItems.battery_potatos));
 		fuels.add(new ItemStack(ModItems.battery_su));
@@ -100,7 +101,7 @@ public class MachineRecipes {
 	}
 
 	public ArrayList<ItemStack> getBlades() {
-		ArrayList<ItemStack> fuels = new ArrayList<ItemStack>();
+		ArrayList<ItemStack> fuels = new ArrayList<>();
 		fuels.add(new ItemStack(ModItems.blades_advanced_alloy));
 		fuels.add(new ItemStack(ModItems.blades_steel));
 		fuels.add(new ItemStack(ModItems.blades_titanium));
@@ -109,14 +110,14 @@ public class MachineRecipes {
 	}
 	
 	public static boolean mODE(Item item, String[] names) {
-		return mODE(new ItemStack(item), names);
+		return MachineRecipes.mODE(new ItemStack(item), names);
 	}
 	
 	public static boolean mODE(ItemStack item, String[] names) {
 		boolean flag = false;
 		if(names.length > 0) {
-			for(int i = 0; i < names.length; i++) {
-				if(mODE(item, names[i]))
+			for (String name : names) {
+				if(MachineRecipes.mODE(item, name))
 					flag = true;
 			}
 		}
@@ -125,7 +126,7 @@ public class MachineRecipes {
 	}
 	
 	public static boolean mODE(Item item, String name) {
-		return mODE(new ItemStack(item), name);
+		return MachineRecipes.mODE(new ItemStack(item), name);
 	}
 	
 	//Matches Ore Dict Entry
@@ -133,9 +134,9 @@ public class MachineRecipes {
 		
 		int[] ids = OreDictionary.getOreIDs(new ItemStack(stack.getItem(), 1, stack.getItemDamage()));
 		
-		for(int i = 0; i < ids.length; i++) {
+		for (int id : ids) {
 			
-			String s = OreDictionary.getOreName(ids[i]);
+			String s = OreDictionary.getOreName(id);
 			
 			if(s.length() > 0 && s.equals(name))
 				return true;
@@ -147,10 +148,10 @@ public class MachineRecipes {
 	
 	public Map<Object, Object> getBoilerRecipes() {
 
-		Map<Object, Object> recipes = new HashMap<Object, Object>();
+		Map<Object, Object> recipes = new HashMap<>();
 		
 		for(int i = 0; i < Fluids.getAll().length; i++) {
-			Object[] outs = getBoilerOutput(Fluids.fromID(i));
+			Object[] outs = MachineRecipes.getBoilerOutput(Fluids.fromID(i));
 			
 			if(outs != null) {
 
@@ -170,7 +171,7 @@ public class MachineRecipes {
 	}
 	
 	public Map<Object, Object> getFluidContainers() {
-		Map<Object, Object> map = new HashMap<Object, Object>();
+		Map<Object, Object> map = new HashMap<>();
 		
 		for(FluidContainer con : FluidContainerRegistry.allContainers) {
 			if(con != null) {

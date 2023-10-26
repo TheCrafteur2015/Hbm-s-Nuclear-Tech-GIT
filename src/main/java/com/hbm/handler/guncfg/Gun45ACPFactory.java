@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import com.hbm.handler.BulletConfiguration;
 import com.hbm.handler.GunConfiguration;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
-import com.hbm.items.ModItems;
 import com.hbm.items.ItemAmmoEnums.Ammo45ACP;
+import com.hbm.items.ModItems;
 import com.hbm.lib.HbmCollection;
 import com.hbm.lib.HbmCollection.EnumGunManufacturer;
 import com.hbm.particle.SpentCasing;
@@ -47,7 +47,7 @@ public class Gun45ACPFactory {
 		config.name = "tommy";
 		config.manufacturer = EnumGunManufacturer.AUTO_ORDINANCE;
 
-		config.config = new ArrayList<Integer>();
+		config.config = new ArrayList<>();
 		config.config.addAll(HbmCollection.acp45);
 
 		return config;
@@ -92,7 +92,7 @@ public class Gun45ACPFactory {
 	}
 
 	public static GunConfiguration getUACPistolBurstConfig() {
-		GunConfiguration config = getUACPistolConfig();
+		GunConfiguration config = Gun45ACPFactory.getUACPistolConfig();
 		config.rateOfFire = 5;
 		config.roundsPerBurst = 3;
 		config.firingDuration = 2;
@@ -135,17 +135,17 @@ public class Gun45ACPFactory {
 		BulletConfiguration bullet = BulletConfigFactory.standardPistolConfig();
 
 		bullet.ammo = new ComparableStack(ModItems.ammo_45.stackFromEnum(Ammo45ACP.STOCK));
-		bullet.spread *= inaccuracy;
+		bullet.spread *= Gun45ACPFactory.inaccuracy;
 		bullet.dmgMax = 12;
 		bullet.dmgMin = 16;
 		
-		bullet.spentCasing = CASING45;
+		bullet.spentCasing = Gun45ACPFactory.CASING45;
 
 		return bullet;
 	}
 
 	public static BulletConfiguration get45AutoAPConfig() {
-		BulletConfiguration bullet = get45AutoConfig();
+		BulletConfiguration bullet = Gun45ACPFactory.get45AutoConfig();
 
 		bullet.ammo = new ComparableStack(ModItems.ammo_45.stackFromEnum(Ammo45ACP.AP));
 		bullet.dmgMax = 18;
@@ -153,13 +153,13 @@ public class Gun45ACPFactory {
 		bullet.wear = 15;
 		bullet.leadChance = 10;
 		
-		bullet.spentCasing = CASING45;
+		bullet.spentCasing = Gun45ACPFactory.CASING45;
 
 		return bullet;
 	}
 
 	public static BulletConfiguration get45AutoDUConfig() {
-		BulletConfiguration bullet = get45AutoConfig();
+		BulletConfiguration bullet = Gun45ACPFactory.get45AutoConfig();
 
 		bullet.ammo = new ComparableStack(ModItems.ammo_45.stackFromEnum(Ammo45ACP.DU));
 		bullet.dmgMax = 30;
@@ -167,7 +167,7 @@ public class Gun45ACPFactory {
 		bullet.wear = 25;
 		bullet.leadChance = 50;
 		
-		bullet.spentCasing = CASING45;
+		bullet.spentCasing = Gun45ACPFactory.CASING45;
 
 		return bullet;
 	}

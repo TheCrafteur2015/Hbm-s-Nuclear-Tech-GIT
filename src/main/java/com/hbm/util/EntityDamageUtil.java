@@ -109,14 +109,14 @@ public class EntityDamageUtil {
 						return false;
 					}
 
-					damageEntity(living, source, amount - living.lastDamage); //#
+					EntityDamageUtil.damageEntity(living, source, amount - living.lastDamage); //#
 					living.lastDamage = amount;
 					flag = false;
 				} else {
 					living.lastDamage = amount;
 					living.prevHealth = living.getHealth();
 					living.hurtResistantTime = living.maxHurtResistantTime;
-					damageEntity(living, source, amount); //#
+					EntityDamageUtil.damageEntity(living, source, amount); //#
 					living.hurtTime = living.maxHurtTime = 10;
 				}
 
@@ -145,7 +145,7 @@ public class EntityDamageUtil {
 					living.worldObj.setEntityState(living, (byte) 2);
 
 					if(source != DamageSource.drown) {
-						setBeenAttacked(living); //#
+						EntityDamageUtil.setBeenAttacked(living); //#
 					}
 
 					if(entity != null) {
@@ -166,18 +166,18 @@ public class EntityDamageUtil {
 				String s;
 
 				if(living.getHealth() <= 0.0F) {
-					s = getDeathSound(living); //#
+					s = EntityDamageUtil.getDeathSound(living); //#
 
 					if(flag && s != null) {
-						living.playSound(s, getSoundVolume(living), getSoundPitch(living)); //#
+						living.playSound(s, EntityDamageUtil.getSoundVolume(living), EntityDamageUtil.getSoundPitch(living)); //#
 					}
 
 					living.onDeath(source);
 				} else {
-					s = getHurtSound(living); //#
+					s = EntityDamageUtil.getHurtSound(living); //#
 
 					if(flag && s != null) {
-						living.playSound(s, getSoundVolume(living), getSoundPitch(living)); //#
+						living.playSound(s, EntityDamageUtil.getSoundVolume(living), EntityDamageUtil.getSoundPitch(living)); //#
 					}
 				}
 
@@ -212,8 +212,8 @@ public class EntityDamageUtil {
 			amount = ForgeHooks.onLivingHurt(living, source, amount);
 			if(amount <= 0)
 				return;
-			amount = applyArmorCalculations(living, source, amount); //#
-			amount = applyPotionDamageCalculations(living, source, amount); //#
+			amount = EntityDamageUtil.applyArmorCalculations(living, source, amount); //#
+			amount = EntityDamageUtil.applyPotionDamageCalculations(living, source, amount); //#
 			float f1 = amount;
 			amount = Math.max(amount - living.getAbsorptionAmount(), 0.0F);
 			living.setAbsorptionAmount(living.getAbsorptionAmount() - (f1 - amount));

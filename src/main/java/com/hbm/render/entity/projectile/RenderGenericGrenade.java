@@ -26,10 +26,10 @@ public class RenderGenericGrenade extends Render {
 			GL11.glTranslatef((float) x, (float) y, (float) z);
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 			GL11.glScalef(0.5F, 0.5F, 0.5F);
-			this.bindEntityTexture(entity);
+			bindEntityTexture(entity);
 			Tessellator tessellator = Tessellator.instance;
 
-			this.renderItem(tessellator, iicon);
+			renderItem(tessellator, iicon);
 			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 			GL11.glPopMatrix();
 		}

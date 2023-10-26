@@ -24,13 +24,13 @@ public class BlockNTMGlass extends BlockBreakable {
 
 	@Override
 	public int quantityDropped(Random rand) {
-		return doesDrop ? 1 : 0;
+		return this.doesDrop ? 1 : 0;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getRenderBlockPass() {
-		return renderLayer;
+		return this.renderLayer;
 	}
 
 	@Override

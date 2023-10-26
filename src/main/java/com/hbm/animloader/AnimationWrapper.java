@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 public class AnimationWrapper {
 
 	public static final AnimationWrapper EMPTY = new AnimationWrapper(Animation.EMPTY){
+		@Override
 		public AnimationWrapper onEnd(EndResult res) {
 			return this;
 		};
@@ -40,7 +41,7 @@ public class AnimationWrapper {
 	}
 	
 	public AnimationWrapper reverse(){
-		this.reverse = !reverse;
+		this.reverse = !this.reverse;
 		return this;
 	}
 	

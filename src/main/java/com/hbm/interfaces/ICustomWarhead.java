@@ -2,6 +2,7 @@ package com.hbm.interfaces;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -17,7 +18,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import scala.actors.threadpool.Arrays;
 /**
  * Interface for customizable warheads or other explosive devices
  * @author UFFR
@@ -143,15 +143,15 @@ public interface ICustomWarhead
 	}
 	public default EnumCustomWarhead getWarheadType(NBTTagCompound data)
 	{
-		return EnumCustomWarhead.valueOf(data.getString(NBT_WARHEAD));
+		return EnumCustomWarhead.valueOf(data.getString(ICustomWarhead.NBT_WARHEAD));
 	}
 	public default EnumWeaponType getWeaponType(NBTTagCompound data)
 	{
-		return EnumWeaponType.valueOf(data.getString(NBT_TYPE));
+		return EnumWeaponType.valueOf(data.getString(ICustomWarhead.NBT_TYPE));
 	}
 	public default EnumCustomWarheadTrait getWeaponTrait(NBTTagCompound data)
 	{
-		return EnumCustomWarheadTrait.valueOf(data.getString(NBT_TRAIT));
+		return EnumCustomWarheadTrait.valueOf(data.getString(ICustomWarhead.NBT_TRAIT));
 	}
 	public ItemStack constructNew();
 	public ICustomWarhead getInstance();
@@ -166,14 +166,14 @@ public interface ICustomWarhead
 		ItemStack stackOut = new ItemStack(item);
 		
 		stackOut.stackTagCompound = new NBTTagCompound();
-		stackOut.stackTagCompound.setTag(NBT_GROUP, data);
+		stackOut.stackTagCompound.setTag(ICustomWarhead.NBT_GROUP, data);
 		
 		return stackOut.copy();
 	}
 	
 	public default NBTTagCompound getWarheadData(ItemStack stack)
 	{
-		return stack.getTagCompound().getCompoundTag(NBT_GROUP);
+		return stack.getTagCompound().getCompoundTag(ICustomWarhead.NBT_GROUP);
 	}
 	
 	public default ItemStack addFuel(ItemStack stack, Enum<?> fuel, float amount)
@@ -182,7 +182,7 @@ public interface ICustomWarhead
 		{
 			NBTTagCompound data = getWarheadData(stack);
 			data.setFloat(fuel.toString(), amount);
-			data.setFloat(NBT_MASS, data.getFloat(NBT_MASS) + amount);
+			data.setFloat(ICustomWarhead.NBT_MASS, data.getFloat(ICustomWarhead.NBT_MASS) + amount);
 		}
 		return stack;
 	}
@@ -199,7 +199,7 @@ public interface ICustomWarhead
 	{
 		for (Enum<?> f : combinedFuels)
 			if (data.getFloat(f.toString()) > 0)
-				tooltip.add(String.format(Locale.US, "%s: %skg (%s)", I18nUtil.resolveKey("warheadFuel.".concat(f.toString())), df.format(data.getFloat(f.toString())), BobMathUtil.toPercentage(data.getFloat(f.toString()), data.getFloat(NBT_MASS))));
+				tooltip.add(String.format(Locale.US, "%s: %skg (%s)", I18nUtil.resolveKey("warheadFuel.".concat(f.toString())), ICustomWarhead.df.format(data.getFloat(f.toString())), BobMathUtil.toPercentage(data.getFloat(f.toString()), data.getFloat(ICustomWarhead.NBT_MASS))));
 	}
 	
 	public default void addTooltip(ItemStack stack, List<String> tooltip)
@@ -225,16 +225,16 @@ public interface ICustomWarhead
 			break;
 		}
 		final EnumCustomWarhead warhead = getWarheadType(data);
-		tooltip.add(data.getFloat(NBT_MASS) + "kg total");
+		tooltip.add(data.getFloat(ICustomWarhead.NBT_MASS) + "kg total");
 		tooltip.add("");
 		switch (warhead)
 		{
 		case CHEM:
 		case BIO:
-			tooltip.add("Type: " + getColorFromWarhead(warhead) + I18nUtil.resolveKey("warhead.".concat(warhead.toString()), I18nUtil.resolveKey(data.getString(NBT_SPECIAL))));
+			tooltip.add("Type: " + ICustomWarhead.getColorFromWarhead(warhead) + I18nUtil.resolveKey("warhead.".concat(warhead.toString()), I18nUtil.resolveKey(data.getString(ICustomWarhead.NBT_SPECIAL))));
 			break;
 		default:
-			tooltip.add("Type: " + getColorFromWarhead(warhead) + warhead.getLoc());
+			tooltip.add("Type: " + ICustomWarhead.getColorFromWarhead(warhead) + warhead.getLoc());
 			break;
 		}
 		tooltip.add("Function: " + getWeaponType(data).getLoc());
@@ -247,12 +247,12 @@ public interface ICustomWarhead
 		case HE:
 		case NUCLEAR:
 		case TX:
-			tooltip.add("Yield: " + BobMathUtil.getShortNumber(data.getInteger(NBT_YIELD)) + "T");
+			tooltip.add("Yield: " + BobMathUtil.getShortNumber(data.getInteger(ICustomWarhead.NBT_YIELD)) + "T");
 			break;
 		case BIO:
 		case CHEM:
 		case SCHRAB:
-			tooltip.add("Radius: " + BobMathUtil.getShortNumber(data.getInteger(NBT_YIELD)) + "M");
+			tooltip.add("Radius: " + BobMathUtil.getShortNumber(data.getInteger(ICustomWarhead.NBT_YIELD)) + "M");
 			break;
 		default:
 			break;
@@ -288,7 +288,7 @@ public interface ICustomWarhead
 		}
 		public float getBlockMass()
 		{
-			return mass * 100;
+			return this.mass * 100;
 		}
 		public float getIngotMass()
 		{
@@ -348,7 +348,7 @@ public interface ICustomWarhead
 		}
 		public float getBlockMass()
 		{
-			return mass * 100;
+			return this.mass * 100;
 		}
 		public float getIngotMass()
 		{

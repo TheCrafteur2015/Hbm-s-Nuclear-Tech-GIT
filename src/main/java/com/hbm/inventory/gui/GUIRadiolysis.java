@@ -22,7 +22,7 @@ public class GUIRadiolysis extends GuiInfoContainer {
 
 	public GUIRadiolysis(InventoryPlayer invPlayer, TileEntityMachineRadiolysis tedf) {
 		super(new ContainerRadiolysis(invPlayer, tedf));
-		radiolysis = tedf;
+		this.radiolysis = tedf;
 		
 		this.xSize = 230;
 		this.ySize = 166;
@@ -32,17 +32,17 @@ public class GUIRadiolysis extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 		
-		radiolysis.tanks[0].renderTankInfo(this, mouseX, mouseY, guiLeft + 61, guiTop + 17, 8, 52);
-		radiolysis.tanks[1].renderTankInfo(this, mouseX, mouseY, guiLeft + 87, guiTop + 17, 12, 16);
-		radiolysis.tanks[2].renderTankInfo(this, mouseX, mouseY, guiLeft + 87, guiTop + 53, 12, 16);
+		this.radiolysis.tanks[0].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 61, this.guiTop + 17, 8, 52);
+		this.radiolysis.tanks[1].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 87, this.guiTop + 17, 12, 16);
+		this.radiolysis.tanks[2].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 87, this.guiTop + 53, 12, 16);
 		
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 8, guiTop + 17, 16, 34, radiolysis.power, radiolysis.maxPower);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 8, this.guiTop + 17, 16, 34, this.radiolysis.power, TileEntityMachineRadiolysis.maxPower);
 		
 		String[] descText = I18nUtil.resolveKeyArray("desc.gui.radiolysis.desc");
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 16, 16, 16, guiLeft - 8, guiTop + 16 + 16, descText);
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft - 16, this.guiTop + 16, 16, 16, this.guiLeft - 8, this.guiTop + 16 + 16, descText);
 		
-		String[] heatText = I18nUtil.resolveKeyArray("desc.gui.rtg.heat", radiolysis.heat);
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 16 + 18, 16, 16, guiLeft - 8, guiTop + 16 + 18 + 16, heatText);
+		String[] heatText = I18nUtil.resolveKeyArray("desc.gui.rtg.heat", this.radiolysis.heat);
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft - 16, this.guiTop + 16 + 18, 16, 16, this.guiLeft - 8, this.guiTop + 16 + 18 + 16, heatText);
 		
 		List<ItemRTGPellet> pellets = ItemRTGPellet.pelletList;
 		String[] pelletText = new String[pellets.size() + 1];
@@ -53,7 +53,7 @@ public class GUIRadiolysis extends GuiInfoContainer {
 			pelletText[i + 1] = I18nUtil.resolveKey("desc.gui.rtg.pelletPower", I18nUtil.resolveKey(pellet.getUnlocalizedName() + ".name"), pellet.getHeat() * 10);
 		}
 		
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 16 + 36, 16, 16, guiLeft - 8, guiTop + 16 + 36 + 16, pelletText);
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft - 16, this.guiTop + 16 + 36, 16, 16, this.guiLeft - 8, this.guiTop + 16 + 36 + 16, pelletText);
 	}
 	
 	@Override
@@ -68,20 +68,20 @@ public class GUIRadiolysis extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIRadiolysis.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		int i = (int)(radiolysis.getPower() * 34 / radiolysis.getMaxPower());
-		drawTexturedModalRect(guiLeft + 8, guiTop + 51 - i, 240, 34 - i, 16, i);
+		int i = (int)(this.radiolysis.getPower() * 34 / this.radiolysis.getMaxPower());
+		drawTexturedModalRect(this.guiLeft + 8, this.guiTop + 51 - i, 240, 34 - i, 16, i);
 		
-		radiolysis.tanks[0].renderTank(guiLeft + 61, guiTop + 69, this.zLevel, 8, 52);
+		this.radiolysis.tanks[0].renderTank(this.guiLeft + 61, this.guiTop + 69, this.zLevel, 8, 52);
 		
 		for(byte j = 0; j < 2; j++) {
-			radiolysis.tanks[j + 1].renderTank(guiLeft + 87, guiTop + 33 + j * 36, this.zLevel, 12, 16);
+			this.radiolysis.tanks[j + 1].renderTank(this.guiLeft + 87, this.guiTop + 33 + j * 36, this.zLevel, 12, 16);
 		}
 		
-		this.drawInfoPanel(guiLeft - 16, guiTop + 16, 16, 16, 10);
-		this.drawInfoPanel(guiLeft - 16, guiTop + 16 + 18, 16, 16, 2);
-		this.drawInfoPanel(guiLeft - 16, guiTop + 16 + 36, 16, 16, 3);
+		drawInfoPanel(this.guiLeft - 16, this.guiTop + 16, 16, 16, 10);
+		drawInfoPanel(this.guiLeft - 16, this.guiTop + 16 + 18, 16, 16, 2);
+		drawInfoPanel(this.guiLeft - 16, this.guiTop + 16 + 36, 16, 16, 3);
 	}
 }

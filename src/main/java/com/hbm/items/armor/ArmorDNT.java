@@ -44,14 +44,14 @@ public class ArmorDNT extends ArmorFSBPowered {
 	@SideOnly(Side.CLIENT)
 	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot) {
 
-		if(models == null) {
-			models = new ModelArmorDNT[4];
+		if(this.models == null) {
+			this.models = new ModelArmorDNT[4];
 
 			for(int i = 0; i < 4; i++)
-				models[i] = new ModelArmorDNT(i);
+				this.models[i] = new ModelArmorDNT(i);
 		}
 
-		return models[armorSlot];
+		return this.models[armorSlot];
 	}
 	
 	private static final UUID speed = UUID.fromString("6ab858ba-d712-485c-bae9-e5e765fc555a");
@@ -68,7 +68,7 @@ public class ArmorDNT extends ArmorFSBPowered {
 		
 		/// SPEED ///
 		Multimap multimap = super.getAttributeModifiers(stack);
-		multimap.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new AttributeModifier(speed, "DNT SPEED", 0.25, 0));
+		multimap.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new AttributeModifier(ArmorDNT.speed, "DNT SPEED", 0.25, 0));
 		player.getAttributeMap().removeAttributeModifiers(multimap);
 		
 		if(player.isSprinting()) {
@@ -78,7 +78,7 @@ public class ArmorDNT extends ArmorFSBPowered {
 		if(!world.isRemote) {
 			
 			/// JET ///
-			if(this.hasFSBArmor(player) && (props.isJetpackActive() || (!player.onGround && !player.isSneaking() && props.enableBackpack))) {
+			if(hasFSBArmor(player) && (props.isJetpackActive() || (!player.onGround && !player.isSneaking() && props.enableBackpack))) {
 
 				NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "jetpack_dns");
@@ -87,7 +87,7 @@ public class ArmorDNT extends ArmorFSBPowered {
 			}
 		}
 
-		if(this.hasFSBArmor(player)) {
+		if(hasFSBArmor(player)) {
 			
 			ArmorUtil.resetFlightTime(player);
 
@@ -173,13 +173,13 @@ public class ArmorDNT extends ArmorFSBPowered {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 
-		list.add("Charge: " + BobMathUtil.getShortNumber(getCharge(stack)) + " / " + BobMathUtil.getShortNumber(maxPower));
+		list.add("Charge: " + BobMathUtil.getShortNumber(getCharge(stack)) + " / " + BobMathUtil.getShortNumber(this.maxPower));
 
 		list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("armor.fullSetBonus"));
 
-		if(!effects.isEmpty()) {
+		if(!this.effects.isEmpty()) {
 
-			for(PotionEffect effect : effects) {
+			for(PotionEffect effect : this.effects) {
 				list.add(EnumChatFormatting.AQUA + "  " + I18n.format(Potion.potionTypes[effect.getPotionID()].getName()));
 			}
 		}

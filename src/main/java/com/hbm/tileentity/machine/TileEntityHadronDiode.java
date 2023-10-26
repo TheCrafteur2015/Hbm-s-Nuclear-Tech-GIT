@@ -20,18 +20,18 @@ public class TileEntityHadronDiode extends TileEntityTickingBase {
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
-			age++;
+		if(!this.worldObj.isRemote) {
+			this.age++;
 			
-			if(age >= 20) {
-				age = 0;
+			if(this.age >= 20) {
+				this.age = 0;
 				sendSides();
 			}
 		} else {
 			
-			if(fatherIAskOfYouToUpdateMe) {
-				fatherIAskOfYouToUpdateMe = false;
-				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			if(this.fatherIAskOfYouToUpdateMe) {
+				this.fatherIAskOfYouToUpdateMe = false;
+				this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
 			}
 		}
 	}
@@ -42,21 +42,21 @@ public class TileEntityHadronDiode extends TileEntityTickingBase {
 		
 		for(int i = 0; i < 6; i++) {
 			
-			if(sides[i] != null)
-				data.setInteger("" + i, sides[i].ordinal());
+			if(this.sides[i] != null)
+				data.setInteger("" + i, this.sides[i].ordinal());
 		}
 		
-		this.networkPack(data, 250);
+		networkPack(data, 250);
 	}
 
 	@Override
 	public void networkUnpack(NBTTagCompound nbt) {
 		
 		for(int i = 0; i < 6; i++) {
-			sides[i] = DiodeConfig.values()[nbt.getInteger("" + i)];
+			this.sides[i] = DiodeConfig.values()[nbt.getInteger("" + i)];
 		}
 		
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
 	}
 	
 	public DiodeConfig getConfig(int side) {
@@ -64,7 +64,7 @@ public class TileEntityHadronDiode extends TileEntityTickingBase {
 		if(ForgeDirection.getOrientation(side) == ForgeDirection.UNKNOWN)
 			return DiodeConfig.NONE;
 		
-		DiodeConfig conf = sides[side];
+		DiodeConfig conf = this.sides[side];
 		
 		if(conf == null)
 			return DiodeConfig.NONE;
@@ -73,8 +73,8 @@ public class TileEntityHadronDiode extends TileEntityTickingBase {
 	}
 	
 	public void setConfig(int side, int config) {
-		sides[side] = DiodeConfig.values()[config];
-		this.markDirty();
+		this.sides[side] = DiodeConfig.values()[config];
+		markDirty();
 		sendSides();
 	}
 	
@@ -84,23 +84,25 @@ public class TileEntityHadronDiode extends TileEntityTickingBase {
 		OUT
 	}
 
+	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		
 		for(int i = 0; i < 6; i++) {
-			sides[i] = DiodeConfig.values()[nbt.getInteger("side_" + i)];
+			this.sides[i] = DiodeConfig.values()[nbt.getInteger("side_" + i)];
 		}
 		
-		fatherIAskOfYouToUpdateMe = true;
+		this.fatherIAskOfYouToUpdateMe = true;
 	}
 
+	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		
 		for(int i = 0; i < 6; i++) {
 			
-			if(sides[i] != null) {
-				nbt.setInteger("side_" + i, sides[i].ordinal());
+			if(this.sides[i] != null) {
+				nbt.setInteger("side_" + i, this.sides[i].ordinal());
 			}
 		}
 	}

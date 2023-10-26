@@ -43,9 +43,11 @@ public class RenderElectricHeater extends TileEntitySpecialRenderer implements I
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase( ) {
+			@Override
 			public void renderInventory() {
 				GL11.glScaled(3, 3, 3);
 			}
+			@Override
 			public void renderCommonWithStack(ItemStack item) {
 				GL11.glTranslated(-0.5, 0, 0);
 				bindTexture(ResourceManager.heater_electric_tex);

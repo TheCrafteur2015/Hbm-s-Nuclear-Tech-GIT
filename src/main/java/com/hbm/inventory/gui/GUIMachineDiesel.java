@@ -18,7 +18,7 @@ public class GUIMachineDiesel extends GuiInfoContainer {
 
 	public GUIMachineDiesel(InventoryPlayer invPlayer, TileEntityMachineDiesel tedf) {
 		super(new ContainerMachineDiesel(invPlayer, tedf));
-		diesel = tedf;
+		this.diesel = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 166;
@@ -28,20 +28,20 @@ public class GUIMachineDiesel extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		diesel.tank.renderTankInfo(this, mouseX, mouseY, guiLeft + 80, guiTop + 69 - 52, 16, 52);
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 152, guiTop + 69 - 52, 16, 52, diesel.power, diesel.powerCap);
+		this.diesel.tank.renderTankInfo(this, mouseX, mouseY, this.guiLeft + 80, this.guiTop + 69 - 52, 16, 52);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 152, this.guiTop + 69 - 52, 16, 52, this.diesel.power, this.diesel.powerCap);
 		
 		String[] text = new String[] { "Fuel consumption rate:",
 				"  1 mB/t",
 				"  20 mB/s",
 				"(Consumption rate is constant)" };
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36, 16, 16, guiLeft - 8, guiTop + 36 + 16, text);
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft - 16, this.guiTop + 36, 16, 16, this.guiLeft - 8, this.guiTop + 36 + 16, text);
 		
-		if(!diesel.hasAcceptableFuel()) {
+		if(!this.diesel.hasAcceptableFuel()) {
 			
 			String[] text2 = new String[] { "Error: The currently set fuel type",
 					"is not supported by this engine!" };
-			this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36 + 32, 16, 16, guiLeft - 8, guiTop + 36 + 16 + 32, text2);
+			this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft - 16, this.guiTop + 36 + 32, 16, 16, this.guiLeft - 8, this.guiTop + 36 + 16 + 32, text2);
 		}
 	}
 	
@@ -56,24 +56,24 @@ public class GUIMachineDiesel extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIMachineDiesel.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		if(diesel.power > 0) {
-			int i = (int)diesel.getPowerScaled(52);
-			drawTexturedModalRect(guiLeft + 152, guiTop + 69 - i, 176, 52 - i, 16, i);
+		if(this.diesel.power > 0) {
+			int i = (int)this.diesel.getPowerScaled(52);
+			drawTexturedModalRect(this.guiLeft + 152, this.guiTop + 69 - i, 176, 52 - i, 16, i);
 		}
 		
-		if(diesel.tank.getFill() > 0 && diesel.hasAcceptableFuel())
+		if(this.diesel.tank.getFill() > 0 && this.diesel.hasAcceptableFuel())
 		{
-			drawTexturedModalRect(guiLeft + 43 + 18 * 4, guiTop + 34, 208, 0, 18, 18);
+			drawTexturedModalRect(this.guiLeft + 43 + 18 * 4, this.guiTop + 34, 208, 0, 18, 18);
 		}
 
-		this.drawInfoPanel(guiLeft - 16, guiTop + 36, 16, 16, 2);
+		drawInfoPanel(this.guiLeft - 16, this.guiTop + 36, 16, 16, 2);
 		
-		if(!diesel.hasAcceptableFuel())
-			this.drawInfoPanel(guiLeft - 16, guiTop + 36 + 32, 16, 16, 6);
+		if(!this.diesel.hasAcceptableFuel())
+			drawInfoPanel(this.guiLeft - 16, this.guiTop + 36 + 32, 16, 16, 6);
 		
-		diesel.tank.renderTank(guiLeft + 80, guiTop + 69, this.zLevel, 16, 52);
+		this.diesel.tank.renderTank(this.guiLeft + 80, this.guiTop + 69, this.zLevel, 16, 52);
 	}
 }

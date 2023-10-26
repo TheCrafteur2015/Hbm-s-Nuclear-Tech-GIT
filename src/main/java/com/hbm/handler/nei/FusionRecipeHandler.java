@@ -18,10 +18,10 @@ import net.minecraft.item.ItemStack;
 
 public class FusionRecipeHandler extends TemplateRecipeHandler {
 	
-    public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<RecipeTransferRect>();
-    public LinkedList<RecipeTransferRect> transferRectsGui = new LinkedList<RecipeTransferRect>();
-    public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<Class<? extends GuiContainer>>();
-    public LinkedList<Class<? extends GuiContainer>> guiGui = new LinkedList<Class<? extends GuiContainer>>();
+    public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<>();
+    public LinkedList<RecipeTransferRect> transferRectsGui = new LinkedList<>();
+    public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<>();
+    public LinkedList<Class<? extends GuiContainer>> guiGui = new LinkedList<>();
 
     public class SmeltingSet extends TemplateRecipeHandler.CachedRecipe {
     	
@@ -37,12 +37,12 @@ public class FusionRecipeHandler extends TemplateRecipeHandler {
         @Override
 		public List<PositionedStack> getIngredients() {
         	
-            return new ArrayList() {{ add(input); }};
+            return new ArrayList() {{ add(SmeltingSet.this.input); }};
         }
 
         @Override
 		public PositionedStack getResult() {
-            return result;
+            return this.result;
         }
     }
     
@@ -105,14 +105,14 @@ public class FusionRecipeHandler extends TemplateRecipeHandler {
     
     @Override
     public void loadTransferRects() {
-        transferRectsGui = new LinkedList<RecipeTransferRect>();
-        guiGui = new LinkedList<Class<? extends GuiContainer>>();
+        this.transferRectsGui = new LinkedList<>();
+        this.guiGui = new LinkedList<>();
 
-        transferRects.add(new RecipeTransferRect(new Rectangle(52 - 5, 34 - 11, 18 * 4, 18), "fusion"));
-        transferRectsGui.add(new RecipeTransferRect(new Rectangle(115 - 5, 17 - 11, 18, 18), "fusion"));
-        guiGui.add(GUIITER.class);
-        RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), transferRects);
-        RecipeTransferRectHandler.registerRectsToGuis(guiGui, transferRectsGui);
+        this.transferRects.add(new RecipeTransferRect(new Rectangle(52 - 5, 34 - 11, 18 * 4, 18), "fusion"));
+        this.transferRectsGui.add(new RecipeTransferRect(new Rectangle(115 - 5, 17 - 11, 18, 18), "fusion"));
+        this.guiGui.add(GUIITER.class);
+        RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), this.transferRects);
+        RecipeTransferRectHandler.registerRectsToGuis(this.guiGui, this.transferRectsGui);
     }
 
 	@Override

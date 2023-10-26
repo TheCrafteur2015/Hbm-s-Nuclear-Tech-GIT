@@ -13,18 +13,18 @@ public class ContainerRBMKRod extends Container {
 	private TileEntityRBMKRod rbmk;
 
 	public ContainerRBMKRod(InventoryPlayer invPlayer, TileEntityRBMKRod tedf) {
-		rbmk = tedf;
+		this.rbmk = tedf;
 
-		this.addSlotToContainer(new Slot(tedf, 0, 80, 45));
+		addSlotToContainer(new Slot(tedf, 0, 80, 45));
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 20));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 20));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 20));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 20));
 		}
 	}
 
@@ -37,11 +37,11 @@ public class ContainerRBMKRod extends Container {
 			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 
-			if(par2 <= rbmk.getSizeInventory() - 1) {
-				if(!this.mergeItemStack(var5, rbmk.getSizeInventory(), this.inventorySlots.size(), true)) {
+			if(par2 <= this.rbmk.getSizeInventory() - 1) {
+				if(!mergeItemStack(var5, this.rbmk.getSizeInventory(), this.inventorySlots.size(), true)) {
 					return null;
 				}
-			} else if(!this.mergeItemStack(var5, 0, rbmk.getSizeInventory(), false)) {
+			} else if(!mergeItemStack(var5, 0, this.rbmk.getSizeInventory(), false)) {
 				return null;
 			}
 

@@ -22,7 +22,7 @@ public class BlockUberConcrete extends BlockBase {
 	
 	public BlockUberConcrete() {
 		super();
-		this.setTickRandomly(true);
+		setTickRandomly(true);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -33,7 +33,7 @@ public class BlockUberConcrete extends BlockBase {
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		super.registerBlockIcons(iconRegister);
 		this.blockIcon = iconRegister.registerIcon(RefStrings.MODID + ":concrete_super");
-		brokenIcons = new IIcon[4];
+		this.brokenIcons = new IIcon[4];
 		
 		for(int i = 0; i < 4; i++) {
 			this.brokenIcons[i] = iconRegister.registerIcon(RefStrings.MODID + ":concrete_super_m" + i);
@@ -44,14 +44,15 @@ public class BlockUberConcrete extends BlockBase {
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
 
-		if(meta == 15) return brokenIcons[3];
-		if(meta == 14) return brokenIcons[2];
-		if(meta > 11) return brokenIcons[1];
-		if(meta > 9) return brokenIcons[0];
+		if(meta == 15) return this.brokenIcons[3];
+		if(meta == 14) return this.brokenIcons[2];
+		if(meta > 11) return this.brokenIcons[1];
+		if(meta > 9) return this.brokenIcons[0];
 		
 		return this.blockIcon;
 	}
 	
+	@Override
 	public void updateTick(World world, int x, int y, int z, Random rand) {
 		int meta = world.getBlockMetadata(x, y, z);
 		
@@ -68,7 +69,7 @@ public class BlockUberConcrete extends BlockBase {
 				return;
 			}
 			
-			List<Integer> sides = new ArrayList(); //i wish the fucking homunculus that made the standard list implementation the nastiest fucking diarrhea of his life
+			List<Integer> sides = new ArrayList<>(); //i wish the fucking homunculus that made the standard list implementation the nastiest fucking diarrhea of his life
 			Collections.addAll(sides, 2, 3, 4, 5);
 			Collections.shuffle(sides);
 			

@@ -25,33 +25,33 @@ public class TileEntityNukeN2 extends TileEntity implements ISidedInventory, IGU
 	private String customName;
 	
 	public TileEntityNukeN2() {
-		slots = new ItemStack[12];
+		this.slots = new ItemStack[12];
 	}
 	
 	@Override
 	public int getSizeInventory() {
-		return slots.length;
+		return this.slots.length;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		return slots[i];
+		return this.slots[i];
 	}
 
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			if(slots[i].stackSize <= j)
+			if(this.slots[i].stackSize <= j)
 			{
-				ItemStack itemStack = slots[i];
-				slots[i] = null;
+				ItemStack itemStack = this.slots[i];
+				this.slots[i] = null;
 				return itemStack;
 			}
-			ItemStack itemStack1 = slots[i].splitStack(j);
-			if (slots[i].stackSize == 0)
+			ItemStack itemStack1 = this.slots[i].splitStack(j);
+			if (this.slots[i].stackSize == 0)
 			{
-				slots[i] = null;
+				this.slots[i] = null;
 			}
 			
 			return itemStack1;
@@ -62,10 +62,10 @@ public class TileEntityNukeN2 extends TileEntity implements ISidedInventory, IGU
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			ItemStack itemStack = slots[i];
-			slots[i] = null;
+			ItemStack itemStack = this.slots[i];
+			this.slots[i] = null;
 			return itemStack;
 		} else {
 		return null;
@@ -74,7 +74,7 @@ public class TileEntityNukeN2 extends TileEntity implements ISidedInventory, IGU
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemStack) {
-		slots[i] = itemStack;
+		this.slots[i] = itemStack;
 		if(itemStack != null && itemStack.stackSize > getInventoryStackLimit())
 		{
 			itemStack.stackSize = getInventoryStackLimit();
@@ -83,7 +83,7 @@ public class TileEntityNukeN2 extends TileEntity implements ISidedInventory, IGU
 
 	@Override
 	public String getInventoryName() {
-		return this.hasCustomInventoryName() ? this.customName : "container.nukeN2";
+		return hasCustomInventoryName() ? this.customName : "container.nukeN2";
 	}
 
 	@Override
@@ -102,11 +102,11 @@ public class TileEntityNukeN2 extends TileEntity implements ISidedInventory, IGU
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		if(worldObj.getTileEntity(xCoord, yCoord, zCoord) != this)
+		if(this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this)
 		{
 			return false;
 		}else{
-			return player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <=64;
+			return player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <=64;
 		}
 	}
 
@@ -132,7 +132,7 @@ public class TileEntityNukeN2 extends TileEntity implements ISidedInventory, IGU
 
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemStack, int j) {
-		return this.isItemValidForSlot(i, itemStack);
+		return isItemValidForSlot(i, itemStack);
 	}
 
 	@Override
@@ -144,15 +144,15 @@ public class TileEntityNukeN2 extends TileEntity implements ISidedInventory, IGU
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		NBTTagList list = nbt.getTagList("items", 10);
-		slots = new ItemStack[getSizeInventory()];
+		this.slots = new ItemStack[getSizeInventory()];
 		
 		for(int i = 0; i < list.tagCount(); i++)
 		{
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("slot");
-			if(b0 >= 0 && b0 < slots.length)
+			if(b0 >= 0 && b0 < this.slots.length)
 			{
-				slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
+				this.slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
 			}
 		}
 	}
@@ -162,13 +162,13 @@ public class TileEntityNukeN2 extends TileEntity implements ISidedInventory, IGU
 		super.writeToNBT(nbt);
 		NBTTagList list = new NBTTagList();
 		
-		for(int i = 0; i < slots.length; i++)
+		for(int i = 0; i < this.slots.length; i++)
 		{
-			if(slots[i] != null)
+			if(this.slots[i] != null)
 			{
 				NBTTagCompound nbt1 = new NBTTagCompound();
 				nbt1.setByte("slot", (byte)i);
-				slots[i].writeToNBT(nbt1);
+				this.slots[i].writeToNBT(nbt1);
 				list.appendTag(nbt1);
 			}
 		}
@@ -177,19 +177,19 @@ public class TileEntityNukeN2 extends TileEntity implements ISidedInventory, IGU
 	
 	public boolean isReady() {
 		
-		if(slots[0] != null && slots[1] != null && slots[2] != null && slots[3] != null && slots[4] != null && slots[5] != null && slots[6] != null && slots[7] != null && slots[8] != null && slots[9] != null && slots[10] != null && slots[11] != null)
-			if(slots[0].getItem() == ModItems.n2_charge && 
-			slots[1].getItem() == ModItems.n2_charge && 
-			slots[2].getItem() == ModItems.n2_charge && 
-			slots[3].getItem() == ModItems.n2_charge && 
-			slots[4].getItem() == ModItems.n2_charge && 
-			slots[5].getItem() == ModItems.n2_charge && 
-			slots[6].getItem() == ModItems.n2_charge && 
-			slots[7].getItem() == ModItems.n2_charge && 
-			slots[8].getItem() == ModItems.n2_charge && 
-			slots[9].getItem() == ModItems.n2_charge && 
-			slots[10].getItem() == ModItems.n2_charge && 
-			slots[11].getItem() == ModItems.n2_charge)
+		if(this.slots[0] != null && this.slots[1] != null && this.slots[2] != null && this.slots[3] != null && this.slots[4] != null && this.slots[5] != null && this.slots[6] != null && this.slots[7] != null && this.slots[8] != null && this.slots[9] != null && this.slots[10] != null && this.slots[11] != null)
+			if(this.slots[0].getItem() == ModItems.n2_charge && 
+			this.slots[1].getItem() == ModItems.n2_charge && 
+			this.slots[2].getItem() == ModItems.n2_charge && 
+			this.slots[3].getItem() == ModItems.n2_charge && 
+			this.slots[4].getItem() == ModItems.n2_charge && 
+			this.slots[5].getItem() == ModItems.n2_charge && 
+			this.slots[6].getItem() == ModItems.n2_charge && 
+			this.slots[7].getItem() == ModItems.n2_charge && 
+			this.slots[8].getItem() == ModItems.n2_charge && 
+			this.slots[9].getItem() == ModItems.n2_charge && 
+			this.slots[10].getItem() == ModItems.n2_charge && 
+			this.slots[11].getItem() == ModItems.n2_charge)
 			{
 				return true;
 			}
@@ -198,9 +198,9 @@ public class TileEntityNukeN2 extends TileEntity implements ISidedInventory, IGU
 	}
 	
 	public void clearSlots() {
-		for(int i = 0; i < slots.length; i++)
+		for(int i = 0; i < this.slots.length; i++)
 		{
-			slots[i] = null;
+			this.slots[i] = null;
 		}
 	}
 	

@@ -29,14 +29,14 @@ public class BlockHadronCooler extends BlockMulti implements ITooltipProvider {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister reg) {
-		icons[0] = reg.registerIcon(RefStrings.MODID + ":hadron_cooler");
-		icons[1] = reg.registerIcon(RefStrings.MODID + ":hadron_cooler_mk2");
+		this.icons[0] = reg.registerIcon(RefStrings.MODID + ":hadron_cooler");
+		this.icons[1] = reg.registerIcon(RefStrings.MODID + ":hadron_cooler_mk2");
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int metadata) {
-		return icons[this.rectify(metadata)];
+		return this.icons[rectify(metadata)];
 	}
 
 	@Override
@@ -46,13 +46,14 @@ public class BlockHadronCooler extends BlockMulti implements ITooltipProvider {
 
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
-		int meta = this.rectify(stack.getItemDamage());
+		int meta = rectify(stack.getItemDamage());
 		
 		if(meta == 1) return this.getUnlocalizedName() + "_mk2";
 		
 		return this.getUnlocalizedName();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		

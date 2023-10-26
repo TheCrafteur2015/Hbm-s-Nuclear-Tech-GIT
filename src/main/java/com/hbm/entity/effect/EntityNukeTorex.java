@@ -24,13 +24,13 @@ public class EntityNukeTorex extends Entity {
 	public double rollerSize = 1;
 	public double heat = 1;
 	public double lastSpawnY = - 1;
-	public ArrayList<Cloudlet> cloudlets = new ArrayList();
+	public ArrayList<Cloudlet> cloudlets = new ArrayList<>();
 	//public static int cloudletLife = 200;
 
 	public EntityNukeTorex(World world) {
 		super(world);
 		this.ignoreFrustumCheck = true;
-		this.setSize(1F, 50F);
+		setSize(1F, 50F);
 	}
 
 	@Override
@@ -53,80 +53,80 @@ public class EntityNukeTorex extends Entity {
 	@Override
 	public void onUpdate() {
 		
-		double s = this.getScale();
+		double s = getScale();
 		double cs = 1.5;
-		int maxAge = this.getMaxAge();
+		int maxAge = getMaxAge();
 		
-		if(worldObj.isRemote) {
+		if(this.worldObj.isRemote) {
 			
-			if(lastSpawnY == -1) {
-				lastSpawnY = posY - 3;
+			if(this.lastSpawnY == -1) {
+				this.lastSpawnY = this.posY - 3;
 			}
 			
-			int spawnTarget = Math.max(worldObj.getHeightValue((int) Math.floor(posX), (int) Math.floor(posZ)) - 3, 1);
+			int spawnTarget = Math.max(this.worldObj.getHeightValue((int) Math.floor(this.posX), (int) Math.floor(this.posZ)) - 3, 1);
 			double moveSpeed = 0.5D;
 			
-			if(Math.abs(spawnTarget - lastSpawnY) < moveSpeed) {
-				lastSpawnY = spawnTarget;
+			if(Math.abs(spawnTarget - this.lastSpawnY) < moveSpeed) {
+				this.lastSpawnY = spawnTarget;
 			} else {
-				lastSpawnY += moveSpeed * Math.signum(spawnTarget - lastSpawnY);
+				this.lastSpawnY += moveSpeed * Math.signum(spawnTarget - this.lastSpawnY);
 			}
 			
 			// spawn mush clouds
-			double range = (torusWidth - rollerSize) * 0.25;
+			double range = (this.torusWidth - this.rollerSize) * 0.25;
 			double simSpeed = getSimulationSpeed();
 			int toSpawn = (int) Math.ceil(10 * simSpeed * simSpeed);
-			int lifetime = Math.min((ticksExisted * ticksExisted) + 200, maxAge - ticksExisted + 200);
+			int lifetime = Math.min((this.ticksExisted * this.ticksExisted) + 200, maxAge - this.ticksExisted + 200);
 				
 			for(int i = 0; i < toSpawn; i++) {
-				double x = posX + rand.nextGaussian() * range;
-				double z = posZ + rand.nextGaussian() * range;
-				Cloudlet cloud = new Cloudlet(x, lastSpawnY, z, (float)(rand.nextDouble() * 2D * Math.PI), 0, lifetime);
+				double x = this.posX + this.rand.nextGaussian() * range;
+				double z = this.posZ + this.rand.nextGaussian() * range;
+				Cloudlet cloud = new Cloudlet(x, this.lastSpawnY, z, (float)(this.rand.nextDouble() * 2D * Math.PI), 0, lifetime);
 				cloud.setScale(1F + this.ticksExisted * 0.005F * (float) cs, 5F * (float) cs);
-				cloudlets.add(cloud);
+				this.cloudlets.add(cloud);
 			}
 			
 			// spawn shock clouds
-			if(ticksExisted < 100) {
+			if(this.ticksExisted < 100) {
 				
-				int cloudCount = ticksExisted * 5;
-				int shockLife = Math.max(300 - ticksExisted * 20, 50);
+				int cloudCount = this.ticksExisted * 5;
+				int shockLife = Math.max(300 - this.ticksExisted * 20, 50);
 				
 				for(int i = 0; i < cloudCount; i++) {
-					Vec3 vec = Vec3.createVectorHelper((ticksExisted * 2 + rand.nextDouble()) * 2, 0, 0);
-					float rot = (float) (Math.PI * 2 * rand.nextDouble());
+					Vec3 vec = Vec3.createVectorHelper((this.ticksExisted * 2 + this.rand.nextDouble()) * 2, 0, 0);
+					float rot = (float) (Math.PI * 2 * this.rand.nextDouble());
 					vec.rotateAroundY(rot);
-					this.cloudlets.add(new Cloudlet(vec.xCoord + posX, worldObj.getHeightValue((int) (vec.xCoord + posX) + 1, (int) (vec.zCoord + posZ)), vec.zCoord + posZ, rot, 0, shockLife)
+					this.cloudlets.add(new Cloudlet(vec.xCoord + this.posX, this.worldObj.getHeightValue((int) (vec.xCoord + this.posX) + 1, (int) (vec.zCoord + this.posZ)), vec.zCoord + this.posZ, rot, 0, shockLife)
 							.setScale(5F, 2F)
 							.setMotion(0));
 				}
 			}
 			
 			// spawn ring clouds
-			if(ticksExisted < 200) {
+			if(this.ticksExisted < 200) {
 				for(int i = 0; i < 2; i++) {
-					Cloudlet cloud = new Cloudlet(posX, posY + coreHeight, posZ, (float)(rand.nextDouble() * 2D * Math.PI), 0, lifetime, TorexType.RING);
+					Cloudlet cloud = new Cloudlet(this.posX, this.posY + this.coreHeight, this.posZ, (float)(this.rand.nextDouble() * 2D * Math.PI), 0, lifetime, TorexType.RING);
 					cloud.setScale(1F + this.ticksExisted * 0.005F * (float) cs * 0.5F, 3F * (float) (cs * s));
-					cloudlets.add(cloud);
+					this.cloudlets.add(cloud);
 				}
 			}
 			
-			for(Cloudlet cloud : cloudlets) {
+			for(Cloudlet cloud : this.cloudlets) {
 				cloud.update();
 			}
-			coreHeight += 0.15/* * s*/;
-			torusWidth += 0.05/* * s*/;
-			rollerSize = torusWidth * 0.35;
-			convectionHeight = coreHeight + rollerSize;
+			this.coreHeight += 0.15/* * s*/;
+			this.torusWidth += 0.05/* * s*/;
+			this.rollerSize = this.torusWidth * 0.35;
+			this.convectionHeight = this.coreHeight + this.rollerSize;
 			
 			int maxHeat = (int) (50 * s);
-			heat = maxHeat - Math.pow((maxHeat * this.ticksExisted) / maxAge, 1);
+			this.heat = maxHeat - Math.pow((maxHeat * this.ticksExisted) / maxAge, 1);
 			
-			cloudlets.removeIf(x -> x.isDead);
+			this.cloudlets.removeIf(x -> x.isDead);
 		}
 		
-		if(!worldObj.isRemote && this.ticksExisted > maxAge) {
-			this.setDead();
+		if(!this.worldObj.isRemote && this.ticksExisted > maxAge) {
+			setDead();
 		}
 	}
 	
@@ -167,7 +167,7 @@ public class EntityNukeTorex extends Entity {
 	}
 	
 	public double getSaturation() {
-		double d = (double) this.ticksExisted / (double) this.getMaxAge();
+		double d = (double) this.ticksExisted / (double) getMaxAge();
 		return 1D - (d * d * d * d);
 	}
 	
@@ -176,8 +176,8 @@ public class EntityNukeTorex extends Entity {
 		int lifetime = getMaxAge();
 		int greying = lifetime * 3 / 4;
 		
-		if(ticksExisted > greying) {
-			return 1 + ((double)(ticksExisted - greying) / (double)(lifetime - greying));
+		if(this.ticksExisted > greying) {
+			return 1 + ((double)(this.ticksExisted - greying) / (double)(lifetime - greying));
 		}
 		
 		return 1D;
@@ -198,7 +198,7 @@ public class EntityNukeTorex extends Entity {
 	}
 	
 	public int getMaxAge() {
-		double s = this.getScale();
+		double s = getScale();
 		return (int) (45 * 20 * s);
 	}
 
@@ -234,18 +234,18 @@ public class EntityNukeTorex extends Entity {
 			this.age = age;
 			this.cloudletLife = maxAge;
 			this.angle = angle;
-			this.rangeMod = 0.3F + rand.nextFloat() * 0.7F;
-			this.colorMod = 0.8F + rand.nextFloat() * 0.2F;
+			this.rangeMod = 0.3F + EntityNukeTorex.this.rand.nextFloat() * 0.7F;
+			this.colorMod = 0.8F + EntityNukeTorex.this.rand.nextFloat() * 0.2F;
 			this.type = type;
 			
-			this.updateColor();
+			updateColor();
 		}
 		
 		private void update() {
 			
-			age++;
+			this.age++;
 			
-			if(age > cloudletLife) {
+			if(this.age > this.cloudletLife) {
 				this.isDead = true;
 			}
 
@@ -278,7 +278,7 @@ public class EntityNukeTorex extends Entity {
 			this.posY += this.motionY * mult;
 			this.posZ += this.motionZ * mult;
 			
-			this.updateColor();
+			updateColor();
 		}
 		
 		private Vec3 getRingMotion(double simPosX, double simPosZ) {
@@ -298,13 +298,13 @@ public class EntityNukeTorex extends Entity {
 			delta.rotateAroundY(this.angle);
 			return delta;*/
 			
-			if(simPosX > EntityNukeTorex.this.posX + torusWidth * 2)
+			if(simPosX > EntityNukeTorex.this.posX + EntityNukeTorex.this.torusWidth * 2)
 				return Vec3.createVectorHelper(0, 0, 0);
 			
 			/* the position of the torus' outer ring center */
 			Vec3 torusPos = Vec3.createVectorHelper(
-					(EntityNukeTorex.this.posX + torusWidth),
-					(EntityNukeTorex.this.posY + coreHeight * 0.5),
+					(EntityNukeTorex.this.posX + EntityNukeTorex.this.torusWidth),
+					(EntityNukeTorex.this.posY + EntityNukeTorex.this.coreHeight * 0.5),
 					EntityNukeTorex.this.posZ);
 			
 			/* the difference between the cloudlet and the torus' ring center */
@@ -345,13 +345,13 @@ public class EntityNukeTorex extends Entity {
 		/* simulated on a 2D-plane along the X/Y axis */
 		private Vec3 getConvectionMotion(double simPosX, double simPosZ) {
 			
-			if(simPosX > EntityNukeTorex.this.posX + torusWidth * 2)
+			if(simPosX > EntityNukeTorex.this.posX + EntityNukeTorex.this.torusWidth * 2)
 				return Vec3.createVectorHelper(0, 0, 0);
 			
 			/* the position of the torus' outer ring center */
 			Vec3 torusPos = Vec3.createVectorHelper(
-					(EntityNukeTorex.this.posX + torusWidth),
-					(EntityNukeTorex.this.posY + coreHeight),
+					(EntityNukeTorex.this.posX + EntityNukeTorex.this.torusWidth),
+					(EntityNukeTorex.this.posY + EntityNukeTorex.this.coreHeight),
 					EntityNukeTorex.this.posZ);
 			
 			/* the difference between the cloudlet and the torus' ring center */
@@ -385,9 +385,9 @@ public class EntityNukeTorex extends Entity {
 		}
 		
 		private Vec3 getLiftMotion(double simPosX, double simPosZ) {
-			double scale = MathHelper.clamp_double(1D - (simPosX - (EntityNukeTorex.this.posX + torusWidth)), 0, 1);
+			double scale = MathHelper.clamp_double(1D - (simPosX - (EntityNukeTorex.this.posX + EntityNukeTorex.this.torusWidth)), 0, 1);
 			
-			Vec3 motion = Vec3.createVectorHelper(EntityNukeTorex.this.posX - this.posX, (EntityNukeTorex.this.posY + convectionHeight) - this.posY, EntityNukeTorex.this.posZ - this.posZ);
+			Vec3 motion = Vec3.createVectorHelper(EntityNukeTorex.this.posX - this.posX, (EntityNukeTorex.this.posY + EntityNukeTorex.this.convectionHeight) - this.posY, EntityNukeTorex.this.posZ - this.posZ);
 			
 			motion = motion.normalize();
 			motion.xCoord *= scale;
@@ -404,9 +404,9 @@ public class EntityNukeTorex extends Entity {
 			double exY = EntityNukeTorex.this.posY + EntityNukeTorex.this.coreHeight;
 			double exZ = EntityNukeTorex.this.posZ;
 
-			double distX = exX - posX;
-			double distY = exY - posY;
-			double distZ = exZ - posZ;
+			double distX = exX - this.posX;
+			double distY = exY - this.posY;
+			double distZ = exZ - this.posZ;
 			
 			double distSq = distX * distX + distY * distY + distZ * distZ;
 			distSq /= EntityNukeTorex.this.heat;
@@ -434,33 +434,33 @@ public class EntityNukeTorex extends Entity {
 		
 		public Vec3 getInterpPos(float interp) {
 			return Vec3.createVectorHelper(
-					prevPosX + (posX - prevPosX) * interp,
-					prevPosY + (posY - prevPosY) * interp,
-					prevPosZ + (posZ - prevPosZ) * interp);
+					this.prevPosX + (this.posX - this.prevPosX) * interp,
+					this.prevPosY + (this.posY - this.prevPosY) * interp,
+					this.prevPosZ + (this.posZ - this.prevPosZ) * interp);
 		}
 		
 		public Vec3 getInterpColor(float interp) {
-			double greying = EntityNukeTorex.this.getGreying();
+			double greying = getGreying();
 			
 			if(this.type == TorexType.RING) {
 				greying += 1;
 			}
 			
 			return Vec3.createVectorHelper(
-					(prevColor.xCoord + (color.xCoord - prevColor.xCoord) * interp) * greying,
-					(prevColor.yCoord + (color.yCoord - prevColor.yCoord) * interp) * greying,
-					(prevColor.zCoord + (color.zCoord - prevColor.zCoord) * interp) * greying);
+					(this.prevColor.xCoord + (this.color.xCoord - this.prevColor.xCoord) * interp) * greying,
+					(this.prevColor.yCoord + (this.color.yCoord - this.prevColor.yCoord) * interp) * greying,
+					(this.prevColor.zCoord + (this.color.zCoord - this.prevColor.zCoord) * interp) * greying);
 		}
 		
 		public float getAlpha() {
-			return (1F - ((float)age / (float)cloudletLife)) * EntityNukeTorex.this.getAlpha();
+			return (1F - ((float)this.age / (float)this.cloudletLife)) * EntityNukeTorex.this.getAlpha();
 		}
 		
 		private float startingScale = 1;
 		private float growingScale = 5F;
 		
 		public float getScale() {
-			return startingScale + ((float)age / (float)cloudletLife) * growingScale;
+			return this.startingScale + ((float)this.age / (float)this.cloudletLife) * this.growingScale;
 		}
 		
 		public Cloudlet setScale(float start, float grow) {
@@ -484,7 +484,7 @@ public class EntityNukeTorex extends Entity {
 
 	@Override protected void writeEntityToNBT(NBTTagCompound nbt) { }
 	@Override public boolean writeToNBTOptional(NBTTagCompound nbt) { return false; }
-	@Override public void readEntityFromNBT(NBTTagCompound nbt) { this.setDead(); }
+	@Override public void readEntityFromNBT(NBTTagCompound nbt) { setDead(); }
 	
 	@Override
 	@SideOnly(Side.CLIENT)

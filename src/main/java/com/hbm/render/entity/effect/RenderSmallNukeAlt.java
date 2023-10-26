@@ -30,26 +30,26 @@ public class RenderSmallNukeAlt extends Render {
     public float ring = 0;
     
     public RenderSmallNukeAlt() {
-    	blastModel = AdvancedModelLoader.loadModel(objTesterModelRL);
-    	blastTexture = new ResourceLocation(RefStrings.MODID, "textures/models/NukeCloudFire.png");
-    	ringModel = AdvancedModelLoader.loadModel(ringModelRL);
-    	ringTexture = new ResourceLocation(RefStrings.MODID, "textures/models/Ring2.png");
-    	ringBigModel = AdvancedModelLoader.loadModel(ringBigModelRL);
-    	ringBigTexture = new ResourceLocation(RefStrings.MODID, "textures/models/Ring2.png");
-    	scale = 0;
-    	ring = 0;
+    	this.blastModel = AdvancedModelLoader.loadModel(RenderSmallNukeAlt.objTesterModelRL);
+    	this.blastTexture = new ResourceLocation(RefStrings.MODID, "textures/models/NukeCloudFire.png");
+    	this.ringModel = AdvancedModelLoader.loadModel(RenderSmallNukeAlt.ringModelRL);
+    	this.ringTexture = new ResourceLocation(RefStrings.MODID, "textures/models/Ring2.png");
+    	this.ringBigModel = AdvancedModelLoader.loadModel(RenderSmallNukeAlt.ringBigModelRL);
+    	this.ringBigTexture = new ResourceLocation(RefStrings.MODID, "textures/models/Ring2.png");
+    	this.scale = 0;
+    	this.ring = 0;
     }
 
 	@Override
 	public void doRender(Entity p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_) {
 		if(((EntityNukeCloudSmall)p_76986_1_).age > 100)
 		{
-			this.renderMush((EntityNukeCloudSmall)p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
-			this.renderCloud((EntityNukeCloudSmall)p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
+			renderMush((EntityNukeCloudSmall)p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
+			renderCloud((EntityNukeCloudSmall)p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
 		} else {
-			this.renderFlare((EntityNukeCloudSmall)p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
+			renderFlare((EntityNukeCloudSmall)p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
 		}
-		this.renderRing((EntityNukeCloudSmall)p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
+		renderRing((EntityNukeCloudSmall)p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
 	}
 	
 	public void renderMush(EntityNukeCloudSmall p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_) {
@@ -65,8 +65,8 @@ public class RenderSmallNukeAlt extends Render {
         }
         GL11.glScalef(4.0F, 4.0F, 4.0F);
         
-        bindTexture(blastTexture);
-        blastModel.renderAll();
+        bindTexture(this.blastTexture);
+        this.blastModel.renderAll();
         GL11.glPopMatrix();
 	}
 	
@@ -84,8 +84,8 @@ public class RenderSmallNukeAlt extends Render {
         //GL11.glScalef(p_76986_1_.scale, 1.0F, p_76986_1_.scale);
         GL11.glScalef(50F, 25.0F, 50F);
         
-        bindTexture(ringBigTexture);
-        ringBigModel.renderAll();
+        bindTexture(this.ringBigTexture);
+        this.ringBigModel.renderAll();
         GL11.glPopMatrix();
 	}
 	
@@ -98,8 +98,8 @@ public class RenderSmallNukeAlt extends Render {
     	GL11.glTranslatef(0.0F, 18F, 0.0F);
     	//ring += 0.1F;
         
-        bindTexture(ringTexture);
-        ringModel.renderAll();
+        bindTexture(this.ringTexture);
+        this.ringModel.renderAll();
         GL11.glPopMatrix();
 	}
 	

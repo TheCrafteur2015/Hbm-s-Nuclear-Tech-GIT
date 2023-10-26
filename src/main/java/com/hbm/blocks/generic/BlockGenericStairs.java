@@ -10,14 +10,14 @@ import net.minecraft.block.BlockStairs;
 
 public class BlockGenericStairs extends BlockStairs {
 
-	public static List<Object[]> recipeGen = new ArrayList();
+	public static List<Object[]> recipeGen = new ArrayList<>();
 
 	public BlockGenericStairs(Block block, int meta) {
 		super(block, meta);
 		this.useNeighborBrightness = true;
 		
-		recipeGen.add(new Object[] {block, meta, this});
+		BlockGenericStairs.recipeGen.add(new Object[] {block, meta, this});
 		
-		this.setBlockTextureName(RefStrings.MODID + ":concrete_smooth");
+		setBlockTextureName(RefStrings.MODID + ":concrete_smooth");
 	}
 }

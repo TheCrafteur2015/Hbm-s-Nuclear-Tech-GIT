@@ -10,7 +10,7 @@ public class EntityGlyphidBlaster extends EntityGlyphidBombardier {
 
 	public EntityGlyphidBlaster(World world) {
 		super(world);
-		this.setSize(2F, 1.125F);
+		setSize(2F, 1.125F);
 	}
 	
 	@Override
@@ -26,9 +26,9 @@ public class EntityGlyphidBlaster extends EntityGlyphidBombardier {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(50D);
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1D);
-		this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(10D);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(50D);
+		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1D);
+		getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(10D);
 	}
 
 	@Override

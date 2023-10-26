@@ -16,7 +16,7 @@ public class ItemRenderMP40 implements IItemRenderer {
 	protected ModelMP40 swordModel;
 	
 	public ItemRenderMP40() {
-		swordModel = new ModelMP40();
+		this.swordModel = new ModelMP40();
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class ItemRenderMP40 implements IItemRenderer {
 				GL11.glRotatef(-20.0F, 0.0F, 0.0F, 1.0F);
 				GL11.glRotatef(5.0F, 0.0F, 1.0F, 0.0F);
 				GL11.glTranslatef(-0.2F, 0.0F, -0.2F);
-				swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			GL11.glPopMatrix();
 			break;
 		case EQUIPPED:
@@ -68,7 +68,7 @@ public class ItemRenderMP40 implements IItemRenderer {
 				GL11.glTranslatef(0.5F, -0.2F, 0.0F);
 				GL11.glScalef(0.5F, 0.5F, 0.5F);
 				GL11.glTranslatef(-1.8F, -0.2F, 0.2F);
-				swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			GL11.glPopMatrix();
 		default: break;
 		}

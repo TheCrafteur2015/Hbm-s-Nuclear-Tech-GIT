@@ -14,28 +14,28 @@ public class ContainerCompactLauncher extends Container {
 	
 	public ContainerCompactLauncher(InventoryPlayer invPlayer, TileEntityCompactLauncher tedf) {
 		
-		nukeBoy = tedf;
+		this.nukeBoy = tedf;
 
-		this.addSlotToContainer(new Slot(tedf, 0, 26, 36));
-		this.addSlotToContainer(new Slot(tedf, 1, 26, 72));
-		this.addSlotToContainer(new Slot(tedf, 2, 116, 90 - 18));
-		this.addSlotToContainer(new Slot(tedf, 3, 134, 90 - 18));
-		this.addSlotToContainer(new Slot(tedf, 4, 152, 90));
-		this.addSlotToContainer(new Slot(tedf, 5, 116, 108));
-		this.addSlotToContainer(new Slot(tedf, 6, 116, 90));
-		this.addSlotToContainer(new Slot(tedf, 7, 134, 90));
+		addSlotToContainer(new Slot(tedf, 0, 26, 36));
+		addSlotToContainer(new Slot(tedf, 1, 26, 72));
+		addSlotToContainer(new Slot(tedf, 2, 116, 90 - 18));
+		addSlotToContainer(new Slot(tedf, 3, 134, 90 - 18));
+		addSlotToContainer(new Slot(tedf, 4, 152, 90));
+		addSlotToContainer(new Slot(tedf, 5, 116, 108));
+		addSlotToContainer(new Slot(tedf, 6, 116, 90));
+		addSlotToContainer(new Slot(tedf, 7, 134, 90));
 		
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 56));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 56));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++)
 		{
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 56));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 56));
 		}
 	}
 	
@@ -51,12 +51,12 @@ public class ContainerCompactLauncher extends Container {
 			var3 = var5.copy();
 			
             if (par2 <= 7) {
-				if (!this.mergeItemStack(var5, 8, this.inventorySlots.size(), true))
+				if (!mergeItemStack(var5, 8, this.inventorySlots.size(), true))
 				{
 					return null;
 				}
 			}
-			else if (!this.mergeItemStack(var5, 0, 8, false))
+			else if (!mergeItemStack(var5, 0, 8, false))
 				return null;
 			
 			if (var5.stackSize == 0)
@@ -74,6 +74,6 @@ public class ContainerCompactLauncher extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return nukeBoy.isUseableByPlayer(player);
+		return this.nukeBoy.isUseableByPlayer(player);
 	}
 }

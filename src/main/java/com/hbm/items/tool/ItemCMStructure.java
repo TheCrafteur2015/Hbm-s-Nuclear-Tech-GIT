@@ -3,11 +3,15 @@ package com.hbm.items.tool;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gson.stream.JsonWriter;
 import com.hbm.blocks.ILookOverlay;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.main.MainRegistry;
 import com.hbm.util.fauxpointtwelve.BlockPos;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,9 +23,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ItemCMStructure extends Item implements ILookOverlay {
 	
@@ -126,11 +127,11 @@ public class ItemCMStructure extends Item implements ILookOverlay {
 		Block b = world.getBlock(x, y, z);
 
 		if(b == ModBlocks.cm_anchor) {
-			this.setAnchor(stack, x, y, z);
+			setAnchor(stack, x, y, z);
 			return true;
 		}
 
-		if(this.getAnchor(stack) == null) {
+		if(getAnchor(stack) == null) {
 			return false;
 		}
 		if(!stack.stackTagCompound.hasKey("x1")) {
@@ -142,7 +143,7 @@ public class ItemCMStructure extends Item implements ILookOverlay {
 			stack.stackTagCompound.setInteger("y2", y);
 			stack.stackTagCompound.setInteger("z2", z);
 		} else {
-			writeToFile(file, stack, world);
+			ItemCMStructure.writeToFile(ItemCMStructure.file, stack, world);
 			stack.stackTagCompound.removeTag("x1");
 			stack.stackTagCompound.removeTag("y1");
 			stack.stackTagCompound.removeTag("z1");
@@ -153,6 +154,7 @@ public class ItemCMStructure extends Item implements ILookOverlay {
 		return true;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		super.addInformation(stack, player, list, ext);
@@ -165,9 +167,9 @@ public class ItemCMStructure extends Item implements ILookOverlay {
 	@Override
 	public void printHook(RenderGameOverlayEvent.Pre event, World world, int x, int y, int z) {
 		ItemStack stack = Minecraft.getMinecraft().thePlayer.getHeldItem();
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 
-		BlockPos anchor = getAnchor(stack);
+		BlockPos anchor = ItemCMStructure.getAnchor(stack);
 
 		if(anchor == null) {
 
@@ -192,6 +194,6 @@ public class ItemCMStructure extends Item implements ILookOverlay {
 			}
 		}
 
-		ILookOverlay.printGeneric(event, this.getItemStackDisplayName(stack), 0xffff00, 0x404000, text);
+		ILookOverlay.printGeneric(event, getItemStackDisplayName(stack), 0xffff00, 0x404000, text);
 	}
 }

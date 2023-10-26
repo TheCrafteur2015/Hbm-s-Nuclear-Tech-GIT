@@ -6,6 +6,7 @@ import java.util.Random;
 import com.google.common.collect.Multimap;
 import com.hbm.entity.projectile.EntityPlasmaBeam;
 import com.hbm.items.ModItems;
+
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -39,7 +40,7 @@ public class GunHP extends Item {
 	public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {
 		new ArrowNockEvent(p_77659_3_, p_77659_1_);
 		{
-			p_77659_3_.setItemInUse(p_77659_1_, this.getMaxItemUseDuration(p_77659_1_));
+			p_77659_3_.setItemInUse(p_77659_1_, getMaxItemUseDuration(p_77659_1_));
 		}
 
 		return p_77659_1_;
@@ -58,18 +59,18 @@ public class GunHP extends Item {
 			EntityPlasmaBeam plasma2 = new EntityPlasmaBeam(world, player, 1F);
 			EntityPlasmaBeam plasma3 = new EntityPlasmaBeam(world, player, 1F);
 			EntityPlasmaBeam plasma4 = new EntityPlasmaBeam(world, player, 1F);
-			plasma1.motionX *= (0.75 + (rand.nextDouble() * 0.5));
-			plasma1.motionY *= (0.75 + (rand.nextDouble() * 0.5));
-			plasma1.motionZ *= (0.75 + (rand.nextDouble() * 0.5));
-			plasma2.motionX *= (0.75 + (rand.nextDouble() * 0.5));
-			plasma2.motionY *= (0.75 + (rand.nextDouble() * 0.5));
-			plasma2.motionZ *= (0.75 + (rand.nextDouble() * 0.5));
-			plasma3.motionX *= (0.75 + (rand.nextDouble() * 0.5));
-			plasma3.motionY *= (0.75 + (rand.nextDouble() * 0.5));
-			plasma3.motionZ *= (0.75 + (rand.nextDouble() * 0.5));
-			plasma4.motionX *= (0.75 + (rand.nextDouble() * 0.5));
-			plasma4.motionY *= (0.75 + (rand.nextDouble() * 0.5));
-			plasma4.motionZ *= (0.75 + (rand.nextDouble() * 0.5));
+			plasma1.motionX *= (0.75 + (this.rand.nextDouble() * 0.5));
+			plasma1.motionY *= (0.75 + (this.rand.nextDouble() * 0.5));
+			plasma1.motionZ *= (0.75 + (this.rand.nextDouble() * 0.5));
+			plasma2.motionX *= (0.75 + (this.rand.nextDouble() * 0.5));
+			plasma2.motionY *= (0.75 + (this.rand.nextDouble() * 0.5));
+			plasma2.motionZ *= (0.75 + (this.rand.nextDouble() * 0.5));
+			plasma3.motionX *= (0.75 + (this.rand.nextDouble() * 0.5));
+			plasma3.motionY *= (0.75 + (this.rand.nextDouble() * 0.5));
+			plasma3.motionZ *= (0.75 + (this.rand.nextDouble() * 0.5));
+			plasma4.motionX *= (0.75 + (this.rand.nextDouble() * 0.5));
+			plasma4.motionY *= (0.75 + (this.rand.nextDouble() * 0.5));
+			plasma4.motionZ *= (0.75 + (this.rand.nextDouble() * 0.5));
 
 			if (flag) {
 				plasma.canBePickedUp = 2;
@@ -78,7 +79,7 @@ public class GunHP extends Item {
 					player.inventory.consumeInventoryItem(ModItems.gun_hp_ammo);
 			}
 
-			if (count == this.getMaxItemUseDuration(stack))
+			if (count == getMaxItemUseDuration(stack))
 				world.playSoundAtEntity(player, "hbm:weapon.immolatorIgnite", 1.0F, 1F);
 			if (count % 10 == 0)
 				world.playSoundAtEntity(player, "hbm:weapon.immolatorShoot", 1.0F, 1F);
@@ -98,6 +99,7 @@ public class GunHP extends Item {
 		return 0;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
@@ -109,11 +111,12 @@ public class GunHP extends Item {
 		list.add("[LEGENDARY WEAPON]");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Multimap getItemAttributeModifiers() {
 		Multimap multimap = super.getItemAttributeModifiers();
 		multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
-				new AttributeModifier(field_111210_e, "Weapon modifier", 4, 0));
+				new AttributeModifier(Item.field_111210_e, "Weapon modifier", 4, 0));
 		return multimap;
 	}
 }

@@ -32,36 +32,36 @@ public class EntityBombletTheta extends EntityThrowable {
 		this.posY += this.motionY;
 		this.posZ += this.motionZ;
 
-        Vec3 vector = Vec3.createVectorHelper(motionX, 0, motionZ);
+        Vec3 vector = Vec3.createVectorHelper(this.motionX, 0, this.motionZ);
         vector = vector.normalize();
-        vector.xCoord *= accelXZ;
-        vector.zCoord *= accelXZ;
-		this.motionY -= decelY;
+        vector.xCoord *= this.accelXZ;
+        vector.zCoord *= this.accelXZ;
+		this.motionY -= this.decelY;
 		this.motionX -= vector.xCoord;
 		this.motionZ -= vector.zCoord;
 		
-		if(motionY < -0.75D && !worldObj.isRemote && rand.nextInt(10) == 0) {
-			EntityBombletSelena selena = new EntityBombletSelena(worldObj);
+		if(this.motionY < -0.75D && !this.worldObj.isRemote && this.rand.nextInt(10) == 0) {
+			EntityBombletSelena selena = new EntityBombletSelena(this.worldObj);
 			selena.posX = this.posX;
 			selena.posY = this.posY;
 			selena.posZ = this.posZ;
-			selena.motionX = rand.nextGaussian();
-			selena.motionY = rand.nextGaussian();
-			selena.motionZ = rand.nextGaussian();
+			selena.motionX = this.rand.nextGaussian();
+			selena.motionY = this.rand.nextGaussian();
+			selena.motionZ = this.rand.nextGaussian();
 			selena.decelY = this.decelY;
 			selena.accelXZ = this.accelXZ;
-			worldObj.spawnEntityInWorld(selena);
+			this.worldObj.spawnEntityInWorld(selena);
 		}
         
-        this.rotation();
+        rotation();
         
         if(this.worldObj.getBlock((int)this.posX, (int)this.posY, (int)this.posZ) != Blocks.air)
         {
     		if(!this.worldObj.isRemote)
     		{
-    			ExplosionLarge.explodeFire(worldObj, this.posX + 0.5F, this.posY + 0.5F, this.posZ + 0.5F, 50.0F, true, true, true);
+    			ExplosionLarge.explodeFire(this.worldObj, this.posX + 0.5F, this.posY + 0.5F, this.posZ + 0.5F, 50.0F, true, true, true);
     		}
-    		this.setDead();
+    		setDead();
         }
 
 		if(!this.worldObj.isRemote)

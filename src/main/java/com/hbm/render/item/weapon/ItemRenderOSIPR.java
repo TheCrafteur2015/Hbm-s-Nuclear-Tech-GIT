@@ -16,7 +16,7 @@ public class ItemRenderOSIPR implements IItemRenderer {
 	protected ModelOSIPR swordModel;
 	
 	public ItemRenderOSIPR() {
-		swordModel = new ModelOSIPR();
+		this.swordModel = new ModelOSIPR();
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class ItemRenderOSIPR implements IItemRenderer {
 				GL11.glScalef(0.5F, 0.5F, 0.5F);
 				GL11.glTranslatef(-0.4F, -0.2F, -0.1F);
 				GL11.glRotatef(-15.0F, 0.0F, 0.0F, 1.0F);
-				swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			GL11.glPopMatrix();
 			break;
 		case EQUIPPED:
@@ -64,7 +64,7 @@ public class ItemRenderOSIPR implements IItemRenderer {
 				GL11.glTranslatef(0.5F, -0.2F, 0.0F);
 				//GL11.glScalef(1.5F, 1.5F, 1.5F);
 				GL11.glTranslatef(-0.4F, -0.1F, 0.0F);
-				swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			GL11.glPopMatrix();
 		default: break;
 		}

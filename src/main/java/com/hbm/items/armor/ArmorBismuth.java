@@ -1,6 +1,7 @@
 package com.hbm.items.armor;
 
 import com.hbm.render.model.ModelArmorBismuth;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelBiped;
@@ -20,14 +21,14 @@ public class ArmorBismuth extends ArmorFSB {
 	@SideOnly(Side.CLIENT)
 	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot) {
 		
-		if(models == null) {
-			models = new ModelArmorBismuth[4];
+		if(this.models == null) {
+			this.models = new ModelArmorBismuth[4];
 			
 			for(int i = 0; i < 4; i++)
-				models[i] = new ModelArmorBismuth(i);
+				this.models[i] = new ModelArmorBismuth(i);
 		}
 		
-		return models[armorSlot];
+		return this.models[armorSlot];
 	}
 
 }

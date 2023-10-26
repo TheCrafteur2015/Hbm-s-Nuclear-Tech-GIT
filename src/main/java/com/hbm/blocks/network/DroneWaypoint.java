@@ -68,7 +68,7 @@ public class DroneWaypoint extends BlockContainer implements ILookOverlay, ITool
 		int meta = world.getBlockMetadata(x, y, z) & 7;
 		ForgeDirection dir = ForgeDirection.getOrientation(meta);
 		
-		this.setBlockBounds(
+		setBlockBounds(
 				dir.offsetX == 1 ? 0F : 0.375F,
 				dir.offsetY == 1 ? 0F : 0.375F,
 				dir.offsetZ == 1 ? 0F : 0.375F,
@@ -128,7 +128,7 @@ public class DroneWaypoint extends BlockContainer implements ILookOverlay, ITool
 	@Override
 	public void printHook(Pre event, World world, int x, int y, int z) {
 		TileEntityDroneWaypoint tile = (TileEntityDroneWaypoint) world.getTileEntity(x, y, z);
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		
 		text.add("Waypoint distance: " + tile.height);
 		

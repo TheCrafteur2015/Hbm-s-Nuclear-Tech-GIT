@@ -16,27 +16,27 @@ public class ChunkRadiationManager {
 
 	@SubscribeEvent
 	public void onWorldLoad(WorldEvent.Load event) {
-		if(RadiationConfig.enableChunkRads) proxy.receiveWorldLoad(event);
+		if(RadiationConfig.enableChunkRads) ChunkRadiationManager.proxy.receiveWorldLoad(event);
 	}
 	
 	@SubscribeEvent
 	public void onWorldUnload(WorldEvent.Unload event) {
-		if(RadiationConfig.enableChunkRads) proxy.receiveWorldUnload(event);
+		if(RadiationConfig.enableChunkRads) ChunkRadiationManager.proxy.receiveWorldUnload(event);
 	}
 
 	@SubscribeEvent
 	public void onChunkLoad(ChunkDataEvent.Load event) {
-		if(RadiationConfig.enableChunkRads) proxy.receiveChunkLoad(event);
+		if(RadiationConfig.enableChunkRads) ChunkRadiationManager.proxy.receiveChunkLoad(event);
 	}
 	
 	@SubscribeEvent
 	public void onChunkSave(ChunkDataEvent.Save event) {
-		if(RadiationConfig.enableChunkRads) proxy.receiveChunkSave(event);
+		if(RadiationConfig.enableChunkRads) ChunkRadiationManager.proxy.receiveChunkSave(event);
 	}
 	
 	@SubscribeEvent
 	public void onChunkUnload(ChunkEvent.Unload event) {
-		if(RadiationConfig.enableChunkRads) proxy.receiveChunkUnload(event);
+		if(RadiationConfig.enableChunkRads) ChunkRadiationManager.proxy.receiveChunkUnload(event);
 	}
 	
 	int eggTimer = 0;
@@ -46,18 +46,18 @@ public class ChunkRadiationManager {
 		
 		if(RadiationConfig.enableChunkRads && event.side == Side.SERVER && event.phase == Phase.END) {
 			
-			eggTimer++;
+			this.eggTimer++;
 			
-			if(eggTimer >= 20) {
-				proxy.updateSystem();
-				eggTimer = 0;
+			if(this.eggTimer >= 20) {
+				ChunkRadiationManager.proxy.updateSystem();
+				this.eggTimer = 0;
 			}
 			
 			if(RadiationConfig.worldRadEffects) {
-				proxy.handleWorldDestruction();
+				ChunkRadiationManager.proxy.handleWorldDestruction();
 			}
 			
-			proxy.receiveWorldTick(event);
+			ChunkRadiationManager.proxy.receiveWorldTick(event);
 		}
 	}
 }

@@ -6,6 +6,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import com.hbm.entity.particle.EntityModFX;
+
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -40,41 +41,41 @@ public class MultiCloudRenderer extends Render {
 		if (p_76986_1_ instanceof EntityModFX) {
 			EntityModFX fx = (EntityModFX) p_76986_1_;
 
-			Item item = field_94151_a[0];
+			Item item = this.field_94151_a[0];
 			
 			if (fx.particleAge <= fx.maxAge && fx.particleAge >= fx.maxAge / 8 * 7) {
-				item = field_94151_a[7];
+				item = this.field_94151_a[7];
 			}
 
 			if (fx.particleAge < fx.maxAge / 8 * 7 && fx.particleAge >= fx.maxAge / 8 * 6) {
-				item = field_94151_a[6];
+				item = this.field_94151_a[6];
 			}
 
 			if (fx.particleAge < fx.maxAge / 8 * 6 && fx.particleAge >= fx.maxAge / 8 * 5) {
-				item = field_94151_a[5];
+				item = this.field_94151_a[5];
 			}
 
 			if (fx.particleAge < fx.maxAge / 8 * 5 && fx.particleAge >= fx.maxAge / 8 * 4) {
-				item = field_94151_a[4];
+				item = this.field_94151_a[4];
 			}
 
 			if (fx.particleAge < fx.maxAge / 8 * 4 && fx.particleAge >= fx.maxAge / 8 * 3) {
-				item = field_94151_a[3];
+				item = this.field_94151_a[3];
 			}
 
 			if (fx.particleAge < fx.maxAge / 8 * 3 && fx.particleAge >= fx.maxAge / 8 * 2) {
-				item = field_94151_a[2];
+				item = this.field_94151_a[2];
 			}
 
 			if (fx.particleAge < fx.maxAge / 8 * 2 && fx.particleAge >= fx.maxAge / 8 * 1) {
-				item = field_94151_a[1];
+				item = this.field_94151_a[1];
 			}
 
 			if (fx.particleAge < fx.maxAge / 8 && fx.particleAge >= 0) {
-				item = field_94151_a[0];
+				item = this.field_94151_a[0];
 			}
 
-			IIcon iicon = item.getIconFromDamage(field_94150_f);
+			IIcon iicon = item.getIconFromDamage(this.field_94150_f);
 
 			if (iicon != null) {
 				GL11.glPushMatrix();
@@ -103,9 +104,9 @@ public class MultiCloudRenderer extends Render {
 					GL11.glScaled(size, size, size);
 
 					GL11.glPushMatrix();
-					this.bindEntityTexture(p_76986_1_);
+					bindEntityTexture(p_76986_1_);
 					Tessellator tessellator = Tessellator.instance;
-					this.func_77026_a(tessellator, iicon);
+					func_77026_a(tessellator, iicon);
 					GL11.glPopMatrix();
 
 					GL11.glScaled(1/size, 1/size, 1/size);

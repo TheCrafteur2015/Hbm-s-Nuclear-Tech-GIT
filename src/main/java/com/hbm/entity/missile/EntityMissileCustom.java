@@ -54,26 +54,28 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 	public EntityMissileCustom(World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.ignoreFrustumCheck = true;
-		startX = (int) posX;
-		startZ = (int) posZ;
-		targetX = (int) posX;
-		targetZ = (int) posZ;
+		this.startX = (int) this.posX;
+		this.startZ = (int) this.posZ;
+		this.targetX = (int) this.posX;
+		this.targetZ = (int) this.posZ;
 	}
 
+	@Override
 	public boolean canBeCollidedWith() {
 		return true;
 	}
 
+	@Override
 	public boolean attackEntityFrom(DamageSource p_70097_1_, float p_70097_2_) {
-		if(this.isEntityInvulnerable()) {
+		if(isEntityInvulnerable()) {
 			return false;
 		} else {
 			if(!this.isDead && !this.worldObj.isRemote) {
-				health -= p_70097_2_;
+				this.health -= p_70097_2_;
 
 				if(this.health <= 0) {
-					this.setDead();
-					this.killMissile();
+					setDead();
+					killMissile();
 				}
 			}
 
@@ -82,8 +84,8 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 	}
 
 	private void killMissile() {
-		ExplosionLarge.explode(worldObj, posX, posY, posZ, 5, true, false, true);
-		ExplosionLarge.spawnShrapnelShower(worldObj, posX, posY, posZ, motionX, motionY, motionZ, 15, 0.075);
+		ExplosionLarge.explode(this.worldObj, this.posX, this.posY, this.posZ, 5, true, false, true);
+		ExplosionLarge.spawnShrapnelShower(this.worldObj, this.posX, this.posY, this.posZ, this.motionX, this.motionY, this.motionZ, 15, 0.075);
 	}
 
 	public EntityMissileCustom(World world, float x, float y, float z, int a, int b, MissileStruct template) {
@@ -92,11 +94,11 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 		/*
 		 * this.posX = x; this.posY = y; this.posZ = z;
 		 */
-		this.setLocationAndAngles(x, y, z, 0, 0);
-		startX = (int) x;
-		startZ = (int) z;
-		targetX = a;
-		targetZ = b;
+		setLocationAndAngles(x, y, z, 0, 0);
+		this.startX = (int) x;
+		this.startZ = (int) z;
+		this.targetX = a;
+		this.targetZ = b;
 		this.motionY = 2;
 
 		this.template = template;
@@ -109,11 +111,11 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 			this.dataWatcher.updateObject(11, Integer.valueOf(0));
 		this.dataWatcher.updateObject(12, Item.getIdFromItem(template.thruster));
 
-		Vec3 vector = Vec3.createVectorHelper(targetX - startX, 0, targetZ - startZ);
-		accelXZ = decelY = 1 / vector.lengthVector();
-		decelY *= 2;
+		Vec3 vector = Vec3.createVectorHelper(this.targetX - this.startX, 0, this.targetZ - this.startZ);
+		this.accelXZ = this.decelY = 1 / vector.lengthVector();
+		this.decelY *= 2;
 
-		velocity = 0.0;
+		this.velocity = 0.0;
 
 		ItemMissile fuselage = (ItemMissile) template.fuselage;
 		ItemMissile thruster = (ItemMissile) template.thruster;
@@ -121,24 +123,24 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 		this.fuel = (Float) fuselage.attributes[1];
 		this.consumption = (Float) thruster.attributes[1];
 
-		this.setSize(1.5F, 1.5F);
+		setSize(1.5F, 1.5F);
 	}
 
 	@Override
 	protected void entityInit() {
-		init(ForgeChunkManager.requestTicket(MainRegistry.instance, worldObj, Type.ENTITY));
+		init(ForgeChunkManager.requestTicket(MainRegistry.instance, this.worldObj, Type.ENTITY));
 		this.dataWatcher.addObject(8, Integer.valueOf(this.health));
 
-		if(template != null) {
-			this.dataWatcher.addObject(9, Integer.valueOf(Item.getIdFromItem(template.warhead)));
-			this.dataWatcher.addObject(10, Integer.valueOf(Item.getIdFromItem(template.fuselage)));
+		if(this.template != null) {
+			this.dataWatcher.addObject(9, Integer.valueOf(Item.getIdFromItem(this.template.warhead)));
+			this.dataWatcher.addObject(10, Integer.valueOf(Item.getIdFromItem(this.template.fuselage)));
 
-			if(template.fins != null)
-				this.dataWatcher.addObject(11, Integer.valueOf(Item.getIdFromItem(template.fins)));
+			if(this.template.fins != null)
+				this.dataWatcher.addObject(11, Integer.valueOf(Item.getIdFromItem(this.template.fins)));
 			else
 				this.dataWatcher.addObject(11, Integer.valueOf(0));
 
-			this.dataWatcher.addObject(12, Integer.valueOf(Item.getIdFromItem(template.thruster)));
+			this.dataWatcher.addObject(12, Integer.valueOf(Item.getIdFromItem(this.template.thruster)));
 		} else {
 			this.dataWatcher.addObject(9, Integer.valueOf(0));
 			this.dataWatcher.addObject(10, Integer.valueOf(0));
@@ -149,21 +151,21 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound nbt) {
-		motionX = nbt.getDouble("moX");
-		motionY = nbt.getDouble("moY");
-		motionZ = nbt.getDouble("moZ");
-		posX = nbt.getDouble("poX");
-		posY = nbt.getDouble("poY");
-		posZ = nbt.getDouble("poZ");
-		decelY = nbt.getDouble("decel");
-		accelXZ = nbt.getDouble("accel");
-		targetX = nbt.getInteger("tX");
-		targetZ = nbt.getInteger("tZ");
-		startX = nbt.getInteger("sX");
-		startZ = nbt.getInteger("sZ");
-		velocity = nbt.getInteger("veloc");
-		fuel = nbt.getFloat("fuel");
-		consumption = nbt.getFloat("consumption");
+		this.motionX = nbt.getDouble("moX");
+		this.motionY = nbt.getDouble("moY");
+		this.motionZ = nbt.getDouble("moZ");
+		this.posX = nbt.getDouble("poX");
+		this.posY = nbt.getDouble("poY");
+		this.posZ = nbt.getDouble("poZ");
+		this.decelY = nbt.getDouble("decel");
+		this.accelXZ = nbt.getDouble("accel");
+		this.targetX = nbt.getInteger("tX");
+		this.targetZ = nbt.getInteger("tZ");
+		this.startX = nbt.getInteger("sX");
+		this.startZ = nbt.getInteger("sZ");
+		this.velocity = nbt.getInteger("veloc");
+		this.fuel = nbt.getFloat("fuel");
+		this.consumption = nbt.getFloat("consumption");
 		this.dataWatcher.updateObject(9, nbt.getInteger("warhead"));
 		this.dataWatcher.updateObject(10, nbt.getInteger("fuselage"));
 		this.dataWatcher.updateObject(11, nbt.getInteger("fins"));
@@ -172,21 +174,21 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound nbt) {
-		nbt.setDouble("moX", motionX);
-		nbt.setDouble("moY", motionY);
-		nbt.setDouble("moZ", motionZ);
-		nbt.setDouble("poX", posX);
-		nbt.setDouble("poY", posY);
-		nbt.setDouble("poZ", posZ);
-		nbt.setDouble("decel", decelY);
-		nbt.setDouble("accel", accelXZ);
-		nbt.setInteger("tX", targetX);
-		nbt.setInteger("tZ", targetZ);
-		nbt.setInteger("sX", startX);
-		nbt.setInteger("sZ", startZ);
-		nbt.setDouble("veloc", velocity);
-		nbt.setFloat("fuel", fuel);
-		nbt.setFloat("consumption", consumption);
+		nbt.setDouble("moX", this.motionX);
+		nbt.setDouble("moY", this.motionY);
+		nbt.setDouble("moZ", this.motionZ);
+		nbt.setDouble("poX", this.posX);
+		nbt.setDouble("poY", this.posY);
+		nbt.setDouble("poZ", this.posZ);
+		nbt.setDouble("decel", this.decelY);
+		nbt.setDouble("accel", this.accelXZ);
+		nbt.setInteger("tX", this.targetX);
+		nbt.setInteger("tZ", this.targetZ);
+		nbt.setInteger("sX", this.startX);
+		nbt.setInteger("sZ", this.startZ);
+		nbt.setDouble("veloc", this.velocity);
+		nbt.setFloat("fuel", this.fuel);
+		nbt.setFloat("consumption", this.consumption);
 		nbt.setInteger("warhead", this.dataWatcher.getWatchableObjectInt(9));
 		nbt.setInteger("fuselage", this.dataWatcher.getWatchableObjectInt(10));
 		nbt.setInteger("fins", this.dataWatcher.getWatchableObjectInt(11));
@@ -218,40 +220,40 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 	public void onUpdate() {
 		this.dataWatcher.updateObject(8, Integer.valueOf(this.health));
 
-		this.setLocationAndAngles(posX + this.motionX * velocity, posY + this.motionY * velocity, posZ + this.motionZ * velocity, 0, 0);
+		setLocationAndAngles(this.posX + this.motionX * this.velocity, this.posY + this.motionY * this.velocity, this.posZ + this.motionZ * this.velocity, 0, 0);
 
-		this.rotation();
+		rotation();
 
-		if(fuel > 0 || worldObj.isRemote) {
+		if(this.fuel > 0 || this.worldObj.isRemote) {
 
-			fuel -= consumption;
+			this.fuel -= this.consumption;
 
-			this.motionY -= decelY * velocity;
+			this.motionY -= this.decelY * this.velocity;
 
-			Vec3 vector = Vec3.createVectorHelper(targetX - startX, 0, targetZ - startZ);
+			Vec3 vector = Vec3.createVectorHelper(this.targetX - this.startX, 0, this.targetZ - this.startZ);
 			vector = vector.normalize();
-			vector.xCoord *= accelXZ * velocity;
-			vector.zCoord *= accelXZ * velocity;
+			vector.xCoord *= this.accelXZ * this.velocity;
+			vector.zCoord *= this.accelXZ * this.velocity;
 
-			if(motionY > 0) {
-				motionX += vector.xCoord;
-				motionZ += vector.zCoord;
+			if(this.motionY > 0) {
+				this.motionX += vector.xCoord;
+				this.motionZ += vector.zCoord;
 			}
 
-			if(motionY < 0) {
-				motionX -= vector.xCoord;
-				motionZ -= vector.zCoord;
+			if(this.motionY < 0) {
+				this.motionX -= vector.xCoord;
+				this.motionZ -= vector.zCoord;
 			}
 
-			if(velocity < 5)
-				velocity += 0.01;
+			if(this.velocity < 5)
+				this.velocity += 0.01;
 		} else {
 
-			motionX *= 0.99;
-			motionZ *= 0.99;
+			this.motionX *= 0.99;
+			this.motionZ *= 0.99;
 
-			if(motionY > -1.5)
-				motionY -= 0.05;
+			if(this.motionY > -1.5)
+				this.motionY -= 0.05;
 		}
 
 		if(this.worldObj.getBlock((int) this.posX, (int) this.posY, (int) this.posZ) != Blocks.air && this.worldObj.getBlock((int) this.posX, (int) this.posY, (int) this.posZ) != Blocks.water && this.worldObj.getBlock((int) this.posX, (int) this.posY, (int) this.posZ) != Blocks.flowing_water) {
@@ -259,13 +261,13 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 			if(!this.worldObj.isRemote) {
 				onImpact();
 			}
-			this.setDead();
+			setDead();
 			return;
 		}
 
 		if(this.worldObj.isRemote) {
 
-			Vec3 v = Vec3.createVectorHelper(motionX, motionY, motionZ);
+			Vec3 v = Vec3.createVectorHelper(this.motionX, this.motionY, this.motionZ);
 			v = v.normalize();
 
 			String smoke = "";
@@ -290,11 +292,11 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 				break;
 			}
 
-			for(int i = 0; i < velocity; i++)
-				MainRegistry.proxy.spawnParticle(posX - v.xCoord * i, posY - v.yCoord * i, posZ - v.zCoord * i, smoke, null);
+			for(int i = 0; i < this.velocity; i++)
+				MainRegistry.proxy.spawnParticle(this.posX - v.xCoord * i, this.posY - v.yCoord * i, this.posZ - v.zCoord * i, smoke, null);
 		}
 
-		loadNeighboringChunks((int) (posX / 16), (int) (posZ / 16));
+		loadNeighboringChunks((int) (this.posX / 16), (int) (this.posZ / 16));
 	}
 
 	@Override
@@ -312,62 +314,62 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 
 		switch(type) {
 		case HE:
-			ExplosionLarge.explode(worldObj, posX, posY, posZ, strength, true, false, true);
-			ExplosionLarge.jolt(worldObj, posX, posY, posZ, strength, (int) (strength * 50), 0.25);
+			ExplosionLarge.explode(this.worldObj, this.posX, this.posY, this.posZ, strength, true, false, true);
+			ExplosionLarge.jolt(this.worldObj, this.posX, this.posY, this.posZ, strength, (int) (strength * 50), 0.25);
 			break;
 		case INC:
-			ExplosionLarge.explodeFire(worldObj, posX, posY, posZ, strength, true, false, true);
-			ExplosionLarge.jolt(worldObj, posX, posY, posZ, strength * 1.5, (int) (strength * 50), 0.25);
+			ExplosionLarge.explodeFire(this.worldObj, this.posX, this.posY, this.posZ, strength, true, false, true);
+			ExplosionLarge.jolt(this.worldObj, this.posX, this.posY, this.posZ, strength * 1.5, (int) (strength * 50), 0.25);
 			break;
 		case CLUSTER:
 			break;
 		case BUSTER:
-			ExplosionLarge.buster(worldObj, posX, posY, posZ, Vec3.createVectorHelper(motionX, motionY, motionZ), strength, strength * 4);
+			ExplosionLarge.buster(this.worldObj, this.posX, this.posY, this.posZ, Vec3.createVectorHelper(this.motionX, this.motionY, this.motionZ), strength, strength * 4);
 			break;
 		case NUCLEAR:
 		case TX:
-			worldObj.spawnEntityInWorld(EntityNukeExplosionMK5.statFac(worldObj, (int) strength, posX, posY, posZ));
-			EntityNukeTorex.statFac(worldObj, posX, posY, posZ, strength);
+			this.worldObj.spawnEntityInWorld(EntityNukeExplosionMK5.statFac(this.worldObj, (int) strength, this.posX, this.posY, this.posZ));
+			EntityNukeTorex.statFac(this.worldObj, this.posX, this.posY, this.posZ, strength);
 			break;
 		case BALEFIRE:
-			EntityBalefire bf = new EntityBalefire(worldObj);
+			EntityBalefire bf = new EntityBalefire(this.worldObj);
 			bf.posX = this.posX;
 			bf.posY = this.posY;
 			bf.posZ = this.posZ;
 			bf.destructionRange = (int) strength;
-			worldObj.spawnEntityInWorld(bf);
-			EntityNukeTorex.statFacBale(worldObj, posX, posY, posZ, strength);
+			this.worldObj.spawnEntityInWorld(bf);
+			EntityNukeTorex.statFacBale(this.worldObj, this.posX, this.posY, this.posZ, strength);
 			break;
 		case N2:
-			worldObj.spawnEntityInWorld(EntityNukeExplosionMK5.statFacNoRad(worldObj, (int) strength, posX, posY, posZ));
-			EntityNukeTorex.statFac(worldObj, posX, posY, posZ, strength);
+			this.worldObj.spawnEntityInWorld(EntityNukeExplosionMK5.statFacNoRad(this.worldObj, (int) strength, this.posX, this.posY, this.posZ));
+			EntityNukeTorex.statFac(this.worldObj, this.posX, this.posY, this.posZ, strength);
 			break;
 		case TAINT:
 			int r = (int) strength;
 			for(int i = 0; i < r * 10; i++) {
-				int a = rand.nextInt(r) + (int) posX - (r / 2 - 1);
-				int b = rand.nextInt(r) + (int) posY - (r / 2 - 1);
-				int c = rand.nextInt(r) + (int) posZ - (r / 2 - 1);
-				if(worldObj.getBlock(a, b, c).isReplaceable(worldObj, a, b, c) && BlockTaint.hasPosNeightbour(worldObj, a, b, c)) {
-					worldObj.setBlock(a, b, c, ModBlocks.taint, rand.nextInt(3) + 4, 2);
+				int a = this.rand.nextInt(r) + (int) this.posX - (r / 2 - 1);
+				int b = this.rand.nextInt(r) + (int) this.posY - (r / 2 - 1);
+				int c = this.rand.nextInt(r) + (int) this.posZ - (r / 2 - 1);
+				if(this.worldObj.getBlock(a, b, c).isReplaceable(this.worldObj, a, b, c) && BlockTaint.hasPosNeightbour(this.worldObj, a, b, c)) {
+					this.worldObj.setBlock(a, b, c, ModBlocks.taint, this.rand.nextInt(3) + 4, 2);
 				}
 			}
 			break;
 		case CLOUD:
 			this.worldObj.playAuxSFX(2002, (int) Math.round(this.posX), (int) Math.round(this.posY), (int) Math.round(this.posZ), 0);
-			ExplosionChaos.spawnChlorine(worldObj, posX - motionX, posY - motionY, posZ - motionZ, 750, 2.5, 2);
+			ExplosionChaos.spawnChlorine(this.worldObj, this.posX - this.motionX, this.posY - this.motionY, this.posZ - this.motionZ, 750, 2.5, 2);
 			break;
 		case TURBINE:
-			ExplosionLarge.explode(worldObj, posX, posY, posZ, 10, true, false, true);
+			ExplosionLarge.explode(this.worldObj, this.posX, this.posY, this.posZ, 10, true, false, true);
 			int count = (int) strength;
 			Vec3 vec = Vec3.createVectorHelper(0.5, 0, 0);
 
 			for(int i = 0; i < count; i++) {
-				EntityBulletBaseNT blade = new EntityBulletBaseNT(worldObj, BulletConfigSyncingUtil.TURBINE);
-				blade.setPositionAndRotation(this.posX - this.motionX, this.posY - this.motionY + rand.nextGaussian(), this.posZ - this.motionZ, 0, 0);
+				EntityBulletBaseNT blade = new EntityBulletBaseNT(this.worldObj, BulletConfigSyncingUtil.TURBINE);
+				blade.setPositionAndRotation(this.posX - this.motionX, this.posY - this.motionY + this.rand.nextGaussian(), this.posZ - this.motionZ, 0, 0);
 				blade.motionX = vec.xCoord;
 				blade.motionZ = vec.zCoord;
-				worldObj.spawnEntityInWorld(blade);
+				this.worldObj.spawnEntityInWorld(blade);
 				vec.rotateAroundY((float) (Math.PI * 2F / (float) count));
 			}
 
@@ -378,44 +380,45 @@ public class EntityMissileCustom extends Entity implements IChunkLoader, IRadarD
 		}
 	}
 
+	@Override
 	public void init(Ticket ticket) {
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 
 			if(ticket != null) {
 
-				if(loaderTicket == null) {
+				if(this.loaderTicket == null) {
 
-					loaderTicket = ticket;
-					loaderTicket.bindEntity(this);
-					loaderTicket.getModData();
+					this.loaderTicket = ticket;
+					this.loaderTicket.bindEntity(this);
+					this.loaderTicket.getModData();
 				}
 
-				ForgeChunkManager.forceChunk(loaderTicket, new ChunkCoordIntPair(chunkCoordX, chunkCoordZ));
+				ForgeChunkManager.forceChunk(this.loaderTicket, new ChunkCoordIntPair(this.chunkCoordX, this.chunkCoordZ));
 			}
 		}
 	}
 
-	List<ChunkCoordIntPair> loadedChunks = new ArrayList<ChunkCoordIntPair>();
+	List<ChunkCoordIntPair> loadedChunks = new ArrayList<>();
 
 	public void loadNeighboringChunks(int newChunkX, int newChunkZ) {
-		if(!worldObj.isRemote && loaderTicket != null) {
-			for(ChunkCoordIntPair chunk : loadedChunks) {
-				ForgeChunkManager.unforceChunk(loaderTicket, chunk);
+		if(!this.worldObj.isRemote && this.loaderTicket != null) {
+			for(ChunkCoordIntPair chunk : this.loadedChunks) {
+				ForgeChunkManager.unforceChunk(this.loaderTicket, chunk);
 			}
 
-			loadedChunks.clear();
-			loadedChunks.add(new ChunkCoordIntPair(newChunkX, newChunkZ));
-			loadedChunks.add(new ChunkCoordIntPair(newChunkX + 1, newChunkZ + 1));
-			loadedChunks.add(new ChunkCoordIntPair(newChunkX - 1, newChunkZ - 1));
-			loadedChunks.add(new ChunkCoordIntPair(newChunkX + 1, newChunkZ - 1));
-			loadedChunks.add(new ChunkCoordIntPair(newChunkX - 1, newChunkZ + 1));
-			loadedChunks.add(new ChunkCoordIntPair(newChunkX + 1, newChunkZ));
-			loadedChunks.add(new ChunkCoordIntPair(newChunkX, newChunkZ + 1));
-			loadedChunks.add(new ChunkCoordIntPair(newChunkX - 1, newChunkZ));
-			loadedChunks.add(new ChunkCoordIntPair(newChunkX, newChunkZ - 1));
+			this.loadedChunks.clear();
+			this.loadedChunks.add(new ChunkCoordIntPair(newChunkX, newChunkZ));
+			this.loadedChunks.add(new ChunkCoordIntPair(newChunkX + 1, newChunkZ + 1));
+			this.loadedChunks.add(new ChunkCoordIntPair(newChunkX - 1, newChunkZ - 1));
+			this.loadedChunks.add(new ChunkCoordIntPair(newChunkX + 1, newChunkZ - 1));
+			this.loadedChunks.add(new ChunkCoordIntPair(newChunkX - 1, newChunkZ + 1));
+			this.loadedChunks.add(new ChunkCoordIntPair(newChunkX + 1, newChunkZ));
+			this.loadedChunks.add(new ChunkCoordIntPair(newChunkX, newChunkZ + 1));
+			this.loadedChunks.add(new ChunkCoordIntPair(newChunkX - 1, newChunkZ));
+			this.loadedChunks.add(new ChunkCoordIntPair(newChunkX, newChunkZ - 1));
 
-			for(ChunkCoordIntPair chunk : loadedChunks) {
-				ForgeChunkManager.forceChunk(loaderTicket, chunk);
+			for(ChunkCoordIntPair chunk : this.loadedChunks) {
+				ForgeChunkManager.forceChunk(this.loaderTicket, chunk);
 			}
 		}
 	}

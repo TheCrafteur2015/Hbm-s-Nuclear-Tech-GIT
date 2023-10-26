@@ -6,7 +6,7 @@ public class ItemPlasticScrap extends ItemEnumMulti {
 
 	public ItemPlasticScrap() {
 		super(ScrapType.class, false, false);
-		this.setCreativeTab(null);
+		setCreativeTab(null);
 	}
 	
 	public static enum ScrapType {

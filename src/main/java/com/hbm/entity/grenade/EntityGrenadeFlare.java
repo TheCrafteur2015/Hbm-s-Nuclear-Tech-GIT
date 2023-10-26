@@ -30,7 +30,7 @@ public class EntityGrenadeFlare extends EntityThrowable
     	super.onUpdate();
     	if(this.ticksExisted > 250)
     	{
-    		this.setDead();
+    		setDead();
     	}
     }
 

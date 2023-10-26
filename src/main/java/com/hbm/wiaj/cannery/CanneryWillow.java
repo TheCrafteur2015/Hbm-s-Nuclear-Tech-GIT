@@ -4,8 +4,8 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.generic.BlockNTMFlower.EnumFlowerType;
 import com.hbm.blocks.generic.BlockTallPlant.EnumTallFlower;
 import com.hbm.inventory.OreDictManager.DictFrame;
-import com.hbm.items.ModItems;
 import com.hbm.items.ItemEnums.EnumPlantType;
+import com.hbm.items.ModItems;
 import com.hbm.util.I18nUtil;
 import com.hbm.wiaj.JarScene;
 import com.hbm.wiaj.JarScript;
@@ -57,12 +57,12 @@ public class CanneryWillow extends CanneryBase {
 		scene0.add(new ActionWait(10));
 
 		scene0.add(new ActionCreateActor(0, new ActorFancyPanel(Minecraft.getMinecraft().fontRenderer, 0, -15, new Object[][] {{I18nUtil.resolveKey("cannery.willow.0")}}, 150)
-				.setColors(colorCopper).setOrientation(Orientation.BOTTOM)));
+				.setColors(CanneryBase.colorCopper).setOrientation(Orientation.BOTTOM)));
 		
 		scene0.add(new ActionWait(80));
 
 		scene0.add(new ActionCreateActor(0, new ActorFancyPanel(Minecraft.getMinecraft().fontRenderer, 0, -15, new Object[][] {{I18nUtil.resolveKey("cannery.willow.1")}}, 150)
-				.setColors(colorCopper).setOrientation(Orientation.BOTTOM)));
+				.setColors(CanneryBase.colorCopper).setOrientation(Orientation.BOTTOM)));
 		
 		scene0.add(new ActionWait(80));
 		scene0.add(new ActionRemoveActor(0));
@@ -75,7 +75,7 @@ public class CanneryWillow extends CanneryBase {
 		scene0.add(new ActionWait(20));
 
 		scene0.add(new ActionCreateActor(0, new ActorFancyPanel(Minecraft.getMinecraft().fontRenderer, 0, -15, new Object[][] {{I18nUtil.resolveKey("cannery.willow.2")}}, 150)
-				.setColors(colorCopper).setOrientation(Orientation.BOTTOM)));
+				.setColors(CanneryBase.colorCopper).setOrientation(Orientation.BOTTOM)));
 		
 		scene0.add(new ActionWait(80));
 		scene0.add(new ActionRemoveActor(0));
@@ -85,7 +85,7 @@ public class CanneryWillow extends CanneryBase {
 		scene0.add(new ActionWait(20));
 
 		scene0.add(new ActionCreateActor(0, new ActorFancyPanel(Minecraft.getMinecraft().fontRenderer, 0, -15, new Object[][] {{I18nUtil.resolveKey("cannery.willow.3")}}, 150)
-				.setColors(colorCopper).setOrientation(Orientation.BOTTOM)));
+				.setColors(CanneryBase.colorCopper).setOrientation(Orientation.BOTTOM)));
 		
 		scene0.add(new ActionWait(80));
 		scene0.add(new ActionRemoveActor(0));
@@ -99,10 +99,10 @@ public class CanneryWillow extends CanneryBase {
 		scene0.add(new ActionWait(20));
 
 		scene0.add(new ActionCreateActor(0, new ActorFancyPanel(Minecraft.getMinecraft().fontRenderer, 0, -35, new Object[][] {{I18nUtil.resolveKey("cannery.willow.4")}}, 150)
-				.setColors(colorCopper).setOrientation(Orientation.BOTTOM)));
+				.setColors(CanneryBase.colorCopper).setOrientation(Orientation.BOTTOM)));
 		scene0.add(new ActionWait(80));
 		scene0.add(new ActionCreateActor(0, new ActorFancyPanel(Minecraft.getMinecraft().fontRenderer, 0, -35, new Object[][] {{I18nUtil.resolveKey("cannery.willow.5")}}, 200)
-				.setColors(colorCopper).setOrientation(Orientation.BOTTOM)));
+				.setColors(CanneryBase.colorCopper).setOrientation(Orientation.BOTTOM)));
 		
 		scene0.add(new ActionWait(100));
 		scene0.add(new ActionRemoveActor(0));
@@ -116,19 +116,19 @@ public class CanneryWillow extends CanneryBase {
 		scene0.add(new ActionWait(20));
 
 		scene0.add(new ActionCreateActor(0, new ActorFancyPanel(Minecraft.getMinecraft().fontRenderer, 0, -35, new Object[][] {{I18nUtil.resolveKey("cannery.willow.6")}}, 150)
-				.setColors(colorCopper).setOrientation(Orientation.BOTTOM)));
+				.setColors(CanneryBase.colorCopper).setOrientation(Orientation.BOTTOM)));
 		scene0.add(new ActionWait(100));
 		scene0.add(new ActionRemoveActor(0));
 		
 		JarScene scene1 = new JarScene(script);
 		scene1.add(new ActionCreateActor(0, new ActorFancyPanel(Minecraft.getMinecraft().fontRenderer, 0, -35, new Object[][] {{I18nUtil.resolveKey("cannery.willow.7")}}, 200)
-				.setColors(colorCopper).setOrientation(Orientation.BOTTOM)));
+				.setColors(CanneryBase.colorCopper).setOrientation(Orientation.BOTTOM)));
 		scene1.add(new ActionWait(100));
 		scene1.add(new ActionRemoveActor(0));
 		
 		scene1.add(new ActionWait(20));
 		scene1.add(new ActionCreateActor(0, new ActorFancyPanel(Minecraft.getMinecraft().fontRenderer, 10, -25, new Object[][] {{"=", DictFrame.fromOne(ModBlocks.plant_flower, EnumFlowerType.CD0), "x1 + ", DictFrame.fromOne(ModItems.plant_item, EnumPlantType.MUSTARDWILLOW), "x3-6"}}, 0)
-				.setColors(colorCopper).setOrientation(Orientation.LEFT)));
+				.setColors(CanneryBase.colorCopper).setOrientation(Orientation.LEFT)));
 		scene1.add(new ActionSetBlock(2, 3, 2, Blocks.air));
 		scene1.add(new ActionSetBlock(2, 2, 2, ModBlocks.plant_flower, EnumFlowerType.CD0.ordinal()));
 		scene1.add(new ActionWait(60));
@@ -136,11 +136,11 @@ public class CanneryWillow extends CanneryBase {
 		scene1.add(new ActionRemoveActor(0));
 		scene1.add(new ActionWait(20));
 		scene1.add(new ActionCreateActor(0, new ActorFancyPanel(Minecraft.getMinecraft().fontRenderer, 0, -15, new Object[][] {{I18nUtil.resolveKey("cannery.willow.8")}}, 200)
-				.setColors(colorCopper).setOrientation(Orientation.BOTTOM)));
+				.setColors(CanneryBase.colorCopper).setOrientation(Orientation.BOTTOM)));
 		scene1.add(new ActionWait(100));
 		
 		scene1.add(new ActionCreateActor(0, new ActorFancyPanel(Minecraft.getMinecraft().fontRenderer, 0, -15, new Object[][] {{I18nUtil.resolveKey("cannery.willow.9")}}, 150)
-				.setColors(colorCopper).setOrientation(Orientation.BOTTOM)));
+				.setColors(CanneryBase.colorCopper).setOrientation(Orientation.BOTTOM)));
 		scene1.add(new ActionWait(100));
 		scene1.add(new ActionRemoveActor(0));
 		

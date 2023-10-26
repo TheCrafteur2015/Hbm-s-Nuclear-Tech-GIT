@@ -16,7 +16,7 @@ public class ItemRenderRedstoneSword implements IItemRenderer {
 	protected ModelSword swordModel;
 	
 	public ItemRenderRedstoneSword() {
-		swordModel = new ModelSword();
+		this.swordModel = new ModelSword();
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class ItemRenderRedstoneSword implements IItemRenderer {
 				Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(RefStrings.MODID +":textures/models/ModelSwordRedstone.png"));
 				GL11.glRotatef(-135.0F, 0.0F, 0.0F, 1.0F);
 				GL11.glTranslatef(-0.8F, 0.4F, -0.1F);
-				swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			GL11.glPopMatrix();
 		default: break;
 		}

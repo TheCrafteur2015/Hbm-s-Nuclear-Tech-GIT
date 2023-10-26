@@ -21,7 +21,7 @@ public class ContainerStorageDrum extends Container {
 			for(int i = 0; i < 6; i++) {
 
 				if(i + j > 1 && i + j < 9 && 5 - i + j > 1 && i + 5 - j > 1) {
-					this.addSlotToContainer(new Slot(drum, index, 35 + i * 18, 24 + j * 18));
+					addSlotToContainer(new Slot(drum, index, 35 + i * 18, 24 + j * 18));
 					index++;
 				}
 			}
@@ -29,12 +29,12 @@ public class ContainerStorageDrum extends Container {
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 152 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 152 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 210));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 210));
 		}
 	}
 
@@ -47,11 +47,11 @@ public class ContainerStorageDrum extends Container {
 			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 			
-			if(par2 <= drum.getSizeInventory() - 1) {
-				if(!InventoryUtil.mergeItemStack(this.inventorySlots, var5, drum.getSizeInventory(), this.inventorySlots.size(), true)) {
+			if(par2 <= this.drum.getSizeInventory() - 1) {
+				if(!InventoryUtil.mergeItemStack(this.inventorySlots, var5, this.drum.getSizeInventory(), this.inventorySlots.size(), true)) {
 					return null;
 				}
-			} else if(!InventoryUtil.mergeItemStack(this.inventorySlots, var5, 0, drum.getSizeInventory(), false)) {
+			} else if(!InventoryUtil.mergeItemStack(this.inventorySlots, var5, 0, this.drum.getSizeInventory(), false)) {
 				return null;
 			}
 
@@ -69,6 +69,6 @@ public class ContainerStorageDrum extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return drum.isUseableByPlayer(player);
+		return this.drum.isUseableByPlayer(player);
 	}
 }

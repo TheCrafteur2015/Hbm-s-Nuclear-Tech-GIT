@@ -53,20 +53,20 @@ public class AuxButtonPacket implements IMessage {
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		x = buf.readInt();
-		y = buf.readInt();
-		z = buf.readInt();
-		value = buf.readInt();
-		id = buf.readInt();
+		this.x = buf.readInt();
+		this.y = buf.readInt();
+		this.z = buf.readInt();
+		this.value = buf.readInt();
+		this.id = buf.readInt();
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeInt(x);
-		buf.writeInt(y);
-		buf.writeInt(z);
-		buf.writeInt(value);
-		buf.writeInt(id);
+		buf.writeInt(this.x);
+		buf.writeInt(this.y);
+		buf.writeInt(this.z);
+		buf.writeInt(this.value);
+		buf.writeInt(this.id);
 	}
 
 	public static class Handler implements IMessageHandler<AuxButtonPacket, IMessage> {
@@ -143,7 +143,7 @@ public class AuxButtonPacket implements IMessage {
 				if (te instanceof TileEntityBarrel) {
 					TileEntityBarrel barrel = (TileEntityBarrel)te;
 
-					barrel.mode = (short) ((barrel.mode + 1) % barrel.modes);
+					barrel.mode = (short) ((barrel.mode + 1) % TileEntityBarrel.modes);
 					barrel.markDirty();
 				}
 				

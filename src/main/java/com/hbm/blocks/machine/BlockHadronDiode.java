@@ -40,6 +40,7 @@ public class BlockHadronDiode extends BlockContainer implements IToolable {
 		this.blockIcon = iconRegister.registerIcon(RefStrings.MODID + ":hadron_diode");
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
 
@@ -49,12 +50,12 @@ public class BlockHadronDiode extends BlockContainer implements IToolable {
 
 		switch(conf) {
 		case NONE:
-			return blockIcon;
+			return this.blockIcon;
 		case IN:
-			return iconIn;
+			return this.iconIn;
 		case OUT:
 		default:
-			return iconOut;
+			return this.iconOut;
 		}
 	}
 	

@@ -18,7 +18,7 @@ public class GUILiquefactor extends GuiInfoContainer {
 
 	public GUILiquefactor(InventoryPlayer invPlayer, TileEntityMachineLiquefactor tedf) {
 		super(new ContainerLiquefactor(invPlayer, tedf));
-		liquefactor = tedf;
+		this.liquefactor = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 204;
@@ -28,8 +28,8 @@ public class GUILiquefactor extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		liquefactor.tank.renderTankInfo(this, mouseX, mouseY, guiLeft + 71, guiTop + 36, 16, 52);
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 134, guiTop + 18, 16, 52, liquefactor.power, liquefactor.maxPower);
+		this.liquefactor.tank.renderTankInfo(this, mouseX, mouseY, this.guiLeft + 71, this.guiTop + 36, 16, 52);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 134, this.guiTop + 18, 16, 52, this.liquefactor.power, TileEntityMachineLiquefactor.maxPower);
 	}
 	
 	@Override
@@ -44,18 +44,18 @@ public class GUILiquefactor extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUILiquefactor.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
-		int i = (int)(liquefactor.getPower() * 52 / liquefactor.getMaxPower());
-		drawTexturedModalRect(guiLeft + 134, guiTop + 70 - i, 176, 52 - i, 16, i);
+		int i = (int)(this.liquefactor.getPower() * 52 / this.liquefactor.getMaxPower());
+		drawTexturedModalRect(this.guiLeft + 134, this.guiTop + 70 - i, 176, 52 - i, 16, i);
 		
-		int j = liquefactor.progress * 42 / liquefactor.processTime;
-		drawTexturedModalRect(guiLeft + 42, guiTop + 17, 192, 0, j, 35);
+		int j = this.liquefactor.progress * 42 / this.liquefactor.processTime;
+		drawTexturedModalRect(this.guiLeft + 42, this.guiTop + 17, 192, 0, j, 35);
 		
 		if(i > 0)
-			drawTexturedModalRect(guiLeft + 138, guiTop + 4, 176, 52, 9, 12);
+			drawTexturedModalRect(this.guiLeft + 138, this.guiTop + 4, 176, 52, 9, 12);
 		
-		liquefactor.tank.renderTank(guiLeft + 71, guiTop + 88, this.zLevel, 16, 52);
+		this.liquefactor.tank.renderTank(this.guiLeft + 71, this.guiTop + 88, this.zLevel, 16, 52);
 	}
 }

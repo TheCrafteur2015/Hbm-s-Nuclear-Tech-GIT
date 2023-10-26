@@ -23,7 +23,7 @@ public class EntityMinecartSemtex extends EntityMinecartNTM {
 
 	@Override
 	public ItemStack getCartItem() {
-		return ItemModMinecart.createCartItem(this.getBase(), EnumMinecart.SEMTEX);
+		return ItemModMinecart.createCartItem(getBase(), EnumMinecart.SEMTEX);
 	}
 
 	@Override

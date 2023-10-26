@@ -12,14 +12,14 @@ public class ModelArmorDesh extends ModelArmorBase {
 	public ModelArmorDesh(int type) {
 		super(type);
 
-		head = new ModelRendererObj(ResourceManager.armor_steamsuit, "Head");
-		body = new ModelRendererObj(ResourceManager.armor_steamsuit, "Body");
-		leftArm = new ModelRendererObj(ResourceManager.armor_steamsuit, "LeftArm").setRotationPoint(-5.0F, 2.0F, 0.0F);
-		rightArm = new ModelRendererObj(ResourceManager.armor_steamsuit, "RightArm").setRotationPoint(5.0F, 2.0F, 0.0F);
-		leftLeg = new ModelRendererObj(ResourceManager.armor_steamsuit, "LeftLeg").setRotationPoint(1.9F, 12.0F, 0.0F);
-		rightLeg = new ModelRendererObj(ResourceManager.armor_steamsuit, "RightLeg").setRotationPoint(-1.9F, 12.0F, 0.0F);
-		leftFoot = new ModelRendererObj(ResourceManager.armor_steamsuit, "LeftBoot").setRotationPoint(1.9F, 12.0F, 0.0F);
-		rightFoot = new ModelRendererObj(ResourceManager.armor_steamsuit, "RightBoot").setRotationPoint(-1.9F, 12.0F, 0.0F);
+		this.head = new ModelRendererObj(ResourceManager.armor_steamsuit, "Head");
+		this.body = new ModelRendererObj(ResourceManager.armor_steamsuit, "Body");
+		this.leftArm = new ModelRendererObj(ResourceManager.armor_steamsuit, "LeftArm").setRotationPoint(-5.0F, 2.0F, 0.0F);
+		this.rightArm = new ModelRendererObj(ResourceManager.armor_steamsuit, "RightArm").setRotationPoint(5.0F, 2.0F, 0.0F);
+		this.leftLeg = new ModelRendererObj(ResourceManager.armor_steamsuit, "LeftLeg").setRotationPoint(1.9F, 12.0F, 0.0F);
+		this.rightLeg = new ModelRendererObj(ResourceManager.armor_steamsuit, "RightLeg").setRotationPoint(-1.9F, 12.0F, 0.0F);
+		this.leftFoot = new ModelRendererObj(ResourceManager.armor_steamsuit, "LeftBoot").setRotationPoint(1.9F, 12.0F, 0.0F);
+		this.rightFoot = new ModelRendererObj(ResourceManager.armor_steamsuit, "RightBoot").setRotationPoint(-1.9F, 12.0F, 0.0F);
 	}
 
 	@Override
@@ -30,26 +30,26 @@ public class ModelArmorDesh extends ModelArmorBase {
 		GL11.glPushMatrix();
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		
-		if(type == 0) {
+		if(this.type == 0) {
 			bindTexture(ResourceManager.steamsuit_helmet);
-			head.render(par7);
+			this.head.render(par7);
 		}
-		if(type == 1) {
+		if(this.type == 1) {
 			bindTexture(ResourceManager.steamsuit_chest);
-			body.render(par7);
+			this.body.render(par7);
 			bindTexture(ResourceManager.steamsuit_arm);
-			leftArm.render(par7);
-			rightArm.render(par7);
+			this.leftArm.render(par7);
+			this.rightArm.render(par7);
 		}
-		if(type == 2) {
+		if(this.type == 2) {
 			bindTexture(ResourceManager.steamsuit_leg);
-			leftLeg.render(par7);
-			rightLeg.render(par7);
+			this.leftLeg.render(par7);
+			this.rightLeg.render(par7);
 		}
-		if(type == 3) {
+		if(this.type == 3) {
 			bindTexture(ResourceManager.steamsuit_leg);
-			leftFoot.render(par7);
-			rightFoot.render(par7);
+			this.leftFoot.render(par7);
+			this.rightFoot.render(par7);
 		}
 		
 		GL11.glShadeModel(GL11.GL_FLAT);

@@ -53,8 +53,8 @@ public class RenderAssembler extends TileEntitySpecialRenderer {
         TileEntityMachineAssembler assembler = (TileEntityMachineAssembler) tileEntity;
 
         if(assembler.recipe != -1) {
-			itemRenderer = new RenderDecoItem(this);
-			itemRenderer.setRenderManager(renderManager);
+			this.itemRenderer = new RenderDecoItem(this);
+			this.itemRenderer.setRenderManager(this.renderManager);
 			GL11.glPushMatrix();
 				GL11.glTranslated(-1, 0.875, 0);
 	        	

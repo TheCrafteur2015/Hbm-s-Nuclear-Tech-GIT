@@ -63,7 +63,7 @@ public class RendererObjTester extends TileEntitySpecialRenderer {
 		double cy4 = Math.sin(System.currentTimeMillis() / chewing % (Math.PI * 2));
 		double cy5 = Math.sin(System.currentTimeMillis() / chewing % (Math.PI * 2) - Math.PI * 0.5);
 		
-		this.bindTexture(ResourceManager.glyphid_tex);
+		bindTexture(ResourceManager.glyphid_tex);
 		ResourceManager.glyphid.renderPart("Body");
 		ResourceManager.glyphid.renderPart("ArmorFront");
 		ResourceManager.glyphid.renderPart("ArmorLeft");
@@ -168,7 +168,7 @@ public class RendererObjTester extends TileEntitySpecialRenderer {
 			GL11.glPopMatrix();
 		}
 
-		this.bindTexture(ResourceManager.universal);
+		bindTexture(ResourceManager.universal);
 		GL11.glScaled(0.05, 0.05, 0.05);
 		ResourceManager.sphere_uv.renderAll();
 		

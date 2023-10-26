@@ -20,10 +20,10 @@ import net.minecraft.item.ItemStack;
 
 public class RadiolysisRecipeHandler extends TemplateRecipeHandler {
 	
-	public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<RecipeTransferRect>();
-	public LinkedList<RecipeTransferRect> transferRectsGui = new LinkedList<RecipeTransferRect>();
-	public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<Class<? extends GuiContainer>>();
-	public LinkedList<Class<? extends GuiContainer>> guiGui = new LinkedList<Class<? extends GuiContainer>>();
+	public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<>();
+	public LinkedList<RecipeTransferRect> transferRectsGui = new LinkedList<>();
+	public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<>();
+	public LinkedList<Class<? extends GuiContainer>> guiGui = new LinkedList<>();
 		
 	public class RecipeSet extends TemplateRecipeHandler.CachedRecipe {
 		PositionedStack input;
@@ -39,18 +39,18 @@ public class RadiolysisRecipeHandler extends TemplateRecipeHandler {
 		
 		@Override
 		public List<PositionedStack> getIngredients() {
-			return getCycledIngredients(cycleticks / 20, Arrays.asList(input));
+			return getCycledIngredients(RadiolysisRecipeHandler.this.cycleticks / 20, Arrays.asList(this.input));
 		}
 		
 		@Override
 		public PositionedStack getResult() {
-			return output1;
+			return this.output1;
 		}
 		
 		@Override
 		public List<PositionedStack> getOtherStacks() {
-			List<PositionedStack> stacks = new ArrayList<PositionedStack>();
-			stacks.add(output2);
+			List<PositionedStack> stacks = new ArrayList<>();
+			stacks.add(this.output2);
 			return stacks;
 		}
 	}
@@ -116,14 +116,14 @@ public class RadiolysisRecipeHandler extends TemplateRecipeHandler {
 	
 	@Override
 	public void loadTransferRects() {
-		transferRectsGui = new LinkedList<RecipeTransferRect>();
-		guiGui = new LinkedList<Class<? extends GuiContainer>>();
+		this.transferRectsGui = new LinkedList<>();
+		this.guiGui = new LinkedList<>();
 		
-		transferRects.add(new RecipeTransferRect(new Rectangle(52, 19, 64, 27), "ntmRadiolysis"));
-		transferRectsGui.add(new RecipeTransferRect(new Rectangle(66, 25, 25, 14), "ntmRadiolysis"));
-		guiGui.add(GUIRadiolysis.class);
-		RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), transferRects);
-		RecipeTransferRectHandler.registerRectsToGuis(guiGui, transferRectsGui);
+		this.transferRects.add(new RecipeTransferRect(new Rectangle(52, 19, 64, 27), "ntmRadiolysis"));
+		this.transferRectsGui.add(new RecipeTransferRect(new Rectangle(66, 25, 25, 14), "ntmRadiolysis"));
+		this.guiGui.add(GUIRadiolysis.class);
+		RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), this.transferRects);
+		RecipeTransferRectHandler.registerRectsToGuis(this.guiGui, this.transferRectsGui);
 	}
 	
 }

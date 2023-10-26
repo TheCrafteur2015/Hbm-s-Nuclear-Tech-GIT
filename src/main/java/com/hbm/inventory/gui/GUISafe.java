@@ -19,7 +19,7 @@ public class GUISafe extends GuiContainer {
 	
 	public GUISafe(InventoryPlayer invPlayer, TileEntitySafe tedf) {
 		super(new ContainerSafe(invPlayer, tedf));
-		diFurnace = tedf;
+		this.diFurnace = tedf;
 
 		this.xSize = 176;
 		this.ySize = 168;
@@ -36,7 +36,7 @@ public class GUISafe extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUISafe.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 	}
 }

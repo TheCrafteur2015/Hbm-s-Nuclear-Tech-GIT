@@ -44,6 +44,7 @@ public class FoundryBasin extends FoundryCastingBase {
 		return new TileEntityFoundryBasin();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB entityBounding, List list, Entity entity) {
 		
@@ -64,7 +65,7 @@ public class FoundryBasin extends FoundryCastingBase {
 
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
-		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.999F, 1.0F); //for some fucking reason setting maxY to something that isn't 1 magically fixes item collisions
+		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.999F, 1.0F); //for some fucking reason setting maxY to something that isn't 1 magically fixes item collisions
 	}
 
 	@Override
@@ -81,7 +82,7 @@ public class FoundryBasin extends FoundryCastingBase {
 
 	@Override
 	public int getRenderType() {
-		return renderID;
+		return FoundryBasin.renderID;
 	}
 	
 	@Override

@@ -50,10 +50,10 @@ public class BlockToolConversion extends BlockMulti implements IToolable, ILookO
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		super.registerBlockIcons(iconRegister);
 		
-		if(names != null) {
-			icons = new IIcon[names.length];
-			for(int i = 0; i < names.length; i++) {
-				icons[i] = iconRegister.registerIcon(getTextureName() + names[i]);
+		if(this.names != null) {
+			this.icons = new IIcon[this.names.length];
+			for(int i = 0; i < this.names.length; i++) {
+				this.icons[i] = iconRegister.registerIcon(getTextureName() + this.names[i]);
 			}
 		}
 	}
@@ -63,11 +63,11 @@ public class BlockToolConversion extends BlockMulti implements IToolable, ILookO
 		
 		int meta = stack.getItemDamage() - 1;
 		
-		if(meta == -1 || names == null || meta >= names.length) {
+		if(meta == -1 || this.names == null || meta >= this.names.length) {
 			return this.getUnlocalizedName();
 		}
 		
-		return this.getUnlocalizedName() + names[meta];
+		return this.getUnlocalizedName() + this.names[meta];
 	}
 
 	@Override
@@ -76,11 +76,11 @@ public class BlockToolConversion extends BlockMulti implements IToolable, ILookO
 		
 		metadata -= 1;
 		
-		if(metadata == -1 || icons == null || metadata >= icons.length) {
+		if(metadata == -1 || this.icons == null || metadata >= this.icons.length) {
 			return super.getIcon(side, metadata);
 		}
 		
-		return icons[metadata];
+		return this.icons[metadata];
 	}
 
 	@Override
@@ -88,11 +88,11 @@ public class BlockToolConversion extends BlockMulti implements IToolable, ILookO
 		
 		if(world.isRemote) return false;
 		
-		Pair<AStack[], MetaBlock> result = conversions.get(new Pair(tool, new MetaBlock(this, world.getBlockMetadata(x, y, z))));
+		Pair<AStack[], MetaBlock> result = BlockToolConversion.conversions.get(new Pair<>(tool, new MetaBlock(this, world.getBlockMetadata(x, y, z))));
 		
 		if(result == null) return false;
 		
-		List<AStack> list = new ArrayList();
+		List<AStack> list = new ArrayList<>();
 		for(AStack stack : result.key) list.add(stack);
 		
 		if(list == null || list.isEmpty() || InventoryUtil.doesPlayerHaveAStacks(player, list, true)) {
@@ -109,16 +109,16 @@ public class BlockToolConversion extends BlockMulti implements IToolable, ILookO
 		
 		ItemStack held = Minecraft.getMinecraft().thePlayer.getHeldItem();
 		if(held == null) return;
-		ToolType tool = this.quickLookup(held);
+		ToolType tool = BlockToolConversion.quickLookup(held);
 		if(tool == null) return;
 		
-		Pair<AStack[], MetaBlock> result = conversions.get(new Pair(tool, new MetaBlock(this, world.getBlockMetadata(x, y, z))));
+		Pair<AStack[], MetaBlock> result = BlockToolConversion.conversions.get(new Pair<>(tool, new MetaBlock(this, world.getBlockMetadata(x, y, z))));
 		
 		if(result == null) return;
 		
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		text.add(EnumChatFormatting.GOLD + "Requires:");
-		List<AStack> materials = new ArrayList();
+		List<AStack> materials = new ArrayList<>();
 		for(AStack stack : result.key) materials.add(stack);
 		
 		List<ItemStack> tools = tool.stacksForDisplay;
@@ -141,30 +141,30 @@ public class BlockToolConversion extends BlockMulti implements IToolable, ILookO
 
 	@Override
 	public int getSubCount() {
-		return names != null ? names.length + 1 : 1;
+		return this.names != null ? this.names.length + 1 : 1;
 	}
 	
 	public static ToolType quickLookup(ItemStack stack) {
 		return ToolType.getType(stack);
 	}
 	
-	public static HashMap<Pair<ToolType, MetaBlock>, Pair<AStack[], MetaBlock>> conversions = new HashMap();
+	public static HashMap<Pair<ToolType, MetaBlock>, Pair<AStack[], MetaBlock>> conversions = new HashMap<>();
 	
 	public static void registerRecipes() {
-		conversions.put(new Pair(ToolType.BOLT, new MetaBlock(ModBlocks.watz_end, 0)), new Pair(new AStack[] {new ComparableStack(ModItems.bolt_dura_steel, 4)}, new MetaBlock(ModBlocks.watz_end, 1)));
-		conversions.put(new Pair(ToolType.TORCH, new MetaBlock(ModBlocks.fusion_conductor, 0)), new Pair(new AStack[] {new OreDictStack(OreDictManager.STEEL.plateCast())}, new MetaBlock(ModBlocks.fusion_conductor, 1)));
+		BlockToolConversion.conversions.put(new Pair<>(ToolType.BOLT, new MetaBlock(ModBlocks.watz_end, 0)), new Pair<>(new AStack[] {new ComparableStack(ModItems.bolt_dura_steel, 4)}, new MetaBlock(ModBlocks.watz_end, 1)));
+		BlockToolConversion.conversions.put(new Pair<>(ToolType.TORCH, new MetaBlock(ModBlocks.fusion_conductor, 0)), new Pair<>(new AStack[] {new OreDictStack(OreDictManager.STEEL.plateCast())}, new MetaBlock(ModBlocks.fusion_conductor, 1)));
 	}
 
-	public static HashMap<Object[], Object> bufferedRecipes = new HashMap();
-	public static HashMap<Object[], Object> bufferedTools = new HashMap();
+	public static HashMap<Object[], Object> bufferedRecipes = new HashMap<>();
+	public static HashMap<Object[], Object> bufferedTools = new HashMap<>();
 	
 	public static HashMap<Object[], Object> getRecipes(boolean recipes) {
 		
-		if(!bufferedRecipes.isEmpty()) return recipes ? bufferedRecipes : bufferedTools;
+		if(!BlockToolConversion.bufferedRecipes.isEmpty()) return recipes ? BlockToolConversion.bufferedRecipes : BlockToolConversion.bufferedTools;
 		
-		for(Entry<Pair<ToolType, MetaBlock>, Pair<AStack[], MetaBlock>> entry : conversions.entrySet()) {
+		for(Entry<Pair<ToolType, MetaBlock>, Pair<AStack[], MetaBlock>> entry : BlockToolConversion.conversions.entrySet()) {
 			
-			List<AStack> list = new ArrayList();
+			List<AStack> list = new ArrayList<>();
 			
 			for(AStack stack : entry.getValue().getKey()) {
 				list.add(stack);
@@ -172,10 +172,10 @@ public class BlockToolConversion extends BlockMulti implements IToolable, ILookO
 			list.add(new ComparableStack(entry.getKey().getValue().block, 1, entry.getKey().getValue().meta));
 
 			Object[] inputInstance = list.toArray(new AStack[0]); // the instance has to match for the machine lookup to succeed
-			bufferedRecipes.put(inputInstance, new ItemStack(entry.getValue().getValue().block, 1, entry.getValue().getValue().meta));
-			bufferedTools.put(inputInstance, entry.getKey().getKey().stacksForDisplay.toArray(new ItemStack[0]));
+			BlockToolConversion.bufferedRecipes.put(inputInstance, new ItemStack(entry.getValue().getValue().block, 1, entry.getValue().getValue().meta));
+			BlockToolConversion.bufferedTools.put(inputInstance, entry.getKey().getKey().stacksForDisplay.toArray(new ItemStack[0]));
 		}
 		
-		return recipes ? bufferedRecipes : bufferedTools;
+		return recipes ? BlockToolConversion.bufferedRecipes : BlockToolConversion.bufferedTools;
 	}
 }

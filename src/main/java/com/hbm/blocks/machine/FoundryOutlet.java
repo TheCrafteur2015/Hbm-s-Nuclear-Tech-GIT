@@ -60,6 +60,7 @@ public class FoundryOutlet extends BlockContainer implements ICrucibleAcceptor, 
 		this.iconFilter = iconRegister.registerIcon(RefStrings.MODID + ":foundry_outlet_filter");
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
 		return true;
@@ -80,6 +81,7 @@ public class FoundryOutlet extends BlockContainer implements ICrucibleAcceptor, 
 		return new TileEntityFoundryOutlet();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB entityBounding, List list, Entity entity) {
 		
@@ -107,10 +109,10 @@ public class FoundryOutlet extends BlockContainer implements ICrucibleAcceptor, 
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
 
 		int meta = world.getBlockMetadata(x, y, z);
-		if(meta == 4) this.setBlockBounds(0.625F, 0F, 0.3125F, 1F, 0.5F, 0.6875F);
-		if(meta == 5) this.setBlockBounds(0F, 0F, 0.3125F, 0.375F, 0.5F, 0.6875F);
-		if(meta == 2) this.setBlockBounds(0.3125F, 0F, 0.625F, 0.6875F, 0.5F, 1F);
-		if(meta == 3) this.setBlockBounds(0.3125F, 0F, 0F, 0.6875F, 0.5F, 0.375F);
+		if(meta == 4) setBlockBounds(0.625F, 0F, 0.3125F, 1F, 0.5F, 0.6875F);
+		if(meta == 5) setBlockBounds(0F, 0F, 0.3125F, 0.375F, 0.5F, 0.6875F);
+		if(meta == 2) setBlockBounds(0.3125F, 0F, 0.625F, 0.6875F, 0.5F, 1F);
+		if(meta == 3) setBlockBounds(0.3125F, 0F, 0F, 0.6875F, 0.5F, 0.375F);
 	}
 	
 	@Override
@@ -179,7 +181,7 @@ public class FoundryOutlet extends BlockContainer implements ICrucibleAcceptor, 
 
 	@Override
 	public int getRenderType() {
-		return renderID;
+		return FoundryOutlet.renderID;
 	}
 	
 	@Override
@@ -195,7 +197,7 @@ public class FoundryOutlet extends BlockContainer implements ICrucibleAcceptor, 
 	@Override
 	public void printHook(Pre event, World world, int x, int y, int z) {
 		TileEntityFoundryOutlet outlet = (TileEntityFoundryOutlet) world.getTileEntity(x, y, z);
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		
 		if(outlet.filter != null) {
 			text.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("foundry.filter", outlet.filter.names[0]));
@@ -207,6 +209,6 @@ public class FoundryOutlet extends BlockContainer implements ICrucibleAcceptor, 
 			text.add(EnumChatFormatting.DARK_RED + I18nUtil.resolveKey("foundry.inverted"));
 		}
 		
-		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(this.getUnlocalizedName() + ".name"), 0xFF4000, 0x401000, text);
+		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xFF4000, 0x401000, text);
 	}
 }

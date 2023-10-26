@@ -22,17 +22,17 @@ public class EntityMissileEMPStrong extends EntityMissileBaseAdvanced {
 	@Override
 	public void onImpact() {
 		
-		EntityEMP emp = new EntityEMP(worldObj);
-		emp.posX = posX;
-		emp.posY = posY;
-		emp.posZ = posZ;
+		EntityEMP emp = new EntityEMP(this.worldObj);
+		emp.posX = this.posX;
+		emp.posY = this.posY;
+		emp.posZ = this.posZ;
 		
-		worldObj.spawnEntityInWorld(emp);
+		this.worldObj.spawnEntityInWorld(emp);
 	}
 
 	@Override
 	public List<ItemStack> getDebris() {
-		List<ItemStack> list = new ArrayList<ItemStack>();
+		List<ItemStack> list = new ArrayList<>();
 
 		list.add(new ItemStack(ModItems.plate_steel, 10));
 		list.add(new ItemStack(ModItems.plate_titanium, 6));

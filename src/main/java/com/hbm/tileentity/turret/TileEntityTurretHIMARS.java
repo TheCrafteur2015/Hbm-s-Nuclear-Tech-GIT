@@ -40,21 +40,21 @@ public class TileEntityTurretHIMARS extends TileEntityTurretBaseArtillery implem
 	@SideOnly(Side.CLIENT)
 	public List<ItemStack> getAmmoTypesForDisplay() {
 		
-		if(ammoStacks != null)
-			return ammoStacks;
+		if(this.ammoStacks != null)
+			return this.ammoStacks;
 		
-		ammoStacks = new ArrayList();
+		this.ammoStacks = new ArrayList<>();
 
-		List list = new ArrayList();
+		List<ItemStack> list = new ArrayList<>();
 		ModItems.ammo_himars.getSubItems(ModItems.ammo_himars, MainRegistry.weaponTab, list);
 		this.ammoStacks.addAll(list);
 		
-		return ammoStacks;
+		return this.ammoStacks;
 	}
 
 	@Override
 	protected List<Integer> getAmmoList() {
-		return new ArrayList();
+		return new ArrayList<>();
 	}
 
 	@Override
@@ -110,21 +110,21 @@ public class TileEntityTurretHIMARS extends TileEntityTurretBaseArtillery implem
 	@Override
 	protected void alignTurret() {
 
-		Vec3 pos = this.getTurretPos();
+		Vec3 pos = getTurretPos();
 		
-		Vec3 delta = Vec3.createVectorHelper(tPos.xCoord - pos.xCoord, tPos.yCoord - pos.yCoord, tPos.zCoord - pos.zCoord);
+		Vec3 delta = Vec3.createVectorHelper(this.tPos.xCoord - pos.xCoord, this.tPos.yCoord - pos.yCoord, this.tPos.zCoord - pos.zCoord);
 		double targetYaw = -Math.atan2(delta.xCoord, delta.zCoord);
 		double targetPitch = Math.PI / 4D;
 		
-		this.turnTowardsAngle(targetPitch, targetYaw);
+		turnTowardsAngle(targetPitch, targetYaw);
 	}
 	
 	public int getSpareRocket() {
 		
 		for(int i = 1; i < 10; i++) {
-			if(slots[i] != null) {
-				if(slots[i].getItem() == ModItems.ammo_himars) {
-					return slots[i].getItemDamage();
+			if(this.slots[i] != null) {
+				if(this.slots[i].getItem() == ModItems.ammo_himars) {
+					return this.slots[i].getItemDamage();
 				}
 			}
 		}
@@ -137,7 +137,7 @@ public class TileEntityTurretHIMARS extends TileEntityTurretBaseArtillery implem
 		
 		this.lastCrane = this.crane;
 		
-		if(this.mode == this.MODE_MANUAL) {
+		if(this.mode == TileEntityTurretHIMARS.MODE_MANUAL) {
 			if(!this.targetQueue.isEmpty()) {
 				this.tPos = this.targetQueue.get(0);
 			}
@@ -145,35 +145,35 @@ public class TileEntityTurretHIMARS extends TileEntityTurretBaseArtillery implem
 			this.targetQueue.clear();
 		}
 		
-		if(worldObj.isRemote) {
+		if(this.worldObj.isRemote) {
 			this.lastRotationPitch = this.rotationPitch;
 			this.lastRotationYaw = this.rotationYaw;
 		}
 
 		this.aligned = false;
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			this.updateConnections();
+			updateConnections();
 			
-			if(this.target != null && !target.isEntityAlive()) {
+			if(this.target != null && !this.target.isEntityAlive()) {
 				this.target = null;
 				this.stattrak++;
 			}
 		}
 		
-		if(target != null && this.mode != this.MODE_MANUAL) {
-			if(!this.entityInLOS(this.target)) {
+		if(this.target != null && this.mode != TileEntityTurretHIMARS.MODE_MANUAL) {
+			if(!entityInLOS(this.target)) {
 				this.target = null;
 			}
 		}
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			if(target != null) {
-				this.tPos = this.getEntityPos(target);
+			if(this.target != null) {
+				this.tPos = getEntityPos(this.target);
 			} else {
-				if(this.mode != this.MODE_MANUAL) {
+				if(this.mode != TileEntityTurretHIMARS.MODE_MANUAL) {
 					this.tPos = null;
 				}
 			}
@@ -181,25 +181,25 @@ public class TileEntityTurretHIMARS extends TileEntityTurretBaseArtillery implem
 		
 		if(isOn() && hasPower()) {
 			
-			if(!this.hasAmmo() || this.crane > 0) {
+			if(!hasAmmo() || this.crane > 0) {
 				
-				this.turnTowardsAngle(0, this.rotationYaw);
+				turnTowardsAngle(0, this.rotationYaw);
 				
 				if(this.aligned) {
 					
-					if(this.hasAmmo()) {
+					if(hasAmmo()) {
 						this.crane -= 0.0125F;
 					} else {
 						this.crane += 0.0125F;
 						
-						if(this.crane >= 1F && !worldObj.isRemote) {
-							int available = this.getSpareRocket();
+						if(this.crane >= 1F && !this.worldObj.isRemote) {
+							int available = getSpareRocket();
 							
 							if(available != -1) {
 								HIMARSRocket type = ItemAmmoHIMARS.itemTypes[available];
 								this.typeLoaded = available;
 								this.ammo = type.amount;
-								this.conusmeAmmo(new ComparableStack(ModItems.ammo_himars, 1, available));
+								conusmeAmmo(new ComparableStack(ModItems.ammo_himars, 1, available));
 							}
 						}
 					}
@@ -209,8 +209,8 @@ public class TileEntityTurretHIMARS extends TileEntityTurretBaseArtillery implem
 				
 			} else {
 				
-				if(tPos != null) {
-					this.alignTurret();
+				if(this.tPos != null) {
+					alignTurret();
 				}
 			}
 			
@@ -220,41 +220,41 @@ public class TileEntityTurretHIMARS extends TileEntityTurretBaseArtillery implem
 			this.tPos = null;
 		}
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			if(this.target != null && !target.isEntityAlive()) {
+			if(this.target != null && !this.target.isEntityAlive()) {
 				this.target = null;
 				this.tPos = null;
 				this.stattrak++;
 			}
 			
 			if(isOn() && hasPower()) {
-				searchTimer--;
+				this.searchTimer--;
 				
-				this.setPower(this.getPower() - this.getConsumption());
+				setPower(getPower() - getConsumption());
 				
-				if(searchTimer <= 0) {
-					searchTimer = this.getDecetorInterval();
+				if(this.searchTimer <= 0) {
+					this.searchTimer = getDecetorInterval();
 					
-					if(this.target == null && this.mode != this.MODE_MANUAL)
-						this.seekNewTarget();
+					if(this.target == null && this.mode != TileEntityTurretHIMARS.MODE_MANUAL)
+						seekNewTarget();
 				}
 			} else {
-				searchTimer = 0;
+				this.searchTimer = 0;
 			}
 			
-			if(this.aligned && crane <= 0) {
-				this.updateFiringTick();
+			if(this.aligned && this.crane <= 0) {
+				updateFiringTick();
 			}
 			
-			this.power = Library.chargeTEFromItems(slots, 10, this.power, this.getMaxPower());
+			this.power = Library.chargeTEFromItems(this.slots, 10, this.power, getMaxPower());
 			
-			NBTTagCompound data = this.writePacket();
-			this.networkPack(data, 250);
+			NBTTagCompound data = writePacket();
+			networkPack(data, 250);
 			
 		} else {
 			
-			Vec3 vec = Vec3.createVectorHelper(this.getBarrelLength(), 0, 0);
+			Vec3 vec = Vec3.createVectorHelper(getBarrelLength(), 0, 0);
 			vec.rotateAroundZ((float) -this.rotationPitch);
 			vec.rotateAroundY((float) -(this.rotationYaw + Math.PI * 0.5));
 			
@@ -295,19 +295,19 @@ public class TileEntityTurretHIMARS extends TileEntityTurretBaseArtillery implem
 	@Override
 	public void updateFiringTick() {
 		
-		timer++;
+		this.timer++;
 		
 		int delay = 40;
 		
-		if(timer % delay == 0) {
+		if(this.timer % delay == 0) {
 			
-			if(this.hasAmmo() && this.tPos != null) {
-				this.spawnShell(this.typeLoaded);
+			if(hasAmmo() && this.tPos != null) {
+				spawnShell(this.typeLoaded);
 				this.ammo--;
-				this.worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:weapon.rocketFlame", 25.0F, 1.0F);
+				this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:weapon.rocketFlame", 25.0F, 1.0F);
 			}
 			
-			if(this.mode == this.MODE_MANUAL && !this.targetQueue.isEmpty()) {
+			if(this.mode == TileEntityTurretHIMARS.MODE_MANUAL && !this.targetQueue.isEmpty()) {
 				this.targetQueue.remove(0);
 				this.tPos = null;
 			}
@@ -316,23 +316,23 @@ public class TileEntityTurretHIMARS extends TileEntityTurretBaseArtillery implem
 
 	public void spawnShell(int type) {
 		
-		Vec3 pos = this.getTurretPos();
-		Vec3 vec = Vec3.createVectorHelper(this.getBarrelLength(), 0, 0);
+		Vec3 pos = getTurretPos();
+		Vec3 vec = Vec3.createVectorHelper(getBarrelLength(), 0, 0);
 		vec.rotateAroundZ((float) -this.rotationPitch);
 		vec.rotateAroundY((float) -(this.rotationYaw + Math.PI * 0.5));
 		
-		EntityArtilleryRocket proj = new EntityArtilleryRocket(worldObj);
+		EntityArtilleryRocket proj = new EntityArtilleryRocket(this.worldObj);
 		proj.setPositionAndRotation(pos.xCoord + vec.xCoord, pos.yCoord + vec.yCoord, pos.zCoord + vec.zCoord, 0.0F, 0.0F);
 		proj.setThrowableHeading(vec.xCoord, vec.yCoord, vec.zCoord, 25F, 0.0F);
 		
 		if(this.target != null)
 			proj.setTarget(this.target);
 		else
-			proj.setTarget(tPos.xCoord, tPos.yCoord, tPos.zCoord);
+			proj.setTarget(this.tPos.xCoord, this.tPos.yCoord, this.tPos.zCoord);
 		
 		proj.setType(type);
 		
-		worldObj.spawnEntityInWorld(proj);
+		this.worldObj.spawnEntityInWorld(proj);
 	}
 
 	@Override

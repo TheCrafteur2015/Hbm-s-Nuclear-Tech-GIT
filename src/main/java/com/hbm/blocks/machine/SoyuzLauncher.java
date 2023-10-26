@@ -51,7 +51,7 @@ public class SoyuzLauncher extends BlockDummyable {
 			return true;
 		} else if(!player.isSneaking())
 		{
-			int[] pos = this.findCore(world, x, y, z);
+			int[] pos = findCore(world, x, y, z);
 			
 			if(pos == null)
 				return false;
@@ -106,7 +106,7 @@ public class SoyuzLauncher extends BlockDummyable {
 		
 		pl.getHeldItem().stackSize--;
 		
-		world.setBlock(x + dir.offsetX * o , y + dir.offsetY * o + height, z + dir.offsetZ * o, this, dir.ordinal() + offset, 3);
+		world.setBlock(x + dir.offsetX * o , y + dir.offsetY * o + SoyuzLauncher.height, z + dir.offsetZ * o, this, dir.ordinal() + BlockDummyable.offset, 3);
 		fillSpace(world, x, y, z, dir, o);
 		world.scheduleBlockUpdate(x, y, z, this, 1);
 		world.scheduleBlockUpdate(x, y, z, this, 2);
@@ -114,16 +114,14 @@ public class SoyuzLauncher extends BlockDummyable {
 		super.onBlockPlacedBy(world, x, y, z, player, itemStack);
 	}
 	
+	@Override
 	public boolean checkRequirement(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		
 		x = x + dir.offsetX * o;
-		y = y + dir.offsetY * o + height;
+		y = y + dir.offsetY * o + SoyuzLauncher.height;
 		z = z + dir.offsetZ * o;
 
-		if(!MultiblockHandlerXR.checkSpace(world, x, y, z, new int[] { 0, 1, 6, 6, 6, 6 }, x, y, z, dir)) return false;
-		if(!MultiblockHandlerXR.checkSpace(world, x, y, z, new int[] { -2, 4, -3, 6, -3, 6 }, x, y, z, dir)) return false;
-		if(!MultiblockHandlerXR.checkSpace(world, x, y, z, new int[] { -2, 4, 6, -3, -3, 6 }, x, y, z, dir)) return false;
-		if(!MultiblockHandlerXR.checkSpace(world, x, y, z, new int[] { -2, 4, 6, -3, 6, -3 }, x, y, z, dir)) return false;
+		if(!MultiblockHandlerXR.checkSpace(world, x, y, z, new int[] { 0, 1, 6, 6, 6, 6 }, x, y, z, dir) || !MultiblockHandlerXR.checkSpace(world, x, y, z, new int[] { -2, 4, -3, 6, -3, 6 }, x, y, z, dir) || !MultiblockHandlerXR.checkSpace(world, x, y, z, new int[] { -2, 4, 6, -3, -3, 6 }, x, y, z, dir) || !MultiblockHandlerXR.checkSpace(world, x, y, z, new int[] { -2, 4, 6, -3, 6, -3 }, x, y, z, dir)) return false;
 		if(!MultiblockHandlerXR.checkSpace(world, x, y, z, new int[] { -2, 4, -3, 6, 6, -3 }, x, y, z, dir)) return false;
 		if(!MultiblockHandlerXR.checkSpace(world, x, y, z, new int[] { 0, 4, 1, 1, -6, 8 }, x, y, z, dir)) return false;
 		if(!MultiblockHandlerXR.checkSpace(world, x, y, z, new int[] { 0, 4, 2, 2, 9, -5 }, x, y, z, dir)) return false;
@@ -131,10 +129,11 @@ public class SoyuzLauncher extends BlockDummyable {
 		return true;
 	}
 	
+	@Override
 	public void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		
 		x = x + dir.offsetX * o;
-		y = y + dir.offsetY * o + height;
+		y = y + dir.offsetY * o + SoyuzLauncher.height;
 		z = z + dir.offsetZ * o;
 
 		MultiblockHandlerXR.fillSpace(world, x, y, z, new int[] { 0, 1, 6, 6, 6, 6 }, this, dir);
@@ -145,17 +144,17 @@ public class SoyuzLauncher extends BlockDummyable {
 		MultiblockHandlerXR.fillSpace(world, x, y, z, new int[] { 0, 4, 1, 1, -6, 8 }, this, dir);
 		MultiblockHandlerXR.fillSpace(world, x, y, z, new int[] { 0, 4, 2, 2, 9, -5 }, this, dir);
 		
-		keepInventory = true;
+		SoyuzLauncher.keepInventory = true;
 		for(int ix = -6; ix <= 6; ix++) {
 			for(int iz = -6; iz <= 6; iz++) {
 				
 				if(ix == 6 || ix == -6 || iz == 6 || iz == -6) {
-					this.makeExtra(world, x + ix, y, z + iz);
-					this.makeExtra(world, x + ix, y + 1, z + iz);
+					makeExtra(world, x + ix, y, z + iz);
+					makeExtra(world, x + ix, y + 1, z + iz);
 				}
 			}
 		}
-		keepInventory = false;
+		SoyuzLauncher.keepInventory = false;
 	}
 
 	@Override
@@ -174,7 +173,7 @@ public class SoyuzLauncher extends BlockDummyable {
 	
 	@Override
 	public void breakBlock(World world, int x, int y, int z, Block p_149749_5_, int i) {
-		if(!keepInventory) {
+		if(!SoyuzLauncher.keepInventory) {
 			ISidedInventory tileentityfurnace = (ISidedInventory) world.getTileEntity(x, y, z);
 
 			if(tileentityfurnace instanceof TileEntitySoyuzLauncher) {

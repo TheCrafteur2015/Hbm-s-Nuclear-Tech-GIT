@@ -75,27 +75,27 @@ public class ExplosionVNT {
 		this.compat.exploder = this.exploder;
 		this.compat.explosionSize = this.size;
 		
-		boolean processBlocks = blockAllocator != null && blockProcessor != null;
-		boolean processEntities = entityProcessor != null && playerProcessor != null;
+		boolean processBlocks = this.blockAllocator != null && this.blockProcessor != null;
+		boolean processEntities = this.entityProcessor != null && this.playerProcessor != null;
 		
 		HashSet<ChunkPosition> affectedBlocks = null;
 		HashMap<EntityPlayer, Vec3> affectedPlayers = null;
 		
 		//allocation
-		if(processBlocks) affectedBlocks = blockAllocator.allocate(this, world, posX, posY, posZ, size);
-		if(processEntities) affectedPlayers = entityProcessor.process(this, world, posX, posY, posZ, size);
+		if(processBlocks) affectedBlocks = this.blockAllocator.allocate(this, this.world, this.posX, this.posY, this.posZ, this.size);
+		if(processEntities) affectedPlayers = this.entityProcessor.process(this, this.world, this.posX, this.posY, this.posZ, this.size);
 		
 		//serverside processing
-		if(processBlocks) blockProcessor.process(this, world, posX, posY, posZ, affectedBlocks);
-		if(processEntities) playerProcessor.process(this, world, posX, posY, posZ, affectedPlayers);
+		if(processBlocks) this.blockProcessor.process(this, this.world, this.posX, this.posY, this.posZ, affectedBlocks);
+		if(processEntities) this.playerProcessor.process(this, this.world, this.posX, this.posY, this.posZ, affectedPlayers);
 		
 		//compat
 		if(processBlocks) this.compat.affectedBlockPositions.addAll(affectedBlocks);
 		if(processEntities) this.compatPlayers.putAll(affectedPlayers);
 		
-		if(sfx != null) {
-			for(IExplosionSFX fx : sfx) {
-				fx.doEffect(this, world, posX, posY, posZ, size);
+		if(this.sfx != null) {
+			for(IExplosionSFX fx : this.sfx) {
+				fx.doEffect(this, this.world, this.posX, this.posY, this.posZ, this.size);
 			}
 		}
 	}
@@ -122,23 +122,23 @@ public class ExplosionVNT {
 	}
 	
 	public ExplosionVNT makeStandard() {
-		this.setBlockAllocator(new BlockAllocatorStandard());
-		this.setBlockProcessor(new BlockProcessorStandard());
-		this.setEntityProcessor(new EntityProcessorStandard());
-		this.setPlayerProcessor(new PlayerProcessorStandard());
-		this.setSFX(new ExplosionEffectStandard());
+		setBlockAllocator(new BlockAllocatorStandard());
+		setBlockProcessor(new BlockProcessorStandard());
+		setEntityProcessor(new EntityProcessorStandard());
+		setPlayerProcessor(new PlayerProcessorStandard());
+		setSFX(new ExplosionEffectStandard());
 		return this;
 	}
 	
 	public ExplosionVNT makeAmat() {
-		this.setBlockAllocator(new BlockAllocatorStandard(this.size < 15 ? 16 : 32));
-		this.setBlockProcessor(new BlockProcessorStandard()
+		setBlockAllocator(new BlockAllocatorStandard(this.size < 15 ? 16 : 32));
+		setBlockProcessor(new BlockProcessorStandard()
 				.setNoDrop());
-		this.setEntityProcessor(new EntityProcessorStandard()
+		setEntityProcessor(new EntityProcessorStandard()
 				.withRangeMod(2F)
 				.withDamageMod(new CustomDamageHandlerAmat(50F)));
-		this.setPlayerProcessor(new PlayerProcessorStandard());
-		this.setSFX(new ExplosionEffectAmat());
+		setPlayerProcessor(new PlayerProcessorStandard());
+		setSFX(new ExplosionEffectAmat());
 		return this;
 	}
 }

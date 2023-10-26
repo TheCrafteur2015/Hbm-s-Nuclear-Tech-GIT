@@ -56,9 +56,9 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IS
 
 	public TileEntitySoyuzLauncher() {
 		super(27);
-		tanks = new FluidTank[2];
-		tanks[0] = new FluidTank(Fluids.KEROSENE, 128000, 0);
-		tanks[1] = new FluidTank(Fluids.OXYGEN, 128000, 1);
+		this.tanks = new FluidTank[2];
+		this.tanks[0] = new FluidTank(Fluids.KEROSENE, 128000, 0);
+		this.tanks[1] = new FluidTank(Fluids.OXYGEN, 128000, 1);
 	}
 
 	@Override
@@ -66,72 +66,73 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IS
 		return "container.soyuzLauncher";
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void updateEntity() {
 
-		if (!worldObj.isRemote) {
+		if (!this.worldObj.isRemote) {
 			
-			if(worldObj.getTotalWorldTime() % 20 == 0) {
+			if(this.worldObj.getTotalWorldTime() % 20 == 0) {
 				for(DirPos pos : getConPos()) {
-					this.trySubscribe(worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
-					this.trySubscribe(tanks[0].getTankType(), worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
-					this.trySubscribe(tanks[1].getTankType(), worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+					this.trySubscribe(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+					this.trySubscribe(this.tanks[0].getTankType(), this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+					this.trySubscribe(this.tanks[1].getTankType(), this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 				}
 			}
 			
-			tanks[0].loadTank(4, 5, slots);
-			tanks[1].loadTank(6, 7, slots);
+			this.tanks[0].loadTank(4, 5, this.slots);
+			this.tanks[1].loadTank(6, 7, this.slots);
 
 			for (int i = 0; i < 2; i++)
-				tanks[i].updateTank(xCoord, yCoord, zCoord, worldObj.provider.dimensionId);
+				this.tanks[i].updateTank(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId);
 			
-			power = Library.chargeTEFromItems(slots, 8, power, maxPower);
+			this.power = Library.chargeTEFromItems(this.slots, 8, this.power, TileEntitySoyuzLauncher.maxPower);
 			
-			if(!starting || !canLaunch()) {
-				countdown = maxCount;
-				starting = false;
-			} else if(countdown > 0) {
-				countdown--;
+			if(!this.starting || !canLaunch()) {
+				this.countdown = TileEntitySoyuzLauncher.maxCount;
+				this.starting = false;
+			} else if(this.countdown > 0) {
+				this.countdown--;
 				
-				if(countdown % 100 == 0 && countdown > 0)
-					worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:alarm.hatch", 100F, 1.1F);
+				if(this.countdown % 100 == 0 && this.countdown > 0)
+					this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:alarm.hatch", 100F, 1.1F);
 				
 			} else {
 				liftOff();
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setLong("power", power);
-			data.setByte("mode", mode);
-			data.setBoolean("starting", starting);
-			data.setByte("type", this.getType());
+			data.setLong("power", this.power);
+			data.setByte("mode", this.mode);
+			data.setBoolean("starting", this.starting);
+			data.setByte("type", getType());
 			networkPack(data, 250);
 		}
 		
-		if(worldObj.isRemote) {
-			if(!starting || !canLaunch()) {
+		if(this.worldObj.isRemote) {
+			if(!this.starting || !canLaunch()) {
 				
-				if(audio != null) {
-					audio.stopSound();
-					audio = null;
+				if(this.audio != null) {
+					this.audio.stopSound();
+					this.audio = null;
 				}
 				
-				countdown = maxCount;
+				this.countdown = TileEntitySoyuzLauncher.maxCount;
 				
-			} else if(countdown > 0) {
+			} else if(this.countdown > 0) {
 
-				if(audio == null) {
-					audio = this.createAudioLoop();
-					audio.updateVolume(100);
-					audio.startSound();
-				} else if(!audio.isPlaying()) {
-					audio = rebootAudio(audio);
+				if(this.audio == null) {
+					this.audio = createAudioLoop();
+					this.audio.updateVolume(100);
+					this.audio.startSound();
+				} else if(!this.audio.isPlaying()) {
+					this.audio = rebootAudio(this.audio);
 				}
 				
-				countdown--;
+				this.countdown--;
 			}
 			
-			List<EntitySoyuz> entities = worldObj.getEntitiesWithinAABB(EntitySoyuz.class, AxisAlignedBB.getBoundingBox(xCoord - 0.5, yCoord, zCoord - 0.5, xCoord + 1.5, yCoord + 10, zCoord + 1.5));
+			List<EntitySoyuz> entities = this.worldObj.getEntitiesWithinAABB(EntitySoyuz.class, AxisAlignedBB.getBoundingBox(this.xCoord - 0.5, this.yCoord, this.zCoord - 0.5, this.xCoord + 1.5, this.yCoord + 10, this.zCoord + 1.5));
 			
 			if(!entities.isEmpty()) {
 				
@@ -139,10 +140,10 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IS
 				data.setString("type", "smoke");
 				data.setString("mode", "shockRand");
 				data.setInteger("count", 50);
-				data.setDouble("strength", worldObj.rand.nextGaussian() * 3 + 6);
-				data.setDouble("posX", xCoord + 0.5);
-				data.setDouble("posY", yCoord - 3);
-				data.setDouble("posZ", zCoord + 0.5);
+				data.setDouble("strength", this.worldObj.rand.nextGaussian() * 3 + 6);
+				data.setDouble("posX", this.xCoord + 0.5);
+				data.setDouble("posY", this.yCoord - 3);
+				data.setDouble("posZ", this.zCoord + 0.5);
 				
 				MainRegistry.proxy.effectNT(data);
 			}
@@ -152,101 +153,104 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IS
 	protected List<DirPos> conPos;
 	protected List<DirPos> getConPos() {
 		
-		if(conPos != null)
-			return conPos;
+		if(this.conPos != null)
+			return this.conPos;
 		
-		conPos = new ArrayList();
+		this.conPos = new ArrayList<>();
 		
 		for(ForgeDirection dir : new ForgeDirection[] {Library.POS_X, Library.POS_Z, Library.NEG_X, Library.NEG_Z}) {
 			ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 			
 			for(int i = -6; i <= 6; i++) {
-				conPos.add(new DirPos(xCoord + dir.offsetX * 7 + rot.offsetX * i, yCoord + 0, zCoord + dir.offsetZ * 7 + rot.offsetZ * i, dir));
-				conPos.add(new DirPos(xCoord + dir.offsetX * 7 + rot.offsetX * i, yCoord - 1, zCoord + dir.offsetZ * 7 + rot.offsetZ * i, dir));
+				this.conPos.add(new DirPos(this.xCoord + dir.offsetX * 7 + rot.offsetX * i, this.yCoord + 0, this.zCoord + dir.offsetZ * 7 + rot.offsetZ * i, dir));
+				this.conPos.add(new DirPos(this.xCoord + dir.offsetX * 7 + rot.offsetX * i, this.yCoord - 1, this.zCoord + dir.offsetZ * 7 + rot.offsetZ * i, dir));
 			}
 		}
 		
-		return conPos;
+		return this.conPos;
 	}
 	
 	@Override
 	public AudioWrapper createAudioLoop() {
-		return MainRegistry.proxy.getLoopedSound("hbm:block.soyuzReady", xCoord, yCoord, zCoord, 2.0F, 100F, 1.0F);
+		return MainRegistry.proxy.getLoopedSound("hbm:block.soyuzReady", this.xCoord, this.yCoord, this.zCoord, 2.0F, 100F, 1.0F);
 	}
 	
-    public void onChunkUnload() {
+    @Override
+	public void onChunkUnload() {
     	
-    	if(audio != null) {
-			audio.stopSound();
-			audio = null;
+    	if(this.audio != null) {
+			this.audio.stopSound();
+			this.audio = null;
     	}
     }
 	
-    public void invalidate() {
+    @Override
+	public void invalidate() {
     	
     	super.invalidate();
     	
-    	if(audio != null) {
-			audio.stopSound();
-			audio = null;
+    	if(this.audio != null) {
+			this.audio.stopSound();
+			this.audio = null;
     	}
     }
 	
+	@Override
 	public void networkUnpack(NBTTagCompound data) {
-		power = data.getLong("power");
-		mode = data.getByte("mode");
-		starting = data.getBoolean("starting");
-		rocketType = data.getByte("type");
+		this.power = data.getLong("power");
+		this.mode = data.getByte("mode");
+		this.starting = data.getBoolean("starting");
+		this.rocketType = data.getByte("type");
 	}
 	
 	public void startCountdown() {
 		
 		if(canLaunch())
-			starting = true;
+			this.starting = true;
 	}
 	
 	public void liftOff() {
 		
 		this.starting = false;
 		
-		int req = this.getFuelRequired();
-		int pow = this.getPowerRequired();
+		int req = getFuelRequired();
+		int pow = getPowerRequired();
 		
-		EntitySoyuz soyuz = new EntitySoyuz(worldObj);
-		soyuz.setSkin(this.getType());
+		EntitySoyuz soyuz = new EntitySoyuz(this.worldObj);
+		soyuz.setSkin(getType());
 		soyuz.mode = this.mode;
-		soyuz.setLocationAndAngles(xCoord + 0.5, yCoord + 1, zCoord + 0.5, 0, 0);
-		worldObj.spawnEntityInWorld(soyuz);
+		soyuz.setLocationAndAngles(this.xCoord + 0.5, this.yCoord + 1, this.zCoord + 0.5, 0, 0);
+		this.worldObj.spawnEntityInWorld(soyuz);
 
-		worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:entity.soyuzTakeoff", 100F, 1.1F);
+		this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:entity.soyuzTakeoff", 100F, 1.1F);
 
-		tanks[0].setFill(tanks[0].getFill() - req);
-		tanks[1].setFill(tanks[1].getFill() - req);
-		power -= pow;
+		this.tanks[0].setFill(this.tanks[0].getFill() - req);
+		this.tanks[1].setFill(this.tanks[1].getFill() - req);
+		this.power -= pow;
 		
-		if(mode == 0) {
-			soyuz.setSat(slots[2]);
+		if(this.mode == 0) {
+			soyuz.setSat(this.slots[2]);
 			
-			if(this.orbital() == 2)
-				slots[3] = null;
+			if(orbital() == 2)
+				this.slots[3] = null;
 			
-			slots[2] = null;
+			this.slots[2] = null;
 		}
 		
-		if(mode == 1) {
-			List<ItemStack> payload = new ArrayList();
+		if(this.mode == 1) {
+			List<ItemStack> payload = new ArrayList<>();
 			
 			for(int i = 9; i < 27; i++) {
-				payload.add(slots[i]);
-				slots[i] = null;
+				payload.add(this.slots[i]);
+				this.slots[i] = null;
 			}
 
-			soyuz.targetX = slots[1].stackTagCompound.getInteger("xCoord");
-			soyuz.targetZ = slots[1].stackTagCompound.getInteger("zCoord");
+			soyuz.targetX = this.slots[1].stackTagCompound.getInteger("xCoord");
+			soyuz.targetZ = this.slots[1].stackTagCompound.getInteger("zCoord");
 			soyuz.setPayload(payload);
 		}
 		
-		slots[0] = null;
+		this.slots[0] = null;
 	}
 	
 	public boolean canLaunch() {
@@ -256,17 +260,17 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IS
 	
 	public boolean hasFuel() {
 		
-		return tanks[0].getFill() >= getFuelRequired();
+		return this.tanks[0].getFill() >= getFuelRequired();
 	}
 	
 	public boolean hasOxy() {
 
-		return tanks[1].getFill() >= getFuelRequired();
+		return this.tanks[1].getFill() >= getFuelRequired();
 	}
 	
 	public int getFuelRequired() {
 		
-		if(mode == 1)
+		if(this.mode == 1)
 			return 20000 + getDist();
 		
 		return 128000;
@@ -275,10 +279,10 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IS
 	public int getDist() {
 		
 		if(designator() == 2) {
-			int x = slots[1].stackTagCompound.getInteger("xCoord");
-			int z = slots[1].stackTagCompound.getInteger("zCoord");
+			int x = this.slots[1].stackTagCompound.getInteger("xCoord");
+			int z = this.slots[1].stackTagCompound.getInteger("zCoord");
 			
-			return (int) Vec3.createVectorHelper(xCoord - x, 0, zCoord - z).lengthVector();
+			return (int) Vec3.createVectorHelper(this.xCoord - x, 0, this.zCoord - z).lengthVector();
 		}
 			
 		return 0;
@@ -286,12 +290,12 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IS
 	
 	public boolean hasPower() {
 		
-		return power >= getPowerRequired();
+		return this.power >= getPowerRequired();
 	}
 	
 	public int getPowerRequired() {
 		
-		return (int) (maxPower * 0.75);
+		return (int) (TileEntitySoyuzLauncher.maxPower * 0.75);
 	}
 	
 	private byte getType() {
@@ -299,15 +303,15 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IS
 		if(!hasRocket())
 			return -1;
 		
-		return (byte) slots[0].getItemDamage();
+		return (byte) this.slots[0].getItemDamage();
 	}
 	
 	public long getPowerScaled(long i) {
-		return (power * i) / maxPower;
+		return (this.power * i) / TileEntitySoyuzLauncher.maxPower;
 	}
 	
 	public boolean hasRocket() {
-		return slots[0] != null && slots[0].getItem() == ModItems.missile_soyuz;
+		return this.slots[0] != null && this.slots[0].getItem() == ModItems.missile_soyuz;
 	}
 	
 	//0: designator not required
@@ -315,10 +319,10 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IS
 	//2: designator present
 	public int designator() {
 		
-		if(mode == 0) {
+		if(this.mode == 0) {
 			return 0;
 		}
-		if(slots[1] != null && slots[1].getItem() instanceof IDesignatorItem && ((IDesignatorItem)slots[1].getItem()).isReady(worldObj, slots[1], xCoord, yCoord, zCoord)) {
+		if(this.slots[1] != null && this.slots[1].getItem() instanceof IDesignatorItem && ((IDesignatorItem)this.slots[1].getItem()).isReady(this.worldObj, this.slots[1], this.xCoord, this.yCoord, this.zCoord)) {
 			return 2;
 		}
 		
@@ -330,10 +334,10 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IS
 	//2: sat present
 	public int satellite() {
 		
-		if(mode == 1)
+		if(this.mode == 1)
 			return 0;
 		
-		if(slots[2] != null) {
+		if(this.slots[2] != null) {
 			return 2;
 		}
 		return 1;
@@ -344,11 +348,11 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IS
 	//2: module present
 	public int orbital() {
 		
-		if(mode == 1)
+		if(this.mode == 1)
 			return 0;
 		
-		if(slots[2] != null && (slots[2].getItem() == ModItems.sat_gerald || slots[2].getItem() == ModItems.sat_lunar_miner)) {
-			if(slots[3] != null && slots[3].getItem() == ModItems.missile_soyuz_lander)
+		if(this.slots[2] != null && (this.slots[2].getItem() == ModItems.sat_gerald || this.slots[2].getItem() == ModItems.sat_lunar_miner)) {
+			if(this.slots[3] != null && this.slots[3].getItem() == ModItems.missile_soyuz_lander)
 				return 2;
 			return 1;
 		}
@@ -360,18 +364,18 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IS
 		super.readFromNBT(nbt);
 		NBTTagList list = nbt.getTagList("items", 10);
 
-		tanks[0].readFromNBT(nbt, "fuel");
-		tanks[1].readFromNBT(nbt, "oxidizer");
-		power = nbt.getLong("power");
-		mode = nbt.getByte("mode");
+		this.tanks[0].readFromNBT(nbt, "fuel");
+		this.tanks[1].readFromNBT(nbt, "oxidizer");
+		this.power = nbt.getLong("power");
+		this.mode = nbt.getByte("mode");
 
-		slots = new ItemStack[getSizeInventory()];
+		this.slots = new ItemStack[getSizeInventory()];
 
 		for (int i = 0; i < list.tagCount(); i++) {
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("slot");
-			if (b0 >= 0 && b0 < slots.length) {
-				slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
+			if (b0 >= 0 && b0 < this.slots.length) {
+				this.slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
 			}
 		}
 	}
@@ -382,16 +386,16 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IS
 		
 		NBTTagList list = new NBTTagList();
 
-		tanks[0].writeToNBT(nbt, "fuel");
-		tanks[1].writeToNBT(nbt, "oxidizer");
-		nbt.setLong("power", power);
-		nbt.setByte("mode", mode);
+		this.tanks[0].writeToNBT(nbt, "fuel");
+		this.tanks[1].writeToNBT(nbt, "oxidizer");
+		nbt.setLong("power", this.power);
+		nbt.setByte("mode", this.mode);
 
-		for (int i = 0; i < slots.length; i++) {
-			if (slots[i] != null) {
+		for (int i = 0; i < this.slots.length; i++) {
+			if (this.slots[i] != null) {
 				NBTTagCompound nbt1 = new NBTTagCompound();
 				nbt1.setByte("slot", (byte) i);
-				slots[i].writeToNBT(nbt1);
+				this.slots[i].writeToNBT(nbt1);
 				list.appendTag(nbt1);
 			}
 		}
@@ -400,40 +404,40 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IS
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		if (type.name().equals(tanks[0].getTankType().name()))
-			return tanks[0].getMaxFill();
-		else if (type.name().equals(tanks[1].getTankType().name()))
-			return tanks[1].getMaxFill();
+		if (type.name().equals(this.tanks[0].getTankType().name()))
+			return this.tanks[0].getMaxFill();
+		else if (type.name().equals(this.tanks[1].getTankType().name()))
+			return this.tanks[1].getMaxFill();
 		else
 			return 0;
 	}
 
 	@Override
 	public void setFillForSync(int fill, int index) {
-		if (index < 2 && tanks[index] != null)
-			tanks[index].setFill(fill);
+		if (index < 2 && this.tanks[index] != null)
+			this.tanks[index].setFill(fill);
 	}
 
 	@Override
 	public void setFluidFill(int fill, FluidType type) {
-		if (type.name().equals(tanks[0].getTankType().name()))
-			tanks[0].setFill(fill);
-		else if (type.name().equals(tanks[1].getTankType().name()))
-			tanks[1].setFill(fill);
+		if (type.name().equals(this.tanks[0].getTankType().name()))
+			this.tanks[0].setFill(fill);
+		else if (type.name().equals(this.tanks[1].getTankType().name()))
+			this.tanks[1].setFill(fill);
 	}
 
 	@Override
 	public void setTypeForSync(FluidType type, int index) {
-		if (index < 2 && tanks[index] != null)
-			tanks[index].setTankType(type);
+		if (index < 2 && this.tanks[index] != null)
+			this.tanks[index].setTankType(type);
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		if (type.name().equals(tanks[0].getTankType().name()))
-			return tanks[0].getFill();
-		else if (type.name().equals(tanks[1].getTankType().name()))
-			return tanks[1].getFill();
+		if (type.name().equals(this.tanks[0].getTankType().name()))
+			return this.tanks[0].getFill();
+		else if (type.name().equals(this.tanks[1].getTankType().name()))
+			return this.tanks[1].getFill();
 		else
 			return 0;
 	}
@@ -462,17 +466,17 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IS
 
 	@Override
 	public long getMaxPower() {
-		return this.maxPower;
+		return TileEntitySoyuzLauncher.maxPower;
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return tanks;
+		return this.tanks;
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return tanks;
+		return this.tanks;
 	}
 	
 	@Override

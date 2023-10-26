@@ -26,9 +26,9 @@ public class Shader {
 		if(!ShaderManager.enableShaders)
 			return;
 
-		GL20.glUseProgram(shader);
-		for(Uniform u : uniforms) {
-			u.apply(shader);
+		GL20.glUseProgram(this.shader);
+		for(Uniform u : this.uniforms) {
+			u.apply(this.shader);
 		}
 	}
 
@@ -37,6 +37,6 @@ public class Shader {
 	}
 
 	public int getShaderId() {
-		return shader;
+		return this.shader;
 	}
 }

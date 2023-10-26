@@ -26,7 +26,7 @@ public class GUICraneExtractor extends GuiInfoContainer {
 
 	public GUICraneExtractor(InventoryPlayer invPlayer, TileEntityCraneExtractor tedf) {
 		super(new ContainerCraneExtractor(invPlayer, tedf));
-		ejector = tedf;
+		this.ejector = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 185;
@@ -40,17 +40,17 @@ public class GUICraneExtractor extends GuiInfoContainer {
 			for(int i = 0; i < 9; ++i) {
 				Slot slot = (Slot) this.inventorySlots.inventorySlots.get(i);
 	
-				if(this.isMouseOverSlot(slot, x, y) && ejector.matcher.modes[i] != null) {
+				if(isMouseOverSlot(slot, x, y) && this.ejector.matcher.modes[i] != null) {
 					
 					String label = EnumChatFormatting.YELLOW + "";
 					
-					switch(ejector.matcher.modes[i]) {
+					switch(this.ejector.matcher.modes[i]) {
 					case "exact": label += "Item and meta match"; break;
 					case "wildcard": label += "Item matches"; break;
-					default: label += "Ore dict key matches: " + ejector.matcher.modes[i]; break;
+					default: label += "Ore dict key matches: " + this.ejector.matcher.modes[i]; break;
 					}
 					
-					this.func_146283_a(Arrays.asList(new String[] { EnumChatFormatting.RED + "Right click to change", label }), x, y - 30);
+					func_146283_a(Arrays.asList(new String[] { EnumChatFormatting.RED + "Right click to change", label }), x, y - 30);
 				}
 			}
 		}
@@ -60,12 +60,12 @@ public class GUICraneExtractor extends GuiInfoContainer {
 	protected void mouseClicked(int x, int y, int i) {
 		super.mouseClicked(x, y, i);
 
-		if(guiLeft + 128 <= x && guiLeft + 128 + 14 > x && guiTop + 30 < y && guiTop + 30 + 26 >= y) {
+		if(this.guiLeft + 128 <= x && this.guiLeft + 128 + 14 > x && this.guiTop + 30 < y && this.guiTop + 30 + 26 >= y) {
 
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 			NBTTagCompound data = new NBTTagCompound();
 			data.setBoolean("whitelist", true);
-			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, ejector.xCoord, ejector.yCoord, ejector.zCoord));
+			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, this.ejector.xCoord, this.ejector.yCoord, this.ejector.zCoord));
 		}
 	}
 	
@@ -79,13 +79,13 @@ public class GUICraneExtractor extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUICraneExtractor.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		if(ejector.isWhitelist) {
-			drawTexturedModalRect(guiLeft + 139, guiTop + 33, 176, 0, 3, 6);
+		if(this.ejector.isWhitelist) {
+			drawTexturedModalRect(this.guiLeft + 139, this.guiTop + 33, 176, 0, 3, 6);
 		} else {
-			drawTexturedModalRect(guiLeft + 139, guiTop + 47, 176, 0, 3, 6);
+			drawTexturedModalRect(this.guiLeft + 139, this.guiTop + 47, 176, 0, 3, 6);
 		}
 	}
 }

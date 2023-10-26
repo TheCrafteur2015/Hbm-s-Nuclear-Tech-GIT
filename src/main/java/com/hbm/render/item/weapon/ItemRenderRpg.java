@@ -6,6 +6,7 @@ import com.hbm.items.ModItems;
 import com.hbm.lib.RefStrings;
 import com.hbm.render.model.ModelGustav;
 import com.hbm.render.model.ModelPanzerschreck;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
@@ -18,8 +19,8 @@ public class ItemRenderRpg implements IItemRenderer {
 	protected ModelPanzerschreck panz;
 	
 	public ItemRenderRpg() {
-		swordModel = new ModelGustav();
-		panz = new ModelPanzerschreck();
+		this.swordModel = new ModelGustav();
+		this.panz = new ModelPanzerschreck();
 	}
 
 	@Override
@@ -70,11 +71,11 @@ public class ItemRenderRpg implements IItemRenderer {
 				GL11.glTranslatef(-0.2F, 0.0F, -0.2F);
 				
 				if(item.getItem() == ModItems.gun_rpg)
-					swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item.getItem() == ModItems.gun_karl)
-					swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item.getItem() == ModItems.gun_panzerschreck)
-					panz.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.panz.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			GL11.glPopMatrix();
 			break;
 		case EQUIPPED:
@@ -100,11 +101,11 @@ public class ItemRenderRpg implements IItemRenderer {
 				}
 				
 				if(item.getItem() == ModItems.gun_rpg)
-					swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item.getItem() == ModItems.gun_karl)
-					swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item.getItem() == ModItems.gun_panzerschreck)
-					panz.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.panz.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			GL11.glPopMatrix();
 		default: break;
 		}

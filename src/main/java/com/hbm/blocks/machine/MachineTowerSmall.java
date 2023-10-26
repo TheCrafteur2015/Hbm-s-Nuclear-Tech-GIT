@@ -53,13 +53,13 @@ public class MachineTowerSmall extends BlockDummyable implements ILookOverlay {
 		
 		for(int i = 2; i <= 6; i++) {
 			ForgeDirection dr2 = ForgeDirection.getOrientation(i);
-			this.makeExtra(world, x + dr2.offsetX * 2, y, z + dr2.offsetZ * 2);
+			makeExtra(world, x + dr2.offsetX * 2, y, z + dr2.offsetZ * 2);
 		}
 	}
 
 	@Override
 	public void printHook(Pre event, World world, int x, int y, int z) {
-		int[] pos = this.findCore(world, x, y, z);
+		int[] pos = findCore(world, x, y, z);
 
 		if(pos == null)
 			return;
@@ -71,7 +71,7 @@ public class MachineTowerSmall extends BlockDummyable implements ILookOverlay {
 
 		TileEntityTowerSmall tower = (TileEntityTowerSmall) te;
 
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 
 		for(int i = 0; i < tower.tanks.length; i++)
 			text.add((i < 1 ? (EnumChatFormatting.GREEN + "-> ") : (EnumChatFormatting.RED + "<- ")) + EnumChatFormatting.RESET + tower.tanks[i].getTankType().getLocalizedName() + ": " + tower.tanks[i].getFill() + "/" + tower.tanks[i].getMaxFill() + "mB");

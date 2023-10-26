@@ -14,23 +14,25 @@ public class ParticleDeadLeaf extends EntityFX {
 
 	public ParticleDeadLeaf(TextureManager texman, World world, double x, double y, double z) {
 		super(world, x, y, z);
-		particleIcon = ModEventHandlerClient.particleLeaf;
+		this.particleIcon = ModEventHandlerClient.particleLeaf;
 		this.particleRed =  this.particleGreen = this.particleBlue = 1F - world.rand.nextFloat() * 0.2F;
 		this.particleScale = 0.1F;
 		this.particleMaxAge = 200 + world.rand.nextInt(50);
 		this.particleGravity = 0.2F;
 	}
 
+	@Override
 	public int getFXLayer() {
 		return 1;
 	}
 
+	@Override
 	public void onUpdate() {
 		super.onUpdate();
 
 		if(!this.onGround) {
-			this.motionX += rand.nextGaussian() * 0.002D;
-			this.motionZ += rand.nextGaussian() * 0.002D;
+			this.motionX += this.rand.nextGaussian() * 0.002D;
+			this.motionZ += this.rand.nextGaussian() * 0.002D;
 			
 			if(this.motionY < -0.025D)
 				this.motionY = -0.025D;
@@ -45,17 +47,17 @@ public class ParticleDeadLeaf extends EntityFX {
 		tess.setColorRGBA_F(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha);
 
 		float scale = this.particleScale;
-		float pX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) interp - interpPosX);
-		float pY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) interp - interpPosY);
-		float pZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) interp - interpPosZ);
+		float pX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) interp - EntityFX.interpPosX);
+		float pY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) interp - EntityFX.interpPosY);
+		float pZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) interp - EntityFX.interpPosZ);
 
-		boolean flipU = this.getEntityId() % 2 == 0;
-		boolean flipV = this.getEntityId() % 4 < 2;
+		boolean flipU = getEntityId() % 2 == 0;
+		boolean flipV = getEntityId() % 4 < 2;
 
-		double minU = flipU ? particleIcon.getMaxU() : particleIcon.getMinU();
-		double maxU = flipU ? particleIcon.getMinU() : particleIcon.getMaxU();
-		double minV = flipV ? particleIcon.getMaxV() : particleIcon.getMinV();
-		double maxV = flipV ? particleIcon.getMinV() : particleIcon.getMaxV();
+		double minU = flipU ? this.particleIcon.getMaxU() : this.particleIcon.getMinU();
+		double maxU = flipU ? this.particleIcon.getMinU() : this.particleIcon.getMaxU();
+		double minV = flipV ? this.particleIcon.getMaxV() : this.particleIcon.getMinV();
+		double maxV = flipV ? this.particleIcon.getMinV() : this.particleIcon.getMaxV();
 
 		tess.addVertexWithUV((double) (pX - fX * scale - sX * scale), (double) (pY - fY * scale), (double) (pZ - fZ * scale - sZ * scale), maxU, maxV);
 		tess.addVertexWithUV((double) (pX - fX * scale + sX * scale), (double) (pY + fY * scale), (double) (pZ - fZ * scale + sZ * scale), maxU, minV);

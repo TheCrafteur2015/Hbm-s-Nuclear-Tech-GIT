@@ -22,10 +22,10 @@ public class EntityBurningFOEQ extends EntityThrowable {
 	public void onUpdate() {
 
 
-		this.lastTickPosX = this.prevPosX = posX;
-		this.lastTickPosY = this.prevPosY = posY;
-		this.lastTickPosZ = this.prevPosZ = posZ;
-		this.setPosition(posX + this.motionX, posY + this.motionY, posZ + this.motionZ);
+		this.lastTickPosX = this.prevPosX = this.posX;
+		this.lastTickPosY = this.prevPosY = this.posY;
+		this.lastTickPosZ = this.prevPosZ = this.posZ;
+		setPosition(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 		
 		/*this.prevPosX = this.posX;
 		this.prevPosY = this.posY;
@@ -35,19 +35,19 @@ public class EntityBurningFOEQ extends EntityThrowable {
 		this.posY += this.motionY;
 		this.posZ += this.motionZ;*/
         
-		if(motionY > -4)
-			motionY -= 0.1;
+		if(this.motionY > -4)
+			this.motionY -= 0.1;
 		
-        this.rotation();
+        rotation();
         
         if(this.worldObj.getBlock((int)this.posX, (int)this.posY, (int)this.posZ) != Blocks.air)
         {
     		if(!this.worldObj.isRemote) {
     			for(int i = 0; i < 25; i++)
-    				ExplosionLarge.explode(worldObj, this.posX + 0.5F + rand.nextGaussian() * 5, this.posY + 0.5F + rand.nextGaussian() * 5, this.posZ + 0.5F + rand.nextGaussian() * 5, 10.0F, rand.nextBoolean(), false, false);
-    			ExplosionNukeGeneric.waste(worldObj, (int)this.posX, (int)this.posY, (int)this.posZ, 35);
+    				ExplosionLarge.explode(this.worldObj, this.posX + 0.5F + this.rand.nextGaussian() * 5, this.posY + 0.5F + this.rand.nextGaussian() * 5, this.posZ + 0.5F + this.rand.nextGaussian() * 5, 10.0F, this.rand.nextBoolean(), false, false);
+    			ExplosionNukeGeneric.waste(this.worldObj, (int)this.posX, (int)this.posY, (int)this.posZ, 35);
     		}
-    		this.setDead();
+    		setDead();
         }
         
         //if(!this.worldObj.isRemote) {

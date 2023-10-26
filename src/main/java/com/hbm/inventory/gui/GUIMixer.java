@@ -38,36 +38,36 @@ public class GUIMixer extends GuiInfoContainer {
 	public void drawScreen(int x, int y, float interp) {
 		super.drawScreen(x, y, interp);
 		
-		this.drawElectricityInfo(this, x, y, guiLeft + 23, guiTop + 23, 16, 52, mixer.getPower(), mixer.getMaxPower());
+		drawElectricityInfo(this, x, y, this.guiLeft + 23, this.guiTop + 23, 16, 52, this.mixer.getPower(), this.mixer.getMaxPower());
 		
-		MixerRecipe[] recipes = MixerRecipes.getOutput(mixer.tanks[2].getTankType());
+		MixerRecipe[] recipes = MixerRecipes.getOutput(this.mixer.tanks[2].getTankType());
 		
 		if(recipes != null && recipes.length > 1) {
-			List<String> label = new ArrayList();
-			label.add(EnumChatFormatting.YELLOW + "Current recipe (" + (mixer.recipeIndex + 1) + "/" + recipes.length + "):");
-			MixerRecipe recipe = recipes[mixer.recipeIndex % recipes.length];
+			List<String> label = new ArrayList<>();
+			label.add(EnumChatFormatting.YELLOW + "Current recipe (" + (this.mixer.recipeIndex + 1) + "/" + recipes.length + "):");
+			MixerRecipe recipe = recipes[this.mixer.recipeIndex % recipes.length];
 			if(recipe.input1 != null) label.add("-" + recipe.input1.type.getLocalizedName());
 			if(recipe.input2 != null) label.add("-" + recipe.input2.type.getLocalizedName());
 			if(recipe.solidInput != null) label.add("-" + recipe.solidInput.extractForCyclingDisplay(20).getDisplayName());
 			label.add(EnumChatFormatting.RED + "Click to change!");
-			this.drawCustomInfoStat(x, y, guiLeft + 62, guiTop + 22, 12, 12, x, y, label);
+			this.drawCustomInfoStat(x, y, this.guiLeft + 62, this.guiTop + 22, 12, 12, x, y, label);
 		}
 
-		mixer.tanks[0].renderTankInfo(this, x, y, guiLeft + 43, guiTop + 23, 7, 52);
-		mixer.tanks[1].renderTankInfo(this, x, y, guiLeft + 52, guiTop + 23, 7, 52);
-		mixer.tanks[2].renderTankInfo(this, x, y, guiLeft + 117, guiTop + 23, 16, 52);
+		this.mixer.tanks[0].renderTankInfo(this, x, y, this.guiLeft + 43, this.guiTop + 23, 7, 52);
+		this.mixer.tanks[1].renderTankInfo(this, x, y, this.guiLeft + 52, this.guiTop + 23, 7, 52);
+		this.mixer.tanks[2].renderTankInfo(this, x, y, this.guiLeft + 117, this.guiTop + 23, 16, 52);
 	}
 
 	@Override
 	protected void mouseClicked(int x, int y, int i) {
 		super.mouseClicked(x, y, i);
 
-		if(guiLeft + 62 <= x && guiLeft + 62 + 12 > x && guiTop + 22 < y && guiTop + 22 + 12 >= y) {
+		if(this.guiLeft + 62 <= x && this.guiLeft + 62 + 12 > x && this.guiTop + 22 < y && this.guiTop + 22 + 12 >= y) {
 
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 			NBTTagCompound data = new NBTTagCompound();
 			data.setBoolean("toggle", true);
-			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, mixer.xCoord, mixer.yCoord, mixer.zCoord));
+			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, this.mixer.xCoord, this.mixer.yCoord, this.mixer.zCoord));
 		}
 	}
 
@@ -82,19 +82,19 @@ public class GUIMixer extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float interp, int x, int y) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIMixer.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		int i = (int) (mixer.getPower() * 53 / mixer.getMaxPower());
-		drawTexturedModalRect(guiLeft + 23, guiTop + 75 - i, 176, 52 - i, 16, i);
+		int i = (int) (this.mixer.getPower() * 53 / this.mixer.getMaxPower());
+		drawTexturedModalRect(this.guiLeft + 23, this.guiTop + 75 - i, 176, 52 - i, 16, i);
 		
-		if(mixer.processTime > 0 && mixer.progress > 0) {
-			int j = mixer.progress * 53 / mixer.processTime;
-			drawTexturedModalRect(guiLeft + 62, guiTop + 36, 192, 0, j, 44);
+		if(this.mixer.processTime > 0 && this.mixer.progress > 0) {
+			int j = this.mixer.progress * 53 / this.mixer.processTime;
+			drawTexturedModalRect(this.guiLeft + 62, this.guiTop + 36, 192, 0, j, 44);
 		}
 
-		mixer.tanks[0].renderTank(guiLeft + 43, guiTop + 75, this.zLevel, 7, 52);
-		mixer.tanks[1].renderTank(guiLeft + 52, guiTop + 75, this.zLevel, 7, 52);
-		mixer.tanks[2].renderTank(guiLeft + 117, guiTop + 75, this.zLevel, 16, 52);
+		this.mixer.tanks[0].renderTank(this.guiLeft + 43, this.guiTop + 75, this.zLevel, 7, 52);
+		this.mixer.tanks[1].renderTank(this.guiLeft + 52, this.guiTop + 75, this.zLevel, 7, 52);
+		this.mixer.tanks[2].renderTank(this.guiLeft + 117, this.guiTop + 75, this.zLevel, 16, 52);
 	}
 }

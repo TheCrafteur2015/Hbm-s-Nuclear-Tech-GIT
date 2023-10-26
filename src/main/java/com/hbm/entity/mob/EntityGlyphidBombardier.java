@@ -14,6 +14,7 @@ public class EntityGlyphidBombardier extends EntityGlyphid {
 		super(world);
 	}
 	
+	@Override
 	public ResourceLocation getSkin() {
 		return ResourceManager.glyphid_bombardier_tex;
 	}
@@ -29,7 +30,7 @@ public class EntityGlyphidBombardier extends EntityGlyphid {
 
 		if(!this.worldObj.isRemote) {
 
-			Entity e = this.getEntityToAttack();
+			Entity e = getEntityToAttack();
 			
 			if(this.ticksExisted % 20 == 0 && e != null) {
 				this.lastTarget = e;
@@ -40,18 +41,18 @@ public class EntityGlyphidBombardier extends EntityGlyphid {
 			
 			if(this.ticksExisted % 20 == 1 && e != null) {
 				
-				boolean topAttack = rand.nextBoolean();
+				boolean topAttack = this.rand.nextBoolean();
 
-				double velX = e.posX - lastX;
-				double velY = e.posY - lastY;
-				double velZ = e.posZ - lastZ;
+				double velX = e.posX - this.lastX;
+				double velY = e.posY - this.lastY;
+				double velZ = e.posZ - this.lastZ;
 				
 				if(this.lastTarget != e || Vec3.createVectorHelper(velX, velY, velZ).lengthVector() > 30) {
 					velX = velY = velZ = 0;
 				}
 				
 				int prediction = topAttack ? 60 : 20;
-				Vec3 delta = Vec3.createVectorHelper(e.posX - posX + velX * prediction, (e.posY + e.height / 2) - (posY + 1) + velY * prediction, e.posZ - posZ + velZ * prediction);
+				Vec3 delta = Vec3.createVectorHelper(e.posX - this.posX + velX * prediction, (e.posY + e.height / 2) - (this.posY + 1) + velY * prediction, e.posZ - this.posZ + velZ * prediction);
 				double len = delta.lengthVector();
 				if(len < 3) return;
 				double targetYaw = -Math.atan2(delta.xCoord, delta.zCoord);
@@ -71,13 +72,13 @@ public class EntityGlyphidBombardier extends EntityGlyphid {
 					fireVec.rotateAroundY((float) -(targetYaw + Math.PI * 0.5));
 					
 					for(int i = 0; i < getBombCount(); i++) {
-						EntityAcidBomb bomb = new EntityAcidBomb(worldObj, posX, posY + 1, posZ);
+						EntityAcidBomb bomb = new EntityAcidBomb(this.worldObj, this.posX, this.posY + 1, this.posZ);
 						bomb.setThrowableHeading(fireVec.xCoord, fireVec.yCoord, fireVec.zCoord, (float) v0, i * getSpreadMult());
 						bomb.damage = getBombDamage();
-						worldObj.spawnEntityInWorld(bomb);
+						this.worldObj.spawnEntityInWorld(bomb);
 					}
 					
-					this.swingItem();
+					swingItem();
 				}
 			}
 		}

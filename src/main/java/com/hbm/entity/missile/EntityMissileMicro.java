@@ -23,13 +23,13 @@ public class EntityMissileMicro extends EntityMissileBaseAdvanced {
 	@Override
 	public void onImpact() {
 		if(!this.worldObj.isRemote) {
-			ExplosionNukeSmall.explode(worldObj, posX, posY + 0.5, posZ, ExplosionNukeSmall.PARAMS_HIGH);
+			ExplosionNukeSmall.explode(this.worldObj, this.posX, this.posY + 0.5, this.posZ, ExplosionNukeSmall.PARAMS_HIGH);
 		}
 	}
 
 	@Override
 	public List<ItemStack> getDebris() {
-		List<ItemStack> list = new ArrayList<ItemStack>();
+		List<ItemStack> list = new ArrayList<>();
 
 		list.add(new ItemStack(ModItems.wire_aluminium, 4));
 		list.add(new ItemStack(ModItems.plate_titanium, 4));

@@ -24,7 +24,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockHazard extends Block implements ITooltipProvider {
 		
-	protected float rad = 0.0F;
+	protected float rad;
 	private ExtDisplayEffect extEffect = null;
 	
 	private boolean beaconable = false;
@@ -34,7 +34,12 @@ public class BlockHazard extends Block implements ITooltipProvider {
 	}
 
 	public BlockHazard(Material mat) {
+		this(mat, 0);
+	}
+	
+	public BlockHazard(Material mat, float rad) {
 		super(mat);
+		this.rad = rad;
 	}
 	
 	public BlockHazard setDisplayEffect(ExtDisplayEffect extEffect) {
@@ -42,14 +47,15 @@ public class BlockHazard extends Block implements ITooltipProvider {
 		return this;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
 		super.randomDisplayTick(world, x, y, z, rand);
 		
-		if(extEffect == null)
+		if(this.extEffect == null)
 			return;
 		
-		switch(extEffect) {
+		switch(this.extEffect) {
 		case RADFOG:
 		case SCHRAB:
 		case FLAMES:
@@ -114,15 +120,15 @@ public class BlockHazard extends Block implements ITooltipProvider {
 
 	@Override
 	public boolean isBeaconBase(IBlockAccess worldObj, int x, int y, int z, int beaconX, int beaconY, int beaconZ) {
-		return beaconable;
+		return this.beaconable;
 	}
 
 	@Override
 	public void updateTick(World world, int x, int y, int z, Random rand) {
 
 		if(this.rad > 0) {
-			ChunkRadiationManager.proxy.incrementRad(world, x, y, z, rad);
-			world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
+			ChunkRadiationManager.proxy.incrementRad(world, x, y, z, this.rad);
+			world.scheduleBlockUpdate(x, y, z, this, tickRate(world));
 		}
 	}
 
@@ -135,14 +141,15 @@ public class BlockHazard extends Block implements ITooltipProvider {
 		return super.tickRate(world);
 	}
 
+	@Override
 	public void onBlockAdded(World world, int x, int y, int z) {
 		super.onBlockAdded(world, x, y, z);
 		
 		// who wrote this???
-		rad = HazardSystem.getHazardLevelFromStack(new ItemStack(this), HazardRegistry.RADIATION) * 0.1F;
+		this.rad = HazardSystem.getHazardLevelFromStack(new ItemStack(this), HazardRegistry.RADIATION) * 0.1F;
 
 		if(this.rad > 0)
-			world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
+			world.scheduleBlockUpdate(x, y, z, this, tickRate(world));
 	}
 	
 	public static enum ExtDisplayEffect {
@@ -153,6 +160,7 @@ public class BlockHazard extends Block implements ITooltipProvider {
 		LAVAPOP
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) { }
 

@@ -9,10 +9,10 @@ import net.minecraft.item.ItemStack;
 public class ItemCraftingDegradation extends Item {
 	
 	public ItemCraftingDegradation(int durability) {
-		this.setMaxStackSize(1);
-		this.setMaxDamage(durability);
-		this.setNoRepair();
-		this.setCreativeTab(MainRegistry.controlTab);
+		setMaxStackSize(1);
+		setMaxDamage(durability);
+		setNoRepair();
+		setCreativeTab(MainRegistry.controlTab);
 	}
 
 	@Override
@@ -39,7 +39,7 @@ public class ItemCraftingDegradation extends Item {
 	@Override
 	public Item setUnlocalizedName(String unlocalizedName) {
 		super.setUnlocalizedName(unlocalizedName);
-		this.setTextureName(RefStrings.MODID + ":"+ unlocalizedName);
+		setTextureName(RefStrings.MODID + ":"+ unlocalizedName);
 		return this;
 	}
 }

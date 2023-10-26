@@ -20,6 +20,6 @@ public class CustomDamageHandlerAmat implements ICustomDamageHandler {
 	@Override
 	public void handleAttack(ExplosionVNT explosion, Entity entity, double distanceScaled) {
 		if(entity instanceof EntityLivingBase)
-			ContaminationUtil.contaminate((EntityLivingBase)entity, HazardType.RADIATION, ContaminationType.CREATIVE, (float) (radiation * (1D - distanceScaled) * explosion.size));
+			ContaminationUtil.contaminate((EntityLivingBase)entity, HazardType.RADIATION, ContaminationType.CREATIVE, (float) (this.radiation * (1D - distanceScaled) * explosion.size));
 	}
 }

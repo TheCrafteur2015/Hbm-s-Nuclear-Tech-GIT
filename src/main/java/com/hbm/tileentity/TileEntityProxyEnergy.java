@@ -7,7 +7,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 //can be used as a soruce too since the core TE handles that anyway
 public class TileEntityProxyEnergy extends TileEntityProxyBase implements IEnergyUser {
 	
-    public boolean canUpdate()
+    @Override
+	public boolean canUpdate()
     {
         return false;
     }

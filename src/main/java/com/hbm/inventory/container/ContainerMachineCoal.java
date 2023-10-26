@@ -15,24 +15,24 @@ public class ContainerMachineCoal extends Container {
 	private TileEntityMachineCoal diFurnace;
 	
 	public ContainerMachineCoal(InventoryPlayer invPlayer, TileEntityMachineCoal tedf) {
-		diFurnace = tedf;
+		this.diFurnace = tedf;
 		
-		this.addSlotToContainer(new Slot(tedf, 0, 44, 53 - 36));
-		this.addSlotToContainer(new Slot(tedf, 1, 80, 53));
-		this.addSlotToContainer(new Slot(tedf, 2, 116, 53));
-		this.addSlotToContainer(new SlotTakeOnly(tedf, 3, 44, 53));
+		addSlotToContainer(new Slot(tedf, 0, 44, 53 - 36));
+		addSlotToContainer(new Slot(tedf, 1, 80, 53));
+		addSlotToContainer(new Slot(tedf, 2, 116, 53));
+		addSlotToContainer(new SlotTakeOnly(tedf, 3, 44, 53));
 		
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++)
 		{
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
 		}
 	}
 	
@@ -53,15 +53,15 @@ public class ContainerMachineCoal extends Container {
 			var3 = var5.copy();
 			
             if (par2 <= 3) {
-				if (!this.mergeItemStack(var5, 4, this.inventorySlots.size(), true))
+				if (!mergeItemStack(var5, 4, this.inventorySlots.size(), true))
 				{
 					return null;
 				}
 			}
-			else if (!this.mergeItemStack(var5, 1, 2, false))
+			else if (!mergeItemStack(var5, 1, 2, false))
 			{
-				if (!this.mergeItemStack(var5, 0, 1, false))
-					if (!this.mergeItemStack(var5, 2, 3, false))
+				if (!mergeItemStack(var5, 0, 1, false))
+					if (!mergeItemStack(var5, 2, 3, false))
 						return null;
 			}
 			
@@ -80,6 +80,6 @@ public class ContainerMachineCoal extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return diFurnace.isUseableByPlayer(player);
+		return this.diFurnace.isUseableByPlayer(player);
 	}
 }

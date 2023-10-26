@@ -76,11 +76,11 @@ public class TileEntityElectrolyser extends TileEntityMachineBase implements IEn
 		//14: Crystal
 		//15-20: Outputs
 		super(21);
-		tanks = new FluidTank[4];
-		tanks[0] = new FluidTank(Fluids.WATER, 16000);
-		tanks[1] = new FluidTank(Fluids.HYDROGEN, 16000);
-		tanks[2] = new FluidTank(Fluids.OXYGEN, 16000);
-		tanks[3] = new FluidTank(Fluids.NITRIC_ACID, 16000);
+		this.tanks = new FluidTank[4];
+		this.tanks[0] = new FluidTank(Fluids.WATER, 16000);
+		this.tanks[1] = new FluidTank(Fluids.HYDROGEN, 16000);
+		this.tanks[2] = new FluidTank(Fluids.OXYGEN, 16000);
+		this.tanks[3] = new FluidTank(Fluids.NITRIC_ACID, 16000);
 	}
 	
 	@Override
@@ -107,63 +107,63 @@ public class TileEntityElectrolyser extends TileEntityMachineBase implements IEn
 	@Override
 	public void updateEntity() {
 
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			this.power = Library.chargeTEFromItems(slots, 0, power, maxPower);
-			this.tanks[0].setType(3, 4, slots);
-			this.tanks[0].loadTank(5, 6, slots);
-			this.tanks[1].unloadTank(7, 8, slots);
-			this.tanks[2].unloadTank(9, 10, slots);
+			this.power = Library.chargeTEFromItems(this.slots, 0, this.power, TileEntityElectrolyser.maxPower);
+			this.tanks[0].setType(3, 4, this.slots);
+			this.tanks[0].loadTank(5, 6, this.slots);
+			this.tanks[1].unloadTank(7, 8, this.slots);
+			this.tanks[2].unloadTank(9, 10, this.slots);
 			
-			if(worldObj.getTotalWorldTime() % 20 == 0) {
-				for(DirPos pos : this.getConPos()) {
-					this.trySubscribe(worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
-					this.trySubscribe(tanks[0].getTankType(), worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
-					this.trySubscribe(tanks[3].getTankType(), worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			if(this.worldObj.getTotalWorldTime() % 20 == 0) {
+				for(DirPos pos : getConPos()) {
+					this.trySubscribe(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+					this.trySubscribe(this.tanks[0].getTankType(), this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+					this.trySubscribe(this.tanks[3].getTankType(), this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 
-					if(tanks[1].getFill() > 0) this.sendFluid(tanks[1], worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
-					if(tanks[2].getFill() > 0) this.sendFluid(tanks[2], worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+					if(this.tanks[1].getFill() > 0) this.sendFluid(this.tanks[1], this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+					if(this.tanks[2].getFill() > 0) this.sendFluid(this.tanks[2], this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 				}
 			}
 			
-			UpgradeManager.eval(slots, 1, 2);
+			UpgradeManager.eval(this.slots, 1, 2);
 			int speedLevel = Math.min(UpgradeManager.getLevel(UpgradeType.SPEED), 3);
 			int powerLevel = Math.min(UpgradeManager.getLevel(UpgradeType.POWER), 3);
 
-			processFluidTime = processFluidTimeBase - processFluidTimeBase * speedLevel / 4;
-			processOreTime = processOreTimeBase - processOreTimeBase * speedLevel / 4;
-			usage = usageBase - usageBase * powerLevel / 4;
+			this.processFluidTime = TileEntityElectrolyser.processFluidTimeBase - TileEntityElectrolyser.processFluidTimeBase * speedLevel / 4;
+			this.processOreTime = TileEntityElectrolyser.processOreTimeBase - TileEntityElectrolyser.processOreTimeBase * speedLevel / 4;
+			this.usage = TileEntityElectrolyser.usageBase - TileEntityElectrolyser.usageBase * powerLevel / 4;
 			
-			if(this.canProcessFluid()) {
+			if(canProcessFluid()) {
 				this.progressFluid++;
 				this.power -= this.usage;
 				
 				if(this.progressFluid >= this.processFluidTime) {
-					this.processFluids();
+					processFluids();
 					this.progressFluid = 0;
-					this.markChanged();
+					markChanged();
 				}
 			}
 			
-			if(this.canProcesMetal()) {
+			if(canProcesMetal()) {
 				this.progressOre++;
 				this.power -= this.usage;
 				
 				if(this.progressOre >= this.processOreTime) {
-					this.processMetal();
+					processMetal();
 					this.progressOre = 0;
-					this.markChanged();
+					markChanged();
 				}
 			}
 			
 			if(this.leftStack != null) {
 				
-				ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset).getOpposite();
-				List<MaterialStack> toCast = new ArrayList();
+				ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset).getOpposite();
+				List<MaterialStack> toCast = new ArrayList<>();
 				toCast.add(this.leftStack);
 				
 				Vec3 impact = Vec3.createVectorHelper(0, 0, 0);
-				MaterialStack didPour = CrucibleUtil.pourFullStack(worldObj, xCoord + 0.5D + dir.offsetX * 5.875D, yCoord + 2D, zCoord + 0.5D + dir.offsetZ * 5.875D, 6, true, toCast, MaterialShapes.NUGGET.q(1), impact);
+				MaterialStack didPour = CrucibleUtil.pourFullStack(this.worldObj, this.xCoord + 0.5D + dir.offsetX * 5.875D, this.yCoord + 2D, this.zCoord + 0.5D + dir.offsetZ * 5.875D, 6, true, toCast, MaterialShapes.NUGGET.q(1), impact);
 
 				if(didPour != null) {
 					NBTTagCompound data = new NBTTagCompound();
@@ -172,8 +172,8 @@ public class TileEntityElectrolyser extends TileEntityMachineBase implements IEn
 					data.setByte("dir", (byte) dir.ordinal());
 					data.setFloat("off", 0.625F);
 					data.setFloat("base", 0.625F);
-					data.setFloat("len", Math.max(1F, yCoord - (float) (Math.ceil(impact.yCoord) - 0.875) + 2));
-					PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, xCoord + 0.5D + dir.offsetX * 5.875D, yCoord + 2, zCoord + 0.5D + dir.offsetZ * 5.875D), new TargetPoint(worldObj.provider.dimensionId, xCoord + 0.5, yCoord + 1, zCoord + 0.5, 50));
+					data.setFloat("len", Math.max(1F, this.yCoord - (float) (Math.ceil(impact.yCoord) - 0.875) + 2));
+					PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, this.xCoord + 0.5D + dir.offsetX * 5.875D, this.yCoord + 2, this.zCoord + 0.5D + dir.offsetZ * 5.875D), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord + 0.5, this.yCoord + 1, this.zCoord + 0.5, 50));
 					
 					if(this.leftStack.amount <= 0) this.leftStack = null;
 				}
@@ -181,12 +181,12 @@ public class TileEntityElectrolyser extends TileEntityMachineBase implements IEn
 			
 			if(this.rightStack != null) {
 				
-				ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
-				List<MaterialStack> toCast = new ArrayList();
+				ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
+				List<MaterialStack> toCast = new ArrayList<>();
 				toCast.add(this.rightStack);
 				
 				Vec3 impact = Vec3.createVectorHelper(0, 0, 0);
-				MaterialStack didPour = CrucibleUtil.pourFullStack(worldObj, xCoord + 0.5D + dir.offsetX * 5.875D, yCoord + 2D, zCoord + 0.5D + dir.offsetZ * 5.875D, 6, true, toCast, MaterialShapes.NUGGET.q(1), impact);
+				MaterialStack didPour = CrucibleUtil.pourFullStack(this.worldObj, this.xCoord + 0.5D + dir.offsetX * 5.875D, this.yCoord + 2D, this.zCoord + 0.5D + dir.offsetZ * 5.875D, 6, true, toCast, MaterialShapes.NUGGET.q(1), impact);
 
 				if(didPour != null) {
 					NBTTagCompound data = new NBTTagCompound();
@@ -195,8 +195,8 @@ public class TileEntityElectrolyser extends TileEntityMachineBase implements IEn
 					data.setByte("dir", (byte) dir.ordinal());
 					data.setFloat("off", 0.625F);
 					data.setFloat("base", 0.625F);
-					data.setFloat("len", Math.max(1F, yCoord - (float) (Math.ceil(impact.yCoord) - 0.875) + 2));
-					PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, xCoord + 0.5D + dir.offsetX * 5.875D, yCoord + 2, zCoord + 0.5D + dir.offsetZ * 5.875D), new TargetPoint(worldObj.provider.dimensionId, xCoord + 0.5, yCoord + 1, zCoord + 0.5, 50));
+					data.setFloat("len", Math.max(1F, this.yCoord - (float) (Math.ceil(impact.yCoord) - 0.875) + 2));
+					PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, this.xCoord + 0.5D + dir.offsetX * 5.875D, this.yCoord + 2, this.zCoord + 0.5D + dir.offsetZ * 5.875D), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord + 0.5, this.yCoord + 1, this.zCoord + 0.5, 50));
 					
 					if(this.rightStack.amount <= 0) this.rightStack = null;
 				}
@@ -210,29 +210,29 @@ public class TileEntityElectrolyser extends TileEntityMachineBase implements IEn
 			data.setInteger("processFluidTime", this.processFluidTime);
 			data.setInteger("processOreTime", this.processOreTime);
 			if(this.leftStack != null) {
-				data.setInteger("leftType", leftStack.material.id);
-				data.setInteger("leftAmount", leftStack.amount);
+				data.setInteger("leftType", this.leftStack.material.id);
+				data.setInteger("leftAmount", this.leftStack.amount);
 			}
 			if(this.rightStack != null) {
-				data.setInteger("rightType", rightStack.material.id);
-				data.setInteger("rightAmount", rightStack.amount);
+				data.setInteger("rightType", this.rightStack.material.id);
+				data.setInteger("rightAmount", this.rightStack.amount);
 			}
-			for(int i = 0; i < 4; i++) tanks[i].writeToNBT(data, "t" + i);
-			this.networkPack(data, 50);
+			for(int i = 0; i < 4; i++) this.tanks[i].writeToNBT(data, "t" + i);
+			networkPack(data, 50);
 		}
 	}
 	
 	public DirPos[] getConPos() {
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - 10);
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - 10);
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 		
 		return new DirPos[] {
-				new DirPos(xCoord - dir.offsetX * 6, yCoord, zCoord - dir.offsetZ * 6, dir.getOpposite()),
-				new DirPos(xCoord - dir.offsetX * 6 + rot.offsetX, yCoord, zCoord - dir.offsetZ * 6 + rot.offsetZ, dir.getOpposite()),
-				new DirPos(xCoord - dir.offsetX * 6 - rot.offsetX, yCoord, zCoord - dir.offsetZ * 6 - rot.offsetZ, dir.getOpposite()),
-				new DirPos(xCoord + dir.offsetX * 6, yCoord, zCoord + dir.offsetZ * 6, dir),
-				new DirPos(xCoord + dir.offsetX * 6 + rot.offsetX, yCoord, zCoord + dir.offsetZ * 6 + rot.offsetZ, dir),
-				new DirPos(xCoord + dir.offsetX * 6 - rot.offsetX, yCoord, zCoord + dir.offsetZ * 6 - rot.offsetZ, dir)
+				new DirPos(this.xCoord - dir.offsetX * 6, this.yCoord, this.zCoord - dir.offsetZ * 6, dir.getOpposite()),
+				new DirPos(this.xCoord - dir.offsetX * 6 + rot.offsetX, this.yCoord, this.zCoord - dir.offsetZ * 6 + rot.offsetZ, dir.getOpposite()),
+				new DirPos(this.xCoord - dir.offsetX * 6 - rot.offsetX, this.yCoord, this.zCoord - dir.offsetZ * 6 - rot.offsetZ, dir.getOpposite()),
+				new DirPos(this.xCoord + dir.offsetX * 6, this.yCoord, this.zCoord + dir.offsetZ * 6, dir),
+				new DirPos(this.xCoord + dir.offsetX * 6 + rot.offsetX, this.yCoord, this.zCoord + dir.offsetZ * 6 + rot.offsetZ, dir),
+				new DirPos(this.xCoord + dir.offsetX * 6 - rot.offsetX, this.yCoord, this.zCoord + dir.offsetZ * 6 - rot.offsetZ, dir)
 		};
 	}
 
@@ -248,24 +248,22 @@ public class TileEntityElectrolyser extends TileEntityMachineBase implements IEn
 		else this.leftStack = null;
 		if(nbt.hasKey("rightType")) this.rightStack = new MaterialStack(Mats.matById.get(nbt.getInteger("rightType")), nbt.getInteger("rightAmount"));
 		else this.rightStack = null;
-		for(int i = 0; i < 4; i++) tanks[i].readFromNBT(nbt, "t" + i);
+		for(int i = 0; i < 4; i++) this.tanks[i].readFromNBT(nbt, "t" + i);
 	}
 	
 	public boolean canProcessFluid() {
 		
-		if(this.power < usage) return false;
+		if(this.power < this.usage) return false;
 		
-		ElectrolysisRecipe recipe = ElectrolyserFluidRecipes.recipes.get(tanks[0].getTankType());
+		ElectrolysisRecipe recipe = ElectrolyserFluidRecipes.recipes.get(this.tanks[0].getTankType());
 		
-		if(recipe == null) return false;
-		if(recipe.amount > tanks[0].getFill()) return false;
-		if(recipe.output1.type == tanks[1].getTankType() && recipe.output1.fill + tanks[1].getFill() > tanks[1].getMaxFill()) return false;
-		if(recipe.output2.type == tanks[2].getTankType() && recipe.output2.fill + tanks[2].getFill() > tanks[2].getMaxFill()) return false;
+		if((recipe == null) || (recipe.amount > this.tanks[0].getFill()) || (recipe.output1.type == this.tanks[1].getTankType() && recipe.output1.fill + this.tanks[1].getFill() > this.tanks[1].getMaxFill())) return false;
+		if(recipe.output2.type == this.tanks[2].getTankType() && recipe.output2.fill + this.tanks[2].getFill() > this.tanks[2].getMaxFill()) return false;
 		
 		if(recipe.byproduct != null) {
 			
 			for(int i = 0; i < recipe.byproduct.length; i++) {
-				ItemStack slot = slots[11 + i];
+				ItemStack slot = this.slots[11 + i];
 				ItemStack byproduct = recipe.byproduct[i];
 				
 				if(slot == null) continue;
@@ -279,23 +277,23 @@ public class TileEntityElectrolyser extends TileEntityMachineBase implements IEn
 	
 	public void processFluids() {
 		
-		ElectrolysisRecipe recipe = ElectrolyserFluidRecipes.recipes.get(tanks[0].getTankType());
-		tanks[0].setFill(tanks[0].getFill() - recipe.amount);
-		tanks[1].setTankType(recipe.output1.type);
-		tanks[2].setTankType(recipe.output2.type);
-		tanks[1].setFill(tanks[1].getFill() + recipe.output1.fill);
-		tanks[2].setFill(tanks[2].getFill() + recipe.output2.fill);
+		ElectrolysisRecipe recipe = ElectrolyserFluidRecipes.recipes.get(this.tanks[0].getTankType());
+		this.tanks[0].setFill(this.tanks[0].getFill() - recipe.amount);
+		this.tanks[1].setTankType(recipe.output1.type);
+		this.tanks[2].setTankType(recipe.output2.type);
+		this.tanks[1].setFill(this.tanks[1].getFill() + recipe.output1.fill);
+		this.tanks[2].setFill(this.tanks[2].getFill() + recipe.output2.fill);
 		
 		if(recipe.byproduct != null) {
 			
 			for(int i = 0; i < recipe.byproduct.length; i++) {
-				ItemStack slot = slots[11 + i];
+				ItemStack slot = this.slots[11 + i];
 				ItemStack byproduct = recipe.byproduct[i];
 				
 				if(slot == null) {
-					slots[11 + i] = byproduct.copy();
+					this.slots[11 + i] = byproduct.copy();
 				} else {
-					slots[11 + i].stackSize += byproduct.stackSize;
+					this.slots[11 + i].stackSize += byproduct.stackSize;
 				}
 			}
 		}
@@ -303,27 +301,25 @@ public class TileEntityElectrolyser extends TileEntityMachineBase implements IEn
 	
 	public boolean canProcesMetal() {
 		
-		if(slots[14] == null) return false;
-		if(this.power < usage) return false;
-		if(this.tanks[3].getFill() < 100) return false;
+		if((this.slots[14] == null) || (this.power < this.usage) || (this.tanks[3].getFill() < 100)) return false;
 		
-		ElectrolysisMetalRecipe recipe = ElectrolyserMetalRecipes.getRecipe(slots[14]);
+		ElectrolysisMetalRecipe recipe = ElectrolyserMetalRecipes.getRecipe(this.slots[14]);
 		if(recipe == null) return false;
 		
-		if(leftStack != null) {
-			if(recipe.output1.material != leftStack.material) return false;
-			if(recipe.output1.amount + leftStack.amount > this.maxMaterial) return false;
+		if(this.leftStack != null) {
+			if(recipe.output1.material != this.leftStack.material) return false;
+			if(recipe.output1.amount + this.leftStack.amount > this.maxMaterial) return false;
 		}
 		
-		if(rightStack != null) {
-			if(recipe.output2.material != rightStack.material) return false;
-			if(recipe.output2.amount + rightStack.amount > this.maxMaterial) return false;
+		if(this.rightStack != null) {
+			if(recipe.output2.material != this.rightStack.material) return false;
+			if(recipe.output2.amount + this.rightStack.amount > this.maxMaterial) return false;
 		}
 		
 		if(recipe.byproduct != null) {
 			
 			for(int i = 0; i < recipe.byproduct.length; i++) {
-				ItemStack slot = slots[15 + i];
+				ItemStack slot = this.slots[15 + i];
 				ItemStack byproduct = recipe.byproduct[i];
 				
 				if(slot == null) continue;
@@ -337,36 +333,36 @@ public class TileEntityElectrolyser extends TileEntityMachineBase implements IEn
 	
 	public void processMetal() {
 		
-		ElectrolysisMetalRecipe recipe = ElectrolyserMetalRecipes.getRecipe(slots[14]);
+		ElectrolysisMetalRecipe recipe = ElectrolyserMetalRecipes.getRecipe(this.slots[14]);
 		
-		if(leftStack == null) {
-			leftStack = new MaterialStack(recipe.output1.material, recipe.output1.amount);
+		if(this.leftStack == null) {
+			this.leftStack = new MaterialStack(recipe.output1.material, recipe.output1.amount);
 		} else {
-			leftStack.amount += recipe.output1.amount;
+			this.leftStack.amount += recipe.output1.amount;
 		}
 		
-		if(rightStack == null) {
-			rightStack = new MaterialStack(recipe.output2.material, recipe.output2.amount);
+		if(this.rightStack == null) {
+			this.rightStack = new MaterialStack(recipe.output2.material, recipe.output2.amount);
 		} else {
-			rightStack.amount += recipe.output2.amount;
+			this.rightStack.amount += recipe.output2.amount;
 		}
 		
 		if(recipe.byproduct != null) {
 			
 			for(int i = 0; i < recipe.byproduct.length; i++) {
-				ItemStack slot = slots[15 + i];
+				ItemStack slot = this.slots[15 + i];
 				ItemStack byproduct = recipe.byproduct[i];
 				
 				if(slot == null) {
-					slots[15 + i] = byproduct.copy();
+					this.slots[15 + i] = byproduct.copy();
 				} else {
-					slots[15 + i].stackSize += byproduct.stackSize;
+					this.slots[15 + i].stackSize += byproduct.stackSize;
 				}
 			}
 		}
 		
 		this.tanks[3].setFill(this.tanks[3].getFill() - 100);
-		this.decrStackSize(14, 1);
+		decrStackSize(14, 1);
 	}
 	
 	@Override
@@ -383,7 +379,7 @@ public class TileEntityElectrolyser extends TileEntityMachineBase implements IEn
 		else this.leftStack = null;
 		if(nbt.hasKey("rightType")) this.rightStack = new MaterialStack(Mats.matById.get(nbt.getInteger("rightType")), nbt.getInteger("rightAmount"));
 		else this.rightStack = null;
-		for(int i = 0; i < 4; i++) tanks[i].readFromNBT(nbt, "t" + i);
+		for(int i = 0; i < 4; i++) this.tanks[i].readFromNBT(nbt, "t" + i);
 	}
 	
 	@Override
@@ -397,14 +393,14 @@ public class TileEntityElectrolyser extends TileEntityMachineBase implements IEn
 		nbt.setInteger("processFluidTime", this.processFluidTime);
 		nbt.setInteger("processOreTime", this.processOreTime);
 		if(this.leftStack != null) {
-			nbt.setInteger("leftType", leftStack.material.id);
-			nbt.setInteger("leftAmount", leftStack.amount);
+			nbt.setInteger("leftType", this.leftStack.material.id);
+			nbt.setInteger("leftAmount", this.leftStack.amount);
 		}
 		if(this.rightStack != null) {
-			nbt.setInteger("rightType", rightStack.material.id);
-			nbt.setInteger("rightAmount", rightStack.amount);
+			nbt.setInteger("rightType", this.rightStack.material.id);
+			nbt.setInteger("rightAmount", this.rightStack.amount);
 		}
-		for(int i = 0; i < 4; i++) tanks[i].writeToNBT(nbt, "t" + i);
+		for(int i = 0; i < 4; i++) this.tanks[i].writeToNBT(nbt, "t" + i);
 	}
 	
 	AxisAlignedBB bb = null;
@@ -412,18 +408,18 @@ public class TileEntityElectrolyser extends TileEntityMachineBase implements IEn
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 5,
-					yCoord - 0,
-					zCoord - 5,
-					xCoord + 6,
-					yCoord + 4,
-					zCoord + 6
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 5,
+					this.yCoord - 0,
+					this.zCoord - 5,
+					this.xCoord + 6,
+					this.yCoord + 4,
+					this.zCoord + 6
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override
@@ -439,7 +435,7 @@ public class TileEntityElectrolyser extends TileEntityMachineBase implements IEn
 
 	@Override
 	public long getMaxPower() {
-		return maxPower;
+		return TileEntityElectrolyser.maxPower;
 	}
 
 	@Override
@@ -449,17 +445,17 @@ public class TileEntityElectrolyser extends TileEntityMachineBase implements IEn
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return tanks;
+		return this.tanks;
 	}
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return new FluidTank[] {tanks[1], tanks[2]};
+		return new FluidTank[] {this.tanks[1], this.tanks[2]};
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] {tanks[0], tanks[3]};
+		return new FluidTank[] {this.tanks[0], this.tanks[3]};
 	}
 
 	@Override
@@ -481,12 +477,12 @@ public class TileEntityElectrolyser extends TileEntityMachineBase implements IEn
 	@Override
 	public void receiveControl(EntityPlayer player, NBTTagCompound data) {
 
-		if(data.hasKey("sgm")) FMLNetworkHandler.openGui(player, MainRegistry.instance, 1, worldObj, xCoord, yCoord, zCoord);
-		if(data.hasKey("sgf")) FMLNetworkHandler.openGui(player, MainRegistry.instance, 0, worldObj, xCoord, yCoord, zCoord);
+		if(data.hasKey("sgm")) FMLNetworkHandler.openGui(player, MainRegistry.instance, 1, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+		if(data.hasKey("sgf")) FMLNetworkHandler.openGui(player, MainRegistry.instance, 0, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 	}
 
 	@Override
 	public boolean hasPermission(EntityPlayer player) {
-		return this.isUseableByPlayer(player);
+		return isUseableByPlayer(player);
 	}
 }

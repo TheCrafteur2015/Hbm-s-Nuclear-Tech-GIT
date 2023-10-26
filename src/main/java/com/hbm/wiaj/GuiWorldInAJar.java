@@ -1,7 +1,6 @@
 package com.hbm.wiaj;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -12,9 +11,9 @@ import org.lwjgl.opengl.GL12;
 import com.hbm.lib.RefStrings;
 import com.hbm.util.I18nUtil;
 import com.hbm.wiaj.actors.ActorFancyPanel;
-import com.hbm.wiaj.actors.ISpecialActor;
 import com.hbm.wiaj.actors.ActorFancyPanel.Orientation;
-import com.hbm.wiaj.cannery.*;
+import com.hbm.wiaj.actors.ISpecialActor;
+import com.hbm.wiaj.cannery.CanneryBase;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.client.Minecraft;
@@ -50,14 +49,14 @@ public class GuiWorldInAJar extends GuiScreen {
 		this.jarScript = script;
 		this.icon = icon;
 		this.seeAlso = seeAlso;
-		this.renderer = new RenderBlocks(jarScript.world);
+		this.renderer = new RenderBlocks(this.jarScript.world);
 		this.renderer.enableAO = true;
 		
-		this.titlePanel = new ActorFancyPanel(fontRendererObj, 40, 27, new Object[][] {{I18nUtil.resolveKey(title)}}, 0).setColors(CanneryBase.colorGold).setOrientation(Orientation.LEFT);
+		this.titlePanel = new ActorFancyPanel(this.fontRendererObj, 40, 27, new Object[][] {{I18nUtil.resolveKey(title)}}, 0).setColors(CanneryBase.colorGold).setOrientation(Orientation.LEFT);
 		this.seeAlsoTitles = new ActorFancyPanel[seeAlso.length];
 		
 		for(int i = 0; i < seeAlso.length; i++) {
-			this.seeAlsoTitles[i] = new ActorFancyPanel(fontRendererObj, 40, 27 + 36 * (i + 1), new Object[][] {{I18nUtil.resolveKey(seeAlso[i].getName())}}, 0).setColors(CanneryBase.colorGrey).setOrientation(Orientation.LEFT);
+			this.seeAlsoTitles[i] = new ActorFancyPanel(this.fontRendererObj, 40, 27 + 36 * (i + 1), new Object[][] {{I18nUtil.resolveKey(seeAlso[i].getName())}}, 0).setColors(CanneryBase.colorGrey).setOrientation(Orientation.LEFT);
 		}
 		
 		
@@ -156,16 +155,16 @@ public class GuiWorldInAJar extends GuiScreen {
 	
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float f) {
-		this.drawDefaultBackground();
+		drawDefaultBackground();
 		//shittyHack = this;
 		
 		try {
-			if(jarScript != null) {
-				jarScript.run();
+			if(this.jarScript != null) {
+				this.jarScript.run();
 			}
-			this.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
+			drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
 			GL11.glDisable(GL11.GL_LIGHTING);
-			this.drawGuiContainerForegroundLayer(mouseX, mouseY);
+			drawGuiContainerForegroundLayer(mouseX, mouseY);
 			GL11.glEnable(GL11.GL_LIGHTING);
 		} catch(Exception ex) {
 			
@@ -185,8 +184,8 @@ public class GuiWorldInAJar extends GuiScreen {
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int button) {
 
-		if(width / 2 - 12 <= mouseX && width / 2 - 12 + 24 > mouseX && height - 36 < mouseY && height - 36 + 24 >= mouseY) {
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+		if(this.width / 2 - 12 <= mouseX && this.width / 2 - 12 + 24 > mouseX && this.height - 36 < mouseY && this.height - 36 + 24 >= mouseY) {
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 			
 			if(this.jarScript.isPaused()) {
 				this.jarScript.unpause();
@@ -195,27 +194,27 @@ public class GuiWorldInAJar extends GuiScreen {
 			}
 		}
 
-		if(width / 2 - 12 - 36 <= mouseX && width / 2 - 12 - 36 + 24 > mouseX && height - 36 < mouseY && height - 36 + 24 >= mouseY) {
+		if(this.width / 2 - 12 - 36 <= mouseX && this.width / 2 - 12 - 36 + 24 > mouseX && this.height - 36 < mouseY && this.height - 36 + 24 >= mouseY) {
 			
 			if(this.jarScript.sceneNumber > 0) {
 				this.jarScript.rewindOne();
-				mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+				this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 			}
 		}
 
-		if(width / 2 - 12 + 36 <= mouseX && width / 2 - 12 + 36 + 24 > mouseX && height - 36 < mouseY && height - 36 + 24 >= mouseY) {
+		if(this.width / 2 - 12 + 36 <= mouseX && this.width / 2 - 12 + 36 + 24 > mouseX && this.height - 36 < mouseY && this.height - 36 + 24 >= mouseY) {
 			
 			if(this.jarScript.sceneNumber < this.jarScript.scenes.size()) {
 				this.jarScript.forwardOne();
-				mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+				this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 			}
 		}
 		
-		for(int i = 0; i < seeAlso.length; i++) {
+		for(int i = 0; i < this.seeAlso.length; i++) {
 			
 			if(15 <= mouseX && 39 > mouseX && 15 + 36 * (i + 1) < mouseY && 39 + 36 * (i + 1) >= mouseY) {
-				CanneryBase cannery = seeAlso[i];
-				mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+				CanneryBase cannery = this.seeAlso[i];
+				this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 				FMLCommonHandler.instance().showGuiScreen(new GuiWorldInAJar(cannery.createScript(), cannery.getName(), cannery.getIcon(), cannery.seeAlso()));
 				return;
 			}
@@ -231,56 +230,56 @@ public class GuiWorldInAJar extends GuiScreen {
 		}
 
 		if(Keyboard.isKeyDown(Keyboard.KEY_LMENU)) {
-			List<Object[]> list = new ArrayList();
-			list.add(new Object[] { (mouseX - width / 2) + " / " + (mouseY - height / 2) });
-			this.drawStackText(list, mouseX - width / 2, mouseY - height / 2, this.fontRendererObj);
+			List<Object[]> list = new ArrayList<>();
+			list.add(new Object[] { (mouseX - this.width / 2) + " / " + (mouseY - this.height / 2) });
+			drawStackText(list, mouseX - this.width / 2, mouseY - this.height / 2, this.fontRendererObj);
 		}
 		
-		Minecraft.getMinecraft().getTextureManager().bindTexture(guiUtil);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GuiWorldInAJar.guiUtil);
 		RenderHelper.disableStandardItemLighting();
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		
 		int playButton = this.jarScript.isPaused() ? 64 : 40;
 		
-		if(width / 2 - 12 <= mouseX && width / 2 - 12 + 24 > mouseX && height - 36 < mouseY && height - 36 + 24 >= mouseY)
-			this.drawTexturedModalRect(width / 2 - 12, height - 36, playButton, 24, 24, 24);
+		if(this.width / 2 - 12 <= mouseX && this.width / 2 - 12 + 24 > mouseX && this.height - 36 < mouseY && this.height - 36 + 24 >= mouseY)
+			drawTexturedModalRect(this.width / 2 - 12, this.height - 36, playButton, 24, 24, 24);
 		else
-			this.drawTexturedModalRect(width / 2 - 12, height - 36, playButton, 48, 24, 24);
+			drawTexturedModalRect(this.width / 2 - 12, this.height - 36, playButton, 48, 24, 24);
 		
 		if(this.jarScript.sceneNumber == 0)
-			this.drawTexturedModalRect(width / 2 - 12 - 36, height - 36, 88, 72, 24, 24);
-		else if(width / 2 - 12 - 36 <= mouseX && width / 2 - 12 - 36 + 24 > mouseX && height - 36 < mouseY && height - 36 + 24 >= mouseY)
-			this.drawTexturedModalRect(width / 2 - 12 - 36, height - 36, 88, 24, 24, 24);
+			drawTexturedModalRect(this.width / 2 - 12 - 36, this.height - 36, 88, 72, 24, 24);
+		else if(this.width / 2 - 12 - 36 <= mouseX && this.width / 2 - 12 - 36 + 24 > mouseX && this.height - 36 < mouseY && this.height - 36 + 24 >= mouseY)
+			drawTexturedModalRect(this.width / 2 - 12 - 36, this.height - 36, 88, 24, 24, 24);
 		else
-			this.drawTexturedModalRect(width / 2 - 12 - 36, height - 36, 88, 48, 24, 24);
+			drawTexturedModalRect(this.width / 2 - 12 - 36, this.height - 36, 88, 48, 24, 24);
 
 		if(this.jarScript.sceneNumber >= this.jarScript.scenes.size())
-			this.drawTexturedModalRect(width / 2 - 12 + 36, height - 36, 112, 72, 24, 24);
-		else if(width / 2 - 12 + 36 <= mouseX && width / 2 - 12 + 36 + 24 > mouseX && height - 36 < mouseY && height - 36 + 24 >= mouseY)
-			this.drawTexturedModalRect(width / 2 - 12 + 36, height - 36, 112, 24, 24, 24);
+			drawTexturedModalRect(this.width / 2 - 12 + 36, this.height - 36, 112, 72, 24, 24);
+		else if(this.width / 2 - 12 + 36 <= mouseX && this.width / 2 - 12 + 36 + 24 > mouseX && this.height - 36 < mouseY && this.height - 36 + 24 >= mouseY)
+			drawTexturedModalRect(this.width / 2 - 12 + 36, this.height - 36, 112, 24, 24, 24);
 		else 
-			this.drawTexturedModalRect(width / 2 - 12 + 36, height - 36, 112, 48, 24, 24);
+			drawTexturedModalRect(this.width / 2 - 12 + 36, this.height - 36, 112, 48, 24, 24);
 		
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		this.drawTexturedModalRect(15, 15, 136, 48, 24, 24);
+		drawTexturedModalRect(15, 15, 136, 48, 24, 24);
 		RenderHelper.enableGUIStandardItemLighting();
-		itemRender.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.renderEngine, this.icon, 19, 19);
-		itemRender.renderItemOverlayIntoGUI(this.fontRendererObj, this.mc.renderEngine, this.icon, 19, 19, null);
+		GuiScreen.itemRender.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.renderEngine, this.icon, 19, 19);
+		GuiScreen.itemRender.renderItemOverlayIntoGUI(this.fontRendererObj, this.mc.renderEngine, this.icon, 19, 19, null);
 		RenderHelper.disableStandardItemLighting();
 
 		if(15 <= mouseX && 39 > mouseX && 15 < mouseY && 39 >= mouseY) {
 			this.titlePanel.drawForegroundComponent(0, 0, this.jarScript.ticksElapsed, this.jarScript.interp);
 		}
 		
-		for(int i = 0; i < seeAlso.length; i++) {
-			CanneryBase also = seeAlso[i];
+		for(int i = 0; i < this.seeAlso.length; i++) {
+			CanneryBase also = this.seeAlso[i];
 
-			Minecraft.getMinecraft().getTextureManager().bindTexture(guiUtil);
+			Minecraft.getMinecraft().getTextureManager().bindTexture(GuiWorldInAJar.guiUtil);
 			GL11.glDisable(GL11.GL_LIGHTING);
-			this.drawTexturedModalRect(15, 15 + 36 * (i + 1), 136, 72, 24, 24);
+			drawTexturedModalRect(15, 15 + 36 * (i + 1), 136, 72, 24, 24);
 			RenderHelper.enableGUIStandardItemLighting();
-			itemRender.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.renderEngine, also.getIcon(), 19, 19 + 36 * (i + 1));
-			itemRender.renderItemOverlayIntoGUI(this.fontRendererObj, this.mc.renderEngine, also.getIcon(), 19, 19 + 36 * (i + 1), null);
+			GuiScreen.itemRender.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.renderEngine, also.getIcon(), 19, 19 + 36 * (i + 1));
+			GuiScreen.itemRender.renderItemOverlayIntoGUI(this.fontRendererObj, this.mc.renderEngine, also.getIcon(), 19, 19 + 36 * (i + 1), null);
 			RenderHelper.disableStandardItemLighting();
 
 			if(15 <= mouseX && 39 > mouseX && 15 + 36 * (i + 1) < mouseY && 39 + 36 * (i + 1) >= mouseY) {
@@ -298,10 +297,10 @@ public class GuiWorldInAJar extends GuiScreen {
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		Tessellator.instance.startDrawingQuads();
 		
-		for(int x = 0; x < jarScript.world.sizeX; x++) {
-			for(int y = 0; y < jarScript.world.sizeY; y++) {
-				for(int z = 0; z < jarScript.world.sizeZ; z++) {
-					renderer.renderBlockByRenderType(jarScript.world.getBlock(x, y, z), x, y, z);
+		for(int x = 0; x < this.jarScript.world.sizeX; x++) {
+			for(int y = 0; y < this.jarScript.world.sizeY; y++) {
+				for(int z = 0; z < this.jarScript.world.sizeZ; z++) {
+					this.renderer.renderBlockByRenderType(this.jarScript.world.getBlock(x, y, z), x, y, z);
 				}
 			}
 		}
@@ -331,17 +330,17 @@ public class GuiWorldInAJar extends GuiScreen {
 		
 		double scale = -10;
 		
-		GL11.glTranslated(width / 2, height / 2, 400);
+		GL11.glTranslated(this.width / 2, this.height / 2, 400);
 		GL11.glScaled(scale, scale, scale);
 		GL11.glScaled(1, 1, 0.5); //incredible flattening power
 		
-		double zoom = jarScript.zoom();
+		double zoom = this.jarScript.zoom();
 		GL11.glScaled(zoom, zoom, zoom);
 
-		GL11.glRotated(jarScript.pitch(), 1, 0, 0);
-		GL11.glRotated(jarScript.yaw(), 0, 1, 0);
-		GL11.glTranslated(jarScript.world.sizeX / -2D, -jarScript.world.sizeY / 2D , jarScript.world.sizeZ / -2D);
-		GL11.glTranslated(jarScript.offsetX(), jarScript.offsetY(), jarScript.offsetZ());
+		GL11.glRotated(this.jarScript.pitch(), 1, 0, 0);
+		GL11.glRotated(this.jarScript.yaw(), 0, 1, 0);
+		GL11.glTranslated(this.jarScript.world.sizeX / -2D, -this.jarScript.world.sizeY / 2D , this.jarScript.world.sizeZ / -2D);
+		GL11.glTranslated(this.jarScript.offsetX(), this.jarScript.offsetY(), this.jarScript.offsetZ());
 	}
 	
 	@Override
@@ -353,8 +352,8 @@ public class GuiWorldInAJar extends GuiScreen {
 
 	public void drawStackText(List<Object[]> lines, int x, int y, FontRenderer font) {
 
-		x += width / 2;
-		y += height / 2;
+		x += this.width / 2;
+		y += this.height / 2;
 		
 		if(!lines.isEmpty()) {
 			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
@@ -364,10 +363,7 @@ public class GuiWorldInAJar extends GuiScreen {
 
 			int height = 0;
 			int longestline = 0;
-			Iterator iterator = lines.iterator();
-
-			while(iterator.hasNext()) {
-				Object[] line = (Object[]) iterator.next();
+			for (Object[] line : lines) {
 				int lineWidth = 0;
 				
 				boolean hasStack = false;
@@ -405,22 +401,22 @@ public class GuiWorldInAJar extends GuiScreen {
 			}
 
 			this.zLevel = 300.0F;
-			itemRender.zLevel = 300.0F;
+			GuiScreen.itemRender.zLevel = 300.0F;
 			//int j1 = -267386864;
 			int colorBg = 0xF0100010;
-			this.drawGradientRect(minX - 3, minY - 4, minX + longestline + 3, minY - 3, colorBg, colorBg);
-			this.drawGradientRect(minX - 3, minY + height + 3, minX + longestline + 3, minY + height + 4, colorBg, colorBg);
-			this.drawGradientRect(minX - 3, minY - 3, minX + longestline + 3, minY + height + 3, colorBg, colorBg);
-			this.drawGradientRect(minX - 4, minY - 3, minX - 3, minY + height + 3, colorBg, colorBg);
-			this.drawGradientRect(minX + longestline + 3, minY - 3, minX + longestline + 4, minY + height + 3, colorBg, colorBg);
+			drawGradientRect(minX - 3, minY - 4, minX + longestline + 3, minY - 3, colorBg, colorBg);
+			drawGradientRect(minX - 3, minY + height + 3, minX + longestline + 3, minY + height + 4, colorBg, colorBg);
+			drawGradientRect(minX - 3, minY - 3, minX + longestline + 3, minY + height + 3, colorBg, colorBg);
+			drawGradientRect(minX - 4, minY - 3, minX - 3, minY + height + 3, colorBg, colorBg);
+			drawGradientRect(minX + longestline + 3, minY - 3, minX + longestline + 4, minY + height + 3, colorBg, colorBg);
 			//int k1 = 1347420415;
 			int color0 = 0x505000FF;
 			//int l1 = (k1 & 16711422) >> 1 | k1 & -16777216;
 			int color1 = (color0 & 0xFEFEFE) >> 1 | color0 & 0xFF000000;
-			this.drawGradientRect(minX - 3, minY - 3 + 1, minX - 3 + 1, minY + height + 3 - 1, color0, color1);
-			this.drawGradientRect(minX + longestline + 2, minY - 3 + 1, minX + longestline + 3, minY + height + 3 - 1, color0, color1);
-			this.drawGradientRect(minX - 3, minY - 3, minX + longestline + 3, minY - 3 + 1, color0, color0);
-			this.drawGradientRect(minX - 3, minY + height + 2, minX + longestline + 3, minY + height + 3, color1, color1);
+			drawGradientRect(minX - 3, minY - 3 + 1, minX - 3 + 1, minY + height + 3 - 1, color0, color1);
+			drawGradientRect(minX + longestline + 2, minY - 3 + 1, minX + longestline + 3, minY + height + 3 - 1, color0, color1);
+			drawGradientRect(minX - 3, minY - 3, minX + longestline + 3, minY - 3 + 1, color0, color0);
+			drawGradientRect(minX - 3, minY + height + 2, minX + longestline + 3, minY + height + 3, color1, color1);
 
 			for(int index = 0; index < lines.size(); ++index) {
 				
@@ -444,11 +440,11 @@ public class GuiWorldInAJar extends GuiScreen {
 						GL11.glColor3f(1F, 1F, 1F);
 
 						if(stack.stackSize == 0) {
-							this.drawGradientRect(minX + indent - 1, minY - 1, minX + indent + 17, minY + 17, 0xffff0000, 0xffff0000);
-							this.drawGradientRect(minX + indent, minY, minX + indent + 16, minY + 16, 0xffb0b0b0, 0xffb0b0b0);
+							drawGradientRect(minX + indent - 1, minY - 1, minX + indent + 17, minY + 17, 0xffff0000, 0xffff0000);
+							drawGradientRect(minX + indent, minY, minX + indent + 16, minY + 16, 0xffb0b0b0, 0xffb0b0b0);
 						}
-						itemRender.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.getTextureManager(), stack, minX + indent, minY);
-						itemRender.renderItemOverlayIntoGUI(this.fontRendererObj, this.mc.getTextureManager(), stack, minX + indent, minY, null);
+						GuiScreen.itemRender.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.getTextureManager(), stack, minX + indent, minY);
+						GuiScreen.itemRender.renderItemOverlayIntoGUI(this.fontRendererObj, this.mc.getTextureManager(), stack, minX + indent, minY, null);
 						RenderHelper.disableStandardItemLighting();
 						GL11.glDisable(GL11.GL_DEPTH_TEST);
 						indent += 18;
@@ -463,7 +459,7 @@ public class GuiWorldInAJar extends GuiScreen {
 			}
 
 			this.zLevel = 0.0F;
-			itemRender.zLevel = 0.0F;
+			GuiScreen.itemRender.zLevel = 0.0F;
 			GL11.glEnable(GL11.GL_LIGHTING);
 			GL11.glEnable(GL11.GL_DEPTH_TEST);
 			RenderHelper.enableStandardItemLighting();

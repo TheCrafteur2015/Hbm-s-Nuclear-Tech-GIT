@@ -42,7 +42,7 @@ public class GunDefabricator extends Item {
 	public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {
 		new ArrowNockEvent(p_77659_3_, p_77659_1_);
 		{
-			p_77659_3_.setItemInUse(p_77659_1_, this.getMaxItemUseDuration(p_77659_1_));
+			p_77659_3_.setItemInUse(p_77659_1_, getMaxItemUseDuration(p_77659_1_));
 		}
 
 		return p_77659_1_;
@@ -58,11 +58,11 @@ public class GunDefabricator extends Item {
 		if ((player.capabilities.isCreativeMode || player.inventory.hasItem(ModItems.gun_defabricator_ammo))
 				&& count % 2 == 0) {
 			EntityBullet entitybullet = new EntityBullet(world, player, 3.0F, 40, 120, false, "tauDay");
-			entitybullet.setDamage(40 + rand.nextInt(120 - 40));
+			entitybullet.setDamage(40 + this.rand.nextInt(120 - 40));
 
 			//world.playSoundAtEntity(player, "random.explode", 1.0F, 1.5F + (rand.nextFloat() / 4));
-			world.playSoundAtEntity(player, "hbm:weapon.defabShoot", 1.0F, 0.9F + (rand.nextFloat() * 0.2F));
-			if(count == this.getMaxItemUseDuration(stack))
+			world.playSoundAtEntity(player, "hbm:weapon.defabShoot", 1.0F, 0.9F + (this.rand.nextFloat() * 0.2F));
+			if(count == getMaxItemUseDuration(stack))
 				world.playSoundAtEntity(player, "hbm:weapon.defabSpinup", 1.0F, 1.0F);
 
 			if(count % 20 == 0 && !flag)
@@ -79,6 +79,7 @@ public class GunDefabricator extends Item {
 		return 0;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
@@ -93,11 +94,12 @@ public class GunDefabricator extends Item {
 		list.add("[LEGENDARY WEAPON]");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Multimap getItemAttributeModifiers() {
 		Multimap multimap = super.getItemAttributeModifiers();
 		multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
-				new AttributeModifier(field_111210_e, "Weapon modifier", 6.5, 0));
+				new AttributeModifier(Item.field_111210_e, "Weapon modifier", 6.5, 0));
 		return multimap;
 	}
 }

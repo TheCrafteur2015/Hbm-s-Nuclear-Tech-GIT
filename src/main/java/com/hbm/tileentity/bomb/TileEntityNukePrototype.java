@@ -26,33 +26,33 @@ public class TileEntityNukePrototype extends TileEntity implements ISidedInvento
 	private String customName;
 	
 	public TileEntityNukePrototype() {
-		slots = new ItemStack[14];
+		this.slots = new ItemStack[14];
 	}
 	
 	@Override
 	public int getSizeInventory() {
-		return slots.length;
+		return this.slots.length;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		return slots[i];
+		return this.slots[i];
 	}
 
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			if(slots[i].stackSize <= j)
+			if(this.slots[i].stackSize <= j)
 			{
-				ItemStack itemStack = slots[i];
-				slots[i] = null;
+				ItemStack itemStack = this.slots[i];
+				this.slots[i] = null;
 				return itemStack;
 			}
-			ItemStack itemStack1 = slots[i].splitStack(j);
-			if (slots[i].stackSize == 0)
+			ItemStack itemStack1 = this.slots[i].splitStack(j);
+			if (this.slots[i].stackSize == 0)
 			{
-				slots[i] = null;
+				this.slots[i] = null;
 			}
 			
 			return itemStack1;
@@ -63,10 +63,10 @@ public class TileEntityNukePrototype extends TileEntity implements ISidedInvento
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			ItemStack itemStack = slots[i];
-			slots[i] = null;
+			ItemStack itemStack = this.slots[i];
+			this.slots[i] = null;
 			return itemStack;
 		} else {
 		return null;
@@ -75,7 +75,7 @@ public class TileEntityNukePrototype extends TileEntity implements ISidedInvento
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemStack) {
-		slots[i] = itemStack;
+		this.slots[i] = itemStack;
 		if(itemStack != null && itemStack.stackSize > getInventoryStackLimit())
 		{
 			itemStack.stackSize = getInventoryStackLimit();
@@ -84,7 +84,7 @@ public class TileEntityNukePrototype extends TileEntity implements ISidedInvento
 
 	@Override
 	public String getInventoryName() {
-		return this.hasCustomInventoryName() ? this.customName : "container.nukePrototype";
+		return hasCustomInventoryName() ? this.customName : "container.nukePrototype";
 	}
 
 	@Override
@@ -103,11 +103,11 @@ public class TileEntityNukePrototype extends TileEntity implements ISidedInvento
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		if(worldObj.getTileEntity(xCoord, yCoord, zCoord) != this)
+		if(this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this)
 		{
 			return false;
 		}else{
-			return player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <=64;
+			return player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <=64;
 		}
 	}
 
@@ -133,7 +133,7 @@ public class TileEntityNukePrototype extends TileEntity implements ISidedInvento
 
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemStack, int j) {
-		return this.isItemValidForSlot(i, itemStack);
+		return isItemValidForSlot(i, itemStack);
 	}
 
 	@Override
@@ -145,15 +145,15 @@ public class TileEntityNukePrototype extends TileEntity implements ISidedInvento
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		NBTTagList list = nbt.getTagList("items", 10);
-		slots = new ItemStack[getSizeInventory()];
+		this.slots = new ItemStack[getSizeInventory()];
 		
 		for(int i = 0; i < list.tagCount(); i++)
 		{
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("slot");
-			if(b0 >= 0 && b0 < slots.length)
+			if(b0 >= 0 && b0 < this.slots.length)
 			{
-				slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
+				this.slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
 			}
 		}
 	}
@@ -163,13 +163,13 @@ public class TileEntityNukePrototype extends TileEntity implements ISidedInvento
 		super.writeToNBT(nbt);
 		NBTTagList list = new NBTTagList();
 		
-		for(int i = 0; i < slots.length; i++)
+		for(int i = 0; i < this.slots.length; i++)
 		{
-			if(slots[i] != null)
+			if(this.slots[i] != null)
 			{
 				NBTTagCompound nbt1 = new NBTTagCompound();
 				nbt1.setByte("slot", (byte)i);
-				slots[i].writeToNBT(nbt1);
+				this.slots[i].writeToNBT(nbt1);
 				list.appendTag(nbt1);
 			}
 		}
@@ -178,21 +178,21 @@ public class TileEntityNukePrototype extends TileEntity implements ISidedInvento
 	
 	public boolean isReady() {
 		
-		if(slots[0] != null && slots[1] != null && slots[2] != null && slots[3] != null && slots[4] != null && slots[5] != null && slots[6] != null && slots[7] != null && slots[8] != null && slots[9] != null && slots[10] != null && slots[11] != null && slots[12] != null && slots[13] != null)
-			if(slots[0].getItem() == ModItems.cell_sas3 && 
-			slots[1].getItem() == ModItems.cell_sas3 && 
-			slots[2].isItemEqual(new ItemStack(ModItems.rod_quad, 1, BreedingRodType.URANIUM.ordinal())) && 
-			slots[3].isItemEqual(new ItemStack(ModItems.rod_quad, 1, BreedingRodType.URANIUM.ordinal())) && 
-			slots[4].isItemEqual(new ItemStack(ModItems.rod_quad, 1, BreedingRodType.LEAD.ordinal())) && 
-			slots[5].isItemEqual(new ItemStack(ModItems.rod_quad, 1, BreedingRodType.LEAD.ordinal())) && 
-			slots[6].isItemEqual(new ItemStack(ModItems.rod_quad, 1, BreedingRodType.NP237.ordinal())) && 
-			slots[7].isItemEqual(new ItemStack(ModItems.rod_quad, 1, BreedingRodType.NP237.ordinal())) && 
-			slots[8].isItemEqual(new ItemStack(ModItems.rod_quad, 1, BreedingRodType.LEAD.ordinal())) && 
-			slots[9].isItemEqual(new ItemStack(ModItems.rod_quad, 1, BreedingRodType.LEAD.ordinal())) && 
-			slots[10].isItemEqual(new ItemStack(ModItems.rod_quad, 1, BreedingRodType.URANIUM.ordinal())) && 
-			slots[11].isItemEqual(new ItemStack(ModItems.rod_quad, 1, BreedingRodType.URANIUM.ordinal())) && 
-			slots[12].getItem() == ModItems.cell_sas3 && 
-			slots[13].getItem() == ModItems.cell_sas3)
+		if(this.slots[0] != null && this.slots[1] != null && this.slots[2] != null && this.slots[3] != null && this.slots[4] != null && this.slots[5] != null && this.slots[6] != null && this.slots[7] != null && this.slots[8] != null && this.slots[9] != null && this.slots[10] != null && this.slots[11] != null && this.slots[12] != null && this.slots[13] != null)
+			if(this.slots[0].getItem() == ModItems.cell_sas3 && 
+			this.slots[1].getItem() == ModItems.cell_sas3 && 
+			this.slots[2].isItemEqual(new ItemStack(ModItems.rod_quad, 1, BreedingRodType.URANIUM.ordinal())) && 
+			this.slots[3].isItemEqual(new ItemStack(ModItems.rod_quad, 1, BreedingRodType.URANIUM.ordinal())) && 
+			this.slots[4].isItemEqual(new ItemStack(ModItems.rod_quad, 1, BreedingRodType.LEAD.ordinal())) && 
+			this.slots[5].isItemEqual(new ItemStack(ModItems.rod_quad, 1, BreedingRodType.LEAD.ordinal())) && 
+			this.slots[6].isItemEqual(new ItemStack(ModItems.rod_quad, 1, BreedingRodType.NP237.ordinal())) && 
+			this.slots[7].isItemEqual(new ItemStack(ModItems.rod_quad, 1, BreedingRodType.NP237.ordinal())) && 
+			this.slots[8].isItemEqual(new ItemStack(ModItems.rod_quad, 1, BreedingRodType.LEAD.ordinal())) && 
+			this.slots[9].isItemEqual(new ItemStack(ModItems.rod_quad, 1, BreedingRodType.LEAD.ordinal())) && 
+			this.slots[10].isItemEqual(new ItemStack(ModItems.rod_quad, 1, BreedingRodType.URANIUM.ordinal())) && 
+			this.slots[11].isItemEqual(new ItemStack(ModItems.rod_quad, 1, BreedingRodType.URANIUM.ordinal())) && 
+			this.slots[12].getItem() == ModItems.cell_sas3 && 
+			this.slots[13].getItem() == ModItems.cell_sas3)
 			{
 				return true;
 			}
@@ -201,9 +201,9 @@ public class TileEntityNukePrototype extends TileEntity implements ISidedInvento
 	}
 	
 	public void clearSlots() {
-		for(int i = 0; i < slots.length; i++)
+		for(int i = 0; i < this.slots.length; i++)
 		{
-			slots[i] = null;
+			this.slots[i] = null;
 		}
 	}
 	

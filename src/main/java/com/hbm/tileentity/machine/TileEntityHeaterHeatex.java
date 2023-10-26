@@ -48,32 +48,32 @@ public class TileEntityHeaterHeatex extends TileEntityMachineBase implements IHe
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
-			this.tanks[0].setType(0, slots);
-			this.setupTanks();
-			this.updateConnections();
+		if(!this.worldObj.isRemote) {
+			this.tanks[0].setType(0, this.slots);
+			setupTanks();
+			updateConnections();
 			
 			this.heatEnergy *= 0.999;
 			
 			NBTTagCompound data = new NBTTagCompound();
-			tanks[0].writeToNBT(data, "0");
-			this.tryConvert();
-			tanks[1].writeToNBT(data, "1");
-			data.setInteger("heat", heatEnergy);
-			data.setInteger("toCool", amountToCool);
-			data.setInteger("delay", tickDelay);
+			this.tanks[0].writeToNBT(data, "0");
+			tryConvert();
+			this.tanks[1].writeToNBT(data, "1");
+			data.setInteger("heat", this.heatEnergy);
+			data.setInteger("toCool", this.amountToCool);
+			data.setInteger("delay", this.tickDelay);
 			INBTPacketReceiver.networkPack(this, data, 25);
 			
 			for(DirPos pos : getConPos()) {
-				if(this.tanks[1].getFill() > 0) this.sendFluid(tanks[1], worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+				if(this.tanks[1].getFill() > 0) this.sendFluid(this.tanks[1], this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 			}
 		}
 	}
 	
 	@Override
 	public void networkUnpack(NBTTagCompound nbt) {
-		tanks[0].readFromNBT(nbt, "0");
-		tanks[1].readFromNBT(nbt, "1");
+		this.tanks[0].readFromNBT(nbt, "0");
+		this.tanks[1].readFromNBT(nbt, "1");
 		this.heatEnergy = nbt.getInteger("heat");
 		this.amountToCool = nbt.getInteger("toCool");
 		this.tickDelay = nbt.getInteger("delay");
@@ -81,53 +81,53 @@ public class TileEntityHeaterHeatex extends TileEntityMachineBase implements IHe
 	
 	protected void setupTanks() {
 		
-		if(tanks[0].getTankType().hasTrait(FT_Coolable.class)) {
-			FT_Coolable trait = tanks[0].getTankType().getTrait(FT_Coolable.class);
+		if(this.tanks[0].getTankType().hasTrait(FT_Coolable.class)) {
+			FT_Coolable trait = this.tanks[0].getTankType().getTrait(FT_Coolable.class);
 			if(trait.getEfficiency(CoolingType.HEATEXCHANGER) > 0) {
-				tanks[1].setTankType(trait.coolsTo);
+				this.tanks[1].setTankType(trait.coolsTo);
 				return;
 			}
 		}
 
-		tanks[0].setTankType(Fluids.NONE);
-		tanks[1].setTankType(Fluids.NONE);
+		this.tanks[0].setTankType(Fluids.NONE);
+		this.tanks[1].setTankType(Fluids.NONE);
 	}
 	
 	protected void updateConnections() {
 		
 		for(DirPos pos : getConPos()) {
-			this.trySubscribe(tanks[0].getTankType(), worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			trySubscribe(this.tanks[0].getTankType(), this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 		}
 	}
 	
 	protected void tryConvert() {
 		
-		if(!tanks[0].getTankType().hasTrait(FT_Coolable.class)) return;
-		if(tickDelay < 1) tickDelay = 1;
-		if(worldObj.getTotalWorldTime() % tickDelay != 0) return;
+		if(!this.tanks[0].getTankType().hasTrait(FT_Coolable.class)) return;
+		if(this.tickDelay < 1) this.tickDelay = 1;
+		if(this.worldObj.getTotalWorldTime() % this.tickDelay != 0) return;
 		
-		FT_Coolable trait = tanks[0].getTankType().getTrait(FT_Coolable.class);
+		FT_Coolable trait = this.tanks[0].getTankType().getTrait(FT_Coolable.class);
 		
-		int inputOps = tanks[0].getFill() / trait.amountReq;
-		int outputOps = (tanks[1].getMaxFill() - tanks[1].getFill()) / trait.amountProduced;
+		int inputOps = this.tanks[0].getFill() / trait.amountReq;
+		int outputOps = (this.tanks[1].getMaxFill() - this.tanks[1].getFill()) / trait.amountProduced;
 		int opCap = this.amountToCool;
 		
 		int ops = Math.min(inputOps, Math.min(outputOps, opCap));
-		tanks[0].setFill(tanks[0].getFill() - trait.amountReq * ops);
-		tanks[1].setFill(tanks[1].getFill() + trait.amountProduced * ops);
+		this.tanks[0].setFill(this.tanks[0].getFill() - trait.amountReq * ops);
+		this.tanks[1].setFill(this.tanks[1].getFill() + trait.amountProduced * ops);
 		this.heatEnergy += trait.heatEnergy * ops * trait.getEfficiency(CoolingType.HEATEXCHANGER);
-		this.markChanged();
+		markChanged();
 	}
 	
 	private DirPos[] getConPos() {
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 		
 		return new DirPos[] {
-				new DirPos(xCoord + dir.offsetX * 2 + rot.offsetX, yCoord, zCoord + dir.offsetZ * 2 + rot.offsetZ, dir),
-				new DirPos(xCoord + dir.offsetX * 2 - rot.offsetX, yCoord, zCoord + dir.offsetZ * 2 - rot.offsetZ, dir),
-				new DirPos(xCoord - dir.offsetX * 2 + rot.offsetX, yCoord, zCoord - dir.offsetZ * 2 + rot.offsetZ, dir.getOpposite()),
-				new DirPos(xCoord - dir.offsetX * 2 - rot.offsetX, yCoord, zCoord - dir.offsetZ * 2 - rot.offsetZ, dir.getOpposite())
+				new DirPos(this.xCoord + dir.offsetX * 2 + rot.offsetX, this.yCoord, this.zCoord + dir.offsetZ * 2 + rot.offsetZ, dir),
+				new DirPos(this.xCoord + dir.offsetX * 2 - rot.offsetX, this.yCoord, this.zCoord + dir.offsetZ * 2 - rot.offsetZ, dir),
+				new DirPos(this.xCoord - dir.offsetX * 2 + rot.offsetX, this.yCoord, this.zCoord - dir.offsetZ * 2 + rot.offsetZ, dir.getOpposite()),
+				new DirPos(this.xCoord - dir.offsetX * 2 - rot.offsetX, this.yCoord, this.zCoord - dir.offsetZ * 2 - rot.offsetZ, dir.getOpposite())
 		};
 	}
 	
@@ -148,14 +148,14 @@ public class TileEntityHeaterHeatex extends TileEntityMachineBase implements IHe
 
 		this.tanks[0].writeToNBT(nbt, "0");
 		this.tanks[1].writeToNBT(nbt, "1");
-		nbt.setInteger("heatEnergy", heatEnergy);
-		nbt.setInteger("toCool", amountToCool);
-		nbt.setInteger("delay", tickDelay);
+		nbt.setInteger("heatEnergy", this.heatEnergy);
+		nbt.setInteger("toCool", this.amountToCool);
+		nbt.setInteger("delay", this.tickDelay);
 	}
 
 	@Override
 	public int getHeatStored() {
-		return heatEnergy;
+		return this.heatEnergy;
 	}
 
 	@Override
@@ -165,22 +165,22 @@ public class TileEntityHeaterHeatex extends TileEntityMachineBase implements IHe
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return tanks;
+		return this.tanks;
 	}
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return new FluidTank[] {tanks[1]};
+		return new FluidTank[] {this.tanks[1]};
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] {tanks[0]};
+		return new FluidTank[] {this.tanks[0]};
 	}
 
 	@Override
 	public boolean canConnect(FluidType type, ForgeDirection dir) {
-		ForgeDirection facing = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+		ForgeDirection facing = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
 		return dir == facing || dir == facing.getOpposite();
 	}
 
@@ -200,18 +200,18 @@ public class TileEntityHeaterHeatex extends TileEntityMachineBase implements IHe
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 1,
-					yCoord,
-					zCoord - 1,
-					xCoord + 2,
-					yCoord + 1,
-					zCoord + 2
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 1,
+					this.yCoord,
+					this.zCoord - 1,
+					this.xCoord + 2,
+					this.yCoord + 1,
+					this.zCoord + 2
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override
@@ -222,7 +222,7 @@ public class TileEntityHeaterHeatex extends TileEntityMachineBase implements IHe
 
 	@Override
 	public boolean hasPermission(EntityPlayer player) {
-		return player.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 16;
+		return player.getDistance(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5) < 16;
 	}
 
 	@Override
@@ -230,6 +230,6 @@ public class TileEntityHeaterHeatex extends TileEntityMachineBase implements IHe
 		if(data.hasKey("toCool")) this.amountToCool = Math.max(data.getInteger("toCool"), 1);
 		if(data.hasKey("delay")) this.tickDelay = Math.max(data.getInteger("delay"), 1);
 		
-		this.markChanged();
+		markChanged();
 	}
 }

@@ -15,50 +15,50 @@ public class ContainerMachineCustom extends Container {
 	private TileEntityCustomMachine custom;
 
 	public ContainerMachineCustom(InventoryPlayer playerInv, TileEntityCustomMachine tile) {
-		custom = tile;
+		this.custom = tile;
 		
 		//Input
-		this.addSlotToContainer(new Slot(tile, 0, 150, 72));
+		addSlotToContainer(new Slot(tile, 0, 150, 72));
 		//Fluid IDs
 		for(int i = 0; i < tile.inputTanks.length; i++) {
-			this.addSlotToContainer(new Slot(tile, 1 + i, 8 + 18 * i, 54));
+			addSlotToContainer(new Slot(tile, 1 + i, 8 + 18 * i, 54));
 		}
 		//Item inputs
-		if(tile.config.itemInCount > 0) this.addSlotToContainer(new Slot(tile, 4, 8, 72));
-		if(tile.config.itemInCount > 1) this.addSlotToContainer(new Slot(tile, 5, 26, 72));
-		if(tile.config.itemInCount > 2) this.addSlotToContainer(new Slot(tile, 6, 44, 72));
-		if(tile.config.itemInCount > 3) this.addSlotToContainer(new Slot(tile, 7, 8, 90));
-		if(tile.config.itemInCount > 4) this.addSlotToContainer(new Slot(tile, 8, 26, 90));
-		if(tile.config.itemInCount > 5) this.addSlotToContainer(new Slot(tile, 9, 44, 90));
+		if(tile.config.itemInCount > 0) addSlotToContainer(new Slot(tile, 4, 8, 72));
+		if(tile.config.itemInCount > 1) addSlotToContainer(new Slot(tile, 5, 26, 72));
+		if(tile.config.itemInCount > 2) addSlotToContainer(new Slot(tile, 6, 44, 72));
+		if(tile.config.itemInCount > 3) addSlotToContainer(new Slot(tile, 7, 8, 90));
+		if(tile.config.itemInCount > 4) addSlotToContainer(new Slot(tile, 8, 26, 90));
+		if(tile.config.itemInCount > 5) addSlotToContainer(new Slot(tile, 9, 44, 90));
 		//Templates
-		if(tile.config.itemInCount > 0) this.addSlotToContainer(new SlotPattern(tile, 10, 8, 108));
-		if(tile.config.itemInCount > 1) this.addSlotToContainer(new SlotPattern(tile, 11, 26, 108));
-		if(tile.config.itemInCount > 2) this.addSlotToContainer(new SlotPattern(tile, 12, 44, 108));
-		if(tile.config.itemInCount > 3) this.addSlotToContainer(new SlotPattern(tile, 13, 8, 126));
-		if(tile.config.itemInCount > 4) this.addSlotToContainer(new SlotPattern(tile, 14, 26, 126));
-		if(tile.config.itemInCount > 5) this.addSlotToContainer(new SlotPattern(tile, 15, 44, 126));
+		if(tile.config.itemInCount > 0) addSlotToContainer(new SlotPattern(tile, 10, 8, 108));
+		if(tile.config.itemInCount > 1) addSlotToContainer(new SlotPattern(tile, 11, 26, 108));
+		if(tile.config.itemInCount > 2) addSlotToContainer(new SlotPattern(tile, 12, 44, 108));
+		if(tile.config.itemInCount > 3) addSlotToContainer(new SlotPattern(tile, 13, 8, 126));
+		if(tile.config.itemInCount > 4) addSlotToContainer(new SlotPattern(tile, 14, 26, 126));
+		if(tile.config.itemInCount > 5) addSlotToContainer(new SlotPattern(tile, 15, 44, 126));
 		//Output
-		if(tile.config.itemOutCount > 0) this.addSlotToContainer(new SlotCraftingOutput(playerInv.player, tile, 16, 78, 72));
-		if(tile.config.itemOutCount > 1) this.addSlotToContainer(new SlotCraftingOutput(playerInv.player, tile, 17, 96, 72));
-		if(tile.config.itemOutCount > 2) this.addSlotToContainer(new SlotCraftingOutput(playerInv.player, tile, 18, 114, 72));
-		if(tile.config.itemOutCount > 3) this.addSlotToContainer(new SlotCraftingOutput(playerInv.player, tile, 19, 78, 90));
-		if(tile.config.itemOutCount > 4) this.addSlotToContainer(new SlotCraftingOutput(playerInv.player, tile, 20, 96, 90));
-		if(tile.config.itemOutCount > 5) this.addSlotToContainer(new SlotCraftingOutput(playerInv.player, tile, 21, 114, 90));
+		if(tile.config.itemOutCount > 0) addSlotToContainer(new SlotCraftingOutput(playerInv.player, tile, 16, 78, 72));
+		if(tile.config.itemOutCount > 1) addSlotToContainer(new SlotCraftingOutput(playerInv.player, tile, 17, 96, 72));
+		if(tile.config.itemOutCount > 2) addSlotToContainer(new SlotCraftingOutput(playerInv.player, tile, 18, 114, 72));
+		if(tile.config.itemOutCount > 3) addSlotToContainer(new SlotCraftingOutput(playerInv.player, tile, 19, 78, 90));
+		if(tile.config.itemOutCount > 4) addSlotToContainer(new SlotCraftingOutput(playerInv.player, tile, 20, 96, 90));
+		if(tile.config.itemOutCount > 5) addSlotToContainer(new SlotCraftingOutput(playerInv.player, tile, 21, 114, 90));
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 174 + i * 18));
+				addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 174 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(playerInv, i, 8 + i * 18, 232));
+			addSlotToContainer(new Slot(playerInv, i, 8 + i * 18, 232));
 		}
 	}
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return custom.isUseableByPlayer(player);
+		return this.custom.isUseableByPlayer(player);
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class ContainerMachineCustom extends Container {
 			return super.slotClick(index, button, mode, player);
 		}
 		
-		Slot slot = this.getSlot(index);
+		Slot slot = getSlot(index);
 		index = ((Slot) this.inventorySlots.get(index)).getSlotIndex();
 		
 		ItemStack ret = null;
@@ -89,7 +89,7 @@ public class ContainerMachineCustom extends Container {
 			ret = slot.getStack().copy();
 		
 		if(button == 1 && mode == 0 && slot.getHasStack()) {
-			custom.matcher.nextMode(player.worldObj, slot.getStack(), index - 10);
+			this.custom.matcher.nextMode(player.worldObj, slot.getStack(), index - 10);
 			return ret;
 			
 		} else {
@@ -101,7 +101,7 @@ public class ContainerMachineCustom extends Container {
 			}
 			
 			slot.onSlotChanged();
-			custom.matcher.initPatternSmart(player.worldObj, slot.getStack(), index - 10);
+			this.custom.matcher.initPatternSmart(player.worldObj, slot.getStack(), index - 10);
 			
 			return ret;
 		}

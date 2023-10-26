@@ -46,20 +46,20 @@ public class GUIRadioRec extends GuiScreen {
 		int oX = 4;
 		int oY = 4;
 
-		this.frequency = new GuiTextField(this.fontRendererObj, guiLeft + 25 + oX, guiTop + 17 + oY, 90 - oX * 2, 14);
+		this.frequency = new GuiTextField(this.fontRendererObj, this.guiLeft + 25 + oX, this.guiTop + 17 + oY, 90 - oX * 2, 14);
 		this.frequency.setTextColor(0x00ff00);
 		this.frequency.setDisabledTextColour(0x00ff00);
 		this.frequency.setEnableBackgroundDrawing(false);
 		this.frequency.setMaxStringLength(10);
-		this.frequency.setText(radio.channel == null ? "" : radio.channel);
+		this.frequency.setText(this.radio.channel == null ? "" : this.radio.channel);
 	}
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float f) {
-		this.drawDefaultBackground();
-		this.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
+		drawDefaultBackground();
+		drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
 		GL11.glDisable(GL11.GL_LIGHTING);
-		this.drawGuiContainerForegroundLayer(mouseX, mouseY);
+		drawGuiContainerForegroundLayer(mouseX, mouseY);
 		GL11.glEnable(GL11.GL_LIGHTING);
 	}
 
@@ -68,21 +68,21 @@ public class GUIRadioRec extends GuiScreen {
 		String name = I18nUtil.resolveKey("container.radio");
 		this.fontRendererObj.drawString(name, this.guiLeft + this.xSize / 2 - this.fontRendererObj.getStringWidth(name) / 2, this.guiTop + 6, 4210752);
 
-		if(guiLeft + 137 <= x && guiLeft + 137 + 18 > x && guiTop + 17 < y && guiTop + 17 + 18 >= y) {
+		if(this.guiLeft + 137 <= x && this.guiLeft + 137 + 18 > x && this.guiTop + 17 < y && this.guiTop + 17 + 18 >= y) {
 			func_146283_a(Arrays.asList(new String[] { "Save Settings" }), x, y);
 		}
-		if(guiLeft + 173 <= x && guiLeft + 173 + 18 > x && guiTop + 17 < y && guiTop + 17 + 18 >= y) {
+		if(this.guiLeft + 173 <= x && this.guiLeft + 173 + 18 > x && this.guiTop + 17 < y && this.guiTop + 17 + 18 >= y) {
 			func_146283_a(Arrays.asList(new String[] { "Toggle" }), x, y);
 		}
 	}
 
 	private void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIRadioRec.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
 		if(this.radio.isOn) {
-			drawTexturedModalRect(guiLeft + 173, guiTop + 17, 0, 42, 18, 18);
+			drawTexturedModalRect(this.guiLeft + 173, this.guiTop + 17, 0, 42, 18, 18);
 		}
 		
 		this.frequency.drawTextBox();
@@ -94,18 +94,18 @@ public class GUIRadioRec extends GuiScreen {
 		
 		this.frequency.mouseClicked(x, y, i);
 		
-		if(guiLeft + 137 <= x && guiLeft + 137 + 18 > x && guiTop + 17 < y && guiTop + 17 + 18 >= y) {
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+		if(this.guiLeft + 137 <= x && this.guiLeft + 137 + 18 > x && this.guiTop + 17 < y && this.guiTop + 17 + 18 >= y) {
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 			NBTTagCompound data = new NBTTagCompound();
 			data.setString("channel", this.frequency.getText());
-			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, radio.xCoord, radio.yCoord, radio.zCoord));
+			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, this.radio.xCoord, this.radio.yCoord, this.radio.zCoord));
 		}
 		
-		if(guiLeft + 173 <= x && guiLeft + 173 + 18 > x && guiTop + 17 < y && guiTop + 17 + 18 >= y) {
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+		if(this.guiLeft + 173 <= x && this.guiLeft + 173 + 18 > x && this.guiTop + 17 < y && this.guiTop + 17 + 18 >= y) {
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 			NBTTagCompound data = new NBTTagCompound();
-			data.setBoolean("isOn", !radio.isOn);
-			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, radio.xCoord, radio.yCoord, radio.zCoord));
+			data.setBoolean("isOn", !this.radio.isOn);
+			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, this.radio.xCoord, this.radio.yCoord, this.radio.zCoord));
 		}
 	}
 

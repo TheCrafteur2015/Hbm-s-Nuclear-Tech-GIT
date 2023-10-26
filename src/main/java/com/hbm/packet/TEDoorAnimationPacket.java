@@ -36,25 +36,25 @@ public class TEDoorAnimationPacket implements IMessage {
 	
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		x = buf.readInt();
-		y = buf.readInt();
-		z = buf.readInt();
-		state = buf.readByte();
-		skinIndex = buf.readByte();
+		this.x = buf.readInt();
+		this.y = buf.readInt();
+		this.z = buf.readInt();
+		this.state = buf.readByte();
+		this.skinIndex = buf.readByte();
 		if(buf.readableBytes() == 1){
-			texture = buf.readByte();
+			this.texture = buf.readByte();
 		}
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeInt(x);
-		buf.writeInt(y);
-		buf.writeInt(z);
-		buf.writeByte(state);
-		buf.writeByte(skinIndex);
-		if(texture != -1){
-			buf.writeByte(texture);
+		buf.writeInt(this.x);
+		buf.writeInt(this.y);
+		buf.writeInt(this.z);
+		buf.writeByte(this.state);
+		buf.writeByte(this.skinIndex);
+		if(this.texture != -1){
+			buf.writeByte(this.texture);
 		}
 	}
 	

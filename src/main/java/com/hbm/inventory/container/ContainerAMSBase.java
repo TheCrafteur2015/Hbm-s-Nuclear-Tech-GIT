@@ -1,6 +1,7 @@
 package com.hbm.inventory.container;
 
 import com.hbm.tileentity.machine.TileEntityAMSBase;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -17,47 +18,47 @@ private TileEntityAMSBase amsBase;
 	private int mode;
 	
 	public ContainerAMSBase(InventoryPlayer invPlayer, TileEntityAMSBase tedf) {
-		amsBase = tedf;
+		this.amsBase = tedf;
 
 		//Cool 1 In
-		this.addSlotToContainer(new Slot(tedf, 0, 8, 18));
+		addSlotToContainer(new Slot(tedf, 0, 8, 18));
 		//Cool 1 Out
-		this.addSlotToContainer(new Slot(tedf, 1, 8, 54));
+		addSlotToContainer(new Slot(tedf, 1, 8, 54));
 		//Cool 2 In
-		this.addSlotToContainer(new Slot(tedf, 2, 152, 18));
+		addSlotToContainer(new Slot(tedf, 2, 152, 18));
 		//Cool 2 Out
-		this.addSlotToContainer(new Slot(tedf, 3, 152, 54));
+		addSlotToContainer(new Slot(tedf, 3, 152, 54));
 		//Fuel 1 In
-		this.addSlotToContainer(new Slot(tedf, 4, 8, 72));
+		addSlotToContainer(new Slot(tedf, 4, 8, 72));
 		//Fuel 1 Out
-		this.addSlotToContainer(new Slot(tedf, 5, 8, 108));
+		addSlotToContainer(new Slot(tedf, 5, 8, 108));
 		//Fuel 2 In
-		this.addSlotToContainer(new Slot(tedf, 6, 152, 72));
+		addSlotToContainer(new Slot(tedf, 6, 152, 72));
 		//Fuel 2 Out
-		this.addSlotToContainer(new Slot(tedf, 7, 152, 108));
+		addSlotToContainer(new Slot(tedf, 7, 152, 108));
 		//Moderator
-		this.addSlotToContainer(new Slot(tedf, 8, 80, 45));
-		this.addSlotToContainer(new Slot(tedf, 9, 62, 63));
-		this.addSlotToContainer(new Slot(tedf, 10, 98, 63));
-		this.addSlotToContainer(new Slot(tedf, 11, 80, 81));
+		addSlotToContainer(new Slot(tedf, 8, 80, 45));
+		addSlotToContainer(new Slot(tedf, 9, 62, 63));
+		addSlotToContainer(new Slot(tedf, 10, 98, 63));
+		addSlotToContainer(new Slot(tedf, 11, 80, 81));
 		//Core
-		this.addSlotToContainer(new Slot(tedf, 12, 80, 63));
+		addSlotToContainer(new Slot(tedf, 12, 80, 63));
 		//Sat Chips
-		this.addSlotToContainer(new Slot(tedf, 13, 62, 108));
-		this.addSlotToContainer(new Slot(tedf, 14, 62 + 18, 108));
-		this.addSlotToContainer(new Slot(tedf, 15, 62 + 36, 108));
+		addSlotToContainer(new Slot(tedf, 13, 62, 108));
+		addSlotToContainer(new Slot(tedf, 14, 62 + 18, 108));
+		addSlotToContainer(new Slot(tedf, 15, 62 + 36, 108));
 		
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 56));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 56));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++)
 		{
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 56));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 56));
 		}
 	}
 	
@@ -73,7 +74,7 @@ private TileEntityAMSBase amsBase;
 			var3 = var5.copy();
 			
             if (par2 <= 3) {
-				if (!this.mergeItemStack(var5, 4, this.inventorySlots.size(), true))
+				if (!mergeItemStack(var5, 4, this.inventorySlots.size(), true))
 				{
 					return null;
 				}
@@ -96,16 +97,15 @@ private TileEntityAMSBase amsBase;
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return amsBase.isUseableByPlayer(player);
+		return this.amsBase.isUseableByPlayer(player);
 	}
 	
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 		
-		for(int i = 0; i < this.crafters.size(); i++)
-		{
-			ICrafting par1 = (ICrafting)this.crafters.get(i);
+		for (Object element : this.crafters) {
+			ICrafting par1 = (ICrafting)element;
 			
 			if(this.heat != this.amsBase.heat)
 			{
@@ -132,23 +132,23 @@ private TileEntityAMSBase amsBase;
 	public void updateProgressBar(int i, int j) {
 		if(i == 0)
 		{
-			amsBase.heat = j;
+			this.amsBase.heat = j;
 		}
 		if(i == 1)
 		{
-			amsBase.efficiency = j;
+			this.amsBase.efficiency = j;
 		}
 		if(i == 2)
 		{
-			amsBase.warning = j;
+			this.amsBase.warning = j;
 		}
 		if(i == 3)
 		{
-			amsBase.field = j;
+			this.amsBase.field = j;
 		}
 		if(i == 4)
 		{
-			amsBase.mode = j;
+			this.amsBase.mode = j;
 		}
 	}
 }

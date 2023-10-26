@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.hbm.lib.RefStrings;
 import com.hbm.render.model.ModelMIRV;
+
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -13,7 +14,7 @@ public class RenderMiniMIRV extends Render {
     private ModelMIRV miniNuke;
 	
 	public RenderMiniMIRV() {
-		miniNuke = new ModelMIRV();
+		this.miniNuke = new ModelMIRV();
 	}
 
 	@Override
@@ -26,7 +27,7 @@ public class RenderMiniMIRV extends Render {
         GL11.glScalef(1.5F, 1.5F, 1.5F);
         
         bindTexture(new ResourceLocation(RefStrings.MODID + ":textures/models/Mirv.png"));
-        miniNuke.renderAll(0.0625F);
+        this.miniNuke.renderAll(0.0625F);
 		GL11.glPopMatrix();
 	}
 

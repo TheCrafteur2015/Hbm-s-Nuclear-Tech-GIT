@@ -8,7 +8,7 @@ import net.minecraft.world.IBlockAccess;
 
 public class BlockCMGlass extends BlockCM {
 
-	public BlockCMGlass(Material mat, Class<? extends Enum> theEnum, boolean multiName, boolean multiTexture) {
+	public BlockCMGlass(Material mat, Class<? extends Enum<?>> theEnum, boolean multiName, boolean multiTexture) {
 		super(mat, theEnum, multiName, multiTexture);
 	}
 	
@@ -22,6 +22,7 @@ public class BlockCMGlass extends BlockCM {
 		return false;
 	}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
 		Block block = world.getBlock(x, y, z);

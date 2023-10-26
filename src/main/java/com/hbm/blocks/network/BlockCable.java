@@ -30,9 +30,9 @@ public class BlockCable extends BlockContainer {
 	public int getRenderType() {
 		
 		if(this == ModBlocks.red_cable_classic)
-			return renderIDClassic;
+			return BlockCable.renderIDClassic;
 		
-		return renderID;
+		return BlockCable.renderID;
 	}
 	
 	@Override

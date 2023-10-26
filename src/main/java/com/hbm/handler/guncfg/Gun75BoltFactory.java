@@ -86,7 +86,7 @@ public class Gun75BoltFactory {
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_75bolt.stackFromEnum(Ammo75Bolt.STOCK));
 		bullet.ammoCount = 30;
-		bullet.spread *= inaccuracy;
+		bullet.spread *= Gun75BoltFactory.inaccuracy;
 		bullet.dmgMin = 74;
 		bullet.dmgMax = 82;
 		bullet.doesRicochet = false;
@@ -120,7 +120,7 @@ public class Gun75BoltFactory {
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_75bolt.stackFromEnum(Ammo75Bolt.INCENDIARY));
 		bullet.ammoCount = 30;
-		bullet.spread *= inaccuracy;
+		bullet.spread *= Gun75BoltFactory.inaccuracy;
 		bullet.dmgMin = 72;
 		bullet.dmgMax = 76;
 		bullet.doesRicochet = false;
@@ -131,7 +131,7 @@ public class Gun75BoltFactory {
 		
 		PotionEffect eff = new PotionEffect(HbmPotion.phosphorus.id, 20 * 20, 0, true);
 		eff.getCurativeItems().clear();
-		bullet.effects = new ArrayList();
+		bullet.effects = new ArrayList<>();
 		bullet.effects.add(new PotionEffect(eff));
 		
 		bullet.bntImpact = (bulletnt, x, y, z, sideHit) -> {
@@ -154,7 +154,7 @@ public class Gun75BoltFactory {
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_75bolt.stackFromEnum(Ammo75Bolt.HE));
 		bullet.ammoCount = 30;
-		bullet.spread *= inaccuracy;
+		bullet.spread *= Gun75BoltFactory.inaccuracy;
 		bullet.dmgMin = 94;
 		bullet.dmgMax = 100;
 		bullet.doesRicochet = false;

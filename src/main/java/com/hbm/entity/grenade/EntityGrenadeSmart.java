@@ -30,12 +30,12 @@ public class EntityGrenadeSmart extends EntityGrenadeBase {
     	
         if (!this.worldObj.isRemote)
         {
-            this.setDead();
+            setDead();
             
             if(this.ticksExisted > 10)
-            	ExplosionLarge.explode(worldObj, posX, posY, posZ, 5.0F, true, false, false);
+            	ExplosionLarge.explode(this.worldObj, this.posX, this.posY, this.posZ, 5.0F, true, false, false);
             else
-            	worldObj.spawnEntityInWorld(new EntityItem(worldObj, posX, posY, posZ, new ItemStack(ModItems.grenade_smart)));
+            	this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.posX, this.posY, this.posZ, new ItemStack(ModItems.grenade_smart)));
         }
     }
 }

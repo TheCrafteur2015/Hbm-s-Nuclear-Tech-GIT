@@ -31,12 +31,12 @@ public class Transform {
 	boolean hidden = false;
 	
 	public Transform(float[] matrix){
-		scale = getScaleFromMatrix(matrix);
-		auxGLMatrix.put(matrix);
-		auxGLMatrix.rewind();
-		rotation = new Quaternion().setFromMatrix((Matrix4f) new Matrix4f().load(auxGLMatrix));
-		translation = Vec3.createVectorHelper(matrix[0*4+3], matrix[1*4+3], matrix[2*4+3]);
-		auxGLMatrix.rewind();
+		this.scale = getScaleFromMatrix(matrix);
+		Transform.auxGLMatrix.put(matrix);
+		Transform.auxGLMatrix.rewind();
+		this.rotation = new Quaternion().setFromMatrix((Matrix4f) new Matrix4f().load(Transform.auxGLMatrix));
+		this.translation = Vec3.createVectorHelper(matrix[0*4+3], matrix[1*4+3], matrix[2*4+3]);
+		Transform.auxGLMatrix.rewind();
 	}
 	
 	private Vec3 getScaleFromMatrix(float[] matrix){
@@ -61,14 +61,14 @@ public class Transform {
 	public void interpolateAndApply(Transform other, float inter){
 		Vec3 trans = BobMathUtil.interpVec(this.translation, other.translation, inter);
 		Vec3 scale = BobMathUtil.interpVec(this.scale, other.scale, inter);
-		Quaternion rot = slerp(rotation, other.rotation, inter);
-		quatToGlMatrix(auxGLMatrix, rot);
-		scale(auxGLMatrix, scale);
-		auxGLMatrix.put(12, (float) trans.xCoord);
-		auxGLMatrix.put(13, (float) trans.yCoord);
-		auxGLMatrix.put(14, (float) trans.zCoord);
+		Quaternion rot = slerp(this.rotation, other.rotation, inter);
+		Transform.quatToGlMatrix(Transform.auxGLMatrix, rot);
+		scale(Transform.auxGLMatrix, scale);
+		Transform.auxGLMatrix.put(12, (float) trans.xCoord);
+		Transform.auxGLMatrix.put(13, (float) trans.yCoord);
+		Transform.auxGLMatrix.put(14, (float) trans.zCoord);
 		
-		GL11.glMultMatrix(auxGLMatrix);
+		GL11.glMultMatrix(Transform.auxGLMatrix);
 	}
 	
 	public static FloatBuffer quatToGlMatrix(FloatBuffer buf, Quaternion q) {

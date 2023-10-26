@@ -15,37 +15,37 @@ public class ContainerMachineRTG extends Container {
 	private int heat;
 	
 	public ContainerMachineRTG(InventoryPlayer invPlayer, TileEntityMachineRTG tedf) {
-		heat = 0;
+		this.heat = 0;
 		
-		testNuke = tedf;
+		this.testNuke = tedf;
 		
-		this.addSlotToContainer(new Slot(tedf, 0, 26, 17));
-		this.addSlotToContainer(new Slot(tedf, 1, 44, 17));
-		this.addSlotToContainer(new Slot(tedf, 2, 62, 17));
-		this.addSlotToContainer(new Slot(tedf, 3, 80, 17));
-		this.addSlotToContainer(new Slot(tedf, 4, 98, 17));
-		this.addSlotToContainer(new Slot(tedf, 5, 26, 35));
-		this.addSlotToContainer(new Slot(tedf, 6, 44, 35));
-		this.addSlotToContainer(new Slot(tedf, 7, 62, 35));
-		this.addSlotToContainer(new Slot(tedf, 8, 80, 35));
-		this.addSlotToContainer(new Slot(tedf, 9, 98, 35));
-		this.addSlotToContainer(new Slot(tedf, 10, 26, 53));
-		this.addSlotToContainer(new Slot(tedf, 11, 44, 53));
-		this.addSlotToContainer(new Slot(tedf, 12, 62, 53));
-		this.addSlotToContainer(new Slot(tedf, 13, 80, 53));
-		this.addSlotToContainer(new Slot(tedf, 14, 98, 53));
+		addSlotToContainer(new Slot(tedf, 0, 26, 17));
+		addSlotToContainer(new Slot(tedf, 1, 44, 17));
+		addSlotToContainer(new Slot(tedf, 2, 62, 17));
+		addSlotToContainer(new Slot(tedf, 3, 80, 17));
+		addSlotToContainer(new Slot(tedf, 4, 98, 17));
+		addSlotToContainer(new Slot(tedf, 5, 26, 35));
+		addSlotToContainer(new Slot(tedf, 6, 44, 35));
+		addSlotToContainer(new Slot(tedf, 7, 62, 35));
+		addSlotToContainer(new Slot(tedf, 8, 80, 35));
+		addSlotToContainer(new Slot(tedf, 9, 98, 35));
+		addSlotToContainer(new Slot(tedf, 10, 26, 53));
+		addSlotToContainer(new Slot(tedf, 11, 44, 53));
+		addSlotToContainer(new Slot(tedf, 12, 62, 53));
+		addSlotToContainer(new Slot(tedf, 13, 80, 53));
+		addSlotToContainer(new Slot(tedf, 14, 98, 53));
 		
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++)
 		{
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
 		}
 	}
 	
@@ -67,12 +67,12 @@ public class ContainerMachineRTG extends Container {
 			var3 = var5.copy();
 			
             if (par2 <= 14) {
-				if (!this.mergeItemStack(var5, 15, this.inventorySlots.size(), true))
+				if (!mergeItemStack(var5, 15, this.inventorySlots.size(), true))
 				{
 					return null;
 				}
 			}
-			else if (!this.mergeItemStack(var5, 0, 15, false))
+			else if (!mergeItemStack(var5, 0, 15, false))
 			{
 					return null;
 			}
@@ -92,16 +92,15 @@ public class ContainerMachineRTG extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return testNuke.isUseableByPlayer(player);
+		return this.testNuke.isUseableByPlayer(player);
 	}
 	
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 		
-		for(int i = 0; i < this.crafters.size(); i++)
-		{
-			ICrafting par1 = (ICrafting)this.crafters.get(i);
+		for (Object element : this.crafters) {
+			ICrafting par1 = (ICrafting)element;
 
 			if(this.heat != this.testNuke.heat)
 			{
@@ -116,7 +115,7 @@ public class ContainerMachineRTG extends Container {
 	public void updateProgressBar(int i, int j) {
 		if(i == 0)
 		{
-			testNuke.heat = j;
+			this.testNuke.heat = j;
 		}
 	}
 }

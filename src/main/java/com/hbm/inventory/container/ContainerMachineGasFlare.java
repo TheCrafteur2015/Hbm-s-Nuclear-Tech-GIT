@@ -19,30 +19,30 @@ public class ContainerMachineGasFlare extends Container {
 
 	public ContainerMachineGasFlare(InventoryPlayer invPlayer, TileEntityMachineGasFlare tedf) {
 
-		testNuke = tedf;
+		this.testNuke = tedf;
 
 		//Battery
-		this.addSlotToContainer(new Slot(tedf, 0, 143, 71));
+		addSlotToContainer(new Slot(tedf, 0, 143, 71));
 		//Fluid in
-		this.addSlotToContainer(new Slot(tedf, 1, 17, 17));
+		addSlotToContainer(new Slot(tedf, 1, 17, 17));
 		//Fluid out
-		this.addSlotToContainer(new SlotTakeOnly(tedf, 2, 17, 53));
+		addSlotToContainer(new SlotTakeOnly(tedf, 2, 17, 53));
 		//Fluid ID
-		this.addSlotToContainer(new Slot(tedf, 3, 35, 71));
+		addSlotToContainer(new Slot(tedf, 3, 35, 71));
 		//Upgrades
-		this.addSlotToContainer(new Slot(tedf, 4, 80, 71));
-		this.addSlotToContainer(new Slot(tedf, 5, 98, 71));
+		addSlotToContainer(new Slot(tedf, 4, 80, 71));
+		addSlotToContainer(new Slot(tedf, 5, 98, 71));
 		
 		int offset = 37;
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + offset));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + offset));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + offset));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + offset));
 		}
 	}
 
@@ -61,25 +61,25 @@ public class ContainerMachineGasFlare extends Container {
 			var3 = var5.copy();
 
 			if(par2 <= 5) {
-				if(!this.mergeItemStack(var5, 6, this.inventorySlots.size(), true)) {
+				if(!mergeItemStack(var5, 6, this.inventorySlots.size(), true)) {
 					return null;
 				}
 			} else {
 				
 				if(var3.getItem() instanceof IItemFluidIdentifier) {
-					if(!this.mergeItemStack(var5, 3, 4, false)) {
+					if(!mergeItemStack(var5, 3, 4, false)) {
 						return null;
 					}
 				} else if(var3.getItem() instanceof IBatteryItem) {
-					if(!this.mergeItemStack(var5, 0, 1, false)) {
+					if(!mergeItemStack(var5, 0, 1, false)) {
 						return null;
 					}
 				} else if(var3.getItem() instanceof ItemMachineUpgrade) {
-					if(!this.mergeItemStack(var5, 4, 6, false)) {
+					if(!mergeItemStack(var5, 4, 6, false)) {
 						return null;
 					}
 				} else {
-					if(!this.mergeItemStack(var5, 1, 2, false)) {
+					if(!mergeItemStack(var5, 1, 2, false)) {
 						return null;
 					}
 				}
@@ -97,6 +97,6 @@ public class ContainerMachineGasFlare extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return testNuke.isUseableByPlayer(player);
+		return this.testNuke.isUseableByPlayer(player);
 	}
 }

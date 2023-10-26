@@ -18,10 +18,10 @@ import net.minecraft.item.ItemStack;
 
 public class CyclotronRecipeHandler extends TemplateRecipeHandler {
 	
-    public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<RecipeTransferRect>();
-    public LinkedList<RecipeTransferRect> transferRectsGui = new LinkedList<RecipeTransferRect>();
-    public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<Class<? extends GuiContainer>>();
-    public LinkedList<Class<? extends GuiContainer>> guiGui = new LinkedList<Class<? extends GuiContainer>>();
+    public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<>();
+    public LinkedList<RecipeTransferRect> transferRectsGui = new LinkedList<>();
+    public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<>();
+    public LinkedList<Class<? extends GuiContainer>> guiGui = new LinkedList<>();
 
     public class SmeltingSet extends TemplateRecipeHandler.CachedRecipe
     {
@@ -39,12 +39,12 @@ public class CyclotronRecipeHandler extends TemplateRecipeHandler {
 
         @Override
 		public List<PositionedStack> getIngredients() {
-            return getCycledIngredients(cycleticks / 48, Arrays.asList(new PositionedStack[] {input1, input2}));
+            return getCycledIngredients(CyclotronRecipeHandler.this.cycleticks / 48, Arrays.asList(new PositionedStack[] {this.input1, this.input2}));
         }
 
         @Override
 		public PositionedStack getResult() {
-            return result;
+            return this.result;
         }
     }
     
@@ -105,14 +105,14 @@ public class CyclotronRecipeHandler extends TemplateRecipeHandler {
     
     @Override
     public void loadTransferRects() {
-        transferRectsGui = new LinkedList<RecipeTransferRect>();
-        guiGui = new LinkedList<Class<? extends GuiContainer>>();
+        this.transferRectsGui = new LinkedList<>();
+        this.guiGui = new LinkedList<>();
         
-        transferRects.add(new RecipeTransferRect(new Rectangle(83 - 3 + 16 - 52, 5 + 18 + 1, 24, 18), "cyclotronProcessing"));
-        transferRectsGui.add(new RecipeTransferRect(new Rectangle(47, 15, 36, 36), "cyclotronProcessing"));
-        guiGui.add(GUIMachineCyclotron.class);
-        RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), transferRects);
-        RecipeTransferRectHandler.registerRectsToGuis(guiGui, transferRectsGui);
+        this.transferRects.add(new RecipeTransferRect(new Rectangle(83 - 3 + 16 - 52, 5 + 18 + 1, 24, 18), "cyclotronProcessing"));
+        this.transferRectsGui.add(new RecipeTransferRect(new Rectangle(47, 15, 36, 36), "cyclotronProcessing"));
+        this.guiGui.add(GUIMachineCyclotron.class);
+        RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), this.transferRects);
+        RecipeTransferRectHandler.registerRectsToGuis(this.guiGui, this.transferRectsGui);
     }
 
     @Override

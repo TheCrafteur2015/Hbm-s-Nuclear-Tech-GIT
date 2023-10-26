@@ -9,7 +9,7 @@ import net.minecraft.item.ItemSlab;
 public class ItemModSlab extends ItemSlab {
 
 	public ItemModSlab(Block block) {
-		super(block, shittyFuckingHackSingle(block), shittyFuckingHackDouble(block), shittyFuckingHackDouble(block) == block);
+		super(block, ItemModSlab.shittyFuckingHackSingle(block), ItemModSlab.shittyFuckingHackDouble(block), ItemModSlab.shittyFuckingHackDouble(block) == block);
 	}
 	
 	public static BlockSlab shittyFuckingHackSingle(Block b) {

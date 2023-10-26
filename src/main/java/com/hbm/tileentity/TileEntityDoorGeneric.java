@@ -21,6 +21,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -42,32 +43,32 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements IAn
 	
 	@Override
 	public void updateEntity(){
-		if(state == 3) {
-			openTicks++;
-			if(openTicks >= getDoorType().timeToOpen()) {
-				openTicks = getDoorType().timeToOpen();
+		if(this.state == 3) {
+			this.openTicks++;
+			if(this.openTicks >= getDoorType().timeToOpen()) {
+				this.openTicks = getDoorType().timeToOpen();
 			}
-		} else if(state == 2) {
-			openTicks--;
-			if(openTicks <= 0) {
-				openTicks = 0;
+		} else if(this.state == 2) {
+			this.openTicks--;
+			if(this.openTicks <= 0) {
+				this.openTicks = 0;
 			}
 		}
 
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			BlockPos pos = new BlockPos(this);
 			
 			int[][] ranges = getDoorType().getDoorOpenRanges();
 			ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
 			
-			if(state == 3) {
+			if(this.state == 3) {
 				
 				for(int i = 0; i < ranges.length; i++) {
 					
 					int[] range = ranges[i];
 					BlockPos startPos = new BlockPos(range[0], range[1], range[2]);
-					float time = getDoorType().getDoorRangeOpenTime(openTicks, i);
+					float time = getDoorType().getDoorRangeOpenTime(this.openTicks, i);
 					
 					for(int j = 0; j < Math.abs(range[3]); j++) {
 						
@@ -91,20 +92,20 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements IAn
 							if(finalPos.equals(pos)) {
 								this.shouldUseBB = false;
 							} else {
-								((BlockDummyable)getBlockType()).makeExtra(worldObj, finalPos.getX(), finalPos.getY(), finalPos.getZ());
+								((BlockDummyable)getBlockType()).makeExtra(this.worldObj, finalPos.getX(), finalPos.getY(), finalPos.getZ());
 							}
 						}
 					}
 				}
 				
-			} else if(state == 2){
+			} else if(this.state == 2){
 				
 				for(int i = 0; i < ranges.length; i++) {
 					
 					int[] range = ranges[i];
 
 					BlockPos startPos = new BlockPos(range[0], range[1], range[2]);
-					float time = getDoorType().getDoorRangeOpenTime(openTicks, i);
+					float time = getDoorType().getDoorRangeOpenTime(this.openTicks, i);
 					
 					for(int j = Math.abs(range[3])-1; j >= 0; j--) {
 						
@@ -128,64 +129,64 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements IAn
 							if(finalPos.equals(pos)) {
 								this.shouldUseBB = false;
 							} else {
-								((BlockDummyable)getBlockType()).removeExtra(worldObj, finalPos.getX(), finalPos.getY(), finalPos.getZ());
+								((BlockDummyable)getBlockType()).removeExtra(this.worldObj, finalPos.getX(), finalPos.getY(), finalPos.getZ());
 							}
 						}
 					}
 				}
 			}
-			if(state == 3 && openTicks == getDoorType().timeToOpen()) {
-				state = 1;
+			if(this.state == 3 && this.openTicks == getDoorType().timeToOpen()) {
+				this.state = 1;
 			}
-			if(state == 2 && openTicks == 0) {
-				state = 0;
+			if(this.state == 2 && this.openTicks == 0) {
+				this.state = 0;
 			}
-			PacketDispatcher.wrapper.sendToAllAround(new TEDoorAnimationPacket(xCoord, yCoord, zCoord, state, skinIndex, (byte)(shouldUseBB ? 1 : 0)), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 100));
+			PacketDispatcher.wrapper.sendToAllAround(new TEDoorAnimationPacket(this.xCoord, this.yCoord, this.zCoord, this.state, this.skinIndex, (byte)(this.shouldUseBB ? 1 : 0)), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 100));
 			
-			if(redstonePower == -1 && state == 0){
+			if(this.redstonePower == -1 && this.state == 0){
 				tryToggle(-1);
-			} else if(redstonePower > 0 && state == 1){
+			} else if(this.redstonePower > 0 && this.state == 1){
 				tryToggle(-1);
 			}
-			if(redstonePower == -1){
-				redstonePower = 0;
+			if(this.redstonePower == -1){
+				this.redstonePower = 0;
 			}
 		}
 	}
 
 	@Override
 	public void onChunkUnload() {
-		if(audio != null) {
-			audio.stopSound();
-			audio = null;
+		if(this.audio != null) {
+			this.audio.stopSound();
+			this.audio = null;
 		}
-		if(audio2 != null) {
-			audio2.stopSound();
-			audio2 = null;
+		if(this.audio2 != null) {
+			this.audio2.stopSound();
+			this.audio2 = null;
 		}
 	}
 	
 	public DoorDecl getDoorType(){
 		
 		if(this.doorType == null)
-			this.doorType = ((BlockDoorGeneric)this.getBlockType()).type;
+			this.doorType = ((BlockDoorGeneric)getBlockType()).type;
 		
 		return this.doorType;
 	}
 
 	public boolean tryToggle(EntityPlayer player){
 		
-		if(state == 0 && redstonePower > 0){
+		if(this.state == 0 && this.redstonePower > 0){
 			//Redstone "power locks" doors, just like minecraft iron doors
 			return false;
 		}
 		if(this.state == 0) {
-			if(!worldObj.isRemote && canAccess(player)) {
+			if(!this.worldObj.isRemote && canAccess(player)) {
 				this.state = 3;
 			}
 			return true;
 		} else if(this.state == 1) {
-			if(!worldObj.isRemote && canAccess(player)) {
+			if(!this.worldObj.isRemote && canAccess(player)) {
 				this.state = 2;
 			}
 			return true;
@@ -194,15 +195,15 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements IAn
 	}
 	
 	public boolean tryToggle(int passcode){
-		if(this.isLocked() && passcode != this.lock)
+		if(isLocked() && passcode != this.lock)
 			return false;
 		if(this.state == 0) {
-			if(!worldObj.isRemote) {
+			if(!this.worldObj.isRemote) {
 				this.state = 3;
 			}
 			return true;
 		} else if(this.state == 1) {
-			if(!worldObj.isRemote) {
+			if(!this.worldObj.isRemote) {
 				this.state = 2;
 			}
 			return true;
@@ -212,27 +213,27 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements IAn
 
 	@Override
 	public void open(){
-		if(state == 0)
+		if(this.state == 0)
 			toggle();
 	}
 
 	@Override
 	public void close(){
-		if(state == 1)
+		if(this.state == 1)
 			toggle();
 	}
 
 	@Override
 	public DoorState getState(){
-		return DoorState.values()[state];
+		return DoorState.values()[this.state];
 	}
 
 	@Override
 	public void toggle(){
-		if(state == 0) {
-			state = 3;
-		} else if(state == 1) {
-			state = 2;
+		if(this.state == 0) {
+			this.state = 3;
+		} else if(this.state == 1) {
+			this.state = 2;
 		}
 	}
 
@@ -242,58 +243,56 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements IAn
 		
 		if(this.state != state) {
 			if(this.state == 0 && state == 3){
-				if(audio == null){
-					audio = MainRegistry.proxy.getLoopedSoundStartStop(worldObj, getDoorType().getOpenSoundLoop(), getDoorType().getOpenSoundStart(), getDoorType().getOpenSoundEnd(), xCoord, yCoord, zCoord, getDoorType().getSoundVolume(), 1);
-					audio.startSound();
+				if(this.audio == null){
+					this.audio = MainRegistry.proxy.getLoopedSoundStartStop(this.worldObj, getDoorType().getOpenSoundLoop(), getDoorType().getOpenSoundStart(), getDoorType().getOpenSoundEnd(), this.xCoord, this.yCoord, this.zCoord, getDoorType().getSoundVolume(), 1);
+					this.audio.startSound();
 				}
-				if(audio2 == null && getDoorType().getSoundLoop2() != null){
-					audio2 = MainRegistry.proxy.getLoopedSoundStartStop(worldObj, getDoorType().getSoundLoop2(), null, null, xCoord, yCoord, zCoord, getDoorType().getSoundVolume(), 1);
-					audio2.startSound();
+				if(this.audio2 == null && getDoorType().getSoundLoop2() != null){
+					this.audio2 = MainRegistry.proxy.getLoopedSoundStartStop(this.worldObj, getDoorType().getSoundLoop2(), null, null, this.xCoord, this.yCoord, this.zCoord, getDoorType().getSoundVolume(), 1);
+					this.audio2.startSound();
 				}
 			}
 			if(this.state == 1 && state == 2){
-				if(audio == null){
-					audio = MainRegistry.proxy.getLoopedSoundStartStop(worldObj, getDoorType().getCloseSoundLoop(), getDoorType().getCloseSoundStart(), getDoorType().getCloseSoundEnd(), xCoord, yCoord, zCoord, getDoorType().getSoundVolume(), 1);
-					audio.startSound();
+				if(this.audio == null){
+					this.audio = MainRegistry.proxy.getLoopedSoundStartStop(this.worldObj, getDoorType().getCloseSoundLoop(), getDoorType().getCloseSoundStart(), getDoorType().getCloseSoundEnd(), this.xCoord, this.yCoord, this.zCoord, getDoorType().getSoundVolume(), 1);
+					this.audio.startSound();
 				}
-				if(audio2 == null && getDoorType().getSoundLoop2() != null){
-					audio2 = MainRegistry.proxy.getLoopedSoundStartStop(worldObj, getDoorType().getSoundLoop2(), null, null, xCoord, yCoord, zCoord, getDoorType().getSoundVolume(), 1);
-					audio2.startSound();
+				if(this.audio2 == null && getDoorType().getSoundLoop2() != null){
+					this.audio2 = MainRegistry.proxy.getLoopedSoundStartStop(this.worldObj, getDoorType().getSoundLoop2(), null, null, this.xCoord, this.yCoord, this.zCoord, getDoorType().getSoundVolume(), 1);
+					this.audio2.startSound();
 				}
 			}
 			if((this.state == 3 && state == 1) || (this.state == 2 && state == 0)){
-				if(audio != null){
-					audio.stopSound();
-					audio = null;
+				if(this.audio != null){
+					this.audio.stopSound();
+					this.audio = null;
 				}
-				if(audio2 != null){
-					audio2.stopSound();
-					audio2 = null;
+				if(this.audio2 != null){
+					this.audio2.stopSound();
+					this.audio2 = null;
 				}
 			}
 			
 			
 			this.state = state;
 			if(state > 1)
-				animStartTime = System.currentTimeMillis();
+				this.animStartTime = System.currentTimeMillis();
 		}
 	}
 
 	//Ah yes piggy backing on this packet
 	@Override
 	public void setTextureState(byte tex){
-		shouldUseBB = tex > 0;
+		this.shouldUseBB = tex > 0;
 	}
 
 	public int getSkinIndex() {
-		return skinIndex;
+		return this.skinIndex;
 	}
 
 	@Override
 	public boolean setSkinIndex(byte skinIndex) {
-		if(!getDoorType().hasSkins())
-			return false;
-		if(getDoorType().getSkinCount() < skinIndex) {
+		if(!getDoorType().hasSkins() || (getDoorType().getSkinCount() < skinIndex)) {
 			return false;
 		}
 		this.skinIndex = skinIndex;
@@ -302,7 +301,7 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements IAn
 
 	@Override
 	public AxisAlignedBB getRenderBoundingBox(){
-		return INFINITE_EXTENT_AABB;
+		return TileEntity.INFINITE_EXTENT_AABB;
 	}
 
 	@Override
@@ -330,13 +329,13 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements IAn
 	public void writeToNBT(NBTTagCompound tag){
 		super.writeToNBT(tag);
 		
-		tag.setByte("state", state);
-		tag.setInteger("openTicks", openTicks);
-		tag.setLong("animStartTime", animStartTime);
-		tag.setInteger("redstoned", redstonePower);
-		tag.setBoolean("shouldUseBB", shouldUseBB);
+		tag.setByte("state", this.state);
+		tag.setInteger("openTicks", this.openTicks);
+		tag.setLong("animStartTime", this.animStartTime);
+		tag.setInteger("redstoned", this.redstonePower);
+		tag.setBoolean("shouldUseBB", this.shouldUseBB);
 		if(getDoorType().hasSkins())
-			tag.setByte("skin", skinIndex);
+			tag.setByte("skin", this.skinIndex);
 		NBTTagCompound activatedBlocks = new NBTTagCompound();
 		int i = 0;
 		for(BlockPos p : this.activatedBlocks){
@@ -356,32 +355,32 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements IAn
 	@Override
 	public void invalidate(){
 		super.invalidate();
-		if(audio != null) {
-			audio.stopSound();
-			audio = null;
+		if(this.audio != null) {
+			this.audio.stopSound();
+			this.audio = null;
 		}
-		if(audio2 != null) {
-			audio2.stopSound();
-			audio2 = null;
+		if(this.audio2 != null) {
+			this.audio2.stopSound();
+			this.audio2 = null;
 		}
 	}
 
 	public void updateRedstonePower(int x, int y, int z){
 		//Drillgon200: Best I could come up with without having to use dummy tile entities
 		BlockPos pos = new BlockPos(x, y, z);
-		boolean powered = worldObj.isBlockIndirectlyGettingPowered(x, y, z);
-		boolean contained = activatedBlocks.contains(pos);
+		boolean powered = this.worldObj.isBlockIndirectlyGettingPowered(x, y, z);
+		boolean contained = this.activatedBlocks.contains(pos);
 		if(!contained && powered){
-			activatedBlocks.add(pos);
-			if(redstonePower == -1){
-				redstonePower = 0;
+			this.activatedBlocks.add(pos);
+			if(this.redstonePower == -1){
+				this.redstonePower = 0;
 			}
-			redstonePower++;
+			this.redstonePower++;
 		} else if(contained && !powered){
-			activatedBlocks.remove(pos);
-			redstonePower--;
-			if(redstonePower == 0){
-				redstonePower = -1;
+			this.activatedBlocks.remove(pos);
+			this.redstonePower--;
+			if(this.redstonePower == 0){
+				this.redstonePower = -1;
 			}
 		}
 	}

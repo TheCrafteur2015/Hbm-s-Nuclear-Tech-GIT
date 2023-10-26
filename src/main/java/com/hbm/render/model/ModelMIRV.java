@@ -27,42 +27,42 @@ public class ModelMIRV extends ModelBase
   
   public ModelMIRV()
   {
-    textureWidth = 64;
-    textureHeight = 32;
+    this.textureWidth = 64;
+    this.textureHeight = 32;
     
-      Shape9 = new ModelRenderer(this, 0, 0);
-      Shape9.addBox(0F, 0F, 0F, 10, 4, 2);
-      Shape9.setRotationPoint(-3F, -2F, -1F);
-      Shape9.setTextureSize(64, 32);
-      Shape9.mirror = true;
-      setRotation(Shape9, 0F, 0F, 0F);
-      Shape10 = new ModelRenderer(this, 0, 6);
-      Shape10.addBox(0F, 0F, 0F, 10, 2, 4);
-      Shape10.setRotationPoint(-3F, -1F, -2F);
-      Shape10.setTextureSize(64, 32);
-      Shape10.mirror = true;
-      setRotation(Shape10, 0F, 0F, 0F);
-      Shape11 = new ModelRenderer(this, 0, 12);
-      Shape11.addBox(0F, 0F, 0F, 10, 3, 3);
-      Shape11.setRotationPoint(-3F, -1.5F, -1.5F);
-      Shape11.setTextureSize(64, 32);
-      Shape11.mirror = true;
-      setRotation(Shape11, 0F, 0F, 0F);
-      Shape12 = new ModelRenderer(this, 0, 18);
-      Shape12.addBox(0F, 0F, 0F, 4, 1, 1);
-      Shape12.setRotationPoint(0F, -3F, -1F);
-      Shape12.setTextureSize(64, 32);
-      Shape12.mirror = true;
-      setRotation(Shape12, 0F, 0F, 0F);
+      this.Shape9 = new ModelRenderer(this, 0, 0);
+      this.Shape9.addBox(0F, 0F, 0F, 10, 4, 2);
+      this.Shape9.setRotationPoint(-3F, -2F, -1F);
+      this.Shape9.setTextureSize(64, 32);
+      this.Shape9.mirror = true;
+      setRotation(this.Shape9, 0F, 0F, 0F);
+      this.Shape10 = new ModelRenderer(this, 0, 6);
+      this.Shape10.addBox(0F, 0F, 0F, 10, 2, 4);
+      this.Shape10.setRotationPoint(-3F, -1F, -2F);
+      this.Shape10.setTextureSize(64, 32);
+      this.Shape10.mirror = true;
+      setRotation(this.Shape10, 0F, 0F, 0F);
+      this.Shape11 = new ModelRenderer(this, 0, 12);
+      this.Shape11.addBox(0F, 0F, 0F, 10, 3, 3);
+      this.Shape11.setRotationPoint(-3F, -1.5F, -1.5F);
+      this.Shape11.setTextureSize(64, 32);
+      this.Shape11.mirror = true;
+      setRotation(this.Shape11, 0F, 0F, 0F);
+      this.Shape12 = new ModelRenderer(this, 0, 18);
+      this.Shape12.addBox(0F, 0F, 0F, 4, 1, 1);
+      this.Shape12.setRotationPoint(0F, -3F, -1F);
+      this.Shape12.setTextureSize(64, 32);
+      this.Shape12.mirror = true;
+      setRotation(this.Shape12, 0F, 0F, 0F);
   }
   
   public void renderAll(float f5)
   {
-    Shape9.render(f5);
-    Shape10.render(f5);
-    Shape11.render(f5);
+    this.Shape9.render(f5);
+    this.Shape10.render(f5);
+    this.Shape11.render(f5);
 	GL11.glDisable(GL11.GL_CULL_FACE);
-    Shape12.render(f5);
+    this.Shape12.render(f5);
 	GL11.glEnable(GL11.GL_CULL_FACE);
   }
   
@@ -71,11 +71,11 @@ public void render(Entity entity, float f, float f1, float f2, float f3, float f
   {
     super.render(entity, f, f1, f2, f3, f4, f5);
     setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-    Shape9.render(f5);
-    Shape10.render(f5);
-    Shape11.render(f5);
+    this.Shape9.render(f5);
+    this.Shape10.render(f5);
+    this.Shape11.render(f5);
 	GL11.glDisable(GL11.GL_CULL_FACE);
-    Shape12.render(f5);
+    this.Shape12.render(f5);
 	GL11.glEnable(GL11.GL_CULL_FACE);
   }
   

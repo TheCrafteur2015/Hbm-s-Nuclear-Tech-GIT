@@ -27,13 +27,15 @@ public class ParticleRift extends EntityFX {
 		this.particleMaxAge = 10;
 	}
 
+	@Override
 	public int getFXLayer() {
 		return 3;
 	}
 
+	@Override
 	public void renderParticle(Tessellator tess, float interp, float x, float y, float z, float tx, float tz) {
 		
-		this.theRenderEngine.bindTexture(texture);
+		this.theRenderEngine.bindTexture(ParticleRift.texture);
 		
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glDisable(GL11.GL_LIGHTING);
@@ -43,9 +45,9 @@ public class ParticleRift extends EntityFX {
 		OpenGlHelper.glBlendFunc(GL11.GL_ONE_MINUS_DST_COLOR, GL11.GL_ONE_MINUS_SRC_COLOR, 1, 0);
 		RenderHelper.disableStandardItemLighting();
 		
-		float pX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) interp - interpPosX);
-		float pY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) interp - interpPosY);
-		float pZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) interp - interpPosZ);
+		float pX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) interp - EntityFX.interpPosX);
+		float pY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) interp - EntityFX.interpPosY);
+		float pZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) interp - EntityFX.interpPosZ);
 		
 		float scale = (this.particleAge + interp) * 0.5F;
 		

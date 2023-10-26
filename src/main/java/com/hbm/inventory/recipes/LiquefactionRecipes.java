@@ -1,7 +1,5 @@
 package com.hbm.inventory.recipes;
 
-import static com.hbm.inventory.OreDictManager.*;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -11,6 +9,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.inventory.FluidStack;
+import com.hbm.inventory.OreDictManager;
 import com.hbm.inventory.RecipesCommon.AStack;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
 import com.hbm.inventory.RecipesCommon.OreDictStack;
@@ -33,39 +32,39 @@ public class LiquefactionRecipes extends SerializableRecipe {
 	public void registerDefaults() {
 		
 		//oil processing
-		recipes.put(COAL.gem(),										new FluidStack(100, Fluids.COALOIL));
-		recipes.put(COAL.dust(),									new FluidStack(100, Fluids.COALOIL));
-		recipes.put(LIGNITE.gem(),									new FluidStack(50, Fluids.COALOIL));
-		recipes.put(LIGNITE.dust(),									new FluidStack(50, Fluids.COALOIL));
-		recipes.put(KEY_OIL_TAR,									new FluidStack(75, Fluids.BITUMEN));
-		recipes.put(KEY_CRACK_TAR,									new FluidStack(100, Fluids.BITUMEN));
-		recipes.put(KEY_COAL_TAR,									new FluidStack(50, Fluids.BITUMEN));
-		recipes.put(KEY_LOG,										new FluidStack(100, Fluids.MUG));
-		recipes.put(KNO.dust(),										new FluidStack(250, Fluids.NITRIC_ACID));
-		recipes.put(NA.dust(),										new FluidStack(100, Fluids.SODIUM));
+		LiquefactionRecipes.recipes.put(OreDictManager.COAL.gem(),										new FluidStack(100, Fluids.COALOIL));
+		LiquefactionRecipes.recipes.put(OreDictManager.COAL.dust(),									new FluidStack(100, Fluids.COALOIL));
+		LiquefactionRecipes.recipes.put(OreDictManager.LIGNITE.gem(),									new FluidStack(50, Fluids.COALOIL));
+		LiquefactionRecipes.recipes.put(OreDictManager.LIGNITE.dust(),									new FluidStack(50, Fluids.COALOIL));
+		LiquefactionRecipes.recipes.put(OreDictManager.KEY_OIL_TAR,									new FluidStack(75, Fluids.BITUMEN));
+		LiquefactionRecipes.recipes.put(OreDictManager.KEY_CRACK_TAR,									new FluidStack(100, Fluids.BITUMEN));
+		LiquefactionRecipes.recipes.put(OreDictManager.KEY_COAL_TAR,									new FluidStack(50, Fluids.BITUMEN));
+		LiquefactionRecipes.recipes.put(OreDictManager.KEY_LOG,										new FluidStack(100, Fluids.MUG));
+		LiquefactionRecipes.recipes.put(OreDictManager.KNO.dust(),										new FluidStack(250, Fluids.NITRIC_ACID));
+		LiquefactionRecipes.recipes.put(OreDictManager.NA.dust(),										new FluidStack(100, Fluids.SODIUM));
 		//general utility recipes because why not
-		recipes.put(new ComparableStack(Blocks.netherrack),			new FluidStack(250, Fluids.LAVA));
-		recipes.put(new ComparableStack(Blocks.cobblestone),		new FluidStack(250, Fluids.LAVA));
-		recipes.put(new ComparableStack(Blocks.stone),				new FluidStack(250, Fluids.LAVA));
-		recipes.put(new ComparableStack(Blocks.obsidian),			new FluidStack(500, Fluids.LAVA));
-		recipes.put(new ComparableStack(Items.snowball),			new FluidStack(125, Fluids.WATER));
-		recipes.put(new ComparableStack(Blocks.snow),				new FluidStack(500, Fluids.WATER));
-		recipes.put(new ComparableStack(Blocks.ice),				new FluidStack(1000, Fluids.WATER));
-		recipes.put(new ComparableStack(Blocks.packed_ice),			new FluidStack(1000, Fluids.WATER));
-		recipes.put(new ComparableStack(Items.ender_pearl),			new FluidStack(100, Fluids.ENDERJUICE));
-		recipes.put(new ComparableStack(ModItems.pellet_charged),	new FluidStack(4000, Fluids.HELIUM4));
+		LiquefactionRecipes.recipes.put(new ComparableStack(Blocks.netherrack),			new FluidStack(250, Fluids.LAVA));
+		LiquefactionRecipes.recipes.put(new ComparableStack(Blocks.cobblestone),		new FluidStack(250, Fluids.LAVA));
+		LiquefactionRecipes.recipes.put(new ComparableStack(Blocks.stone),				new FluidStack(250, Fluids.LAVA));
+		LiquefactionRecipes.recipes.put(new ComparableStack(Blocks.obsidian),			new FluidStack(500, Fluids.LAVA));
+		LiquefactionRecipes.recipes.put(new ComparableStack(Items.snowball),			new FluidStack(125, Fluids.WATER));
+		LiquefactionRecipes.recipes.put(new ComparableStack(Blocks.snow),				new FluidStack(500, Fluids.WATER));
+		LiquefactionRecipes.recipes.put(new ComparableStack(Blocks.ice),				new FluidStack(1000, Fluids.WATER));
+		LiquefactionRecipes.recipes.put(new ComparableStack(Blocks.packed_ice),			new FluidStack(1000, Fluids.WATER));
+		LiquefactionRecipes.recipes.put(new ComparableStack(Items.ender_pearl),			new FluidStack(100, Fluids.ENDERJUICE));
+		LiquefactionRecipes.recipes.put(new ComparableStack(ModItems.pellet_charged),	new FluidStack(4000, Fluids.HELIUM4));
 
-		recipes.put(new ComparableStack(Items.sugar),				new FluidStack(100, Fluids.ETHANOL));
-		recipes.put(new ComparableStack(ModBlocks.plant_flower, 1, 3), new FluidStack(150, Fluids.ETHANOL));
-		recipes.put(new ComparableStack(ModBlocks.plant_flower, 1, 4), new FluidStack(50, Fluids.ETHANOL));
-		recipes.put(new ComparableStack(ModItems.biomass),			new FluidStack(125, Fluids.BIOGAS));
-		recipes.put(new ComparableStack(Items.fish, 1, OreDictionary.WILDCARD_VALUE), new FluidStack(100, Fluids.FISHOIL));
-		recipes.put(new ComparableStack(Blocks.double_plant, 1, 0),	new FluidStack(100, Fluids.SUNFLOWEROIL));
+		LiquefactionRecipes.recipes.put(new ComparableStack(Items.sugar),				new FluidStack(100, Fluids.ETHANOL));
+		LiquefactionRecipes.recipes.put(new ComparableStack(ModBlocks.plant_flower, 1, 3), new FluidStack(150, Fluids.ETHANOL));
+		LiquefactionRecipes.recipes.put(new ComparableStack(ModBlocks.plant_flower, 1, 4), new FluidStack(50, Fluids.ETHANOL));
+		LiquefactionRecipes.recipes.put(new ComparableStack(ModItems.biomass),			new FluidStack(125, Fluids.BIOGAS));
+		LiquefactionRecipes.recipes.put(new ComparableStack(Items.fish, 1, OreDictionary.WILDCARD_VALUE), new FluidStack(100, Fluids.FISHOIL));
+		LiquefactionRecipes.recipes.put(new ComparableStack(Blocks.double_plant, 1, 0),	new FluidStack(100, Fluids.SUNFLOWEROIL));
 
-		recipes.put(new ComparableStack(Items.wheat_seeds),			new FluidStack(50, Fluids.SEEDSLURRY));
-		recipes.put(new ComparableStack(Blocks.tallgrass, 1, 1),	new FluidStack(100, Fluids.SEEDSLURRY));
-		recipes.put(new ComparableStack(Blocks.tallgrass, 1, 2),	new FluidStack(100, Fluids.SEEDSLURRY));
-		recipes.put(new ComparableStack(Blocks.vine),				new FluidStack(100, Fluids.SEEDSLURRY));
+		LiquefactionRecipes.recipes.put(new ComparableStack(Items.wheat_seeds),			new FluidStack(50, Fluids.SEEDSLURRY));
+		LiquefactionRecipes.recipes.put(new ComparableStack(Blocks.tallgrass, 1, 1),	new FluidStack(100, Fluids.SEEDSLURRY));
+		LiquefactionRecipes.recipes.put(new ComparableStack(Blocks.tallgrass, 1, 2),	new FluidStack(100, Fluids.SEEDSLURRY));
+		LiquefactionRecipes.recipes.put(new ComparableStack(Blocks.vine),				new FluidStack(100, Fluids.SEEDSLURRY));
 		
 		//recipes.put(new ComparableStack(ModItems.solid_fuel_bf),	new FluidStack(250, Fluids.BALEFIRE));
 		
@@ -79,19 +78,19 @@ public class LiquefactionRecipes extends SerializableRecipe {
 		
 		ComparableStack comp = new ComparableStack(stack.getItem(), 1, stack.getItemDamage());
 		
-		if(recipes.containsKey(comp))
-			return recipes.get(comp);
+		if(LiquefactionRecipes.recipes.containsKey(comp))
+			return LiquefactionRecipes.recipes.get(comp);
 		
 		String[] dictKeys = comp.getDictKeys();
 		comp = new ComparableStack(stack.getItem(), 1, OreDictionary.WILDCARD_VALUE);
 		
-		if(recipes.containsKey(comp))
-			return recipes.get(comp);
+		if(LiquefactionRecipes.recipes.containsKey(comp))
+			return LiquefactionRecipes.recipes.get(comp);
 		
 		for(String key : dictKeys) {
 
-			if(recipes.containsKey(key))
-				return recipes.get(key);
+			if(LiquefactionRecipes.recipes.containsKey(key))
+				return LiquefactionRecipes.recipes.get(key);
 		}
 		
 		if(stack.getItem() instanceof ItemFood) {
@@ -105,7 +104,7 @@ public class LiquefactionRecipes extends SerializableRecipe {
 
 	public static HashMap<Object, ItemStack> getRecipes() {
 		
-		HashMap<Object, ItemStack> recipes = new HashMap<Object, ItemStack>();
+		HashMap<Object, ItemStack> recipes = new HashMap<>();
 		
 		for(Entry<Object, FluidStack> entry : LiquefactionRecipes.recipes.entrySet()) {
 			
@@ -133,24 +132,24 @@ public class LiquefactionRecipes extends SerializableRecipe {
 
 	@Override
 	public Object getRecipeObject() {
-		return recipes;
+		return LiquefactionRecipes.recipes;
 	}
 
 	@Override
 	public void deleteRecipes() {
-		recipes.clear();
+		LiquefactionRecipes.recipes.clear();
 	}
 
 	@Override
 	public void readRecipe(JsonElement recipe) {
 		JsonObject obj = (JsonObject) recipe;
-		AStack in = this.readAStack(obj.get("input").getAsJsonArray());
-		FluidStack out = this.readFluidStack(obj.get("output").getAsJsonArray());
+		AStack in = readAStack(obj.get("input").getAsJsonArray());
+		FluidStack out = readFluidStack(obj.get("output").getAsJsonArray());
 		
 		if(in instanceof ComparableStack) {
-			recipes.put(((ComparableStack) in).makeSingular(), out);
+			LiquefactionRecipes.recipes.put(((ComparableStack) in).makeSingular(), out);
 		} else if(in instanceof OreDictStack) {
-			recipes.put(((OreDictStack) in).name, out);
+			LiquefactionRecipes.recipes.put(((OreDictStack) in).name, out);
 		}
 	}
 
@@ -161,12 +160,12 @@ public class LiquefactionRecipes extends SerializableRecipe {
 		
 		writer.name("input");
 		if(key instanceof String) {
-			this.writeAStack(new OreDictStack((String) key), writer);
+			writeAStack(new OreDictStack((String) key), writer);
 		} else if(key instanceof ComparableStack) {
-			this.writeAStack((ComparableStack) key, writer);
+			writeAStack((ComparableStack) key, writer);
 		}
 		
 		writer.name("output");
-		this.writeFluidStack(rec.getValue(), writer);
+		writeFluidStack(rec.getValue(), writer);
 	}
 }

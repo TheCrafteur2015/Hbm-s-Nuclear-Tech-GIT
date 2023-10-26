@@ -1,5 +1,12 @@
 package com.hbm.render.world;
 
+import java.util.Random;
+
+import org.lwjgl.opengl.GL11;
+
+import com.hbm.extprop.HbmLivingProps;
+import com.hbm.handler.ImpactWorldHandler;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -10,13 +17,6 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IRenderHandler;
-
-import org.lwjgl.opengl.GL11;
-
-import com.hbm.extprop.HbmLivingProps;
-import com.hbm.handler.ImpactWorldHandler;
-
-import java.util.Random;
 
 public class RenderNTMSkyboxImpact extends IRenderHandler {
 	
@@ -39,7 +39,7 @@ public class RenderNTMSkyboxImpact extends IRenderHandler {
 	public RenderNTMSkyboxImpact() {
 		GL11.glPushMatrix();
 		GL11.glNewList(this.starGLCallList, GL11.GL_COMPILE);
-		this.renderStars();
+		renderStars();
 		GL11.glEndList();
 		GL11.glPopMatrix();
 		final Tessellator tessellator = Tessellator.instance;
@@ -154,7 +154,7 @@ public class RenderNTMSkyboxImpact extends IRenderHandler {
 		{
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, rain);
-			mc.renderEngine.bindTexture(this.sunTexture);
+			mc.renderEngine.bindTexture(RenderNTMSkyboxImpact.sunTexture);
 			tessellator.startDrawingQuads();
 			tessellator.addVertexWithUV(-f10, 100.0D, -f10, 0.0D, 0.0D);
 			tessellator.addVertexWithUV(f10, 100.0D, -f10, 1.0D, 0.0D);
@@ -193,7 +193,7 @@ public class RenderNTMSkyboxImpact extends IRenderHandler {
 			GL11.glRotatef(140.0F, 1.0F, 0.0F, 0.0F);
 			GL11.glRotatef(-40.0F, 0.0F, 0.0F, 1.0F);
 
-			FMLClientHandler.instance().getClient().renderEngine.bindTexture(digammaStar);
+			FMLClientHandler.instance().getClient().renderEngine.bindTexture(RenderNTMSkyboxImpact.digammaStar);
 
 			float digamma = HbmLivingProps.getDigamma(Minecraft.getMinecraft().thePlayer);
 			float var12 = 1F * (1 + digamma * 0.25F);
@@ -213,7 +213,7 @@ public class RenderNTMSkyboxImpact extends IRenderHandler {
 			GL11.glRotatef((System.currentTimeMillis() % (360 * 1000) / 1000F), 0.0F, 1.0F, 0.0F);
 			GL11.glRotatef((System.currentTimeMillis() % (360 * 100) / 100F), 1.0F, 0.0F, 0.0F);
 
-			FMLClientHandler.instance().getClient().renderEngine.bindTexture(bobmazonSat);
+			FMLClientHandler.instance().getClient().renderEngine.bindTexture(RenderNTMSkyboxImpact.bobmazonSat);
 
 			var12 = 0.5F;
 			dist = 100D;

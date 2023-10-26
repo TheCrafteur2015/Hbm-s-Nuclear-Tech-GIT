@@ -15,21 +15,21 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockGasFlammable extends BlockGasBase {
 	
-	public static HashSet<Block> fireSources = new HashSet();
+	public static HashSet<Block> fireSources = new HashSet<>();
 	
 	public BlockGasFlammable() {
 		super(0.8F, 0.8F, 0.2F);
 		
-		if(fireSources.isEmpty()) {
-			fireSources.add(Blocks.fire);
-			fireSources.add(Blocks.lava);
-			fireSources.add(Blocks.torch);
-			fireSources.add(Blocks.lit_pumpkin);
+		if(BlockGasFlammable.fireSources.isEmpty()) {
+			BlockGasFlammable.fireSources.add(Blocks.fire);
+			BlockGasFlammable.fireSources.add(Blocks.lava);
+			BlockGasFlammable.fireSources.add(Blocks.torch);
+			BlockGasFlammable.fireSources.add(Blocks.lit_pumpkin);
 			
 			if(Compat.isModLoaded(Compat.MOD_TIC)) {
 				Block stoneTorch = Compat.tryLoadBlock(Compat.MOD_TIC, "decoration.stonetorch");
 				if(stoneTorch != null) {
-					fireSources.add(stoneTorch);
+					BlockGasFlammable.fireSources.add(stoneTorch);
 				}
 			}
 		}
@@ -41,12 +41,12 @@ public class BlockGasFlammable extends BlockGasBase {
 		if(world.rand.nextInt(3) == 0)
 			return ForgeDirection.getOrientation(world.rand.nextInt(2));
 		
-		return this.randomHorizontal(world);
+		return randomHorizontal(world);
 	}
 
 	@Override
 	public ForgeDirection getSecondDirection(World world, int x, int y, int z) {
-		return this.randomHorizontal(world);
+		return randomHorizontal(world);
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class BlockGasFlammable extends BlockGasBase {
 		
 		/* causes burning entities to set off the gas */
 		if(!world.isRemote && entity.isBurning()) {
-			this.combust(world, x, y, z);
+			combust(world, x, y, z);
 		}
 	}
 
@@ -99,7 +99,7 @@ public class BlockGasFlammable extends BlockGasBase {
 	}
 	
 	public boolean isFireSource(Block b) {
-		return this.fireSources.contains(b);
+		return BlockGasFlammable.fireSources.contains(b);
 	}
 
 	@Override

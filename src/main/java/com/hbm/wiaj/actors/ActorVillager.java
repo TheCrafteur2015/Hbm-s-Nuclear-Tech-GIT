@@ -26,19 +26,19 @@ public class ActorVillager implements ISpecialActor {
 
 	@Override
 	public void drawBackgroundComponent(WorldInAJar world, int ticks, float interp) {
-		double x = data.getDouble("x");
-		double y = data.getDouble("y");
-		double z = data.getDouble("z");
-		double yaw = data.getDouble("yaw");
+		double x = this.data.getDouble("x");
+		double y = this.data.getDouble("y");
+		double z = this.data.getDouble("z");
+		double yaw = this.data.getDouble("yaw");
 		GL11.glTranslated(x, y, z);
 		GL11.glRotated(yaw, 0, 1, 0);
-		RenderManager.instance.renderEntityWithPosYaw(villager, 0D, 0D, 0D, 0F, interp);
+		RenderManager.instance.renderEntityWithPosYaw(this.villager, 0D, 0D, 0D, 0F, interp);
 	}
 
 	@Override
 	public void updateActor(JarScene scene) {
-		villager.limbSwingAmount += (1F - villager.limbSwingAmount) * 0.4F;
-		villager.limbSwing += villager.limbSwingAmount;
+		this.villager.limbSwingAmount += (1F - this.villager.limbSwingAmount) * 0.4F;
+		this.villager.limbSwing += this.villager.limbSwingAmount;
 	}
 
 	@Override

@@ -62,7 +62,7 @@ public class MachineFluidTank extends BlockDummyable implements IPersistentInfoP
 		if(world.isRemote) {
 			return true;
 		} else if(!player.isSneaking()) {
-			int[] pos = this.findCore(world, x, y, z);
+			int[] pos = findCore(world, x, y, z);
 
 			if(pos == null)
 				return false;
@@ -83,10 +83,10 @@ public class MachineFluidTank extends BlockDummyable implements IPersistentInfoP
 	protected void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		super.fillSpace(world, x, y, z, dir, o);
 
-		this.makeExtra(world, x - dir.offsetX + 1, y, z - dir.offsetZ + 1);
-		this.makeExtra(world, x - dir.offsetX + 1, y, z - dir.offsetZ - 1);
-		this.makeExtra(world, x - dir.offsetX - 1, y, z - dir.offsetZ + 1);
-		this.makeExtra(world, x - dir.offsetX - 1, y, z - dir.offsetZ - 1);
+		makeExtra(world, x - dir.offsetX + 1, y, z - dir.offsetZ + 1);
+		makeExtra(world, x - dir.offsetX + 1, y, z - dir.offsetZ - 1);
+		makeExtra(world, x - dir.offsetX - 1, y, z - dir.offsetZ + 1);
+		makeExtra(world, x - dir.offsetX - 1, y, z - dir.offsetZ - 1);
 	}
 	
 	@Override
@@ -94,6 +94,7 @@ public class MachineFluidTank extends BlockDummyable implements IPersistentInfoP
 		return IPersistentNBT.getDrops(world, x, y, z, this);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(ItemStack stack, NBTTagCompound persistentTag, EntityPlayer player, List list, boolean ext) {
 		FluidTank tank = new FluidTank(Fluids.NONE, 0);
@@ -106,10 +107,11 @@ public class MachineFluidTank extends BlockDummyable implements IPersistentInfoP
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onBlockExploded(World world, int x, int y, int z, Explosion explosion) {
 
-		int[] pos = this.findCore(world, x, y, z);
+		int[] pos = findCore(world, x, y, z);
 		if(pos == null) return;
 		TileEntity core = world.getTileEntity(pos[0], pos[1], pos[2]);
 		if(!(core instanceof TileEntityMachineFluidTank)) return;

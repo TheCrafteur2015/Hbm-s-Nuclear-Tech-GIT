@@ -64,7 +64,7 @@ public class ItemChopper extends Item {
 			return stack;
 			
 		} else {
-			MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(world, player, true);
+			MovingObjectPosition movingobjectposition = getMovingObjectPositionFromPlayer(world, player, true);
 
 			if(movingobjectposition == null) {
 				return stack;
@@ -74,11 +74,7 @@ public class ItemChopper extends Item {
 					int j = movingobjectposition.blockY;
 					int k = movingobjectposition.blockZ;
 
-					if(!world.canMineBlock(player, i, j, k)) {
-						return stack;
-					}
-
-					if(!player.canPlayerEdit(i, j, k, movingobjectposition.sideHit, stack)) {
+					if(!world.canMineBlock(player, i, j, k) || !player.canPlayerEdit(i, j, k, movingobjectposition.sideHit, stack)) {
 						return stack;
 					}
 

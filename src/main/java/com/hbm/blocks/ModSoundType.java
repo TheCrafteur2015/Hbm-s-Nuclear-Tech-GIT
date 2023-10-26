@@ -1,8 +1,8 @@
 package com.hbm.blocks;
 
-import net.minecraft.block.Block;
-
 import java.util.Random;
+
+import net.minecraft.block.Block;
 
 public class ModSoundType extends Block.SoundType {
 	protected final String placeSound;
@@ -17,50 +17,50 @@ public class ModSoundType extends Block.SoundType {
 	}
 
 	public ModEnvelopedSoundType enveloped() {
-		return new ModEnvelopedSoundType(placeSound, breakSound, stepSound, volume, frequency);
+		return new ModEnvelopedSoundType(this.placeSound, this.breakSound, this.stepSound, this.volume, this.frequency);
 	}
 
 	public ModEnvelopedSoundType enveloped(Random random) {
-		return new ModEnvelopedSoundType(placeSound, breakSound, stepSound, volume, frequency, random);
+		return new ModEnvelopedSoundType(this.placeSound, this.breakSound, this.stepSound, this.volume, this.frequency, random);
 	}
 
 	@Override
 	public String func_150496_b() {
-		return placeSound;
+		return this.placeSound;
 	}
 
 	@Override
 	public String getBreakSound() {
-		return breakSound;
+		return this.breakSound;
 	}
 
 	@Override
 	public String getStepResourcePath() {
-		return stepSound;
+		return this.stepSound;
 	}
 
 	// creates a sound type with vanilla-like sound strings name-spaced to the mod
 	public static ModSoundType mod(String soundName, float volume, float pitch) {
-		return new ModSoundType(modDig(soundName), modDig(soundName), modStep(soundName), volume, pitch);
+		return new ModSoundType(ModSoundType.modDig(soundName), ModSoundType.modDig(soundName), ModSoundType.modStep(soundName), volume, pitch);
 	}
 
 	// these permutations allow creating a sound type with one of the three sounds being custom
 	// and the other ones defaulting to vanilla-like sound strings name-spaced to the mod
 
 	public static ModSoundType customPlace(String soundName, String placeSound, float volume, float pitch) {
-		return new ModSoundType(placeSound, modDig(soundName), modStep(soundName), volume, pitch);
+		return new ModSoundType(placeSound, ModSoundType.modDig(soundName), ModSoundType.modStep(soundName), volume, pitch);
 	}
 
 	public static ModSoundType customBreak(String soundName, String breakSound, float volume, float pitch) {
-		return new ModSoundType(modDig(soundName), breakSound, modStep(soundName), volume, pitch);
+		return new ModSoundType(ModSoundType.modDig(soundName), breakSound, ModSoundType.modStep(soundName), volume, pitch);
 	}
 
 	public static ModSoundType customStep(String soundName, String stepSound, float volume, float pitch) {
-		return new ModSoundType(modDig(soundName), modDig(soundName), stepSound, volume, pitch);
+		return new ModSoundType(ModSoundType.modDig(soundName), ModSoundType.modDig(soundName), stepSound, volume, pitch);
 	}
 
 	public static ModSoundType customDig(String soundName, String digSound, float volume, float pitch) {
-		return new ModSoundType(digSound, digSound, modStep(soundName), volume, pitch);
+		return new ModSoundType(digSound, digSound, ModSoundType.modStep(soundName), volume, pitch);
 	}
 
 	// these permutations copy sounds from an existing sound type and modify one of the sounds,
@@ -112,19 +112,19 @@ public class ModSoundType extends Block.SoundType {
 
 		@Override
 		public String func_150496_b() {
-			probableSubType = SubType.PLACE;
+			this.probableSubType = SubType.PLACE;
 			return super.func_150496_b();
 		}
 
 		@Override
 		public String getBreakSound() {
-			probableSubType = SubType.BREAK;
+			this.probableSubType = SubType.BREAK;
 			return super.getBreakSound();
 		}
 
 		@Override
 		public String getStepResourcePath() {
-			probableSubType = SubType.STEP;
+			this.probableSubType = SubType.STEP;
 			return super.getStepResourcePath();
 		}
 
@@ -143,18 +143,18 @@ public class ModSoundType extends Block.SoundType {
 
 		@Override
 		public float getVolume() {
-			if (volumeEnvelope == null)
+			if (this.volumeEnvelope == null)
 				return super.getVolume();
 			else
-				return volumeEnvelope.compute(super.getVolume(), random, probableSubType);
+				return this.volumeEnvelope.compute(super.getVolume(), this.random, this.probableSubType);
 		}
 
 		@Override
 		public float getPitch() {
-			if (pitchEnvelope == null)
+			if (this.pitchEnvelope == null)
 				return super.getPitch();
 			else
-				return pitchEnvelope.compute(super.getPitch(), random, probableSubType);
+				return this.pitchEnvelope.compute(super.getPitch(), this.random, this.probableSubType);
 		}
 
 		@FunctionalInterface

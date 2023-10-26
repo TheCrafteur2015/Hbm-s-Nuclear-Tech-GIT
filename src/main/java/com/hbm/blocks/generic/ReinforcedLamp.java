@@ -21,7 +21,7 @@ public class ReinforcedLamp extends Block {
 		this.isOn = isOn;
 
 		if(isOn) {
-			this.setLightLevel(1.0F);
+			setLightLevel(1.0F);
 		}
 	}
 

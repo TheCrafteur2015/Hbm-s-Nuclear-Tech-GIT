@@ -7,16 +7,16 @@ public class RUVertice {
 	public float z;
 
 	public RUVertice(float X, float Y, float Z) {
-		x = X;
-		y = Y;
-		z = Z;
+		this.x = X;
+		this.y = Y;
+		this.z = Z;
 	}
 
 	public RUVertice normalize() {
-		float l = (float) Math.sqrt(x * x + y * y + z * z);
-		x /= l;
-		y /= l;
-		z /= l;
+		float l = (float) Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+		this.x /= l;
+		this.y /= l;
+		this.z /= l;
 		return this;
 	}
 }

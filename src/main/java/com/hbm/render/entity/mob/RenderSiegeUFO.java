@@ -21,7 +21,7 @@ public class RenderSiegeUFO extends Render {
 		
 		EntitySiegeUFO ufo = (EntitySiegeUFO) entity;
 		
-		this.bindTexture(getEntityTexture(entity));
+		bindTexture(getEntityTexture(entity));
 		
 		double rot = (entity.ticksExisted + f1) * 5 % 360D;
 		GL11.glRotated(rot, 0, 1, 0);

@@ -41,7 +41,7 @@ public class ReactorResearch extends BlockDummyable {
 		} else if(!player.isSneaking()) {
 			BossSpawnHandler.markFBI(player);
 			
-			int[] pos = this.findCore(world, x, y, z);
+			int[] pos = findCore(world, x, y, z);
 
 			if(pos == null)
 				return false;

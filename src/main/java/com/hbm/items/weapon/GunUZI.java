@@ -44,7 +44,7 @@ public class GunUZI extends Item implements IHoldableWeapon {
 	public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {
 		new ArrowNockEvent(p_77659_3_, p_77659_1_);
 		{
-			p_77659_3_.setItemInUse(p_77659_1_, this.getMaxItemUseDuration(p_77659_1_));
+			p_77659_3_.setItemInUse(p_77659_1_, getMaxItemUseDuration(p_77659_1_));
 		}
 
 		return p_77659_1_;
@@ -60,10 +60,10 @@ public class GunUZI extends Item implements IHoldableWeapon {
 		if (player.capabilities.isCreativeMode || player.inventory.hasItem(ModItems.ammo_22lr)) {
 			
 			EntityBullet entityarrow = new EntityBullet(world, player, 3.0F, 2, 4, false, false);
-			entityarrow.setDamage(2 + rand.nextInt(3));
+			entityarrow.setDamage(2 + this.rand.nextInt(3));
 			
 			if(this == ModItems.gun_uzi_saturnite || this == ModItems.gun_uzi_saturnite_silencer) {
-				entityarrow.setDamage(4 + rand.nextInt(5));
+				entityarrow.setDamage(4 + this.rand.nextInt(5));
 				entityarrow.fire = true;
 			}
 
@@ -87,6 +87,7 @@ public class GunUZI extends Item implements IHoldableWeapon {
 		return 0;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
@@ -120,11 +121,12 @@ public class GunUZI extends Item implements IHoldableWeapon {
 		return EnumRarity.common;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Multimap getItemAttributeModifiers() {
 		Multimap multimap = super.getItemAttributeModifiers();
 		multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
-				new AttributeModifier(field_111210_e, "Weapon modifier", 2.5D, 0));
+				new AttributeModifier(Item.field_111210_e, "Weapon modifier", 2.5D, 0));
 		return multimap;
 	}
 

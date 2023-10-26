@@ -44,22 +44,22 @@ public class ExplosionNT extends Explosion {
 	}
 
 	public ExplosionNT addAttrib(ExAttrib attrib) {
-		atttributes.add(attrib);
+		this.atttributes.add(attrib);
 		return this;
 	}
 
 	public ExplosionNT addAllAttrib(List<ExAttrib> attrib) {
-		atttributes.addAll(attrib);
+		this.atttributes.addAll(attrib);
 		return this;
 	}
 
 	public ExplosionNT addAllAttrib(ExAttrib... attrib) {
-		for(ExAttrib a : attrib) atttributes.add(a);
+		for(ExAttrib a : attrib) this.atttributes.add(a);
 		return this;
 	}
 
 	public ExplosionNT overrideResolution(int res) {
-		resolution = res;
+		this.resolution = res;
 		return this;
 	}
 
@@ -68,6 +68,7 @@ public class ExplosionNT extends Explosion {
 		doExplosionB(false);
 	}
 
+	@Override
 	public void doExplosionA() {
 		float f = this.explosionSize;
 		HashSet hashset = new HashSet();
@@ -105,14 +106,14 @@ public class ExplosionNT extends Explosion {
 							Block block = this.worldObj.getBlock(xPos, yPos, zPos);
 
 							if(block.getMaterial() != Material.air) {
-								float resistance = this.exploder != null ? this.exploder.func_145772_a(this, this.worldObj, xPos, yPos, zPos, block) : block.getExplosionResistance(this.exploder, worldObj, xPos, yPos, zPos, explosionX, explosionY, explosionZ);
+								float resistance = this.exploder != null ? this.exploder.func_145772_a(this, this.worldObj, xPos, yPos, zPos, block) : block.getExplosionResistance(this.exploder, this.worldObj, xPos, yPos, zPos, this.explosionX, this.explosionY, this.explosionZ);
 								remainingPower -= (resistance + 0.3F) * step;
 							}
 
 							if(block != Blocks.air && remainingPower > 0.0F && (this.exploder == null || this.exploder.func_145774_a(this, this.worldObj, xPos, yPos, zPos, block, remainingPower))) {
 								hashset.add(new ChunkPosition(xPos, yPos, zPos));
 								
-							} else if(this.has(ExAttrib.ERRODE) && errosion.containsKey(block)) {
+							} else if(has(ExAttrib.ERRODE) && ExplosionNT.errosion.containsKey(block)) {
 								hashset.add(new ChunkPosition(xPos, yPos, zPos));
 							}
 
@@ -140,8 +141,8 @@ public class ExplosionNT extends Explosion {
 			net.minecraftforge.event.ForgeEventFactory.onExplosionDetonate(this.worldObj, this, list, this.explosionSize);
 			Vec3 vec3 = Vec3.createVectorHelper(this.explosionX, this.explosionY, this.explosionZ);
 
-			for(int i1 = 0; i1 < list.size(); ++i1) {
-				Entity entity = (Entity) list.get(i1);
+			for (Object element : list) {
+				Entity entity = (Entity) element;
 				double d4 = entity.getDistance(this.explosionX, this.explosionY, this.explosionZ) / (double) this.explosionSize;
 
 				if(d4 <= 1.0D) {
@@ -173,6 +174,7 @@ public class ExplosionNT extends Explosion {
 		}
 	}
 
+	@Override
 	public void doExplosionB(boolean p_77279_1_) {
 
 		if(!has(ExAttrib.NOSOUND))
@@ -228,11 +230,11 @@ public class ExplosionNT extends Explosion {
 					boolean doesErrode = false;
 					Block errodesInto = Blocks.air;
 					
-					if(this.has(ExAttrib.ERRODE) && this.explosionRNG.nextFloat() < 0.6F) { //errosion has a 60% chance to occour
+					if(has(ExAttrib.ERRODE) && this.explosionRNG.nextFloat() < 0.6F) { //errosion has a 60% chance to occour
 						
-						if(errosion.containsKey(block)) {
+						if(ExplosionNT.errosion.containsKey(block)) {
 							doesErrode = true;
-							errodesInto = errosion.get(block);
+							errodesInto = ExplosionNT.errosion.get(block);
 						}
 					}
 					
@@ -307,10 +309,12 @@ public class ExplosionNT extends Explosion {
 		}
 	}
 
+	@Override
 	public Map func_77277_b() {
 		return this.affectedEntities;
 	}
 
+	@Override
 	public EntityLivingBase getExplosivePlacedBy() {
 		return this.exploder == null ? null : (this.exploder instanceof EntityTNTPrimed ? ((EntityTNTPrimed) this.exploder).getTntPlacedBy() : (this.exploder instanceof EntityLivingBase ? (EntityLivingBase) this.exploder : null));
 	}
@@ -340,10 +344,10 @@ public class ExplosionNT extends Explosion {
 	public static final HashMap<Block, Block> errosion = new HashMap();
 	
 	static {
-		errosion.put(ModBlocks.concrete, Blocks.gravel);
-		errosion.put(ModBlocks.concrete_smooth, Blocks.gravel);
-		errosion.put(ModBlocks.brick_concrete, ModBlocks.brick_concrete_broken);
-		errosion.put(ModBlocks.brick_concrete_broken, Blocks.gravel);
+		ExplosionNT.errosion.put(ModBlocks.concrete, Blocks.gravel);
+		ExplosionNT.errosion.put(ModBlocks.concrete_smooth, Blocks.gravel);
+		ExplosionNT.errosion.put(ModBlocks.brick_concrete, ModBlocks.brick_concrete_broken);
+		ExplosionNT.errosion.put(ModBlocks.brick_concrete_broken, Blocks.gravel);
 	}
 
 }

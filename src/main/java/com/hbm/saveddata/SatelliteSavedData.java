@@ -1,12 +1,13 @@
 package com.hbm.saveddata;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 import com.hbm.saveddata.satellites.Satellite;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
-
-import java.util.HashMap;
-import java.util.Map.Entry;
 
 public class SatelliteSavedData extends WorldSavedData {
 	
@@ -25,7 +26,7 @@ public class SatelliteSavedData extends WorldSavedData {
 	 */
     public SatelliteSavedData() {
         super("satellites");
-        this.markDirty();
+        markDirty();
     }
     
     public boolean isFreqTaken(int freq) {
@@ -33,7 +34,7 @@ public class SatelliteSavedData extends WorldSavedData {
     }
     
     public Satellite getSatFromFreq(int freq) {
-    	return sats.get(freq);
+    	return this.sats.get(freq);
     }
 
 	@Override
@@ -46,17 +47,17 @@ public class SatelliteSavedData extends WorldSavedData {
 			
 			int freq = nbt.getInteger("sat_freq_" + i);
 			
-			sats.put(freq, sat);
+			this.sats.put(freq, sat);
 		}
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
-		nbt.setInteger("satCount", sats.size());
+		nbt.setInteger("satCount", this.sats.size());
 		
 		int i = 0;
 
-    	for(Entry<Integer, Satellite> struct : sats.entrySet()) {
+    	for(Entry<Integer, Satellite> struct : this.sats.entrySet()) {
     		NBTTagCompound data = new NBTTagCompound();
     		struct.getValue().writeToNBT(data);
     		

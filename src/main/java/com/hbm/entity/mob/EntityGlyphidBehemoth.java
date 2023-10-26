@@ -10,7 +10,7 @@ public class EntityGlyphidBehemoth extends EntityGlyphid {
 
 	public EntityGlyphidBehemoth(World world) {
 		super(world);
-		this.setSize(2.25F, 1.25F);
+		setSize(2.25F, 1.25F);
 	}
 	
 	@Override
@@ -26,9 +26,9 @@ public class EntityGlyphidBehemoth extends EntityGlyphid {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(100D);
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.8D);
-		this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(25D);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(100D);
+		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.8D);
+		getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(25D);
 	}
 
 	@Override

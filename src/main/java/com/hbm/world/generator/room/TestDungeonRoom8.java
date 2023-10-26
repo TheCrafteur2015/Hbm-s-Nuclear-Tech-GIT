@@ -20,42 +20,43 @@ public class TestDungeonRoom8 extends CellularDungeonRoom {
 		super(parent);
 	}
 
+	@Override
 	public void generateMain(World world, int x, int y, int z) {
 		
 		super.generateMain(world, x, y, z);
-		DungeonToolbox.generateBox(world, x + parent.width / 2 - 3, y + 1, z + parent.width / 2 - 3, 1, parent.height - 2, 1, ModBlocks.meteor_pillar);
-		DungeonToolbox.generateBox(world, x + parent.width / 2 + 3, y + 1, z + parent.width / 2 - 3, 1, parent.height - 2, 1, ModBlocks.meteor_pillar);
-		DungeonToolbox.generateBox(world, x + parent.width / 2 + 3, y + 1, z + parent.width / 2 + 3, 1, parent.height - 2, 1, ModBlocks.meteor_pillar);
-		DungeonToolbox.generateBox(world, x + parent.width / 2 - 3, y + 1, z + parent.width / 2 + 3, 1, parent.height - 2, 1, ModBlocks.meteor_pillar);
-		world.setBlock(x + parent.width / 2 - 3, y + 3, z + parent.width / 2 - 3, ModBlocks.meteor_brick_chiseled, 0, 2);
-		world.setBlock(x + parent.width / 2 + 3, y + 3, z + parent.width / 2 - 3, ModBlocks.meteor_brick_chiseled, 0, 2);
-		world.setBlock(x + parent.width / 2 + 3, y + 3, z + parent.width / 2 + 3, ModBlocks.meteor_brick_chiseled, 0, 2);
-		world.setBlock(x + parent.width / 2 - 3, y + 3, z + parent.width / 2 + 3, ModBlocks.meteor_brick_chiseled, 0, 2);
+		DungeonToolbox.generateBox(world, x + this.parent.width / 2 - 3, y + 1, z + this.parent.width / 2 - 3, 1, this.parent.height - 2, 1, ModBlocks.meteor_pillar);
+		DungeonToolbox.generateBox(world, x + this.parent.width / 2 + 3, y + 1, z + this.parent.width / 2 - 3, 1, this.parent.height - 2, 1, ModBlocks.meteor_pillar);
+		DungeonToolbox.generateBox(world, x + this.parent.width / 2 + 3, y + 1, z + this.parent.width / 2 + 3, 1, this.parent.height - 2, 1, ModBlocks.meteor_pillar);
+		DungeonToolbox.generateBox(world, x + this.parent.width / 2 - 3, y + 1, z + this.parent.width / 2 + 3, 1, this.parent.height - 2, 1, ModBlocks.meteor_pillar);
+		world.setBlock(x + this.parent.width / 2 - 3, y + 3, z + this.parent.width / 2 - 3, ModBlocks.meteor_brick_chiseled, 0, 2);
+		world.setBlock(x + this.parent.width / 2 + 3, y + 3, z + this.parent.width / 2 - 3, ModBlocks.meteor_brick_chiseled, 0, 2);
+		world.setBlock(x + this.parent.width / 2 + 3, y + 3, z + this.parent.width / 2 + 3, ModBlocks.meteor_brick_chiseled, 0, 2);
+		world.setBlock(x + this.parent.width / 2 - 3, y + 3, z + this.parent.width / 2 + 3, ModBlocks.meteor_brick_chiseled, 0, 2);
 
-		DungeonToolbox.generateBox(world, x + 4, y + 1, z + 4, parent.width - 8, 1, parent.width - 8, ModBlocks.meteor_polished);
+		DungeonToolbox.generateBox(world, x + 4, y + 1, z + 4, this.parent.width - 8, 1, this.parent.width - 8, ModBlocks.meteor_polished);
 		
 		int i = world.rand.nextInt(8);
 		
 		switch(i) {
-		case 0: world.setBlock(x + parent.width / 2, y + 2, z + parent.width / 2, ModBlocks.meteor_brick_chiseled, 0, 3); break;
-		case 1: world.setBlock(x + parent.width / 2, y + 2, z + parent.width / 2, ModBlocks.ntm_dirt, 0, 3); break;
-		case 2: world.setBlock(x + parent.width / 2, y + 2, z + parent.width / 2, ModBlocks.block_starmetal, 0, 3); break;
-		case 3: world.setBlock(x + parent.width / 2, y + 2, z + parent.width / 2, ModBlocks.statue_elb_f, 0, 3); break;
-		case 4: world.setBlock(x + parent.width / 2, y + 2, z + parent.width / 2, ModBlocks.crate_red, 0, 3); break;
-		case 5: world.setBlock(x + parent.width / 2, y + 2, z + parent.width / 2, ModBlocks.balefire, 0, 3); break;
-		case 6: world.setBlock(x + parent.width / 2, y + 2, z + parent.width / 2, ModBlocks.block_meteor, 0, 3); break;
+		case 0: world.setBlock(x + this.parent.width / 2, y + 2, z + this.parent.width / 2, ModBlocks.meteor_brick_chiseled, 0, 3); break;
+		case 1: world.setBlock(x + this.parent.width / 2, y + 2, z + this.parent.width / 2, ModBlocks.ntm_dirt, 0, 3); break;
+		case 2: world.setBlock(x + this.parent.width / 2, y + 2, z + this.parent.width / 2, ModBlocks.block_starmetal, 0, 3); break;
+		case 3: world.setBlock(x + this.parent.width / 2, y + 2, z + this.parent.width / 2, ModBlocks.statue_elb_f, 0, 3); break;
+		case 4: world.setBlock(x + this.parent.width / 2, y + 2, z + this.parent.width / 2, ModBlocks.crate_red, 0, 3); break;
+		case 5: world.setBlock(x + this.parent.width / 2, y + 2, z + this.parent.width / 2, ModBlocks.balefire, 0, 3); break;
+		case 6: world.setBlock(x + this.parent.width / 2, y + 2, z + this.parent.width / 2, ModBlocks.block_meteor, 0, 3); break;
 		case 7:
-			world.setBlock(x + parent.width / 2, y + 2, z + parent.width / 2, ModBlocks.safe, 0, 3);
-			if(world.getTileEntity(x + parent.width / 2, y + 2, z + parent.width / 2) instanceof TileEntitySafe) {
+			world.setBlock(x + this.parent.width / 2, y + 2, z + this.parent.width / 2, ModBlocks.safe, 0, 3);
+			if(world.getTileEntity(x + this.parent.width / 2, y + 2, z + this.parent.width / 2) instanceof TileEntitySafe) {
 				
 				int r = world.rand.nextInt(10);
 				
 				if(r == 0)
-					((TileEntitySafe)world.getTileEntity(x + parent.width / 2, y + 2, z + parent.width / 2)).setInventorySlotContents(7, new ItemStack(ModItems.book_of_));
+					((TileEntitySafe)world.getTileEntity(x + this.parent.width / 2, y + 2, z + this.parent.width / 2)).setInventorySlotContents(7, new ItemStack(ModItems.book_of_));
 				else if(r < 4)
-					((TileEntitySafe)world.getTileEntity(x + parent.width / 2, y + 2, z + parent.width / 2)).setInventorySlotContents(7, generateBook(world));
+					((TileEntitySafe)world.getTileEntity(x + this.parent.width / 2, y + 2, z + this.parent.width / 2)).setInventorySlotContents(7, TestDungeonRoom8.generateBook(world));
 				else
-					((TileEntitySafe)world.getTileEntity(x + parent.width / 2, y + 2, z + parent.width / 2)).setInventorySlotContents(7, new ItemStack(Items.book));
+					((TileEntitySafe)world.getTileEntity(x + this.parent.width / 2, y + 2, z + this.parent.width / 2)).setInventorySlotContents(7, new ItemStack(Items.book));
 			}
 			break;
 		}

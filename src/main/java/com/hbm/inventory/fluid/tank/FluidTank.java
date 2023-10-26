@@ -21,14 +21,15 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 
+@SuppressWarnings("deprecation")
 public class FluidTank {
 	
-	public static final List<FluidLoadingHandler> loadingHandlers = new ArrayList();
+	public static final List<FluidLoadingHandler> loadingHandlers = new ArrayList<>();
 	
 	static {
-		loadingHandlers.add(new FluidLoaderStandard());
-		loadingHandlers.add(new FluidLoaderFillableItem());
-		loadingHandlers.add(new FluidLoaderInfinite());
+		FluidTank.loadingHandlers.add(new FluidLoaderStandard());
+		FluidTank.loadingHandlers.add(new FluidLoaderFillableItem());
+		FluidTank.loadingHandlers.add(new FluidLoaderInfinite());
 	}
 	
 	FluidType type;
@@ -44,7 +45,7 @@ public class FluidTank {
 	
 	public FluidTank withPressure(int pressure) {
 		
-		if(this.pressure != pressure) this.setFill(0);
+		if(this.pressure != pressure) setFill(0);
 		
 		this.pressure = pressure;
 		return this;
@@ -58,7 +59,7 @@ public class FluidTank {
 	}
 	
 	public void setFill(int i) {
-		fluid = i;
+		this.fluid = i;
 	}
 	
 	public void setTankType(FluidType type) {
@@ -71,31 +72,31 @@ public class FluidTank {
 			return;
 		
 		this.type = type;
-		this.setFill(0);
+		setFill(0);
 	}
 	
 	public FluidType getTankType() {
-		return type;
+		return this.type;
 	}
 	
 	public int getFill() {
-		return fluid;
+		return this.fluid;
 	}
 	
 	public int getMaxFill() {
-		return maxFluid;
+		return this.maxFluid;
 	}
 	
 	public int getPressure() {
-		return pressure;
+		return this.pressure;
 	}
 	
 	public int changeTankSize(int size) {
-		maxFluid = size;
+		this.maxFluid = size;
 		
-		if(fluid > maxFluid) {
-			int dif = fluid - maxFluid;
-			fluid = maxFluid;
+		if(this.fluid > this.maxFluid) {
+			int dif = this.fluid - this.maxFluid;
+			this.fluid = this.maxFluid;
 			return dif;
 		}
 			
@@ -113,26 +114,23 @@ public class FluidTank {
 		updateTank(x, y, z, dim, 100);
 	}
 	@Deprecated public void updateTank(int x, int y, int z, int dim, int range) {
-		PacketDispatcher.wrapper.sendToAllAround(new TEFluidPacket(x, y, z, fluid, index, type), new TargetPoint(dim, x, y, z, range));
+		PacketDispatcher.wrapper.sendToAllAround(new TEFluidPacket(x, y, z, this.fluid, this.index, this.type), new TargetPoint(dim, x, y, z, range));
 	}
 	
 	//Fills tank from canisters
 	public boolean loadTank(int in, int out, ItemStack[] slots) {
 		
-		if(slots[in] == null)
-			return false;
+		if((slots[in] == null) || (this.pressure != 0)) return false; //for now, canisters can only be loaded from high-pressure tanks, not unloaded
 		
-		if(this.pressure != 0) return false; //for now, canisters can only be loaded from high-pressure tanks, not unloaded
+		int prev = getFill();
 		
-		int prev = this.getFill();
-		
-		for(FluidLoadingHandler handler : loadingHandlers) {
+		for(FluidLoadingHandler handler : FluidTank.loadingHandlers) {
 			if(handler.emptyItem(slots, in, out, this)) {
 				break;
 			}
 		}
 		
-		return this.getFill() > prev;
+		return getFill() > prev;
 	}
 	
 	//Fills canisters from tank
@@ -141,15 +139,15 @@ public class FluidTank {
 		if(slots[in] == null)
 			return false;
 		
-		int prev = this.getFill();
+		int prev = getFill();
 		
-		for(FluidLoadingHandler handler : loadingHandlers) {
+		for(FluidLoadingHandler handler : FluidTank.loadingHandlers) {
 			if(handler.fillItem(slots, in, out, this)) {
 				break;
 			}
 		}
 		
-		return this.getFill() < prev;
+		return getFill() < prev;
 	}
 
 	public boolean setType(int in, ItemStack[] slots) {
@@ -171,19 +169,19 @@ public class FluidTank {
 			if(in == out) {
 				FluidType newType = id.getType(null, 0, 0, 0, slots[in]);
 				
-				if(type != newType) {
-					type = newType;
-					fluid = 0;
+				if(this.type != newType) {
+					this.type = newType;
+					this.fluid = 0;
 					return true;
 				}
 				
 			} else if(slots[out] == null) {
 				FluidType newType = id.getType(null, 0, 0, 0, slots[in]);
-				if(type != newType) {
-					type = newType;
+				if(this.type != newType) {
+					this.type = newType;
 					slots[out] = slots[in].copy();
 					slots[in] = null;
-					fluid = 0;
+					this.fluid = 0;
 					return true;
 				}
 			}
@@ -208,7 +206,7 @@ public class FluidTank {
 
 		GL11.glEnable(GL11.GL_BLEND);
 		
-		int color = type.getTint();
+		int color = this.type.getTint();
 		double r = ((color & 0xff0000) >> 16) / 255D;
 		double g = ((color & 0x00ff00) >> 8) / 255D;
 		double b = ((color & 0x0000ff) >> 0) / 255D;
@@ -216,9 +214,9 @@ public class FluidTank {
 
 		y -= height;
 		
-		Minecraft.getMinecraft().getTextureManager().bindTexture(type.getTexture());
+		Minecraft.getMinecraft().getTextureManager().bindTexture(this.type.getTexture());
 		
-		int i = (fluid * height) / maxFluid;
+		int i = (this.fluid * height) / this.maxFluid;
 		
 		double minX = x;
 		double maxX = x;
@@ -237,7 +235,7 @@ public class FluidTank {
 		}
 		
 		if(orientation == 1) {
-			i = (fluid * width) / maxFluid;
+			i = (this.fluid * width) / this.maxFluid;
 			maxX += i;
 			maxY += height;
 			
@@ -262,39 +260,39 @@ public class FluidTank {
 	public void renderTankInfo(GuiInfoContainer gui, int mouseX, int mouseY, int x, int y, int width, int height) {
 		if(x <= mouseX && x + width > mouseX && y < mouseY && y + height >= mouseY) {
 			
-			List<String> list = new ArrayList();
+			List<String> list = new ArrayList<>();
 			list.add(this.type.getLocalizedName());
-			list.add(fluid + "/" + maxFluid + "mB");
+			list.add(this.fluid + "/" + this.maxFluid + "mB");
 			
 			if(this.pressure != 0) {
 				list.add(EnumChatFormatting.RED + "Pressure: " + this.pressure + " PU");
 			}
 			
-			type.addInfo(list);
+			this.type.addInfo(list);
 			gui.drawInfo(list.toArray(new String[0]), mouseX, mouseY);
 		}
 	}
 
 	//Called by TE to save fillstate
 	public void writeToNBT(NBTTagCompound nbt, String s) {
-		nbt.setInteger(s, fluid);
-		nbt.setInteger(s + "_max", maxFluid);
-		nbt.setInteger(s + "_type", type.getID());
-		nbt.setShort(s + "_p", (short) pressure);
+		nbt.setInteger(s, this.fluid);
+		nbt.setInteger(s + "_max", this.maxFluid);
+		nbt.setInteger(s + "_type", this.type.getID());
+		nbt.setShort(s + "_p", (short) this.pressure);
 	}
 	
 	//Called by TE to load fillstate
 	public void readFromNBT(NBTTagCompound nbt, String s) {
-		fluid = nbt.getInteger(s);
+		this.fluid = nbt.getInteger(s);
 		int max = nbt.getInteger(s + "_max");
 		if(max > 0)
-			maxFluid = max;
+			this.maxFluid = max;
 		
-		fluid = MathHelper.clamp_int(fluid, 0, max);
+		this.fluid = MathHelper.clamp_int(this.fluid, 0, max);
 		
-		type = Fluids.fromName(nbt.getString(s + "_type")); //compat
-		if(type == Fluids.NONE)
-			type = Fluids.fromID(nbt.getInteger(s + "_type"));
+		this.type = Fluids.fromName(nbt.getString(s + "_type")); //compat
+		if(this.type == Fluids.NONE)
+			this.type = Fluids.fromID(nbt.getInteger(s + "_type"));
 		
 		this.pressure = nbt.getShort(s + "_p");
 	}

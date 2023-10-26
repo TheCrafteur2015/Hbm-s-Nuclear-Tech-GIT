@@ -19,7 +19,7 @@ public class GUIMachineOilWell extends GuiInfoContainer {
 	
 	public GUIMachineOilWell(InventoryPlayer invPlayer, TileEntityOilDrillBase tedf) {
 		super(new ContainerMachineOilWell(invPlayer, tedf));
-		derrick = tedf;
+		this.derrick = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 166;
@@ -29,11 +29,11 @@ public class GUIMachineOilWell extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		derrick.tanks[0].renderTankInfo(this, mouseX, mouseY, guiLeft + 62, guiTop + 69 - 52, 16, 52);
-		derrick.tanks[1].renderTankInfo(this, mouseX, mouseY, guiLeft + 107, guiTop + 69 - 52, 16, 52);
+		this.derrick.tanks[0].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 62, this.guiTop + 69 - 52, 16, 52);
+		this.derrick.tanks[1].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 107, this.guiTop + 69 - 52, 16, 52);
 		
-		if(derrick.tanks.length >= 3) {
-			derrick.tanks[2].renderTankInfo(this, mouseX, mouseY, guiLeft + 40, guiTop + 37, 6, 32);
+		if(this.derrick.tanks.length >= 3) {
+			this.derrick.tanks[2].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 40, this.guiTop + 37, 6, 32);
 		}
 		
 		String[] upgradeText = new String[4];
@@ -41,9 +41,9 @@ public class GUIMachineOilWell extends GuiInfoContainer {
 		upgradeText[1] = I18nUtil.resolveKey("desc.gui.upgrade.speed");
 		upgradeText[2] = I18nUtil.resolveKey("desc.gui.upgrade.power");
 		upgradeText[3] = I18nUtil.resolveKey("desc.gui.upgrade.afterburner");
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 156, guiTop + 3, 8, 8, mouseX, mouseY, upgradeText);
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 156, this.guiTop + 3, 8, 8, mouseX, mouseY, upgradeText);
 		
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 8, guiTop + 17, 16, 34, derrick.power, derrick.getMaxPower());
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 8, this.guiTop + 17, 16, 34, this.derrick.power, this.derrick.getMaxPower());
 	}
 
 	@Override
@@ -57,28 +57,28 @@ public class GUIMachineOilWell extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIMachineOilWell.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		int i = (int)(derrick.getPower() * 34 / derrick.getMaxPower());
-		drawTexturedModalRect(guiLeft + 8, guiTop + 51 - i, 176, 34 - i, 16, i);
+		int i = (int)(this.derrick.getPower() * 34 / this.derrick.getMaxPower());
+		drawTexturedModalRect(this.guiLeft + 8, this.guiTop + 51 - i, 176, 34 - i, 16, i);
 		
-		int k = derrick.indicator;
+		int k = this.derrick.indicator;
 		
 		if(k != 0)
-			drawTexturedModalRect(guiLeft + 35, guiTop + 17, 176 + (k - 1) * 16, 52, 16, 16);
+			drawTexturedModalRect(this.guiLeft + 35, this.guiTop + 17, 176 + (k - 1) * 16, 52, 16, 16);
 		
-		if(derrick.tanks.length < 3) {
-			drawTexturedModalRect(guiLeft + 34, guiTop + 36, 192, 0, 18, 34);
+		if(this.derrick.tanks.length < 3) {
+			drawTexturedModalRect(this.guiLeft + 34, this.guiTop + 36, 192, 0, 18, 34);
 		}
 		
-		derrick.tanks[0].renderTank(guiLeft + 62, guiTop + 69, this.zLevel, 16, 52);
-		derrick.tanks[1].renderTank(guiLeft + 107, guiTop + 69, this.zLevel, 16, 52);
+		this.derrick.tanks[0].renderTank(this.guiLeft + 62, this.guiTop + 69, this.zLevel, 16, 52);
+		this.derrick.tanks[1].renderTank(this.guiLeft + 107, this.guiTop + 69, this.zLevel, 16, 52);
 		
-		if(derrick.tanks.length > 2) {
-			derrick.tanks[2].renderTank(guiLeft + 40, guiTop + 69, this.zLevel, 6, 32);
+		if(this.derrick.tanks.length > 2) {
+			this.derrick.tanks[2].renderTank(this.guiLeft + 40, this.guiTop + 69, this.zLevel, 6, 32);
 		}
 		
-		this.drawInfoPanel(guiLeft + 156, guiTop + 3, 8, 8, 8);
+		drawInfoPanel(this.guiLeft + 156, this.guiTop + 3, 8, 8, 8);
 	}
 }

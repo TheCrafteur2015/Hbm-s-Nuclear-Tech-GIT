@@ -44,12 +44,12 @@ public class MachineCatalyticReformer extends BlockDummyable {
 		
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 
-		this.makeExtra(world, x - dir.offsetX + 1, y, z - dir.offsetZ + 1);
-		this.makeExtra(world, x - dir.offsetX + 1, y, z - dir.offsetZ - 1);
-		this.makeExtra(world, x - dir.offsetX - 1, y, z - dir.offsetZ + 1);
-		this.makeExtra(world, x - dir.offsetX - 1, y, z - dir.offsetZ - 1);
-		this.makeExtra(world, x - dir.offsetX + rot.offsetX * 2, y, z - dir.offsetZ + rot.offsetZ * 2);
-		this.makeExtra(world, x - dir.offsetX - rot.offsetX * 2, y, z - dir.offsetZ - rot.offsetZ * 2);
+		makeExtra(world, x - dir.offsetX + 1, y, z - dir.offsetZ + 1);
+		makeExtra(world, x - dir.offsetX + 1, y, z - dir.offsetZ - 1);
+		makeExtra(world, x - dir.offsetX - 1, y, z - dir.offsetZ + 1);
+		makeExtra(world, x - dir.offsetX - 1, y, z - dir.offsetZ - 1);
+		makeExtra(world, x - dir.offsetX + rot.offsetX * 2, y, z - dir.offsetZ + rot.offsetZ * 2);
+		makeExtra(world, x - dir.offsetX - rot.offsetX * 2, y, z - dir.offsetZ - rot.offsetZ * 2);
 	}
 
 	@Override

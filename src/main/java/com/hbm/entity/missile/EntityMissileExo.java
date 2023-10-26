@@ -28,7 +28,7 @@ public class EntityMissileExo extends EntityMissileBaseAdvanced {
 
 	@Override
 	public List<ItemStack> getDebris() {
-		List<ItemStack> list = new ArrayList<ItemStack>();
+		List<ItemStack> list = new ArrayList<>();
 
 		list.add(new ItemStack(ModItems.plate_titanium, 10));
 		list.add(new ItemStack(ModItems.plate_steel, 14));

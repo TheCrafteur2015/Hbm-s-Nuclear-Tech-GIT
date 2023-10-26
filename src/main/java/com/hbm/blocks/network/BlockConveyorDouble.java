@@ -10,7 +10,7 @@ public class BlockConveyorDouble extends BlockConveyorBendable {
 	@Override
 	public Vec3 getClosestSnappingPosition(World world, int x, int y, int z, Vec3 itemPos) {
 
-		ForgeDirection dir = this.getTravelDirection(world, x, y, z, itemPos);
+		ForgeDirection dir = getTravelDirection(world, x, y, z, itemPos);
 		
 		itemPos.xCoord = MathHelper.clamp_double(itemPos.xCoord, x, x + 1);
 		itemPos.zCoord = MathHelper.clamp_double(itemPos.zCoord, z, z + 1);

@@ -32,21 +32,22 @@ public class GUIElectrolyserFluid extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 		
-		electrolyser.tanks[0].renderTankInfo(this, mouseX, mouseY, guiLeft + 42, guiTop + 18, 16, 52);
-		electrolyser.tanks[1].renderTankInfo(this, mouseX, mouseY, guiLeft + 96, guiTop + 18, 16, 52);
-		electrolyser.tanks[2].renderTankInfo(this, mouseX, mouseY, guiLeft + 116, guiTop + 18, 16, 52);
+		this.electrolyser.tanks[0].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 42, this.guiTop + 18, 16, 52);
+		this.electrolyser.tanks[1].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 96, this.guiTop + 18, 16, 52);
+		this.electrolyser.tanks[2].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 116, this.guiTop + 18, 16, 52);
 		
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 186, guiTop + 18, 16, 89, electrolyser.power, electrolyser.maxPower);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 186, this.guiTop + 18, 16, 89, this.electrolyser.power, TileEntityElectrolyser.maxPower);
 	}
 	
+	@Override
 	protected void mouseClicked(int x, int y, int i) {
 		super.mouseClicked(x, y, i);
 
-		if(guiLeft + 8 <= x && guiLeft + 8 + 54 > x && guiTop + 82 < y && guiTop + 82 + 12 >= y) {
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+		if(this.guiLeft + 8 <= x && this.guiLeft + 8 + 54 > x && this.guiTop + 82 < y && this.guiTop + 82 + 12 >= y) {
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 			NBTTagCompound data = new NBTTagCompound();
 			data.setBoolean("sgm", true);
-			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, electrolyser.xCoord, electrolyser.yCoord, electrolyser.zCoord));
+			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, this.electrolyser.xCoord, this.electrolyser.yCoord, this.electrolyser.zCoord));
 		}
 	}
 	
@@ -61,20 +62,20 @@ public class GUIElectrolyserFluid extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIElectrolyserFluid.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		int p = (int) (electrolyser.power * 89 / electrolyser.maxPower);
-		drawTexturedModalRect(guiLeft + 186, guiTop + 107 - p, 210, 89 - p, 16, p);
+		int p = (int) (this.electrolyser.power * 89 / TileEntityElectrolyser.maxPower);
+		drawTexturedModalRect(this.guiLeft + 186, this.guiTop + 107 - p, 210, 89 - p, 16, p);
 		
-		if(electrolyser.power >= electrolyser.usage)
-			drawTexturedModalRect(guiLeft + 190, guiTop + 4, 226, 40, 9, 12);
+		if(this.electrolyser.power >= this.electrolyser.usage)
+			drawTexturedModalRect(this.guiLeft + 190, this.guiTop + 4, 226, 40, 9, 12);
 		
-		int e = electrolyser.progressFluid * 41 / electrolyser.processFluidTime;
-		drawTexturedModalRect(guiLeft + 62, guiTop + 26, 226, 0, 12, e);
+		int e = this.electrolyser.progressFluid * 41 / this.electrolyser.processFluidTime;
+		drawTexturedModalRect(this.guiLeft + 62, this.guiTop + 26, 226, 0, 12, e);
 
-		electrolyser.tanks[0].renderTank(guiLeft + 42, guiTop + 70, this.zLevel, 16, 52);
-		electrolyser.tanks[1].renderTank(guiLeft + 96, guiTop + 70, this.zLevel, 16, 52);
-		electrolyser.tanks[2].renderTank(guiLeft + 116, guiTop + 70, this.zLevel, 16, 52);
+		this.electrolyser.tanks[0].renderTank(this.guiLeft + 42, this.guiTop + 70, this.zLevel, 16, 52);
+		this.electrolyser.tanks[1].renderTank(this.guiLeft + 96, this.guiTop + 70, this.zLevel, 16, 52);
+		this.electrolyser.tanks[2].renderTank(this.guiLeft + 116, this.guiTop + 70, this.zLevel, 16, 52);
 	}
 }

@@ -25,13 +25,15 @@ public class ParticleMukeWave extends EntityFX {
 		this.particleMaxAge = 25;
 	}
 
+	@Override
 	public int getFXLayer() {
 		return 3;
 	}
 
+	@Override
 	public void renderParticle(Tessellator tess, float interp, float x, float y, float z, float tx, float tz) {
 		
-		this.theRenderEngine.bindTexture(texture);
+		this.theRenderEngine.bindTexture(ParticleMukeWave.texture);
 		
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glDisable(GL11.GL_LIGHTING);
@@ -52,9 +54,9 @@ public class ParticleMukeWave extends EntityFX {
 		
 		tess.setColorRGBA_F(1.0F, 1.0F, 1.0F, this.particleAlpha);
 		
-	    float pX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double)interp - interpPosX);
-	    float pY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double)interp - interpPosY);
-	    float pZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double)interp - interpPosZ);
+	    float pX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double)interp - EntityFX.interpPosX);
+	    float pY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double)interp - EntityFX.interpPosY);
+	    float pZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double)interp - EntityFX.interpPosZ);
 	       
 		tess.addVertexWithUV((double)(pX - 1 * scale), (double)(pY - 0.25), (double)(pZ - 1 * scale), 1, 1);
 		tess.addVertexWithUV((double)(pX - 1 * scale), (double)(pY - 0.25), (double)(pZ + 1 * scale), 1, 0);

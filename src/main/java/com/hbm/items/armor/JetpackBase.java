@@ -37,7 +37,7 @@ public abstract class JetpackBase extends ItemArmorMod implements IFillableItem 
 	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		list.add(EnumChatFormatting.LIGHT_PURPLE + fuel.getLocalizedName() + ": " + this.getFuel(itemstack) + "mB / " + this.maxFuel + "mB");
+		list.add(EnumChatFormatting.LIGHT_PURPLE + this.fuel.getLocalizedName() + ": " + getFuel(itemstack) + "mB / " + this.maxFuel + "mB");
 		list.add("");
 		super.addInformation(itemstack, player, list, bool);
 		list.add(EnumChatFormatting.GOLD + "Can be worn on its own!");
@@ -51,7 +51,7 @@ public abstract class JetpackBase extends ItemArmorMod implements IFillableItem 
 		if(jetpack == null)
 			return;
 		
-		list.add(EnumChatFormatting.RED + "  " + stack.getDisplayName() + " (" + fuel.getLocalizedName() + ": " + this.getFuel(jetpack) + "mB / " + this.maxFuel + "mB");
+		list.add(EnumChatFormatting.RED + "  " + stack.getDisplayName() + " (" + this.fuel.getLocalizedName() + ": " + getFuel(jetpack) + "mB / " + this.maxFuel + "mB");
 	}
 	
 	@Override
@@ -90,7 +90,7 @@ public abstract class JetpackBase extends ItemArmorMod implements IFillableItem 
 		float yawWrapped = MathHelper.wrapAngleTo180_float(yawHead - yawOffset);
 		float pitch = player.rotationPitch;
 		
-		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(this.getArmorTexture(armor, event.entity, 1, null)));
+		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(getArmorTexture(armor, event.entity, 1, null)));
 		modelJetpack.render(event.entityPlayer, 0.0F, 0.0F, yawWrapped, yaw, pitch, 0.0625F);
 	}
 
@@ -103,7 +103,7 @@ public abstract class JetpackBase extends ItemArmorMod implements IFillableItem 
 	@SideOnly(Side.CLIENT)
 	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot) {
 		if (armorSlot == 1) {
-			if (model == null) {
+			if (this.model == null) {
 				this.model = new ModelJetPack();
 			}
 			return this.model;
@@ -115,7 +115,7 @@ public abstract class JetpackBase extends ItemArmorMod implements IFillableItem 
 	protected void useUpFuel(EntityPlayer player, ItemStack stack, int rate) {
 
 		if(player.ticksExisted % rate == 0)
-			this.setFuel(stack, this.getFuel(stack) - 1);
+			setFuel(stack, getFuel(stack) - 1);
 	}
 	
     public static int getFuel(ItemStack stack) {
@@ -156,13 +156,13 @@ public abstract class JetpackBase extends ItemArmorMod implements IFillableItem 
 		if(!acceptsFluid(type, stack))
 			return amount;
 		
-		int fill = this.getFuel(stack);
-		int req = maxFuel - fill;
+		int fill = getFuel(stack);
+		int req = this.maxFuel - fill;
 		
 		int toFill = Math.min(amount, req);
 		//toFill = Math.min(toFill, getLoadSpeed(stack));
 		
-		this.setFuel(stack, fill + toFill);
+		setFuel(stack, fill + toFill);
 		
 		return amount - toFill;
 	}

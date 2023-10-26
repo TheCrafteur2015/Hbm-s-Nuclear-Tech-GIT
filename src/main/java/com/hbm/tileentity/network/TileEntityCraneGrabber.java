@@ -1,5 +1,7 @@
 package com.hbm.tileentity.network;
 
+import java.util.List;
+
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.network.CraneInserter;
 import com.hbm.entity.item.EntityMovingItem;
@@ -9,6 +11,7 @@ import com.hbm.inventory.gui.GUICraneGrabber;
 import com.hbm.items.ModItems;
 import com.hbm.module.ModulePatternMatcher;
 import com.hbm.tileentity.IGUIProvider;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -25,8 +28,6 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.List;
-
 public class TileEntityCraneGrabber extends TileEntityCraneBase implements IGUIProvider, IControlReceiver {
 
 	public boolean isWhitelist = false;
@@ -38,7 +39,7 @@ public class TileEntityCraneGrabber extends TileEntityCraneBase implements IGUIP
 	}
 	
 	public void nextMode(int i) {
-		this.matcher.nextMode(worldObj, slots[i], i);
+		this.matcher.nextMode(this.worldObj, this.slots[i], i);
 	}
 
 	@Override
@@ -46,26 +47,27 @@ public class TileEntityCraneGrabber extends TileEntityCraneBase implements IGUIP
 		return "container.craneGrabber";
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void updateEntity() {
 		super.updateEntity();
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			int delay = 20;
 			
-			if(slots[10] != null && slots[10].getItem() == ModItems.upgrade_ejector) {
-				switch(slots[10].getItemDamage()) {
+			if(this.slots[10] != null && this.slots[10].getItem() == ModItems.upgrade_ejector) {
+				switch(this.slots[10].getItemDamage()) {
 				case 0: delay = 10; break;
 				case 1: delay = 5; break;
 				case 2: delay = 2; break;
 				}
 			}
 			
-			if(worldObj.getTotalWorldTime() % delay == 0 && !this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)) {
+			if(this.worldObj.getTotalWorldTime() % delay == 0 && !this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord)) {
 				int amount = 1;
 				
-				if(slots[9] != null && slots[9].getItem() == ModItems.upgrade_stack) {
-					switch(slots[9].getItemDamage()) {
+				if(this.slots[9] != null && this.slots[9].getItem() == ModItems.upgrade_stack) {
+					switch(this.slots[9].getItemDamage()) {
 					case 0: amount = 4; break;
 					case 1: amount = 16; break;
 					case 2: amount = 64; break;
@@ -74,7 +76,7 @@ public class TileEntityCraneGrabber extends TileEntityCraneBase implements IGUIP
 	
 				ForgeDirection inputSide = getInputSide();
 				ForgeDirection outputSide = getOutputSide();
-				TileEntity te = worldObj.getTileEntity(xCoord + outputSide.offsetX, yCoord + outputSide.offsetY, zCoord + outputSide.offsetZ);
+				TileEntity te = this.worldObj.getTileEntity(this.xCoord + outputSide.offsetX, this.yCoord + outputSide.offsetY, this.zCoord + outputSide.offsetZ);
 				
 				int[] access = null;
 				ISidedInventory sided = null;
@@ -93,20 +95,20 @@ public class TileEntityCraneGrabber extends TileEntityCraneBase implements IGUIP
 					 * to fuck with the AABB further, since that's just a major headache for no practical benefit
 					*/
 					double reach = 1D;
-					if(this.getBlockMetadata() > 1) { //ignore if pointing up or down
-						Block b = worldObj.getBlock(xCoord + inputSide.offsetX, yCoord + inputSide.offsetY, zCoord + inputSide.offsetZ);
+					if(getBlockMetadata() > 1) { //ignore if pointing up or down
+						Block b = this.worldObj.getBlock(this.xCoord + inputSide.offsetX, this.yCoord + inputSide.offsetY, this.zCoord + inputSide.offsetZ);
 						if(b == ModBlocks.conveyor_double) reach = 0.5D;
 						if(b == ModBlocks.conveyor_triple) reach = 0.33D;
 					}
 
-					double x = xCoord + inputSide.offsetX * reach;
-					double y = yCoord + inputSide.offsetY * reach;
-					double z = zCoord + inputSide.offsetZ * reach;
-					List<EntityMovingItem> items = worldObj.getEntitiesWithinAABB(EntityMovingItem.class, AxisAlignedBB.getBoundingBox(x + 0.1875D, y + 0.1875D, z + 0.1875D, x + 0.8125D, y + 0.8125D, z + 0.8125D));
+					double x = this.xCoord + inputSide.offsetX * reach;
+					double y = this.yCoord + inputSide.offsetY * reach;
+					double z = this.zCoord + inputSide.offsetZ * reach;
+					List<EntityMovingItem> items = this.worldObj.getEntitiesWithinAABB(EntityMovingItem.class, AxisAlignedBB.getBoundingBox(x + 0.1875D, y + 0.1875D, z + 0.1875D, x + 0.8125D, y + 0.8125D, z + 0.8125D));
 					
 					for(EntityMovingItem item : items) {
 						ItemStack stack = item.getItemStack();
-						boolean match = this.matchesFilter(stack);
+						boolean match = matchesFilter(stack);
 						if(this.isWhitelist && !match || !this.isWhitelist && match) continue;
 						
 						ItemStack copy = stack.copy();
@@ -130,12 +132,13 @@ public class TileEntityCraneGrabber extends TileEntityCraneBase implements IGUIP
 			
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setBoolean("isWhitelist", isWhitelist);
+			data.setBoolean("isWhitelist", this.isWhitelist);
 			this.matcher.writeToNBT(data);
-			this.networkPack(data, 15);
+			networkPack(data, 15);
 		}
 	}
 	
+	@Override
 	public void networkUnpack(NBTTagCompound nbt) {
 		this.isWhitelist = nbt.getBoolean("isWhitelist");
 		this.matcher.modes = new String[this.matcher.modes.length];
@@ -145,7 +148,7 @@ public class TileEntityCraneGrabber extends TileEntityCraneBase implements IGUIP
 	public boolean matchesFilter(ItemStack stack) {
 		
 		for(int i = 0; i < 9; i++) {
-			ItemStack filter = slots[i];
+			ItemStack filter = this.slots[i];
 			
 			if(filter != null && this.matcher.isValidForFilter(filter, i, stack)) {
 				return true;
@@ -182,7 +185,7 @@ public class TileEntityCraneGrabber extends TileEntityCraneBase implements IGUIP
 
 	@Override
 	public boolean hasPermission(EntityPlayer player) {
-		return Vec3.createVectorHelper(xCoord - player.posX, yCoord - player.posY, zCoord - player.posZ).lengthVector() < 20;
+		return Vec3.createVectorHelper(this.xCoord - player.posX, this.yCoord - player.posY, this.zCoord - player.posZ).lengthVector() < 20;
 	}
 
 	@Override

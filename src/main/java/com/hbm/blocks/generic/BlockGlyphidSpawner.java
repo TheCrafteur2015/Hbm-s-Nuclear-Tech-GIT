@@ -47,32 +47,33 @@ public class BlockGlyphidSpawner extends BlockContainer {
 
 	public static class TileEntityGlpyhidSpawner extends TileEntity {
 		
+		@SuppressWarnings("unchecked")
 		@Override
 		public void updateEntity() {
 			
-			if(!worldObj.isRemote && worldObj.getTotalWorldTime() % 60 == 0 && this.worldObj.difficultySetting != EnumDifficulty.PEACEFUL) {
+			if(!this.worldObj.isRemote && this.worldObj.getTotalWorldTime() % 60 == 0 && this.worldObj.difficultySetting != EnumDifficulty.PEACEFUL) {
 				
 				int count = 0;
 				
-				for(Object e : worldObj.loadedEntityList) {
+				for(Object e : this.worldObj.loadedEntityList) {
 					if(e instanceof EntityGlyphid) {
 						count++;
 						if(count >= MobConfig.spawnMax) return;
 					}
 				}
 
-				float soot = PollutionHandler.getPollution(worldObj, xCoord, yCoord, zCoord, PollutionType.SOOT);
-				List<EntityGlyphid> list = worldObj.getEntitiesWithinAABB(EntityGlyphid.class, AxisAlignedBB.getBoundingBox(xCoord - 6, yCoord + 1, zCoord - 6, xCoord + 7, yCoord + 9, zCoord + 7));
+				float soot = PollutionHandler.getPollution(this.worldObj, this.xCoord, this.yCoord, this.zCoord, PollutionType.SOOT);
+				List<EntityGlyphid> list = this.worldObj.getEntitiesWithinAABB(EntityGlyphid.class, AxisAlignedBB.getBoundingBox(this.xCoord - 6, this.yCoord + 1, this.zCoord - 6, this.xCoord + 7, this.yCoord + 9, this.zCoord + 7));
 				
 				if(list.size() < 3) {
 					EntityGlyphid glyphid = createGlyphid(soot);
-					glyphid.setLocationAndAngles(xCoord + 0.5, yCoord + 1, zCoord + 0.5, worldObj.rand.nextFloat() * 360.0F, 0.0F);
+					glyphid.setLocationAndAngles(this.xCoord + 0.5, this.yCoord + 1, this.zCoord + 0.5, this.worldObj.rand.nextFloat() * 360.0F, 0.0F);
 					this.worldObj.spawnEntityInWorld(glyphid);
 				}
 				
-				if(worldObj.rand.nextInt(20) == 0 && soot >= MobConfig.scoutThreshold) {
-					EntityGlyphidScout scout = new EntityGlyphidScout(worldObj);
-					scout.setLocationAndAngles(xCoord + 0.5, yCoord + 1, zCoord + 0.5, worldObj.rand.nextFloat() * 360.0F, 0.0F);
+				if(this.worldObj.rand.nextInt(20) == 0 && soot >= MobConfig.scoutThreshold) {
+					EntityGlyphidScout scout = new EntityGlyphidScout(this.worldObj);
+					scout.setLocationAndAngles(this.xCoord + 0.5, this.yCoord + 1, this.zCoord + 0.5, this.worldObj.rand.nextFloat() * 360.0F, 0.0F);
 					this.worldObj.spawnEntityInWorld(scout);
 				}
 			}
@@ -81,12 +82,12 @@ public class BlockGlyphidSpawner extends BlockContainer {
 		public EntityGlyphid createGlyphid(float soot) {
 			Random rand = new Random();
 
-			if(soot < MobConfig.tier2Threshold) return rand.nextInt(5) == 0 ? new EntityGlyphidBombardier(worldObj) : new EntityGlyphid(worldObj);
-			if(soot < MobConfig.tier3Threshold) return rand.nextInt(5) == 0 ? new EntityGlyphidBombardier(worldObj) : new EntityGlyphidBrawler(worldObj);
-			if(soot < MobConfig.tier4Threshold) return rand.nextInt(5) == 0 ? new EntityGlyphidBlaster(worldObj) : new EntityGlyphidBehemoth(worldObj);
-			if(soot < MobConfig.tier5Threshold) return rand.nextInt(5) == 0 ? new EntityGlyphidBlaster(worldObj) : new EntityGlyphidBrenda(worldObj);
+			if(soot < MobConfig.tier2Threshold) return rand.nextInt(5) == 0 ? new EntityGlyphidBombardier(this.worldObj) : new EntityGlyphid(this.worldObj);
+			if(soot < MobConfig.tier3Threshold) return rand.nextInt(5) == 0 ? new EntityGlyphidBombardier(this.worldObj) : new EntityGlyphidBrawler(this.worldObj);
+			if(soot < MobConfig.tier4Threshold) return rand.nextInt(5) == 0 ? new EntityGlyphidBlaster(this.worldObj) : new EntityGlyphidBehemoth(this.worldObj);
+			if(soot < MobConfig.tier5Threshold) return rand.nextInt(5) == 0 ? new EntityGlyphidBlaster(this.worldObj) : new EntityGlyphidBrenda(this.worldObj);
 			
-			return rand.nextInt(3) == 0 ? new EntityGlyphidBlaster(worldObj) : new EntityGlyphidNuclear(worldObj);
+			return rand.nextInt(3) == 0 ? new EntityGlyphidBlaster(this.worldObj) : new EntityGlyphidNuclear(this.worldObj);
 		}
 	}
 }

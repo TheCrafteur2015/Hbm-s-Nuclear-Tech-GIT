@@ -1,14 +1,14 @@
 package com.hbm.render.item.weapon;
 
-import com.hbm.render.anim.HbmAnimations;
-import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 
 import com.hbm.main.ResourceManager;
+import com.hbm.render.anim.HbmAnimations;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.model.IModelCustom;
 
 public class ItemRenderWeaponAR15 implements IItemRenderer {
 	

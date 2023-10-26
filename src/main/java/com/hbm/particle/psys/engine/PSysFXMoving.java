@@ -34,19 +34,21 @@ public abstract class PSysFXMoving extends PSysFX {
 		return 0.98D;
 	}
 	
+	@Override
 	public void updateParticle() {
 		super.updateParticle();
 
 		if(!this.isUnloaded) {
-			this.motionX -= this.getParticleGravity();
-			this.motionX *= this.getParticleDrag();
-			this.motionY *= this.getParticleDrag();
-			this.motionZ *= this.getParticleDrag();
+			this.motionX -= getParticleGravity();
+			this.motionX *= getParticleDrag();
+			this.motionY *= getParticleDrag();
+			this.motionZ *= getParticleDrag();
 			
-			this.move(motionX, motionY, motionZ);
+			move(this.motionX, this.motionY, this.motionZ);
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void move(double x, double y, double z) {
 
 		double x0 = x;
@@ -55,23 +57,23 @@ public abstract class PSysFXMoving extends PSysFX {
 		
 		this.collisionData = new boolean[6];
 
-		if(!noClip) {
-			List<AxisAlignedBB> list = this.world.getCollidingBoundingBoxes(null, this.getBoundingBox().expand(x, y, z));
+		if(!this.noClip) {
+			List<AxisAlignedBB> list = this.world.getCollidingBoundingBoxes(null, getBoundingBox().expand(x, y, z));
 
-			for(AxisAlignedBB aabb : list) y = aabb.calculateYOffset(this.getBoundingBox(), y);
-			this.setBoundingBox(this.getBoundingBox().offset(0.0D, y, 0.0D));
+			for(AxisAlignedBB aabb : list) y = aabb.calculateYOffset(getBoundingBox(), y);
+			setBoundingBox(getBoundingBox().offset(0.0D, y, 0.0D));
 
-			for(AxisAlignedBB aabb : list) x = aabb.calculateXOffset(this.getBoundingBox(), x);
-			this.setBoundingBox(this.getBoundingBox().offset(x, 0.0D, 0.0D));
+			for(AxisAlignedBB aabb : list) x = aabb.calculateXOffset(getBoundingBox(), x);
+			setBoundingBox(getBoundingBox().offset(x, 0.0D, 0.0D));
 
-			for(AxisAlignedBB aabb : list) z = aabb.calculateZOffset(this.getBoundingBox(), z);
-			this.setBoundingBox(this.getBoundingBox().offset(0.0D, 0.0D, z));
+			for(AxisAlignedBB aabb : list) z = aabb.calculateZOffset(getBoundingBox(), z);
+			setBoundingBox(getBoundingBox().offset(0.0D, 0.0D, z));
 			
 		} else {
-			this.setBoundingBox(this.getBoundingBox().offset(x, y, z));
+			setBoundingBox(getBoundingBox().offset(x, y, z));
 		}
 
-		this.setPosToAABB();
+		setPosToAABB();
 
 		if(x0 != x && x > 0) this.collisionData[Library.NEG_X.ordinal()] = true;
 		if(x0 != x && x < 0) this.collisionData[Library.POS_X.ordinal()] = true;

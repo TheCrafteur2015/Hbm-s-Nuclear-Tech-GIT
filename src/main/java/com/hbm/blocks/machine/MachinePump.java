@@ -57,21 +57,21 @@ public class MachinePump extends BlockDummyable implements ITooltipProvider, ILo
 	public void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		super.fillSpace(world, x, y, z, dir, o);
 
-		this.makeExtra(world, x - dir.offsetX + 1, y, z - dir.offsetZ);
-		this.makeExtra(world, x - dir.offsetX - 1, y, z - dir.offsetZ);
-		this.makeExtra(world, x - dir.offsetX, y, z - dir.offsetZ + 1);
-		this.makeExtra(world, x - dir.offsetX, y, z - dir.offsetZ - 1);
+		makeExtra(world, x - dir.offsetX + 1, y, z - dir.offsetZ);
+		makeExtra(world, x - dir.offsetX - 1, y, z - dir.offsetZ);
+		makeExtra(world, x - dir.offsetX, y, z - dir.offsetZ + 1);
+		makeExtra(world, x - dir.offsetX, y, z - dir.offsetZ - 1);
 	}
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		this.addStandardInfo(stack, player, list, ext);
+		addStandardInfo(stack, player, list, ext);
 	}
 
 	@Override
 	public void printHook(Pre event, World world, int x, int y, int z) {
 		
-		int[] pos = this.findCore(world, x, y, z);
+		int[] pos = findCore(world, x, y, z);
 		
 		if(pos == null)
 			return;
@@ -80,7 +80,7 @@ public class MachinePump extends BlockDummyable implements ITooltipProvider, ILo
 		
 		if(!(te instanceof TileEntityMachinePumpBase)) return;
 
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		
 		if(te instanceof TileEntityMachinePumpSteam) {
 			TileEntityMachinePumpSteam pump = (TileEntityMachinePumpSteam) te;
@@ -91,7 +91,7 @@ public class MachinePump extends BlockDummyable implements ITooltipProvider, ILo
 		
 		if(te instanceof TileEntityMachinePumpElectric) {
 			TileEntityMachinePumpElectric pump = (TileEntityMachinePumpElectric) te;
-			text.add(EnumChatFormatting.GREEN + "-> " + EnumChatFormatting.RESET + String.format(Locale.US, "%,d", pump.power) + " / " + String.format(Locale.US, "%,d", pump.maxPower) + "HE");
+			text.add(EnumChatFormatting.GREEN + "-> " + EnumChatFormatting.RESET + String.format(Locale.US, "%,d", pump.power) + " / " + String.format(Locale.US, "%,d", TileEntityMachinePumpElectric.maxPower) + "HE");
 			text.add(EnumChatFormatting.RED + "<- " + EnumChatFormatting.RESET + pump.water.getTankType().getLocalizedName() + ": " + String.format(Locale.US, "%,d", pump.water.getFill()) + " / " + String.format(Locale.US, "%,d", pump.water.getMaxFill()) + "mB");
 		}
 		

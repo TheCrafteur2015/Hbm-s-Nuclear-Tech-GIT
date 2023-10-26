@@ -18,7 +18,7 @@ public class EntityAIMaskmanMinigun extends EntityAIBase {
 	public EntityAIMaskmanMinigun(EntityCreature owner, boolean checkSight, boolean nearbyOnly, int delay) {
 		this.owner = owner;
 		this.delay = delay;
-		timer = delay;
+		this.timer = delay;
 	}
 
 	@Override
@@ -31,27 +31,27 @@ public class EntityAIMaskmanMinigun extends EntityAIBase {
             
         } else {
             this.target = entity;
-            double dist = Vec3.createVectorHelper(target.posX - owner.posX, target.posY - owner.posY, target.posZ - owner.posZ).lengthVector();
+            double dist = Vec3.createVectorHelper(this.target.posX - this.owner.posX, this.target.posY - this.owner.posY, this.target.posZ - this.owner.posZ).lengthVector();
             return dist > 5 && dist < 10;
         }
 	}
 	
 	@Override
     public boolean continueExecuting() {
-        return this.shouldExecute() || !this.owner.getNavigator().noPath();
+        return shouldExecute() || !this.owner.getNavigator().noPath();
     }
 
 	@Override
     public void updateTask() {
     	
-		timer--;
+		this.timer--;
 		
-		if(timer <= 0) {
-			timer = delay;
+		if(this.timer <= 0) {
+			this.timer = this.delay;
 
-			EntityBulletBaseNT bullet = new EntityBulletBaseNT(owner.worldObj, BulletConfigSyncingUtil.MASKMAN_BULLET, owner, target, 1.0F, 0);
-			owner.worldObj.spawnEntityInWorld(bullet);
-			owner.playSound("hbm:weapon.calShoot", 1.0F, 1.0F);
+			EntityBulletBaseNT bullet = new EntityBulletBaseNT(this.owner.worldObj, BulletConfigSyncingUtil.MASKMAN_BULLET, this.owner, this.target, 1.0F, 0);
+			this.owner.worldObj.spawnEntityInWorld(bullet);
+			this.owner.playSound("hbm:weapon.calShoot", 1.0F, 1.0F);
 		}
 		
 		this.owner.rotationYaw = this.owner.rotationYawHead;

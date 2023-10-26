@@ -31,8 +31,8 @@ public class CommandDebugChunkLoad extends CommandBase {
 			return;
 		}
 
-		int x = this.parseInt(sender, args[0]);
-		int z = this.parseInt(sender, args[1]);
+		int x = parseInt(sender, args[0]);
+		int z = parseInt(sender, args[1]);
 		
 		IChunkProvider prov = sender.getEntityWorld().getChunkProvider();
 		if(prov instanceof ChunkProviderServer) {

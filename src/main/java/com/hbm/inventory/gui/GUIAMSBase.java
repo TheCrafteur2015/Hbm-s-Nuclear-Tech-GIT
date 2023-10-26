@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import com.hbm.inventory.container.ContainerAMSBase;
 import com.hbm.lib.RefStrings;
 import com.hbm.tileentity.machine.TileEntityAMSBase;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -17,7 +18,7 @@ public class GUIAMSBase extends GuiInfoContainer {
 	
 	public GUIAMSBase(InventoryPlayer invPlayer, TileEntityAMSBase tedf) {
 		super(new ContainerAMSBase(invPlayer, tedf));
-		base = tedf;
+		this.base = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 222;
@@ -27,20 +28,20 @@ public class GUIAMSBase extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		base.tanks[0].renderTankInfo(this, mouseX, mouseY, guiLeft + 26, guiTop + 70 - 52, 16, 52);
-		base.tanks[1].renderTankInfo(this, mouseX, mouseY, guiLeft + 134, guiTop + 70 - 52, 16, 52);
-		base.tanks[2].renderTankInfo(this, mouseX, mouseY, guiLeft + 26, guiTop + 124 - 52, 16, 52);
-		base.tanks[3].renderTankInfo(this, mouseX, mouseY, guiLeft + 134, guiTop + 124 - 52, 16, 52);
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 116, guiTop + 124 - 104, 7, 104, base.power, TileEntityAMSBase.maxPower);
-		this.drawCustomInfo(this, mouseX, mouseY, guiLeft + 44, guiTop + 124 - 106, 7, 106, new String[] { "Restriction Field:", base.field + "%" });
-		this.drawCustomInfo(this, mouseX, mouseY, guiLeft + 53, guiTop + 124 - 106, 7, 106, new String[] { "Efficiency:", base.efficiency + "%" });
-		this.drawCustomInfo(this, mouseX, mouseY, guiLeft + 125, guiTop + 124 - 106, 7, 106, new String[] { "Heat:", base.heat + "/" + TileEntityAMSBase.maxHeat });
+		this.base.tanks[0].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 26, this.guiTop + 70 - 52, 16, 52);
+		this.base.tanks[1].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 134, this.guiTop + 70 - 52, 16, 52);
+		this.base.tanks[2].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 26, this.guiTop + 124 - 52, 16, 52);
+		this.base.tanks[3].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 134, this.guiTop + 124 - 52, 16, 52);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 116, this.guiTop + 124 - 104, 7, 104, this.base.power, TileEntityAMSBase.maxPower);
+		drawCustomInfo(this, mouseX, mouseY, this.guiLeft + 44, this.guiTop + 124 - 106, 7, 106, new String[] { "Restriction Field:", this.base.field + "%" });
+		drawCustomInfo(this, mouseX, mouseY, this.guiLeft + 53, this.guiTop + 124 - 106, 7, 106, new String[] { "Efficiency:", this.base.efficiency + "%" });
+		drawCustomInfo(this, mouseX, mouseY, this.guiLeft + 125, this.guiTop + 124 - 106, 7, 106, new String[] { "Heat:", this.base.heat + "/" + TileEntityAMSBase.maxHeat });
 
-		if(!base.hasResonators()) {
+		if(!this.base.hasResonators()) {
 			String[] text = new String[] { "Error: Three satellite ID-chips linked",
 				"to xenium resonators are required",
 				"for this machine to work!" };
-			this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36, 16, 16, guiLeft - 8, guiTop + 36 + 16, text);
+			this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft - 16, this.guiTop + 36, 16, 16, this.guiLeft - 8, this.guiTop + 36 + 16, text);
 		}
 	}
 
@@ -55,45 +56,45 @@ public class GUIAMSBase extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIAMSBase.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		int i = (int)base.getPowerScaled(106);
-		drawTexturedModalRect(guiLeft + 116, guiTop + 124 - i, 206, 106 - i, 7, i);
+		int i = (int)this.base.getPowerScaled(106);
+		drawTexturedModalRect(this.guiLeft + 116, this.guiTop + 124 - i, 206, 106 - i, 7, i);
 		
-		int j = base.getFieldScaled(106);
-		drawTexturedModalRect(guiLeft + 44, guiTop + 124 - j, 192, 106 - j, 7, j);
+		int j = this.base.getFieldScaled(106);
+		drawTexturedModalRect(this.guiLeft + 44, this.guiTop + 124 - j, 192, 106 - j, 7, j);
 		
-		int k = base.getEfficiencyScaled(106);
-		drawTexturedModalRect(guiLeft + 53, guiTop + 124 - k, 199, 106 - k, 7, k);
+		int k = this.base.getEfficiencyScaled(106);
+		drawTexturedModalRect(this.guiLeft + 53, this.guiTop + 124 - k, 199, 106 - k, 7, k);
 		
-		int l = base.getHeatScaled(106);
-		drawTexturedModalRect(guiLeft + 125, guiTop + 124 - l, 213, 106 - l, 7, l);
+		int l = this.base.getHeatScaled(106);
+		drawTexturedModalRect(this.guiLeft + 125, this.guiTop + 124 - l, 213, 106 - l, 7, l);
 		
-		int m = base.mode;
+		int m = this.base.mode;
 		if(m > 0)
-		drawTexturedModalRect(guiLeft + 80, guiTop + 108, 176, 32 + 16 * m, 16, 16);
+		drawTexturedModalRect(this.guiLeft + 80, this.guiTop + 108, 176, 32 + 16 * m, 16, 16);
 		
-		int n = base.warning;
+		int n = this.base.warning;
 		if(n > 0)
-		drawTexturedModalRect(guiLeft + 80, guiTop + 18, 176, 32 + 16 * n, 16, 16);
+		drawTexturedModalRect(this.guiLeft + 80, this.guiTop + 18, 176, 32 + 16 * n, 16, 16);
 		
-		if(base.color > -1) {
-			GL11.glColor3ub((byte)((base.color & 0xFF0000) >> 16), (byte)((base.color & 0x00FF00) >> 8), (byte)((base.color & 0x0000FF) >> 0));
-			drawTexturedModalRect(guiLeft + 61, guiTop + 44, 176, 160, 54, 54);
+		if(this.base.color > -1) {
+			GL11.glColor3ub((byte)((this.base.color & 0xFF0000) >> 16), (byte)((this.base.color & 0x00FF00) >> 8), (byte)((this.base.color & 0x0000FF) >> 0));
+			drawTexturedModalRect(this.guiLeft + 61, this.guiTop + 44, 176, 160, 54, 54);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			drawTexturedModalRect(guiLeft + 61, guiTop + 44, 176, 106, 54, 54);
+			drawTexturedModalRect(this.guiLeft + 61, this.guiTop + 44, 176, 106, 54, 54);
 		}
 
-		if(!base.hasResonators())
-			this.drawInfoPanel(guiLeft - 16, guiTop + 36, 16, 16, 6);
+		if(!this.base.hasResonators())
+			drawInfoPanel(this.guiLeft - 16, this.guiTop + 36, 16, 16, 6);
 
-		base.tanks[0].renderTank(guiLeft + 26, guiTop + 70, this.zLevel, 16, 52);
+		this.base.tanks[0].renderTank(this.guiLeft + 26, this.guiTop + 70, this.zLevel, 16, 52);
 		
-		base.tanks[1].renderTank(guiLeft + 134, guiTop + 70, this.zLevel, 16, 52);
+		this.base.tanks[1].renderTank(this.guiLeft + 134, this.guiTop + 70, this.zLevel, 16, 52);
 		
-		base.tanks[2].renderTank(guiLeft + 26, guiTop + 124, this.zLevel, 16, 52);
+		this.base.tanks[2].renderTank(this.guiLeft + 26, this.guiTop + 124, this.zLevel, 16, 52);
 		
-		base.tanks[3].renderTank(guiLeft + 134, guiTop + 124, this.zLevel, 16, 52);
+		this.base.tanks[3].renderTank(this.guiLeft + 134, this.guiTop + 124, this.zLevel, 16, 52);
 	}
 }

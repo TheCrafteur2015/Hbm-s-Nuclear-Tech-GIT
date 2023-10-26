@@ -21,14 +21,14 @@ import net.minecraft.item.ItemStack;
 
 public class CrucibleSmeltingHandler extends TemplateRecipeHandler {
 	
-	public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<RecipeTransferRect>();
-	public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<Class<? extends GuiContainer>>();
+	public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<>();
+	public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<>();
 	
 	public class RecipeSet extends TemplateRecipeHandler.CachedRecipe {
 
 		PositionedStack input;
 		PositionedStack crucible;
-		List<PositionedStack> outputs = new ArrayList();
+		List<PositionedStack> outputs = new ArrayList<>();
 		
 		public RecipeSet(AStack input, List<ItemStack> outputs) {
 			this.input = new PositionedStack(input.extractForNEI(), 48, 24);
@@ -42,21 +42,21 @@ public class CrucibleSmeltingHandler extends TemplateRecipeHandler {
 
 		@Override
 		public List<PositionedStack> getIngredients() {
-			return getCycledIngredients(cycleticks / 20, Arrays.asList(input));
+			return getCycledIngredients(CrucibleSmeltingHandler.this.cycleticks / 20, Arrays.asList(this.input));
 		}
 
 		@Override
 		public PositionedStack getResult() {
-			return outputs.get(0);
+			return this.outputs.get(0);
 		}
 
 		@Override
 		public List<PositionedStack> getOtherStacks() {
-			List<PositionedStack> other = new ArrayList();
-			other.add(input);
-			other.add(crucible);
-			other.addAll(outputs);
-			return getCycledIngredients(cycleticks / 20, other);
+			List<PositionedStack> other = new ArrayList<>();
+			other.add(this.input);
+			other.add(this.crucible);
+			other.addAll(this.outputs);
+			return getCycledIngredients(CrucibleSmeltingHandler.this.cycleticks / 20, other);
 		}
 	}
 
@@ -124,7 +124,7 @@ public class CrucibleSmeltingHandler extends TemplateRecipeHandler {
 	
 	@Override
 	public void loadTransferRects() {
-		transferRects.add(new RecipeTransferRect(new Rectangle(65, 23, 36, 18), "ntmCrucibleSmelting"));
-		RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), transferRects);
+		this.transferRects.add(new RecipeTransferRect(new Rectangle(65, 23, 36, 18), "ntmCrucibleSmelting"));
+		RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), this.transferRects);
 	}
 }

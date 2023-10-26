@@ -15,14 +15,14 @@ public class RBMKCraneConsole extends BlockDummyable {
 
 	public RBMKCraneConsole() {
 		super(Material.iron);
-		this.setHardness(3F);
-		this.setResistance(30F);
+		setHardness(3F);
+		setResistance(30F);
 	}
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
 		
-		if(meta >= this.offset)
+		if(meta >= BlockDummyable.offset)
 			return new TileEntityCraneConsole();
 		return null;
 	}
@@ -67,9 +67,9 @@ public class RBMKCraneConsole extends BlockDummyable {
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
 
 		if(world.getBlockMetadata(x, y, z) == ForgeDirection.UP.ordinal()) {
-			this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
+			setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
 		} else {
-			this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+			setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 		}
 	}
 }

@@ -27,8 +27,8 @@ public class GUIPlasticBag extends GuiContainer {
 
 	@Override
 	public void drawScreen(int x, int y, float interp) {
-		if(firstHeld == null) {
-			firstHeld = this.mc.thePlayer.getHeldItem();
+		if(this.firstHeld == null) {
+			this.firstHeld = this.mc.thePlayer.getHeldItem();
 		}
 		
 		super.drawScreen(x, y, interp);
@@ -42,7 +42,7 @@ public class GUIPlasticBag extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIPlasticBag.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 	}
 }

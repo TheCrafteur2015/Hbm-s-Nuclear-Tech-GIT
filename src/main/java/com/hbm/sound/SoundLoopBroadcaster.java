@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.hbm.tileentity.machine.TileEntityBroadcaster;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.entity.EntityClientPlayerMP;
@@ -12,12 +13,12 @@ import net.minecraft.util.ResourceLocation;
 
 public class SoundLoopBroadcaster extends SoundLoopMachine {
 	
-	public static List<SoundLoopBroadcaster> list = new ArrayList<SoundLoopBroadcaster>();
+	public static List<SoundLoopBroadcaster> list = new ArrayList<>();
 	public float intendedVolume = 25.0F;
 
 	public SoundLoopBroadcaster(ResourceLocation path, TileEntity te) {
 		super(path, te);
-		list.add(this);
+		SoundLoopBroadcaster.list.add(this);
 		this.field_147666_i = ISound.AttenuationType.NONE;
 	}
 
@@ -29,20 +30,20 @@ public class SoundLoopBroadcaster extends SoundLoopMachine {
 		float f = 0;
 		
 		if(player != null) {
-			f = (float)Math.sqrt(Math.pow(xPosF - player.posX, 2) + Math.pow(yPosF - player.posY, 2) + Math.pow(zPosF - player.posZ, 2));
-			volume = func(f, intendedVolume);
+			f = (float)Math.sqrt(Math.pow(this.xPosF - player.posX, 2) + Math.pow(this.yPosF - player.posY, 2) + Math.pow(this.zPosF - player.posZ, 2));
+			this.volume = func(f, this.intendedVolume);
 			
-			if(!(player.worldObj.getTileEntity((int)xPosF, (int)yPosF, (int)zPosF) instanceof TileEntityBroadcaster)) {
+			if(!(player.worldObj.getTileEntity((int)this.xPosF, (int)this.yPosF, (int)this.zPosF) instanceof TileEntityBroadcaster)) {
 				this.donePlaying = true;
-				volume = 0;
+				this.volume = 0;
 			}
 		} else {
-			volume = intendedVolume;
+			this.volume = this.intendedVolume;
 		}
 	}
 	
 	public TileEntity getTE() {
-		return te;
+		return this.te;
 	}
 	
 	public float func(float f, float v) {

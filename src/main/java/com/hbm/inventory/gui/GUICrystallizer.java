@@ -29,15 +29,15 @@ public class GUICrystallizer extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 		
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 152, guiTop + 18, 16, 52, acidomatic.power, acidomatic.maxPower);
-		acidomatic.tank.renderTankInfo(this, mouseX, mouseY, guiLeft + 35, guiTop + 18, 16, 52);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 152, this.guiTop + 18, 16, 52, this.acidomatic.power, TileEntityMachineCrystallizer.maxPower);
+		this.acidomatic.tank.renderTankInfo(this, mouseX, mouseY, this.guiLeft + 35, this.guiTop + 18, 16, 52);
 
 		String[] upgradeText = new String[4];
 		upgradeText[0] = I18nUtil.resolveKey("desc.gui.upgrade");
 		upgradeText[1] = I18nUtil.resolveKey("desc.gui.upgrade.speed");
 		upgradeText[2] = I18nUtil.resolveKey("desc.gui.upgrade.effectiveness");
 		upgradeText[3] = I18nUtil.resolveKey("desc.gui.upgrade.overdrive");
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 117, guiTop + 22, 8, 8, guiLeft + 200, guiTop + 45, upgradeText);
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 117, this.guiTop + 22, 8, 8, this.guiLeft + 200, this.guiTop + 45, upgradeText);
 	}
 	
 	@Override
@@ -51,17 +51,17 @@ public class GUICrystallizer extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUICrystallizer.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
-		int i = (int)acidomatic.getPowerScaled(52);
-		drawTexturedModalRect(guiLeft + 152, guiTop + 70 - i, 176, 64 - i, 16, i);
+		int i = (int)this.acidomatic.getPowerScaled(52);
+		drawTexturedModalRect(this.guiLeft + 152, this.guiTop + 70 - i, 176, 64 - i, 16, i);
 		
-		int j = acidomatic.getProgressScaled(28);
-		drawTexturedModalRect(guiLeft + 80, guiTop + 47, 176, 0, j, 12);
+		int j = this.acidomatic.getProgressScaled(28);
+		drawTexturedModalRect(this.guiLeft + 80, this.guiTop + 47, 176, 0, j, 12);
 		
-		this.drawInfoPanel(guiLeft + 117, guiTop + 22, 8, 8, 8);
+		drawInfoPanel(this.guiLeft + 117, this.guiTop + 22, 8, 8, 8);
 
-		acidomatic.tank.renderTank(guiLeft + 35, guiTop + 70, this.zLevel, 16, 52);
+		this.acidomatic.tank.renderTank(this.guiLeft + 35, this.guiTop + 70, this.zLevel, 16, 52);
 	}
 }

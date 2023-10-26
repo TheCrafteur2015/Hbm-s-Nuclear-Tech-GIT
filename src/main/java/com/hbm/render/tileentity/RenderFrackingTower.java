@@ -29,7 +29,7 @@ public class RenderFrackingTower extends TileEntitySpecialRenderer {
 
 		GL11.glTranslated(0, 0.5, 0);
 		
-		bindTexture(pipe_tex);
+		bindTexture(RenderFrackingTower.pipe_tex);
 		ResourceManager.pipe_neo.renderPart("pX");
 		ResourceManager.pipe_neo.renderPart("nX");
 		ResourceManager.pipe_neo.renderPart("pZ");

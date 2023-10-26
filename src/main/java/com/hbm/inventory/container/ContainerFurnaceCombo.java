@@ -18,20 +18,20 @@ public class ContainerFurnaceCombo extends Container {
 		this.furnace = furnace;
 
 		//input
-		this.addSlotToContainer(new Slot(furnace, 0, 26, 36));
+		addSlotToContainer(new Slot(furnace, 0, 26, 36));
 		//output
-		this.addSlotToContainer(new SlotSmelting(invPlayer.player, furnace, 1, 89, 36));
-		this.addSlotToContainer(new Slot(furnace, 2, 136, 18));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, furnace, 3, 136, 54));
+		addSlotToContainer(new SlotSmelting(invPlayer.player, furnace, 1, 89, 36));
+		addSlotToContainer(new Slot(furnace, 2, 136, 18));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, furnace, 3, 136, 54));
 		
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 104 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 104 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 162));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 162));
 		}
 	}
 
@@ -45,13 +45,13 @@ public class ContainerFurnaceCombo extends Container {
 			stack = originalStack.copy();
 
 			if(index <= 3) {
-				if(!this.mergeItemStack(originalStack, 4, this.inventorySlots.size(), true)) {
+				if(!mergeItemStack(originalStack, 4, this.inventorySlots.size(), true)) {
 					return null;
 				}
 				
 				slot.onSlotChange(originalStack, stack);
 				
-			} else if(!this.mergeItemStack(originalStack, 0, 1, false)) {
+			} else if(!mergeItemStack(originalStack, 0, 1, false)) {
 				return null;
 			}
 
@@ -67,6 +67,6 @@ public class ContainerFurnaceCombo extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return furnace.isUseableByPlayer(player);
+		return this.furnace.isUseableByPlayer(player);
 	}
 }

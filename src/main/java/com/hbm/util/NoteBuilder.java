@@ -11,20 +11,21 @@ public class NoteBuilder {
 	}
 	
 	public NoteBuilder add(Instrument instrument, Note note, Octave octave) {
-		if(!beat.isEmpty())
-			beat += "-";
+		if(!this.beat.isEmpty())
+			this.beat += "-";
 		
 		String result = instrument.ordinal() + ":" + note.ordinal() + ":" + octave.ordinal();
 		
-		beat += result;
+		this.beat += result;
 		
 		return this;
 	}
 	
 	public String end() {
-		return beat;
+		return this.beat;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static Triplet<Instrument, Note, Octave>[] translate(String beat) {
 		String[] hits = beat.split("-");
 		Triplet<Instrument, Note, Octave>[] notes = new Triplet[hits.length];
@@ -36,7 +37,7 @@ public class NoteBuilder {
 				Note note = Note.values()[Integer.parseInt(components[1])];
 				Octave octave = Octave.values()[Integer.parseInt(components[2])];
 				
-				notes[i] = new Triplet(instrument, note, octave);
+				notes[i] = new Triplet<>(instrument, note, octave);
 			}
 			
 			return notes;

@@ -22,15 +22,15 @@ public class ModelTestRender extends ModelBase
   
   public ModelTestRender()
   {
-    textureWidth = 64;
-    textureHeight = 32;
+    this.textureWidth = 64;
+    this.textureHeight = 32;
     
-      MainBlock = new ModelRenderer(this, 0, 0);
-      MainBlock.addBox(0F, 0F, 0F, 12, 16, 12);
-      MainBlock.setRotationPoint(-6F, 8F, -6F);
-      MainBlock.setTextureSize(64, 32);
-      MainBlock.mirror = true;
-      setRotation(MainBlock, 0F, 0F, 0F);
+      this.MainBlock = new ModelRenderer(this, 0, 0);
+      this.MainBlock.addBox(0F, 0F, 0F, 12, 16, 12);
+      this.MainBlock.setRotationPoint(-6F, 8F, -6F);
+      this.MainBlock.setTextureSize(64, 32);
+      this.MainBlock.mirror = true;
+      setRotation(this.MainBlock, 0F, 0F, 0F);
   }
   
   @Override
@@ -38,11 +38,11 @@ public void render(Entity entity, float f, float f1, float f2, float f3, float f
   {
     super.render(entity, f, f1, f2, f3, f4, f5);
     setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-    MainBlock.render(f5);
+    this.MainBlock.render(f5);
   }
   
   public void renderModel(float f) {
-	    MainBlock.render(f);
+	    this.MainBlock.render(f);
   }
   
   private void setRotation(ModelRenderer model, float x, float y, float z)

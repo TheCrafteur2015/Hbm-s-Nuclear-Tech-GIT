@@ -25,8 +25,8 @@ public class ItemTrain extends ItemEnumMulti {
 
 	public ItemTrain() {
 		super(EnumTrainType.class, true, true);
-		this.setCreativeTab(CreativeTabs.tabTransport);
-		this.setMaxStackSize(1);
+		setCreativeTab(CreativeTabs.tabTransport);
+		setMaxStackSize(1);
 	}
 	
 	@Override
@@ -73,7 +73,7 @@ public class ItemTrain extends ItemEnumMulti {
 		
 		if(b instanceof IRailNTM) {
 			
-			EnumTrainType type = EnumUtil.grabEnumSafely(theEnum, stack.getItemDamage());
+			EnumTrainType type = EnumUtil.grabEnumSafely(this.theEnum, stack.getItemDamage());
 			EntityRailCarBase train = null;
 			try { train = type.train.getConstructor(World.class).newInstance(world); } catch(Exception e) { }
 			
@@ -86,7 +86,7 @@ public class ItemTrain extends ItemEnumMulti {
 					train.setPosition(corePos.xCoord, corePos.yCoord, corePos.zCoord);
 					Vec3 frontPos = train.getRelPosAlongRail(anchor, train.getLengthSpan(), new MoveContext(RailCheckType.FRONT, train.getCollisionSpan() - train.getLengthSpan()));
 					Vec3 backPos = train.getRelPosAlongRail(anchor, -train.getLengthSpan(), new MoveContext(RailCheckType.BACK, train.getCollisionSpan() - train.getLengthSpan()));
-					train.rotationYaw = train.generateYaw(frontPos, backPos);
+					train.rotationYaw = EntityRailCarBase.generateYaw(frontPos, backPos);
 					world.spawnEntityInWorld(train);
 				}
 				

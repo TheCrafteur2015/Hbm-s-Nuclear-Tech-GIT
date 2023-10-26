@@ -58,10 +58,12 @@ public class RenderAshpit extends TileEntitySpecialRenderer implements IItemRend
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase() {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(0, -1, 0);
 				GL11.glScaled(3.25, 3.25, 3.25);
 			}
+			@Override
 			public void renderCommon() {
 				bindTexture(ResourceManager.ashpit_tex);
 				ResourceManager.heater_oven.renderPart("Main");

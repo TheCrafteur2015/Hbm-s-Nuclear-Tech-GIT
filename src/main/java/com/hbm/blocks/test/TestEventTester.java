@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
 import com.hbm.main.MainRegistry;
 
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
@@ -425,9 +426,10 @@ public class TestEventTester extends Block {
     	}
     }
 	
+	@SuppressWarnings("unchecked")
 	public void killEvent(World world, int x, int y, int z) {
 		
-			world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.break", 1.0F, itemRand.nextFloat() * 0.4F + 0.8F);
+			world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.break", 1.0F, TestEventTester.itemRand.nextFloat() * 0.4F + 0.8F);
 			float f = this.explosionSize;
 	        int i;
 	        int j;
@@ -448,9 +450,8 @@ public class TestEventTester extends Block {
 	        List list = world.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBox(i, k, l, j, i2, j2));
 	        Vec3 vec4 = Vec3.createVectorHelper(x, y + 1, z);
 
-	        for (int i1 = 0; i1 < list.size(); ++i1)
-	        {
-	            Entity entity = (Entity)list.get(i1);
+	        for (Object element : list) {
+	            Entity entity = (Entity)element;
 	            double d4 = entity.getDistance(x, y, z) / this.explosionSize;
 
 	            if (d4 <= 1.0D)

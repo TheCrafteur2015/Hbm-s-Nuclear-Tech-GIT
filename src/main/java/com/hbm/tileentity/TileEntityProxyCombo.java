@@ -16,6 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
+@SuppressWarnings("deprecation")
 public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergyUser, IFluidAcceptor, ISidedInventory, IFluidConnector, IHeatSource {
 	
 	TileEntity tile;
@@ -55,17 +56,17 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	//fewer messy recursive operations
 	public TileEntity getTile() {
 		
-		if(tile == null || tile.isInvalid()) {
-			tile = this.getTE();
+		if(this.tile == null || this.tile.isInvalid()) {
+			this.tile = getTE();
 		}
 		
-		return tile;
+		return this.tile;
 	}
 
 	@Override
 	public void setFillForSync(int fill, int index) {
 		
-		if(!fluid)
+		if(!this.fluid)
 			return;
 		
 		if(getTile() instanceof IFluidContainer) {
@@ -76,7 +77,7 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	@Override
 	public void setFluidFill(int fill, FluidType type) {
 		
-		if(!fluid)
+		if(!this.fluid)
 			return;
 		
 		if(getTile() instanceof IFluidContainer) {
@@ -87,7 +88,7 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	@Override
 	public int getFluidFillForReceive(FluidType type) {
 		
-		if(!fluid)
+		if(!this.fluid)
 			return 0;
 		
 		if(getTile() instanceof IFluidAcceptor) {
@@ -99,7 +100,7 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	@Override
 	public int getMaxFluidFillForReceive(FluidType type) {
 		
-		if(!fluid)
+		if(!this.fluid)
 			return 0;
 		
 		if(getTile() instanceof IFluidAcceptor) {
@@ -112,7 +113,7 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	@Override
 	public void receiveFluid(int amount, FluidType type) {
 		
-		if(!fluid)
+		if(!this.fluid)
 			return;
 		
 		if(getTile() instanceof IFluidAcceptor) {
@@ -123,7 +124,7 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	@Override
 	public void setTypeForSync(FluidType type, int index) {
 		
-		if(!fluid)
+		if(!this.fluid)
 			return;
 		
 		if(getTile() instanceof IFluidContainer) {
@@ -134,7 +135,7 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	@Override
 	public int getFluidFill(FluidType type) {
 		
-		if(!fluid)
+		if(!this.fluid)
 			return 0;
 		
 		if(getTile() instanceof IFluidContainer) {
@@ -147,7 +148,7 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	@Override
 	public int getMaxFluidFill(FluidType type) {
 		
-		if(!fluid)
+		if(!this.fluid)
 			return 0;
 		
 		if(getTile() instanceof IFluidAcceptor) {
@@ -160,7 +161,7 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	@Override
 	public void setPower(long i) {
 		
-		if(!power)
+		if(!this.power)
 			return;
 		
 		if(getTile() instanceof IEnergyUser) {
@@ -171,7 +172,7 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	@Override
 	public long getPower() {
 		
-		if(!power)
+		if(!this.power)
 			return 0;
 		
 		if(getTile() instanceof IEnergyConnector) {
@@ -184,7 +185,7 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	@Override
 	public long getMaxPower() {
 		
-		if(!power)
+		if(!this.power)
 			return 0;
 		
 		if(getTile() instanceof IEnergyConnector) {
@@ -210,7 +211,7 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	@Override
 	public boolean canConnect(ForgeDirection dir) {
 		
-		if(!power)
+		if(!this.power)
 			return false;
 		
 		if(getTile() instanceof IEnergyConnector) {
@@ -223,7 +224,7 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	@Override
 	public int getSizeInventory() {
 		
-		if(!inventory)
+		if(!this.inventory)
 			return 0;
 		
 		if(getTile() instanceof ISidedInventory) {
@@ -236,7 +237,7 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	@Override
 	public ItemStack getStackInSlot(int slot) {
 		
-		if(!inventory)
+		if(!this.inventory)
 			return null;
 		
 		if(getTile() instanceof ISidedInventory) {
@@ -259,7 +260,7 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	@Override
 	public ItemStack getStackInSlotOnClosing(int slot) {
 		
-		if(!inventory)
+		if(!this.inventory)
 			return null;
 		
 		if(getTile() instanceof ISidedInventory) {
@@ -272,7 +273,7 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
 		
-		if(!inventory)
+		if(!this.inventory)
 			return;
 		
 		if(getTile() instanceof ISidedInventory) {
@@ -283,7 +284,7 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	@Override
 	public String getInventoryName() {
 		
-		if(!inventory)
+		if(!this.inventory)
 			return null;
 		
 		if(getTile() instanceof ISidedInventory) {
@@ -296,7 +297,7 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	@Override
 	public boolean hasCustomInventoryName() {
 		
-		if(!inventory)
+		if(!this.inventory)
 			return false;
 		
 		if(getTile() instanceof ISidedInventory) {
@@ -309,7 +310,7 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	@Override
 	public int getInventoryStackLimit() {
 		
-		if(!inventory)
+		if(!this.inventory)
 			return 0;
 		
 		if(getTile() instanceof ISidedInventory) {
@@ -322,7 +323,7 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
 		
-		if(!inventory)
+		if(!this.inventory)
 			return false;
 		
 		if(getTile() instanceof ISidedInventory) {
@@ -335,7 +336,7 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	@Override
 	public void openInventory() {
 		
-		if(!inventory)
+		if(!this.inventory)
 			return;
 		
 		if(getTile() instanceof ISidedInventory) {
@@ -346,7 +347,7 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	@Override
 	public void closeInventory() {
 		
-		if(!inventory)
+		if(!this.inventory)
 			return;
 		
 		if(getTile() instanceof ISidedInventory) {
@@ -357,12 +358,12 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 		
-		if(!inventory)
+		if(!this.inventory)
 			return false;
 		
 		if(getTile() instanceof ISidedInventory) {
 			
-			if(getTile() instanceof IConditionalInvAccess) return ((IConditionalInvAccess) getTile()).isItemValidForSlot(xCoord, yCoord, zCoord, slot, stack);
+			if(getTile() instanceof IConditionalInvAccess) return ((IConditionalInvAccess) getTile()).isItemValidForSlot(this.xCoord, this.yCoord, this.zCoord, slot, stack);
 			
 			return ((ISidedInventory)getTile()).isItemValidForSlot(slot, stack);
 		}
@@ -373,12 +374,12 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
 		
-		if(!inventory)
+		if(!this.inventory)
 			return new int[0];
 		
 		if(getTile() instanceof ISidedInventory) {
 			
-			if(getTile() instanceof IConditionalInvAccess) return ((IConditionalInvAccess) getTile()).getAccessibleSlotsFromSide(xCoord, yCoord, zCoord, side);
+			if(getTile() instanceof IConditionalInvAccess) return ((IConditionalInvAccess) getTile()).getAccessibleSlotsFromSide(this.xCoord, this.yCoord, this.zCoord, side);
 			
 			return ((ISidedInventory)getTile()).getAccessibleSlotsFromSide(side);
 		}
@@ -389,12 +390,12 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	@Override
 	public boolean canInsertItem(int i, ItemStack stack, int j) {
 		
-		if(!inventory)
+		if(!this.inventory)
 			return false;
 		
 		if(getTile() instanceof ISidedInventory) {
 			
-			if(getTile() instanceof IConditionalInvAccess) return ((IConditionalInvAccess) getTile()).canInsertItem(xCoord, yCoord, zCoord, i, stack, j);
+			if(getTile() instanceof IConditionalInvAccess) return ((IConditionalInvAccess) getTile()).canInsertItem(this.xCoord, this.yCoord, this.zCoord, i, stack, j);
 			
 			return ((ISidedInventory)getTile()).canInsertItem(i, stack, j);
 		}
@@ -405,12 +406,12 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	@Override
 	public boolean canExtractItem(int i, ItemStack stack, int j) {
 		
-		if(!inventory)
+		if(!this.inventory)
 			return false;
 		
 		if(getTile() instanceof ISidedInventory) {
 			
-			if(getTile() instanceof IConditionalInvAccess) return ((IConditionalInvAccess) getTile()).canExtractItem(xCoord, yCoord, zCoord, i, stack, j);
+			if(getTile() instanceof IConditionalInvAccess) return ((IConditionalInvAccess) getTile()).canExtractItem(this.xCoord, this.yCoord, this.zCoord, i, stack, j);
 			
 			return ((ISidedInventory)getTile()).canExtractItem(i, stack, j);
 		}
@@ -432,10 +433,10 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 
-		nbt.setBoolean("inv", inventory);
-		nbt.setBoolean("power", power);
-		nbt.setBoolean("fluid", fluid);
-		nbt.setBoolean("heat", heat);
+		nbt.setBoolean("inv", this.inventory);
+		nbt.setBoolean("power", this.power);
+		nbt.setBoolean("fluid", this.fluid);
+		nbt.setBoolean("heat", this.heat);
 	}
 
 	@Override

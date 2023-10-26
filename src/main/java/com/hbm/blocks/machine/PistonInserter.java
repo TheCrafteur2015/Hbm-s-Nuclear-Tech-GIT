@@ -37,7 +37,7 @@ public class PistonInserter extends BlockContainerBase implements ITooltipProvid
 	
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor) {
-		this.updateState(world, x, y, z);
+		updateState(world, x, y, z);
 	}
 	
 	protected void updateState(World world, int x, int y, int z) {
@@ -229,23 +229,23 @@ public class PistonInserter extends BlockContainerBase implements ITooltipProvid
 		@Override
 		public void updateEntity() {
 			
-			if(!worldObj.isRemote) {
+			if(!this.worldObj.isRemote) {
 				
-				if(delay <= 0) {
+				if(this.delay <= 0) {
 					
 					if(this.isRetracting && this.extend > 0) {
 						this.extend--;
 					} else if(!this.isRetracting) {
 						this.extend++;
 						
-						if(this.extend >= this.maxExtend) {
-							worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:block.pressOperate", 1.0F, 1.5F);
+						if(this.extend >= TileEntityPistonInserter.maxExtend) {
+							this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:block.pressOperate", 1.0F, 1.5F);
 							
-							ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata());
-							Block b = worldObj.getBlock(xCoord + dir.offsetX * 2, yCoord + dir.offsetY * 2, zCoord + dir.offsetZ * 2);
+							ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata());
+							Block b = this.worldObj.getBlock(this.xCoord + dir.offsetX * 2, this.yCoord + dir.offsetY * 2, this.zCoord + dir.offsetZ * 2);
 							
-							if(b instanceof IInsertable && ((IInsertable) b).insertItem(worldObj, xCoord + dir.offsetX * 2, yCoord + dir.offsetY * 2, zCoord + dir.offsetZ * 2, dir, slot)) {
-								this.decrStackSize(0, 1);
+							if(b instanceof IInsertable && ((IInsertable) b).insertItem(this.worldObj, this.xCoord + dir.offsetX * 2, this.yCoord + dir.offsetY * 2, this.zCoord + dir.offsetZ * 2, dir, this.slot)) {
+								decrStackSize(0, 1);
 							}
 							
 							this.isRetracting = true;
@@ -254,14 +254,14 @@ public class PistonInserter extends BlockContainerBase implements ITooltipProvid
 					}
 					
 				} else {
-					delay--;
+					this.delay--;
 				}
 				
 				NBTTagCompound data = new NBTTagCompound();
-				data.setInteger("extend", extend);
+				data.setInteger("extend", this.extend);
 				if(this.slot != null) {
 					NBTTagCompound stack = new NBTTagCompound();
-					slot.writeToNBT(stack);
+					this.slot.writeToNBT(stack);
 					data.setTag("stack", stack);
 				}
 				
@@ -298,12 +298,12 @@ public class PistonInserter extends BlockContainerBase implements ITooltipProvid
 		@Override
 		public void writeToNBT(NBTTagCompound nbt) {
 			super.writeToNBT(nbt);
-			nbt.setInteger("extend", extend);
-			nbt.setBoolean("retract", isRetracting);
-			nbt.setBoolean("state", lastState); //saved so loading into a world doesn't cause issues
+			nbt.setInteger("extend", this.extend);
+			nbt.setBoolean("retract", this.isRetracting);
+			nbt.setBoolean("state", this.lastState); //saved so loading into a world doesn't cause issues
 			if(this.slot != null) {
 				NBTTagCompound stack = new NBTTagCompound();
-				slot.writeToNBT(stack);
+				this.slot.writeToNBT(stack);
 				nbt.setTag("stack", stack);
 			}
 		}
@@ -328,12 +328,12 @@ public class PistonInserter extends BlockContainerBase implements ITooltipProvid
 		@Override
 		public AxisAlignedBB getRenderBoundingBox() {
 			
-			if(aabb != null)
-				return aabb;
+			if(this.aabb != null)
+				return this.aabb;
 			
-			ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata());
-			aabb = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).addCoord(dir.offsetX, dir.offsetY, dir.offsetZ);
-			return aabb;
+			ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata());
+			this.aabb = AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1).addCoord(dir.offsetX, dir.offsetY, dir.offsetZ);
+			return this.aabb;
 		}
 		
 		/* BS inventory stuff */
@@ -367,8 +367,8 @@ public class PistonInserter extends BlockContainerBase implements ITooltipProvid
 		@Override
 		public void setInventorySlotContents(int slot, ItemStack stack) {
 			this.slot = stack;
-			if(stack != null && stack.stackSize > this.getInventoryStackLimit())
-				stack.stackSize = this.getInventoryStackLimit();
+			if(stack != null && stack.stackSize > getInventoryStackLimit())
+				stack.stackSize = getInventoryStackLimit();
 		}
 		
 		@Override public String getInventoryName() { return null; }
@@ -389,6 +389,6 @@ public class PistonInserter extends BlockContainerBase implements ITooltipProvid
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		this.addStandardInfo(stack, player, list, ext);
+		addStandardInfo(stack, player, list, ext);
 	}
 }

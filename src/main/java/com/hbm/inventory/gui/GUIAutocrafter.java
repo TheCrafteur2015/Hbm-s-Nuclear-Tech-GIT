@@ -22,7 +22,7 @@ public class GUIAutocrafter extends GuiInfoContainer {
 
 	public GUIAutocrafter(InventoryPlayer invPlayer, TileEntityMachineAutocrafter tedf) {
 		super(new ContainerAutocrafter(invPlayer, tedf));
-		diFurnace = tedf;
+		this.diFurnace = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 240;
@@ -32,30 +32,30 @@ public class GUIAutocrafter extends GuiInfoContainer {
 	public void drawScreen(int x, int y, float interp) {
 		super.drawScreen(x, y, interp);
 		
-		this.drawElectricityInfo(this, x, y, guiLeft + 17, guiTop + 45, 16, 52, diFurnace.getPower(), diFurnace.getMaxPower());
+		drawElectricityInfo(this, x, y, this.guiLeft + 17, this.guiTop + 45, 16, 52, this.diFurnace.getPower(), this.diFurnace.getMaxPower());
 
 		if(this.mc.thePlayer.inventory.getItemStack() == null) {
 			for(int i = 0; i < 9; ++i) {
 				Slot slot = (Slot) this.inventorySlots.inventorySlots.get(i);
 	
-				if(this.isMouseOverSlot(slot, x, y) && diFurnace.modes[i] != null) {
+				if(isMouseOverSlot(slot, x, y) && this.diFurnace.modes[i] != null) {
 					
 					String label = EnumChatFormatting.YELLOW + "";
 					
-					switch(diFurnace.modes[i]) {
+					switch(this.diFurnace.modes[i]) {
 					case "exact": label += "Item and meta match"; break;
 					case "wildcard": label += "Item matches"; break;
-					default: label += "Ore dict key matches: " + diFurnace.modes[i]; break;
+					default: label += "Ore dict key matches: " + this.diFurnace.modes[i]; break;
 					}
 					
-					this.func_146283_a(Arrays.asList(new String[] { EnumChatFormatting.RED + "Right click to change", label }), x, y - 30);
+					func_146283_a(Arrays.asList(new String[] { EnumChatFormatting.RED + "Right click to change", label }), x, y - 30);
 				}
 			}
 			
 			Slot slot = (Slot) this.inventorySlots.inventorySlots.get(9);
 			
-			if(this.isMouseOverSlot(slot, x, y) && diFurnace.slots[9] != null) {
-				this.func_146283_a(Arrays.asList(new String[] { EnumChatFormatting.RED + "Right click to change", EnumChatFormatting.YELLOW + "" + (diFurnace.recipeIndex + 1) + " / " + diFurnace.recipeCount }), x, y - 30);
+			if(isMouseOverSlot(slot, x, y) && this.diFurnace.slots[9] != null) {
+				func_146283_a(Arrays.asList(new String[] { EnumChatFormatting.RED + "Right click to change", EnumChatFormatting.YELLOW + "" + (this.diFurnace.recipeIndex + 1) + " / " + this.diFurnace.recipeCount }), x, y - 30);
 			}
 		}
 	}
@@ -71,11 +71,11 @@ public class GUIAutocrafter extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIAutocrafter.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		int i = (int)(diFurnace.getPower() * 52 / diFurnace.getMaxPower());
-		drawTexturedModalRect(guiLeft + 17, guiTop + 97 - i, 176, 52 - i, 16, i);
+		int i = (int)(this.diFurnace.getPower() * 52 / this.diFurnace.getMaxPower());
+		drawTexturedModalRect(this.guiLeft + 17, this.guiTop + 97 - i, 176, 52 - i, 16, i);
 		
 	}
 
@@ -86,7 +86,8 @@ public class GUIAutocrafter extends GuiInfoContainer {
 	 * @param y
 	 * @return
 	 */
+	@Override
 	protected boolean isMouseOverSlot(Slot slot, int x, int y) {
-		return this.func_146978_c(slot.xDisplayPosition, slot.yDisplayPosition, 16, 16, x, y);
+		return func_146978_c(slot.xDisplayPosition, slot.yDisplayPosition, 16, 16, x, y);
 	}
 }

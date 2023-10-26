@@ -60,7 +60,7 @@ public interface IFluidConnector {
 				red = true;
 		}
 		
-		if(particleDebug) {
+		if(IFluidConnector.particleDebug) {
 			NBTTagCompound data = new NBTTagCompound();
 			data.setString("type", "network");
 			data.setString("mode", "fluid");

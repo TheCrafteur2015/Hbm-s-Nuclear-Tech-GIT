@@ -22,7 +22,31 @@ import com.hbm.inventory.RecipesCommon.OreDictStack;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.material.MatDistribution;
-import com.hbm.inventory.recipes.*;
+import com.hbm.inventory.recipes.ArcWelderRecipes;
+import com.hbm.inventory.recipes.BlastFurnaceRecipes;
+import com.hbm.inventory.recipes.BreederRecipes;
+import com.hbm.inventory.recipes.CentrifugeRecipes;
+import com.hbm.inventory.recipes.ChemplantRecipes;
+import com.hbm.inventory.recipes.CokerRecipes;
+import com.hbm.inventory.recipes.CombinationRecipes;
+import com.hbm.inventory.recipes.CompressorRecipes;
+import com.hbm.inventory.recipes.CrackingRecipes;
+import com.hbm.inventory.recipes.CrucibleRecipes;
+import com.hbm.inventory.recipes.CrystallizerRecipes;
+import com.hbm.inventory.recipes.CustomMachineRecipes;
+import com.hbm.inventory.recipes.CyclotronRecipes;
+import com.hbm.inventory.recipes.ElectrolyserFluidRecipes;
+import com.hbm.inventory.recipes.ElectrolyserMetalRecipes;
+import com.hbm.inventory.recipes.FractionRecipes;
+import com.hbm.inventory.recipes.FuelPoolRecipes;
+import com.hbm.inventory.recipes.HadronRecipes;
+import com.hbm.inventory.recipes.LiquefactionRecipes;
+import com.hbm.inventory.recipes.MixerRecipes;
+import com.hbm.inventory.recipes.OutgasserRecipes;
+import com.hbm.inventory.recipes.PressRecipes;
+import com.hbm.inventory.recipes.ReformingRecipes;
+import com.hbm.inventory.recipes.ShredderRecipes;
+import com.hbm.inventory.recipes.SolidificationRecipes;
 import com.hbm.items.ModItems;
 import com.hbm.main.MainRegistry;
 import com.hbm.util.Tuple.Pair;
@@ -34,40 +58,40 @@ import net.minecraft.item.ItemStack;
 public abstract class SerializableRecipe {
 	
 	public static final Gson gson = new Gson();
-	public static List<SerializableRecipe> recipeHandlers = new ArrayList();
+	public static List<SerializableRecipe> recipeHandlers = new ArrayList<>();
 	
 	/*
 	 * INIT
 	 */
 	
 	public static void registerAllHandlers() {
-		recipeHandlers.add(new PressRecipes());
-		recipeHandlers.add(new BlastFurnaceRecipes());
-		recipeHandlers.add(new ShredderRecipes());
-		recipeHandlers.add(new ChemplantRecipes());
-		recipeHandlers.add(new CombinationRecipes());
-		recipeHandlers.add(new CrucibleRecipes());
-		recipeHandlers.add(new CentrifugeRecipes());
-		recipeHandlers.add(new CrystallizerRecipes());
-		recipeHandlers.add(new FractionRecipes());
-		recipeHandlers.add(new CrackingRecipes());
-		recipeHandlers.add(new ReformingRecipes());
-		recipeHandlers.add(new LiquefactionRecipes());
-		recipeHandlers.add(new SolidificationRecipes());
-		recipeHandlers.add(new CokerRecipes());
-		recipeHandlers.add(new BreederRecipes());
-		recipeHandlers.add(new CyclotronRecipes());
-		recipeHandlers.add(new HadronRecipes());
-		recipeHandlers.add(new FuelPoolRecipes());
-		recipeHandlers.add(new MixerRecipes());
-		recipeHandlers.add(new OutgasserRecipes());
-		recipeHandlers.add(new CompressorRecipes());
-		recipeHandlers.add(new ElectrolyserFluidRecipes());
-		recipeHandlers.add(new ElectrolyserMetalRecipes());
-		recipeHandlers.add(new ArcWelderRecipes());
+		SerializableRecipe.recipeHandlers.add(new PressRecipes());
+		SerializableRecipe.recipeHandlers.add(new BlastFurnaceRecipes());
+		SerializableRecipe.recipeHandlers.add(new ShredderRecipes());
+		SerializableRecipe.recipeHandlers.add(new ChemplantRecipes());
+		SerializableRecipe.recipeHandlers.add(new CombinationRecipes());
+		SerializableRecipe.recipeHandlers.add(new CrucibleRecipes());
+		SerializableRecipe.recipeHandlers.add(new CentrifugeRecipes());
+		SerializableRecipe.recipeHandlers.add(new CrystallizerRecipes());
+		SerializableRecipe.recipeHandlers.add(new FractionRecipes());
+		SerializableRecipe.recipeHandlers.add(new CrackingRecipes());
+		SerializableRecipe.recipeHandlers.add(new ReformingRecipes());
+		SerializableRecipe.recipeHandlers.add(new LiquefactionRecipes());
+		SerializableRecipe.recipeHandlers.add(new SolidificationRecipes());
+		SerializableRecipe.recipeHandlers.add(new CokerRecipes());
+		SerializableRecipe.recipeHandlers.add(new BreederRecipes());
+		SerializableRecipe.recipeHandlers.add(new CyclotronRecipes());
+		SerializableRecipe.recipeHandlers.add(new HadronRecipes());
+		SerializableRecipe.recipeHandlers.add(new FuelPoolRecipes());
+		SerializableRecipe.recipeHandlers.add(new MixerRecipes());
+		SerializableRecipe.recipeHandlers.add(new OutgasserRecipes());
+		SerializableRecipe.recipeHandlers.add(new CompressorRecipes());
+		SerializableRecipe.recipeHandlers.add(new ElectrolyserFluidRecipes());
+		SerializableRecipe.recipeHandlers.add(new ElectrolyserMetalRecipes());
+		SerializableRecipe.recipeHandlers.add(new ArcWelderRecipes());
 		
-		recipeHandlers.add(new MatDistribution());
-		recipeHandlers.add(new CustomMachineRecipes());
+		SerializableRecipe.recipeHandlers.add(new MatDistribution());
+		SerializableRecipe.recipeHandlers.add(new CustomMachineRecipes());
 	}
 	
 	public static void initialize() {
@@ -84,7 +108,7 @@ public abstract class SerializableRecipe {
 		
 		MainRegistry.logger.info("Starting recipe init!");
 		
-		for(SerializableRecipe recipe : recipeHandlers) {
+		for(SerializableRecipe recipe : SerializableRecipe.recipeHandlers) {
 			
 			recipe.deleteRecipes();
 			
@@ -139,8 +163,8 @@ public abstract class SerializableRecipe {
 		
 		try {
 			/* Get the recipe list object */
-			Object recipeObject = this.getRecipeObject();
-			List recipeList = new ArrayList();
+			Object recipeObject = getRecipeObject();
+			List recipeList = new ArrayList<>();
 			
 			/* Try to pry all recipes from our list */
 			if(recipeObject instanceof Collection) {
@@ -157,15 +181,15 @@ public abstract class SerializableRecipe {
 			writer.setIndent("  ");					//pretty formatting
 			writer.beginObject();					//initial '{'
 			
-			if(this.getComment() != null) {
-				writer.name("comment").value(this.getComment());
+			if(getComment() != null) {
+				writer.name("comment").value(getComment());
 			}
 			
 			writer.name("recipes").beginArray();	//all recipes are stored in an array called "recipes"
 			
 			for(Object recipe : recipeList) {
 				writer.beginObject();				//begin object for a single recipe
-				this.writeRecipe(recipe, writer);	//serialize here
+				writeRecipe(recipe, writer);	//serialize here
 				writer.endObject();					//end recipe object
 			}
 			
@@ -180,10 +204,10 @@ public abstract class SerializableRecipe {
 	public void readRecipeFile(File file) {
 		
 		try {
-			JsonObject json = gson.fromJson(new FileReader(file), JsonObject.class);
+			JsonObject json = SerializableRecipe.gson.fromJson(new FileReader(file), JsonObject.class);
 			JsonArray recipes = json.get("recipes").getAsJsonArray();
 			for(JsonElement recipe : recipes) {
-				this.readRecipe(recipe);
+				readRecipe(recipe);
 			}
 		} catch(FileNotFoundException ex) { }
 	}
@@ -213,7 +237,7 @@ public abstract class SerializableRecipe {
 	public static AStack[] readAStackArray(JsonArray array) {
 		try {
 			AStack[] items = new AStack[array.size()];
-			for(int i = 0; i < items.length; i++) { items[i] = readAStack((JsonArray) array.get(i)); }
+			for(int i = 0; i < items.length; i++) { items[i] = SerializableRecipe.readAStack((JsonArray) array.get(i)); }
 			return items;
 		} catch(Exception ex) { }
 		MainRegistry.logger.error("Error reading stack array " + array.toString());
@@ -266,7 +290,7 @@ public abstract class SerializableRecipe {
 	public static ItemStack[] readItemStackArray(JsonArray array) {
 		try {
 			ItemStack[] items = new ItemStack[array.size()];
-			for(int i = 0; i < items.length; i++) { items[i] = readItemStack((JsonArray) array.get(i)); }
+			for(int i = 0; i < items.length; i++) { items[i] = SerializableRecipe.readItemStack((JsonArray) array.get(i)); }
 			return items;
 		} catch(Exception ex) { }
 		MainRegistry.logger.error("Error reading stack array " + array.toString());
@@ -276,7 +300,7 @@ public abstract class SerializableRecipe {
 	public static Pair<ItemStack, Float>[] readItemStackArrayChance(JsonArray array) {
 		try {
 			Pair<ItemStack, Float>[] items = new Pair[array.size()];
-			for(int i = 0; i < items.length; i++) { items[i] = readItemStackChance((JsonArray) array.get(i)); }
+			for(int i = 0; i < items.length; i++) { items[i] = SerializableRecipe.readItemStackChance((JsonArray) array.get(i)); }
 			return items;
 		} catch(Exception ex) { }
 		MainRegistry.logger.error("Error reading stack array " + array.toString());
@@ -318,7 +342,7 @@ public abstract class SerializableRecipe {
 	public static FluidStack[] readFluidArray(JsonArray array) {
 		try {
 			FluidStack[] fluids = new FluidStack[array.size()];
-			for(int i = 0; i < fluids.length; i++) { fluids[i] = readFluidStack((JsonArray) array.get(i)); }
+			for(int i = 0; i < fluids.length; i++) { fluids[i] = SerializableRecipe.readFluidStack((JsonArray) array.get(i)); }
 			return fluids;
 		} catch(Exception ex) { }
 		MainRegistry.logger.error("Error reading fluid array " + array.toString());

@@ -74,7 +74,7 @@ public class RenderExcavator extends TileEntitySpecialRenderer implements IItemR
 		GL11.glShadeModel(GL11.GL_FLAT);
 		
 		if(drill.chuteTimer > 0) {
-			bindTexture(cobble);
+			bindTexture(RenderExcavator.cobble);
 			double widthX = 0.125;
 			double widthZ = 0.125;
 			double speed = 250D;
@@ -112,7 +112,7 @@ public class RenderExcavator extends TileEntitySpecialRenderer implements IItemR
 			widthZ = 0.0625;
 			double uU = smoosh ? 4 : 2;
 			double uL = 0.5;
-			bindTexture(smoosh ? gravel : cobble);
+			bindTexture(smoosh ? RenderExcavator.gravel : RenderExcavator.cobble);
 			tess.startDrawingQuads();
 			tess.setNormal(0F, 0F, 1F);
 			tess.addVertexWithUV(widthX, 2, 2.5 + widthZ, 0, dropU);
@@ -151,10 +151,12 @@ public class RenderExcavator extends TileEntitySpecialRenderer implements IItemR
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase( ) {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(0, -2, 0);
 				GL11.glScaled(3, 3, 3);
 			}
+			@Override
 			public void renderCommon() {
 				GL11.glRotatef(90, 0F, 1F, 0F);
 				GL11.glScaled(0.5, 0.5, 0.5);

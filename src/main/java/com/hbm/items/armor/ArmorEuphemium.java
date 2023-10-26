@@ -1,5 +1,9 @@
 package com.hbm.items.armor;
 
+import com.hbm.items.ModItems;
+import com.hbm.lib.RefStrings;
+import com.hbm.util.ArmorUtil;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -9,15 +13,11 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
-import com.hbm.items.ModItems;
-import com.hbm.lib.RefStrings;
-import com.hbm.util.ArmorUtil;
-
 public class ArmorEuphemium extends ItemArmor {
 	
 	public ArmorEuphemium(ArmorMaterial armorMaterial, int armorType) {
 		super(armorMaterial, 0, armorType);
-		this.setCreativeTab(null);
+		setCreativeTab(null);
 	}
 	
 	@Override

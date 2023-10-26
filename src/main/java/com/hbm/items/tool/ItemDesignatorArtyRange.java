@@ -19,10 +19,11 @@ import net.minecraft.world.World;
 public class ItemDesignatorArtyRange extends Item {
 
 	public ItemDesignatorArtyRange() {
-		this.setFull3D();
-		this.setMaxStackSize(1);
+		setFull3D();
+		setMaxStackSize(1);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		if(itemstack.getTagCompound() == null) {

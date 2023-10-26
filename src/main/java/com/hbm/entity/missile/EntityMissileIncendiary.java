@@ -21,12 +21,12 @@ public class EntityMissileIncendiary extends EntityMissileBaseAdvanced {
 
 	@Override
 	public void onImpact() {
-		ExplosionLarge.explodeFire(worldObj, this.posX + 0.5F, this.posY + 0.5F, this.posZ + 0.5F, 10.0F, true, true, true);
+		ExplosionLarge.explodeFire(this.worldObj, this.posX + 0.5F, this.posY + 0.5F, this.posZ + 0.5F, 10.0F, true, true, true);
 	}
 
 	@Override
 	public List<ItemStack> getDebris() {
-		List<ItemStack> list = new ArrayList<ItemStack>();
+		List<ItemStack> list = new ArrayList<>();
 
 		list.add(new ItemStack(ModItems.plate_titanium, 4));
 		list.add(new ItemStack(ModItems.thruster_small, 1));

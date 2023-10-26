@@ -18,8 +18,8 @@ public class RenderHunterChopper extends Render {
 	ModelHunterChopper mine2;
 
 	public RenderHunterChopper() {
-		mine = new ProtoCopter();
-		mine2 = new ModelHunterChopper();
+		this.mine = new ProtoCopter();
+		this.mine2 = new ModelHunterChopper();
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class RenderHunterChopper extends Render {
         //if(rocket instanceof EntityHunterChopper)
         //	mine2.setGunRotations((EntityHunterChopper)rocket, yaw, pitch);
 		
-		mine2.renderAll(0.0625F);
+		this.mine2.renderAll(0.0625F);
 		GL11.glPopMatrix();
 	}
 

@@ -48,7 +48,7 @@ public class NukeMan extends BlockContainer implements IBomb {
 
 	@Override
 	public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_) {
-		if(!keepInventory) {
+		if(!NukeMan.keepInventory) {
 			TileEntityNukeMan tileentityfurnace = (TileEntityNukeMan) p_149749_1_.getTileEntity(p_149749_2_, p_149749_3_, p_149749_4_);
 
 			if(tileentityfurnace != null) {
@@ -110,7 +110,7 @@ public class NukeMan extends BlockContainer implements IBomb {
 		TileEntityNukeMan entity = (TileEntityNukeMan) p_149695_1_.getTileEntity(x, y, z);
 		if(p_149695_1_.isBlockIndirectlyGettingPowered(x, y, z) && !p_149695_1_.isRemote) {
 			if(entity.isReady()) {
-				this.onBlockDestroyedByPlayer(p_149695_1_, x, y, z, 1);
+				onBlockDestroyedByPlayer(p_149695_1_, x, y, z, 1);
 				entity.clearSlots();
 				p_149695_1_.setBlockToAir(x, y, z);
 				igniteTestBomb(p_149695_1_, x, y, z);
@@ -120,7 +120,7 @@ public class NukeMan extends BlockContainer implements IBomb {
 
 	public boolean igniteTestBomb(World world, int x, int y, int z) {
 		if(!world.isRemote) {
-			tetn.clearSlots();
+			this.tetn.clearSlots();
 			world.playSoundEffect(x, y, z, "random.explode", 1.0f, world.rand.nextFloat() * 0.1F + 0.9F);
 
 			world.spawnEntityInWorld(EntityNukeExplosionMK5.statFac(world, BombConfig.manRadius, x + 0.5, y + 0.5, z + 0.5));
@@ -169,7 +169,7 @@ public class NukeMan extends BlockContainer implements IBomb {
 		if(!world.isRemote) {
 			TileEntityNukeMan entity = (TileEntityNukeMan) world.getTileEntity(x, y, z);
 			if(entity.isReady()) {
-				this.onBlockDestroyedByPlayer(world, x, y, z, 1);
+				onBlockDestroyedByPlayer(world, x, y, z, 1);
 				entity.clearSlots();
 				world.setBlockToAir(x, y, z);
 				igniteTestBomb(world, x, y, z);

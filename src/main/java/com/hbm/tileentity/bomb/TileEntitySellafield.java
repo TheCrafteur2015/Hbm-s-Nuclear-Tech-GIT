@@ -16,7 +16,7 @@ public class TileEntitySellafield extends TileEntity {
 	@Override
 	public void updateEntity() {
 		
-		List list = worldObj.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBox(xCoord + 0.5D - radius, yCoord + 0.5D - radius, zCoord + 0.5D - radius, xCoord + 0.5D + radius, yCoord + 0.5D + radius, zCoord + 0.5D + radius));
+		List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBox(this.xCoord + 0.5D - this.radius, this.yCoord + 0.5D - this.radius, this.zCoord + 0.5D - this.radius, this.xCoord + 0.5D + this.radius, this.yCoord + 0.5D + this.radius, this.zCoord + 0.5D + this.radius));
 		
 		for(Object o : list) {
 			
@@ -24,7 +24,7 @@ public class TileEntitySellafield extends TileEntity {
 				
 				EntityLivingBase entity = (EntityLivingBase) o;
 				
-				if(Math.sqrt(Math.pow(xCoord + 0.5D - entity.posX, 2) + Math.pow(yCoord + 0.5D - entity.posY, 2) + Math.pow(zCoord + 0.5D - entity.posZ, 2)) <= radius) {
+				if(Math.sqrt(Math.pow(this.xCoord + 0.5D - entity.posX, 2) + Math.pow(this.yCoord + 0.5D - entity.posY, 2) + Math.pow(this.zCoord + 0.5D - entity.posZ, 2)) <= this.radius) {
 					//Library.applyRadiation(entity, 5 * 60, 100, 4 * 60, 75);
 					entity.attackEntityFrom(ModDamageSource.radiation, entity.getHealth() * 0.5F);
 				}
@@ -32,15 +32,17 @@ public class TileEntitySellafield extends TileEntity {
 		}
 	}
 
+	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		
-		radius = nbt.getDouble("radius");
+		this.radius = nbt.getDouble("radius");
 	}
 
+	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setDouble("radius", radius);
+		nbt.setDouble("radius", this.radius);
 	}
 
 }

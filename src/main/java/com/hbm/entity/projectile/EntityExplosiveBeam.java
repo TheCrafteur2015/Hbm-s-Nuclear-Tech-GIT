@@ -43,15 +43,15 @@ public class EntityExplosiveBeam extends Entity implements IProjectile
     {
         super(p_i1753_1_);
         this.renderDistanceWeight = 10.0D;
-        this.setSize(0.5F, 0.5F);
+        setSize(0.5F, 0.5F);
     }
 
     public EntityExplosiveBeam(World p_i1754_1_, double p_i1754_2_, double p_i1754_4_, double p_i1754_6_)
     {
         super(p_i1754_1_);
         this.renderDistanceWeight = 10.0D;
-        this.setSize(0.5F, 0.5F);
-        this.setPosition(p_i1754_2_, p_i1754_4_, p_i1754_6_);
+        setSize(0.5F, 0.5F);
+        setPosition(p_i1754_2_, p_i1754_4_, p_i1754_6_);
         this.yOffset = 0.0F;
     }
 
@@ -78,10 +78,10 @@ public class EntityExplosiveBeam extends Entity implements IProjectile
             float f3 = (float)(-(Math.atan2(d1, d3) * 180.0D / Math.PI));
             double d4 = d0 / d3;
             double d5 = d2 / d3;
-            this.setLocationAndAngles(p_i1755_2_.posX + d4, this.posY, p_i1755_2_.posZ + d5, f2, f3);
+            setLocationAndAngles(p_i1755_2_.posX + d4, this.posY, p_i1755_2_.posZ + d5, f2, f3);
             this.yOffset = 0.0F;
             float f4 = (float)d3 * 0.2F;
-            this.setThrowableHeading(d0, d1 + f4, d2, p_i1755_4_, p_i1755_5_);
+            setThrowableHeading(d0, d1 + f4, d2, p_i1755_4_, p_i1755_5_);
         }
     }
 	
@@ -90,20 +90,20 @@ public class EntityExplosiveBeam extends Entity implements IProjectile
 		this.renderDistanceWeight = 10.0D;
 		this.shootingEntity = p_i1756_2_;
 
-		this.setSize(0.5F, 0.5F);
-		this.setLocationAndAngles(grenade.posX, grenade.posY + grenade.getEyeHeight(), grenade.posZ,
+		setSize(0.5F, 0.5F);
+		setLocationAndAngles(grenade.posX, grenade.posY + grenade.getEyeHeight(), grenade.posZ,
 				grenade.rotationYaw, grenade.rotationPitch);
 		this.posX -= MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
 		this.posY -= 0.10000000149011612D;
 		this.posZ -= MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
-		this.setPosition(this.posX, this.posY, this.posZ);
+		setPosition(this.posX, this.posY, this.posZ);
 		this.yOffset = 0.0F;
 		this.motionX = -MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI)
 				* MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
 		this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI)
 				* MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
 		this.motionY = (-MathHelper.sin(this.rotationPitch / 180.0F * (float) Math.PI));
-		this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, p_i1756_3_ * 1.5F, 1.0F);
+		setThrowableHeading(this.motionX, this.motionY, this.motionZ, p_i1756_3_ * 1.5F, 1.0F);
 	}
 
     public EntityExplosiveBeam(World p_i1756_1_, EntityLivingBase p_i1756_2_, float p_i1756_3_)
@@ -112,17 +112,17 @@ public class EntityExplosiveBeam extends Entity implements IProjectile
         this.renderDistanceWeight = 10.0D;
         this.shootingEntity = p_i1756_2_;
 
-        this.setSize(0.5F, 0.5F);
-        this.setLocationAndAngles(p_i1756_2_.posX, p_i1756_2_.posY + p_i1756_2_.getEyeHeight(), p_i1756_2_.posZ, p_i1756_2_.rotationYaw, p_i1756_2_.rotationPitch);
+        setSize(0.5F, 0.5F);
+        setLocationAndAngles(p_i1756_2_.posX, p_i1756_2_.posY + p_i1756_2_.getEyeHeight(), p_i1756_2_.posZ, p_i1756_2_.rotationYaw, p_i1756_2_.rotationPitch);
         this.posX -= MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * 0.16F;
         this.posY -= 0.10000000149011612D;
         this.posZ -= MathHelper.sin(this.rotationYaw / 180.0F * (float)Math.PI) * 0.16F;
-        this.setPosition(this.posX, this.posY, this.posZ);
+        setPosition(this.posX, this.posY, this.posZ);
         this.yOffset = 0.0F;
         this.motionX = -MathHelper.sin(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI);
         this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI);
         this.motionY = (-MathHelper.sin(this.rotationPitch / 180.0F * (float)Math.PI));
-        this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, p_i1756_3_ * 1.5F, 1.0F);
+        setThrowableHeading(this.motionX, this.motionY, this.motionZ, p_i1756_3_ * 1.5F, 1.0F);
     }
 
     public EntityExplosiveBeam(World world, int x, int y, int z, double mx, double my, double mz, double grav) {
@@ -177,8 +177,8 @@ public class EntityExplosiveBeam extends Entity implements IProjectile
 	@SideOnly(Side.CLIENT)
     public void setPositionAndRotation2(double p_70056_1_, double p_70056_3_, double p_70056_5_, float p_70056_7_, float p_70056_8_, int p_70056_9_)
     {
-        this.setPosition(p_70056_1_, p_70056_3_, p_70056_5_);
-        this.setRotation(p_70056_7_, p_70056_8_);
+        setPosition(p_70056_1_, p_70056_3_, p_70056_5_);
+        setRotation(p_70056_7_, p_70056_8_);
     }
 
     /**
@@ -199,7 +199,7 @@ public class EntityExplosiveBeam extends Entity implements IProjectile
             this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(p_70016_3_, f) * 180.0D / Math.PI);
             this.prevRotationPitch = this.rotationPitch;
             this.prevRotationYaw = this.rotationYaw;
-            this.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+            setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
             this.ticksInGround = 0;
         }
     }
@@ -214,7 +214,7 @@ public class EntityExplosiveBeam extends Entity implements IProjectile
         super.onUpdate();
         
         if(this.ticksExisted > 100)
-        	this.setDead();
+        	setDead();
 
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F)
         {
@@ -228,7 +228,7 @@ public class EntityExplosiveBeam extends Entity implements IProjectile
         if (block.getMaterial() != Material.air)
         {
             block.setBlockBoundsBasedOnState(this.worldObj, this.field_145791_d, this.field_145792_e, this.field_145789_f); 
-    		this.setDead();
+    		setDead();
     		explode();
         }
 
@@ -302,7 +302,7 @@ public class EntityExplosiveBeam extends Entity implements IProjectile
                     f2 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
                     int k = MathHelper.ceiling_double_int(f2 * this.damage);
 
-                    if (this.getIsCritical())
+                    if (getIsCritical())
                     {
                         k += this.rand.nextInt(k / 2 + 2);
                     }
@@ -327,19 +327,19 @@ public class EntityExplosiveBeam extends Entity implements IProjectile
 
             f1 = 0.05F;
 
-            if (this.isInWater())
+            if (isInWater())
             {
-            	this.setDead();
+            	setDead();
             	explode();
             }
 
-            if (this.isWet())
+            if (isWet())
             {
-                this.extinguish();
+                extinguish();
             }
             
-            this.setPosition(this.posX, this.posY, this.posZ);
-            this.func_145775_I();
+            setPosition(this.posX, this.posY, this.posZ);
+            func_145775_I();
         }
     }
 
@@ -461,11 +461,11 @@ public class EntityExplosiveBeam extends Entity implements IProjectile
     }
     
     private void explode() {
-    	if(!worldObj.isRemote) {
-    		EntityNukeExplosionMK3 ex = EntityNukeExplosionMK3.statFacFleija(worldObj, posX, posY, posZ, 10);
+    	if(!this.worldObj.isRemote) {
+    		EntityNukeExplosionMK3 ex = EntityNukeExplosionMK3.statFacFleija(this.worldObj, this.posX, this.posY, this.posZ, 10);
     		if(!ex.isDead) {
 				this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "random.explode", 100.0f, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
-				worldObj.spawnEntityInWorld(ex);
+				this.worldObj.spawnEntityInWorld(ex);
 	
 	    		
 	    		EntityCloudFleijaRainbow cloud = new EntityCloudFleijaRainbow(this.worldObj, 10);

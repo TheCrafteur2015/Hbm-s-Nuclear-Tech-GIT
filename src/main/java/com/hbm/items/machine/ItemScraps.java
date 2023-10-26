@@ -7,12 +7,12 @@ import org.lwjgl.input.Keyboard;
 import com.hbm.inventory.material.MaterialShapes;
 import com.hbm.inventory.material.Mats;
 import com.hbm.inventory.material.Mats.MaterialStack;
+import com.hbm.inventory.material.NTMMaterial;
+import com.hbm.inventory.material.NTMMaterial.SmeltingBehavior;
 import com.hbm.items.ModItems;
 import com.hbm.items.special.ItemAutogen;
 import com.hbm.lib.RefStrings;
 import com.hbm.util.I18nUtil;
-import com.hbm.inventory.material.NTMMaterial;
-import com.hbm.inventory.material.NTMMaterial.SmeltingBehavior;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -35,6 +35,7 @@ public class ItemScraps extends ItemAutogen {
 		super(null);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister reg) {
 		super.registerIcons(reg);
@@ -42,6 +43,7 @@ public class ItemScraps extends ItemAutogen {
 		this.addiviceIcon = reg.registerIcon(RefStrings.MODID + ":scraps_additive");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tab, List list) {
@@ -68,6 +70,7 @@ public class ItemScraps extends ItemAutogen {
 		return super.getColorFromItemStack(stack, layer);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIconIndex(ItemStack stack) {
 		
@@ -76,36 +79,37 @@ public class ItemScraps extends ItemAutogen {
 			NTMMaterial mat = Mats.matById.get(stack.getItemDamage());
 			
 			if(mat != null) {
-				if(mat.smeltable == mat.smeltable.SMELTABLE) return this.liquidIcon;
-				if(mat.smeltable == mat.smeltable.ADDITIVE) return this.addiviceIcon;
+				if(mat.smeltable == SmeltingBehavior.SMELTABLE) return this.liquidIcon;
+				if(mat.smeltable == SmeltingBehavior.ADDITIVE) return this.addiviceIcon;
 			}
 		}
 		
-		return this.getIconFromDamage(stack.getItemDamage());
+		return getIconFromDamage(stack.getItemDamage());
 	}
 
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
 		
 		if(stack.hasTagCompound() && stack.stackTagCompound.getBoolean("liquid")) {
-			MaterialStack contents = getMats(stack);
+			MaterialStack contents = ItemScraps.getMats(stack);
 			if(contents != null) {
 				return I18nUtil.resolveKey(contents.material.getUnlocalizedName());
 			}
 		}
 		
-		return ("" + StatCollector.translateToLocal(this.getUnlocalizedNameInefficiently(stack) + ".name")).trim();
+		return ("" + StatCollector.translateToLocal(getUnlocalizedNameInefficiently(stack) + ".name")).trim();
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-		MaterialStack contents = getMats(stack);
+		MaterialStack contents = ItemScraps.getMats(stack);
 		
 		if(contents != null) {
 			
 			if(stack.hasTagCompound() && stack.stackTagCompound.getBoolean("liquid")) {
 				list.add(Mats.formatAmount(contents.amount, Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)));
-				if(contents.material.smeltable == contents.material.smeltable.ADDITIVE) list.add(EnumChatFormatting.DARK_RED + "Additive, not castable!");
+				if(contents.material.smeltable == SmeltingBehavior.ADDITIVE) list.add(EnumChatFormatting.DARK_RED + "Additive, not castable!");
 			} else {
 				list.add(I18nUtil.resolveKey(contents.material.getUnlocalizedName()) + ", " + Mats.formatAmount(contents.amount, Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)));
 			}
@@ -129,7 +133,7 @@ public class ItemScraps extends ItemAutogen {
 	}
 	
 	public static ItemStack create(MaterialStack stack) {
-		return create(stack, false);
+		return ItemScraps.create(stack, false);
 	}
 	
 	public static ItemStack create(MaterialStack stack, boolean liquid) {

@@ -17,7 +17,7 @@ public class MapGenTest extends MapGenStructure {
 
 	@Override
 	protected StructureStart getStructureStart(int x, int z) {
-		return new StructureStartTest(worldObj, rand, x, z);
+		return new StructureStartTest(this.worldObj, this.rand, x, z);
 	}
 
 }

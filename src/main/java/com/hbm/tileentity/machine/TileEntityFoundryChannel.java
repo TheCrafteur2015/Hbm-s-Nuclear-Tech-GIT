@@ -19,38 +19,39 @@ public class TileEntityFoundryChannel extends TileEntityFoundryBase {
 	public int nextUpdate;
 	public int lastFlow = 0;
 	
+	@SuppressWarnings({ "unchecked", "serial", "rawtypes" })
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			if(this.type == null && this.amount != 0) {
 				this.amount = 0;
 			}
 			
-			nextUpdate--;
+			this.nextUpdate--;
 			
-			if(nextUpdate <= 0 && this.amount > 0 && this.type != null) {
+			if(this.nextUpdate <= 0 && this.amount > 0 && this.type != null) {
 				
 				boolean hasOp = false;
-				nextUpdate = 5;
+				this.nextUpdate = 5;
 				
 				List<Integer> ints = new ArrayList() {{ add(2); add(3); add(4); add(5); }};
 				Collections.shuffle(ints);
-				if(lastFlow > 0) {
+				if(this.lastFlow > 0) {
 					ints.remove((Integer) this.lastFlow);
 					ints.add(this.lastFlow);
 				}
 				
 				for(Integer i : ints) {
 					ForgeDirection dir = ForgeDirection.getOrientation(i);
-					Block b = worldObj.getBlock(xCoord + dir.offsetX, yCoord, zCoord + dir.offsetZ);
+					Block b = this.worldObj.getBlock(this.xCoord + dir.offsetX, this.yCoord, this.zCoord + dir.offsetZ);
 					
 					if(b instanceof ICrucibleAcceptor && b != ModBlocks.foundry_channel) {
 						ICrucibleAcceptor acc = (ICrucibleAcceptor) b;
 						
-						if(acc.canAcceptPartialFlow(worldObj, xCoord + dir.offsetX, yCoord, zCoord + dir.offsetZ, dir.getOpposite(), new MaterialStack(this.type, this.amount))) {
-							MaterialStack left = acc.flow(worldObj, xCoord + dir.offsetX, yCoord, zCoord + dir.offsetZ, dir.getOpposite(), new MaterialStack(this.type, this.amount));
+						if(acc.canAcceptPartialFlow(this.worldObj, this.xCoord + dir.offsetX, this.yCoord, this.zCoord + dir.offsetZ, dir.getOpposite(), new MaterialStack(this.type, this.amount))) {
+							MaterialStack left = acc.flow(this.worldObj, this.xCoord + dir.offsetX, this.yCoord, this.zCoord + dir.offsetZ, dir.getOpposite(), new MaterialStack(this.type, this.amount));
 							if(left == null) {
 								this.type = null;
 								this.amount = 0;
@@ -66,7 +67,7 @@ public class TileEntityFoundryChannel extends TileEntityFoundryBase {
 				if(!hasOp) {
 					for(Integer i : ints) {
 						ForgeDirection dir = ForgeDirection.getOrientation(i);
-						TileEntity b = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord, zCoord + dir.offsetZ);
+						TileEntity b = this.worldObj.getTileEntity(this.xCoord + dir.offsetX, this.yCoord, this.zCoord + dir.offsetZ);
 						
 						if(b instanceof TileEntityFoundryChannel) {
 							TileEntityFoundryChannel acc = (TileEntityFoundryChannel) b;
@@ -76,7 +77,7 @@ public class TileEntityFoundryChannel extends TileEntityFoundryBase {
 								
 								acc.lastFlow = dir.getOpposite().ordinal();
 								
-								if(worldObj.rand.nextInt(5) == 0 || this.amount == 1) { //force swap operations with single quanta to keep them moving
+								if(this.worldObj.rand.nextInt(5) == 0 || this.amount == 1) { //force swap operations with single quanta to keep them moving
 									//1:4 chance that the fill states are simply swapped
 									//this promotes faster spreading and prevents spread limits
 									int buf = this.amount;

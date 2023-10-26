@@ -14,25 +14,25 @@ public class ContainerNukeMike extends Container {
 
 	public ContainerNukeMike(InventoryPlayer invPlayer, TileEntityNukeMike tedf) {
 
-		nukeMike = tedf;
+		this.nukeMike = tedf;
 
-		this.addSlotToContainer(new Slot(tedf, 0, 26, 83));
-		this.addSlotToContainer(new Slot(tedf, 1, 26, 101));
-		this.addSlotToContainer(new Slot(tedf, 2, 44, 83));
-		this.addSlotToContainer(new Slot(tedf, 3, 44, 101));
-		this.addSlotToContainer(new Slot(tedf, 4, 39, 35));
-		this.addSlotToContainer(new Slot(tedf, 5, 98, 91));
-		this.addSlotToContainer(new Slot(tedf, 6, 116, 91));
-		this.addSlotToContainer(new Slot(tedf, 7, 134, 91));
+		addSlotToContainer(new Slot(tedf, 0, 26, 83));
+		addSlotToContainer(new Slot(tedf, 1, 26, 101));
+		addSlotToContainer(new Slot(tedf, 2, 44, 83));
+		addSlotToContainer(new Slot(tedf, 3, 44, 101));
+		addSlotToContainer(new Slot(tedf, 4, 39, 35));
+		addSlotToContainer(new Slot(tedf, 5, 98, 91));
+		addSlotToContainer(new Slot(tedf, 6, 116, 91));
+		addSlotToContainer(new Slot(tedf, 7, 134, 91));
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 135 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 135 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 193));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 193));
 		}
 	}
 
@@ -46,7 +46,7 @@ public class ContainerNukeMike extends Container {
 			var3 = var5.copy();
 
 			if(par2 <= 7) {
-				if(!this.mergeItemStack(var5, 8, this.inventorySlots.size(), true)) {
+				if(!mergeItemStack(var5, 8, this.inventorySlots.size(), true)) {
 					return null;
 				}
 			} else {
@@ -65,7 +65,7 @@ public class ContainerNukeMike extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return nukeMike.isUseableByPlayer(player);
+		return this.nukeMike.isUseableByPlayer(player);
 	}
 
 }

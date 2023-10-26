@@ -19,8 +19,7 @@ public class ScrapsCraftingHandler implements IRecipe {
 			ItemStack stack = inventory.getStackInRowAndColumn(i % 3, i / 3);
 			
 			if(stack == null) continue;
-			if(stack.getItem() != ModItems.scraps) return false;
-			if(mat != null) return false;
+			if((stack.getItem() != ModItems.scraps) || (mat != null)) return false;
 			
 			mat = ItemScraps.getMats(stack);
 			if(mat.amount < 2) return false;
@@ -37,8 +36,7 @@ public class ScrapsCraftingHandler implements IRecipe {
 			ItemStack stack = inventory.getStackInRowAndColumn(i % 3, i / 3);
 			
 			if(stack == null) continue;
-			if(stack.getItem() != ModItems.scraps) return null;
-			if(mat != null) return null;
+			if((stack.getItem() != ModItems.scraps) || (mat != null)) return null;
 			
 			mat = ItemScraps.getMats(stack);
 			if(mat.amount < 2) return null;

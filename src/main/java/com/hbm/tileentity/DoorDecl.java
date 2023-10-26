@@ -1,15 +1,17 @@
 package com.hbm.tileentity;
 
+import org.lwjgl.opengl.GL11;
+
 import com.hbm.animloader.AnimatedModel;
 import com.hbm.animloader.Animation;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.WavefrontObjDisplayList;
 import com.hbm.util.BobMathUtil;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
 public abstract class DoorDecl {
 
@@ -361,7 +363,7 @@ public abstract class DoorDecl {
 
     @SideOnly(Side.CLIENT)
     public String[] getChildren(String partName) {
-        return nothing;
+        return DoorDecl.nothing;
     }
 
     @SideOnly(Side.CLIENT)

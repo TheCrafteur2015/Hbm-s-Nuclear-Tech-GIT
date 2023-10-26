@@ -27,19 +27,19 @@ public class ItemConserve extends ItemEnumMulti {
 	
 	@Override
 	public ItemStack onEaten(ItemStack stack, World world, EntityPlayer player) {
-		EnumFoodType num = EnumUtil.grabEnumSafely(theEnum, stack.getItemDamage());
+		EnumFoodType num = EnumUtil.grabEnumSafely(this.theEnum, stack.getItemDamage());
 		
 		stack.stackSize--;
 		player.getFoodStats().addStats(num.foodLevel, num.saturation);
 		world.playSoundAtEntity(player, "random.burp", 0.5F, world.rand.nextFloat() * 0.1F + 0.9F);
-		this.onFoodEaten(stack, world, player);
+		onFoodEaten(stack, world, player);
 		return stack;
 	}
 	
 	//the fancy enum lambdas and method references and whatever can come later if necessary
 	protected void onFoodEaten(ItemStack stack, World world, EntityPlayer player) {
 		player.inventory.addItemStackToInventory(new ItemStack(ModItems.can_key));
-		EnumFoodType num = EnumUtil.grabEnumSafely(theEnum, stack.getItemDamage());
+		EnumFoodType num = EnumUtil.grabEnumSafely(this.theEnum, stack.getItemDamage());
 		
 		if(num == EnumFoodType.BHOLE && !world.isRemote) {
 			EntityVortex vortex = new EntityVortex(world, 0.5F);
@@ -67,11 +67,12 @@ public class ItemConserve extends ItemEnumMulti {
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
 		if(player.canEat(false))
-			player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
+			player.setItemInUse(stack, getMaxItemUseDuration(stack));
 		
 		return stack;
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		String unloc = this.getUnlocalizedName(itemstack) + ".desc";
@@ -89,18 +90,18 @@ public class ItemConserve extends ItemEnumMulti {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister reg) {
-		Enum[] enums = theEnum.getEnumConstants();
+		Enum<?>[] enums = this.theEnum.getEnumConstants();
 		this.icons = new IIcon[enums.length];
 		
-		for(int i = 0; i < icons.length; i++) {
-			Enum num = enums[i];
-			this.icons[i] = reg.registerIcon(this.getIconString() + "_" + num.name().toLowerCase(Locale.US));
+		for(int i = 0; i < this.icons.length; i++) {
+			Enum<?> num = enums[i];
+			this.icons[i] = reg.registerIcon(getIconString() + "_" + num.name().toLowerCase(Locale.US));
 		}
 	}
 	
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
-		Enum num = EnumUtil.grabEnumSafely(theEnum, stack.getItemDamage());
+		Enum<?> num = EnumUtil.grabEnumSafely(this.theEnum, stack.getItemDamage());
 		return "item.canned_" + num.name().toLowerCase(Locale.US);
 	}
 	

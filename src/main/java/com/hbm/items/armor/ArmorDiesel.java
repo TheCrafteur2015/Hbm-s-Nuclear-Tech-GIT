@@ -43,21 +43,21 @@ public class ArmorDiesel extends ArmorFSBFueled {
 	@SideOnly(Side.CLIENT)
 	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot) {
 		
-		if(models == null) {
-			models = new ModelArmorDiesel[4];
+		if(this.models == null) {
+			this.models = new ModelArmorDiesel[4];
 			
 			for(int i = 0; i < 4; i++)
-				models[i] = new ModelArmorDiesel(i);
+				this.models[i] = new ModelArmorDiesel(i);
 		}
 		
-		return models[armorSlot];
+		return this.models[armorSlot];
 	}
 
 	@Override
 	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
 		super.onArmorTick(world, player, stack);
 		
-		if(!world.isRemote && this == ModItems.dieselsuit_legs && this.hasFSBArmor(player) && world.getTotalWorldTime() % 3 == 0) {
+		if(!world.isRemote && this == ModItems.dieselsuit_legs && hasFSBArmor(player) && world.getTotalWorldTime() % 3 == 0) {
 			NBTTagCompound data = new NBTTagCompound();
 			data.setString("type", "bnuuy");
 			data.setInteger("player", player.getEntityId());

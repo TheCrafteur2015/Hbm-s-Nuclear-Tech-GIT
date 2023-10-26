@@ -24,24 +24,24 @@ public class EntityWastePearl extends EntityGrenadeBase {
 	public void explode() {
 
 		if(!this.worldObj.isRemote) {
-			this.setDead();
+			setDead();
 
-			int x = (int)Math.floor(posX);
-			int y = (int)Math.floor(posY);
-			int z = (int)Math.floor(posZ);
+			int x = (int)Math.floor(this.posX);
+			int y = (int)Math.floor(this.posY);
+			int z = (int)Math.floor(this.posZ);
 			
 			for(int ix = x - 3; ix <= x + 3; ix++) {
 				for(int iy = y - 3; iy <= y + 3; iy++) {
 					for(int iz = z - 3; iz <= z + 3; iz++) {
 						
-						if(worldObj.rand.nextInt(3) == 0 && worldObj.getBlock(ix, iy, iz).isReplaceable(worldObj, ix, iy, iz) && ModBlocks.fallout.canPlaceBlockAt(worldObj, ix, iy, iz)) {
-							worldObj.setBlock(ix, iy, iz, ModBlocks.fallout);
-						} else if(worldObj.getBlock(ix, iy, iz) == Blocks.air) {
+						if(this.worldObj.rand.nextInt(3) == 0 && this.worldObj.getBlock(ix, iy, iz).isReplaceable(this.worldObj, ix, iy, iz) && ModBlocks.fallout.canPlaceBlockAt(this.worldObj, ix, iy, iz)) {
+							this.worldObj.setBlock(ix, iy, iz, ModBlocks.fallout);
+						} else if(this.worldObj.getBlock(ix, iy, iz) == Blocks.air) {
 							
-							if(rand.nextBoolean())
-								worldObj.setBlock(ix, iy, iz, ModBlocks.gas_radon);
+							if(this.rand.nextBoolean())
+								this.worldObj.setBlock(ix, iy, iz, ModBlocks.gas_radon);
 							else
-								worldObj.setBlock(ix, iy, iz, ModBlocks.gas_radon_dense);
+								this.worldObj.setBlock(ix, iy, iz, ModBlocks.gas_radon_dense);
 						}
 					}
 				}

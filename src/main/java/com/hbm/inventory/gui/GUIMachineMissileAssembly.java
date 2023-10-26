@@ -24,7 +24,7 @@ public class GUIMachineMissileAssembly extends GuiInfoContainer {
 	
 	public GUIMachineMissileAssembly(InventoryPlayer invPlayer, TileEntityMachineMissileAssembly tedf) {
 		super(new ContainerMachineMissileAssembly(invPlayer, tedf));
-		assembler = tedf;
+		this.assembler = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 222;
@@ -35,13 +35,14 @@ public class GUIMachineMissileAssembly extends GuiInfoContainer {
 		super.drawScreen(mouseX, mouseY, f);
 	}
 
+	@Override
 	protected void mouseClicked(int x, int y, int i) {
     	super.mouseClicked(x, y, i);
 		
-    	if(guiLeft + 115 <= x && guiLeft + 115 + 18 > x && guiTop + 35 < y && guiTop + 35 + 18 >= y) {
+    	if(this.guiLeft + 115 <= x && this.guiLeft + 115 + 18 > x && this.guiTop + 35 < y && this.guiTop + 35 + 18 >= y) {
     		
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
-    		PacketDispatcher.wrapper.sendToServer(new AuxButtonPacket(assembler.xCoord, assembler.yCoord, assembler.zCoord, 0, 0));
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+    		PacketDispatcher.wrapper.sendToServer(new AuxButtonPacket(this.assembler.xCoord, this.assembler.yCoord, this.assembler.zCoord, 0, 0));
     	}
     }
 
@@ -56,43 +57,43 @@ public class GUIMachineMissileAssembly extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIMachineMissileAssembly.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
-		if(assembler.fuselageState() == 1)
-			drawTexturedModalRect(guiLeft + 49, guiTop + 23, 194, 0, 6, 8);
-		if(assembler.warheadState() == 1)
-			drawTexturedModalRect(guiLeft + 31, guiTop + 23, 194, 0, 6, 8);
-		if(assembler.chipState() == 1)
-			drawTexturedModalRect(guiLeft + 13, guiTop + 23, 194, 0, 6, 8);
-		if(assembler.stabilityState() == 1)
-			drawTexturedModalRect(guiLeft + 67, guiTop + 23, 194, 0, 6, 8);
-		if(assembler.stabilityState() == 0)
-			drawTexturedModalRect(guiLeft + 67, guiTop + 23, 200, 0, 6, 8);
-		if(assembler.thrusterState() == 1)
-			drawTexturedModalRect(guiLeft + 85, guiTop + 23, 194, 0, 6, 8);
+		if(this.assembler.fuselageState() == 1)
+			drawTexturedModalRect(this.guiLeft + 49, this.guiTop + 23, 194, 0, 6, 8);
+		if(this.assembler.warheadState() == 1)
+			drawTexturedModalRect(this.guiLeft + 31, this.guiTop + 23, 194, 0, 6, 8);
+		if(this.assembler.chipState() == 1)
+			drawTexturedModalRect(this.guiLeft + 13, this.guiTop + 23, 194, 0, 6, 8);
+		if(this.assembler.stabilityState() == 1)
+			drawTexturedModalRect(this.guiLeft + 67, this.guiTop + 23, 194, 0, 6, 8);
+		if(this.assembler.stabilityState() == 0)
+			drawTexturedModalRect(this.guiLeft + 67, this.guiTop + 23, 200, 0, 6, 8);
+		if(this.assembler.thrusterState() == 1)
+			drawTexturedModalRect(this.guiLeft + 85, this.guiTop + 23, 194, 0, 6, 8);
 		
-		if(assembler.canBuild())
-			drawTexturedModalRect(guiLeft + 115, guiTop + 35, 176, 0, 18, 18);
+		if(this.assembler.canBuild())
+			drawTexturedModalRect(this.guiLeft + 115, this.guiTop + 35, 176, 0, 18, 18);
 		
 		/// DRAW MISSILE START
 		GL11.glPushMatrix();
 
 		MissileMultipart missile = new MissileMultipart();
 		
-		if(assembler.getStackInSlot(1) != null)
-			missile.warhead = MissilePart.getPart(assembler.getStackInSlot(1).getItem());
+		if(this.assembler.getStackInSlot(1) != null)
+			missile.warhead = MissilePart.getPart(this.assembler.getStackInSlot(1).getItem());
 		
-		if(assembler.getStackInSlot(2) != null)
-			missile.fuselage = MissilePart.getPart(assembler.getStackInSlot(2).getItem());
+		if(this.assembler.getStackInSlot(2) != null)
+			missile.fuselage = MissilePart.getPart(this.assembler.getStackInSlot(2).getItem());
 		
-		if(assembler.getStackInSlot(3) != null)
-			missile.fins = MissilePart.getPart(assembler.getStackInSlot(3).getItem());
+		if(this.assembler.getStackInSlot(3) != null)
+			missile.fins = MissilePart.getPart(this.assembler.getStackInSlot(3).getItem());
 		
-		if(assembler.getStackInSlot(4) != null)
-			missile.thruster = MissilePart.getPart(assembler.getStackInSlot(4).getItem());
+		if(this.assembler.getStackInSlot(4) != null)
+			missile.thruster = MissilePart.getPart(this.assembler.getStackInSlot(4).getItem());
 		
-		GL11.glTranslatef(guiLeft + 88, guiTop + 98, 100);
+		GL11.glTranslatef(this.guiLeft + 88, this.guiTop + 98, 100);
 		GL11.glRotatef(System.currentTimeMillis() / 10 % 360, 0, -1, 0);
 		
 		double size = 8 * 18;

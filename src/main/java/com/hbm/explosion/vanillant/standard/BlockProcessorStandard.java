@@ -53,11 +53,11 @@ public class BlockProcessorStandard implements IBlockProcessor {
 			if(block.getMaterial() != Material.air) {
 				if(block.canDropFromExplosion(null)) {
 					
-					if(chance != null) {
-						dropChance = chance.mutateDropChance(explosion, block, blockX, blockY, blockZ, dropChance);
+					if(this.chance != null) {
+						dropChance = this.chance.mutateDropChance(explosion, block, blockX, blockY, blockZ, dropChance);
 					}
 					
-					int dropFortune = fortune == null ? 0 : fortune.mutateFortune(explosion, block, blockX, blockY, blockZ);
+					int dropFortune = this.fortune == null ? 0 : this.fortune.mutateFortune(explosion, block, blockX, blockY, blockZ);
 					
 					block.dropBlockAsItemWithChance(world, blockX, blockY, blockZ, world.getBlockMetadata(blockX, blockY, blockZ), dropChance, dropFortune);
 				}

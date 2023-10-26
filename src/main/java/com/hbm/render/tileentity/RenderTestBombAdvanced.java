@@ -25,7 +25,7 @@ public class RenderTestBombAdvanced extends TileEntitySpecialRenderer {
 			GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
 			GL11.glRotatef(180, 0F, 0F, 1F);
 			
-			this.bindTexture(texture);
+			bindTexture(RenderTestBombAdvanced.texture);
 			
 			GL11.glPushMatrix();
 				this.modelBomb.renderModel(0.0625F);

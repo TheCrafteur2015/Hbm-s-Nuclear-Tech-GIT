@@ -22,10 +22,7 @@ public class BlockGraphiteDrilled extends BlockGraphiteDrilledBase implements IT
 			int cfg = meta & 3;
 			
 			if(side == cfg * 2 || side == cfg * 2 + 1) {
-				if(checkInteraction(world, x, y, z, meta, player, ModItems.pile_rod_uranium, ModBlocks.block_graphite_fuel)) return true;
-				if(checkInteraction(world, x, y, z, meta | 8, player, ModItems.pile_rod_pu239, ModBlocks.block_graphite_fuel)) return true;
-				if(checkInteraction(world, x, y, z, meta, player, ModItems.pile_rod_plutonium, ModBlocks.block_graphite_plutonium)) return true;
-				if(checkInteraction(world, x, y, z, meta, player, ModItems.pile_rod_source, ModBlocks.block_graphite_source)) return true;
+				if(checkInteraction(world, x, y, z, meta, player, ModItems.pile_rod_uranium, ModBlocks.block_graphite_fuel) || checkInteraction(world, x, y, z, meta | 8, player, ModItems.pile_rod_pu239, ModBlocks.block_graphite_fuel) || checkInteraction(world, x, y, z, meta, player, ModItems.pile_rod_plutonium, ModBlocks.block_graphite_plutonium) || checkInteraction(world, x, y, z, meta, player, ModItems.pile_rod_source, ModBlocks.block_graphite_source)) return true;
 				if(checkInteraction(world, x, y, z, meta, player, ModItems.pile_rod_boron, ModBlocks.block_graphite_rod)) return true;
 				if(checkInteraction(world, x, y, z, meta, player, ModItems.pile_rod_lithium, ModBlocks.block_graphite_lithium)) return true;
 				if(checkInteraction(world, x, y, z, meta, player, ModItems.cell_tritium, ModBlocks.block_graphite_tritium)) return true; //if you want to i guess?
@@ -67,7 +64,7 @@ public class BlockGraphiteDrilled extends BlockGraphiteDrilledBase implements IT
 			world.setBlock(x, y, z, ModBlocks.block_graphite_drilled, cfg, 3);
 			world.playSoundEffect(x + 0.5, y + 1.5, z + 0.5, "hbm:item.upgradePlug", 1.0F, 0.85F);
 
-			BlockGraphiteRod.ejectItem(world, x, y, z, ForgeDirection.getOrientation(side), new ItemStack(ModItems.hull_small_aluminium));
+			BlockGraphiteDrilledBase.ejectItem(world, x, y, z, ForgeDirection.getOrientation(side), new ItemStack(ModItems.hull_small_aluminium));
 		}
 		
 		return true;

@@ -1,16 +1,16 @@
 package com.hbm.inventory.gui;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
 import com.hbm.inventory.container.ContainerNukeGadget;
 import com.hbm.lib.RefStrings;
 import com.hbm.tileentity.bomb.TileEntityNukeGadget;
 import com.hbm.util.I18nUtil;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.ResourceLocation;
 
 public class GUINukeGadget extends GuiInfoContainer {
 	
@@ -19,7 +19,7 @@ public class GUINukeGadget extends GuiInfoContainer {
 	
 	public GUINukeGadget(InventoryPlayer invPlayer, TileEntityNukeGadget tedf) {
 		super(new ContainerNukeGadget(invPlayer, tedf));
-		testNuke = tedf;
+		this.testNuke = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 166;
@@ -30,7 +30,7 @@ public class GUINukeGadget extends GuiInfoContainer {
 		super.drawScreen(mouseX, mouseY, f);
 		
 		String[] descText = I18nUtil.resolveKeyArray("desc.gui.nukeGadget.desc");
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 16, 16, 16, guiLeft - 8, guiTop + 16 + 16, descText);
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft - 16, this.guiTop + 16, 16, 16, this.guiLeft - 8, this.guiTop + 16 + 16, descText);
 	}
 	
 	@Override
@@ -44,34 +44,34 @@ public class GUINukeGadget extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUINukeGadget.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		if(testNuke.exp1())
+		if(this.testNuke.exp1())
 		{
-			drawTexturedModalRect(guiLeft + 82, guiTop + 19, 176, 0, 24, 24);
+			drawTexturedModalRect(this.guiLeft + 82, this.guiTop + 19, 176, 0, 24, 24);
 		}
 		
-		if(testNuke.exp2())
+		if(this.testNuke.exp2())
 		{
-			drawTexturedModalRect(guiLeft + 106, guiTop + 19, 200, 0, 24, 24);
+			drawTexturedModalRect(this.guiLeft + 106, this.guiTop + 19, 200, 0, 24, 24);
 		}
 		
-		if(testNuke.exp3())
+		if(this.testNuke.exp3())
 		{
-			drawTexturedModalRect(guiLeft + 82, guiTop + 43, 176, 24, 24, 24);
+			drawTexturedModalRect(this.guiLeft + 82, this.guiTop + 43, 176, 24, 24, 24);
 		}
 		
-		if(testNuke.exp4())
+		if(this.testNuke.exp4())
 		{
-			drawTexturedModalRect(guiLeft + 106, guiTop + 43, 200, 24, 24, 24);
+			drawTexturedModalRect(this.guiLeft + 106, this.guiTop + 43, 200, 24, 24, 24);
 		}
 
-		if(testNuke.isReady())
+		if(this.testNuke.isReady())
 		{
-			drawTexturedModalRect(guiLeft + 134, guiTop + 35, 176, 48, 16, 16);
+			drawTexturedModalRect(this.guiLeft + 134, this.guiTop + 35, 176, 48, 16, 16);
 		}
 		
-		this.drawInfoPanel(guiLeft - 16, guiTop + 16, 16, 16, 2);
+		drawInfoPanel(this.guiLeft - 16, this.guiTop + 16, 16, 16, 2);
 	}
 }

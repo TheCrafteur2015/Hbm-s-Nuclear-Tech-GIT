@@ -17,7 +17,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityCharger extends TileEntityLoadedBase implements IEnergyUser, INBTPacketReceiver {
 	
-	private List<EntityPlayer> players = new ArrayList();
+	private List<EntityPlayer> players = new ArrayList<>();
 	private long charge = 0;
 	private int lastOp = 0;
 	
@@ -27,19 +27,20 @@ public class TileEntityCharger extends TileEntityLoadedBase implements IEnergyUs
 	public int lastUsingTicks;
 	public static final int delay = 20;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void updateEntity() {
 		
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata()).getOpposite();
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata()).getOpposite();
 		
-		if(!worldObj.isRemote) {
-			this.trySubscribe(worldObj, xCoord + dir.offsetX, yCoord, zCoord + dir.offsetZ, dir);
+		if(!this.worldObj.isRemote) {
+			trySubscribe(this.worldObj, this.xCoord + dir.offsetX, this.yCoord, this.zCoord + dir.offsetZ, dir);
 			
-			players = worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(xCoord + 0.5, yCoord, zCoord + 0.5, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5).expand(0.5, 0.0, 0.5));
+			this.players = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(this.xCoord + 0.5, this.yCoord, this.zCoord + 0.5, this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5).expand(0.5, 0.0, 0.5));
 			
-			charge = 0;
+			this.charge = 0;
 			
-			for(EntityPlayer player : players) {
+			for(EntityPlayer player : this.players) {
 				
 				for(int i = 0; i < 5; i++) {
 					
@@ -47,46 +48,46 @@ public class TileEntityCharger extends TileEntityLoadedBase implements IEnergyUs
 					
 					if(stack != null && stack.getItem() instanceof IBatteryItem) {
 						IBatteryItem battery = (IBatteryItem) stack.getItem();
-						charge += Math.min(battery.getMaxCharge() - battery.getCharge(stack), battery.getChargeRate());
+						this.charge += Math.min(battery.getMaxCharge() - battery.getCharge(stack), battery.getChargeRate());
 					}
 				}
 			}
 			
-			particles = lastOp > 0;
+			this.particles = this.lastOp > 0;
 			
-			if(particles) {
+			if(this.particles) {
 				
-				lastOp--;
+				this.lastOp--;
 				
-				if(worldObj.getTotalWorldTime() % 20 == 0)
-					worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "random.fizz", 0.2F, 0.5F);
+				if(this.worldObj.getTotalWorldTime() % 20 == 0)
+					this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, "random.fizz", 0.2F, 0.5F);
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setLong("c", charge);
-			data.setBoolean("p", particles);
+			data.setLong("c", this.charge);
+			data.setBoolean("p", this.particles);
 			INBTPacketReceiver.networkPack(this, data, 50);
 		}
 		
-		lastUsingTicks = usingTicks;
+		this.lastUsingTicks = this.usingTicks;
 		
-		if((charge > 0 || particles) && usingTicks < delay) {
-			usingTicks++;
-			if(usingTicks == 2)
-				worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "tile.piston.out", 0.5F, 0.5F);
+		if((this.charge > 0 || this.particles) && this.usingTicks < TileEntityCharger.delay) {
+			this.usingTicks++;
+			if(this.usingTicks == 2)
+				this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, "tile.piston.out", 0.5F, 0.5F);
 		}
-		if((charge <= 0 && !particles) && usingTicks > 0) {
-			usingTicks--;
-			if(usingTicks == 4)
-				worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "tile.piston.in", 0.5F, 0.5F);
+		if((this.charge <= 0 && !this.particles) && this.usingTicks > 0) {
+			this.usingTicks--;
+			if(this.usingTicks == 4)
+				this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, "tile.piston.in", 0.5F, 0.5F);
 		}
 		
-		if(particles) {
-			Random rand = worldObj.rand;
-			worldObj.spawnParticle("magicCrit",
-					xCoord + 0.5 + rand.nextDouble() * 0.0625 + dir.offsetX * 0.75,
-					yCoord + 0.1,
-					zCoord + 0.5 + rand.nextDouble() * 0.0625 + dir.offsetZ * 0.75,
+		if(this.particles) {
+			Random rand = this.worldObj.rand;
+			this.worldObj.spawnParticle("magicCrit",
+					this.xCoord + 0.5 + rand.nextDouble() * 0.0625 + dir.offsetX * 0.75,
+					this.yCoord + 0.1,
+					this.zCoord + 0.5 + rand.nextDouble() * 0.0625 + dir.offsetZ * 0.75,
 					-dir.offsetX + rand.nextGaussian() * 0.1,
 					0,
 					-dir.offsetZ + rand.nextGaussian() * 0.1);
@@ -106,7 +107,7 @@ public class TileEntityCharger extends TileEntityLoadedBase implements IEnergyUs
 
 	@Override
 	public long getMaxPower() {
-		return charge;
+		return this.charge;
 	}
 
 	@Override
@@ -115,10 +116,10 @@ public class TileEntityCharger extends TileEntityLoadedBase implements IEnergyUs
 	@Override
 	public long transferPower(long power) {
 		
-		if(this.usingTicks < delay || power == 0)
+		if(this.usingTicks < TileEntityCharger.delay || power == 0)
 			return power;
 		
-		for(EntityPlayer player : players) {
+		for(EntityPlayer player : this.players) {
 			
 			for(int i = 0; i < 5; i++) {
 				
@@ -132,7 +133,7 @@ public class TileEntityCharger extends TileEntityLoadedBase implements IEnergyUs
 					battery.chargeBattery(stack, toCharge);
 					power -= toCharge;
 					
-					lastOp = 4;
+					this.lastOp = 4;
 				}
 			}
 		}

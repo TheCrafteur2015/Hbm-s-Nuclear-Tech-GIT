@@ -46,10 +46,7 @@ public class BlockDepthOre extends BlockDepth {
 		if(this == ModBlocks.ore_depth_cinnebar) {
 			return 2 + rand.nextInt(3);
 		}
-		if(this == ModBlocks.ore_depth_zirconium) {
-			return 2 + rand.nextInt(2);
-		}
-		if(this == ModBlocks.ore_depth_nether_neodymium) {
+		if((this == ModBlocks.ore_depth_zirconium) || (this == ModBlocks.ore_depth_nether_neodymium)) {
 			return 2 + rand.nextInt(2);
 		}
 		

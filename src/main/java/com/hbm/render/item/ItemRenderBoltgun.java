@@ -93,7 +93,7 @@ public class ItemRenderBoltgun implements IItemRenderer {
 		}
 
 		ResourceManager.boltgun.renderPart("Gun");
-		if(type != type.EQUIPPED_FIRST_PERSON) {
+		if(type != ItemRenderType.EQUIPPED_FIRST_PERSON) {
 			ResourceManager.boltgun.renderPart("Barrel");
 		}
 		GL11.glShadeModel(GL11.GL_FLAT);

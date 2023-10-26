@@ -1,11 +1,11 @@
 package com.hbm.entity.grenade;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.world.World;
-
 import com.hbm.explosion.ExplosionChaos;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.ItemGrenade;
+
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.World;
 
 public class EntityGrenadeCluster extends EntityGrenadeBouncyBase
 {
@@ -29,7 +29,7 @@ public class EntityGrenadeCluster extends EntityGrenadeBouncyBase
 
         if (!this.worldObj.isRemote)
         {
-            this.setDead();
+            setDead();
             ExplosionChaos.cluster(this.worldObj, (int)this.posX, (int)this.posY, (int)this.posZ, 10, 50);
             this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 1.5F, true);
         }

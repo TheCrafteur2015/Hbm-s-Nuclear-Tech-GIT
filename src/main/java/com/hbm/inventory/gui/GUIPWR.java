@@ -17,6 +17,7 @@ import com.hbm.tileentity.machine.TileEntityPWRController;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
@@ -48,32 +49,32 @@ public class GUIPWR extends GuiInfoContainer {
 		
 		Keyboard.enableRepeatEvents(true);
 		
-		this.field = new GuiTextField(this.fontRendererObj, guiLeft + 57, guiTop + 63, 30, 8);
+		this.field = new GuiTextField(this.fontRendererObj, this.guiLeft + 57, this.guiTop + 63, 30, 8);
 		this.field.setTextColor(0x00ff00);
 		this.field.setDisabledTextColour(0x008000);
 		this.field.setEnableBackgroundDrawing(false);
 		this.field.setMaxStringLength(3);
 		
-		this.field.setText((100 - controller.rodTarget) + "");
+		this.field.setText((100 - this.controller.rodTarget) + "");
 	}
 	
 	@Override
 	public void drawScreen(int x, int y, float interp) {
 		super.drawScreen(x, y, interp);
 		
-		this.drawCustomInfoStat(x, y, guiLeft + 115, guiTop + 31, 18, 18, x, y, new String[] { "Core: " + String.format(Locale.US, "%,d", controller.coreHeat) + " / " + String.format(Locale.US, "%,d", controller.coreHeatCapacity) + " TU" });
-		this.drawCustomInfoStat(x, y, guiLeft + 151, guiTop + 31, 18, 18, x, y, new String[] { "Hull: " + String.format(Locale.US, "%,d", controller.hullHeat) + " / " + String.format(Locale.US, "%,d", controller.hullHeatCapacity) + " TU" });
+		this.drawCustomInfoStat(x, y, this.guiLeft + 115, this.guiTop + 31, 18, 18, x, y, new String[] { "Core: " + String.format(Locale.US, "%,d", this.controller.coreHeat) + " / " + String.format(Locale.US, "%,d", TileEntityPWRController.coreHeatCapacity) + " TU" });
+		this.drawCustomInfoStat(x, y, this.guiLeft + 151, this.guiTop + 31, 18, 18, x, y, new String[] { "Hull: " + String.format(Locale.US, "%,d", this.controller.hullHeat) + " / " + String.format(Locale.US, "%,d", TileEntityPWRController.hullHeatCapacity) + " TU" });
 
-		this.drawCustomInfoStat(x, y, guiLeft + 52, guiTop + 31, 36, 18, x, y, new String[] { ((int) (controller.progress * 100 / controller.processTime)) + "%" });
-		this.drawCustomInfoStat(x, y, guiLeft + 52, guiTop + 53, 54, 4, x, y, "Control rod level: " + (100 - controller.rodLevel) + "%");
+		this.drawCustomInfoStat(x, y, this.guiLeft + 52, this.guiTop + 31, 36, 18, x, y, new String[] { ((int) (this.controller.progress * 100 / this.controller.processTime)) + "%" });
+		this.drawCustomInfoStat(x, y, this.guiLeft + 52, this.guiTop + 53, 54, 4, x, y, "Control rod level: " + (100 - this.controller.rodLevel) + "%");
 		
-		if(controller.typeLoaded != -1 && controller.amountLoaded > 0) {
-			ItemStack display = new ItemStack(ModItems.pwr_fuel, 1, controller.typeLoaded);
-			if(guiLeft + 88 <= x && guiLeft + 88 + 18 > x && guiTop + 4 < y && guiTop + 4 + 18 >= y) this.renderToolTip(display, x, y);
+		if(this.controller.typeLoaded != -1 && this.controller.amountLoaded > 0) {
+			ItemStack display = new ItemStack(ModItems.pwr_fuel, 1, this.controller.typeLoaded);
+			if(this.guiLeft + 88 <= x && this.guiLeft + 88 + 18 > x && this.guiTop + 4 < y && this.guiTop + 4 + 18 >= y) renderToolTip(display, x, y);
 		}
 		
-		controller.tanks[0].renderTankInfo(this, x, y, guiLeft + 8, guiTop + 5, 16, 52);
-		controller.tanks[1].renderTankInfo(this, x, y, guiLeft + 26, guiTop + 5, 16, 52);
+		this.controller.tanks[0].renderTankInfo(this, x, y, this.guiLeft + 8, this.guiTop + 5, 16, 52);
+		this.controller.tanks[1].renderTankInfo(this, x, y, this.guiLeft + 26, this.guiTop + 5, 16, 52);
 	}
 
 	@Override
@@ -81,15 +82,15 @@ public class GUIPWR extends GuiInfoContainer {
 		GL11.glPushMatrix();
 		GL11.glTranslatef(0.0F, 0.0F, 32.0F);
 		this.zLevel = 200.0F;
-		itemRender.zLevel = 200.0F;
+		GuiScreen.itemRender.zLevel = 200.0F;
 		FontRenderer font = null;
 		if(stack != null) font = stack.getItem().getFontRenderer(stack);
-		if(font == null) font = fontRendererObj;
-		itemRender.renderItemAndEffectIntoGUI(font, this.mc.getTextureManager(), stack, x, y);
+		if(font == null) font = this.fontRendererObj;
+		GuiScreen.itemRender.renderItemAndEffectIntoGUI(font, this.mc.getTextureManager(), stack, x, y);
 		GL11.glScaled(0.5, 0.5, 0.5);
-		itemRender.renderItemOverlayIntoGUI(font, this.mc.getTextureManager(), stack, (x + font.getStringWidth(label) / 4) * 2, (y + 15) * 2, label);
+		GuiScreen.itemRender.renderItemOverlayIntoGUI(font, this.mc.getTextureManager(), stack, (x + font.getStringWidth(label) / 4) * 2, (y + 15) * 2, label);
 		this.zLevel = 0.0F;
-		itemRender.zLevel = 0.0F;
+		GuiScreen.itemRender.zLevel = 0.0F;
 		GL11.glPopMatrix();
 	}
 	
@@ -98,7 +99,7 @@ public class GUIPWR extends GuiInfoContainer {
 		this.fontRendererObj.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 		
 		double scale = 1.25;
-		String flux = String.format(Locale.US, "%,.1f", controller.flux);
+		String flux = String.format(Locale.US, "%,.1f", this.controller.flux);
 		GL11.glScaled(1 / scale, 1 / scale, 1);
 		this.fontRendererObj.drawString(flux, (int) (165 * scale - this.fontRendererObj.getStringWidth(flux)), (int)(64 * scale), 0x00ff00);
 		GL11.glScaled(scale, scale, 1);
@@ -107,35 +108,35 @@ public class GUIPWR extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(this.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		if(controller.hullHeat > controller.hullHeatCapacity * 0.8 || controller.coreHeat > controller.coreHeatCapacity * 0.8)
-			drawTexturedModalRect(guiLeft + 147, guiTop, 176, 14, 26, 26);
+		if(this.controller.hullHeat > TileEntityPWRController.hullHeatCapacity * 0.8 || this.controller.coreHeat > TileEntityPWRController.coreHeatCapacity * 0.8)
+			drawTexturedModalRect(this.guiLeft + 147, this.guiTop, 176, 14, 26, 26);
 
-		int p = (int) (controller.progress * 33 / controller.processTime);
-		drawTexturedModalRect(guiLeft + 54, guiTop + 33, 176, 0, p, 14);
+		int p = (int) (this.controller.progress * 33 / this.controller.processTime);
+		drawTexturedModalRect(this.guiLeft + 54, this.guiTop + 33, 176, 0, p, 14);
 
-		int c = (int) (controller.rodLevel * 52 / 100);
-		drawTexturedModalRect(guiLeft + 53, guiTop + 54, 176, 40, c, 2);
+		int c = (int) (this.controller.rodLevel * 52 / 100);
+		drawTexturedModalRect(this.guiLeft + 53, this.guiTop + 54, 176, 40, c, 2);
 
 		//GaugeUtil.renderGauge(Gauge.ROUND_SMALL, guiLeft + 115, guiTop + 31, this.zLevel, (double) controller.coreHeat / (double) controller.coreHeatCapacity);
 		//GaugeUtil.renderGauge(Gauge.ROUND_SMALL, guiLeft + 151, guiTop + 31, this.zLevel, (double) controller.hullHeat / (double) controller.hullHeatCapacity);
 
-		GaugeUtil.drawSmoothGauge(guiLeft + 124, guiTop + 40, this.zLevel, (double) controller.coreHeat / (double) controller.coreHeatCapacity, 5, 2, 1, 0x7F0000);
-		GaugeUtil.drawSmoothGauge(guiLeft + 160, guiTop + 40, this.zLevel, (double) controller.hullHeat / (double) controller.hullHeatCapacity, 5, 2, 1, 0x7F0000);
+		GaugeUtil.drawSmoothGauge(this.guiLeft + 124, this.guiTop + 40, this.zLevel, (double) this.controller.coreHeat / (double) TileEntityPWRController.coreHeatCapacity, 5, 2, 1, 0x7F0000);
+		GaugeUtil.drawSmoothGauge(this.guiLeft + 160, this.guiTop + 40, this.zLevel, (double) this.controller.hullHeat / (double) TileEntityPWRController.hullHeatCapacity, 5, 2, 1, 0x7F0000);
 		
-		if(controller.typeLoaded != -1 && controller.amountLoaded > 0) {
-			ItemStack display = new ItemStack(ModItems.pwr_fuel, 1, controller.typeLoaded);
-			this.drawItemStack(display, guiLeft + 89, guiTop + 5, EnumChatFormatting.YELLOW + "" + controller.amountLoaded + "/" + controller.rodCount);
+		if(this.controller.typeLoaded != -1 && this.controller.amountLoaded > 0) {
+			ItemStack display = new ItemStack(ModItems.pwr_fuel, 1, this.controller.typeLoaded);
+			drawItemStack(display, this.guiLeft + 89, this.guiTop + 5, EnumChatFormatting.YELLOW + "" + this.controller.amountLoaded + "/" + this.controller.rodCount);
 			RenderHelper.enableGUIStandardItemLighting();
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		}
 		
 		GL11.glDisable(GL11.GL_LIGHTING);
 
-		controller.tanks[0].renderTank(guiLeft + 8, guiTop + 57, this.zLevel, 16, 52);
-		controller.tanks[1].renderTank(guiLeft + 26, guiTop + 57, this.zLevel, 16, 52);
+		this.controller.tanks[0].renderTank(this.guiLeft + 8, this.guiTop + 57, this.zLevel, 16, 52);
+		this.controller.tanks[1].renderTank(this.guiLeft + 26, this.guiTop + 57, this.zLevel, 16, 52);
 		
 		this.field.drawTextBox();
 	}
@@ -176,16 +177,16 @@ public class GUIPWR extends GuiInfoContainer {
 		super.mouseClicked(mouseX, mouseY, i);
 		this.field.mouseClicked(mouseX, mouseY, i);
 		
-		if(guiLeft + 88 <= mouseX && guiLeft + 88 + 18 > mouseX && guiTop + 58 < mouseY && guiTop + 58 + 18 >= mouseY) {
+		if(this.guiLeft + 88 <= mouseX && this.guiLeft + 88 + 18 > mouseX && this.guiTop + 58 < mouseY && this.guiTop + 58 + 18 >= mouseY) {
 			
-			if(NumberUtils.isNumber(field.getText())) {
-				int level = (int)MathHelper.clamp_double(Double.parseDouble(field.getText()), 0, 100);
-				field.setText(level + "");
+			if(NumberUtils.isNumber(this.field.getText())) {
+				int level = (int)MathHelper.clamp_double(Double.parseDouble(this.field.getText()), 0, 100);
+				this.field.setText(level + "");
 				
 				NBTTagCompound control = new NBTTagCompound();
 				control.setInteger("control", 100 - level);
-				PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(control, controller.xCoord, controller.yCoord, controller.zCoord));
-				mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1F));
+				PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(control, this.controller.xCoord, this.controller.yCoord, this.controller.zCoord));
+				this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1F));
 				
 			}
 		}

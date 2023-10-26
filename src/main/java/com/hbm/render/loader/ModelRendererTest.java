@@ -24,15 +24,16 @@ public class ModelRendererTest extends ModelRenderer {
 
 	public ModelRendererTest(ModelBase p_i1174_1_, int p_i1174_2_, int p_i1174_3_) {
 		this(p_i1174_1_);
-		this.setTextureOffset(p_i1174_2_, p_i1174_3_);
+		setTextureOffset(p_i1174_2_, p_i1174_3_);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void render(float p_78785_1_) {
 		if(!this.isHidden) {
 			if(this.showModel) {
 				if(!this.compiled) {
-					this.compileDisplayList(p_78785_1_);
+					compileDisplayList(p_78785_1_);
 				}
 
 				GL11.glTranslatef(this.offsetX, this.offsetY, this.offsetZ);
@@ -96,12 +97,13 @@ public class ModelRendererTest extends ModelRenderer {
 		}
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void renderWithRotation(float p_78791_1_) {
 		if(!this.isHidden) {
 			if(this.showModel) {
 				if(!this.compiled) {
-					this.compileDisplayList(p_78791_1_);
+					compileDisplayList(p_78791_1_);
 				}
 
 				GL11.glPushMatrix();
@@ -125,12 +127,13 @@ public class ModelRendererTest extends ModelRenderer {
 		}
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void postRender(float p_78794_1_) {
 		if(!this.isHidden) {
 			if(this.showModel) {
 				if(!this.compiled) {
-					this.compileDisplayList(p_78794_1_);
+					compileDisplayList(p_78794_1_);
 				}
 
 				if(this.rotateAngleX == 0.0F && this.rotateAngleY == 0.0F && this.rotateAngleZ == 0.0F) {
@@ -162,8 +165,8 @@ public class ModelRendererTest extends ModelRenderer {
 		GL11.glNewList(this.displayList, GL11.GL_COMPILE);
 		Tessellator tessellator = Tessellator.instance;
 
-		for(int i = 0; i < this.cubeList.size(); ++i) {
-			((ModelBox) this.cubeList.get(i)).render(tessellator, p_78788_1_);
+		for (Object element : this.cubeList) {
+			((ModelBox) element).render(tessellator, p_78788_1_);
 		}
 
 		GL11.glEndList();

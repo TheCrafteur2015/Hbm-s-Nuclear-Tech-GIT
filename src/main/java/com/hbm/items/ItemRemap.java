@@ -37,6 +37,7 @@ public class ItemRemap extends Item {
 		player.inventory.setInventorySlotContents(slot, new ItemStack(this.remapItem, stack.stackSize, this.remapMeta));
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public int getColorFromItemStack(ItemStack stack, int pass) {
 		return 0xFF8080;

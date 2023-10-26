@@ -32,7 +32,7 @@ public class CableDetector extends BlockContainer {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int metadata) {
-		return metadata == 1 ? iconOn : blockIcon;
+		return metadata == 1 ? this.iconOn : this.blockIcon;
 	}
 
 	@Override

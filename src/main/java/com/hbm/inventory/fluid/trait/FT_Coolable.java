@@ -31,7 +31,7 @@ public class FT_Coolable extends FluidTrait {
 	}
 	
 	public FT_Coolable setEff(CoolingType type, double eff) {
-		efficiency.put(type, eff);
+		this.efficiency.put(type, eff);
 		return this;
 	}
 	
@@ -42,7 +42,7 @@ public class FT_Coolable extends FluidTrait {
 	
 	@Override
 	public void addInfoHidden(List<String> info) {
-		info.add(EnumChatFormatting.AQUA + "Thermal capacity: " + heatEnergy + " TU");
+		info.add(EnumChatFormatting.AQUA + "Thermal capacity: " + this.heatEnergy + " TU");
 		for(CoolingType type : CoolingType.values()) {
 			
 			double eff = getEfficiency(type);
@@ -85,7 +85,7 @@ public class FT_Coolable extends FluidTrait {
 		this.heatEnergy = obj.get("heatEnergy").getAsInt();
 		
 		for(CoolingType type : CoolingType.values()) {
-			if(obj.has(type.name())) efficiency.put(type, obj.get(type.name()).getAsDouble());
+			if(obj.has(type.name())) this.efficiency.put(type, obj.get(type.name()).getAsDouble());
 		}
 	}
 }

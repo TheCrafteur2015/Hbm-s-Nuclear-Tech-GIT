@@ -145,7 +145,7 @@ public class VaultDoor extends BlockContainer implements IBomb, IMultiblock {
 			TileEntityVaultDoor entity = (TileEntityVaultDoor) world.getTileEntity(x, y, z);
 			if(entity != null) {
 				entity.type++;
-				if(entity.type >= entity.maxTypes)
+				if(entity.type >= TileEntityVaultDoor.maxTypes)
 					entity.type = 0;
 			}
 

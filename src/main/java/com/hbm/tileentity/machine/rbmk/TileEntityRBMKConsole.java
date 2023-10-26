@@ -43,8 +43,8 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 	public TileEntityRBMKConsole() {
 		super(0);
 		
-		for(int i = 0; i < screens.length; i++) {
-			screens[i] = new RBMKScreen();
+		for(int i = 0; i < this.screens.length; i++) {
+			this.screens[i] = new RBMKScreen();
 		}
 	}
 
@@ -56,7 +56,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			if(this.worldObj.getTotalWorldTime() % 10 == 0) {
 
@@ -77,17 +77,17 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 		for(int i = -7; i <= 7; i++) {
 			for(int j = -7; j <= 7; j++) {
 				
-				TileEntity te = worldObj.getTileEntity(targetX + i, targetY, targetZ + j);
+				TileEntity te = this.worldObj.getTileEntity(this.targetX + i, this.targetY, this.targetZ + j);
 				int index = (i + 7) + (j + 7) * 15;
 				
 				if(te instanceof TileEntityRBMKBase) {
 					
 					TileEntityRBMKBase rbmk = (TileEntityRBMKBase)te;
 					
-					columns[index] = new RBMKColumn(rbmk.getConsoleType(), rbmk.getNBTForConsole());
-					columns[index].data.setDouble("heat", rbmk.heat);
-					columns[index].data.setDouble("maxHeat", rbmk.maxHeat());
-					if(rbmk.isModerated()) columns[index].data.setBoolean("moderated", true); //false is the default anyway and not setting it when we don't need to reduces cruft
+					this.columns[index] = new RBMKColumn(rbmk.getConsoleType(), rbmk.getNBTForConsole());
+					this.columns[index].data.setDouble("heat", rbmk.heat);
+					this.columns[index].data.setDouble("maxHeat", rbmk.maxHeat());
+					if(rbmk.isModerated()) this.columns[index].data.setBoolean("moderated", true); //false is the default anyway and not setting it when we don't need to reduces cruft
 					
 					if(te instanceof TileEntityRBMKRod) {
 						TileEntityRBMKRod fuel = (TileEntityRBMKRod) te;
@@ -95,7 +95,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 					}
 					
 				} else {
-					columns[index] = null;
+					this.columns[index] = null;
 				}
 			}
 		}
@@ -159,7 +159,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 				}
 			}
 			
-			double result = value / (double) count;
+			double result = value / count;
 			String text = ((int)(result * 10)) / 10D + "";
 			
 			switch(screen.type) {
@@ -183,7 +183,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 			
 			data.setBoolean("full", true);
 			
-			for(int i = 0; i < columns.length; i++) {
+			for(int i = 0; i < this.columns.length; i++) {
 				
 				if(this.columns[i] != null) {
 					data.setTag("column_" + i, this.columns[i].data);
@@ -194,7 +194,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 			data.setIntArray("flux", this.fluxBuffer);
 			
 			for(int i = 0; i < this.screens.length; i++) {
-				RBMKScreen screen = screens[i];
+				RBMKScreen screen = this.screens[i];
 				if(screen.display != null) {
 					data.setString("t" + i, screen.display);
 				}
@@ -202,11 +202,11 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 		}
 		
 		for(int i = 0; i < this.screens.length; i++) {
-			RBMKScreen screen = screens[i];
+			RBMKScreen screen = this.screens[i];
 			data.setByte("s" + i, (byte) screen.type.ordinal());
 		}
 		
-		this.networkPack(data, 50);
+		networkPack(data, 50);
 	}
 	
 	@Override
@@ -215,7 +215,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 		if(data.getBoolean("full")) {
 			this.columns = new RBMKColumn[15 * 15];
 			
-			for(int i = 0; i < columns.length; i++) {
+			for(int i = 0; i < this.columns.length; i++) {
 				
 				if(data.hasKey("type_" + i)) {
 					this.columns[i] = new RBMKColumn(ColumnType.values()[data.getShort("type_" + i)], (NBTTagCompound)data.getTag("column_" + i));
@@ -225,22 +225,23 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 			this.fluxBuffer = data.getIntArray("flux");
 			
 			for(int i = 0; i < this.screens.length; i++) {
-				RBMKScreen screen = screens[i];
+				RBMKScreen screen = this.screens[i];
 				screen.display = data.getString("t" + i);
 			}
 		}
 		
 		for(int i = 0; i < this.screens.length; i++) {
-			RBMKScreen screen = screens[i];
+			RBMKScreen screen = this.screens[i];
 			screen.type = ScreenType.values()[data.getByte("s" + i)];
 		}
 	}
 
 	@Override
 	public boolean hasPermission(EntityPlayer player) {
-		return Vec3.createVectorHelper(xCoord - player.posX, yCoord - player.posY, zCoord - player.posZ).lengthVector() < 20;
+		return Vec3.createVectorHelper(this.xCoord - player.posX, this.yCoord - player.posY, this.zCoord - player.posZ).lengthVector() < 20;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void receiveControl(NBTTagCompound data) {
 		
@@ -255,7 +256,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 					int x = data.getInteger(key) % 15 - 7;
 					int z = data.getInteger(key) / 15 - 7;
 					
-					TileEntity te = worldObj.getTileEntity(targetX + x, targetY, targetZ + z);
+					TileEntity te = this.worldObj.getTileEntity(this.targetX + x, this.targetY, this.targetZ + z);
 					
 					if(te instanceof TileEntityRBMKControlManual) {
 						TileEntityRBMKControlManual rod = (TileEntityRBMKControlManual) te;
@@ -276,7 +277,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 		
 		if(data.hasKey("id")) {
 			int slot = data.getByte("id");
-			List<Integer> list = new ArrayList();
+			List<Integer> list = new ArrayList<>();
 			
 			for(int i = 0; i < 15 * 15; i++) {
 				if(data.getBoolean("s" + i)) {
@@ -291,7 +292,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 	
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
-		return AxisAlignedBB.getBoundingBox(xCoord - 2, yCoord, zCoord - 2, xCoord + 3, yCoord + 4, zCoord + 3);
+		return AxisAlignedBB.getBoundingBox(this.xCoord - 2, this.yCoord, this.zCoord - 2, this.xCoord + 3, this.yCoord + 4, this.zCoord + 3);
 	}
 	
 	@Override
@@ -304,7 +305,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 		this.targetX = x;
 		this.targetY = y;
 		this.targetZ = z;
-		this.markDirty();
+		markDirty();
 	}
 	
 	@Override
@@ -368,7 +369,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 			 * against humanity that I threw the towel. It's not fancy, I get that, please fuck off.
 			 */
 			
-			List<String> stats = new ArrayList();
+			List<String> stats = new ArrayList<>();
 			stats.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("rbmk.heat", ((int)((this.data.getDouble("heat") * 10D)) / 10D) + "°C"));
 			switch(this.type) {
 
@@ -405,7 +406,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 				break;
 			}
 			
-			if(data.getBoolean("moderated"))
+			if(this.data.getBoolean("moderated"))
 				stats.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("rbmk.moderated"));
 			
 			return stats;

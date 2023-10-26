@@ -43,6 +43,7 @@ public class FoundryMold extends FoundryCastingBase {
 		return new TileEntityFoundryMold();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB entityBounding, List list, Entity entity) {
 		
@@ -63,7 +64,7 @@ public class FoundryMold extends FoundryCastingBase {
 
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
-		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
+		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
 	}
 
 	@Override
@@ -76,7 +77,7 @@ public class FoundryMold extends FoundryCastingBase {
 
 	@Override
 	public int getRenderType() {
-		return renderID;
+		return FoundryMold.renderID;
 	}
 	
 	@Override

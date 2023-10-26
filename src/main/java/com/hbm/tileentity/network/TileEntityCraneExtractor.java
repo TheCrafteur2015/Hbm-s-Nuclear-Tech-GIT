@@ -1,6 +1,5 @@
 package com.hbm.tileentity.network;
 
-import api.hbm.conveyor.IConveyorBelt;
 import com.hbm.entity.item.EntityMovingItem;
 import com.hbm.interfaces.IControlReceiver;
 import com.hbm.inventory.container.ContainerCraneExtractor;
@@ -8,6 +7,8 @@ import com.hbm.inventory.gui.GUICraneExtractor;
 import com.hbm.items.ModItems;
 import com.hbm.module.ModulePatternMatcher;
 import com.hbm.tileentity.IGUIProvider;
+
+import api.hbm.conveyor.IConveyorBelt;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -46,7 +47,7 @@ public class TileEntityCraneExtractor extends TileEntityCraneBase implements IGU
 		if(stack != null) {
 			
 			if((stack.getItem() == ModItems.upgrade_ejector && i == 19) || (stack.getItem() == ModItems.upgrade_stack && i == 18)) {
-				worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "hbm:item.upgradePlug", 1.0F, 1.0F);
+				this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, "hbm:item.upgradePlug", 1.0F, 1.0F);
 			}
 		}
 	}
@@ -54,23 +55,23 @@ public class TileEntityCraneExtractor extends TileEntityCraneBase implements IGU
 	@Override
 	public void updateEntity() {
 		super.updateEntity();
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			int delay = 20;
 			
-			if(slots[19] != null && slots[19].getItem() == ModItems.upgrade_ejector) {
-				switch(slots[19].getItemDamage()) {
+			if(this.slots[19] != null && this.slots[19].getItem() == ModItems.upgrade_ejector) {
+				switch(this.slots[19].getItemDamage()) {
 				case 0: delay = 10; break;
 				case 1: delay = 5; break;
 				case 2: delay = 2; break;
 				}
 			}
 			
-			if(worldObj.getTotalWorldTime() % delay == 0 && !this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)) {
+			if(this.worldObj.getTotalWorldTime() % delay == 0 && !this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord)) {
 				int amount = 1;
 				
-				if(slots[18] != null && slots[18].getItem() == ModItems.upgrade_stack) {
-					switch(slots[18].getItemDamage()) {
+				if(this.slots[18] != null && this.slots[18].getItem() == ModItems.upgrade_stack) {
+					switch(this.slots[18].getItemDamage()) {
 					case 0: amount = 4; break;
 					case 1: amount = 16; break;
 					case 2: amount = 64; break;
@@ -79,8 +80,8 @@ public class TileEntityCraneExtractor extends TileEntityCraneBase implements IGU
 
 				ForgeDirection inputSide = getOutputSide(); // note the switcheroo!
 				ForgeDirection outputSide = getInputSide();
-				TileEntity te = worldObj.getTileEntity(xCoord + inputSide.offsetX, yCoord + inputSide.offsetY, zCoord + inputSide.offsetZ);
-				Block b = worldObj.getBlock(xCoord + outputSide.offsetX, yCoord + outputSide.offsetY, zCoord + outputSide.offsetZ);
+				TileEntity te = this.worldObj.getTileEntity(this.xCoord + inputSide.offsetX, this.yCoord + inputSide.offsetY, this.zCoord + inputSide.offsetZ);
+				Block b = this.worldObj.getBlock(this.xCoord + outputSide.offsetX, this.yCoord + outputSide.offsetY, this.zCoord + outputSide.offsetZ);
 				
 				int[] access = null;
 				ISidedInventory sided = null;
@@ -88,7 +89,7 @@ public class TileEntityCraneExtractor extends TileEntityCraneBase implements IGU
 				if(te instanceof ISidedInventory) {
 					sided = (ISidedInventory) te;
 					//access = sided.getAccessibleSlotsFromSide(dir.ordinal());
-					access = masquerade(sided, inputSide.getOpposite().ordinal());
+					access = TileEntityCraneExtractor.masquerade(sided, inputSide.getOpposite().ordinal());
 				}
 				
 				boolean hasSent = false;
@@ -109,20 +110,20 @@ public class TileEntityCraneExtractor extends TileEntityCraneBase implements IGU
 							
 							if(stack != null && (sided == null || sided.canExtractItem(index, stack, inputSide.getOpposite().ordinal()))){
 								
-								boolean match = this.matchesFilter(stack);
+								boolean match = matchesFilter(stack);
 								
-								if((isWhitelist && match) || (!isWhitelist && !match)) {
+								if((this.isWhitelist && match) || (!this.isWhitelist && !match)) {
 									stack = stack.copy();
 									int toSend = Math.min(amount, stack.stackSize);
 									inv.decrStackSize(index, toSend);
 									stack.stackSize = toSend;
 									
-									EntityMovingItem moving = new EntityMovingItem(worldObj);
-									Vec3 pos = Vec3.createVectorHelper(xCoord + 0.5 + outputSide.offsetX * 0.55, yCoord + 0.5 + outputSide.offsetY * 0.55, zCoord + 0.5 + outputSide.offsetZ * 0.55);
-									Vec3 snap = belt.getClosestSnappingPosition(worldObj, xCoord + outputSide.offsetX, yCoord + outputSide.offsetY, zCoord + outputSide.offsetZ, pos);
+									EntityMovingItem moving = new EntityMovingItem(this.worldObj);
+									Vec3 pos = Vec3.createVectorHelper(this.xCoord + 0.5 + outputSide.offsetX * 0.55, this.yCoord + 0.5 + outputSide.offsetY * 0.55, this.zCoord + 0.5 + outputSide.offsetZ * 0.55);
+									Vec3 snap = belt.getClosestSnappingPosition(this.worldObj, this.xCoord + outputSide.offsetX, this.yCoord + outputSide.offsetY, this.zCoord + outputSide.offsetZ, pos);
 									moving.setPosition(snap.xCoord, snap.yCoord, snap.zCoord);
 									moving.setItemStack(stack);
-									worldObj.spawnEntityInWorld(moving);
+									this.worldObj.spawnEntityInWorld(moving);
 									hasSent = true;
 									break;
 								}
@@ -134,7 +135,7 @@ public class TileEntityCraneExtractor extends TileEntityCraneBase implements IGU
 					if(!hasSent) {
 						
 						for(int i = 9; i < 18; i++) {
-							ItemStack stack = slots[i];
+							ItemStack stack = this.slots[i];
 							
 							if(stack != null){
 								stack = stack.copy();
@@ -142,12 +143,12 @@ public class TileEntityCraneExtractor extends TileEntityCraneBase implements IGU
 								decrStackSize(i, toSend);
 								stack.stackSize = toSend;
 								
-								EntityMovingItem moving = new EntityMovingItem(worldObj);
-								Vec3 pos = Vec3.createVectorHelper(xCoord + 0.5 + outputSide.offsetX * 0.55, yCoord + 0.5 + outputSide.offsetY * 0.55, zCoord + 0.5 + outputSide.offsetZ * 0.55);
-								Vec3 snap = belt.getClosestSnappingPosition(worldObj, xCoord + outputSide.offsetX, yCoord + outputSide.offsetY, zCoord + outputSide.offsetZ, pos);
+								EntityMovingItem moving = new EntityMovingItem(this.worldObj);
+								Vec3 pos = Vec3.createVectorHelper(this.xCoord + 0.5 + outputSide.offsetX * 0.55, this.yCoord + 0.5 + outputSide.offsetY * 0.55, this.zCoord + 0.5 + outputSide.offsetZ * 0.55);
+								Vec3 snap = belt.getClosestSnappingPosition(this.worldObj, this.xCoord + outputSide.offsetX, this.yCoord + outputSide.offsetY, this.zCoord + outputSide.offsetZ, pos);
 								moving.setPosition(snap.xCoord, snap.yCoord, snap.zCoord);
 								moving.setItemStack(stack);
-								worldObj.spawnEntityInWorld(moving);
+								this.worldObj.spawnEntityInWorld(moving);
 								break;
 							}
 						}
@@ -156,9 +157,9 @@ public class TileEntityCraneExtractor extends TileEntityCraneBase implements IGU
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setBoolean("isWhitelist", isWhitelist);
+			data.setBoolean("isWhitelist", this.isWhitelist);
 			this.matcher.writeToNBT(data);
-			this.networkPack(data, 15);
+			networkPack(data, 15);
 		}
 	}
 	
@@ -171,6 +172,7 @@ public class TileEntityCraneExtractor extends TileEntityCraneBase implements IGU
 		return sided.getAccessibleSlotsFromSide(side);
 	}
 	
+	@Override
 	public void networkUnpack(NBTTagCompound nbt) {
 		this.isWhitelist = nbt.getBoolean("isWhitelist");
 		this.matcher.modes = new String[this.matcher.modes.length];
@@ -180,7 +182,7 @@ public class TileEntityCraneExtractor extends TileEntityCraneBase implements IGU
 	public boolean matchesFilter(ItemStack stack) {
 		
 		for(int i = 0; i < 9; i++) {
-			ItemStack filter = slots[i];
+			ItemStack filter = this.slots[i];
 			
 			if(filter != null && this.matcher.isValidForFilter(filter, i, stack)) {
 				return true;
@@ -191,7 +193,7 @@ public class TileEntityCraneExtractor extends TileEntityCraneBase implements IGU
 	}
 	
 	public void nextMode(int i) {
-		this.matcher.nextMode(worldObj, slots[i], i);
+		this.matcher.nextMode(this.worldObj, this.slots[i], i);
 	}
 
 	@Override
@@ -236,7 +238,7 @@ public class TileEntityCraneExtractor extends TileEntityCraneBase implements IGU
 
 	@Override
 	public boolean hasPermission(EntityPlayer player) {
-		return Vec3.createVectorHelper(xCoord - player.posX, yCoord - player.posY, zCoord - player.posZ).lengthVector() < 20;
+		return Vec3.createVectorHelper(this.xCoord - player.posX, this.yCoord - player.posY, this.zCoord - player.posZ).lengthVector() < 20;
 	}
 
 	@Override

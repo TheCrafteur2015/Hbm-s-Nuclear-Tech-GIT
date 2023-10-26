@@ -13,7 +13,7 @@ public class ItemModRevive extends ItemArmorMod {
 
 	public ItemModRevive(int durability) {
 		super(ArmorModHandler.extra, false, false, true, false);
-		this.setMaxDamage(durability);
+		setMaxDamage(durability);
 	}
 
 	@Override

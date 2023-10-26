@@ -38,7 +38,7 @@ public class TileEntitySubstation extends TileEntityPylonBase {
 
 	@Override
 	public Vec3 getConnectionPoint() {
-		return Vec3.createVectorHelper(xCoord + 0.5, yCoord + 5.25, zCoord + 0.5);
+		return Vec3.createVectorHelper(this.xCoord + 0.5, this.yCoord + 5.25, this.zCoord + 0.5);
 	}
 
 	@Override
@@ -48,15 +48,15 @@ public class TileEntitySubstation extends TileEntityPylonBase {
 	
 	@Override
 	public List<int[]> getConnectionPoints() {
-		List<int[]> pos = new ArrayList(connected);
-		pos.add(new int[] {xCoord + 2, yCoord, zCoord - 1});
-		pos.add(new int[] {xCoord + 2, yCoord, zCoord + 1});
-		pos.add(new int[] {xCoord - 2, yCoord, zCoord - 1});
-		pos.add(new int[] {xCoord - 2, yCoord, zCoord + 1});
-		pos.add(new int[] {xCoord - 1, yCoord, zCoord + 2});
-		pos.add(new int[] {xCoord + 1, yCoord, zCoord + 2});
-		pos.add(new int[] {xCoord - 1, yCoord, zCoord - 2});
-		pos.add(new int[] {xCoord + 1, yCoord, zCoord - 2});
+		List<int[]> pos = new ArrayList<>(this.connected);
+		pos.add(new int[] {this.xCoord + 2, this.yCoord, this.zCoord - 1});
+		pos.add(new int[] {this.xCoord + 2, this.yCoord, this.zCoord + 1});
+		pos.add(new int[] {this.xCoord - 2, this.yCoord, this.zCoord - 1});
+		pos.add(new int[] {this.xCoord - 2, this.yCoord, this.zCoord + 1});
+		pos.add(new int[] {this.xCoord - 1, this.yCoord, this.zCoord + 2});
+		pos.add(new int[] {this.xCoord + 1, this.yCoord, this.zCoord + 2});
+		pos.add(new int[] {this.xCoord - 1, this.yCoord, this.zCoord - 2});
+		pos.add(new int[] {this.xCoord + 1, this.yCoord, this.zCoord - 2});
 		return pos;
 	}
 
@@ -67,11 +67,11 @@ public class TileEntitySubstation extends TileEntityPylonBase {
 
 	@Override
 	public List<Integer> getProxies() {
-		List<Integer> proxies = new ArrayList();
-		proxies.add(IEnergyConductor.getIdentityFromPos(xCoord + 1, yCoord, zCoord + 1));
-		proxies.add(IEnergyConductor.getIdentityFromPos(xCoord + 1, yCoord, zCoord - 1));
-		proxies.add(IEnergyConductor.getIdentityFromPos(xCoord - 1, yCoord, zCoord + 1));
-		proxies.add(IEnergyConductor.getIdentityFromPos(xCoord - 1, yCoord, zCoord - 1));
+		List<Integer> proxies = new ArrayList<>();
+		proxies.add(IEnergyConductor.getIdentityFromPos(this.xCoord + 1, this.yCoord, this.zCoord + 1));
+		proxies.add(IEnergyConductor.getIdentityFromPos(this.xCoord + 1, this.yCoord, this.zCoord - 1));
+		proxies.add(IEnergyConductor.getIdentityFromPos(this.xCoord - 1, this.yCoord, this.zCoord + 1));
+		proxies.add(IEnergyConductor.getIdentityFromPos(this.xCoord - 1, this.yCoord, this.zCoord - 1));
 		return proxies;
 	}
 }

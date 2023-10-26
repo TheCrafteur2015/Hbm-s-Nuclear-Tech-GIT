@@ -22,26 +22,26 @@ public interface IToolable {
 		TORCH,
 		BOLT;
 		
-		public List<ItemStack> stacksForDisplay = new ArrayList();
-		private static HashMap<ComparableStack, ToolType> map = new HashMap();
+		public List<ItemStack> stacksForDisplay = new ArrayList<>();
+		private static HashMap<ComparableStack, ToolType> map = new HashMap<>();
 		
 		public void register(ItemStack stack) {
-			stacksForDisplay.add(stack);
+			this.stacksForDisplay.add(stack);
 		}
 		
 		public static ToolType getType(ItemStack stack) {
 			
-			if(!map.isEmpty()) {
-				return map.get(new ComparableStack(stack));
+			if(!ToolType.map.isEmpty()) {
+				return ToolType.map.get(new ComparableStack(stack));
 			}
 			
 			for(ToolType type : ToolType.values()) {
 				for(ItemStack tool : type.stacksForDisplay) {
-					map.put(new ComparableStack(tool), type);
+					ToolType.map.put(new ComparableStack(tool), type);
 				}
 			}
 			
-			return map.get(new ComparableStack(stack));
+			return ToolType.map.get(new ComparableStack(stack));
 		}
 	}
 }

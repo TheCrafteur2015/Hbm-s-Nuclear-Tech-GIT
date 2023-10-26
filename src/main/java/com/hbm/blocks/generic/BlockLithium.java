@@ -27,6 +27,7 @@ public class BlockLithium extends BlockBeaconable {
 				|| world.getBlock(x, y, z - 1).getMaterial() == Material.water;
 	}
 
+	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
 
 		if (touchesWater(world, x, y, z)) {
@@ -35,6 +36,7 @@ public class BlockLithium extends BlockBeaconable {
 		}
 	}
 
+	@Override
 	public int onBlockPlaced(World world, int x, int y, int z, int side, float fx, float fy, float fz, int meta) {
 
 		if (touchesWater(world, x, y, z)) {
@@ -45,6 +47,7 @@ public class BlockLithium extends BlockBeaconable {
 		return meta;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
 

@@ -40,8 +40,8 @@ public class EntityGrenadeBouncyGeneric extends EntityGrenadeBouncyBase implemen
 
 	@Override
 	public void explode() {
-		getGrenade().explode(this, this.getThrower(), worldObj, posX, posY, posZ);
-		this.setDead();
+		getGrenade().explode(this, getThrower(), this.worldObj, this.posX, this.posY, this.posZ);
+		setDead();
 	}
 
 	@Override

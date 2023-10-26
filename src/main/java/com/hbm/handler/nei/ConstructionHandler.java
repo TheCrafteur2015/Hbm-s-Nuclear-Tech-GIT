@@ -13,7 +13,7 @@ import net.minecraft.util.EnumChatFormatting;
 public class ConstructionHandler extends NEIUniversalHandler {
 
 	public ConstructionHandler() {
-		super("Construction", getRecipes(true), getRecipes(false));
+		super("Construction", ConstructionHandler.getRecipes(true), ConstructionHandler.getRecipes(false));
 	}
 
 	@Override
@@ -26,8 +26,8 @@ public class ConstructionHandler extends NEIUniversalHandler {
 	
 	public static HashMap<Object[], Object> getRecipes(boolean recipes) {
 		
-		if(!bufferedRecipes.isEmpty()) {
-			return recipes ? bufferedRecipes : bufferedTools;
+		if(!ConstructionHandler.bufferedRecipes.isEmpty()) {
+			return recipes ? ConstructionHandler.bufferedRecipes : ConstructionHandler.bufferedTools;
 		}
 		
 		/* WATZ */
@@ -40,8 +40,8 @@ public class ConstructionHandler extends NEIUniversalHandler {
 				new ItemStack(ModBlocks.watz_cooler, 26),
 				new ItemStack(ModItems.boltgun)};
 
-		bufferedRecipes.put(watz, new ItemStack(ModBlocks.watz));
-		bufferedTools.put(watz, new ItemStack(ModBlocks.struct_watz_core));
+		ConstructionHandler.bufferedRecipes.put(watz, new ItemStack(ModBlocks.watz));
+		ConstructionHandler.bufferedTools.put(watz, new ItemStack(ModBlocks.struct_watz_core));
 		
 		/* ITER */
 		ItemStack[] iter = new ItemStack[] {
@@ -54,8 +54,8 @@ public class ConstructionHandler extends NEIUniversalHandler {
 				new ItemStack(ModBlocks.reinforced_glass, 8),
 				new ItemStack(ModItems.blowtorch)};
 
-		bufferedRecipes.put(iter, new ItemStack(ModBlocks.iter));
-		bufferedTools.put(iter, new ItemStack(ModBlocks.struct_iter_core));
+		ConstructionHandler.bufferedRecipes.put(iter, new ItemStack(ModBlocks.iter));
+		ConstructionHandler.bufferedTools.put(iter, new ItemStack(ModBlocks.struct_iter_core));
 		
 		/* PLASMA HEATER */
 		ItemStack[] heater = new ItemStack[] {
@@ -63,14 +63,14 @@ public class ConstructionHandler extends NEIUniversalHandler {
 				new ItemStack(ModBlocks.fusion_heater, 64),
 				new ItemStack(ModBlocks.fusion_heater, 64) };
 
-		bufferedRecipes.put(heater, new ItemStack(ModBlocks.plasma_heater));
-		bufferedTools.put(heater, new ItemStack(ModBlocks.struct_plasma_core));
+		ConstructionHandler.bufferedRecipes.put(heater, new ItemStack(ModBlocks.plasma_heater));
+		ConstructionHandler.bufferedTools.put(heater, new ItemStack(ModBlocks.struct_plasma_core));
 		
 		/* COMPACT LAUNCHER */
 		ItemStack[] launcher = new ItemStack[] { new ItemStack(ModBlocks.struct_launcher, 8) };
 
-		bufferedRecipes.put(launcher, new ItemStack(ModBlocks.compact_launcher));
-		bufferedTools.put(launcher, new ItemStack(ModBlocks.struct_launcher_core));
+		ConstructionHandler.bufferedRecipes.put(launcher, new ItemStack(ModBlocks.compact_launcher));
+		ConstructionHandler.bufferedTools.put(launcher, new ItemStack(ModBlocks.struct_launcher_core));
 		
 		/* LAUNCH TABLE */
 		ItemStack[] table = new ItemStack[] {
@@ -78,8 +78,8 @@ public class ConstructionHandler extends NEIUniversalHandler {
 				new ItemStack(ModBlocks.struct_launcher, 64),
 				new ItemStack(ModBlocks.struct_scaffold, 11)};
 
-		bufferedRecipes.put(table, new ItemStack(ModBlocks.launch_table));
-		bufferedTools.put(table, new ItemStack(ModBlocks.struct_launcher_core_large));
+		ConstructionHandler.bufferedRecipes.put(table, new ItemStack(ModBlocks.launch_table));
+		ConstructionHandler.bufferedTools.put(table, new ItemStack(ModBlocks.struct_launcher_core_large));
 		
 		/* SOYUZ LAUNCHER */
 		ItemStack[] soysauce = new ItemStack[] {
@@ -90,9 +90,9 @@ public class ConstructionHandler extends NEIUniversalHandler {
 				new ItemStack(ModBlocks.concrete_smooth, 8),
 				ItemStackUtil.addTooltipToStack(new ItemStack(ModBlocks.concrete_smooth, 320), EnumChatFormatting.RED + "5x64"),};
 
-		bufferedRecipes.put(soysauce, new ItemStack(ModBlocks.soyuz_launcher));
-		bufferedTools.put(soysauce, new ItemStack(ModBlocks.struct_soyuz_core));
+		ConstructionHandler.bufferedRecipes.put(soysauce, new ItemStack(ModBlocks.soyuz_launcher));
+		ConstructionHandler.bufferedTools.put(soysauce, new ItemStack(ModBlocks.struct_soyuz_core));
 		
-		return recipes ? bufferedRecipes : bufferedTools;
+		return recipes ? ConstructionHandler.bufferedRecipes : ConstructionHandler.bufferedTools;
 	}
 }

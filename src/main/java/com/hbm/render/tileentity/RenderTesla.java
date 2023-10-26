@@ -31,10 +31,10 @@ public class RenderTesla extends TileEntitySpecialRenderer {
         TileEntityTesla tesla = (TileEntityTesla)tileEntity;
 
         double sx = tesla.xCoord + 0.5D;
-        double sy = tesla.yCoord + tesla.offset;
+        double sy = tesla.yCoord + TileEntityTesla.offset;
         double sz = tesla.zCoord + 0.5D;
 
-        GL11.glTranslated(0.0D, tesla.offset, 0.0D);
+        GL11.glTranslated(0.0D, TileEntityTesla.offset, 0.0D);
         for(double[] target : tesla.targets) {
         	
         	double length = Math.sqrt(Math.pow(target[0] - sx, 2) + Math.pow(target[1] - sy, 2) + Math.pow(target[2] - sz, 2));

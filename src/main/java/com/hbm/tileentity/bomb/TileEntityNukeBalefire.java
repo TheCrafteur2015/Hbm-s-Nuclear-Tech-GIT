@@ -27,7 +27,7 @@ public class TileEntityNukeBalefire extends TileEntityMachineBase implements IGU
 
 	public TileEntityNukeBalefire() {
 		super(2);
-		timer = 18000;
+		this.timer = 18000;
 	}
 
 	@Override
@@ -38,49 +38,52 @@ public class TileEntityNukeBalefire extends TileEntityMachineBase implements IGU
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			if(!this.isLoaded()) {
-				started = false;
+			if(!isLoaded()) {
+				this.started = false;
 			}
 			
-			if(started) {
-				timer--;
+			if(this.started) {
+				this.timer--;
 				
-				if(timer % 20 == 0)
-					worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:weapon.fstbmbPing", 5.0F, 1.0F);
+				if(this.timer % 20 == 0)
+					this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:weapon.fstbmbPing", 5.0F, 1.0F);
 			}
 			
-			if(timer <= 0) {
+			if(this.timer <= 0) {
 				explode();
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setInteger("timer", timer);
-			data.setBoolean("loaded", this.isLoaded());
-			data.setBoolean("started", started);
+			data.setInteger("timer", this.timer);
+			data.setBoolean("loaded", isLoaded());
+			data.setBoolean("started", this.started);
 			networkPack(data, 250);
 		}
 	}
 	
+	@Override
 	public void networkUnpack(NBTTagCompound data) {
 		
-		timer = data.getInteger("timer");
-		started = data.getBoolean("started");
-		loaded = data.getBoolean("loaded");
+		this.timer = data.getInteger("timer");
+		this.started = data.getBoolean("started");
+		this.loaded = data.getBoolean("loaded");
 	}
 	
+	@Override
 	public void handleButtonPacket(int value, int meta) {
 		
-		if(meta == 0 && this.isLoaded()) {
-			worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:weapon.fstbmbStart", 5.0F, 1.0F);
-			started = true;
+		if(meta == 0 && isLoaded()) {
+			this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:weapon.fstbmbStart", 5.0F, 1.0F);
+			this.started = true;
 		}
 		
 		if(meta == 1)
-			timer = value * 20;
+			this.timer = value * 20;
 	}
 	
+	@Override
 	public boolean isLoaded() {
 		
 		return hasEgg() && hasBattery();
@@ -88,7 +91,7 @@ public class TileEntityNukeBalefire extends TileEntityMachineBase implements IGU
 	
 	public boolean hasEgg() {
 		
-		if(slots[0] != null && slots[0].getItem() == ModItems.egg_balefire) {
+		if(this.slots[0] != null && this.slots[0].getItem() == ModItems.egg_balefire) {
 			return true;
 		}
 		
@@ -102,13 +105,13 @@ public class TileEntityNukeBalefire extends TileEntityMachineBase implements IGU
 	
 	public int getBattery() {
 		
-		if(slots[1] != null && slots[1].getItem() == ModItems.battery_spark &&
-				((IBatteryItem)ModItems.battery_spark).getCharge(slots[1]) == ((IBatteryItem)ModItems.battery_spark).getMaxCharge()) {
+		if(this.slots[1] != null && this.slots[1].getItem() == ModItems.battery_spark &&
+				((IBatteryItem)ModItems.battery_spark).getCharge(this.slots[1]) == ((IBatteryItem)ModItems.battery_spark).getMaxCharge()) {
 			return 1;
 		}
 		
-		if(slots[1] != null && slots[1].getItem() == ModItems.battery_trixite &&
-				((IBatteryItem)ModItems.battery_trixite).getCharge(slots[1]) == ((IBatteryItem)ModItems.battery_trixite).getMaxCharge()) {
+		if(this.slots[1] != null && this.slots[1].getItem() == ModItems.battery_trixite &&
+				((IBatteryItem)ModItems.battery_trixite).getCharge(this.slots[1]) == ((IBatteryItem)ModItems.battery_trixite).getMaxCharge()) {
 			return 2;
 		}
 		
@@ -117,23 +120,23 @@ public class TileEntityNukeBalefire extends TileEntityMachineBase implements IGU
 	
 	public void explode() {
 		
-		for(int i = 0; i < slots.length; i++)
-			slots[i] = null;
+		for(int i = 0; i < this.slots.length; i++)
+			this.slots[i] = null;
 		
-		worldObj.func_147480_a(xCoord, yCoord, zCoord, false);
+		this.worldObj.func_147480_a(this.xCoord, this.yCoord, this.zCoord, false);
 		
-		EntityBalefire bf = new EntityBalefire(worldObj);
-		bf.posX = xCoord + 0.5;
-		bf.posY = yCoord + 0.5;
-		bf.posZ = zCoord + 0.5;
+		EntityBalefire bf = new EntityBalefire(this.worldObj);
+		bf.posX = this.xCoord + 0.5;
+		bf.posY = this.yCoord + 0.5;
+		bf.posZ = this.zCoord + 0.5;
 		bf.destructionRange = (int) 250;
-		worldObj.spawnEntityInWorld(bf);
-		EntityNukeTorex.statFacBale(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, 250);
+		this.worldObj.spawnEntityInWorld(bf);
+		EntityNukeTorex.statFacBale(this.worldObj, this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, 250);
 	}
 	
 	public String getMinutes() {
 		
-		String mins = "" + (timer / 1200);
+		String mins = "" + (this.timer / 1200);
 		
 		if(mins.length() == 1)
 			mins = "0" + mins;
@@ -143,7 +146,7 @@ public class TileEntityNukeBalefire extends TileEntityMachineBase implements IGU
 	
 	public String getSeconds() {
 		
-		String mins = "" + ((timer / 20) % 60);
+		String mins = "" + ((this.timer / 20) % 60);
 		
 		if(mins.length() == 1)
 			mins = "0" + mins;
@@ -155,16 +158,16 @@ public class TileEntityNukeBalefire extends TileEntityMachineBase implements IGU
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		
-		started = nbt.getBoolean("started");
-		timer = nbt.getInteger("timer");
+		this.started = nbt.getBoolean("started");
+		this.timer = nbt.getInteger("timer");
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		
-		nbt.setBoolean("started", started);
-		nbt.setInteger("timer", timer);
+		nbt.setBoolean("started", this.started);
+		nbt.setInteger("timer", this.timer);
 	}
 	
 	@Override

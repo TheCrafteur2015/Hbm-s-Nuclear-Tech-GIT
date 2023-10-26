@@ -52,7 +52,7 @@ public class ParticleFoundry extends EntityFX {
 		this.prevPosZ = this.posZ;
 
 		if(this.particleAge++ >= this.particleMaxAge) {
-			this.setDead();
+			setDead();
 		}
 	}
 
@@ -89,35 +89,35 @@ public class ParticleFoundry extends EntityFX {
 		GL11.glDisable(GL11.GL_CULL_FACE);
 		GL11.glDisable(GL11.GL_BLEND);
 		GL11.glTranslatef(pX, pY, pZ);
-		this.theRenderEngine.bindTexture(lava);
+		this.theRenderEngine.bindTexture(ParticleFoundry.lava);
 		
 		tess.startDrawingQuads();
 		tess.setNormal(0.0F, 1.0F, 0.0F);
 		tess.setBrightness(240);
 
-		double dirXG = dir.offsetX * girth;
-		double dirZG = dir.offsetZ * girth;
+		double dirXG = this.dir.offsetX * girth;
+		double dirZG = this.dir.offsetZ * girth;
 		double rotXW = rot.offsetX * width;
 		double rotZW = rot.offsetZ * width;
 		
 		double uMin = 0.5 - width;
 		double uMax = 0.5 + width;
 		double vMin = 0;
-		double vMax = length;
+		double vMax = this.length;
 		
 		double add = (int)(System.currentTimeMillis() / 100 % 16) / 16D;
 
 		//lower back
 		tess.addVertexWithUV(rotXW,		girth,		rotZW,	uMax,	vMax + add + girth);
 		tess.addVertexWithUV(-rotXW,	girth,		-rotZW,	uMin,	vMax + add + girth);
-		tess.addVertexWithUV(-rotXW,	-length,	-rotZW,	uMin,	vMin + add);
-		tess.addVertexWithUV(rotXW,		-length,	rotZW,	uMax,	vMin + add);
+		tess.addVertexWithUV(-rotXW,	-this.length,	-rotZW,	uMin,	vMin + add);
+		tess.addVertexWithUV(rotXW,		-this.length,	rotZW,	uMax,	vMin + add);
 
 		//lower front
 		tess.addVertexWithUV(dirXG + rotXW,	0,			dirZG + rotZW,	uMax,	vMax + add);
 		tess.addVertexWithUV(dirXG - rotXW,	0,			dirZG - rotZW,	uMin,	vMax + add);
-		tess.addVertexWithUV(dirXG - rotXW,	-length,	dirZG - rotZW,	uMin,	vMin + add);
-		tess.addVertexWithUV(dirXG + rotXW,	-length,	dirZG + rotZW,	uMax,	vMin + add);
+		tess.addVertexWithUV(dirXG - rotXW,	-this.length,	dirZG - rotZW,	uMin,	vMin + add);
+		tess.addVertexWithUV(dirXG + rotXW,	-this.length,	dirZG + rotZW,	uMax,	vMin + add);
 		
 		double wMin = 0;
 		double wMax = girth;
@@ -125,43 +125,43 @@ public class ParticleFoundry extends EntityFX {
 		//lower left
 		tess.addVertexWithUV(rotXW,			girth,		rotZW,			wMin, vMax + add + girth);
 		tess.addVertexWithUV(dirXG + rotXW,	0,			dirZG + rotZW,	wMax, vMax + add);
-		tess.addVertexWithUV(dirXG + rotXW,	-length,	dirZG + rotZW,	wMax, vMin + add);
-		tess.addVertexWithUV(rotXW,			-length,	rotZW,			wMin, vMin + add);
+		tess.addVertexWithUV(dirXG + rotXW,	-this.length,	dirZG + rotZW,	wMax, vMin + add);
+		tess.addVertexWithUV(rotXW,			-this.length,	rotZW,			wMin, vMin + add);
 		
 		//lower right
 		tess.addVertexWithUV(-rotXW,		girth,		-rotZW,			wMin, vMax + add + girth);
 		tess.addVertexWithUV(dirXG - rotXW,	0,			dirZG - rotZW,	wMax, vMax + add);
-		tess.addVertexWithUV(dirXG - rotXW,	-length,	dirZG - rotZW,	wMax, vMin + add);
-		tess.addVertexWithUV(-rotXW,		-length,	-rotZW,			wMin, vMin + add);
+		tess.addVertexWithUV(dirXG - rotXW,	-this.length,	dirZG - rotZW,	wMax, vMin + add);
+		tess.addVertexWithUV(-rotXW,		-this.length,	-rotZW,			wMin, vMin + add);
 
-		double dirOX = dir.offsetX * offset;
-		double dirOZ = dir.offsetZ * offset;
+		double dirOX = this.dir.offsetX * this.offset;
+		double dirOZ = this.dir.offsetZ * this.offset;
 		
-		vMax = offset;
+		vMax = this.offset;
 
 		//upper back
 		tess.addVertexWithUV(rotXW,				0,		rotZW,			uMax, vMax - add);
 		tess.addVertexWithUV(-rotXW,			0,		-rotZW,			uMin, vMax - add);
-		tess.addVertexWithUV(-rotXW - dirOX,	base,	-rotZW - dirOZ,	uMin, vMin - add);
-		tess.addVertexWithUV(rotXW - dirOX,		base,	rotZW - dirOZ,	uMax, vMin - add);
+		tess.addVertexWithUV(-rotXW - dirOX,	this.base,	-rotZW - dirOZ,	uMin, vMin - add);
+		tess.addVertexWithUV(rotXW - dirOX,		this.base,	rotZW - dirOZ,	uMax, vMin - add);
 		
 		//upper front
 		tess.addVertexWithUV(rotXW,				girth,			rotZW,			uMax, vMax - add + 0.25);
 		tess.addVertexWithUV(-rotXW,			girth,			-rotZW,			uMin, vMax - add + 0.25);
-		tess.addVertexWithUV(-rotXW - dirOX,	base + girth,	-rotZW - dirOZ,	uMin, vMin - add + 0.25);
-		tess.addVertexWithUV(rotXW - dirOX,		base + girth,	rotZW - dirOZ,	uMax, vMin - add + 0.25);
+		tess.addVertexWithUV(-rotXW - dirOX,	this.base + girth,	-rotZW - dirOZ,	uMin, vMin - add + 0.25);
+		tess.addVertexWithUV(rotXW - dirOX,		this.base + girth,	rotZW - dirOZ,	uMax, vMin - add + 0.25);
 		
 		//upper left
 		tess.addVertexWithUV(rotXW,			0,				rotZW,			wMax, vMax - add + 0.75);
 		tess.addVertexWithUV(rotXW,			girth,			rotZW,			wMin, vMax - add + 0.75);
-		tess.addVertexWithUV(rotXW - dirOX,	base + girth,	rotZW - dirOZ,	wMin, vMin - add + 0.75);
-		tess.addVertexWithUV(rotXW - dirOX,	base,			rotZW - dirOZ,	wMax, vMin - add + 0.75);
+		tess.addVertexWithUV(rotXW - dirOX,	this.base + girth,	rotZW - dirOZ,	wMin, vMin - add + 0.75);
+		tess.addVertexWithUV(rotXW - dirOX,	this.base,			rotZW - dirOZ,	wMax, vMin - add + 0.75);
 		
 		//upper right
 		tess.addVertexWithUV(-rotXW,			0,				-rotZW,			wMax, vMax - add + 0.75);
 		tess.addVertexWithUV(-rotXW,			girth,			-rotZW,			wMin, vMax - add + 0.75);
-		tess.addVertexWithUV(-rotXW - dirOX,	base + girth,	-rotZW - dirOZ,	wMin, vMin - add + 0.75);
-		tess.addVertexWithUV(-rotXW - dirOX,	base,			-rotZW - dirOZ, wMax, vMin - add + 0.75);
+		tess.addVertexWithUV(-rotXW - dirOX,	this.base + girth,	-rotZW - dirOZ,	wMin, vMin - add + 0.75);
+		tess.addVertexWithUV(-rotXW - dirOX,	this.base,			-rotZW - dirOZ, wMax, vMin - add + 0.75);
 		
 		vMax = 0.125F;
 		

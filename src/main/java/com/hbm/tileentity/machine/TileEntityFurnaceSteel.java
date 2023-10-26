@@ -51,71 +51,71 @@ public class TileEntityFurnaceSteel extends TileEntityMachineBase implements IGU
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			tryPullHeat();
 			
 			this.wasOn = false;
 			
-			int burn = (heat - this.maxHeat / 3) / 10;
+			int burn = (this.heat - TileEntityFurnaceSteel.maxHeat / 3) / 10;
 			
 			for(int i = 0; i < 3; i++) {
 				
-				if(slots[i] == null || lastItems[i] == null || !slots[i].isItemEqual(lastItems[i])) {
-					progress[i] = 0;
-					bonus[i] = 0;
+				if(this.slots[i] == null || this.lastItems[i] == null || !this.slots[i].isItemEqual(this.lastItems[i])) {
+					this.progress[i] = 0;
+					this.bonus[i] = 0;
 				}
 				
 				if(canSmelt(i)) {
-					progress[i] += burn;
+					this.progress[i] += burn;
 					this.heat -= burn;
 					this.wasOn = true;
-					if(worldObj.getTotalWorldTime() % 20 == 0) PollutionHandler.incrementPollution(worldObj, xCoord, yCoord, zCoord, PollutionType.SOOT, PollutionHandler.SOOT_PER_SECOND * 2);
+					if(this.worldObj.getTotalWorldTime() % 20 == 0) PollutionHandler.incrementPollution(this.worldObj, this.xCoord, this.yCoord, this.zCoord, PollutionType.SOOT, PollutionHandler.SOOT_PER_SECOND * 2);
 				}
 				
-				lastItems[i] = slots[i];
+				this.lastItems[i] = this.slots[i];
 				
-				if(progress[i] >= processTime) {
-					ItemStack result = FurnaceRecipes.smelting().getSmeltingResult(slots[i]);
+				if(this.progress[i] >= TileEntityFurnaceSteel.processTime) {
+					ItemStack result = FurnaceRecipes.smelting().getSmeltingResult(this.slots[i]);
 					
-					if(slots[i + 3] == null) {
-						slots[i + 3] = result.copy();
+					if(this.slots[i + 3] == null) {
+						this.slots[i + 3] = result.copy();
 					} else {
-						slots[i + 3].stackSize += result.stackSize;
+						this.slots[i + 3].stackSize += result.stackSize;
 					}
 					
-					this.addBonus(slots[i], i);
+					addBonus(this.slots[i], i);
 					
-					while(bonus[i] >= 100) {
-						slots[i + 3].stackSize =  Math.min(slots[i + 3].getMaxStackSize(), slots[i + 3].stackSize + result.stackSize);
-						bonus[i] -= 100;
+					while(this.bonus[i] >= 100) {
+						this.slots[i + 3].stackSize =  Math.min(this.slots[i + 3].getMaxStackSize(), this.slots[i + 3].stackSize + result.stackSize);
+						this.bonus[i] -= 100;
 					}
 					
-					this.decrStackSize(i, 1);
+					decrStackSize(i, 1);
 					
-					progress[i] = 0;
+					this.progress[i] = 0;
 					
 				}
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setIntArray("progress", progress);
-			data.setIntArray("bonus", bonus);
-			data.setInteger("heat", heat);
-			data.setBoolean("wasOn", wasOn);
-			this.networkPack(data, 50);
+			data.setIntArray("progress", this.progress);
+			data.setIntArray("bonus", this.bonus);
+			data.setInteger("heat", this.heat);
+			data.setBoolean("wasOn", this.wasOn);
+			networkPack(data, 50);
 		} else {
 			
 			if(this.wasOn) {
-				ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - 10);
+				ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - 10);
 				ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 				
-				worldObj.spawnParticle("smoke", xCoord + 0.5 - dir.offsetX * 1.125 - rot.offsetX * 0.75, yCoord + 2.625, zCoord + 0.5 - dir.offsetZ * 1.125 - rot.offsetZ * 0.75, 0.0, 0.05, 0.0);
+				this.worldObj.spawnParticle("smoke", this.xCoord + 0.5 - dir.offsetX * 1.125 - rot.offsetX * 0.75, this.yCoord + 2.625, this.zCoord + 0.5 - dir.offsetZ * 1.125 - rot.offsetZ * 0.75, 0.0, 0.05, 0.0);
 				
-				if(worldObj.rand.nextInt(20) == 0)
-					worldObj.spawnParticle("cloud", xCoord + 0.5 + dir.offsetX * 0.75, yCoord + 2, zCoord + 0.5 + dir.offsetZ * 0.75, 0.0, 0.05, 0.0);
+				if(this.worldObj.rand.nextInt(20) == 0)
+					this.worldObj.spawnParticle("cloud", this.xCoord + 0.5 + dir.offsetX * 0.75, this.yCoord + 2, this.zCoord + 0.5 + dir.offsetZ * 0.75, 0.0, 0.05, 0.0);
 
-				if(worldObj.rand.nextInt(15) == 0)
-					worldObj.spawnParticle("lava", xCoord + 0.5 + dir.offsetX * 1.5 + rot.offsetX * (worldObj.rand.nextDouble() - 0.5), yCoord + 0.75, zCoord + 0.5 + dir.offsetZ * 1.5 + rot.offsetZ * (worldObj.rand.nextDouble() - 0.5), dir.offsetX * 0.5D, 0.05, dir.offsetZ * 0.5D);
+				if(this.worldObj.rand.nextInt(15) == 0)
+					this.worldObj.spawnParticle("lava", this.xCoord + 0.5 + dir.offsetX * 1.5 + rot.offsetX * (this.worldObj.rand.nextDouble() - 0.5), this.yCoord + 0.75, this.zCoord + 0.5 + dir.offsetZ * 1.5 + rot.offsetZ * (this.worldObj.rand.nextDouble() - 0.5), dir.offsetX * 0.5D, 0.05, dir.offsetZ * 0.5D);
 
 			}
 		}
@@ -141,8 +141,8 @@ public class TileEntityFurnaceSteel extends TileEntityMachineBase implements IGU
 		for(int i = 0; i < list.tagCount(); i++) {
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("lastItem");
-			if(b0 >= 0 && b0 < lastItems.length) {
-				lastItems[b0] = ItemStack.loadItemStackFromNBT(nbt1);
+			if(b0 >= 0 && b0 < this.lastItems.length) {
+				this.lastItems[b0] = ItemStack.loadItemStackFromNBT(nbt1);
 			}
 		}
 	}
@@ -151,16 +151,16 @@ public class TileEntityFurnaceSteel extends TileEntityMachineBase implements IGU
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 
-		nbt.setIntArray("progress", progress);
-		nbt.setIntArray("bonus", bonus);
-		nbt.setInteger("heat", heat);
+		nbt.setIntArray("progress", this.progress);
+		nbt.setIntArray("bonus", this.bonus);
+		nbt.setInteger("heat", this.heat);
 		
 		NBTTagList list = new NBTTagList();
-		for(int i = 0; i < lastItems.length; i++) {
-			if(lastItems[i] != null) {
+		for(int i = 0; i < this.lastItems.length; i++) {
+			if(this.lastItems[i] != null) {
 				NBTTagCompound nbt1 = new NBTTagCompound();
 				nbt1.setByte("lastItem", (byte) i);
-				lastItems[i].writeToNBT(nbt1);
+				this.lastItems[i].writeToNBT(nbt1);
 				list.appendTag(nbt1);
 			}
 		}
@@ -173,16 +173,15 @@ public class TileEntityFurnaceSteel extends TileEntityMachineBase implements IGU
 		
 		for(String name : names) {
 			if(name.startsWith("ore")) { this.bonus[index] += 25; return; }
-			if(name.startsWith("log")) { this.bonus[index] += 50; return; }
-			if(name.equals("anyTar")) { this.bonus[index] += 50; return; }
+			if(name.startsWith("log") || name.equals("anyTar")) { this.bonus[index] += 50; return; }
 		}
 	}
 	
 	protected void tryPullHeat() {
 		
-		if(this.heat >= this.maxHeat) return;
+		if(this.heat >= TileEntityFurnaceSteel.maxHeat) return;
 		
-		TileEntity con = worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
+		TileEntity con = this.worldObj.getTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
 		
 		if(con instanceof IHeatSource) {
 			IHeatSource source = (IHeatSource) con;
@@ -193,11 +192,11 @@ public class TileEntityFurnaceSteel extends TileEntityMachineBase implements IGU
 			}
 			
 			if(diff > 0) {
-				diff = (int) Math.ceil(diff * diffusion);
+				diff = (int) Math.ceil(diff * TileEntityFurnaceSteel.diffusion);
 				source.useUpHeat(diff);
 				this.heat += diff;
-				if(this.heat > this.maxHeat)
-					this.heat = this.maxHeat;
+				if(this.heat > TileEntityFurnaceSteel.maxHeat)
+					this.heat = TileEntityFurnaceSteel.maxHeat;
 				return;
 			}
 		}
@@ -207,16 +206,15 @@ public class TileEntityFurnaceSteel extends TileEntityMachineBase implements IGU
 	
 	public boolean canSmelt(int index) {
 		
-		if(this.heat < this.maxHeat / 3) return false;
-		if(slots[index] == null) return false;
+		if((this.heat < TileEntityFurnaceSteel.maxHeat / 3) || (this.slots[index] == null)) return false;
 		
-		ItemStack result = FurnaceRecipes.smelting().getSmeltingResult(slots[index]);
+		ItemStack result = FurnaceRecipes.smelting().getSmeltingResult(this.slots[index]);
 		
 		if(result == null) return false;
-		if(slots[index + 3] == null) return true;
+		if(this.slots[index + 3] == null) return true;
 		
-		if(!result.isItemEqual(slots[index + 3])) return false;
-		if(result.stackSize + slots[index + 3].stackSize > slots[index + 3].getMaxStackSize()) return false;
+		if(!result.isItemEqual(this.slots[index + 3])) return false;
+		if(result.stackSize + this.slots[index + 3].stackSize > this.slots[index + 3].getMaxStackSize()) return false;
 		
 		return true;
 	}
@@ -256,18 +254,18 @@ public class TileEntityFurnaceSteel extends TileEntityMachineBase implements IGU
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 1,
-					yCoord,
-					zCoord - 1,
-					xCoord + 2,
-					yCoord + 3,
-					zCoord + 2
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 1,
+					this.yCoord,
+					this.zCoord - 1,
+					this.xCoord + 2,
+					this.yCoord + 3,
+					this.zCoord + 2
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override

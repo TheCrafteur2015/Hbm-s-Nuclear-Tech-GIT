@@ -5397,6 +5397,7 @@ tile.sellafield.5.name=Sellafite-Corium
 tile.sellafield_slaked.name=Slaked Sellafite
 tile.semtex.name=Semtex
 tile.sliding_blast_door.name=Sliding Blast Door
+tile.sliding_blast_door_2.name=Sliding Blast Door 2
 tile.solar_mirror.name=Heliostat Mirror
 tile.soyuz_capsule.name=Cargo Landing Capsule
 tile.soyuz_launcher.name=Soyuz Launch Platform

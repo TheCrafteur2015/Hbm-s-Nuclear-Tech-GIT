@@ -24,7 +24,7 @@ public class GUIMachineGasFlare extends GuiInfoContainer {
 	
 	public GUIMachineGasFlare(InventoryPlayer invPlayer, TileEntityMachineGasFlare tedf) {
 		super(new ContainerMachineGasFlare(invPlayer, tedf));
-		flare = tedf;
+		this.flare = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 203;
@@ -34,27 +34,28 @@ public class GUIMachineGasFlare extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 79, guiTop + 16, 35, 10, mouseX, mouseY, I18nUtil.resolveKeyArray("flare.valve"));
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 79, guiTop + 50, 35, 14, mouseX, mouseY, I18nUtil.resolveKeyArray("flare.ignition"));
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 79, this.guiTop + 16, 35, 10, mouseX, mouseY, I18nUtil.resolveKeyArray("flare.valve"));
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 79, this.guiTop + 50, 35, 14, mouseX, mouseY, I18nUtil.resolveKeyArray("flare.ignition"));
 		
-		flare.tank.renderTankInfo(this, mouseX, mouseY, guiLeft + 35, guiTop + 69 - 52, 16, 52);
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 143, guiTop + 69 - 52, 16, 52, flare.power, flare.maxPower);
+		this.flare.tank.renderTankInfo(this, mouseX, mouseY, this.guiLeft + 35, this.guiTop + 69 - 52, 16, 52);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 143, this.guiTop + 69 - 52, 16, 52, this.flare.power, TileEntityMachineGasFlare.maxPower);
 	}
 
+	@Override
 	protected void mouseClicked(int x, int y, int i) {
 		super.mouseClicked(x, y, i);
 
-		if(guiLeft + 89 <= x && guiLeft + 89 + 16 > x && guiTop + 16 < y && guiTop + 16 + 10 >= y) {
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+		if(this.guiLeft + 89 <= x && this.guiLeft + 89 + 16 > x && this.guiTop + 16 < y && this.guiTop + 16 + 10 >= y) {
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 			NBTTagCompound data = new NBTTagCompound();
 			data.setBoolean("valve", true);
-			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, flare.xCoord, flare.yCoord, flare.zCoord));
+			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, this.flare.xCoord, this.flare.yCoord, this.flare.zCoord));
 			
-		} else if(guiLeft + 89 <= x && guiLeft + 89 + 16 > x && guiTop + 50 < y && guiTop + 50 + 14 >= y) {
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+		} else if(this.guiLeft + 89 <= x && this.guiLeft + 89 + 16 > x && this.guiTop + 50 < y && this.guiTop + 50 + 14 >= y) {
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 			NBTTagCompound data = new NBTTagCompound();
 			data.setBoolean("dial", true);
-			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, flare.xCoord, flare.yCoord, flare.zCoord));
+			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, this.flare.xCoord, this.flare.yCoord, this.flare.zCoord));
 		}
 		
 	}
@@ -70,18 +71,18 @@ public class GUIMachineGasFlare extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIMachineGasFlare.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
-		int j = (int)flare.getPowerScaled(52);
-		drawTexturedModalRect(guiLeft + 143, guiTop + 69 - j, 176, 94 - j, 16, j);
+		int j = (int)this.flare.getPowerScaled(52);
+		drawTexturedModalRect(this.guiLeft + 143, this.guiTop + 69 - j, 176, 94 - j, 16, j);
 
-		if(flare.isOn)  drawTexturedModalRect(guiLeft + 79, guiTop + 15, 176, 0, 35, 10);
-		if(flare.doesBurn)  drawTexturedModalRect(guiLeft + 79, guiTop + 49, 176, 10, 35, 14);
+		if(this.flare.isOn)  drawTexturedModalRect(this.guiLeft + 79, this.guiTop + 15, 176, 0, 35, 10);
+		if(this.flare.doesBurn)  drawTexturedModalRect(this.guiLeft + 79, this.guiTop + 49, 176, 10, 35, 14);
 		
-		if(flare.isOn && flare.doesBurn && flare.tank.getFill() > 0 && flare.tank.getTankType().hasTrait(FT_Flammable.class))
-			drawTexturedModalRect(guiLeft + 88, guiTop + 29, 176, 24, 18, 18);
+		if(this.flare.isOn && this.flare.doesBurn && this.flare.tank.getFill() > 0 && this.flare.tank.getTankType().hasTrait(FT_Flammable.class))
+			drawTexturedModalRect(this.guiLeft + 88, this.guiTop + 29, 176, 24, 18, 18);
 		
-		flare.tank.renderTank(guiLeft + 35, guiTop + 69, this.zLevel, 16, 52);
+		this.flare.tank.renderTank(this.guiLeft + 35, this.guiTop + 69, this.zLevel, 16, 52);
 	}
 }

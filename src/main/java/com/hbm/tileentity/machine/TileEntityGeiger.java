@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.hbm.handler.radiation.ChunkRadiationManager;
+
 import cpw.mods.fml.common.Optional;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
@@ -20,47 +21,47 @@ public class TileEntityGeiger extends TileEntity implements SimpleComponent {
 	@Override
 	public void updateEntity() {
 		
-		timer++;
+		this.timer++;
 		
-		if(timer == 10) {
-			timer = 0;
-			ticker = check();
+		if(this.timer == 10) {
+			this.timer = 0;
+			this.ticker = check();
 		}
 		
-		if(timer % 5 == 0) {
-			if(ticker > 0) {
-				List<Integer> list = new ArrayList<Integer>();
+		if(this.timer % 5 == 0) {
+			if(this.ticker > 0) {
+				List<Integer> list = new ArrayList<>();
 
-				if(ticker < 1)
+				if(this.ticker < 1)
 					list.add(0);
-				if(ticker < 5)
+				if(this.ticker < 5)
 					list.add(0);
-				if(ticker < 10)
+				if(this.ticker < 10)
 					list.add(1);
-				if(ticker > 5 && ticker < 15)
+				if(this.ticker > 5 && this.ticker < 15)
 					list.add(2);
-				if(ticker > 10 && ticker < 20)
+				if(this.ticker > 10 && this.ticker < 20)
 					list.add(3);
-				if(ticker > 15 && ticker < 25)
+				if(this.ticker > 15 && this.ticker < 25)
 					list.add(4);
-				if(ticker > 20 && ticker < 30)
+				if(this.ticker > 20 && this.ticker < 30)
 					list.add(5);
-				if(ticker > 25)
+				if(this.ticker > 25)
 					list.add(6);
 			
-				int r = list.get(worldObj.rand.nextInt(list.size()));
+				int r = list.get(this.worldObj.rand.nextInt(list.size()));
 				
 				if(r > 0)
-		        	worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:item.geiger" + r, 1.0F, 1.0F);
-			} else if(worldObj.rand.nextInt(50) == 0) {
-				worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:item.geiger"+ (1 + worldObj.rand.nextInt(1)), 1.0F, 1.0F);
+		        	this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:item.geiger" + r, 1.0F, 1.0F);
+			} else if(this.worldObj.rand.nextInt(50) == 0) {
+				this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:item.geiger"+ (1 + this.worldObj.rand.nextInt(1)), 1.0F, 1.0F);
 			}
 		}
 		
 	}
 
 	public int check() {
-		int rads = (int)Math.ceil(ChunkRadiationManager.proxy.getRadiation(worldObj, xCoord, yCoord, zCoord));
+		int rads = (int)Math.ceil(ChunkRadiationManager.proxy.getRadiation(this.worldObj, this.xCoord, this.yCoord, this.zCoord));
 		return rads;
 	}
 	@Override

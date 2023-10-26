@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 public class IconUtil {
 	
 	public static ResourceLocation getTextureFromBlock(Block b) {
-		return getTextureFromBlockAndSide(b, 1);
+		return IconUtil.getTextureFromBlockAndSide(b, 1);
 	}
 	
 	public static ResourceLocation getTextureFromBlockAndSide(Block b, int side) {

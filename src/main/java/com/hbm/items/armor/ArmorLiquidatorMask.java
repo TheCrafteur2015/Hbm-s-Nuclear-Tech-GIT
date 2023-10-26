@@ -3,8 +3,8 @@ package com.hbm.items.armor;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.hbm.util.ArmorUtil;
 import com.hbm.util.ArmorRegistry.HazardClass;
+import com.hbm.util.ArmorUtil;
 
 import api.hbm.item.IGasMask;
 import cpw.mods.fml.relauncher.Side;
@@ -22,7 +22,7 @@ public class ArmorLiquidatorMask extends ArmorLiquidator implements IGasMask {
 
 	@Override
 	public ArrayList<HazardClass> getBlacklist(ItemStack stack, EntityLivingBase entity) {
-		return new ArrayList(); // full hood has no restrictions
+		return new ArrayList<>(); // full hood has no restrictions
 	}
 
 	@Override
@@ -40,6 +40,7 @@ public class ArmorLiquidatorMask extends ArmorLiquidator implements IGasMask {
 		ArmorUtil.damageGasMaskFilter(stack, damage);
 	}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		ArmorUtil.addGasMaskTooltip(stack, player, list, ext);
@@ -55,7 +56,7 @@ public class ArmorLiquidatorMask extends ArmorLiquidator implements IGasMask {
 		
 		if(player.isSneaking()) {
 			
-			ItemStack filter = this.getFilter(stack, player);
+			ItemStack filter = getFilter(stack, player);
 			
 			if(filter != null) {
 				ArmorUtil.removeFilter(stack);

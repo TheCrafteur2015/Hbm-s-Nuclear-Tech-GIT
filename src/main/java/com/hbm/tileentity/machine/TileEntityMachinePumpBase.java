@@ -20,18 +20,18 @@ import net.minecraft.util.AxisAlignedBB;
 
 public abstract class TileEntityMachinePumpBase extends TileEntityLoadedBase implements IFluidStandardTransceiver, INBTPacketReceiver {
 	
-	public static final HashSet<Block> validBlocks = new HashSet();
+	public static final HashSet<Block> validBlocks = new HashSet<>();
 	
 	static {
-		validBlocks.add(Blocks.grass);
-		validBlocks.add(Blocks.dirt);
-		validBlocks.add(Blocks.sand);
-		validBlocks.add(Blocks.mycelium);
-		validBlocks.add(ModBlocks.waste_earth);
-		validBlocks.add(ModBlocks.dirt_dead);
-		validBlocks.add(ModBlocks.dirt_oily);
-		validBlocks.add(ModBlocks.sand_dirty);
-		validBlocks.add(ModBlocks.sand_dirty_red);
+		TileEntityMachinePumpBase.validBlocks.add(Blocks.grass);
+		TileEntityMachinePumpBase.validBlocks.add(Blocks.dirt);
+		TileEntityMachinePumpBase.validBlocks.add(Blocks.sand);
+		TileEntityMachinePumpBase.validBlocks.add(Blocks.mycelium);
+		TileEntityMachinePumpBase.validBlocks.add(ModBlocks.waste_earth);
+		TileEntityMachinePumpBase.validBlocks.add(ModBlocks.dirt_dead);
+		TileEntityMachinePumpBase.validBlocks.add(ModBlocks.dirt_oily);
+		TileEntityMachinePumpBase.validBlocks.add(ModBlocks.sand_dirty);
+		TileEntityMachinePumpBase.validBlocks.add(ModBlocks.sand_dirty_red);
 	}
 	
 	public FluidTank water;
@@ -42,27 +42,28 @@ public abstract class TileEntityMachinePumpBase extends TileEntityLoadedBase imp
 	public boolean onGround = false;
 	public int groundCheckDelay = 0;
 	
+	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			for(DirPos pos : getConPos()) {
-				if(water.getFill() > 0) this.sendFluid(water, worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+				if(this.water.getFill() > 0) this.sendFluid(this.water, this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 			}
 			
-			if(groundCheckDelay > 0) {
-				groundCheckDelay--;
+			if(this.groundCheckDelay > 0) {
+				this.groundCheckDelay--;
 			} else {
-				onGround = this.checkGround();
+				this.onGround = checkGround();
 			}
 			
 			this.isOn = false;
-			if(this.canOperate() && yCoord <= 70 && onGround) {
+			if(canOperate() && this.yCoord <= 70 && this.onGround) {
 				this.isOn = true;
-				this.operate();
+				operate();
 			}
 			
-			NBTTagCompound data = this.getSync();
+			NBTTagCompound data = getSync();
 			INBTPacketReceiver.networkPack(this, data, 150);
 			
 		} else {
@@ -74,15 +75,15 @@ public abstract class TileEntityMachinePumpBase extends TileEntityLoadedBase imp
 				this.rotor -= 360F;
 				this.lastRotor -= 360F;
 				
-				MainRegistry.proxy.playSoundClient(xCoord, yCoord, zCoord, "hbm:block.steamEngineOperate", 0.5F, 0.75F);
-				MainRegistry.proxy.playSoundClient(xCoord, yCoord, zCoord, "game.neutral.swim.splash", 1F, 0.5F);
+				MainRegistry.proxy.playSoundClient(this.xCoord, this.yCoord, this.zCoord, "hbm:block.steamEngineOperate", 0.5F, 0.75F);
+				MainRegistry.proxy.playSoundClient(this.xCoord, this.yCoord, this.zCoord, "game.neutral.swim.splash", 1F, 0.5F);
 			}
 		}
 	}
 	
 	protected boolean checkGround() {
 		
-		if(worldObj.provider.hasNoSky) return false;
+		if(this.worldObj.provider.hasNoSky) return false;
 		
 		int validBlocks = 0;
 		int invalidBlocks = 0;
@@ -91,11 +92,11 @@ public abstract class TileEntityMachinePumpBase extends TileEntityLoadedBase imp
 			for(int y = -1; y >= -4; y--) {
 				for(int z = -1; z <= 1; z++) {
 					
-					Block b = worldObj.getBlock(xCoord + x, yCoord + y, zCoord + z);
+					Block b = this.worldObj.getBlock(this.xCoord + x, this.yCoord + y, this.zCoord + z);
 					
 					if(y == -1 && !b.isNormalCube()) return false; // first layer has to be full solid
 					
-					if(this.validBlocks.contains(b)) validBlocks++;
+					if(TileEntityMachinePumpBase.validBlocks.contains(b)) validBlocks++;
 					else invalidBlocks ++;
 				}
 			}
@@ -106,9 +107,9 @@ public abstract class TileEntityMachinePumpBase extends TileEntityLoadedBase imp
 	
 	protected NBTTagCompound getSync() {
 		NBTTagCompound data = new NBTTagCompound();
-		data.setBoolean("isOn", isOn);
-		data.setBoolean("onGround", onGround);
-		water.writeToNBT(data, "w");
+		data.setBoolean("isOn", this.isOn);
+		data.setBoolean("onGround", this.onGround);
+		this.water.writeToNBT(data, "w");
 		return data;
 	}
 
@@ -116,7 +117,7 @@ public abstract class TileEntityMachinePumpBase extends TileEntityLoadedBase imp
 	public void networkUnpack(NBTTagCompound nbt) {
 		this.isOn = nbt.getBoolean("isOn");
 		this.onGround = nbt.getBoolean("onGround");
-		water.readFromNBT(nbt, "w");
+		this.water.readFromNBT(nbt, "w");
 	}
 
 	protected abstract boolean canOperate();
@@ -124,21 +125,21 @@ public abstract class TileEntityMachinePumpBase extends TileEntityLoadedBase imp
 	
 	protected DirPos[] getConPos() {
 		return new DirPos[] {
-				new DirPos(xCoord + 2, yCoord, zCoord, Library.POS_X),
-				new DirPos(xCoord - 2, yCoord, zCoord, Library.NEG_X),
-				new DirPos(xCoord, yCoord, zCoord + 2, Library.POS_Z),
-				new DirPos(xCoord, yCoord, zCoord - 2, Library.NEG_Z)
+				new DirPos(this.xCoord + 2, this.yCoord, this.zCoord, Library.POS_X),
+				new DirPos(this.xCoord - 2, this.yCoord, this.zCoord, Library.NEG_X),
+				new DirPos(this.xCoord, this.yCoord, this.zCoord + 2, Library.POS_Z),
+				new DirPos(this.xCoord, this.yCoord, this.zCoord - 2, Library.NEG_Z)
 		};
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return new FluidTank[] {water};
+		return new FluidTank[] {this.water};
 	}
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return new FluidTank[] {water};
+		return new FluidTank[] {this.water};
 	}
 
 	@Override
@@ -151,18 +152,18 @@ public abstract class TileEntityMachinePumpBase extends TileEntityLoadedBase imp
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 1,
-					yCoord,
-					zCoord - 1,
-					xCoord + 2,
-					yCoord + 5,
-					zCoord + 2
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 1,
+					this.yCoord,
+					this.zCoord - 1,
+					this.xCoord + 2,
+					this.yCoord + 5,
+					this.zCoord + 2
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override

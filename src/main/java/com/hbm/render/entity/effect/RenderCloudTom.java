@@ -40,7 +40,7 @@ public class RenderCloudTom extends Render {
 		Tessellator tess = Tessellator.instance;
 		tess.startDrawingQuads();
 		
-		bindTexture(this.getEntityTexture(blast));
+		bindTexture(getEntityTexture(blast));
 		
         GL11.glMatrixMode(GL11.GL_TEXTURE);
         GL11.glLoadIdentity();

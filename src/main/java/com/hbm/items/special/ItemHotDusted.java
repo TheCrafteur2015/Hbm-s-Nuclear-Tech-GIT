@@ -9,7 +9,7 @@ public class ItemHotDusted extends ItemHot {
 
 	public ItemHotDusted(int heat) {
 		super(heat);
-		this.setHasSubtypes(true);
+		setHasSubtypes(true);
 	}
 	
 	@Override
@@ -18,6 +18,6 @@ public class ItemHotDusted extends ItemHot {
 	}
 	
 	public static int getMaxHeat(ItemStack stack) {
-		return heat - stack.getItemDamage() * 10;
+		return ItemHot.heat - stack.getItemDamage() * 10;
 	}
 }

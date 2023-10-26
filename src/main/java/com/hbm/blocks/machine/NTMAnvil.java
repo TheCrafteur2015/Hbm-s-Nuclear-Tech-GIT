@@ -49,23 +49,23 @@ public class NTMAnvil extends BlockFallingNT implements ITooltipProvider, IGUIPr
 
 	public NTMAnvil(Material mat, int tier) {
 		super(mat);
-		this.setStepSound(Block.soundTypeAnvil);
-		this.setHardness(5.0F);
-		this.setResistance(100.0F);
+		setStepSound(Block.soundTypeAnvil);
+		setHardness(5.0F);
+		setResistance(100.0F);
 		this.tier = tier;
 		
-		List<NTMAnvil> anvils = tierMap.get((Integer)tier);
+		List<NTMAnvil> anvils = NTMAnvil.tierMap.get(tier);
 		if(anvils == null)
-			anvils = new ArrayList();
+			anvils = new ArrayList<>();
 		anvils.add(this);
-		tierMap.put((Integer)tier, anvils);
+		NTMAnvil.tierMap.put(tier, anvils);
 	}
 	
 	public static List<ItemStack> getAnvilsFromTier(int tier) {
-		List<NTMAnvil> anvils = tierMap.get((Integer)tier);
+		List<NTMAnvil> anvils = NTMAnvil.tierMap.get(tier);
 		
 		if(anvils != null) {
-			List<ItemStack> stacks = new ArrayList();
+			List<ItemStack> stacks = new ArrayList<>();
 			
 			for(NTMAnvil anvil : anvils)
 				stacks.add(new ItemStack(anvil));
@@ -73,7 +73,7 @@ public class NTMAnvil extends BlockFallingNT implements ITooltipProvider, IGUIPr
 			return stacks;
 		}
 		
-		return new ArrayList();
+		return new ArrayList<>();
 	}
 	
 	@Override
@@ -98,7 +98,7 @@ public class NTMAnvil extends BlockFallingNT implements ITooltipProvider, IGUIPr
 
 	@Override
 	public int getRenderType() {
-		return renderID;
+		return NTMAnvil.renderID;
 	}
 
 	@Override
@@ -152,10 +152,10 @@ public class NTMAnvil extends BlockFallingNT implements ITooltipProvider, IGUIPr
 		int meta = world.getBlockMetadata(x, y, z);
 		
 		if(meta == 2 || meta == 3)
-			this.setBlockBounds(0.0F, 0.0F, 0.25F, 1.0F, 0.75F, 0.75F);
+			setBlockBounds(0.0F, 0.0F, 0.25F, 1.0F, 0.75F, 0.75F);
 		
 		if(meta == 4 || meta == 5)
-			this.setBlockBounds(0.25F, 0.0F, 0.0F, 0.75F, 0.75F, 1.0F);
+			setBlockBounds(0.25F, 0.0F, 0.0F, 0.75F, 0.75F, 1.0F);
 	}
 
 	@Override
@@ -163,17 +163,18 @@ public class NTMAnvil extends BlockFallingNT implements ITooltipProvider, IGUIPr
 		int meta = world.getBlockMetadata(x, y, z);
 		
 		if(meta == 2 || meta == 3)
-			this.setBlockBounds(0.0F, 0.0F, 0.25F, 1.0F, 0.75F, 0.75F);
+			setBlockBounds(0.0F, 0.0F, 0.25F, 1.0F, 0.75F, 0.75F);
 		
 		if(meta == 4 || meta == 5)
-			this.setBlockBounds(0.25F, 0.0F, 0.0F, 0.75F, 0.75F, 1.0F);
+			setBlockBounds(0.25F, 0.0F, 0.0F, 0.75F, 0.75F, 1.0F);
 		
 		return AxisAlignedBB.getBoundingBox(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-		list.add(EnumChatFormatting.GOLD + "Tier " + tier + " Anvil");
+		list.add(EnumChatFormatting.GOLD + "Tier " + this.tier + " Anvil");
 	}
 
 	@Override
@@ -197,6 +198,7 @@ public class NTMAnvil extends BlockFallingNT implements ITooltipProvider, IGUIPr
 	@SideOnly(Side.CLIENT)
 	public void overrideRenderer(EntityFallingBlockNT falling, RenderBlocks renderBlocks, Tessellator tessellator) {
 
+		@SuppressWarnings("unused")
 		World world = falling.worldObj;
 		float rotation = 0;
 

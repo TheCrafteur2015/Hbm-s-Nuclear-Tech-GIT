@@ -34,18 +34,18 @@ public class TEMissileMultipartPacket implements IMessage {
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		x = buf.readInt();
-		y = buf.readInt();
-		z = buf.readInt();
-		missile = MissileStruct.readFromByteBuffer(buf);
+		this.x = buf.readInt();
+		this.y = buf.readInt();
+		this.z = buf.readInt();
+		this.missile = MissileStruct.readFromByteBuffer(buf);
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeInt(x);
-		buf.writeInt(y);
-		buf.writeInt(z);
-		missile.writeToByteBuffer(buf);
+		buf.writeInt(this.x);
+		buf.writeInt(this.y);
+		buf.writeInt(this.z);
+		this.missile.writeToByteBuffer(buf);
 	}
 
 	public static class Handler implements IMessageHandler<TEMissileMultipartPacket, IMessage> {

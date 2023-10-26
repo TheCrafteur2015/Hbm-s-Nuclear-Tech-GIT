@@ -44,7 +44,8 @@ public class BlockHadronCore extends BlockContainer {
 		this.iconOut = iconRegister.registerIcon(RefStrings.MODID + ":hadron_core_out");
 	}
 	
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
     	
     	if(side == meta)
@@ -58,7 +59,8 @@ public class BlockHadronCore extends BlockContainer {
         return this.blockIcon;
     }
 	
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
+    @Override
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
     	
         int l = BlockPistonBase.determineOrientation(world, x, y, z, player);
         world.setBlockMetadataWithNotify(x, y, z, l, 2);

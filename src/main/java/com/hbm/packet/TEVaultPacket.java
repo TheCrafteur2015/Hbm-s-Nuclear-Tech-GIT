@@ -38,24 +38,24 @@ public class TEVaultPacket implements IMessage {
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		x = buf.readInt();
-		y = buf.readInt();
-		z = buf.readInt();
-		isOpening = buf.readBoolean();
-		state = buf.readInt();
-		sysTime = buf.readLong();
-		type = buf.readInt();
+		this.x = buf.readInt();
+		this.y = buf.readInt();
+		this.z = buf.readInt();
+		this.isOpening = buf.readBoolean();
+		this.state = buf.readInt();
+		this.sysTime = buf.readLong();
+		this.type = buf.readInt();
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeInt(x);
-		buf.writeInt(y);
-		buf.writeInt(z);
-		buf.writeBoolean(isOpening);
-		buf.writeInt(state);
-		buf.writeLong(sysTime);
-		buf.writeInt(type);
+		buf.writeInt(this.x);
+		buf.writeInt(this.y);
+		buf.writeInt(this.z);
+		buf.writeBoolean(this.isOpening);
+		buf.writeInt(this.state);
+		buf.writeLong(this.sysTime);
+		buf.writeInt(this.type);
 	}
 
 	public static class Handler implements IMessageHandler<TEVaultPacket, IMessage> {

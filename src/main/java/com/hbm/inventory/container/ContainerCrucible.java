@@ -18,23 +18,23 @@ public class ContainerCrucible extends Container {
 		this.crucible = crucible;
 		
 		//template
-		this.addSlotToContainer(new SlotNonRetarded(crucible, 0, 107, 81));
+		addSlotToContainer(new SlotNonRetarded(crucible, 0, 107, 81));
 		
 		//input
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 3; j++) {
-				this.addSlotToContainer(new SlotNonRetarded(crucible, j + i * 3 + 1, 107 + j * 18, 18 + i * 18));
+				addSlotToContainer(new SlotNonRetarded(crucible, j + i * 3 + 1, 107 + j * 18, 18 + i * 18));
 			}
 		}
 		
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 132 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 132 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 190));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 190));
 		}
 	}
 
@@ -48,7 +48,7 @@ public class ContainerCrucible extends Container {
 			stack = originalStack.copy();
 
 			if(index <= 9) {
-				if(!this.mergeItemStack(originalStack, 10, this.inventorySlots.size(), true)) {
+				if(!mergeItemStack(originalStack, 10, this.inventorySlots.size(), true)) {
 					return null;
 				}
 				
@@ -70,6 +70,6 @@ public class ContainerCrucible extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return crucible.isUseableByPlayer(player);
+		return this.crucible.isUseableByPlayer(player);
 	}
 }

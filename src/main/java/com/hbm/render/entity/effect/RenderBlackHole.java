@@ -27,7 +27,7 @@ public class RenderBlackHole extends Render {
 	protected ResourceLocation disc = new ResourceLocation(RefStrings.MODID, "textures/entity/bholeDisc.png");
 
 	public RenderBlackHole() {
-		blastModel = AdvancedModelLoader.loadModel(objTesterModelRL);
+		this.blastModel = AdvancedModelLoader.loadModel(RenderBlackHole.objTesterModelRL);
 	}
 
 	@Override
@@ -42,8 +42,8 @@ public class RenderBlackHole extends Render {
 
 		GL11.glScalef(size, size, size);
 
-		bindTexture(hole);
-		blastModel.renderAll();
+		bindTexture(this.hole);
+		this.blastModel.renderAll();
 
 		if(entity instanceof EntityVortex) {
 			renderSwirl(entity, interp);
@@ -102,20 +102,20 @@ public class RenderBlackHole extends Render {
 				for(int i = 0; i < count; i++) {
 					
 					if(j == 0)
-						this.setColorFromIteration(tess, k, 1F);
+						setColorFromIteration(tess, k, 1F);
 					else
 						tess.setColorRGBA_F(1.0F, 1.0F, 1.0F, glow);
 					
 					tess.addVertexWithUV(vec.xCoord * s, 0, vec.zCoord * s, 0.5 + vec.xCoord * 0.25, 0.5 + vec.zCoord * 0.25);
-					this.setColorFromIteration(tess, k, 0F);
+					setColorFromIteration(tess, k, 0F);
 					tess.addVertexWithUV(vec.xCoord * s * 2, 0, vec.zCoord * s * 2, 0.5 + vec.xCoord * 0.5, 0.5 + vec.zCoord * 0.5);
 					
 					vec.rotateAroundY((float)(Math.PI * 2 / count));
-					this.setColorFromIteration(tess, k, 0F);
+					setColorFromIteration(tess, k, 0F);
 					tess.addVertexWithUV(vec.xCoord * s * 2, 0, vec.zCoord * s * 2, 0.5 + vec.xCoord * 0.5, 0.5 + vec.zCoord * 0.5);
 					
 					if(j == 0)
-						this.setColorFromIteration(tess, k, 1F);
+						setColorFromIteration(tess, k, 1F);
 					else
 						tess.setColorRGBA_F(1.0F, 1.0F, 1.0F, glow);
 					
@@ -172,7 +172,7 @@ public class RenderBlackHole extends Render {
 		if(entity instanceof EntityRagingVortex)
 			glow = 0.25F;
 		
-		bindTexture(swirl);
+		bindTexture(this.swirl);
 
 		GL11.glPushMatrix();
 		GL11.glRotatef(entity.getEntityId() % 90 - 45, 1, 0, 0);
@@ -200,7 +200,7 @@ public class RenderBlackHole extends Render {
 				tess.addVertexWithUV(vec.xCoord * 0.9, 0, vec.zCoord * 0.9, 0.5 + vec.xCoord * 0.25 / s * 0.9, 0.5 + vec.zCoord * 0.25 / s * 0.9);
 				
 				if(j == 0)
-					this.setColorFull(entity, tess);
+					setColorFull(entity, tess);
 				else
 					tess.setColorRGBA_F(1.0F, 1.0F, 1.0F, glow);
 				
@@ -209,7 +209,7 @@ public class RenderBlackHole extends Render {
 				vec.rotateAroundY((float)(Math.PI * 2 / count));
 				
 				if(j == 0)
-					this.setColorFull(entity, tess);
+					setColorFull(entity, tess);
 				else
 					tess.setColorRGBA_F(1.0F, 1.0F, 1.0F, glow);
 				
@@ -232,20 +232,20 @@ public class RenderBlackHole extends Render {
 			for(int i = 0; i < count; i++) {
 				
 				if(j == 0)
-					this.setColorFull(entity, tess);
+					setColorFull(entity, tess);
 				else
 					tess.setColorRGBA_F(1.0F, 1.0F, 1.0F, glow);
 				
 				tess.addVertexWithUV(vec.xCoord * s, 0, vec.zCoord * s, 0.5 + vec.xCoord * 0.25, 0.5 + vec.zCoord * 0.25);
-				this.setColorNone(entity, tess);
+				setColorNone(entity, tess);
 				tess.addVertexWithUV(vec.xCoord * s * 2, 0, vec.zCoord * s * 2, 0.5 + vec.xCoord * 0.5, 0.5 + vec.zCoord * 0.5);
 				
 				vec.rotateAroundY((float)(Math.PI * 2 / count));
-				this.setColorNone(entity, tess);
+				setColorNone(entity, tess);
 				tess.addVertexWithUV(vec.xCoord * s * 2, 0, vec.zCoord * s * 2, 0.5 + vec.xCoord * 0.5, 0.5 + vec.zCoord * 0.5);
 				
 				if(j == 0)
-					this.setColorFull(entity, tess);
+					setColorFull(entity, tess);
 				else
 					tess.setColorRGBA_F(1.0F, 1.0F, 1.0F, glow);
 				

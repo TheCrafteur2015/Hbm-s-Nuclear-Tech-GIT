@@ -18,7 +18,7 @@ public class GUIRBMKHeater extends GuiInfoContainer {
 
 	public GUIRBMKHeater(InventoryPlayer invPlayer, TileEntityRBMKHeater tedf) {
 		super(new ContainerRBMKHeater(invPlayer, tedf));
-		rod = tedf;
+		this.rod = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 186;
@@ -28,8 +28,8 @@ public class GUIRBMKHeater extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		rod.feed.renderTankInfo(this, mouseX, mouseY, guiLeft + 68, guiTop + 24, 16, 58);
-		rod.steam.renderTankInfo(this, mouseX, mouseY, guiLeft + 126, guiTop + 24, 16, 58);
+		this.rod.feed.renderTankInfo(this, mouseX, mouseY, this.guiLeft + 68, this.guiTop + 24, 16, 58);
+		this.rod.steam.renderTankInfo(this, mouseX, mouseY, this.guiLeft + 126, this.guiTop + 24, 16, 58);
 	}
 	
 	@Override
@@ -43,15 +43,15 @@ public class GUIRBMKHeater extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIRBMKHeater.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
-		rod.feed.renderTank(guiLeft + 68, guiTop + 82, this.zLevel, 14, 58);
-		rod.steam.renderTank(guiLeft + 126, guiTop + 82, this.zLevel, 14, 58);
+		this.rod.feed.renderTank(this.guiLeft + 68, this.guiTop + 82, this.zLevel, 14, 58);
+		this.rod.steam.renderTank(this.guiLeft + 126, this.guiTop + 82, this.zLevel, 14, 58);
 		
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIRBMKHeater.texture);
 
-		drawTexturedModalRect(guiLeft + 72, guiTop + 72, 176, 0, 10, 10);
-		drawTexturedModalRect(guiLeft + 130, guiTop + 72, 186, 0, 10, 10);
+		drawTexturedModalRect(this.guiLeft + 72, this.guiTop + 72, 176, 0, 10, 10);
+		drawTexturedModalRect(this.guiLeft + 130, this.guiTop + 72, 186, 0, 10, 10);
 	}
 }

@@ -7,8 +7,8 @@ public class RailBooster extends RailGeneric {
 	
 	public RailBooster() {
 		super();
-		this.setMaxSpeed(1.0F);
-		this.setFlexible(false);
+		setMaxSpeed(1.0F);
+		setFlexible(false);
 	}
 
 	@Override

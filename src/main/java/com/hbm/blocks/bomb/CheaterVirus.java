@@ -5,6 +5,7 @@ import java.util.Random;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.config.GeneralConfig;
 import com.hbm.explosion.ExplosionChaos;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -20,7 +21,7 @@ public class CheaterVirus extends Block {
 	
 	public CheaterVirus(Material p_i45394_1_) {
 		super(p_i45394_1_);
-		this.setTickRandomly(true);
+		setTickRandomly(true);
 	}
 
 	@Override
@@ -60,9 +61,9 @@ public class CheaterVirus extends Block {
     			world.setBlock(x, y, z - 1, ModBlocks.cheater_virus);
     		}
     		
-    		protect = false;
+    		CheaterVirus.protect = false;
     		world.setBlock(x, y, z, Blocks.air);
-    		protect = true;
+    		CheaterVirus.protect = true;
     	}
     }
     
@@ -76,10 +77,10 @@ public class CheaterVirus extends Block {
     			(world.getBlock(x, y, z + 1) == Blocks.air || world.getBlock(x, y, z + 1) == ModBlocks.cheater_virus || world.getBlock(x, y, z + 1) == ModBlocks.cheater_virus_seed) && 
     			(world.getBlock(x, y, z - 1) == Blocks.air || world.getBlock(x, y, z - 1) == ModBlocks.cheater_virus || world.getBlock(x, y, z - 1) == ModBlocks.cheater_virus_seed) && 
     			!world.isRemote) {
-			protect = false;
+			CheaterVirus.protect = false;
 			world.setBlock(x, y, z, Blocks.air);
 			ExplosionChaos.spreadVirus(world, x, y, z, 5);
-			protect = true;
+			CheaterVirus.protect = true;
     	}
     }
 

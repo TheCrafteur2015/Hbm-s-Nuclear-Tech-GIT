@@ -29,7 +29,7 @@ public class ItemMultitoolPassive extends Item {
 	Random rand = new Random();
 	
 	public ItemMultitoolPassive() {
-		this.setMaxDamage(5000);
+		setMaxDamage(5000);
 	}
 
 	@Override
@@ -97,8 +97,8 @@ public class ItemMultitoolPassive extends Item {
 				return stack;
 			} else if (this == ModItems.multitool_sky) {
 				for(int i = 0; i < 15; i++) {
-					int a = (int)player.posX - 15 + rand.nextInt(31);
-					int b = (int)player.posZ - 15 + rand.nextInt(31);
+					int a = (int)player.posX - 15 + this.rand.nextInt(31);
+					int b = (int)player.posZ - 15 + this.rand.nextInt(31);
 					//if(!world.isRemote) {
 						EntityLightningBolt blitz = new EntityLightningBolt(world, a, world.getHeightValue(a, b), b);
 						world.spawnEntityInWorld(blitz);
@@ -167,12 +167,12 @@ public class ItemMultitoolPassive extends Item {
 			list.addAll(Library.getBlockPosInPath(x, y, z, l, vec0));
 
 			if(!world.isRemote)
-				for(int j = 0; j < list.size(); j++) {
+				for (int[] element : list) {
 					
-					int x1 = list.get(j)[0];
-					int y1 = list.get(j)[1];
-					int z1 = list.get(j)[2];
-					int w1 = list.get(j)[3];
+					int x1 = element[0];
+					int y1 = element[1];
+					int z1 = element[2];
+					int w1 = element[3];
 					
 					Block b = world.getBlock(x1, y1, z1);
 					float k = b.getExplosionResistance(null);
@@ -206,37 +206,39 @@ public class ItemMultitoolPassive extends Item {
 		return false;
     }
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Multimap getItemAttributeModifiers() {
 		Multimap multimap = super.getItemAttributeModifiers();
 		if(this == ModItems.multitool_ext) {
 			multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
-					new AttributeModifier(field_111210_e, "Weapon modifier", 7, 0));
+					new AttributeModifier(Item.field_111210_e, "Weapon modifier", 7, 0));
 		} else if (this == ModItems.multitool_miner) {
 			multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
-					new AttributeModifier(field_111210_e, "Weapon modifier", 8, 0));
+					new AttributeModifier(Item.field_111210_e, "Weapon modifier", 8, 0));
 		} else if (this == ModItems.multitool_hit) {
 			multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
-					new AttributeModifier(field_111210_e, "Weapon modifier", 16, 0));
+					new AttributeModifier(Item.field_111210_e, "Weapon modifier", 16, 0));
 		} else if (this == ModItems.multitool_beam) {
 			multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
-					new AttributeModifier(field_111210_e, "Weapon modifier", 8, 0));
+					new AttributeModifier(Item.field_111210_e, "Weapon modifier", 8, 0));
 		} else if (this == ModItems.multitool_sky) {
 			multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
-					new AttributeModifier(field_111210_e, "Weapon modifier", 5, 0));
+					new AttributeModifier(Item.field_111210_e, "Weapon modifier", 5, 0));
 		} else if (this == ModItems.multitool_mega) {
 			multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
-					new AttributeModifier(field_111210_e, "Weapon modifier", 12, 0));
+					new AttributeModifier(Item.field_111210_e, "Weapon modifier", 12, 0));
 		} else if (this == ModItems.multitool_joule) {
 			multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
-					new AttributeModifier(field_111210_e, "Weapon modifier", 12, 0));
+					new AttributeModifier(Item.field_111210_e, "Weapon modifier", 12, 0));
 		} else if (this == ModItems.multitool_decon) {
 			multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
-					new AttributeModifier(field_111210_e, "Weapon modifier", 5, 0));
+					new AttributeModifier(Item.field_111210_e, "Weapon modifier", 5, 0));
 		}
 		return multimap;
 	}
     
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool)
 	{

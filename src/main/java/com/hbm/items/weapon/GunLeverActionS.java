@@ -36,7 +36,7 @@ public class GunLeverActionS extends Item {
 		
 		this.maxStackSize = 1;
 
-		this.setMaxDamage(500);
+		setMaxDamage(500);
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class GunLeverActionS extends Item {
 	 */
 	@Override
 	public void onPlayerStoppedUsing(ItemStack p_77615_1_, World p_77615_2_, EntityPlayer p_77615_3_, int p_77615_4_) {
-		int j = this.getMaxItemUseDuration(p_77615_1_) - p_77615_4_;
+		int j = getMaxItemUseDuration(p_77615_1_) - p_77615_4_;
 
 		ArrowLooseEvent event = new ArrowLooseEvent(p_77615_3_, p_77615_1_, j);
 		MinecraftForge.EVENT_BUS.post(event);
@@ -86,20 +86,20 @@ public class GunLeverActionS extends Item {
 
 			p_77615_2_.playSoundAtEntity(p_77615_3_, "hbm:weapon.revolverShootAlt", 5.0F, 0.75F);
 			
-			setAnim(p_77615_1_, 1);
+			GunLeverActionS.setAnim(p_77615_1_, 1);
 		}
 	}
 
 	
     @Override
 	public void onUpdate(ItemStack stack, World world, Entity entity, int i, boolean b) {
-    	int j = getAnim(stack);
+    	int j = GunLeverActionS.getAnim(stack);
     	
     	if(j > 0) {
     		if(j < 30)
-    			setAnim(stack, j + 1);
+    			GunLeverActionS.setAnim(stack, j + 1);
     		else
-    			setAnim(stack, 0);
+    			GunLeverActionS.setAnim(stack, 0);
     		
         	if(j == 15)
         		world.playSoundAtEntity(entity, "hbm:weapon.leverActionReload", 2F, 0.85F);
@@ -138,8 +138,8 @@ public class GunLeverActionS extends Item {
 		ArrowNockEvent event = new ArrowNockEvent(p_77659_3_, p_77659_1_);
 		MinecraftForge.EVENT_BUS.post(event);
 
-		if(this.getAnim(p_77659_1_) == 0)
-			p_77659_3_.setItemInUse(p_77659_1_, this.getMaxItemUseDuration(p_77659_1_));
+		if(getAnim(p_77659_1_) == 0)
+			p_77659_3_.setItemInUse(p_77659_1_, getMaxItemUseDuration(p_77659_1_));
 
 		return p_77659_1_;
 	}
@@ -153,7 +153,8 @@ public class GunLeverActionS extends Item {
 		return 1;
 	}
 
-    public String getItemStackDisplayName(ItemStack stack)
+    @Override
+	public String getItemStackDisplayName(ItemStack stack)
     {
 		if(MainRegistry.polaroidID == 11)
 			return ("" + StatCollector.translateToLocal(this.getUnlocalizedName() + "_2.name")).trim();
@@ -161,6 +162,7 @@ public class GunLeverActionS extends Item {
 			return ("" + StatCollector.translateToLocal(this.getUnlocalizedName() + ".name")).trim();
     }
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
@@ -175,11 +177,12 @@ public class GunLeverActionS extends Item {
 		list.add("[LEGENDARY WEAPON]");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Multimap getItemAttributeModifiers() {
 		Multimap multimap = super.getItemAttributeModifiers();
 		multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
-				new AttributeModifier(field_111210_e, "Weapon modifier", 3.5, 0));
+				new AttributeModifier(Item.field_111210_e, "Weapon modifier", 3.5, 0));
 		return multimap;
 	}
 	
@@ -205,7 +208,7 @@ public class GunLeverActionS extends Item {
 	public static float getRotationFromAnim(ItemStack stack) {
 		float rad = 0.0174533F;
 		rad *= 7.5F;
-		int i = getAnim(stack);
+		int i = GunLeverActionS.getAnim(stack);
 		
 		if(i < 10)
 			return 0;
@@ -218,7 +221,7 @@ public class GunLeverActionS extends Item {
 	}
 	
 	public static float getOffsetFromAnim(ItemStack stack) {
-		float i = getAnim(stack);
+		float i = GunLeverActionS.getAnim(stack);
 		
 		if(i < 10)
 			return 0;

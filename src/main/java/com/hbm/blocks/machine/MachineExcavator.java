@@ -27,7 +27,7 @@ public class MachineExcavator extends BlockDummyable {
 	
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-		return this.standardOpenBehavior(world, x, y, z, player, 0);
+		return standardOpenBehavior(world, x, y, z, player, 0);
 	}
 
 	@Override
@@ -69,9 +69,9 @@ public class MachineExcavator extends BlockDummyable {
 		MultiblockHandlerXR.fillSpace(world, x, y, z, new int[] {-1, 3, -2, 3, 3, 3}, this, dir);
 		
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
-		this.makeExtra(world, x + dir.offsetX * 3 + rot.offsetX, y + 1, z + dir.offsetZ * 3 + rot.offsetZ);
-		this.makeExtra(world, x + dir.offsetX * 3 - rot.offsetX, y + 1, z + dir.offsetZ * 3 - rot.offsetZ);
-		this.makeExtra(world, x + rot.offsetX * 3, y + 1, z + rot.offsetZ * 3);
-		this.makeExtra(world, x - rot.offsetX * 3, y + 1, z - rot.offsetZ * 3);
+		makeExtra(world, x + dir.offsetX * 3 + rot.offsetX, y + 1, z + dir.offsetZ * 3 + rot.offsetZ);
+		makeExtra(world, x + dir.offsetX * 3 - rot.offsetX, y + 1, z + dir.offsetZ * 3 - rot.offsetZ);
+		makeExtra(world, x + rot.offsetX * 3, y + 1, z + rot.offsetZ * 3);
+		makeExtra(world, x - rot.offsetX * 3, y + 1, z - rot.offsetZ * 3);
 	}
 }

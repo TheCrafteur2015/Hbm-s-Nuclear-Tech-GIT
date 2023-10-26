@@ -55,10 +55,10 @@ public class ItemCustomLore extends Item {
 			} else {
 				Random rand = new Random(System.currentTimeMillis() / 500);
 				
-				if(setSize == 0)
-					setSize = Item.itemRegistry.getKeys().size();
+				if(ItemCustomLore.setSize == 0)
+					ItemCustomLore.setSize = Item.itemRegistry.getKeys().size();
 				
-				int r = rand.nextInt(setSize);
+				int r = rand.nextInt(ItemCustomLore.setSize);
 				
 				Item item = Item.getItemById(r);
 				
@@ -75,7 +75,7 @@ public class ItemCustomLore extends Item {
 
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
-		return this.rarity != null ? rarity : super.getRarity(stack);
+		return this.rarity != null ? this.rarity : super.getRarity(stack);
 	}
 
 	@Override

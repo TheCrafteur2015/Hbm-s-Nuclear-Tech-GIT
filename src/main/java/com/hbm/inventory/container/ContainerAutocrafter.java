@@ -14,35 +14,35 @@ public class ContainerAutocrafter extends Container {
 	private TileEntityMachineAutocrafter autocrafter;
 
 	public ContainerAutocrafter(InventoryPlayer invPlayer, TileEntityMachineAutocrafter tedf) {
-		autocrafter = tedf;
+		this.autocrafter = tedf;
 
 		/* TEMPLATE */
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 3; j++) {
-				this.addSlotToContainer(new SlotPattern(tedf, j + i * 3, 44 + j * 18, 22 + i * 18));
+				addSlotToContainer(new SlotPattern(tedf, j + i * 3, 44 + j * 18, 22 + i * 18));
 			}
 		}
-		this.addSlotToContainer(new SlotPattern(tedf, 9, 116, 40));
+		addSlotToContainer(new SlotPattern(tedf, 9, 116, 40));
 
 		/* RECIPE */
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 3; j++) {
-				this.addSlotToContainer(new Slot(tedf, j + i * 3 + 10, 44 + j * 18, 86 + i * 18));
+				addSlotToContainer(new Slot(tedf, j + i * 3 + 10, 44 + j * 18, 86 + i * 18));
 			}
 		}
-		this.addSlotToContainer(new Slot(tedf, 19, 116, 104));
+		addSlotToContainer(new Slot(tedf, 19, 116, 104));
 		
 		//Battery
-		this.addSlotToContainer(new Slot(tedf, 20, 17, 99));
+		addSlotToContainer(new Slot(tedf, 20, 17, 99));
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 158 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 158 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 216));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 216));
 		}
 	}
 
@@ -58,7 +58,7 @@ public class ContainerAutocrafter extends Container {
 			return super.slotClick(index, button, mode, player);
 		}
 
-		Slot slot = this.getSlot(index);
+		Slot slot = getSlot(index);
 		
 		ItemStack ret = null;
 		ItemStack held = player.inventory.getItemStack();
@@ -70,15 +70,15 @@ public class ContainerAutocrafter extends Container {
 		if(index == 9) {
 			
 			if(button == 1 && mode == 0 && slot.getHasStack()) {
-				autocrafter.nextTemplate();
-				this.detectAndSendChanges();
+				this.autocrafter.nextTemplate();
+				detectAndSendChanges();
 			}
 			
 			return ret;
 		}
 		
 		if(button == 1 && mode == 0 && slot.getHasStack()) {
-			autocrafter.nextMode(index);
+			this.autocrafter.nextMode(index);
 			return ret;
 			
 		} else {
@@ -90,8 +90,8 @@ public class ContainerAutocrafter extends Container {
 			}
 			
 			slot.onSlotChanged();
-			autocrafter.initPattern(slot.getStack(), index);
-			autocrafter.updateTemplateGrid();
+			this.autocrafter.initPattern(slot.getStack(), index);
+			this.autocrafter.updateTemplateGrid();
 			
 			return ret;
 		}
@@ -104,6 +104,6 @@ public class ContainerAutocrafter extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return autocrafter.isUseableByPlayer(player);
+		return this.autocrafter.isUseableByPlayer(player);
 	}
 }

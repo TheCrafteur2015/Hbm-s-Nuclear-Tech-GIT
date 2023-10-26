@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 
 public class BlockMultiSlab extends BlockSlab {
 	
-	public static List<Object[]> recipeGen = new ArrayList();
+	public static List<Object[]> recipeGen = new ArrayList<>();
 	
 	public Block[] slabMaterials;
 	public Block single;
@@ -33,53 +33,56 @@ public class BlockMultiSlab extends BlockSlab {
 		
 		if(single == null) {
 			for(int i = 0; i < slabMaterials.length; i++) {
-				recipeGen.add(new Object[] {slabMaterials[i], this, i});
+				BlockMultiSlab.recipeGen.add(new Object[] {slabMaterials[i], this, i});
 			}
 		}
 		
-		this.setBlockTextureName(RefStrings.MODID + ":concrete_smooth");
+		setBlockTextureName(RefStrings.MODID + ":concrete_smooth");
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
-		meta = (meta & 7) % slabMaterials.length;
-		Block block = slabMaterials[meta];
+		meta = (meta & 7) % this.slabMaterials.length;
+		Block block = this.slabMaterials[meta];
 		return block.getIcon(side, meta);
 	}
 
 	@Override
 	public Item getItemDropped(int meta, Random rand, int fortune) {
-		return Item.getItemFromBlock(single != null ? single : this);
+		return Item.getItemFromBlock(this.single != null ? this.single : this);
 	}
 	
 	@Override
 	protected ItemStack createStackedBlock(int meta) {
-		return new ItemStack(Item.getItemFromBlock(single != null ? single : this), 2, (meta & 7) % slabMaterials.length);
+		return new ItemStack(Item.getItemFromBlock(this.single != null ? this.single : this), 2, (meta & 7) % this.slabMaterials.length);
 	}
 	
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
 	public Item getItem(World world, int x, int y, int z) {
-		return Item.getItemFromBlock(single != null ? single : this);
+		return Item.getItemFromBlock(this.single != null ? this.single : this);
 	}
 
 	@Override
 	public String func_150002_b(int meta) {
-		meta = (meta & 7) % slabMaterials.length;
-		Block block = slabMaterials[meta];
+		meta = (meta & 7) % this.slabMaterials.length;
+		Block block = this.slabMaterials[meta];
 		return super.getUnlocalizedName() + "." + block.getUnlocalizedName().substring(5);
 	}
 	
 	@Override
 	public int getDamageValue(World world, int x, int y, int z) {
-		return (super.getDamageValue(world, x, y, z) & 7) % slabMaterials.length;
+		return (super.getDamageValue(world, x, y, z) & 7) % this.slabMaterials.length;
 	}
 	
+	@SuppressWarnings("unchecked")
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 		
-		if(single == null) {
-			for(int i = 0; i < slabMaterials.length; ++i) {
+		if(this.single == null) {
+			for(int i = 0; i < this.slabMaterials.length; ++i) {
 				list.add(new ItemStack(item, 1, i));
 			}
 		}
@@ -88,16 +91,16 @@ public class BlockMultiSlab extends BlockSlab {
 	@Override
 	public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
 		int meta = world.getBlockMetadata(x, y, z);
-		meta = (meta & 7) % slabMaterials.length;
-		Block block = slabMaterials[meta];
+		meta = (meta & 7) % this.slabMaterials.length;
+		Block block = this.slabMaterials[meta];
 		return block.getExplosionResistance(entity);
 	}
 	
 	@Override
 	public float getBlockHardness(World world, int x, int y, int z) {
 		int meta = world.getBlockMetadata(x, y, z);
-		meta = (meta & 7) % slabMaterials.length;
-		Block block = slabMaterials[meta];
+		meta = (meta & 7) % this.slabMaterials.length;
+		Block block = this.slabMaterials[meta];
 		return block.getBlockHardness(world, x, y, z); //relies on block not assuming that they are at that position
 	}
 }

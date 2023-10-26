@@ -40,7 +40,7 @@ public class MachineBoiler extends BlockContainer {
 
 	public MachineBoiler(boolean blockState) {
 		super(Material.iron);
-		isActive = blockState;
+		this.isActive = blockState;
 	}
 	
 	@Override
@@ -84,7 +84,7 @@ public class MachineBoiler extends BlockContainer {
 	@Override
 	public void onBlockAdded(World world, int x, int y, int z) {
 		super.onBlockAdded(world, x, y, z);
-		this.setDefaultDirection(world, x, y, z);
+		setDefaultDirection(world, x, y, z);
 	}
 	
 	private void setDefaultDirection(World world, int x, int y, int z) {
@@ -172,7 +172,7 @@ public class MachineBoiler extends BlockContainer {
 		int i = world.getBlockMetadata(x, y, z);
 		Block block = world.getBlock(x, y, z);
 		TileEntity entity = world.getTileEntity(x, y, z);
-		keepInventory = true;
+		MachineBoiler.keepInventory = true;
 
 		if(block == ModBlocks.machine_boiler_off || block == ModBlocks.machine_boiler_on)
 			if(isProcessing)
@@ -190,7 +190,7 @@ public class MachineBoiler extends BlockContainer {
 				world.setBlock(x, y, z, ModBlocks.machine_boiler_electric_off);
 			}
 		
-		keepInventory = false;
+		MachineBoiler.keepInventory = false;
 		world.setBlockMetadataWithNotify(x, y, z, i, 3);
 		
 		if(entity != null) {
@@ -202,7 +202,7 @@ public class MachineBoiler extends BlockContainer {
 	@Override
 	public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_)
     {
-        if (!keepInventory)
+        if (!MachineBoiler.keepInventory)
         {
         	ISidedInventory tileentityfurnace = (ISidedInventory)p_149749_1_.getTileEntity(p_149749_2_, p_149749_3_, p_149749_4_);
 
@@ -255,7 +255,7 @@ public class MachineBoiler extends BlockContainer {
 	@SideOnly(Side.CLIENT)
     public void randomDisplayTick(World p_149734_1_, int x, int y, int z, Random rand)
     {
-        if (isActive) {
+        if (this.isActive) {
         	
         	if(this == ModBlocks.machine_boiler_on) {
 	            int l = p_149734_1_.getBlockMetadata(x, y, z);

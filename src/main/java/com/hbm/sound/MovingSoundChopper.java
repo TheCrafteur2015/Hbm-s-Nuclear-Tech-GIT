@@ -1,6 +1,7 @@
 package com.hbm.sound;
 
 import com.hbm.entity.mob.EntityHunterChopper;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
@@ -14,7 +15,7 @@ public class MovingSoundChopper extends MovingSoundPlayerLoop {
 	public void update() {
 		super.update();
 		
-		if(player instanceof EntityHunterChopper && ((EntityHunterChopper)player).getIsDying())
-			this.stop();
+		if(this.player instanceof EntityHunterChopper && ((EntityHunterChopper)this.player).getIsDying())
+			stop();
 	}
 }

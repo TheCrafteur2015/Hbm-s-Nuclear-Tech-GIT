@@ -28,22 +28,23 @@ public class TileEntityRadiobox extends TileEntityLoadedBase implements IEnergyU
 	public static long maxPower = 500000;
 	public boolean infinite = false;
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote)
-			this.updateConnections();
+		if(!this.worldObj.isRemote)
+			updateConnections();
 
-		if(!worldObj.isRemote && this.getBlockMetadata() > 5 && (power >= 25000 || infinite)) {
+		if(!this.worldObj.isRemote && getBlockMetadata() > 5 && (this.power >= 25000 || this.infinite)) {
 			
-			if(!infinite) {
-				power -= 25000;
-				this.markDirty();
+			if(!this.infinite) {
+				this.power -= 25000;
+				markDirty();
 			}
 			
 			int range = 15;
 			
-			List<IMob> entities = worldObj.getEntitiesWithinAABB(IMob.class, AxisAlignedBB.getBoundingBox(xCoord - range, yCoord - range, zCoord - range, xCoord + range, yCoord + range, zCoord + range));
+			List<IMob> entities = this.worldObj.getEntitiesWithinAABB(IMob.class, AxisAlignedBB.getBoundingBox(this.xCoord - range, this.yCoord - range, this.zCoord - range, this.xCoord + range, this.yCoord + range, this.zCoord + range));
 			
 			for(IMob entity : entities) {
 				
@@ -57,38 +58,38 @@ public class TileEntityRadiobox extends TileEntityLoadedBase implements IEnergyU
 	private void updateConnections() {
 		
 		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-			this.trySubscribe(worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, dir);
+			trySubscribe(this.worldObj, this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ, dir);
 	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		
-		power = nbt.getLong("power");
-		infinite = nbt.getBoolean("infinite");
+		this.power = nbt.getLong("power");
+		this.infinite = nbt.getBoolean("infinite");
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		
-		nbt.setLong("power", power);
-		nbt.setBoolean("infinite", infinite);
+		nbt.setLong("power", this.power);
+		nbt.setBoolean("infinite", this.infinite);
 	}
 
 	@Override
 	public void setPower(long i) {
-		power = i;
+		this.power = i;
 	}
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 
 	@Override
 	public long getMaxPower() {
-		return maxPower;
+		return TileEntityRadiobox.maxPower;
 	}
 	
 	@Override

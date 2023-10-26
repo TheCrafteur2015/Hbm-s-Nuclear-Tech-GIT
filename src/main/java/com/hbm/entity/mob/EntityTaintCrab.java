@@ -24,15 +24,16 @@ import net.minecraft.world.World;
 
 public class EntityTaintCrab extends EntityCyberCrab {
 	
-	public List<double[]> targets = new ArrayList();
+	public List<double[]> targets = new ArrayList<>();
 
 	public EntityTaintCrab(World p_i1733_1_) {
 		super(p_i1733_1_);
-        this.setSize(1.25F, 1.25F);
+        setSize(1.25F, 1.25F);
         this.ignoreFrustumCheck = true;
 	}
     
-    protected EntityAIArrowAttack arrowAI() {
+    @Override
+	protected EntityAIArrowAttack arrowAI() {
     	return new EntityAIArrowAttack(this, 0.5D, 5, 5, 50.0F);
     }
 
@@ -40,15 +41,16 @@ public class EntityTaintCrab extends EntityCyberCrab {
 	protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(25.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.5F);
+        getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(25.0D);
+        getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.5F);
     }
     
-    public void onLivingUpdate() {
+    @Override
+	public void onLivingUpdate() {
     	
-    	targets = TileEntityTesla.zap(worldObj, posX, posY + 1.25, posZ, 10, this);
+    	this.targets = TileEntityTesla.zap(this.worldObj, this.posX, this.posY + 1.25, this.posZ, 10, this);
 
-		List<EntityLivingBase> targets = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(posX - 5, posY - 5, posZ - 5, posX + 5, posY + 5, posZ + 5));
+		List<EntityLivingBase> targets = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(this.posX - 5, this.posY - 5, this.posZ - 5, this.posX + 5, this.posY + 5, this.posZ + 5));
 		
 		for(EntityLivingBase e : targets) {
 			
@@ -65,15 +67,16 @@ public class EntityTaintCrab extends EntityCyberCrab {
         return ModItems.coil_advanced_alloy;
     }
 
-    protected void dropRareDrop(int p_70600_1_) {
-    	this.dropItem(ModItems.coil_magnetized_tungsten, 1);
+    @Override
+	protected void dropRareDrop(int p_70600_1_) {
+    	dropItem(ModItems.coil_magnetized_tungsten, 1);
     }
 
 	@Override
 	public void attackEntityWithRangedAttack(EntityLivingBase entity, float f) {
 		
-		EntityBulletBaseNT bullet = new EntityBulletBaseNT(worldObj, BulletConfigSyncingUtil.BMG50_STAR, this);
-		Vec3 motion = Vec3.createVectorHelper(posX - entity.posX, posY - entity.posZ - entity.height / 2, posZ - entity.posZ);
+		EntityBulletBaseNT bullet = new EntityBulletBaseNT(this.worldObj, BulletConfigSyncingUtil.BMG50_STAR, this);
+		Vec3 motion = Vec3.createVectorHelper(this.posX - entity.posX, this.posY - entity.posZ - entity.height / 2, this.posZ - entity.posZ);
 		motion = motion.normalize();
 		NBTTagCompound data = new NBTTagCompound();
 		data.setString("type", "vanilla");
@@ -81,8 +84,8 @@ public class EntityTaintCrab extends EntityCyberCrab {
 		data.setDouble("mX", bullet.motionX * 0.3);
 		data.setDouble("mY", bullet.motionY * 0.3);
 		data.setDouble("mZ", bullet.motionZ * 0.3);
-		PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, bullet.posX, bullet.posY, bullet.posZ), new TargetPoint(this.dimension, posX, posY, posZ, 50));
+		PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, bullet.posX, bullet.posY, bullet.posZ), new TargetPoint(this.dimension, this.posX, this.posY, this.posZ, 50));
         this.worldObj.spawnEntityInWorld(bullet);
-        this.playSound("hbm:weapon.sawShoot", 1.0F, 0.5F);
+        playSound("hbm:weapon.sawShoot", 1.0F, 0.5F);
 	}
 }

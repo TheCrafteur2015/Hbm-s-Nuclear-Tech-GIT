@@ -16,28 +16,28 @@ public class ContainerHadron extends Container {
 	
 	public ContainerHadron(InventoryPlayer invPlayer, TileEntityHadron tedf) {
 		
-		hadron = tedf;
+		this.hadron = tedf;
 
 		//Inputs
-		this.addSlotToContainer(new Slot(tedf, 0, 17, 36));
-		this.addSlotToContainer(new Slot(tedf, 1, 35, 36));
+		addSlotToContainer(new Slot(tedf, 0, 17, 36));
+		addSlotToContainer(new Slot(tedf, 1, 35, 36));
 		//Outputs
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 2, 125, 36));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 3, 143, 36));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 2, 125, 36));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 3, 143, 36));
 		//Battery
-		this.addSlotToContainer(new Slot(tedf, 4, 44, 108));
+		addSlotToContainer(new Slot(tedf, 4, 44, 108));
 		
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + (18 * 3) + 2));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + (18 * 3) + 2));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++)
 		{
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + (18 * 3) + 2));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + (18 * 3) + 2));
 		}
 	}
 	
@@ -58,11 +58,11 @@ public class ContainerHadron extends Container {
 			var3 = var5.copy();
 			
             if (par2 <= 4) {
-				if (!this.mergeItemStack(var5, 5, this.inventorySlots.size(), true))
+				if (!mergeItemStack(var5, 5, this.inventorySlots.size(), true))
 				{
 					return null;
 				}
-			} else if (!this.mergeItemStack(var5, 0, 2, false)) {
+			} else if (!mergeItemStack(var5, 0, 2, false)) {
 							return null;
 			}
 			
@@ -81,6 +81,6 @@ public class ContainerHadron extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return hadron.isUseableByPlayer(player);
+		return this.hadron.isUseableByPlayer(player);
 	}
 }

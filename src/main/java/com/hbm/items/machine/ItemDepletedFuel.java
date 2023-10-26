@@ -16,8 +16,8 @@ import net.minecraft.util.EnumChatFormatting;
 public class ItemDepletedFuel extends ItemNuclearWaste {
 	
 	public ItemDepletedFuel() {
-		this.setHasSubtypes(true);
-		this.setMaxDamage(0);
+		setHasSubtypes(true);
+		setMaxDamage(0);
 	}
 	
 	@Override

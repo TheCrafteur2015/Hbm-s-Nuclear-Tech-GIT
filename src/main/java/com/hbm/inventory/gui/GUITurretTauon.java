@@ -14,7 +14,8 @@ public class GUITurretTauon extends GUITurretBase {
 		super(invPlayer, tedf);
 	}
 	
+	@Override
 	protected ResourceLocation getTexture() {
-		return texture;
+		return GUITurretTauon.texture;
 	}
 }

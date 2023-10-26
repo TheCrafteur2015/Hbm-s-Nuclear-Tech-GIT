@@ -21,7 +21,7 @@ public class BlockOutgas extends BlockOre {
 
 	public BlockOutgas(Material mat, boolean randomTick, int rate, boolean onBreak) {
 		super(mat);
-		this.setTickRandomly(randomTick);
+		setTickRandomly(randomTick);
 		this.randomTick = randomTick;
 		this.rate = rate;
 		this.onBreak = onBreak;
@@ -33,8 +33,9 @@ public class BlockOutgas extends BlockOre {
 		this.onNeighbour = onNeighbour;
 	}
 
+	@Override
 	public int tickRate(World world) {
-		return rate;
+		return this.rate;
 	}
 	
 	protected Block getGas() {
@@ -94,8 +95,8 @@ public class BlockOutgas extends BlockOre {
 	@Override
 	public void dropBlockAsItemWithChance(World world, int x, int y, int z, int meta, float chance, int fortune) {
 		
-		if(onBreak) {
-			world.setBlock(x, y, z, this.getGas());
+		if(this.onBreak) {
+			world.setBlock(x, y, z, getGas());
 		}
 		
 		super.dropBlockAsItemWithChance(world, x, y, z, meta, chance, fortune);
@@ -104,7 +105,7 @@ public class BlockOutgas extends BlockOre {
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
 		
-		if(onNeighbour) {
+		if(this.onNeighbour) {
 
 			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 				
@@ -125,7 +126,7 @@ public class BlockOutgas extends BlockOre {
 					for(int iz = -2; iz <= 2; iz++) {
 						
 						if(Math.abs(ix + iy + iz) < 5 && Math.abs(ix + iy + iz) > 0 && world.getBlock(x + ix, y + iy, z + iz) == Blocks.air) {
-							world.setBlock(x + ix, y + iy, z + iz, this.getGas());
+							world.setBlock(x + ix, y + iy, z + iz, getGas());
 						}
 					}
 				}

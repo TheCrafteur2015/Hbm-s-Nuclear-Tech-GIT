@@ -36,11 +36,11 @@ public class EntityAAShell extends Entity {
 	
 	@Override
 	public void onUpdate() {
-		if(fuse > 0)
-			fuse --;
+		if(this.fuse > 0)
+			this.fuse --;
 		
-		if(dFuse > 0) {
-			dFuse --;
+		if(this.dFuse > 0) {
+			this.dFuse --;
 		} else {
 			explode();
 			return;
@@ -53,11 +53,11 @@ public class EntityAAShell extends Entity {
 		
 		for(int i = 0; i < 5; i++) {
 
-			this.setPosition(posX + this.motionX, posY + this.motionY, posZ + this.motionZ);
+			setPosition(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 			
 			rotation();
 			
-			if(fuse == 0) {
+			if(this.fuse == 0) {
 		        List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(this.posX - 5, this.posY - 5, this.posZ - 5, this.posX + 5, this.posY + 5, this.posZ + 5));
 		        for(Entity e : list) {
 		        	float size = e.width * e.width * e.height;
@@ -69,7 +69,7 @@ public class EntityAAShell extends Entity {
 		        }
 			}
 			
-			if(worldObj.getBlock((int)posX, (int)posY, (int)posZ).getMaterial() != Material.air) {
+			if(this.worldObj.getBlock((int)this.posX, (int)this.posY, (int)this.posZ).getMaterial() != Material.air) {
 				explode();
 				return;
 			}
@@ -102,12 +102,12 @@ public class EntityAAShell extends Entity {
 	}
 
 	private void explode() {
-		worldObj.createExplosion(null, posX, posY, posZ, 20, true);
-		ExplosionLarge.spawnParticlesRadial(worldObj, posX, posY, posZ, 35);
-		if(rand.nextInt(15) == 0)
-			ExplosionLarge.spawnShrapnels(worldObj, posX, posY, posZ, 5 + rand.nextInt(11));
-		else if(rand.nextInt(15) == 0)
-			ExplosionLarge.spawnShrapnelShower(worldObj, posX, posY, posZ, motionX * 2, motionY * 2, motionZ * 2, 5 + rand.nextInt(11), 0.15);
-		this.setDead();
+		this.worldObj.createExplosion(null, this.posX, this.posY, this.posZ, 20, true);
+		ExplosionLarge.spawnParticlesRadial(this.worldObj, this.posX, this.posY, this.posZ, 35);
+		if(this.rand.nextInt(15) == 0)
+			ExplosionLarge.spawnShrapnels(this.worldObj, this.posX, this.posY, this.posZ, 5 + this.rand.nextInt(11));
+		else if(this.rand.nextInt(15) == 0)
+			ExplosionLarge.spawnShrapnelShower(this.worldObj, this.posX, this.posY, this.posZ, this.motionX * 2, this.motionY * 2, this.motionZ * 2, 5 + this.rand.nextInt(11), 0.15);
+		setDead();
 	}
 }

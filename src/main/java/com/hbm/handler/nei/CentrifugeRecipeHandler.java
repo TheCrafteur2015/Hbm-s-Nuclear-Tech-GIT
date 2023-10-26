@@ -20,8 +20,8 @@ public class CentrifugeRecipeHandler extends NEIUniversalHandler {
 	@Override
 	public void loadTransferRects() {
 		super.loadTransferRects();
-		transferRectsGui.add(new RecipeTransferRect(new Rectangle(56, 0, 80, 38), "ntmCentrifuge"));
-		guiGui.add(GUIMachineCentrifuge.class);
-		RecipeTransferRectHandler.registerRectsToGuis(guiGui, transferRectsGui);
+		this.transferRectsGui.add(new RecipeTransferRect(new Rectangle(56, 0, 80, 38), "ntmCentrifuge"));
+		this.guiGui.add(GUIMachineCentrifuge.class);
+		RecipeTransferRectHandler.registerRectsToGuis(this.guiGui, this.transferRectsGui);
 	}
 }

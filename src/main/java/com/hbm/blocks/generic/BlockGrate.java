@@ -52,7 +52,7 @@ public class BlockGrate extends Block implements ITooltipProvider {
 
 	@Override
 	public int getRenderType() {
-		return renderID;
+		return BlockGrate.renderID;
 	}
 
 	@Override
@@ -68,13 +68,13 @@ public class BlockGrate extends Block implements ITooltipProvider {
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
 		int meta = world.getBlockMetadata(x, y, z);
-		this.setBlockBounds(0F, meta * 0.125F, 0F, 1F, meta * 0.125F + 0.125F - (this == ModBlocks.steel_grate_wide ? 0.001F : 0), 1F);
+		setBlockBounds(0F, meta * 0.125F, 0F, 1F, meta * 0.125F + 0.125F - (this == ModBlocks.steel_grate_wide ? 0.001F : 0), 1F);
 	}
 
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
 		int meta = world.getBlockMetadata(x, y, z);
-		this.setBlockBounds(0F, meta * 0.125F, 0F, 1F, meta * 0.125F + 0.125F - (this == ModBlocks.steel_grate_wide ? 0.001F : 0), 1F);
+		setBlockBounds(0F, meta * 0.125F, 0F, 1F, meta * 0.125F + 0.125F - (this == ModBlocks.steel_grate_wide ? 0.001F : 0), 1F);
 		return AxisAlignedBB.getBoundingBox(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
 	}
 
@@ -114,8 +114,9 @@ public class BlockGrate extends Block implements ITooltipProvider {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(I18nUtil.resolveKey(this.getUnlocalizedName() + ".desc"));
+		list.add(I18nUtil.resolveKey(getUnlocalizedName() + ".desc"));
 	}
 }

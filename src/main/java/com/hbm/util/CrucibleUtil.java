@@ -8,6 +8,7 @@ import com.hbm.inventory.material.NTMMaterial.SmeltingBehavior;
 import api.hbm.block.ICrucibleAcceptor;
 import net.minecraft.block.Block;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -26,21 +27,21 @@ public class CrucibleUtil {
 		Vec3 end = Vec3.createVectorHelper(x, y - range, z);
 		
 		MovingObjectPosition[] mopHolder = new MovingObjectPosition[1];
-		ICrucibleAcceptor acc = getPouringTarget(world, start, end, mopHolder);
+		ICrucibleAcceptor acc = CrucibleUtil.getPouringTarget(world, start, end, mopHolder);
 		MovingObjectPosition mop = mopHolder[0];
 		
 		if(acc == null) {
-			spill(mop, safe, stack, quanta, impactPosHolder);
+			CrucibleUtil.spill(mop, safe, stack, quanta, impactPosHolder);
 			return stack;
 		}
 		
-		MaterialStack ret = tryPourStack(world, acc, mop, stack, impactPosHolder);
+		MaterialStack ret = CrucibleUtil.tryPourStack(world, acc, mop, stack, impactPosHolder);
 		
 		if(ret != null) {
 			return ret;
 		}
 
-		spill(mop, safe, stack, quanta, impactPosHolder);
+		CrucibleUtil.spill(mop, safe, stack, quanta, impactPosHolder);
 		return stack;
 	}
 	
@@ -57,18 +58,18 @@ public class CrucibleUtil {
 		Vec3 end = Vec3.createVectorHelper(x, y - range, z);
 		
 		MovingObjectPosition[] mopHolder = new MovingObjectPosition[1];
-		ICrucibleAcceptor acc = getPouringTarget(world, start, end, mopHolder);
+		ICrucibleAcceptor acc = CrucibleUtil.getPouringTarget(world, start, end, mopHolder);
 		MovingObjectPosition mop = mopHolder[0];
 		
 		if(acc == null) {
-			return spill(mop, safe, stacks, quanta, impactPosHolder);
+			return CrucibleUtil.spill(mop, safe, stacks, quanta, impactPosHolder);
 		}
 		
 		for(MaterialStack stack : stacks) {
 			
 			int amountToPour = Math.min(stack.amount, quanta);
 			MaterialStack toPour = new MaterialStack(stack.material, amountToPour);
-			MaterialStack left = tryPourStack(world, acc, mop, toPour, impactPosHolder);
+			MaterialStack left = CrucibleUtil.tryPourStack(world, acc, mop, toPour, impactPosHolder);
 			
 			if(left != null) {
 				stack.amount -= (amountToPour - left.amount);
@@ -76,7 +77,7 @@ public class CrucibleUtil {
 			}
 		}
 		
-		return spill(mop, safe, stacks, quanta, impactPosHolder);
+		return CrucibleUtil.spill(mop, safe, stacks, quanta, impactPosHolder);
 	}
 	
 	/**
@@ -118,7 +119,7 @@ public class CrucibleUtil {
 			mopHolder[0] = mop;
 		}
 		
-		if(mop == null || mop.typeOfHit != mop.typeOfHit.BLOCK) {
+		if(mop == null || mop.typeOfHit != MovingObjectType.BLOCK) {
 			return null;
 		}
 		
@@ -137,7 +138,7 @@ public class CrucibleUtil {
 	public static MaterialStack spill(MovingObjectPosition mop, boolean safe, List<MaterialStack> stacks, int quanta, Vec3 impactPos) {
 		//simply use the first available material
 		MaterialStack top = stacks.get(0);
-		MaterialStack ret = spill(mop, safe, top, quanta, impactPos);
+		MaterialStack ret = CrucibleUtil.spill(mop, safe, top, quanta, impactPos);
 		//remove all stacks with no content
 		stacks.removeIf(o -> o.amount <= 0);
 		

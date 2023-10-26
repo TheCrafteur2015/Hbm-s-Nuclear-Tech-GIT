@@ -17,18 +17,18 @@ public class ContainerCraneBoxer extends Container {
 		
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 7; j++) {
-				this.addSlotToContainer(new Slot(boxer, j + i * 7, 8 + j * 18, 17 + i * 18));
+				addSlotToContainer(new Slot(boxer, j + i * 7, 8 + j * 18, 17 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 103 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 103 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 161));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 161));
 		}
 	}
 
@@ -41,12 +41,12 @@ public class ContainerCraneBoxer extends Container {
 			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 
-			if(slot <= boxer.getSizeInventory() - 1) {
-				if(!this.mergeItemStack(var5, boxer.getSizeInventory(), this.inventorySlots.size(), true)) {
+			if(slot <= this.boxer.getSizeInventory() - 1) {
+				if(!mergeItemStack(var5, this.boxer.getSizeInventory(), this.inventorySlots.size(), true)) {
 					return null;
 				}
 			} else {
-				if(!this.mergeItemStack(var5, 0, boxer.getSizeInventory(), false)) {
+				if(!mergeItemStack(var5, 0, this.boxer.getSizeInventory(), false)) {
 					 return null;
 				}
 				
@@ -67,6 +67,6 @@ public class ContainerCraneBoxer extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return boxer.isUseableByPlayer(player);
+		return this.boxer.isUseableByPlayer(player);
 	}
 }

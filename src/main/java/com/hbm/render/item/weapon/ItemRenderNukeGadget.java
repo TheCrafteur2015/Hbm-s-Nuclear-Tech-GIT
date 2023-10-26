@@ -18,8 +18,8 @@ public class ItemRenderNukeGadget implements IItemRenderer {
     float f = -1;
 	
 	public ItemRenderNukeGadget() {
-		gadgetModel = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/TheGadget3.obj"));
-		gadgetTexture = new ResourceLocation(RefStrings.MODID, "textures/models/TheGadget3_.png");
+		this.gadgetModel = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/TheGadget3.obj"));
+		this.gadgetTexture = new ResourceLocation(RefStrings.MODID, "textures/models/TheGadget3_.png");
 	}
 
 	@Override
@@ -45,12 +45,12 @@ public class ItemRenderNukeGadget implements IItemRenderer {
 		case EQUIPPED_FIRST_PERSON:
 		case ENTITY:
 			GL11.glPushMatrix();
-				Minecraft.getMinecraft().renderEngine.bindTexture(gadgetTexture);
+				Minecraft.getMinecraft().renderEngine.bindTexture(this.gadgetTexture);
 				//GL11.glRotatef(0.0F, 0.0F, 0.0F, 1.0F);
 				GL11.glRotatef(15.0F, 0.0F, 0.0F, -1.0F);
 				GL11.glTranslatef(0.8F, 0.2F, 0.5F);
 				GL11.glScalef(0.25F, 0.25F, 0.25F);
-		        gadgetModel.renderAll();
+		        this.gadgetModel.renderAll();
 			GL11.glPopMatrix();
 		default: break;
 		}

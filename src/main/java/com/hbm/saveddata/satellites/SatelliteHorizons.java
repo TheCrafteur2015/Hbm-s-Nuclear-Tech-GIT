@@ -20,26 +20,30 @@ public class SatelliteHorizons extends Satellite {
 		this.satIface = Interfaces.SAT_COORD;
 	}
 
+	@Override
 	public void onOrbit(World world, double x, double y, double z) {
 
 		for(Object p : world.playerEntities)
 			((EntityPlayer)p).triggerAchievement(MainRegistry.horizonsStart);
 	}
 	
+	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
-		nbt.setBoolean("used", used);
+		nbt.setBoolean("used", this.used);
 	}
 	
+	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
-		used = nbt.getBoolean("used");
+		this.used = nbt.getBoolean("used");
 	}
 	
+	@Override
 	public void onCoordAction(World world, EntityPlayer player, int x, int y, int z) {
 		
-		if(used)
+		if(this.used)
 			return;
 		
-		used = true;
+		this.used = true;
 		SatelliteSavedData.getData(world).markDirty();
 		
 		EntityTom tom = new EntityTom(world);

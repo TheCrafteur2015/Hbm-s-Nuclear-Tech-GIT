@@ -13,7 +13,7 @@ public class GunCannonFactory {
 	protected static SpentCasing CASINNG240MM;
 	
 	static {
-		CASINNG240MM = new SpentCasing(CasingType.BOTTLENECK).setScale(7.5F).setBounceMotion(0.02F, 0.05F).setColor(SpentCasing.COLOR_CASE_BRASS).setupSmoke(1F, 0.5D, 60, 20);
+		GunCannonFactory.CASINNG240MM = new SpentCasing(CasingType.BOTTLENECK).setScale(7.5F).setBounceMotion(0.02F, 0.05F).setColor(SpentCasing.COLOR_CASE_BRASS).setupSmoke(1F, 0.5D, 60, 20);
 	}
 
 	public static BulletConfiguration getShellConfig() {
@@ -26,7 +26,7 @@ public class GunCannonFactory {
 		bullet.explosive = 4F;
 		bullet.blockDamage = false;
 		
-		bullet.spentCasing = CASINNG240MM.register("240MM"); //same instance everywhere, only register once
+		bullet.spentCasing = GunCannonFactory.CASINNG240MM.register("240MM"); //same instance everywhere, only register once
 		
 		return bullet;
 	}
@@ -41,7 +41,7 @@ public class GunCannonFactory {
 		bullet.explosive = 4F;
 		bullet.blockDamage = true;
 		
-		bullet.spentCasing = CASINNG240MM;
+		bullet.spentCasing = GunCannonFactory.CASINNG240MM;
 		
 		return bullet;
 	}
@@ -56,7 +56,7 @@ public class GunCannonFactory {
 		bullet.doesPenetrate = true;
 		bullet.style = BulletConfiguration.STYLE_APDS;
 		
-		bullet.spentCasing = CASINNG240MM;
+		bullet.spentCasing = GunCannonFactory.CASINNG240MM;
 		
 		return bullet;
 	}
@@ -71,7 +71,7 @@ public class GunCannonFactory {
 		bullet.doesPenetrate = true;
 		bullet.style = BulletConfiguration.STYLE_APDS;
 		
-		bullet.spentCasing = CASINNG240MM;
+		bullet.spentCasing = GunCannonFactory.CASINNG240MM;
 		
 		return bullet;
 	}
@@ -88,7 +88,7 @@ public class GunCannonFactory {
 			BulletConfigFactory.nuclearExplosion(bulletnt, x, y, z, ExplosionNukeSmall.PARAMS_TOTS);
 		};
 		
-		bullet.spentCasing = CASINNG240MM;
+		bullet.spentCasing = GunCannonFactory.CASINNG240MM;
 		
 		return bullet;
 	}

@@ -32,7 +32,7 @@ public class RenderSubstation extends RenderPylonBase {
 		
 		GL11.glPushMatrix();
 		TileEntitySubstation sub = (TileEntitySubstation) tile;
-		this.renderLinesGeneric(sub, x, y, z);
+		renderLinesGeneric(sub, x, y, z);
 		GL11.glPopMatrix();
 	}
 

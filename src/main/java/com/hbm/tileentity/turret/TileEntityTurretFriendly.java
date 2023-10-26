@@ -15,19 +15,19 @@ import net.minecraft.world.World;
 
 public class TileEntityTurretFriendly extends TileEntityTurretChekhov {
 
-	static List<Integer> configs = new ArrayList();
+	static List<Integer> configs = new ArrayList<>();
 	
 	static {
-		configs.add(BulletConfigSyncingUtil.R5_NORMAL);
-		configs.add(BulletConfigSyncingUtil.R5_EXPLOSIVE);
-		configs.add(BulletConfigSyncingUtil.R5_DU);
-		configs.add(BulletConfigSyncingUtil.R5_STAR);
-		configs.add(BulletConfigSyncingUtil.CHL_R5);
+		TileEntityTurretFriendly.configs.add(BulletConfigSyncingUtil.R5_NORMAL);
+		TileEntityTurretFriendly.configs.add(BulletConfigSyncingUtil.R5_EXPLOSIVE);
+		TileEntityTurretFriendly.configs.add(BulletConfigSyncingUtil.R5_DU);
+		TileEntityTurretFriendly.configs.add(BulletConfigSyncingUtil.R5_STAR);
+		TileEntityTurretFriendly.configs.add(BulletConfigSyncingUtil.CHL_R5);
 	}
 	
 	@Override
 	protected List<Integer> getAmmoList() {
-		return configs;
+		return TileEntityTurretFriendly.configs;
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class TileEntityTurretFriendly extends TileEntityTurretChekhov {
 	
 	@Override
 	protected CasingEjector getEjector() {
-		return ejector;
+		return TileEntityTurretFriendly.ejector;
 	}
 	
 	@Override

@@ -33,8 +33,8 @@ public class RenderDoorGeneric extends TileEntitySpecialRenderer {
 		
 		TileEntityDoorGeneric te = (TileEntityDoorGeneric) tile;
 		
-		if(buf == null){
-			buf = GLAllocation.createDirectByteBuffer(8*4).asDoubleBuffer();
+		if(RenderDoorGeneric.buf == null){
+			RenderDoorGeneric.buf = GLAllocation.createDirectByteBuffer(8*4).asDoubleBuffer();
 		}
 		DoorDecl door = te.getDoorType();
 		
@@ -52,9 +52,9 @@ public class RenderDoorGeneric extends TileEntitySpecialRenderer {
 		double[][] clip = door.getClippingPlanes();
 		for(int i = 0; i < clip.length; i ++){
 			GL11.glEnable(GL11.GL_CLIP_PLANE0+i);
-			buf.put(clip[i]);
-			buf.rewind();
-			GL11.glClipPlane(GL11.GL_CLIP_PLANE0+i, buf);
+			RenderDoorGeneric.buf.put(clip[i]);
+			RenderDoorGeneric.buf.rewind();
+			GL11.glClipPlane(GL11.GL_CLIP_PLANE0+i, RenderDoorGeneric.buf);
 		}
 		
 		GL11.glShadeModel(GL11.GL_SMOOTH);
@@ -109,16 +109,16 @@ public class RenderDoorGeneric extends TileEntitySpecialRenderer {
 	}
 	
 	public void doPartTransform(DoorDecl door, String name, float openTicks, boolean child){
-		door.getTranslation(name, openTicks, child, tran);
-		door.getOrigin(name, orig);
-		door.getRotation(name, openTicks, rot);
-		GL11.glTranslated(orig[0], orig[1], orig[2]);
-		if(rot[0] != 0)
-			GL11.glRotated(rot[0], 1, 0, 0);
-		if(rot[1] != 0)
-			GL11.glRotated(rot[1], 0, 1, 0);
-		if(rot[2] != 0)
-			GL11.glRotated(rot[2], 0, 0, 1);
-		GL11.glTranslated(-orig[0]+tran[0], -orig[1]+tran[1], -orig[2]+tran[2]);
+		door.getTranslation(name, openTicks, child, RenderDoorGeneric.tran);
+		door.getOrigin(name, RenderDoorGeneric.orig);
+		door.getRotation(name, openTicks, RenderDoorGeneric.rot);
+		GL11.glTranslated(RenderDoorGeneric.orig[0], RenderDoorGeneric.orig[1], RenderDoorGeneric.orig[2]);
+		if(RenderDoorGeneric.rot[0] != 0)
+			GL11.glRotated(RenderDoorGeneric.rot[0], 1, 0, 0);
+		if(RenderDoorGeneric.rot[1] != 0)
+			GL11.glRotated(RenderDoorGeneric.rot[1], 0, 1, 0);
+		if(RenderDoorGeneric.rot[2] != 0)
+			GL11.glRotated(RenderDoorGeneric.rot[2], 0, 0, 1);
+		GL11.glTranslated(-RenderDoorGeneric.orig[0]+RenderDoorGeneric.tran[0], -RenderDoorGeneric.orig[1]+RenderDoorGeneric.tran[1], -RenderDoorGeneric.orig[2]+RenderDoorGeneric.tran[2]);
 	}
 }

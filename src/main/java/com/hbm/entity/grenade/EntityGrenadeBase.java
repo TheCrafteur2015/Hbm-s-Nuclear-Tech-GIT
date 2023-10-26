@@ -34,7 +34,7 @@ public abstract class EntityGrenadeBase extends EntityThrowable {
 		
         this.prevRotationPitch = this.rotationPitch;
         
-        this.rotationPitch -= Vec3.createVectorHelper(motionX, motionY, motionZ).lengthVector() * 25;
+        this.rotationPitch -= Vec3.createVectorHelper(this.motionX, this.motionY, this.motionZ).lengthVector() * 25;
         
         this.rotationYaw = (float)(Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 
@@ -56,10 +56,10 @@ public abstract class EntityGrenadeBase extends EntityThrowable {
 		if(p_70184_1_.entityHit != null) {
 			byte b0 = 0;
 
-			p_70184_1_.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), b0);
+			p_70184_1_.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getThrower()), b0);
 		}
 
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			if(GeneralConfig.enableExtendedLogging) {
 
 				String s = "null";
@@ -67,11 +67,11 @@ public abstract class EntityGrenadeBase extends EntityThrowable {
 				if(getThrower() != null && getThrower() instanceof EntityPlayer)
 					s = ((EntityPlayer) getThrower()).getDisplayName();
 
-				MainRegistry.logger.log(Level.INFO, "[GREN] Set off grenade at " + ((int) posX) + " / " + ((int) posY) + " / " + ((int) posZ) + " by " + s + "!");
+				MainRegistry.logger.log(Level.INFO, "[GREN] Set off grenade at " + ((int) this.posX) + " / " + ((int) this.posY) + " / " + ((int) this.posZ) + " by " + s + "!");
 			}
 		}
 
-		this.explode();
+		explode();
 	}
 
 	public abstract void explode();

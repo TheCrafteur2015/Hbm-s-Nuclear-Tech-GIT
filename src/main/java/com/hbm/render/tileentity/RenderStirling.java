@@ -96,10 +96,12 @@ public class RenderStirling extends TileEntitySpecialRenderer implements IItemRe
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase( ) {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(0, -1.5, 0);
 				GL11.glScaled(3.25, 3.25, 3.25);
 			}
+			@Override
 			public void renderCommonWithStack(ItemStack item) {
 				GL11.glRotatef(90, 0F, 1F, 0F);
 				boolean cog = item.getItemDamage() != 1;

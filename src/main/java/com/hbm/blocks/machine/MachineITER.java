@@ -61,7 +61,7 @@ public class MachineITER extends BlockDummyable {
 			return true;
 		} else if(!player.isSneaking())
 		{
-			int[] pos = this.findCore(world, x, y, z);
+			int[] pos = findCore(world, x, y, z);
 			
 			if(pos == null)
 				return false;
@@ -135,10 +135,10 @@ public class MachineITER extends BlockDummyable {
 		
 		pl.getHeldItem().stackSize--;
 		
-		world.setBlock(x + dir.offsetX * o , y + dir.offsetY * o + height, z + dir.offsetZ * o, this, dir.ordinal() + offset, 3);
-		this.safeRem = true;
+		world.setBlock(x + dir.offsetX * o , y + dir.offsetY * o + MachineITER.height, z + dir.offsetZ * o, this, dir.ordinal() + BlockDummyable.offset, 3);
+		BlockDummyable.safeRem = true;
 		fillSpace(world, x, y, z, dir, o);
-		this.safeRem = false;
+		BlockDummyable.safeRem = false;
 		world.scheduleBlockUpdate(x, y, z, this, 1);
 		world.scheduleBlockUpdate(x, y, z, this, 2);
 
@@ -222,15 +222,15 @@ public class MachineITER extends BlockDummyable {
 			}
 		}
 		
-		this.makeExtra(world, x, y, z);
-		this.makeExtra(world, x, y + 4, z);
+		makeExtra(world, x, y, z);
+		makeExtra(world, x, y + 4, z);
 		
 		Vec3 vec = Vec3.createVectorHelper(5.75, 0, 0);
 		
 		for(int i = 0; i < 16; i++) {
 			vec.rotateAroundY((float) (Math.PI / 8));
-			this.makeExtra(world, x + (int)vec.xCoord, y, z + (int)vec.zCoord);
-			this.makeExtra(world, x + (int)vec.xCoord, y + 4, z + (int)vec.zCoord);
+			makeExtra(world, x + (int)vec.xCoord, y, z + (int)vec.zCoord);
+			makeExtra(world, x + (int)vec.xCoord, y + 4, z + (int)vec.zCoord);
 		}
 	}
 
@@ -244,7 +244,7 @@ public class MachineITER extends BlockDummyable {
 	@Override
 	public void breakBlock(World world, int x, int y, int z, Block block, int i) {
 
-		if(i >= 12 && drop) {
+		if(i >= 12 && MachineITER.drop) {
 
 			for(int l = 0; l < 4; l++) {
 				world.spawnEntityInWorld(new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, new ItemStack(ModBlocks.fusion_conductor, 64)));

@@ -48,25 +48,25 @@ public class TileEntityLaunchPad extends TileEntityLoadedBase implements ISidedI
 	private String customName;
 	
 	public TileEntityLaunchPad() {
-		slots = new ItemStack[3];
+		this.slots = new ItemStack[3];
 	}
 
 	@Override
 	public int getSizeInventory() {
-		return slots.length;
+		return this.slots.length;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		return slots[i];
+		return this.slots[i];
 	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			ItemStack itemStack = slots[i];
-			slots[i] = null;
+			ItemStack itemStack = this.slots[i];
+			this.slots[i] = null;
 			return itemStack;
 		} else {
 		return null;
@@ -75,7 +75,7 @@ public class TileEntityLaunchPad extends TileEntityLoadedBase implements ISidedI
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemStack) {
-		slots[i] = itemStack;
+		this.slots[i] = itemStack;
 		if(itemStack != null && itemStack.stackSize > getInventoryStackLimit())
 		{
 			itemStack.stackSize = getInventoryStackLimit();
@@ -84,7 +84,7 @@ public class TileEntityLaunchPad extends TileEntityLoadedBase implements ISidedI
 
 	@Override
 	public String getInventoryName() {
-		return this.hasCustomInventoryName() ? this.customName : "container.launchPad";
+		return hasCustomInventoryName() ? this.customName : "container.launchPad";
 	}
 
 	@Override
@@ -103,11 +103,11 @@ public class TileEntityLaunchPad extends TileEntityLoadedBase implements ISidedI
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		if(worldObj.getTileEntity(xCoord, yCoord, zCoord) != this)
+		if(this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this)
 		{
 			return false;
 		}else{
-			return player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <=64;
+			return player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <=64;
 		}
 	}
 	
@@ -124,18 +124,18 @@ public class TileEntityLaunchPad extends TileEntityLoadedBase implements ISidedI
 	
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			if(slots[i].stackSize <= j)
+			if(this.slots[i].stackSize <= j)
 			{
-				ItemStack itemStack = slots[i];
-				slots[i] = null;
+				ItemStack itemStack = this.slots[i];
+				this.slots[i] = null;
 				return itemStack;
 			}
-			ItemStack itemStack1 = slots[i].splitStack(j);
-			if (slots[i].stackSize == 0)
+			ItemStack itemStack1 = this.slots[i].splitStack(j);
+			if (this.slots[i].stackSize == 0)
 			{
-				slots[i] = null;
+				this.slots[i] = null;
 			}
 			
 			return itemStack1;
@@ -148,16 +148,16 @@ public class TileEntityLaunchPad extends TileEntityLoadedBase implements ISidedI
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		NBTTagList list = nbt.getTagList("items", 10);
-		power = nbt.getLong("power");
-		slots = new ItemStack[getSizeInventory()];
+		this.power = nbt.getLong("power");
+		this.slots = new ItemStack[getSizeInventory()];
 		
 		for(int i = 0; i < list.tagCount(); i++)
 		{
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("slot");
-			if(b0 >= 0 && b0 < slots.length)
+			if(b0 >= 0 && b0 < this.slots.length)
 			{
-				slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
+				this.slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
 			}
 		}
 	}
@@ -166,15 +166,15 @@ public class TileEntityLaunchPad extends TileEntityLoadedBase implements ISidedI
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		NBTTagList list = new NBTTagList();
-		nbt.setLong("power", power);
+		nbt.setLong("power", this.power);
 		
-		for(int i = 0; i < slots.length; i++)
+		for(int i = 0; i < this.slots.length; i++)
 		{
-			if(slots[i] != null)
+			if(this.slots[i] != null)
 			{
 				NBTTagCompound nbt1 = new NBTTagCompound();
 				nbt1.setByte("slot", (byte)i);
-				slots[i].writeToNBT(nbt1);
+				this.slots[i].writeToNBT(nbt1);
 				list.appendTag(nbt1);
 			}
 		}
@@ -184,12 +184,12 @@ public class TileEntityLaunchPad extends TileEntityLoadedBase implements ISidedI
 	@Override
 	public int[] getAccessibleSlotsFromSide(int p_94128_1_)
     {
-        return p_94128_1_ == 0 ? slots_bottom : (p_94128_1_ == 1 ? slots_top : slots_side);
+        return p_94128_1_ == 0 ? TileEntityLaunchPad.slots_bottom : (p_94128_1_ == 1 ? TileEntityLaunchPad.slots_top : TileEntityLaunchPad.slots_side);
     }
 
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemStack, int j) {
-		return this.isItemValidForSlot(i, itemStack);
+		return isItemValidForSlot(i, itemStack);
 	}
 
 	@Override
@@ -198,28 +198,28 @@ public class TileEntityLaunchPad extends TileEntityLoadedBase implements ISidedI
 	}
 
 	public long getPowerScaled(long i) {
-		return (power * i) / maxPower;
+		return (this.power * i) / this.maxPower;
 	}
 
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			power = Library.chargeTEFromItems(slots, 2, power, maxPower);
-			this.updateConnections();
+			this.power = Library.chargeTEFromItems(this.slots, 2, this.power, this.maxPower);
+			updateConnections();
 			
-			PacketDispatcher.wrapper.sendToAllAround(new TEMissilePacket(xCoord, yCoord, zCoord, slots[0]), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 250));
-			PacketDispatcher.wrapper.sendToAllAround(new AuxElectricityPacket(xCoord, yCoord, zCoord, power), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 50));
+			PacketDispatcher.wrapper.sendToAllAround(new TEMissilePacket(this.xCoord, this.yCoord, this.zCoord, this.slots[0]), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 250));
+			PacketDispatcher.wrapper.sendToAllAround(new AuxElectricityPacket(this.xCoord, this.yCoord, this.zCoord, this.power), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 50));
 		}
 	}
 	
 	private void updateConnections() {
-		this.trySubscribe(worldObj, xCoord + 1, yCoord, zCoord, Library.POS_X);
-		this.trySubscribe(worldObj, xCoord - 1, yCoord, zCoord, Library.NEG_X);
-		this.trySubscribe(worldObj, xCoord, yCoord, zCoord + 1, Library.POS_Z);
-		this.trySubscribe(worldObj, xCoord, yCoord, zCoord - 1, Library.NEG_Z);
-		this.trySubscribe(worldObj, xCoord, yCoord - 1, zCoord, Library.NEG_Y);
+		trySubscribe(this.worldObj, this.xCoord + 1, this.yCoord, this.zCoord, Library.POS_X);
+		trySubscribe(this.worldObj, this.xCoord - 1, this.yCoord, this.zCoord, Library.NEG_X);
+		trySubscribe(this.worldObj, this.xCoord, this.yCoord, this.zCoord + 1, Library.POS_Z);
+		trySubscribe(this.worldObj, this.xCoord, this.yCoord, this.zCoord - 1, Library.NEG_Z);
+		trySubscribe(this.worldObj, this.xCoord, this.yCoord - 1, this.zCoord, Library.NEG_Y);
 	}
 	
 	@Override
@@ -229,19 +229,19 @@ public class TileEntityLaunchPad extends TileEntityLoadedBase implements ISidedI
 
 	@Override
 	public void setPower(long i) {
-		power = i;
+		this.power = i;
 		
 	}
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 		
 	}
 
 	@Override
 	public long getMaxPower() {
-		return maxPower;
+		return this.maxPower;
 	}
 	
 	@Override
@@ -249,10 +249,10 @@ public class TileEntityLaunchPad extends TileEntityLoadedBase implements ISidedI
 		
 		this.power += power;
 		
-		if(this.power > this.getMaxPower()) {
+		if(this.power > getMaxPower()) {
 			
-			long overshoot = this.power - this.getMaxPower();
-			this.power = this.getMaxPower();
+			long overshoot = this.power - getMaxPower();
+			this.power = getMaxPower();
 			return overshoot;
 		}
 		
@@ -286,12 +286,12 @@ public class TileEntityLaunchPad extends TileEntityLoadedBase implements ISidedI
 	@Callback
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getCoords(Context context, Arguments args) {
-		if (slots[1] != null && slots[1].getItem() instanceof IDesignatorItem) {
+		if (this.slots[1] != null && this.slots[1].getItem() instanceof IDesignatorItem) {
 			int xCoord2;
 			int zCoord2;
-			if (slots[1].stackTagCompound != null) {
-				xCoord2 = slots[1].stackTagCompound.getInteger("xCoord");
-				zCoord2 = slots[1].stackTagCompound.getInteger("zCoord");
+			if (this.slots[1].stackTagCompound != null) {
+				xCoord2 = this.slots[1].stackTagCompound.getInteger("xCoord");
+				zCoord2 = this.slots[1].stackTagCompound.getInteger("zCoord");
 			} else
 				return new Object[] {false};
 
@@ -309,10 +309,10 @@ public class TileEntityLaunchPad extends TileEntityLoadedBase implements ISidedI
 	@Callback
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] setCoords(Context context, Arguments args) {
-		if (slots[1] != null && slots[1].getItem() instanceof IDesignatorItem) {
-			slots[1].stackTagCompound = new NBTTagCompound();
-			slots[1].stackTagCompound.setInteger("xCoord", args.checkInteger(0));
-			slots[1].stackTagCompound.setInteger("zCoord", args.checkInteger(1));
+		if (this.slots[1] != null && this.slots[1].getItem() instanceof IDesignatorItem) {
+			this.slots[1].stackTagCompound = new NBTTagCompound();
+			this.slots[1].stackTagCompound.setInteger("xCoord", args.checkInteger(0));
+			this.slots[1].stackTagCompound.setInteger("zCoord", args.checkInteger(1));
 
 			return new Object[] {true};
 		}
@@ -323,7 +323,7 @@ public class TileEntityLaunchPad extends TileEntityLoadedBase implements ISidedI
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] launch(Context context, Arguments args) {
 		//worldObj.getBlock(xCoord, yCoord, zCoord).explode(worldObj, xCoord, yCoord, zCoord);	
-		((LaunchPad) ModBlocks.launch_pad).explode(worldObj, xCoord, yCoord, zCoord);
+		((LaunchPad) ModBlocks.launch_pad).explode(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 		return new Object[] {};
 	}
 

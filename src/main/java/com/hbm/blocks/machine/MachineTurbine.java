@@ -49,7 +49,7 @@ public class MachineTurbine extends BlockContainer implements ITooltipProvider {
 		if(side == 0 || side == 1)
 			return this.iconTop;
 		
-		return blockIcon;
+		return this.blockIcon;
 	}
 
 	@Override
@@ -126,6 +126,6 @@ public class MachineTurbine extends BlockContainer implements ITooltipProvider {
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		this.addStandardInfo(stack, player, list, ext);
+		addStandardInfo(stack, player, list, ext);
 	}
 }

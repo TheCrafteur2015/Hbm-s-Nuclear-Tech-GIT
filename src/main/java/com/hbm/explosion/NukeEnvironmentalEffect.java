@@ -29,8 +29,8 @@ public class NukeEnvironmentalEffect {
 				for (int zz = -r; zz < r; zz++) {
 					int Z = zz + z;
 					int ZZ = YY + zz * zz;
-					if (ZZ < r22 + rand.nextInt(j)) {
-						applyStandardEffect(world, X, Y, Z);
+					if (ZZ < r22 + NukeEnvironmentalEffect.rand.nextInt(j)) {
+						NukeEnvironmentalEffect.applyStandardEffect(world, X, Y, Z);
 					}
 				}
 			}
@@ -108,7 +108,7 @@ public class NukeEnvironmentalEffect {
 			chance = 100;
 		}
 		
-		if(b != null && rand.nextInt(1000) < chance)
+		if(b != null && NukeEnvironmentalEffect.rand.nextInt(1000) < chance)
 			world.setBlock(x, y, z, b, meta, 2);
 	}
 

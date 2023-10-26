@@ -1,14 +1,14 @@
 package com.hbm.entity.grenade;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.world.World;
-
 import java.util.Random;
 
 import com.hbm.entity.effect.EntityMist;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.ItemGrenade;
+
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.World;
 
 public class EntityGrenadeGas extends EntityGrenadeBouncyBase {
 	Random rand = new Random();
@@ -29,14 +29,14 @@ public class EntityGrenadeGas extends EntityGrenadeBouncyBase {
 	public void explode() {
 
 		if (!this.worldObj.isRemote) {
-			this.setDead();
+			setDead();
 			this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 0.0F, true);
 			
-			EntityMist mist = new EntityMist(worldObj);
+			EntityMist mist = new EntityMist(this.worldObj);
 			mist.setType(Fluids.CHLORINE);
-			mist.setPosition(posX, posY - 5, posZ);
+			mist.setPosition(this.posX, this.posY - 5, this.posZ);
 			mist.setArea(15, 10);
-			worldObj.spawnEntityInWorld(mist);
+			this.worldObj.spawnEntityInWorld(mist);
 		}
 	}
 

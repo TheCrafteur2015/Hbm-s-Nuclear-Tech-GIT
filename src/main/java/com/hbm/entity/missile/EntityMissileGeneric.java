@@ -21,12 +21,12 @@ public class EntityMissileGeneric extends EntityMissileBaseAdvanced {
 
 	@Override
 	public void onImpact() {
-		ExplosionLarge.explode(worldObj, posX, posY, posZ, 10.0F, true, true, true);
+		ExplosionLarge.explode(this.worldObj, this.posX, this.posY, this.posZ, 10.0F, true, true, true);
 	}
 
 	@Override
 	public List<ItemStack> getDebris() {
-		List<ItemStack> list = new ArrayList<ItemStack>();
+		List<ItemStack> list = new ArrayList<>();
 
 		list.add(new ItemStack(ModItems.plate_titanium, 4));
 		list.add(new ItemStack(ModItems.thruster_small, 1));

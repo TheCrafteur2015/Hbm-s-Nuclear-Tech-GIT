@@ -15,9 +15,9 @@ public class ParticleGasFlame extends EntitySmokeFX {
 		super(world, x, y, z, mX, mY * 1.5, mZ, scale);
 		updateColor();
 		this.particleScale = scale;
-		this.colorMod = 0.8F + rand.nextFloat() * 0.2F;
+		this.colorMod = 0.8F + this.rand.nextFloat() * 0.2F;
 		this.noClip = true;
-		this.particleMaxAge = 30 + rand.nextInt(13);
+		this.particleMaxAge = 30 + this.rand.nextInt(13);
 	}
 
 	@Override
@@ -43,9 +43,9 @@ public class ParticleGasFlame extends EntitySmokeFX {
 		this.particleGreen = color.getGreen() / 255F;
 		this.particleBlue = color.getBlue() / 255F;
 
-		this.particleRed *= colorMod;
-		this.particleGreen *= colorMod;
-		this.particleBlue *= colorMod;
+		this.particleRed *= this.colorMod;
+		this.particleGreen *= this.colorMod;
+		this.particleBlue *= this.colorMod;
 	}
 	
 	@Override

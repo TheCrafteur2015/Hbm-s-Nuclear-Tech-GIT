@@ -37,7 +37,7 @@ public class MachineRadiolysis extends BlockDummyable {
 		} else if(!player.isSneaking()) {
 			BossSpawnHandler.markFBI(player);
 			
-			int[] pos = this.findCore(world, x, y, z);
+			int[] pos = findCore(world, x, y, z);
 
 			if(pos == null)
 				return false;
@@ -59,12 +59,13 @@ public class MachineRadiolysis extends BlockDummyable {
 		return 0;
 	}
 	
+	@Override
 	protected void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		super.fillSpace(world, x, y, z, dir, o);
 		
-		this.makeExtra(world, x + dir.offsetX * o + 1, y, z + dir.offsetZ * o);
-		this.makeExtra(world, x + dir.offsetX * o - 1, y, z + dir.offsetZ * o);
-		this.makeExtra(world, x + dir.offsetX * o, y, z + dir.offsetZ * o + 1);
-		this.makeExtra(world, x + dir.offsetX * o, y, z + dir.offsetZ * o - 1);
+		makeExtra(world, x + dir.offsetX * o + 1, y, z + dir.offsetZ * o);
+		makeExtra(world, x + dir.offsetX * o - 1, y, z + dir.offsetZ * o);
+		makeExtra(world, x + dir.offsetX * o, y, z + dir.offsetZ * o + 1);
+		makeExtra(world, x + dir.offsetX * o, y, z + dir.offsetZ * o - 1);
 	}
 }

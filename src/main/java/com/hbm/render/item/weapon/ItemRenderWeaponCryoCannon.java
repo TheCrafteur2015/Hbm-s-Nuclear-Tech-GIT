@@ -20,9 +20,9 @@ public class ItemRenderWeaponCryoCannon implements IItemRenderer {
 	public static final ResourceLocation[] turbine_tex = new ResourceLocation[9];
 	
 	public ItemRenderWeaponCryoCannon() {
-		for(int i = 0; i < fill_tex.length; i++) fill_tex[i] = new ResourceLocation(RefStrings.MODID, "textures/models/weapons/cryo_cannon/fill_" + i + ".png");
-		for(int i = 0; i < pressure_tex.length; i++) pressure_tex[i] = new ResourceLocation(RefStrings.MODID, "textures/models/weapons/cryo_cannon/pressure_" + i + ".png");
-		for(int i = 0; i < turbine_tex.length; i++) turbine_tex[i] = new ResourceLocation(RefStrings.MODID, "textures/models/weapons/cryo_cannon/turbine_" + i + ".png");
+		for(int i = 0; i < ItemRenderWeaponCryoCannon.fill_tex.length; i++) ItemRenderWeaponCryoCannon.fill_tex[i] = new ResourceLocation(RefStrings.MODID, "textures/models/weapons/cryo_cannon/fill_" + i + ".png");
+		for(int i = 0; i < ItemRenderWeaponCryoCannon.pressure_tex.length; i++) ItemRenderWeaponCryoCannon.pressure_tex[i] = new ResourceLocation(RefStrings.MODID, "textures/models/weapons/cryo_cannon/pressure_" + i + ".png");
+		for(int i = 0; i < ItemRenderWeaponCryoCannon.turbine_tex.length; i++) ItemRenderWeaponCryoCannon.turbine_tex[i] = new ResourceLocation(RefStrings.MODID, "textures/models/weapons/cryo_cannon/turbine_" + i + ".png");
 	}
 	
 	@Override
@@ -68,11 +68,11 @@ public class ItemRenderWeaponCryoCannon implements IItemRenderer {
 
 			ResourceManager.cryocannon.renderPart("Gun");
 			ResourceManager.cryocannon.renderPart("Rotor");
-			Minecraft.getMinecraft().renderEngine.bindTexture(fill_tex[MathHelper.clamp_int(ItemGunBase.getMag(item) * fill_tex.length / gun.mainConfig.ammoCap, 0, fill_tex.length - 1)]);
+			Minecraft.getMinecraft().renderEngine.bindTexture(ItemRenderWeaponCryoCannon.fill_tex[MathHelper.clamp_int(ItemGunBase.getMag(item) * ItemRenderWeaponCryoCannon.fill_tex.length / gun.mainConfig.ammoCap, 0, ItemRenderWeaponCryoCannon.fill_tex.length - 1)]);
 			ResourceManager.cryocannon.renderPart("Fuel");
-			Minecraft.getMinecraft().renderEngine.bindTexture(turbine_tex[MathHelper.clamp_int(turbine_tex.length - 1 - ItemCryoCannon.getTurbine(item) * turbine_tex.length / 100, 0, turbine_tex.length - 1)]);
+			Minecraft.getMinecraft().renderEngine.bindTexture(ItemRenderWeaponCryoCannon.turbine_tex[MathHelper.clamp_int(ItemRenderWeaponCryoCannon.turbine_tex.length - 1 - ItemCryoCannon.getTurbine(item) * ItemRenderWeaponCryoCannon.turbine_tex.length / 100, 0, ItemRenderWeaponCryoCannon.turbine_tex.length - 1)]);
 			ResourceManager.cryocannon.renderPart("Spin");
-			Minecraft.getMinecraft().renderEngine.bindTexture(pressure_tex[MathHelper.clamp_int(ItemCryoCannon.getPressure(item) * pressure_tex.length / 1000, 0, pressure_tex.length - 1)]);
+			Minecraft.getMinecraft().renderEngine.bindTexture(ItemRenderWeaponCryoCannon.pressure_tex[MathHelper.clamp_int(ItemCryoCannon.getPressure(item) * ItemRenderWeaponCryoCannon.pressure_tex.length / 1000, 0, ItemRenderWeaponCryoCannon.pressure_tex.length - 1)]);
 			ResourceManager.cryocannon.renderPart("Pressure");
 			
 			break;

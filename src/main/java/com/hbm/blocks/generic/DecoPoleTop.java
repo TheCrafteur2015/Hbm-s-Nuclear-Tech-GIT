@@ -14,7 +14,7 @@ public class DecoPoleTop extends Block {
 	
 	@Override
 	public int getRenderType(){
-		return renderID;
+		return DecoPoleTop.renderID;
 	}
 	
 	@Override

@@ -17,16 +17,16 @@ public interface IFluidSource extends IFluidContainer {
 
 	@Deprecated
 	public default void setFluidFillForTransfer(int fill, FluidType type) {
-		this.setFluidFill(fill, type);
+		setFluidFill(fill, type);
 	}
 
 	@Deprecated
 	public default int getFluidFillForTransfer(FluidType type) {
-		return this.getFluidFill(type);
+		return getFluidFill(type);
 	}
 
 	@Deprecated
 	public default void transferFluid(int amount, FluidType type) {
-		this.setFluidFillForTransfer(this.getFluidFillForTransfer(type) - amount, type);
+		setFluidFillForTransfer(getFluidFillForTransfer(type) - amount, type);
 	}
 }

@@ -17,41 +17,42 @@ public class ModelGrenade extends ModelBase {
 	ModelRenderer Shape3;
 
 	public ModelGrenade() {
-		textureWidth = 32;
-		textureHeight = 32;
+		this.textureWidth = 32;
+		this.textureHeight = 32;
 
-		Shape1 = new ModelRenderer(this, 0, 0);
-		Shape1.addBox(0F, 0F, 0F, 8, 8, 8);
-		Shape1.setRotationPoint(-4F, -4F, -4F);
-		Shape1.setTextureSize(32, 32);
-		Shape1.mirror = true;
-		setRotation(Shape1, 0F, 0F, 0F);
-		Shape2 = new ModelRenderer(this, 0, 16);
-		Shape2.addBox(0F, 0F, 0F, 4, 6, 6);
-		Shape2.setRotationPoint(-8F, -3F, -3F);
-		Shape2.setTextureSize(32, 32);
-		Shape2.mirror = true;
-		setRotation(Shape2, 0F, 0F, 0F);
-		Shape3 = new ModelRenderer(this, 20, 16);
-		Shape3.addBox(0F, 0F, 0F, 1, 4, 4);
-		Shape3.setRotationPoint(-9F, -2F, -2F);
-		Shape3.setTextureSize(32, 32);
-		Shape3.mirror = true;
-		setRotation(Shape3, 0F, 0F, 0F);
+		this.Shape1 = new ModelRenderer(this, 0, 0);
+		this.Shape1.addBox(0F, 0F, 0F, 8, 8, 8);
+		this.Shape1.setRotationPoint(-4F, -4F, -4F);
+		this.Shape1.setTextureSize(32, 32);
+		this.Shape1.mirror = true;
+		setRotation(this.Shape1, 0F, 0F, 0F);
+		this.Shape2 = new ModelRenderer(this, 0, 16);
+		this.Shape2.addBox(0F, 0F, 0F, 4, 6, 6);
+		this.Shape2.setRotationPoint(-8F, -3F, -3F);
+		this.Shape2.setTextureSize(32, 32);
+		this.Shape2.mirror = true;
+		setRotation(this.Shape2, 0F, 0F, 0F);
+		this.Shape3 = new ModelRenderer(this, 20, 16);
+		this.Shape3.addBox(0F, 0F, 0F, 1, 4, 4);
+		this.Shape3.setRotationPoint(-9F, -2F, -2F);
+		this.Shape3.setTextureSize(32, 32);
+		this.Shape3.mirror = true;
+		setRotation(this.Shape3, 0F, 0F, 0F);
 	}
 
+	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-		Shape1.render(f5);
-		Shape2.render(f5);
-		Shape3.render(f5);
+		this.Shape1.render(f5);
+		this.Shape2.render(f5);
+		this.Shape3.render(f5);
 	}
 	
 	public void renderAll(float f5) {
-		Shape1.render(f5);
-		Shape2.render(f5);
-		Shape3.render(f5);
+		this.Shape1.render(f5);
+		this.Shape2.render(f5);
+		this.Shape3.render(f5);
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -60,6 +61,7 @@ public class ModelGrenade extends ModelBase {
 		model.rotateAngleZ = z;
 	}
 
+	@Override
 	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
 		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 	}

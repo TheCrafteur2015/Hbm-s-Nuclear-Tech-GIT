@@ -10,8 +10,8 @@ import net.minecraft.util.MathHelper;
 
 public class ModelCloak extends ModelBiped {
 	public ModelCloak() {
-		textureWidth = 64;
-		textureHeight = 32;
+		this.textureWidth = 64;
+		this.textureHeight = 32;
 	}
 
 	@Override

@@ -52,31 +52,31 @@ public class ItemGunChemthrower extends ItemGunBase implements IFillableItem {
 		player.inventoryContainer.detectAndSendChanges();
 
 		int wear = (int) Math.ceil(10 / (1F + EnchantmentHelper.getEnchantmentLevel(Enchantment.unbreaking.effectId, stack)));
-		setItemWear(stack, getItemWear(stack) + wear);
+		ItemGunBase.setItemWear(stack, ItemGunBase.getItemWear(stack) + wear);
 		
 		//world.playSoundAtEntity(player, mainConfig.firingSound, 1.0F, mainConfig.firingPitch);
 	}
 
 	@Override
 	public boolean hasAmmo(ItemStack stack, EntityPlayer player, boolean main) {
-		return getMag(stack) >= 0 + this.getConsumption(stack);
+		return ItemGunBase.getMag(stack) >= 0 + getConsumption(stack);
 	}
 
 	@Override
 	public void useUpAmmo(EntityPlayer player, ItemStack stack, boolean main) {
 		
-		if(!main && altConfig == null)
+		if(!main && this.altConfig == null)
 			return;
 		
-		GunConfiguration config = mainConfig;
+		GunConfiguration config = this.mainConfig;
 		
 		if(!main)
-			config = altConfig;
+			config = this.altConfig;
 		
 		if(hasInfinity(stack, config))
 			return;
 		
-		setMag(stack, getMag(stack) - this.getConsumption(stack));
+		ItemGunBase.setMag(stack, ItemGunBase.getMag(stack) - getConsumption(stack));
 	}
 
 	@Override
@@ -90,42 +90,43 @@ public class ItemGunChemthrower extends ItemGunBase implements IFillableItem {
 		//spawn fluid projectile
 		
 		EntityChemical chem = new EntityChemical(world, player);
-		chem.setFluid(this.getFluidType(stack));
+		chem.setFluid(getFluidType(stack));
 		world.spawnEntityInWorld(chem);
 		
 		if(player instanceof EntityPlayerMP)
 			PacketDispatcher.wrapper.sendTo(new GunAnimationPacket(AnimType.CYCLE.ordinal()), (EntityPlayerMP) player);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		
-		list.add("Ammo: " + getMag(stack) + " / " + mainConfig.ammoCap + "mB");
+		list.add("Ammo: " + ItemGunBase.getMag(stack) + " / " + this.mainConfig.ammoCap + "mB");
 		
-		list.add("Ammo Type: " + this.getFluidType(stack).getLocalizedName());
+		list.add("Ammo Type: " + getFluidType(stack).getLocalizedName());
 		
-		int dura = mainConfig.durability - getItemWear(stack);
+		int dura = this.mainConfig.durability - ItemGunBase.getItemWear(stack);
 		
 		if(dura < 0)
 			dura = 0;
 		
-		list.add("Durability: " + dura + " / " + mainConfig.durability);
+		list.add("Durability: " + dura + " / " + this.mainConfig.durability);
 		list.add("");
-		list.add("Name: " + mainConfig.name);
-		list.add("Manufacturer: " + mainConfig.manufacturer);
+		list.add("Name: " + this.mainConfig.name);
+		list.add("Manufacturer: " + this.mainConfig.manufacturer);
 		
-		if(!mainConfig.comment.isEmpty()) {
+		if(!this.mainConfig.comment.isEmpty()) {
 			list.add("");
-			for(String s : mainConfig.comment)
+			for(String s : this.mainConfig.comment)
 				list.add(EnumChatFormatting.ITALIC + s);
 		}
 		
 		if(GeneralConfig.enableExtendedLogging) {
 			list.add("");
-			list.add("Type: " + getMagType(stack));
-			list.add("Is Reloading: " + getIsReloading(stack));
-			list.add("Reload Cycle: " + getReloadCycle(stack));
-			list.add("RoF Cooldown: " + getDelay(stack));
+			list.add("Type: " + ItemGunBase.getMagType(stack));
+			list.add("Is Reloading: " + ItemGunBase.getIsReloading(stack));
+			list.add("Reload Cycle: " + ItemGunBase.getReloadCycle(stack));
+			list.add("RoF Cooldown: " + ItemGunBase.getDelay(stack));
 		}
 	}
 
@@ -138,7 +139,7 @@ public class ItemGunChemthrower extends ItemGunBase implements IFillableItem {
 		
 		if(type == ElementType.HOTBAR) {
 			
-			FluidType fluid = this.getFluidType(stack);
+			FluidType fluid = getFluidType(stack);
 			
 			ItemStack ammo = ItemFluidIcon.make(fluid, 1);
 			
@@ -164,11 +165,11 @@ public class ItemGunChemthrower extends ItemGunBase implements IFillableItem {
 	
 	@Override
 	protected void reload2(ItemStack stack, World world, EntityPlayer player) {
-		this.setIsReloading(stack, false);
+		setIsReloading(stack, false);
 	}
 	
 	public FluidType getFluidType(ItemStack stack) {
-		return Fluids.fromID(this.getMagType(stack));
+		return Fluids.fromID(getMagType(stack));
 	}
 	
 	public int getConsumption(ItemStack stack) {
@@ -177,7 +178,7 @@ public class ItemGunChemthrower extends ItemGunBase implements IFillableItem {
 
 	@Override
 	public boolean acceptsFluid(FluidType type, ItemStack stack) {
-		return getFluidType(stack) == type || this.getMag(stack) == 0;
+		return getFluidType(stack) == type || getMag(stack) == 0;
 	}
 	
 	public static final int transferSpeed = 50;
@@ -188,16 +189,16 @@ public class ItemGunChemthrower extends ItemGunBase implements IFillableItem {
 		if(!acceptsFluid(type, stack))
 			return amount;
 		
-		if(this.getMag(stack) == 0)
-			this.setMagType(stack, type.getID());
+		if(getMag(stack) == 0)
+			setMagType(stack, type.getID());
 		
-		int fill = this.getMag(stack);
+		int fill = getMag(stack);
 		int req = this.mainConfig.ammoCap - fill;
 		
 		int toFill = Math.min(amount, req);
-		toFill = Math.min(toFill, transferSpeed);
+		toFill = Math.min(toFill, ItemGunChemthrower.transferSpeed);
 		
-		this.setMag(stack, fill + toFill);
+		setMag(stack, fill + toFill);
 		
 		return amount - toFill;
 	}
@@ -210,11 +211,11 @@ public class ItemGunChemthrower extends ItemGunBase implements IFillableItem {
 	@Override
 	public int tryEmpty(FluidType type, int amount, ItemStack stack) {
 		
-		int fill = this.getMag(stack);
+		int fill = getMag(stack);
 		int toUnload = Math.min(fill, amount);
-		toUnload = Math.min(toUnload, transferSpeed);
+		toUnload = Math.min(toUnload, ItemGunChemthrower.transferSpeed);
 		
-		this.setMag(stack, fill - toUnload);
+		setMag(stack, fill - toUnload);
 		
 		return toUnload;
 	}

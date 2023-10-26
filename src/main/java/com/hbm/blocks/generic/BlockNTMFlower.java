@@ -25,7 +25,7 @@ public class BlockNTMFlower extends BlockEnumMulti implements IPlantable, IGrowa
 
 	public BlockNTMFlower() {
 		super(Material.plants, EnumFlowerType.class, true, true);
-		this.setTickRandomly(true);
+		setTickRandomly(true);
 	}
 	
 	public static enum EnumFlowerType {
@@ -59,7 +59,7 @@ public class BlockNTMFlower extends BlockEnumMulti implements IPlantable, IGrowa
 
 	@Override
 	public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-		return super.canPlaceBlockAt(world, x, y, z) && this.canBlockStay(world, x, y, z);
+		return super.canPlaceBlockAt(world, x, y, z) && canBlockStay(world, x, y, z);
 	}
 
 	protected boolean canPlaceBlockOn(Block block) {
@@ -69,11 +69,11 @@ public class BlockNTMFlower extends BlockEnumMulti implements IPlantable, IGrowa
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
 		super.onNeighborBlockChange(world, x, y, z, block);
-		this.checkAndDropBlock(world, x, y, z);
+		checkAndDropBlock(world, x, y, z);
 	}
 	
 	protected void checkAndDropBlock(World world, int x, int y, int z) {
-		if(!this.canBlockStay(world, x, y, z)) {
+		if(!canBlockStay(world, x, y, z)) {
 			this.dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
 			world.setBlock(x, y, z, Blocks.air, 0, 2);
 		}

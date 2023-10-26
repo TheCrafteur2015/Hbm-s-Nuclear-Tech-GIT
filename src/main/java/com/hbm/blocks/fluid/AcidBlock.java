@@ -5,6 +5,7 @@ import java.util.Random;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.lib.ModDamageSource;
 import com.hbm.lib.RefStrings;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -31,23 +32,23 @@ public class AcidBlock extends BlockFluidClassic {
 
 	public AcidBlock(Fluid fluid, Material material, DamageSource damage) {
 		super(fluid, material);
-		damageSource = damage;
+		AcidBlock.damageSource = damage;
 		setQuantaPerBlock(4);
 		setCreativeTab(null);
-		displacements.put(this, false);
+		this.displacements.put(this, false);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
-		return (side == 0 || side == 1) ? stillIcon : flowingIcon;
+		return (side == 0 || side == 1) ? AcidBlock.stillIcon : AcidBlock.flowingIcon;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister register) {
-		stillIcon = register.registerIcon(RefStrings.MODID + ":acid_still");
-		flowingIcon = register.registerIcon(RefStrings.MODID + ":acid_flowing");
+		AcidBlock.stillIcon = register.registerIcon(RefStrings.MODID + ":acid_still");
+		AcidBlock.flowingIcon = register.registerIcon(RefStrings.MODID + ":acid_flowing");
 	}
 
 	@Override

@@ -24,7 +24,7 @@ public class GUIDiFurnace extends GuiContainer {
 
 	public GUIDiFurnace(InventoryPlayer invPlayer, TileEntityDiFurnace tedf) {
 		super(new ContainerDiFurnace(invPlayer, tedf));
-		diFurnace = tedf;
+		this.diFurnace = tedf;
 
 		this.xSize = 176;
 		this.ySize = 166;
@@ -38,13 +38,13 @@ public class GUIDiFurnace extends GuiContainer {
 			for(int i = 0; i < 3; i++) {
 				Slot slot = (Slot) this.inventorySlots.inventorySlots.get(i);
 				
-				if(this.isMouseOverSlot(slot, x, y)) {
+				if(isMouseOverSlot(slot, x, y)) {
 					
 					String label = EnumChatFormatting.YELLOW + "Accepts items from: ";
-					byte dir = i == 0 ? diFurnace.sideUpper : i == 1 ? diFurnace.sideLower : diFurnace.sideFuel;
+					byte dir = i == 0 ? this.diFurnace.sideUpper : i == 1 ? this.diFurnace.sideLower : this.diFurnace.sideFuel;
 					label += ForgeDirection.getOrientation(dir);
 					
-					this.func_146283_a(Arrays.asList(new String[] { label }), x, y - (slot.getHasStack() ? 15 : 0));
+					func_146283_a(Arrays.asList(new String[] { label }), x, y - (slot.getHasStack() ? 15 : 0));
 					
 					return;
 				}
@@ -53,7 +53,7 @@ public class GUIDiFurnace extends GuiContainer {
 	}
 	
 	protected boolean isMouseOverSlot(Slot slot, int x, int y) {
-		return this.func_146978_c(slot.xDisplayPosition, slot.yDisplayPosition, 16, 16, x, y);
+		return func_146978_c(slot.xDisplayPosition, slot.yDisplayPosition, 16, 16, x, y);
 	}
 
 	@Override
@@ -67,22 +67,22 @@ public class GUIDiFurnace extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIDiFurnace.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
-		if(diFurnace.isInvalid() && diFurnace.getWorldObj().getTileEntity(diFurnace.xCoord, diFurnace.yCoord, diFurnace.zCoord) instanceof TileEntityDiFurnace)
-			diFurnace = (TileEntityDiFurnace) diFurnace.getWorldObj().getTileEntity(diFurnace.xCoord, diFurnace.yCoord, diFurnace.zCoord);
+		if(this.diFurnace.isInvalid() && this.diFurnace.getWorldObj().getTileEntity(this.diFurnace.xCoord, this.diFurnace.yCoord, this.diFurnace.zCoord) instanceof TileEntityDiFurnace)
+			this.diFurnace = (TileEntityDiFurnace) this.diFurnace.getWorldObj().getTileEntity(this.diFurnace.xCoord, this.diFurnace.yCoord, this.diFurnace.zCoord);
 
-		if(diFurnace.hasPower()) {
-			int i1 = diFurnace.getPowerRemainingScaled(52);
-			drawTexturedModalRect(guiLeft + 44, guiTop + 70 - i1, 201, 53 - i1, 16, i1);
+		if(this.diFurnace.hasPower()) {
+			int i1 = this.diFurnace.getPowerRemainingScaled(52);
+			drawTexturedModalRect(this.guiLeft + 44, this.guiTop + 70 - i1, 201, 53 - i1, 16, i1);
 		}
 
-		int j1 = diFurnace.getDiFurnaceProgressScaled(24);
-		drawTexturedModalRect(guiLeft + 101, guiTop + 35, 176, 14, j1 + 1, 17);
+		int j1 = this.diFurnace.getDiFurnaceProgressScaled(24);
+		drawTexturedModalRect(this.guiLeft + 101, this.guiTop + 35, 176, 14, j1 + 1, 17);
 
-		if(diFurnace.hasPower() && (diFurnace.canProcess() || j1 > 0)) {
-			drawTexturedModalRect(guiLeft + 63, guiTop + 37, 176, 0, 14, 14);
+		if(this.diFurnace.hasPower() && (this.diFurnace.canProcess() || j1 > 0)) {
+			drawTexturedModalRect(this.guiLeft + 63, this.guiTop + 37, 176, 0, 14, 14);
 		}
 	}
 

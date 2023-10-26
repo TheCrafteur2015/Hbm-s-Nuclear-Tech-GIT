@@ -79,7 +79,7 @@ public class OreCave {
 		if(world.provider == null || world.provider.dimensionId != this.dim) return;
 		
 		if(this.noise == null) {
-			this.noise = new NoiseGeneratorPerlin(new Random(event.world.getSeed() + (ore.getID() * 31) + yLevel), 2);
+			this.noise = new NoiseGeneratorPerlin(new Random(event.world.getSeed() + (this.ore.hashCode() * 31) + this.yLevel), 2);
 		}
 		
 		int cX = event.chunkX;
@@ -90,18 +90,18 @@ public class OreCave {
 		for(int x = cX + 8; x < cX + 24; x++) {
 			for(int z = cZ + 8; z < cZ + 24; z++) {
 				
-				double n = noise.func_151601_a(x * scale, z * scale);
+				double n = this.noise.func_151601_a(x * scale, z * scale);
 				
-				if(n > threshold) {
-					int range = (int)((n - threshold) * rangeMult);
+				if(n > this.threshold) {
+					int range = (int)((n - this.threshold) * this.rangeMult);
 					
-					if(range > maxRange)
-						range = (maxRange * 2) - range;
+					if(range > this.maxRange)
+						range = (this.maxRange * 2) - range;
 					
 					if(range < 0)
 						continue;
 					
-					for(int y = yLevel - range; y <= yLevel + range; y++) {
+					for(int y = this.yLevel - range; y <= this.yLevel + range; y++) {
 						Block genTarget = world.getBlock(x, y, z);
 						
 						if(genTarget.isNormalCube() && (genTarget.getMaterial() == Material.rock || genTarget.getMaterial() == Material.ground) && DungeonToolbox.allowedToReplace(genTarget)) {
@@ -115,10 +115,10 @@ public class OreCave {
 									shouldGen = true;
 								}
 								
-								if(shouldGen && (fluid == null || !canGenFluid))
+								if(shouldGen && (this.fluid == null || !canGenFluid))
 									break;
 								
-								if(fluid != null) {
+								if(this.fluid != null) {
 									switch(dir) {
 									case UP: if(neighbor.getMaterial() != Material.air && !(neighbor instanceof BlockStalagmite)) canGenFluid = false; break;
 									case DOWN: if(!neighbor.isNormalCube()) canGenFluid = false; break;
@@ -126,14 +126,14 @@ public class OreCave {
 									case SOUTH:
 									case EAST:
 									case WEST:
-										if(!neighbor.isNormalCube() && neighbor != fluid) canGenFluid = false; break;
+										if(!neighbor.isNormalCube() && neighbor != this.fluid) canGenFluid = false; break;
 									}
 								}
 							}
 							
-							if(fluid != null && canGenFluid) {
-								world.setBlock(x, y, z, fluid, 0, 2);
-								world.setBlock(x, y - 1, z, ore.block, ore.meta, 2);
+							if(this.fluid != null && canGenFluid) {
+								world.setBlock(x, y, z, this.fluid, 0, 2);
+								world.setBlock(x, y - 1, z, this.ore.block, this.ore.meta, 2);
 								
 								for(int i = 2; i < 6; i++) {
 									ForgeDirection dir = ForgeDirection.getOrientation(i);
@@ -142,11 +142,11 @@ public class OreCave {
 									Block neighbor = world.getBlock(clX, y, clZ);
 									
 									if(neighbor.isNormalCube())
-										world.setBlock(clX, y, clZ, ore.block, ore.meta, 2);
+										world.setBlock(clX, y, clZ, this.ore.block, this.ore.meta, 2);
 								}
 								
 							} else if(shouldGen) {
-								world.setBlock(x, y, z, ore.block, ore.meta, 2);
+								world.setBlock(x, y, z, this.ore.block, this.ore.meta, 2);
 							}
 							
 						} else {
@@ -154,10 +154,10 @@ public class OreCave {
 							if((genTarget.getMaterial() == Material.air || !genTarget.isNormalCube()) && event.rand.nextInt(5) == 0 && !genTarget.getMaterial().isLiquid()) {
 								
 								if(ModBlocks.stalactite.canPlaceBlockAt(world, x, y, z)) {
-									world.setBlock(x, y, z, ModBlocks.stalactite, BlockStalagmite.getMetaFromResource(ore.meta), 2);
+									world.setBlock(x, y, z, ModBlocks.stalactite, BlockStalagmite.getMetaFromResource(this.ore.meta), 2);
 								} else {
 									if(ModBlocks.stalagmite.canPlaceBlockAt(world, x, y, z)) {
-										world.setBlock(x, y, z, ModBlocks.stalagmite, BlockStalagmite.getMetaFromResource(ore.meta), 2);
+										world.setBlock(x, y, z, ModBlocks.stalagmite, BlockStalagmite.getMetaFromResource(this.ore.meta), 2);
 									}
 								}
 							}

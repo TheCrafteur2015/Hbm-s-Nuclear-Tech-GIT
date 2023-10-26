@@ -28,7 +28,7 @@ public class ParticleVortexGlow extends EntityFX {
 		this.particleGreen = colG;
 		this.particleBlue = colB;
 		this.particleAlpha = colA;
-		workingAlpha = colA;
+		this.workingAlpha = colA;
 		return this;
 	}
 
@@ -41,7 +41,7 @@ public class ParticleVortexGlow extends EntityFX {
 	public void onUpdate() {
 		this.particleAge++;
 		if(this.particleAge >= this.particleMaxAge) {
-			this.setDead();
+			setDead();
 		}
 	}
 
@@ -53,7 +53,7 @@ public class ParticleVortexGlow extends EntityFX {
 	@Override
 	public void renderParticle(Tessellator tess, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
 		
-		Minecraft.getMinecraft().getTextureManager().bindTexture(fresnel_ms);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(ParticleVortexGlow.fresnel_ms);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 		GL11.glDisable(GL11.GL_ALPHA_TEST);
 		GL11.glDepthMask(false);
@@ -61,13 +61,13 @@ public class ParticleVortexGlow extends EntityFX {
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 		float timeScale = (this.particleAge + partialTicks) / (float) this.particleMaxAge;
 		float shrink = MathHelper.clamp_float(1 - BobMathUtil.remap((float) MathHelper.clamp_float(timeScale, 0, 1), 0.6F, 1F, 0.6F, 1F), 0, 1);
-		this.workingAlpha = shrink * particleAlpha;
+		this.workingAlpha = shrink * this.particleAlpha;
 
-		float f4 = 0.1F * (this.particleScale + shrink * particleScale * 4);
+		float f4 = 0.1F * (this.particleScale + shrink * this.particleScale * 4);
 
-		float f5 = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks - interpPosX);
-		float f6 = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks - interpPosY);
-		float f7 = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks - interpPosZ);
+		float f5 = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks - EntityFX.interpPosX);
+		float f6 = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks - EntityFX.interpPosY);
+		float f7 = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks - EntityFX.interpPosZ);
 		Vec3[] avec3d = new Vec3[] {
 				Vec3.createVectorHelper((double) (-rotationX * f4 - rotationXY * f4), (double) (-rotationZ * f4), (double) (-rotationYZ * f4 - rotationXZ * f4)),
 				Vec3.createVectorHelper((double) (-rotationX * f4 + rotationXY * f4), (double) (rotationZ * f4), (double) (-rotationYZ * f4 + rotationXZ * f4)),

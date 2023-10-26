@@ -74,15 +74,15 @@ public class Watz extends BlockDummyable {
 		x += dir.offsetX * o;
 		z += dir.offsetZ * o;
 
-		this.makeExtra(world, x + 2, y, z);
-		this.makeExtra(world, x - 2, y, z);
-		this.makeExtra(world, x, y, z + 2);
-		this.makeExtra(world, x, y, z - 2);
-		this.makeExtra(world, x + 2, y + 2, z);
-		this.makeExtra(world, x - 2, y + 2, z);
-		this.makeExtra(world, x, y + 2, z + 2);
-		this.makeExtra(world, x, y + 2, z - 2);
-		this.makeExtra(world, x, y + 2, z);
+		makeExtra(world, x + 2, y, z);
+		makeExtra(world, x - 2, y, z);
+		makeExtra(world, x, y, z + 2);
+		makeExtra(world, x, y, z - 2);
+		makeExtra(world, x + 2, y + 2, z);
+		makeExtra(world, x - 2, y + 2, z);
+		makeExtra(world, x, y + 2, z + 2);
+		makeExtra(world, x, y + 2, z - 2);
+		makeExtra(world, x, y + 2, z);
 	}
 	
 	public static boolean drop = true;
@@ -90,7 +90,7 @@ public class Watz extends BlockDummyable {
 	@Override
 	public void breakBlock(World world, int x, int y, int z, Block block, int i) {
 
-		if(i >= 12 && drop) {
+		if(i >= 12 && Watz.drop) {
 
 			world.spawnEntityInWorld(new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, new ItemStack(ModBlocks.watz_end, 48)));
 			for(int j = 0; j < 3; j++) world.spawnEntityInWorld(new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, new ItemStack(ModItems.bolt_dura_steel, 64)));

@@ -3,6 +3,18 @@ package com.hbm.entity.projectile;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import com.hbm.blocks.ModBlocks;
+import com.hbm.blocks.generic.RedBarrel;
+import com.hbm.entity.grenade.EntityGrenadeTau;
+import com.hbm.entity.mob.EntityCreeperNuclear;
+import com.hbm.entity.particle.EntityBSmokeFX;
+import com.hbm.items.ModItems;
+import com.hbm.lib.ModDamageSource;
+import com.hbm.util.ArmorUtil;
+
+import cpw.mods.fml.relauncher.ReflectionHelper;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -28,19 +40,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-
-import com.hbm.blocks.ModBlocks;
-import com.hbm.blocks.generic.RedBarrel;
-import com.hbm.entity.grenade.EntityGrenadeTau;
-import com.hbm.entity.mob.EntityCreeperNuclear;
-import com.hbm.entity.particle.EntityBSmokeFX;
-import com.hbm.items.ModItems;
-import com.hbm.lib.ModDamageSource;
-import com.hbm.util.ArmorUtil;
-
-import cpw.mods.fml.relauncher.ReflectionHelper;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityBullet extends Entity implements IProjectile {
 	private int field_145791_d = -1;
@@ -70,14 +69,14 @@ public class EntityBullet extends Entity implements IProjectile {
 	public EntityBullet(World p_i1753_1_) {
 		super(p_i1753_1_);
 		this.renderDistanceWeight = 10.0D;
-		this.setSize(0.5F, 0.5F);
+		setSize(0.5F, 0.5F);
 	}
 
 	public EntityBullet(World p_i1754_1_, double p_i1754_2_, double p_i1754_4_, double p_i1754_6_) {
 		super(p_i1754_1_);
 		this.renderDistanceWeight = 10.0D;
-		this.setSize(0.5F, 0.5F);
-		this.setPosition(p_i1754_2_, p_i1754_4_, p_i1754_6_);
+		setSize(0.5F, 0.5F);
+		setPosition(p_i1754_2_, p_i1754_4_, p_i1754_6_);
 		this.yOffset = 0.0F;
 	}
 
@@ -102,10 +101,10 @@ public class EntityBullet extends Entity implements IProjectile {
 			float f3 = (float) (-(Math.atan2(d1, d3) * 180.0D / Math.PI));
 			double d4 = d0 / d3;
 			double d5 = d2 / d3;
-			this.setLocationAndAngles(p_i1755_2_.posX + d4, this.posY, p_i1755_2_.posZ + d5, f2, f3);
+			setLocationAndAngles(p_i1755_2_.posX + d4, this.posY, p_i1755_2_.posZ + d5, f2, f3);
 			this.yOffset = 0.0F;
 			float f4 = 0;//(float) d3 * 0.2F;
-			this.setThrowableHeading(d0, d1 + f4, d2, p_i1755_4_, p_i1755_5_);
+			setThrowableHeading(d0, d1 + f4, d2, p_i1755_4_, p_i1755_5_);
 		}
 	}
 
@@ -119,20 +118,20 @@ public class EntityBullet extends Entity implements IProjectile {
 			this.canBePickedUp = 1;
 		}
 
-		this.setSize(0.5F, 0.5F);
-		this.setLocationAndAngles(p_i1756_2_.posX, p_i1756_2_.posY + p_i1756_2_.getEyeHeight(), p_i1756_2_.posZ,
+		setSize(0.5F, 0.5F);
+		setLocationAndAngles(p_i1756_2_.posX, p_i1756_2_.posY + p_i1756_2_.getEyeHeight(), p_i1756_2_.posZ,
 				p_i1756_2_.rotationYaw, p_i1756_2_.rotationPitch);
 		this.posX -= MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
 		this.posY -= 0.10000000149011612D;
 		this.posZ -= MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
-		this.setPosition(this.posX, this.posY, this.posZ);
+		setPosition(this.posX, this.posY, this.posZ);
 		this.yOffset = 0.0F;
 		this.motionX = -MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI)
 				* MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
 		this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI)
 				* MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
 		this.motionY = (-MathHelper.sin(this.rotationPitch / 180.0F * (float) Math.PI));
-		this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, p_i1756_3_ * 1.5F, 1.0F);
+		setThrowableHeading(this.motionX, this.motionY, this.motionZ, p_i1756_3_ * 1.5F, 1.0F);
 
 		// this.dmgMin = dmgMin;
 		// this.dmgMax = dmgMax;
@@ -149,20 +148,20 @@ public class EntityBullet extends Entity implements IProjectile {
 			this.canBePickedUp = 1;
 		}
 
-		this.setSize(0.5F, 0.5F);
-		this.setLocationAndAngles(p_i1756_2_.posX, p_i1756_2_.posY + p_i1756_2_.getEyeHeight(), p_i1756_2_.posZ,
+		setSize(0.5F, 0.5F);
+		setLocationAndAngles(p_i1756_2_.posX, p_i1756_2_.posY + p_i1756_2_.getEyeHeight(), p_i1756_2_.posZ,
 				p_i1756_2_.rotationYaw, p_i1756_2_.rotationPitch);
 		this.posX -= MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
 		this.posY -= 0.10000000149011612D;
 		this.posZ -= MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
-		this.setPosition(this.posX, this.posY, this.posZ);
+		setPosition(this.posX, this.posY, this.posZ);
 		this.yOffset = 0.0F;
 		this.motionX = -MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI)
 				* MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
 		this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI)
 				* MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
 		this.motionY = (-MathHelper.sin(this.rotationPitch / 180.0F * (float) Math.PI));
-		this.setThrowableHeading2(this.motionX, this.motionY, this.motionZ, p_i1756_3_ * 1.5F, 1.0F);
+		setThrowableHeading2(this.motionX, this.motionY, this.motionZ, p_i1756_3_ * 1.5F, 1.0F);
 	}
 
 	public EntityBullet(World p_i1756_1_, EntityLivingBase p_i1756_2_, float p_i1756_3_, int dmgMin, int dmgMax,
@@ -175,23 +174,23 @@ public class EntityBullet extends Entity implements IProjectile {
 			this.canBePickedUp = 1;
 		}
 
-		this.setSize(0.5F, 0.5F);
-		this.setLocationAndAngles(p_i1756_2_.posX, p_i1756_2_.posY + p_i1756_2_.getEyeHeight(), p_i1756_2_.posZ,
+		setSize(0.5F, 0.5F);
+		setLocationAndAngles(p_i1756_2_.posX, p_i1756_2_.posY + p_i1756_2_.getEyeHeight(), p_i1756_2_.posZ,
 				p_i1756_2_.rotationYaw, p_i1756_2_.rotationPitch);
 		this.posX -= MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
 		this.posY -= 0.10000000149011612D;
 		this.posZ -= MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
-		this.setPosition(this.posX, this.posY, this.posZ);
+		setPosition(this.posX, this.posY, this.posZ);
 		this.yOffset = 0.0F;
 		this.motionX = -MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI)
 				* MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
 		this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI)
 				* MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
 		this.motionY = (-MathHelper.sin(this.rotationPitch / 180.0F * (float) Math.PI));
-		this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, p_i1756_3_ * 1.5F, 1.0F);
-		this.setTau(isTau == "tauDay");
-		this.setChopper(isTau == "chopper");
-		this.setIsCritical(isTau != "chopper");
+		setThrowableHeading(this.motionX, this.motionY, this.motionZ, p_i1756_3_ * 1.5F, 1.0F);
+		setTau(isTau == "tauDay");
+		setChopper(isTau == "chopper");
+		setIsCritical(isTau != "chopper");
 	}
 	
 	//why the living shit did i make isTau a string? who knows, who cares.
@@ -201,22 +200,22 @@ public class EntityBullet extends Entity implements IProjectile {
 		this.renderDistanceWeight = 10.0D;
 		this.shootingEntity = p_i1756_2_;
 
-		this.setSize(0.5F, 0.5F);
-		this.setLocationAndAngles(grenade.posX, grenade.posY + grenade.getEyeHeight(), grenade.posZ,
+		setSize(0.5F, 0.5F);
+		setLocationAndAngles(grenade.posX, grenade.posY + grenade.getEyeHeight(), grenade.posZ,
 				grenade.rotationYaw, grenade.rotationPitch);
 		this.posX -= MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
 		this.posY -= 0.10000000149011612D;
 		this.posZ -= MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
-		this.setPosition(this.posX, this.posY, this.posZ);
+		setPosition(this.posX, this.posY, this.posZ);
 		this.yOffset = 0.0F;
 		this.motionX = -MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI)
 				* MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
 		this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI)
 				* MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
 		this.motionY = (-MathHelper.sin(this.rotationPitch / 180.0F * (float) Math.PI));
-		this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, p_i1756_3_ * 1.5F, 1.0F);
-		this.setTau(isTau == "tauDay");
-		this.setIsCritical(true);
+		setThrowableHeading(this.motionX, this.motionY, this.motionZ, p_i1756_3_ * 1.5F, 1.0F);
+		setTau(isTau == "tauDay");
+		setIsCritical(true);
 	}
 
 	public EntityBullet(World world, int x, int y, int z, double mx, double my, double mz, double grav) {
@@ -300,8 +299,8 @@ public class EntityBullet extends Entity implements IProjectile {
 	@SideOnly(Side.CLIENT)
 	public void setPositionAndRotation2(double p_70056_1_, double p_70056_3_, double p_70056_5_, float p_70056_7_,
 			float p_70056_8_, int p_70056_9_) {
-		this.setPosition(p_70056_1_, p_70056_3_, p_70056_5_);
-		this.setRotation(p_70056_7_, p_70056_8_);
+		setPosition(p_70056_1_, p_70056_3_, p_70056_5_);
+		setRotation(p_70056_7_, p_70056_8_);
 	}
 
 	/**
@@ -320,7 +319,7 @@ public class EntityBullet extends Entity implements IProjectile {
 			this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(p_70016_3_, f) * 180.0D / Math.PI);
 			this.prevRotationPitch = this.rotationPitch;
 			this.prevRotationYaw = this.rotationYaw;
-			this.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+			setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
 			this.ticksInGround = 0;
 		}
 	}
@@ -350,12 +349,12 @@ public class EntityBullet extends Entity implements IProjectile {
 
 			if (axisalignedbb != null
 					&& axisalignedbb.isVecInside(Vec3.createVectorHelper(this.posX, this.posY, this.posZ))
-					&& !this.getIsCritical()) {
+					&& !getIsCritical()) {
 				this.inGround = true;
 			}
 
 			if (block == ModBlocks.red_barrel) {
-				((RedBarrel) block).explode(worldObj, this.field_145791_d, this.field_145792_e, this.field_145789_f);
+				((RedBarrel) block).explode(this.worldObj, this.field_145791_d, this.field_145792_e, this.field_145789_f);
 			}
 
 			if (block == Blocks.glass || block == Blocks.stained_glass || block == Blocks.glass_pane
@@ -370,8 +369,8 @@ public class EntityBullet extends Entity implements IProjectile {
 			--this.arrowShake;
 		}
 
-		if (this.inGround && !this.getIsCritical()) {
-			this.setDead();
+		if (this.inGround && !getIsCritical()) {
+			setDead();
 			
 		} else {
 			++this.ticksInAir;
@@ -445,7 +444,7 @@ public class EntityBullet extends Entity implements IProjectile {
 								+ this.motionZ * this.motionZ);
 						int k = MathHelper.ceiling_double_int(f2 * this.damage);
 
-						if (this.getIsCritical()) {
+						if (getIsCritical()) {
 							k += this.rand.nextInt(k / 2 + 2);
 						}
 
@@ -462,35 +461,35 @@ public class EntityBullet extends Entity implements IProjectile {
 						//   |/ 
 						//   X-O   Displacer
 						
-						if (!this.getIsCritical() && !this.getIsChopper()) {
+						if (!getIsCritical() && !getIsChopper()) {
 							if (this.shootingEntity == null) {
 								damagesource = ModDamageSource.causeBulletDamage(this, this);
 							} else {
-								damagesource = ModDamageSource.causeBulletDamage(this, shootingEntity);
+								damagesource = ModDamageSource.causeBulletDamage(this, this.shootingEntity);
 							}
-						} else if(!this.getIsChopper()) {
+						} else if(!getIsChopper()) {
 							if (this.shootingEntity == null) {
 								damagesource = ModDamageSource.causeTauDamage(this, this);
 							} else {
-								damagesource = ModDamageSource.causeTauDamage(this, shootingEntity);
+								damagesource = ModDamageSource.causeTauDamage(this, this.shootingEntity);
 							}
-						} else if(!this.getIsCritical()) {
+						} else if(!getIsCritical()) {
 							if (this.shootingEntity == null) {
 								damagesource = ModDamageSource.causeDisplacementDamage(this, this);
 							} else {
-								damagesource = ModDamageSource.causeDisplacementDamage(this, shootingEntity);
+								damagesource = ModDamageSource.causeDisplacementDamage(this, this.shootingEntity);
 							}
 						}
 
-						if (fire || this.isBurning() && !(movingobjectposition.entityHit instanceof EntityEnderman)) {
+						if (this.fire || isBurning() && !(movingobjectposition.entityHit instanceof EntityEnderman)) {
 							movingobjectposition.entityHit.setFire(5);
 						}
 
-						if (movingobjectposition.entityHit.attackEntityFrom(damagesource, (float) damage)) {
+						if (movingobjectposition.entityHit.attackEntityFrom(damagesource, (float) this.damage)) {
 							if (movingobjectposition.entityHit instanceof EntityLivingBase) {
 								EntityLivingBase entitylivingbase = (EntityLivingBase) movingobjectposition.entityHit;
 
-								if (rad) {
+								if (this.rad) {
 									if (entitylivingbase instanceof EntityPlayer
 											&& ArmorUtil.checkForHazmat((EntityPlayer) entitylivingbase)) {
 									} else if (entitylivingbase instanceof EntityCreeper) {
@@ -498,8 +497,8 @@ public class EntityBullet extends Entity implements IProjectile {
 										creep.setLocationAndAngles(entitylivingbase.posX, entitylivingbase.posY, entitylivingbase.posZ,
 												entitylivingbase.rotationYaw, entitylivingbase.rotationPitch);
 										if (!entitylivingbase.isDead)
-											if (!worldObj.isRemote)
-												worldObj.spawnEntityInWorld(creep);
+											if (!this.worldObj.isRemote)
+												this.worldObj.spawnEntityInWorld(creep);
 										entitylivingbase.setDead();
 									} else if (entitylivingbase instanceof EntityVillager) {
 										EntityZombie creep = new EntityZombie(this.worldObj);
@@ -518,7 +517,7 @@ public class EntityBullet extends Entity implements IProjectile {
 									}
 								}
 								
-								if(antidote)
+								if(this.antidote)
 									entitylivingbase.clearActivePotions();
 								
 								if (this.knockbackStrength > 0) {
@@ -546,21 +545,21 @@ public class EntityBullet extends Entity implements IProjectile {
 								}
 								
 								if(this.pip) {
-									if(!worldObj.isRemote) {
-										EntityBoxcar pippo = new EntityBoxcar(worldObj);
+									if(!this.worldObj.isRemote) {
+										EntityBoxcar pippo = new EntityBoxcar(this.worldObj);
 										pippo.posX = movingobjectposition.entityHit.posX;
 										pippo.posY = movingobjectposition.entityHit.posY + 50;
 										pippo.posZ = movingobjectposition.entityHit.posZ;
 									
 										for(int j = 0; j < 50; j++) {
-											EntityBSmokeFX fx = new EntityBSmokeFX(worldObj, pippo.posX + (rand.nextDouble() - 0.5) * 4, pippo.posY + (rand.nextDouble() - 0.5) * 12, pippo.posZ + (rand.nextDouble() - 0.5) * 4, 0, 0, 0);
-											worldObj.spawnEntityInWorld(fx);
+											EntityBSmokeFX fx = new EntityBSmokeFX(this.worldObj, pippo.posX + (this.rand.nextDouble() - 0.5) * 4, pippo.posY + (this.rand.nextDouble() - 0.5) * 12, pippo.posZ + (this.rand.nextDouble() - 0.5) * 4, 0, 0, 0);
+											this.worldObj.spawnEntityInWorld(fx);
 										}
 									
-										worldObj.spawnEntityInWorld(pippo);
+										this.worldObj.spawnEntityInWorld(pippo);
 									}
 									
-									worldObj.playSoundEffect(movingobjectposition.entityHit.posX, 
+									this.worldObj.playSoundEffect(movingobjectposition.entityHit.posX, 
 											movingobjectposition.entityHit.posY + 50, 
 											movingobjectposition.entityHit.posZ, "hbm:alarm.trainHorn", 100F, 1F);
 								}
@@ -568,7 +567,7 @@ public class EntityBullet extends Entity implements IProjectile {
 
 							if (!(movingobjectposition.entityHit instanceof EntityEnderman)) {
 								if (!this.worldObj.isRemote) {
-									if (!instakill || movingobjectposition.entityHit instanceof EntityPlayer) {
+									if (!this.instakill || movingobjectposition.entityHit instanceof EntityPlayer) {
 										// movingobjectposition.entityHit.attackEntityFrom(DamageSource.generic,
 										// dmgMin + rand.nextInt(dmgMax -
 										// dmgMin));
@@ -576,7 +575,7 @@ public class EntityBullet extends Entity implements IProjectile {
 										((EntityLivingBase) movingobjectposition.entityHit).setHealth(0.0F);
 									}
 								}
-								if (!this.getIsCritical())
+								if (!getIsCritical())
 									//this.setDead();
 									;
 							}
@@ -587,7 +586,7 @@ public class EntityBullet extends Entity implements IProjectile {
 								try {
 									Field lastDamage = ReflectionHelper.findField(EntityLivingBase.class, "lastDamage", "field_110153_bc");
 									
-									float dmg = (float) damage + lastDamage.getFloat(movingobjectposition.entityHit);
+									float dmg = (float) this.damage + lastDamage.getFloat(movingobjectposition.entityHit);
 									
 									movingobjectposition.entityHit.attackEntityFrom(damagesource, dmg);
 								} catch (Exception x) { }
@@ -606,9 +605,9 @@ public class EntityBullet extends Entity implements IProjectile {
 							}
 						}*/
 					} else {
-						this.setDead();
+						setDead();
 					}
-				} else if (!this.getIsCritical()) {
+				} else if (!getIsCritical()) {
 					this.field_145791_d = movingobjectposition.blockX;
 					this.field_145792_e = movingobjectposition.blockY;
 					this.field_145789_f = movingobjectposition.blockZ;
@@ -634,9 +633,9 @@ public class EntityBullet extends Entity implements IProjectile {
 				}
 			}
 
-			if (this.getIsCritical()) {
+			if (getIsCritical()) {
 				for (i = 0; i < 8; ++i) {
-					if (!this.getIsTau())
+					if (!getIsTau())
 						this.worldObj.spawnParticle("fireworksSpark", this.posX + this.motionX * i / 8.0D,
 								this.posY + this.motionY * i / 8.0D,
 								this.posZ + this.motionZ * i / 8.0D, 0, 0,
@@ -681,7 +680,7 @@ public class EntityBullet extends Entity implements IProjectile {
 			float f3 = 0.99F;
 			f1 = 0.05F;
 
-			if (this.isInWater()) {
+			if (isInWater()) {
 				for (int l = 0; l < 4; ++l) {
 					f4 = 0.25F;
 					this.worldObj.spawnParticle("bubble", this.posX - this.motionX * f4, this.posY - this.motionY * f4,
@@ -691,20 +690,20 @@ public class EntityBullet extends Entity implements IProjectile {
 				f3 = 0.8F;
 			}
 
-			if (this.isWet()) {
-				this.extinguish();
+			if (isWet()) {
+				extinguish();
 			}
 
 			this.motionX *= f3;
 			this.motionY *= f3;
 			this.motionZ *= f3;
-			this.motionY -= gravity;
-			this.setPosition(this.posX, this.posY, this.posZ);
-			this.func_145775_I();
+			this.motionY -= this.gravity;
+			setPosition(this.posX, this.posY, this.posZ);
+			func_145775_I();
 		}
 
 		if (this.ticksExisted > 250)
-			this.setDead();
+			setDead();
 	}
 
 	/**
@@ -759,7 +758,7 @@ public class EntityBullet extends Entity implements IProjectile {
 
 			if (flag) {
 				p_70100_1_.onItemPickup(this, 1);
-				this.setDead();
+				setDead();
 			}
 		}
 	}
@@ -859,7 +858,7 @@ public class EntityBullet extends Entity implements IProjectile {
 	@SideOnly(Side.CLIENT)
     public int getBrightnessForRender(float p_70070_1_)
     {
-		if(this.getIsCritical() || this.getIsChopper())
+		if(getIsCritical() || getIsChopper())
 			return 15728880;
 		else
 			return super.getBrightnessForRender(p_70070_1_);
@@ -868,7 +867,7 @@ public class EntityBullet extends Entity implements IProjectile {
     @Override
 	public float getBrightness(float p_70013_1_)
     {
-		if(this.getIsCritical() || this.getIsChopper())
+		if(getIsCritical() || getIsChopper())
 			return 1.0F;
 		else
 			return super.getBrightness(p_70013_1_);

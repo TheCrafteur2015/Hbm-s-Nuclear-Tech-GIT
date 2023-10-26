@@ -19,7 +19,7 @@ import net.minecraftforge.oredict.OreDictionary;
 public class FluidContainerRegistry {
 	
 	//TODO: somehow incorporate hashmaps into this
-	public static List<FluidContainer> allContainers = new ArrayList<FluidContainer>();
+	public static List<FluidContainer> allContainers = new ArrayList<>();
 	
 	public static void register() {
 		FluidContainerRegistry.registerContainer(new FluidContainer(new ItemStack(Items.water_bucket), new ItemStack(Items.bucket), Fluids.WATER, 1000));
@@ -81,7 +81,7 @@ public class FluidContainerRegistry {
 	}
 	
 	public static void registerContainer(FluidContainer con) {
-		allContainers.add(con);
+		FluidContainerRegistry.allContainers.add(con);
 		OreDictionary.registerOre(con.type.getDict(con.content), con.fullContainer);
 	}
 	
@@ -93,7 +93,7 @@ public class FluidContainerRegistry {
 		ItemStack sta = stack.copy();
 		sta.stackSize = 1;
 		
-		for(FluidContainer container : allContainers) {
+		for(FluidContainer container : FluidContainerRegistry.allContainers) {
 			if(container.type == type &&
 					ItemStack.areItemStacksEqual(container.fullContainer, sta) &&
 					ItemStack.areItemStackTagsEqual(container.fullContainer, sta))
@@ -111,7 +111,7 @@ public class FluidContainerRegistry {
 		ItemStack sta = stack.copy();
 		sta.stackSize = 1;
 		
-		for(FluidContainer container : allContainers) {
+		for(FluidContainer container : FluidContainerRegistry.allContainers) {
 			if(ItemStack.areItemStacksEqual(container.fullContainer, sta) && ItemStack.areItemStackTagsEqual(container.fullContainer, sta))
 				return container.type;
 		}
@@ -126,7 +126,7 @@ public class FluidContainerRegistry {
 		ItemStack sta = stack.copy();
 		sta.stackSize = 1;
 
-		for(FluidContainer container : allContainers) {
+		for(FluidContainer container : FluidContainerRegistry.allContainers) {
 			if(ItemStack.areItemStacksEqual(container.emptyContainer, sta) &&  ItemStack.areItemStackTagsEqual(container.emptyContainer, sta) && container.type == type)
 				return container.fullContainer.copy();
 		}
@@ -141,7 +141,7 @@ public class FluidContainerRegistry {
 		ItemStack sta = stack.copy();
 		sta.stackSize = 1;
 
-		for(FluidContainer container : allContainers) {
+		for(FluidContainer container : FluidContainerRegistry.allContainers) {
 			if(ItemStack.areItemStacksEqual(container.fullContainer, sta) && ItemStack.areItemStackTagsEqual(container.fullContainer, sta))
 				return container.emptyContainer == null ? null : container.emptyContainer.copy();
 		}

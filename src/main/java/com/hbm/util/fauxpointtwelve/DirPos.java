@@ -27,9 +27,9 @@ public class DirPos extends BlockPos {
 		switch(rotationIn) {
 		case NONE:
 		default: return this;
-		case CLOCKWISE_90: return new DirPos(-this.getZ(), this.getY(), this.getX(), this.getDir().getRotation(ForgeDirection.UP));
-		case CLOCKWISE_180: return new DirPos(-this.getX(), this.getY(), -this.getZ(), this.getDir().getOpposite());
-		case COUNTERCLOCKWISE_90: return new DirPos(this.getZ(), this.getY(), -this.getX(), this.getDir().getRotation(ForgeDirection.DOWN));
+		case CLOCKWISE_90: return new DirPos(-getZ(), getY(), getX(), getDir().getRotation(ForgeDirection.UP));
+		case CLOCKWISE_180: return new DirPos(-getX(), getY(), -getZ(), getDir().getOpposite());
+		case COUNTERCLOCKWISE_90: return new DirPos(getZ(), getY(), -getX(), getDir().getRotation(ForgeDirection.DOWN));
 		}
 	}
 	

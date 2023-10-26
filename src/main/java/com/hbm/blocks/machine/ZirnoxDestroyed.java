@@ -57,7 +57,7 @@ public class ZirnoxDestroyed extends BlockDummyable {
 			
 		} else if(block == ModBlocks.foam_layer || block == ModBlocks.block_foam) {
 			if(rand.nextInt(25) == 0) {
-				int pos[] = this.findCore(world, x, y, z);
+				int pos[] = findCore(world, x, y, z);
 				
 				if(pos != null) {
 					TileEntity te = world.getTileEntity(pos[0], pos[1], pos[2]);
@@ -80,6 +80,7 @@ public class ZirnoxDestroyed extends BlockDummyable {
 		return 100 + world.rand.nextInt(20);
 	}
 
+	@Override
 	public void onBlockAdded(World world, int x, int y, int z) {
 		super.onBlockAdded(world, x, y, z);
 
@@ -94,7 +95,7 @@ public class ZirnoxDestroyed extends BlockDummyable {
 			}
 		}
 
-		world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
+		world.scheduleBlockUpdate(x, y, z, this, tickRate(world));
 	}
 
 	@Override
@@ -104,7 +105,7 @@ public class ZirnoxDestroyed extends BlockDummyable {
 
 	@Override
 	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int meta, int fortune) {
-		ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
+		ArrayList<ItemStack> drops = new ArrayList<>();
 		drops.add(new ItemStack(ModBlocks.concrete_smooth, 6));
 		drops.add(new ItemStack(ModBlocks.deco_pipe_quad, 4));
 		drops.add(new ItemStack(ModBlocks.steel_grate, 2));
@@ -124,6 +125,7 @@ public class ZirnoxDestroyed extends BlockDummyable {
 		return 2;
 	}
 
+	@Override
 	protected void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		super.fillSpace(world, x, y, z, dir, o);
 	}

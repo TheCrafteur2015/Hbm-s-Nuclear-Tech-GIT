@@ -15,26 +15,26 @@ public class ContainerMachineMissileAssembly extends Container {
 	
 	public ContainerMachineMissileAssembly(InventoryPlayer invPlayer, TileEntityMachineMissileAssembly tedf) {
 		
-		nukeBoy = tedf;
+		this.nukeBoy = tedf;
 
-		this.addSlotToContainer(new Slot(tedf, 0, 8, 36));
-		this.addSlotToContainer(new Slot(tedf, 1, 26, 36));
-		this.addSlotToContainer(new Slot(tedf, 2, 44, 36));
-		this.addSlotToContainer(new Slot(tedf, 3, 62, 36));
-		this.addSlotToContainer(new Slot(tedf, 4, 80, 36));
-		this.addSlotToContainer(new SlotTakeOnly(tedf, 5, 152, 36));
+		addSlotToContainer(new Slot(tedf, 0, 8, 36));
+		addSlotToContainer(new Slot(tedf, 1, 26, 36));
+		addSlotToContainer(new Slot(tedf, 2, 44, 36));
+		addSlotToContainer(new Slot(tedf, 3, 62, 36));
+		addSlotToContainer(new Slot(tedf, 4, 80, 36));
+		addSlotToContainer(new SlotTakeOnly(tedf, 5, 152, 36));
 		
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 56));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 56));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++)
 		{
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 56));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 56));
 		}
 	}
 	
@@ -50,12 +50,12 @@ public class ContainerMachineMissileAssembly extends Container {
 			var3 = var5.copy();
 			
             if (par2 <= 5) {
-				if (!this.mergeItemStack(var5, 6, this.inventorySlots.size(), true))
+				if (!mergeItemStack(var5, 6, this.inventorySlots.size(), true))
 				{
 					return null;
 				}
 			}
-			else if (!this.mergeItemStack(var5, 0, 5, false))
+			else if (!mergeItemStack(var5, 0, 5, false))
 				return null;
 			
 			if (var5.stackSize == 0)
@@ -73,6 +73,6 @@ public class ContainerMachineMissileAssembly extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return nukeBoy.isUseableByPlayer(player);
+		return this.nukeBoy.isUseableByPlayer(player);
 	}
 }

@@ -61,6 +61,7 @@ public class BlockMassStorage extends BlockContainer implements IBlockMulti, ILo
 		this.iconSide[3] = iconRegister.registerIcon(RefStrings.MODID + ":mass_storage_side_wood");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
@@ -73,7 +74,7 @@ public class BlockMassStorage extends BlockContainer implements IBlockMulti, ILo
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int metadata) {
-		int meta = this.rectify(metadata);
+		int meta = rectify(metadata);
 		return side == 1 ? this.iconTop[meta] : (side == 0 ? this.iconTop[meta] : this.iconSide[meta]);
 	}
 
@@ -156,9 +157,9 @@ public class BlockMassStorage extends BlockContainer implements IBlockMulti, ILo
 			world.spawnEntityInWorld(new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, drop));
 		}
 		
-		dropInv = false;
+		BlockMassStorage.dropInv = false;
 		boolean flag = world.setBlockToAir(x, y, z);
-		dropInv = true;
+		BlockMassStorage.dropInv = true;
 		
 		return flag;
 	}
@@ -193,7 +194,7 @@ public class BlockMassStorage extends BlockContainer implements IBlockMulti, ILo
 	@Override
 	public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
 
-		if(dropInv) {
+		if(BlockMassStorage.dropInv) {
 			ISidedInventory sided = (ISidedInventory) world.getTileEntity(x, y, z);
 			Random rand = world.rand;
 	
@@ -259,7 +260,7 @@ public class BlockMassStorage extends BlockContainer implements IBlockMulti, ILo
 		
 		TileEntityMassStorage storage = (TileEntityMassStorage) te;
 		
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		String title = "Empty";
 		boolean full = storage.type != null;
 				
@@ -278,6 +279,7 @@ public class BlockMassStorage extends BlockContainer implements IBlockMulti, ILo
 		ILookOverlay.printGeneric(event, title, full ? 0xffff00 : 0x00ffff, full ? 0x404000 : 0x004040, text);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		

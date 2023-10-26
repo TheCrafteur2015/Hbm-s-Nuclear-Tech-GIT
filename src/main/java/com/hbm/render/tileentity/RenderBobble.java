@@ -71,8 +71,8 @@ public class RenderBobble extends TileEntitySpecialRenderer {
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		
-		bindTexture(socket);
-		bobble.renderPart("Socket");
+		bindTexture(RenderBobble.socket);
+		RenderBobble.bobble.renderPart("Socket");
 		
 		switch(type) {
 		case STRENGTH:
@@ -81,23 +81,23 @@ public class RenderBobble extends TileEntitySpecialRenderer {
 		case CHARISMA:
 		case INTELLIGENCE:
 		case AGILITY:
-		case LUCK:		bindTexture(bobble_vaultboy); break;
+		case LUCK:		bindTexture(RenderBobble.bobble_vaultboy); break;
 			
-		case BOB:		bindTexture(bobble_hbm); break;
-		case PU238:		bindTexture(bobble_pu238); break;
-		case FRIZZLE:	bindTexture(bobble_frizzle); break;
-		case VT:		bindTexture(bobble_vt); break;
-		case DOC:		bindTexture(bobble_doc); break;
-		case BLUEHAT:	bindTexture(bobble_blue); break;
-		case PHEO:		bindTexture(bobble_pheo); break;
-		case CIRNO:		bindTexture(bobble_cirno); break;
-		case ADAM29:	bindTexture(bobble_adam); break;
-		case UFFR:		bindTexture(bobble_uffr); break;
-		case VAER:		bindTexture(bobble_vaer); break;
-		case NOS:		bindTexture(bobble_nos); break;
-		case DRILLGON:	bindTexture(bobble_drillgon); break;
-		case MICROWAVE:	bindTexture(bobble_microwave); break;
-		case PEEP:		bindTexture(bobble_peep); break;
+		case BOB:		bindTexture(RenderBobble.bobble_hbm); break;
+		case PU238:		bindTexture(RenderBobble.bobble_pu238); break;
+		case FRIZZLE:	bindTexture(RenderBobble.bobble_frizzle); break;
+		case VT:		bindTexture(RenderBobble.bobble_vt); break;
+		case DOC:		bindTexture(RenderBobble.bobble_doc); break;
+		case BLUEHAT:	bindTexture(RenderBobble.bobble_blue); break;
+		case PHEO:		bindTexture(RenderBobble.bobble_pheo); break;
+		case CIRNO:		bindTexture(RenderBobble.bobble_cirno); break;
+		case ADAM29:	bindTexture(RenderBobble.bobble_adam); break;
+		case UFFR:		bindTexture(RenderBobble.bobble_uffr); break;
+		case VAER:		bindTexture(RenderBobble.bobble_vaer); break;
+		case NOS:		bindTexture(RenderBobble.bobble_nos); break;
+		case DRILLGON:	bindTexture(RenderBobble.bobble_drillgon); break;
+		case MICROWAVE:	bindTexture(RenderBobble.bobble_microwave); break;
+		case PEEP:		bindTexture(RenderBobble.bobble_peep); break;
 		default:		bindTexture(ResourceManager.universal);
 		}
 		
@@ -127,83 +127,83 @@ public class RenderBobble extends TileEntitySpecialRenderer {
 	public static double[] rotHead = {0, 0, 0};
 	
 	public void resetFigurineRotation() {
-		rotLeftArm = new double[]{0, 0, 0};
-		rotRightArm = new double[]{0, 0, 0};
-		rotLeftLeg = new double[]{0, 0, 0};
-		rotRightLeg = new double[]{0, 0, 0};
-		rotBody = 0;
-		rotHead = new double[]{0, 0, 0};
+		RenderBobble.rotLeftArm = new double[]{0, 0, 0};
+		RenderBobble.rotRightArm = new double[]{0, 0, 0};
+		RenderBobble.rotLeftLeg = new double[]{0, 0, 0};
+		RenderBobble.rotRightLeg = new double[]{0, 0, 0};
+		RenderBobble.rotBody = 0;
+		RenderBobble.rotHead = new double[]{0, 0, 0};
 	}
 	
 	@SuppressWarnings("incomplete-switch") // shut up
 	public void setupFigurineRotation(BobbleType type) {
 		switch(type) {
 		case STRENGTH:
-			rotLeftArm = new double[]{0, 25, 135};
-			rotRightArm = new double[]{0, -45, 135};
-			rotLeftLeg = new double[]{0, 0, -5};
-			rotRightLeg = new double[]{0, 0, 5};
-			rotHead = new double[]{15, 0, 0};
+			RenderBobble.rotLeftArm = new double[]{0, 25, 135};
+			RenderBobble.rotRightArm = new double[]{0, -45, 135};
+			RenderBobble.rotLeftLeg = new double[]{0, 0, -5};
+			RenderBobble.rotRightLeg = new double[]{0, 0, 5};
+			RenderBobble.rotHead = new double[]{15, 0, 0};
 			break;
 		case PERCEPTION:
-			rotLeftArm = new double[]{0, -15, 135};
-			rotRightArm = new double[]{-5, 0, 0};
+			RenderBobble.rotLeftArm = new double[]{0, -15, 135};
+			RenderBobble.rotRightArm = new double[]{-5, 0, 0};
 			break;
 		case ENDURANCE:
-			rotBody = 45;
-			rotLeftArm = new double[]{0, -25, 30};
-			rotRightArm = new double[]{0, 45, 30};
-			rotHead = new double[]{0, -45, 0};
+			RenderBobble.rotBody = 45;
+			RenderBobble.rotLeftArm = new double[]{0, -25, 30};
+			RenderBobble.rotRightArm = new double[]{0, 45, 30};
+			RenderBobble.rotHead = new double[]{0, -45, 0};
 			break;
 		case CHARISMA:
-			rotBody = 45;
-			rotRightArm = new double[]{0, -45, 90};
-			rotLeftLeg = new double[]{0, 0, -5};
-			rotRightLeg = new double[]{0, 0, 5};
-			rotHead = new double[]{-5, -45, 0};
+			RenderBobble.rotBody = 45;
+			RenderBobble.rotRightArm = new double[]{0, -45, 90};
+			RenderBobble.rotLeftLeg = new double[]{0, 0, -5};
+			RenderBobble.rotRightLeg = new double[]{0, 0, 5};
+			RenderBobble.rotHead = new double[]{-5, -45, 0};
 			break;
 		case INTELLIGENCE:
-			rotHead = new double[]{0, 30, 0};
-			rotLeftArm = new double[]{5, 0, 0};
-			rotRightArm = new double[]{15, 0, 170};
+			RenderBobble.rotHead = new double[]{0, 30, 0};
+			RenderBobble.rotLeftArm = new double[]{5, 0, 0};
+			RenderBobble.rotRightArm = new double[]{15, 0, 170};
 			break;
 		case AGILITY:
-			rotLeftArm = new double[]{0, 0, 60};
-			rotRightArm = new double[]{0, 0, -45};
-			rotLeftLeg = new double[]{0, 0, -15};
-			rotRightLeg = new double[]{0, 0, 45};
+			RenderBobble.rotLeftArm = new double[]{0, 0, 60};
+			RenderBobble.rotRightArm = new double[]{0, 0, -45};
+			RenderBobble.rotLeftLeg = new double[]{0, 0, -15};
+			RenderBobble.rotRightLeg = new double[]{0, 0, 45};
 			break;
 		case LUCK:
-			rotLeftArm = new double[]{135, 45, 0};
-			rotRightArm = new double[]{-135, -45, 0};
-			rotRightLeg = new double[]{-5, 0, 0};
+			RenderBobble.rotLeftArm = new double[]{135, 45, 0};
+			RenderBobble.rotRightArm = new double[]{-135, -45, 0};
+			RenderBobble.rotRightLeg = new double[]{-5, 0, 0};
 			break;
 		case VT:
-			rotLeftArm = new double[]{0, -45, 60};
-			rotRightArm = new double[]{0, 0, 45};
-			rotLeftLeg = new double[]{2, 0, 0};
-			rotRightLeg = new double[]{-2, 0, 0};
+			RenderBobble.rotLeftArm = new double[]{0, -45, 60};
+			RenderBobble.rotRightArm = new double[]{0, 0, 45};
+			RenderBobble.rotLeftLeg = new double[]{2, 0, 0};
+			RenderBobble.rotRightLeg = new double[]{-2, 0, 0};
 			break;
 		case BLUEHAT:
-			rotLeftArm = new double[]{0, 90, 60};
+			RenderBobble.rotLeftArm = new double[]{0, 90, 60};
 			break;
 		case FRIZZLE:
-			rotLeftArm = new double[]{0, 15, 45};
-			rotRightArm = new double[]{0, 0, 80};
+			RenderBobble.rotLeftArm = new double[]{0, 15, 45};
+			RenderBobble.rotRightArm = new double[]{0, 0, 80};
 			break;
 		case ADAM29:
-			rotRightArm = new double[]{0, 0, 60};
+			RenderBobble.rotRightArm = new double[]{0, 0, 60};
 			break;
 		case PHEO:
-			rotLeftArm = new double[]{0, 0, 80};
-			rotRightArm = new double[]{0, 0, 45};
+			RenderBobble.rotLeftArm = new double[]{0, 0, 80};
+			RenderBobble.rotRightArm = new double[]{0, 0, 45};
 			break;
 		case VAER:
-			rotLeftArm = new double[]{0, -5, 45};
-			rotRightArm = new double[]{0, 15, 45};
+			RenderBobble.rotLeftArm = new double[]{0, -5, 45};
+			RenderBobble.rotRightArm = new double[]{0, 15, 45};
 		case PEEP:
-			rotLeftArm = new double[]{0, 0, 1};
-			rotRightArm = new double[]{0, 0, 1};
+			RenderBobble.rotLeftArm = new double[]{0, 0, 1};
+			RenderBobble.rotRightArm = new double[]{0, 0, 1};
 			break;
 		}
 	}
@@ -214,9 +214,9 @@ public class RenderBobble extends TileEntitySpecialRenderer {
 		setupFigurineRotation(type);
 
 		GL11.glPushMatrix();
-		GL11.glRotated(rotBody, 0, 1, 0);
+		GL11.glRotated(RenderBobble.rotBody, 0, 1, 0);
 		
-		if(type == BobbleType.PEEP) bobble.renderPart("PeepTail");
+		if(type == BobbleType.PEEP) RenderBobble.bobble.renderPart("PeepTail");
 		
 		GL11.glDisable(GL11.GL_CULL_FACE);
 		
@@ -230,21 +230,21 @@ public class RenderBobble extends TileEntitySpecialRenderer {
 		//LEFT LEG//
 		GL11.glPushMatrix();
 			GL11.glTranslated(0, 1, -0.125);
-			GL11.glRotated(rotLeftLeg[0], 1, 0, 0);
-			GL11.glRotated(rotLeftLeg[1], 0, 1, 0);
-			GL11.glRotated(rotLeftLeg[2], 0, 0, 1);
+			GL11.glRotated(RenderBobble.rotLeftLeg[0], 1, 0, 0);
+			GL11.glRotated(RenderBobble.rotLeftLeg[1], 0, 1, 0);
+			GL11.glRotated(RenderBobble.rotLeftLeg[2], 0, 0, 1);
 			GL11.glTranslated(0, -1, 0.125);
-			bobble.renderPart("LL" + suffix);
+			RenderBobble.bobble.renderPart("LL" + suffix);
 		GL11.glPopMatrix();
 
 		//RIGHT LEG//
 		GL11.glPushMatrix();
 			GL11.glTranslated(0, 1, 0.125);
-			GL11.glRotated(rotRightLeg[0], 1, 0, 0);
-			GL11.glRotated(rotRightLeg[1], 0, 1, 0);
-			GL11.glRotated(rotRightLeg[2], 0, 0, 1);
+			GL11.glRotated(RenderBobble.rotRightLeg[0], 1, 0, 0);
+			GL11.glRotated(RenderBobble.rotRightLeg[1], 0, 1, 0);
+			GL11.glRotated(RenderBobble.rotRightLeg[2], 0, 0, 1);
 			GL11.glTranslated(0, -1, -0.125);
-			bobble.renderPart("RL" + suffix);
+			RenderBobble.bobble.renderPart("RL" + suffix);
 		GL11.glPopMatrix();
 		
 		//renderOrigin();
@@ -252,25 +252,25 @@ public class RenderBobble extends TileEntitySpecialRenderer {
 		//LEFT ARM//
 		GL11.glPushMatrix();
 			GL11.glTranslated(0, 1.625, -0.25);
-			GL11.glRotated(rotLeftArm[0], 1, 0, 0);
-			GL11.glRotated(rotLeftArm[1], 0, 1, 0);
-			GL11.glRotated(rotLeftArm[2], 0, 0, 1);
+			GL11.glRotated(RenderBobble.rotLeftArm[0], 1, 0, 0);
+			GL11.glRotated(RenderBobble.rotLeftArm[1], 0, 1, 0);
+			GL11.glRotated(RenderBobble.rotLeftArm[2], 0, 0, 1);
 			GL11.glTranslated(0, -1.625, 0.25);
-			bobble.renderPart("LA" + suffix);
+			RenderBobble.bobble.renderPart("LA" + suffix);
 		GL11.glPopMatrix();
 
 		//RIGHT ARM//
 		GL11.glPushMatrix();
 			GL11.glTranslated(0, 1.625, 0.25);
-			GL11.glRotated(rotRightArm[0], 1, 0, 0);
-			GL11.glRotated(rotRightArm[1], 0, 1, 0);
-			GL11.glRotated(rotRightArm[2], 0, 0, 1);
+			GL11.glRotated(RenderBobble.rotRightArm[0], 1, 0, 0);
+			GL11.glRotated(RenderBobble.rotRightArm[1], 0, 1, 0);
+			GL11.glRotated(RenderBobble.rotRightArm[2], 0, 0, 1);
 			GL11.glTranslated(0, -1.625, -0.25);
-			bobble.renderPart("RA" + suffix);
+			RenderBobble.bobble.renderPart("RA" + suffix);
 		GL11.glPopMatrix();
 
 		//BODY//
-		bobble.renderPart("Body" + suffix);
+		RenderBobble.bobble.renderPart("Body" + suffix);
 
 		//HEAD//
 		double speed = 0.005;
@@ -281,21 +281,21 @@ public class RenderBobble extends TileEntitySpecialRenderer {
 		GL11.glRotated(Math.sin(System.currentTimeMillis() * speed) * amplitude, 1, 0, 0);
 		GL11.glRotated(Math.sin(System.currentTimeMillis() * speed + (Math.PI * 0.5)) * amplitude, 0, 0, 1);
 		
-		GL11.glRotated(rotHead[0], 1, 0, 0);
-		GL11.glRotated(rotHead[1], 0, 1, 0);
-		GL11.glRotated(rotHead[2], 0, 0, 1);
+		GL11.glRotated(RenderBobble.rotHead[0], 1, 0, 0);
+		GL11.glRotated(RenderBobble.rotHead[1], 0, 1, 0);
+		GL11.glRotated(RenderBobble.rotHead[2], 0, 0, 1);
 		
 		GL11.glTranslated(0, -1.75, 0);
-		bobble.renderPart("Head" + suffix);
+		RenderBobble.bobble.renderPart("Head" + suffix);
 
-		if(type == BobbleType.VT) bobble.renderPart("Horn");
-		if(type == BobbleType.PEEP) bobble.renderPart("PeepHat");
+		if(type == BobbleType.VT) RenderBobble.bobble.renderPart("Horn");
+		if(type == BobbleType.PEEP) RenderBobble.bobble.renderPart("PeepHat");
 		
 		if(type == BobbleType.VAER) {
 			GL11.glTranslated(0.25, 1.9, 0.075);
 			GL11.glRotated(-60, 0, 0, 1);
 			GL11.glScaled(0.5, 0.5, 0.5);
-			this.renderItem(new ItemStack(ModItems.cigarette));
+			renderItem(new ItemStack(ModItems.cigarette));
 		}
 		
 		if(type == BobbleType.NOS) {
@@ -303,7 +303,7 @@ public class RenderBobble extends TileEntitySpecialRenderer {
 			GL11.glRotated(180, 1, 0, 0);
 			double scale = 0.095D;
 			GL11.glScaled(scale, scale, scale);
-			this.bindTexture(ResourceManager.hat);
+			bindTexture(ResourceManager.hat);
 			ResourceManager.armor_hat.renderAll();
 		}
 		
@@ -325,7 +325,7 @@ public class RenderBobble extends TileEntitySpecialRenderer {
 		GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
 		GL11.glDisable(GL11.GL_LIGHTING);
-		bobble.renderPart("Pellet");
+		RenderBobble.bobble.renderPart("Pellet");
 
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glEnable(GL11.GL_BLEND);
@@ -333,7 +333,7 @@ public class RenderBobble extends TileEntitySpecialRenderer {
 
 		OpenGlHelper.glBlendFunc(770, 771, 1, 0);
 		GL11.glColor4f(1.0F, 1.0F, 0.0F, 0.1F + (float) Math.sin(System.currentTimeMillis() * 0.001D) * 0.05F);
-		bobble.renderPart("PelletShine");
+		RenderBobble.bobble.renderPart("PelletShine");
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
 		GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
@@ -348,7 +348,7 @@ public class RenderBobble extends TileEntitySpecialRenderer {
 	public void renderFumo(BobbleType type) {
 
 		GL11.glEnable(GL11.GL_CULL_FACE);
-		bobble.renderPart("Fumo");
+		RenderBobble.bobble.renderPart("Fumo");
 		
 		double speed = 0.005;
 		double amplitude = 1;
@@ -360,13 +360,13 @@ public class RenderBobble extends TileEntitySpecialRenderer {
 		GL11.glTranslated(0, -0.75, 0);
 
 		GL11.glDisable(GL11.GL_CULL_FACE);
-		bobble.renderPart("FumoHead");
+		RenderBobble.bobble.renderPart("FumoHead");
 		
 		GL11.glPopMatrix();
 	}
 	
 	public void renderDrillgon(BobbleType type) {
-		bobble.renderPart("Drillgon");
+		RenderBobble.bobble.renderPart("Drillgon");
 	}
 
 	private ModelUboinik shotgun = new ModelUboinik();
@@ -412,12 +412,12 @@ public class RenderBobble extends TileEntitySpecialRenderer {
 			GL11.glTranslated(0.5, 1.15, 0.45);
 			GL11.glRotated(-60, 1, 0, 0);
 			GL11.glScaled(2, 2, 2);
-			this.bindTexture(ResourceManager.shimmer_axe_tex);
+			bindTexture(ResourceManager.shimmer_axe_tex);
 			ResourceManager.shimmer_axe.renderAll();
 			break;
 		case BOB:
 			GL11.glShadeModel(GL11.GL_SMOOTH);
-			this.bindTexture(ResourceManager.mini_nuke_tex);
+			bindTexture(ResourceManager.mini_nuke_tex);
 			GL11.glScaled(0.5, 0.5, 0.5);
 			GL11.glPushMatrix();
 			GL11.glTranslated(0.75, 1, 0.9);
@@ -426,7 +426,7 @@ public class RenderBobble extends TileEntitySpecialRenderer {
 				GL11.glTranslated(-0.75, 0, 0);
 			}
 			GL11.glPopMatrix();
-			this.bindTexture(ResourceManager.mini_mirv_tex);
+			bindTexture(ResourceManager.mini_mirv_tex);
 			GL11.glTranslated(0, 0.75, -0.9);
 			GL11.glRotated(90, 0, 1, 0);
 			GL11.glRotated(90, 1, 0, 0);
@@ -434,13 +434,13 @@ public class RenderBobble extends TileEntitySpecialRenderer {
 			GL11.glShadeModel(GL11.GL_FLAT);
 			break;
 		case VAER:
-			this.bindTexture(shot_tex);
+			bindTexture(this.shot_tex);
 			GL11.glTranslated(0.6, 1.5, 0);
 			GL11.glRotated(140, 0, 0, 1);
 			GL11.glRotated(-60, 0, 1, 0);
 			GL11.glTranslated(-0.2, 0, 0);
 			GL11.glScaled(0.5, 0.5, 0.5);
-			shotgun.renderDud(0.0625F);
+			this.shotgun.renderDud(0.0625F);
 			break;
 		}
 	}

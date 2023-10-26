@@ -31,7 +31,7 @@ public abstract class EntityThrowableInterp extends EntityThrowableNT {
 	@Override
 	public void onUpdate() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			super.onUpdate();
 		} else {
 			if(this.turnProgress > 0) {
@@ -42,13 +42,14 @@ public abstract class EntityThrowableInterp extends EntityThrowableNT {
 				this.rotationYaw = (float) ((double) this.rotationYaw + d / (double) this.turnProgress);
 				this.rotationPitch = (float)((double)this.rotationPitch + (this.syncPitch - (double)this.rotationPitch) / (double)this.turnProgress);
 				--this.turnProgress;
-				this.setPosition(interpX, interpY, interpZ);
+				setPosition(interpX, interpY, interpZ);
 			} else {
-				this.setPosition(this.posX, this.posY, this.posZ);
+				setPosition(this.posX, this.posY, this.posZ);
 			}
 		}
 	}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void setVelocity(double velX, double velY, double velZ) {
 		this.velocityX = this.motionX = velX;
@@ -56,6 +57,7 @@ public abstract class EntityThrowableInterp extends EntityThrowableNT {
 		this.velocityZ = this.motionZ = velZ;
 	}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int theNumberThree) {
 		this.syncPosX = x;

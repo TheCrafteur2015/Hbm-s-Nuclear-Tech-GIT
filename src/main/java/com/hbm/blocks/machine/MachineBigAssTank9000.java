@@ -53,22 +53,20 @@ public class MachineBigAssTank9000 extends BlockDummyable implements IPersistent
 		MultiblockHandlerXR.fillSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, new int[] {4, 0, 1, 1, 2, -2}, this, dir);
 		MultiblockHandlerXR.fillSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, new int[] {4, 0, 1, 1, -2, 2}, this, dir);
 
-		this.makeExtra(world, x + dir.offsetX * o + 1, y, z + dir.offsetZ * o + 2);
-		this.makeExtra(world, x + dir.offsetX * o - 1, y, z + dir.offsetZ * o + 2);
-		this.makeExtra(world, x + dir.offsetX * o + 1, y, z + dir.offsetZ * o - 2);
-		this.makeExtra(world, x + dir.offsetX * o - 1, y, z + dir.offsetZ * o - 2);
-		this.makeExtra(world, x + dir.offsetX * o + 2, y, z + dir.offsetZ * o + 1);
-		this.makeExtra(world, x + dir.offsetX * o - 2, y, z + dir.offsetZ * o + 1);
-		this.makeExtra(world, x + dir.offsetX * o + 2, y, z + dir.offsetZ * o - 1);
-		this.makeExtra(world, x + dir.offsetX * o - 2, y, z + dir.offsetZ * o - 1);
+		makeExtra(world, x + dir.offsetX * o + 1, y, z + dir.offsetZ * o + 2);
+		makeExtra(world, x + dir.offsetX * o - 1, y, z + dir.offsetZ * o + 2);
+		makeExtra(world, x + dir.offsetX * o + 1, y, z + dir.offsetZ * o - 2);
+		makeExtra(world, x + dir.offsetX * o - 1, y, z + dir.offsetZ * o - 2);
+		makeExtra(world, x + dir.offsetX * o + 2, y, z + dir.offsetZ * o + 1);
+		makeExtra(world, x + dir.offsetX * o - 2, y, z + dir.offsetZ * o + 1);
+		makeExtra(world, x + dir.offsetX * o + 2, y, z + dir.offsetZ * o - 1);
+		makeExtra(world, x + dir.offsetX * o - 2, y, z + dir.offsetZ * o - 1);
 	}
 
 	@Override
 	protected boolean checkRequirement(World world, int x, int y, int z, ForgeDirection dir, int o) {
 
-		if(!MultiblockHandlerXR.checkSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, getDimensions(), x, y, z, dir)) return false;
-		if(!MultiblockHandlerXR.checkSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, new int[] {4, 0, 1, 1, 2, -2}, x, y, z, dir)) return false;
-		if(!MultiblockHandlerXR.checkSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, new int[] {4, 0, 1, 1, -2, 2}, x, y, z, dir)) return false;
+		if(!MultiblockHandlerXR.checkSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, getDimensions(), x, y, z, dir) || !MultiblockHandlerXR.checkSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, new int[] {4, 0, 1, 1, 2, -2}, x, y, z, dir) || !MultiblockHandlerXR.checkSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, new int[] {4, 0, 1, 1, -2, 2}, x, y, z, dir)) return false;
 		
 		return true;
 	}
@@ -80,7 +78,7 @@ public class MachineBigAssTank9000 extends BlockDummyable implements IPersistent
 			return true;
 		} else if(!player.isSneaking()) {
 			
-			int[] pos = this.findCore(world, x, y, z);
+			int[] pos = findCore(world, x, y, z);
 			
 			if(pos == null)
 				return false;
@@ -114,6 +112,7 @@ public class MachineBigAssTank9000 extends BlockDummyable implements IPersistent
 		return tank.getComparatorPower();
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(ItemStack stack, NBTTagCompound persistentTag, EntityPlayer player, List list, boolean ext) {
 		FluidTank tank = new FluidTank(Fluids.NONE, 0);

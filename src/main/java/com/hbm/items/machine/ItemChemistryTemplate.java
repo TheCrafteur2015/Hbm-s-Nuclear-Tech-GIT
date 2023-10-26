@@ -2,6 +2,7 @@ package com.hbm.items.machine;
 
 import java.util.List;
 
+import com.hbm.inventory.RecipesCommon.AStack;
 import com.hbm.inventory.recipes.ChemplantRecipes;
 import com.hbm.inventory.recipes.ChemplantRecipes.ChemRecipe;
 import com.hbm.items.ModItems;
@@ -19,10 +20,11 @@ import net.minecraft.util.StatCollector;
 public class ItemChemistryTemplate extends Item {
 
 	public ItemChemistryTemplate() {
-		this.setHasSubtypes(true);
-		this.setMaxDamage(0);
+		setHasSubtypes(true);
+		setMaxDamage(0);
 	}
 
+	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
 		
 		ChemRecipe recipe = ChemplantRecipes.indexMapping.get(stack.getItemDamage());
@@ -44,8 +46,8 @@ public class ItemChemistryTemplate extends Item {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tabs, List list) {
-		for(int i = 0; i < ChemplantRecipes.recipes.size(); i++) {
-			list.add(new ItemStack(item, 1, ChemplantRecipes.recipes.get(i).getId()));
+		for (ChemRecipe element : ChemplantRecipes.recipes) {
+			list.add(new ItemStack(item, 1, element.getId()));
 		}
 	}
 	
@@ -81,9 +83,9 @@ public class ItemChemistryTemplate extends Item {
 
 			list.add(EnumChatFormatting.BOLD + I18nUtil.resolveKey("info.template_in_p"));
 
-			for(int i = 0; i < recipe.inputs.length; i++) {
-				if(recipe.inputs[i] != null) {
-					list.add(recipe.inputs[i].stacksize + "x " + recipe.inputs[i].extractForCyclingDisplay(20).getDisplayName());
+			for (AStack input : recipe.inputs) {
+				if(input != null) {
+					list.add(input.stacksize + "x " + input.extractForCyclingDisplay(20).getDisplayName());
 				}
 			}
 

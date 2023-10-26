@@ -6,21 +6,21 @@ public class TileEntityFluidValve extends TileEntityPipeBaseNT {
 	
 	@Override
 	public boolean canUpdate() {
-		return this.worldObj != null && this.getBlockMetadata() == 1 && super.canUpdate();
+		return this.worldObj != null && getBlockMetadata() == 1 && super.canUpdate();
 	}
 
 	public void updateState() {
 		
-		if(this.getBlockMetadata() == 0 && this.network != null) {
+		if(getBlockMetadata() == 0 && this.network != null) {
 			this.network.destroy();
 			this.network = null;
 		}
 		
-		if(this.getBlockMetadata() == 1) {
-			this.connect();
+		if(getBlockMetadata() == 1) {
+			connect();
 			
-			if(this.getPipeNet(type) == null) {
-				new PipeNet(type).joinLink(this);
+			if(getPipeNet(this.type) == null) {
+				new PipeNet(this.type).joinLink(this);
 			}
 		}
 	}

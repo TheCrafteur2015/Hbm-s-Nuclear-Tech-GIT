@@ -62,30 +62,30 @@ public class TileEntityAMSBase extends TileEntity implements ISidedInventory, IF
 	private String customName;
 	
 	public TileEntityAMSBase() {
-		slots = new ItemStack[16];
-		tanks = new FluidTank[4];
-		tanks[0] = new FluidTank(Fluids.COOLANT, 8000, 0);
-		tanks[1] = new FluidTank(Fluids.CRYOGEL, 8000, 1);
-		tanks[2] = new FluidTank(Fluids.DEUTERIUM, 8000, 2);
-		tanks[3] = new FluidTank(Fluids.TRITIUM, 8000, 3);
+		this.slots = new ItemStack[16];
+		this.tanks = new FluidTank[4];
+		this.tanks[0] = new FluidTank(Fluids.COOLANT, 8000, 0);
+		this.tanks[1] = new FluidTank(Fluids.CRYOGEL, 8000, 1);
+		this.tanks[2] = new FluidTank(Fluids.DEUTERIUM, 8000, 2);
+		this.tanks[3] = new FluidTank(Fluids.TRITIUM, 8000, 3);
 	}
 
 	@Override
 	public int getSizeInventory() {
-		return slots.length;
+		return this.slots.length;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		return slots[i];
+		return this.slots[i];
 	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			ItemStack itemStack = slots[i];
-			slots[i] = null;
+			ItemStack itemStack = this.slots[i];
+			this.slots[i] = null;
 			return itemStack;
 		} else {
 		return null;
@@ -94,7 +94,7 @@ public class TileEntityAMSBase extends TileEntity implements ISidedInventory, IF
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemStack) {
-		slots[i] = itemStack;
+		this.slots[i] = itemStack;
 		if(itemStack != null && itemStack.stackSize > getInventoryStackLimit())
 		{
 			itemStack.stackSize = getInventoryStackLimit();
@@ -103,7 +103,7 @@ public class TileEntityAMSBase extends TileEntity implements ISidedInventory, IF
 
 	@Override
 	public String getInventoryName() {
-		return this.hasCustomInventoryName() ? this.customName : "container.amsBase";
+		return hasCustomInventoryName() ? this.customName : "container.amsBase";
 	}
 
 	@Override
@@ -122,11 +122,11 @@ public class TileEntityAMSBase extends TileEntity implements ISidedInventory, IF
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		if(worldObj.getTileEntity(xCoord, yCoord, zCoord) != this)
+		if(this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this)
 		{
 			return false;
 		}else{
-			return player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <=128;
+			return player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <=128;
 		}
 	}
 	
@@ -143,18 +143,18 @@ public class TileEntityAMSBase extends TileEntity implements ISidedInventory, IF
 	
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			if(slots[i].stackSize <= j)
+			if(this.slots[i].stackSize <= j)
 			{
-				ItemStack itemStack = slots[i];
-				slots[i] = null;
+				ItemStack itemStack = this.slots[i];
+				this.slots[i] = null;
 				return itemStack;
 			}
-			ItemStack itemStack1 = slots[i].splitStack(j);
-			if (slots[i].stackSize == 0)
+			ItemStack itemStack1 = this.slots[i].splitStack(j);
+			if (this.slots[i].stackSize == 0)
 			{
-				slots[i] = null;
+				this.slots[i] = null;
 			}
 			
 			return itemStack1;
@@ -168,24 +168,24 @@ public class TileEntityAMSBase extends TileEntity implements ISidedInventory, IF
 		super.readFromNBT(nbt);
 		NBTTagList list = nbt.getTagList("items", 10);
 
-		power = nbt.getLong("power");
-		tanks[0].readFromNBT(nbt, "coolant1");
-		tanks[1].readFromNBT(nbt, "coolant2");
-		tanks[2].readFromNBT(nbt, "fuel1");
-		tanks[3].readFromNBT(nbt, "fuel2");
-		field = nbt.getInteger("field");
-		efficiency = nbt.getInteger("efficiency");
-		heat = nbt.getInteger("heat");
-		locked = nbt.getBoolean("locked");
-		slots = new ItemStack[getSizeInventory()];
+		this.power = nbt.getLong("power");
+		this.tanks[0].readFromNBT(nbt, "coolant1");
+		this.tanks[1].readFromNBT(nbt, "coolant2");
+		this.tanks[2].readFromNBT(nbt, "fuel1");
+		this.tanks[3].readFromNBT(nbt, "fuel2");
+		this.field = nbt.getInteger("field");
+		this.efficiency = nbt.getInteger("efficiency");
+		this.heat = nbt.getInteger("heat");
+		this.locked = nbt.getBoolean("locked");
+		this.slots = new ItemStack[getSizeInventory()];
 		
 		for(int i = 0; i < list.tagCount(); i++)
 		{
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("slot");
-			if(b0 >= 0 && b0 < slots.length)
+			if(b0 >= 0 && b0 < this.slots.length)
 			{
-				slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
+				this.slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
 			}
 		}
 	}
@@ -193,24 +193,24 @@ public class TileEntityAMSBase extends TileEntity implements ISidedInventory, IF
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setLong("power", power);
-		tanks[0].writeToNBT(nbt, "coolant1");
-		tanks[1].writeToNBT(nbt, "coolant2");
-		tanks[2].writeToNBT(nbt, "fuel1");
-		tanks[3].writeToNBT(nbt, "fuel2");
-		nbt.setInteger("field", field);
-		nbt.setInteger("efficiency", efficiency);
-		nbt.setInteger("heat", heat);
-		nbt.setBoolean("locked", locked);
+		nbt.setLong("power", this.power);
+		this.tanks[0].writeToNBT(nbt, "coolant1");
+		this.tanks[1].writeToNBT(nbt, "coolant2");
+		this.tanks[2].writeToNBT(nbt, "fuel1");
+		this.tanks[3].writeToNBT(nbt, "fuel2");
+		nbt.setInteger("field", this.field);
+		nbt.setInteger("efficiency", this.efficiency);
+		nbt.setInteger("heat", this.heat);
+		nbt.setBoolean("locked", this.locked);
 		NBTTagList list = new NBTTagList();
 		
-		for(int i = 0; i < slots.length; i++)
+		for(int i = 0; i < this.slots.length; i++)
 		{
-			if(slots[i] != null)
+			if(this.slots[i] != null)
 			{
 				NBTTagCompound nbt1 = new NBTTagCompound();
 				nbt1.setByte("slot", (byte)i);
-				slots[i].writeToNBT(nbt1);
+				this.slots[i].writeToNBT(nbt1);
 				list.appendTag(nbt1);
 			}
 		}
@@ -220,12 +220,12 @@ public class TileEntityAMSBase extends TileEntity implements ISidedInventory, IF
 	@Override
 	public int[] getAccessibleSlotsFromSide(int p_94128_1_)
     {
-        return p_94128_1_ == 0 ? slots_bottom : (p_94128_1_ == 1 ? slots_top : slots_side);
+        return p_94128_1_ == 0 ? TileEntityAMSBase.slots_bottom : (p_94128_1_ == 1 ? TileEntityAMSBase.slots_top : TileEntityAMSBase.slots_side);
     }
 
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemStack, int j) {
-		return this.isItemValidForSlot(i, itemStack);
+		return isItemValidForSlot(i, itemStack);
 	}
 
 	@Override
@@ -236,57 +236,57 @@ public class TileEntityAMSBase extends TileEntity implements ISidedInventory, IF
 	@Override
 	public void updateEntity() {
 
-		if (!worldObj.isRemote) {
+		if (!this.worldObj.isRemote) {
 			
-			for(int i = 0; i < tanks.length; i++)
-				tanks[i].setFill(tanks[i].getMaxFill());
+			for (FluidTank tank : this.tanks)
+				tank.setFill(tank.getMaxFill());
 			
-			if(!locked) {
+			if(!this.locked) {
 				
-				age++;
-				if(age >= 20)
+				this.age++;
+				if(this.age >= 20)
 				{
-					age = 0;
+					this.age = 0;
 				}
 
-				tanks[0].setType(0, 1, slots);
-				tanks[1].setType(2, 3, slots);
-				tanks[2].setType(4, 5, slots);
-				tanks[3].setType(6, 7, slots);
+				this.tanks[0].setType(0, 1, this.slots);
+				this.tanks[1].setType(2, 3, this.slots);
+				this.tanks[2].setType(4, 5, this.slots);
+				this.tanks[3].setType(6, 7, this.slots);
 				
 				for(int i = 0; i < 4; i++)
-					tanks[i].updateTank(xCoord, yCoord, zCoord, worldObj.provider.dimensionId);
+					this.tanks[i].updateTank(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId);
 				
 				int f1 = 0, f2 = 0, f3 = 0, f4 = 0;
 				int booster = 0;
 
-				if(worldObj.getTileEntity(xCoord + 6, yCoord, zCoord) instanceof TileEntityAMSLimiter) {
-					TileEntityAMSLimiter te = (TileEntityAMSLimiter)worldObj.getTileEntity(xCoord + 6, yCoord, zCoord);
-					if(!te.locked && worldObj.getBlockMetadata(xCoord + 6, yCoord, zCoord) == 4) {
+				if(this.worldObj.getTileEntity(this.xCoord + 6, this.yCoord, this.zCoord) instanceof TileEntityAMSLimiter) {
+					TileEntityAMSLimiter te = (TileEntityAMSLimiter)this.worldObj.getTileEntity(this.xCoord + 6, this.yCoord, this.zCoord);
+					if(!te.locked && this.worldObj.getBlockMetadata(this.xCoord + 6, this.yCoord, this.zCoord) == 4) {
 						f1 = te.efficiency;
 						if(te.mode == 2)
 							booster++;
 					}
 				}
-				if(worldObj.getTileEntity(xCoord - 6, yCoord, zCoord) instanceof TileEntityAMSLimiter) {
-					TileEntityAMSLimiter te = (TileEntityAMSLimiter)worldObj.getTileEntity(xCoord - 6, yCoord, zCoord);
-					if(!te.locked && worldObj.getBlockMetadata(xCoord - 6, yCoord, zCoord) == 5) {
+				if(this.worldObj.getTileEntity(this.xCoord - 6, this.yCoord, this.zCoord) instanceof TileEntityAMSLimiter) {
+					TileEntityAMSLimiter te = (TileEntityAMSLimiter)this.worldObj.getTileEntity(this.xCoord - 6, this.yCoord, this.zCoord);
+					if(!te.locked && this.worldObj.getBlockMetadata(this.xCoord - 6, this.yCoord, this.zCoord) == 5) {
 						f2 = te.efficiency;
 						if(te.mode == 2)
 							booster++;
 					}
 				}
-				if(worldObj.getTileEntity(xCoord, yCoord, zCoord + 6) instanceof TileEntityAMSLimiter) {
-					TileEntityAMSLimiter te = (TileEntityAMSLimiter)worldObj.getTileEntity(xCoord, yCoord, zCoord + 6);
-					if(!te.locked && worldObj.getBlockMetadata(xCoord, yCoord, zCoord + 6) == 2) {
+				if(this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord + 6) instanceof TileEntityAMSLimiter) {
+					TileEntityAMSLimiter te = (TileEntityAMSLimiter)this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord + 6);
+					if(!te.locked && this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord + 6) == 2) {
 						f3 = te.efficiency;
 						if(te.mode == 2)
 							booster++;
 					}
 				}
-				if(worldObj.getTileEntity(xCoord, yCoord, zCoord - 6) instanceof TileEntityAMSLimiter) {
-					TileEntityAMSLimiter te = (TileEntityAMSLimiter)worldObj.getTileEntity(xCoord, yCoord, zCoord - 6);
-					if(!te.locked && worldObj.getBlockMetadata(xCoord, yCoord, zCoord - 6) == 3) {
+				if(this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord - 6) instanceof TileEntityAMSLimiter) {
+					TileEntityAMSLimiter te = (TileEntityAMSLimiter)this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord - 6);
+					if(!te.locked && this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord - 6) == 3) {
 						f4 = te.efficiency;
 						if(te.mode == 2)
 							booster++;
@@ -295,14 +295,14 @@ public class TileEntityAMSBase extends TileEntity implements ISidedInventory, IF
 				
 				this.field = Math.round(calcField(f1, f2, f3, f4));
 				
-				mode = 0;
-				if(field > 0)
-					mode = 1;
+				this.mode = 0;
+				if(this.field > 0)
+					this.mode = 1;
 				if(booster > 0)
-					mode = 2;
+					this.mode = 2;
 				
-				if(worldObj.getTileEntity(xCoord, yCoord + 9, zCoord) instanceof TileEntityAMSEmitter) {
-					TileEntityAMSEmitter te = (TileEntityAMSEmitter)worldObj.getTileEntity(xCoord, yCoord + 9, zCoord);
+				if(this.worldObj.getTileEntity(this.xCoord, this.yCoord + 9, this.zCoord) instanceof TileEntityAMSEmitter) {
+					TileEntityAMSEmitter te = (TileEntityAMSEmitter)this.worldObj.getTileEntity(this.xCoord, this.yCoord + 9, this.zCoord);
 						this.efficiency = te.efficiency;
 				}
 				
@@ -313,83 +313,83 @@ public class TileEntityAMSBase extends TileEntity implements ISidedInventory, IF
 				int heatBase = 0;
 				int fuelBase = 0;
 				
-				if(slots[8] != null && slots[9] != null && slots[10] != null && slots[11] != null && slots[12] != null &&
-						slots[8].getItem() instanceof ItemCatalyst && slots[9].getItem() instanceof ItemCatalyst &&
-						slots[10].getItem() instanceof ItemCatalyst && slots[11].getItem() instanceof ItemCatalyst &&
-						slots[12].getItem() instanceof ItemAMSCore && hasResonators() && efficiency > 0) {
-					int a = ((ItemCatalyst)slots[8].getItem()).getColor();
-					int b = ((ItemCatalyst)slots[9].getItem()).getColor();
-					int c = ((ItemCatalyst)slots[10].getItem()).getColor();
-					int d = ((ItemCatalyst)slots[11].getItem()).getColor();
+				if(this.slots[8] != null && this.slots[9] != null && this.slots[10] != null && this.slots[11] != null && this.slots[12] != null &&
+						this.slots[8].getItem() instanceof ItemCatalyst && this.slots[9].getItem() instanceof ItemCatalyst &&
+						this.slots[10].getItem() instanceof ItemCatalyst && this.slots[11].getItem() instanceof ItemCatalyst &&
+						this.slots[12].getItem() instanceof ItemAMSCore && hasResonators() && this.efficiency > 0) {
+					int a = ((ItemCatalyst)this.slots[8].getItem()).getColor();
+					int b = ((ItemCatalyst)this.slots[9].getItem()).getColor();
+					int c = ((ItemCatalyst)this.slots[10].getItem()).getColor();
+					int d = ((ItemCatalyst)this.slots[11].getItem()).getColor();
 
-					int e = this.calcAvgHex(a, b);
-					int f = this.calcAvgHex(c, d);
+					int e = calcAvgHex(a, b);
+					int f = calcAvgHex(c, d);
 					
-					int g = this.calcAvgHex(e, f);
+					int g = calcAvgHex(e, f);
 					
 					this.color = g;
 
 					
 					for(int i = 8; i < 12; i++) {
-						heatMod *= ItemCatalyst.getHeatMod(slots[i]);
-						fuelMod *= ItemCatalyst.getFuelMod(slots[i]);
+						heatMod *= ItemCatalyst.getHeatMod(this.slots[i]);
+						fuelMod *= ItemCatalyst.getFuelMod(this.slots[i]);
 					}
 
-					heatBase = ItemAMSCore.getHeatBase(slots[12]);
-					fuelBase = ItemAMSCore.getFuelBase(slots[12]);
+					heatBase = ItemAMSCore.getHeatBase(this.slots[12]);
+					fuelBase = ItemAMSCore.getFuelBase(this.slots[12]);
 					
 					heatBase *= Math.pow(1.25F, booster);
-					heatBase *= (100 - field);
+					heatBase *= (100 - this.field);
 					
-					if(this.getFuelPower(tanks[2].getTankType()) > 0 && this.getFuelPower(tanks[3].getTankType()) > 0 &&
-							tanks[2].getFill() > 0 && tanks[3].getFill() > 0) {
+					if(getFuelPower(this.tanks[2].getTankType()) > 0 && getFuelPower(this.tanks[3].getTankType()) > 0 &&
+							this.tanks[2].getFill() > 0 && this.tanks[3].getFill() > 0) {
 
 						//power += (powerBase * powerMod * gauss(1, (heat - (maxHeat / 2)) / maxHeat)) / 1000 * getFuelPower(tanks[2].getTankType()) * getFuelPower(tanks[3].getTankType());
-						heat += (heatBase * heatMod) / (float)(this.field / 100F);
-						tanks[2].setFill((int)(tanks[2].getFill() - fuelBase * fuelMod));
-						tanks[3].setFill((int)(tanks[3].getFill() - fuelBase * fuelMod));
-						if(tanks[2].getFill() <= 0)
-							tanks[2].setFill(0);
-						if(tanks[3].getFill() <= 0)
-							tanks[3].setFill(0);
+						this.heat += (heatBase * heatMod) / (float)(this.field / 100F);
+						this.tanks[2].setFill((int)(this.tanks[2].getFill() - fuelBase * fuelMod));
+						this.tanks[3].setFill((int)(this.tanks[3].getFill() - fuelBase * fuelMod));
+						if(this.tanks[2].getFill() <= 0)
+							this.tanks[2].setFill(0);
+						if(this.tanks[3].getFill() <= 0)
+							this.tanks[3].setFill(0);
 						
-						if(heat > maxHeat) {
-							heat = maxHeat;
+						if(this.heat > TileEntityAMSBase.maxHeat) {
+							this.heat = TileEntityAMSBase.maxHeat;
 						}
 					}
 				}
 				
-				if(power > maxPower)
-					power = maxPower;
+				if(this.power > TileEntityAMSBase.maxPower)
+					this.power = TileEntityAMSBase.maxPower;
 				
 				
-				if(heat > 0 && tanks[0].getFill() > 0 && tanks[1].getFill() > 0) {
-					heat -= (this.getCoolingStrength(tanks[0].getTankType()) * this.getCoolingStrength(tanks[1].getTankType()));
+				if(this.heat > 0 && this.tanks[0].getFill() > 0 && this.tanks[1].getFill() > 0) {
+					this.heat -= (getCoolingStrength(this.tanks[0].getTankType()) * getCoolingStrength(this.tanks[1].getTankType()));
 
-					tanks[0].setFill(tanks[0].getFill() - 10);
-					tanks[1].setFill(tanks[1].getFill() - 10);
+					this.tanks[0].setFill(this.tanks[0].getFill() - 10);
+					this.tanks[1].setFill(this.tanks[1].getFill() - 10);
 
-					if(tanks[0].getFill() < 0)
-						tanks[0].setFill(0);
-					if(tanks[1].getFill() < 0)
-						tanks[1].setFill(0);
+					if(this.tanks[0].getFill() < 0)
+						this.tanks[0].setFill(0);
+					if(this.tanks[1].getFill() < 0)
+						this.tanks[1].setFill(0);
 					
-					if(heat < 0)
-						heat = 0;
+					if(this.heat < 0)
+						this.heat = 0;
 				}
 				
 			} else {
-				field = 0;
-				efficiency = 0;
-				power = 0;
-				warning = 3;
+				this.field = 0;
+				this.efficiency = 0;
+				this.power = 0;
+				this.warning = 3;
 			}
 
-			PacketDispatcher.wrapper.sendToAllAround(new AuxElectricityPacket(xCoord, yCoord, zCoord, power), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 150));
-			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(xCoord, yCoord, zCoord, locked ? 1 : 0, 0), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 150));
-			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(xCoord, yCoord, zCoord, color, 1), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 150));
-			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(xCoord, yCoord, zCoord, efficiency, 2), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 150));
-			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(xCoord, yCoord, zCoord, field, 3), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 150));
+			PacketDispatcher.wrapper.sendToAllAround(new AuxElectricityPacket(this.xCoord, this.yCoord, this.zCoord, this.power), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 150));
+			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(this.xCoord, this.yCoord, this.zCoord, this.locked ? 1 : 0, 0), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 150));
+			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(this.xCoord, this.yCoord, this.zCoord, this.color, 1), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 150));
+			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(this.xCoord, this.yCoord, this.zCoord, this.efficiency, 2), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 150));
+			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(this.xCoord, this.yCoord, this.zCoord, this.field, 3), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 150));
 		}
 	}
 	
@@ -398,7 +398,7 @@ public class TileEntityAMSBase extends TileEntity implements ISidedInventory, IF
 		if(type == Fluids.WATER) return 5;
 		if(type == Fluids.OIL) return 15;
 		if(type == Fluids.COOLANT) return this.heat / 250;
-		if(type == Fluids.CRYOGEL) return this.heat > heat/2 ? 25 : 5;
+		if(type == Fluids.CRYOGEL) return this.heat > this.heat/2 ? 25 : 5;
 		return 0;
 	}
 	
@@ -430,36 +430,36 @@ public class TileEntityAMSBase extends TileEntity implements ISidedInventory, IF
 	}
 	
 	public long getPowerScaled(long i) {
-		return (power * i) / maxPower;
+		return (this.power * i) / TileEntityAMSBase.maxPower;
 	}
 	
 	public int getEfficiencyScaled(int i) {
-		return (efficiency * i) / maxEfficiency;
+		return (this.efficiency * i) / TileEntityAMSBase.maxEfficiency;
 	}
 	
 	public int getFieldScaled(int i) {
-		return (field * i) / maxField;
+		return (this.field * i) / TileEntityAMSBase.maxField;
 	}
 	
 	public int getHeatScaled(int i) {
-		return (heat * i) / maxHeat;
+		return (this.heat * i) / TileEntityAMSBase.maxHeat;
 	}
 	
 	public boolean hasResonators() {
 		
-		if(slots[13] != null && slots[14] != null && slots[15] != null &&
-				slots[13].getItem() == ModItems.sat_chip && slots[14].getItem() == ModItems.sat_chip && slots[15].getItem() == ModItems.sat_chip) {
+		if(this.slots[13] != null && this.slots[14] != null && this.slots[15] != null &&
+				this.slots[13].getItem() == ModItems.sat_chip && this.slots[14].getItem() == ModItems.sat_chip && this.slots[15].getItem() == ModItems.sat_chip) {
 			
-		    SatelliteSavedData data = (SatelliteSavedData)worldObj.perWorldStorage.loadData(SatelliteSavedData.class, "satellites");
+		    SatelliteSavedData data = (SatelliteSavedData)this.worldObj.perWorldStorage.loadData(SatelliteSavedData.class, "satellites");
 		    if(data == null) {
-		        worldObj.perWorldStorage.setData("satellites", new SatelliteSavedData());
-		        data = (SatelliteSavedData)worldObj.perWorldStorage.loadData(SatelliteSavedData.class, "satellites");
+		        this.worldObj.perWorldStorage.setData("satellites", new SatelliteSavedData());
+		        data = (SatelliteSavedData)this.worldObj.perWorldStorage.loadData(SatelliteSavedData.class, "satellites");
 		    }
 		    data.markDirty();
 
-		    int i1 = ISatChip.getFreqS(slots[13]);
-		    int i2 = ISatChip.getFreqS(slots[14]);
-		    int i3 = ISatChip.getFreqS(slots[15]);
+		    int i1 = ISatChip.getFreqS(this.slots[13]);
+		    int i2 = ISatChip.getFreqS(this.slots[14]);
+		    int i3 = ISatChip.getFreqS(this.slots[15]);
 		    
 		    if(data.getSatFromFreq(i1) != null && data.getSatFromFreq(i2) != null && data.getSatFromFreq(i3) != null &&
 		    		data.getSatFromFreq(i1) instanceof SatelliteResonator && data.getSatFromFreq(i2) instanceof SatelliteResonator && data.getSatFromFreq(i3) instanceof SatelliteResonator &&
@@ -473,54 +473,54 @@ public class TileEntityAMSBase extends TileEntity implements ISidedInventory, IF
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		if(type.name().equals(tanks[0].getTankType().name()))
-			return tanks[0].getMaxFill();
-		else if(type.name().equals(tanks[1].getTankType().name()))
-			return tanks[1].getMaxFill();
-		else if(type.name().equals(tanks[2].getTankType().name()))
-			return tanks[2].getMaxFill();
-		else if(type.name().equals(tanks[3].getTankType().name()))
-			return tanks[3].getMaxFill();
+		if(type.name().equals(this.tanks[0].getTankType().name()))
+			return this.tanks[0].getMaxFill();
+		else if(type.name().equals(this.tanks[1].getTankType().name()))
+			return this.tanks[1].getMaxFill();
+		else if(type.name().equals(this.tanks[2].getTankType().name()))
+			return this.tanks[2].getMaxFill();
+		else if(type.name().equals(this.tanks[3].getTankType().name()))
+			return this.tanks[3].getMaxFill();
 		else
 			return 0;
 	}
 
 	@Override
 	public void setFluidFill(int i, FluidType type) {
-		if(type.name().equals(tanks[0].getTankType().name()))
-			tanks[0].setFill(i);
-		else if(type.name().equals(tanks[1].getTankType().name()))
-			tanks[1].setFill(i);
-		else if(type.name().equals(tanks[2].getTankType().name()))
-			tanks[2].setFill(i);
-		else if(type.name().equals(tanks[3].getTankType().name()))
-			tanks[3].setFill(i);
+		if(type.name().equals(this.tanks[0].getTankType().name()))
+			this.tanks[0].setFill(i);
+		else if(type.name().equals(this.tanks[1].getTankType().name()))
+			this.tanks[1].setFill(i);
+		else if(type.name().equals(this.tanks[2].getTankType().name()))
+			this.tanks[2].setFill(i);
+		else if(type.name().equals(this.tanks[3].getTankType().name()))
+			this.tanks[3].setFill(i);
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		if(type.name().equals(tanks[0].getTankType().name()))
-			return tanks[0].getFill();
-		else if(type.name().equals(tanks[1].getTankType().name()))
-			return tanks[1].getFill();
-		else if(type.name().equals(tanks[2].getTankType().name()))
-			return tanks[2].getFill();
-		else if(type.name().equals(tanks[3].getTankType().name()))
-			return tanks[3].getFill();
+		if(type.name().equals(this.tanks[0].getTankType().name()))
+			return this.tanks[0].getFill();
+		else if(type.name().equals(this.tanks[1].getTankType().name()))
+			return this.tanks[1].getFill();
+		else if(type.name().equals(this.tanks[2].getTankType().name()))
+			return this.tanks[2].getFill();
+		else if(type.name().equals(this.tanks[3].getTankType().name()))
+			return this.tanks[3].getFill();
 		else
 			return 0;
 	}
 
 	@Override
 	public void setFillForSync(int fill, int index) {
-		if(index < 4 && tanks[index] != null)
-			tanks[index].setFill(fill);
+		if(index < 4 && this.tanks[index] != null)
+			this.tanks[index].setFill(fill);
 	}
 
 	@Override
 	public void setTypeForSync(FluidType type, int index) {
-		if(index < 4 && tanks[index] != null)
-			tanks[index].setTankType(type);
+		if(index < 4 && this.tanks[index] != null)
+			this.tanks[index].setTankType(type);
 	}
 	
 	@Override

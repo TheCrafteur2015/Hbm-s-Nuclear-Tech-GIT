@@ -49,6 +49,7 @@ public class BlockFireworks extends BlockContainer {
 		return new TileEntityFireworks();
 	}
 
+	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int i, float fx, float fy, float fz) {
 		
 		if(world.isRemote)
@@ -87,10 +88,10 @@ public class BlockFireworks extends BlockContainer {
 			}
 		}
 
-		player.addChatComponentMessage(new ChatComponentTranslation(this.getUnlocalizedName() + ".name").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));
-		player.addChatComponentMessage(new ChatComponentTranslation(this.getUnlocalizedName() + ".charges", te.charges).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
-		player.addChatComponentMessage(new ChatComponentTranslation(this.getUnlocalizedName() + ".color", Integer.toHexString(te.color)).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
-		player.addChatComponentMessage(new ChatComponentTranslation(this.getUnlocalizedName() + ".message", te.message).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+		player.addChatComponentMessage(new ChatComponentTranslation(getUnlocalizedName() + ".name").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));
+		player.addChatComponentMessage(new ChatComponentTranslation(getUnlocalizedName() + ".charges", te.charges).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+		player.addChatComponentMessage(new ChatComponentTranslation(getUnlocalizedName() + ".color", Integer.toHexString(te.color)).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+		player.addChatComponentMessage(new ChatComponentTranslation(getUnlocalizedName() + ".message", te.message).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
 		
 		return true;
 	}

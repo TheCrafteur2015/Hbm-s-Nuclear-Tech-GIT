@@ -40,25 +40,25 @@ public class TileEntityNukeFurnace extends TileEntity implements ISidedInventory
 	private String customName;
 	
 	public TileEntityNukeFurnace() {
-		slots = new ItemStack[3];
+		this.slots = new ItemStack[3];
 	}
 
 	@Override
 	public int getSizeInventory() {
-		return slots.length;
+		return this.slots.length;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		return slots[i];
+		return this.slots[i];
 	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			ItemStack itemStack = slots[i];
-			slots[i] = null;
+			ItemStack itemStack = this.slots[i];
+			this.slots[i] = null;
 			return itemStack;
 		} else {
 		return null;
@@ -67,7 +67,7 @@ public class TileEntityNukeFurnace extends TileEntity implements ISidedInventory
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemStack) {
-		slots[i] = itemStack;
+		this.slots[i] = itemStack;
 		if(itemStack != null && itemStack.stackSize > getInventoryStackLimit())
 		{
 			itemStack.stackSize = getInventoryStackLimit();
@@ -76,7 +76,7 @@ public class TileEntityNukeFurnace extends TileEntity implements ISidedInventory
 
 	@Override
 	public String getInventoryName() {
-		return this.hasCustomInventoryName() ? this.customName : "container.nukeFurnace";
+		return hasCustomInventoryName() ? this.customName : "container.nukeFurnace";
 	}
 
 	@Override
@@ -95,11 +95,11 @@ public class TileEntityNukeFurnace extends TileEntity implements ISidedInventory
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		if(worldObj.getTileEntity(xCoord, yCoord, zCoord) != this)
+		if(this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this)
 		{
 			return false;
 		}else{
-			return player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <=64;
+			return player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <=64;
 		}
 	}
 	
@@ -115,7 +115,7 @@ public class TileEntityNukeFurnace extends TileEntity implements ISidedInventory
 	}
 	
 	public boolean hasItemPower(ItemStack itemStack) {
-		return getItemPower(itemStack) > 0;
+		return TileEntityNukeFurnace.getItemPower(itemStack) > 0;
 	}
 	
 	private static int getItemPower(ItemStack stack) {
@@ -123,7 +123,7 @@ public class TileEntityNukeFurnace extends TileEntity implements ISidedInventory
 			return 0;
 		} else {
 
-			int power = getFuelValue(stack);
+			int power = TileEntityNukeFurnace.getFuelValue(stack);
 			
 			return power;
 		}
@@ -131,18 +131,18 @@ public class TileEntityNukeFurnace extends TileEntity implements ISidedInventory
 	
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			if(slots[i].stackSize <= j)
+			if(this.slots[i].stackSize <= j)
 			{
-				ItemStack itemStack = slots[i];
-				slots[i] = null;
+				ItemStack itemStack = this.slots[i];
+				this.slots[i] = null;
 				return itemStack;
 			}
-			ItemStack itemStack1 = slots[i].splitStack(j);
-			if (slots[i].stackSize == 0)
+			ItemStack itemStack1 = this.slots[i].splitStack(j);
+			if (this.slots[i].stackSize == 0)
 			{
-				slots[i] = null;
+				this.slots[i] = null;
 			}
 			
 			return itemStack1;
@@ -156,17 +156,17 @@ public class TileEntityNukeFurnace extends TileEntity implements ISidedInventory
 		super.readFromNBT(nbt);
 		NBTTagList list = nbt.getTagList("items", 10);
 		
-		dualPower = nbt.getShort("powerTime");
-		dualCookTime = nbt.getShort("CookTime");
-		slots = new ItemStack[getSizeInventory()];
+		this.dualPower = nbt.getShort("powerTime");
+		this.dualCookTime = nbt.getShort("CookTime");
+		this.slots = new ItemStack[getSizeInventory()];
 		
 		for(int i = 0; i < list.tagCount(); i++)
 		{
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("slot");
-			if(b0 >= 0 && b0 < slots.length)
+			if(b0 >= 0 && b0 < this.slots.length)
 			{
-				slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
+				this.slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
 			}
 		}
 	}
@@ -174,17 +174,17 @@ public class TileEntityNukeFurnace extends TileEntity implements ISidedInventory
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setShort("powerTime", (short) dualPower);
-		nbt.setShort("cookTime", (short) dualCookTime);
+		nbt.setShort("powerTime", (short) this.dualPower);
+		nbt.setShort("cookTime", (short) this.dualCookTime);
 		NBTTagList list = new NBTTagList();
 		
-		for(int i = 0; i < slots.length; i++)
+		for(int i = 0; i < this.slots.length; i++)
 		{
-			if(slots[i] != null)
+			if(this.slots[i] != null)
 			{
 				NBTTagCompound nbt1 = new NBTTagCompound();
 				nbt1.setByte("slot", (byte)i);
-				slots[i].writeToNBT(nbt1);
+				this.slots[i].writeToNBT(nbt1);
 				list.appendTag(nbt1);
 			}
 		}
@@ -194,7 +194,7 @@ public class TileEntityNukeFurnace extends TileEntity implements ISidedInventory
 	@Override
 	public int[] getAccessibleSlotsFromSide(int p_94128_1_)
     {
-        return p_94128_1_ == 0 ? slots_bottom : (p_94128_1_ == 1 ? slots_top : slots_side);
+        return p_94128_1_ == 0 ? TileEntityNukeFurnace.slots_bottom : (p_94128_1_ == 1 ? TileEntityNukeFurnace.slots_top : TileEntityNukeFurnace.slots_side);
     }
 
 	@Override
@@ -228,15 +228,15 @@ public class TileEntityNukeFurnace extends TileEntity implements ISidedInventory
 	}
 	
 	public int getDiFurnaceProgressScaled(int i) {
-		return (dualCookTime * i) / processingSpeed;
+		return (this.dualCookTime * i) / TileEntityNukeFurnace.processingSpeed;
 	}
 	
 	public int getPowerRemainingScaled(int i) {
-		return (dualPower * i) / maxPower;
+		return (this.dualPower * i) / TileEntityNukeFurnace.maxPower;
 	}
 	
 	public boolean canProcess() {
-		if(slots[1] == null)
+		if(this.slots[1] == null)
 		{
 			return false;
 		}
@@ -246,19 +246,19 @@ public class TileEntityNukeFurnace extends TileEntity implements ISidedInventory
 			return false;
 		}
 		
-		if(slots[2] == null)
+		if(this.slots[2] == null)
 		{
 			return true;
 		}
 		
-		if(!slots[2].isItemEqual(itemStack)) {
+		if(!this.slots[2].isItemEqual(itemStack)) {
 			return false;
 		}
 		
-		if(slots[2].stackSize < getInventoryStackLimit() && slots[2].stackSize < slots[2].getMaxStackSize()) {
+		if(this.slots[2].stackSize < getInventoryStackLimit() && this.slots[2].stackSize < this.slots[2].getMaxStackSize()) {
 			return true;
 		}else{
-			return slots[2].stackSize < itemStack.getMaxStackSize();
+			return this.slots[2].stackSize < itemStack.getMaxStackSize();
 		}
 	}
 	
@@ -266,35 +266,35 @@ public class TileEntityNukeFurnace extends TileEntity implements ISidedInventory
 		if(canProcess()) {
 	        ItemStack itemStack = FurnaceRecipes.smelting().getSmeltingResult(this.slots[1]);
 			
-			if(slots[2] == null)
+			if(this.slots[2] == null)
 			{
-				slots[2] = itemStack.copy();
-			}else if(slots[2].isItemEqual(itemStack)) {
-				slots[2].stackSize += itemStack.stackSize;
+				this.slots[2] = itemStack.copy();
+			}else if(this.slots[2].isItemEqual(itemStack)) {
+				this.slots[2].stackSize += itemStack.stackSize;
 			}
 			
 			for(int i = 1; i < 2; i++)
 			{
-				if(slots[i].stackSize <= 0)
+				if(this.slots[i].stackSize <= 0)
 				{
-					slots[i] = new ItemStack(slots[i].getItem().setFull3D());
+					this.slots[i] = new ItemStack(this.slots[i].getItem().setFull3D());
 				}else{
-					slots[i].stackSize--;
+					this.slots[i].stackSize--;
 				}
-				if(slots[i].stackSize <= 0)
+				if(this.slots[i].stackSize <= 0)
 				{
-					slots[i] = null;
+					this.slots[i] = null;
 				}
 			}
 			
 			{
-				dualPower--;
+				this.dualPower--;
 			}
 		}
 	}
 	
 	public boolean hasPower() {
-		return dualPower > 0;
+		return this.dualPower > 0;
 	}
 	
 	public boolean isProcessing() {
@@ -303,14 +303,14 @@ public class TileEntityNukeFurnace extends TileEntity implements ISidedInventory
 	
 	@Override
 	public void updateEntity() {
-		this.hasPower();
+		hasPower();
 		boolean flag1 = false;
 		
-		if(!worldObj.isRemote)
+		if(!this.worldObj.isRemote)
 		{
-			if(this.hasItemPower(this.slots[0]) && this.dualPower == 0)
+			if(hasItemPower(this.slots[0]) && this.dualPower == 0)
 			{
-				this.dualPower += getItemPower(this.slots[0]);
+				this.dualPower += TileEntityNukeFurnace.getItemPower(this.slots[0]);
 				if(this.slots[0] != null)
 				{
 					flag1 = true;
@@ -324,16 +324,16 @@ public class TileEntityNukeFurnace extends TileEntity implements ISidedInventory
 			
 			if(hasPower() && canProcess())
 			{
-				dualCookTime++;
+				this.dualCookTime++;
 				
 				if(this.dualCookTime == TileEntityNukeFurnace.processingSpeed)
 				{
 					this.dualCookTime = 0;
-					this.processItem();
+					processItem();
 					flag1 = true;
 				}
 			}else{
-				dualCookTime = 0;
+				this.dualCookTime = 0;
 			}
 			
 			boolean trigger = true;
@@ -352,11 +352,11 @@ public class TileEntityNukeFurnace extends TileEntity implements ISidedInventory
 		
 		if(flag1)
 		{
-			this.markDirty();
+			markDirty();
 		}
 	}
 	
-	private static HashMap<ComparableStack, Integer> fuels = new HashMap();
+	private static HashMap<ComparableStack, Integer> fuels = new HashMap<>();
 	//for the int array: [0] => level (1-4) [1] => amount of operations
 	
 	/* 
@@ -365,22 +365,22 @@ public class TileEntityNukeFurnace extends TileEntity implements ISidedInventory
 	 * Who even uses this furnace? Nobody, but it's better then removing it without prior approval
 	 */
 	public static void registerFuels() {
-		setRecipe(BreedingRodType.TRITIUM, 5);
-		setRecipe(BreedingRodType.CO60, 10);
-		setRecipe(BreedingRodType.THF, 30);
-		setRecipe(BreedingRodType.U235, 50);
-		setRecipe(BreedingRodType.NP237, 30);
-		setRecipe(BreedingRodType.PU238, 20);
-		setRecipe(BreedingRodType.PU239, 50);
-		setRecipe(BreedingRodType.RGP, 30);
-		setRecipe(BreedingRodType.WASTE, 20);
+		TileEntityNukeFurnace.setRecipe(BreedingRodType.TRITIUM, 5);
+		TileEntityNukeFurnace.setRecipe(BreedingRodType.CO60, 10);
+		TileEntityNukeFurnace.setRecipe(BreedingRodType.THF, 30);
+		TileEntityNukeFurnace.setRecipe(BreedingRodType.U235, 50);
+		TileEntityNukeFurnace.setRecipe(BreedingRodType.NP237, 30);
+		TileEntityNukeFurnace.setRecipe(BreedingRodType.PU238, 20);
+		TileEntityNukeFurnace.setRecipe(BreedingRodType.PU239, 50);
+		TileEntityNukeFurnace.setRecipe(BreedingRodType.RGP, 30);
+		TileEntityNukeFurnace.setRecipe(BreedingRodType.WASTE, 20);
 	}
 	
 	/** Sets power for single, dual, and quad rods **/
 	public static void setRecipe(BreedingRodType type, int power) {
-		fuels.put(new ComparableStack(new ItemStack(ModItems.rod, 1, type.ordinal())), power);
-		fuels.put(new ComparableStack(new ItemStack(ModItems.rod_dual, 1, type.ordinal())), power * 2);
-		fuels.put(new ComparableStack(new ItemStack(ModItems.rod_quad, 1, type.ordinal())), power * 4);
+		TileEntityNukeFurnace.fuels.put(new ComparableStack(new ItemStack(ModItems.rod, 1, type.ordinal())), power);
+		TileEntityNukeFurnace.fuels.put(new ComparableStack(new ItemStack(ModItems.rod_dual, 1, type.ordinal())), power * 2);
+		TileEntityNukeFurnace.fuels.put(new ComparableStack(new ItemStack(ModItems.rod_quad, 1, type.ordinal())), power * 4);
 	}
 	
 	/**
@@ -394,8 +394,8 @@ public class TileEntityNukeFurnace extends TileEntity implements ISidedInventory
 			return 0;
 		
 		ComparableStack sta = new ComparableStack(stack).makeSingular();
-		if(fuels.get(sta) != null)
-			return fuels.get(sta);
+		if(TileEntityNukeFurnace.fuels.get(sta) != null)
+			return TileEntityNukeFurnace.fuels.get(sta);
 		
 		return 0;
 	}

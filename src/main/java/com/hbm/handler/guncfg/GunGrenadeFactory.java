@@ -7,8 +7,8 @@ import com.hbm.handler.BulletConfiguration;
 import com.hbm.handler.CasingEjector;
 import com.hbm.handler.GunConfiguration;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
-import com.hbm.items.ModItems;
 import com.hbm.items.ItemAmmoEnums.AmmoGrenade;
+import com.hbm.items.ModItems;
 import com.hbm.lib.HbmCollection;
 import com.hbm.lib.HbmCollection.EnumGunManufacturer;
 import com.hbm.packet.AuxParticlePacketNT;
@@ -60,7 +60,7 @@ public class GunGrenadeFactory {
 		config.config = HbmCollection.grenade;
 		config.durability = 300;
 		
-		config.ejector = EJECTOR_LAUNCHER;
+		config.ejector = GunGrenadeFactory.EJECTOR_LAUNCHER;
 		
 		return config;
 	}
@@ -88,7 +88,7 @@ public class GunGrenadeFactory {
 		config.config = HbmCollection.grenade;
 		config.durability = 2500;
 		
-		config.ejector = EJECTOR_CONGOLAKE;
+		config.ejector = GunGrenadeFactory.EJECTOR_CONGOLAKE;
 		
 		return config;
 	}
@@ -104,7 +104,7 @@ public class GunGrenadeFactory {
 		bullet.wear = 10;
 		bullet.trail = 0;
 		
-		bullet.spentCasing = CASING40MM.clone().register("40MMStock");
+		bullet.spentCasing = GunGrenadeFactory.CASING40MM.clone().register("40MMStock");
 		
 		return bullet;
 	}
@@ -121,7 +121,7 @@ public class GunGrenadeFactory {
 		bullet.explosive = 5.0F;
 		bullet.trail = 1;
 		
-		bullet.spentCasing = CASING40MM.clone().register("40MMHE");
+		bullet.spentCasing = GunGrenadeFactory.CASING40MM.clone().register("40MMHE");
 		
 		return bullet;
 	}
@@ -138,7 +138,7 @@ public class GunGrenadeFactory {
 		bullet.trail = 0;
 		bullet.incendiary = 2;
 		
-		bullet.spentCasing = CASING40MM.clone().register("40MMInc");
+		bullet.spentCasing = GunGrenadeFactory.CASING40MM.clone().register("40MMInc");
 		
 		return bullet;
 	}
@@ -157,7 +157,7 @@ public class GunGrenadeFactory {
 		
 		bullet.bntImpact = BulletConfigFactory.getPhosphorousEffect(10, 60 * 20, 100, 0.5D, 1F);
 		
-		bullet.spentCasing = CASING40MM.clone().register("40MMPhos");
+		bullet.spentCasing = GunGrenadeFactory.CASING40MM.clone().register("40MMPhos");
 		
 		return bullet;
 	}
@@ -175,7 +175,7 @@ public class GunGrenadeFactory {
 		bullet.explosive = 0;
 		bullet.chlorine = 50;
 		
-		bullet.spentCasing = CASING40MM.clone().register("40MMTox");
+		bullet.spentCasing = GunGrenadeFactory.CASING40MM.clone().register("40MMTox");
 		
 		return bullet;
 	}
@@ -193,7 +193,7 @@ public class GunGrenadeFactory {
 		bullet.explosive = 7.5F;
 		bullet.jolt = 6.5D;
 		
-		bullet.spentCasing = CASING40MM.clone().register("40MMIF");
+		bullet.spentCasing = GunGrenadeFactory.CASING40MM.clone().register("40MMIF");
 		
 		return bullet;
 	}
@@ -210,28 +210,28 @@ public class GunGrenadeFactory {
 		bullet.explosive = 10.0F;
 		bullet.trail = 3;
 		
-		bullet.spentCasing = CASING40MM.clone().register("40MMCon");
+		bullet.spentCasing = GunGrenadeFactory.CASING40MM.clone().register("40MMCon");
 		
 		return bullet;
 	}
 	
 	public static BulletConfiguration getGrenadeFinnedConfig() {
 		
-		BulletConfiguration bullet = getGrenadeConfig();
+		BulletConfiguration bullet = GunGrenadeFactory.getGrenadeConfig();
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_grenade.stackFromEnum(AmmoGrenade.FINNED));
 		bullet.gravity = 0.02;
 		bullet.explosive = 1.5F;
 		bullet.trail = 5;
 		
-		bullet.spentCasing = CASING40MM.clone().register("40MMFin");
+		bullet.spentCasing = GunGrenadeFactory.CASING40MM.clone().register("40MMFin");
 		
 		return bullet;
 	}
 	
 	public static BulletConfiguration getGrenadeNuclearConfig() {
 		
-		BulletConfiguration bullet = getGrenadeConfig();
+		BulletConfiguration bullet = GunGrenadeFactory.getGrenadeConfig();
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_grenade.stackFromEnum(AmmoGrenade.NUCLEAR));
 		bullet.velocity = 4;
@@ -241,7 +241,7 @@ public class GunGrenadeFactory {
 			BulletConfigFactory.nuclearExplosion(bulletnt, x, y, z, ExplosionNukeSmall.PARAMS_TOTS);
 		};
 		
-		bullet.spentCasing = CASING40MM.clone().register("40MMNuke");
+		bullet.spentCasing = GunGrenadeFactory.CASING40MM.clone().register("40MMNuke");
 		
 		return bullet;
 	}
@@ -257,7 +257,7 @@ public class GunGrenadeFactory {
 		bullet.trail = 5;
 		bullet.vPFX = "bluedust";
 		
-		bullet.spentCasing = CASING40MM.clone().register("40MMTrac").setColor(0xEEEEEE);
+		bullet.spentCasing = GunGrenadeFactory.CASING40MM.clone().register("40MMTrac").setColor(0xEEEEEE);
 		
 		return bullet;
 	}

@@ -28,7 +28,7 @@ public class RailStandardBuffer extends BlockDummyable implements IRailNTM {
 
 	@Override
 	public int getRenderType() {
-		return renderID;
+		return RailStandardBuffer.renderID;
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class RailStandardBuffer extends BlockDummyable implements IRailNTM {
 
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
-		this.setBlockBounds(0F, 0F, 0F, 1F, 0.125F, 1F);
+		setBlockBounds(0F, 0F, 0F, 1F, 0.125F, 1F);
 	}
 
 	@Override
@@ -58,12 +58,12 @@ public class RailStandardBuffer extends BlockDummyable implements IRailNTM {
 	
 	/* Very simple function determining the snapping position and adding the motion value to it, if desired. */
 	public Vec3 snapAndMove(World world, int x, int y, int z, double trainX, double trainY, double trainZ, double motionX, double motionY, double motionZ, double speed, RailContext info, MoveContext context) {
-		int[] pos = this.findCore(world, x, y, z);
+		int[] pos = findCore(world, x, y, z);
 		if(pos == null) return Vec3.createVectorHelper(trainX, trainY, trainZ);
 		int cX = pos[0];
 		int cY = pos[1];
 		int cZ = pos[2];
-		int meta = world.getBlockMetadata(cX, cY, cZ) - this.offset;
+		int meta = world.getBlockMetadata(cX, cY, cZ) - BlockDummyable.offset;
 		ForgeDirection dir = ForgeDirection.getOrientation(meta);
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 

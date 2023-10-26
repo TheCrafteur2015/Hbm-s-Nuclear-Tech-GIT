@@ -21,7 +21,7 @@ public class RenderArtilleryShell extends Render {
 		float scale = 5F;
 		GL11.glScalef(scale * 0.5F, scale, scale * 0.5F);
 		
-		this.bindEntityTexture(shell);
+		bindEntityTexture(shell);
 		
 		boolean fog = GL11.glIsEnabled(GL11.GL_FOG);
 		

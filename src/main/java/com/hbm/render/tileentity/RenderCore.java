@@ -216,7 +216,7 @@ public class RenderCore extends TileEntitySpecialRenderer {
         
         GL11.glDisable(GL11.GL_LIGHTING);
         
-        random.setSeed(31110L);
+        RenderCore.random.setSeed(31110L);
 
 		GL11.glDisable(GL11.GL_LIGHTING);
 
@@ -232,7 +232,7 @@ public class RenderCore extends TileEntitySpecialRenderer {
 		GL11.glPushMatrix();
 		GL11.glLoadIdentity();
 		float f100 = world.getTotalWorldTime() % 500L / 500F;
-		GL11.glTranslatef(random.nextFloat(), f100, random.nextFloat());
+		GL11.glTranslatef(RenderCore.random.nextFloat(), f100, RenderCore.random.nextFloat());
 
 		Tessellator tessellator = Tessellator.instance;
 
@@ -242,7 +242,7 @@ public class RenderCore extends TileEntitySpecialRenderer {
 			float f7 = 1.0F / (f5 + 1.0F);
 
 			if (i == 0) {
-				this.bindTexture(sky);
+				bindTexture(RenderCore.sky);
 				f7 = 0.0F;
 				f5 = 65.0F;
 				GL11.glEnable(GL11.GL_BLEND);
@@ -250,20 +250,20 @@ public class RenderCore extends TileEntitySpecialRenderer {
 			}
 
 			if (i == 1) {
-				this.bindTexture(portal);
+				bindTexture(RenderCore.portal);
 				GL11.glEnable(GL11.GL_BLEND);
 				GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
 			}
 
-			GL11.glTranslatef(random.nextFloat() * (1 - f7), random.nextFloat() * (1 - f7), random.nextFloat() * (1 - f7));
+			GL11.glTranslatef(RenderCore.random.nextFloat() * (1 - f7), RenderCore.random.nextFloat() * (1 - f7), RenderCore.random.nextFloat() * (1 - f7));
 			float scale = 0.8F;
             GL11.glScalef(scale, scale, scale);
             float ang = 360 / end;
-            GL11.glRotatef(ang * i + ang * random.nextFloat(), 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef(ang * i + ang * RenderCore.random.nextFloat(), 0.0F, 0.0F, 1.0F);
 
-			float f11 = (float) random.nextDouble() * 0.5F + 0.4F;
-			float f12 = (float) random.nextDouble() * 0.5F + 0.4F;
-			float f13 = (float) random.nextDouble() * 0.5F + 2F;
+			float f11 = (float) RenderCore.random.nextDouble() * 0.5F + 0.4F;
+			float f12 = (float) RenderCore.random.nextDouble() * 0.5F + 0.4F;
+			float f13 = (float) RenderCore.random.nextDouble() * 0.5F + 2F;
 			if (i == 0) {
 				f13 = 1.0F;
 				f12 = 1.0F;
@@ -273,10 +273,10 @@ public class RenderCore extends TileEntitySpecialRenderer {
 			f12 *= f7;
 			f11 *= f7;
 
-			GL11.glTexGen(GL11.GL_S, GL11.GL_EYE_PLANE, this.func_147525_a(1, 0, 0, 0));
-			GL11.glTexGen(GL11.GL_T, GL11.GL_EYE_PLANE, this.func_147525_a(0, 0, 1, 0));
-			GL11.glTexGen(GL11.GL_R, GL11.GL_EYE_PLANE, this.func_147525_a(0, 0, 0, 1));
-			GL11.glTexGen(GL11.GL_Q, GL11.GL_EYE_PLANE, this.func_147525_a(0, 1, 0, 0));
+			GL11.glTexGen(GL11.GL_S, GL11.GL_EYE_PLANE, func_147525_a(1, 0, 0, 0));
+			GL11.glTexGen(GL11.GL_T, GL11.GL_EYE_PLANE, func_147525_a(0, 0, 1, 0));
+			GL11.glTexGen(GL11.GL_R, GL11.GL_EYE_PLANE, func_147525_a(0, 0, 0, 1));
+			GL11.glTexGen(GL11.GL_Q, GL11.GL_EYE_PLANE, func_147525_a(0, 1, 0, 0));
 
 			GL11.glRotatef(180, 0, 0, 1);
 			

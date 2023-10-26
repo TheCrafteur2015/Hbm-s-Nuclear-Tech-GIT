@@ -35,10 +35,10 @@ public class HFRWavefrontObject implements IModelCustom {
 	private static Matcher face_V_VT_VN_Matcher, face_V_VT_Matcher, face_V_VN_Matcher, face_V_Matcher;
 	private static Matcher groupObjectMatcher;
 
-	public ArrayList<Vertex> vertices = new ArrayList<Vertex>();
-	public ArrayList<Vertex> vertexNormals = new ArrayList<Vertex>();
-	public ArrayList<TextureCoordinate> textureCoordinates = new ArrayList<TextureCoordinate>();
-	public ArrayList<S_GroupObject> groupObjects = new ArrayList<S_GroupObject>();
+	public ArrayList<Vertex> vertices = new ArrayList<>();
+	public ArrayList<Vertex> vertexNormals = new ArrayList<>();
+	public ArrayList<TextureCoordinate> textureCoordinates = new ArrayList<>();
+	public ArrayList<S_GroupObject> groupObjects = new ArrayList<>();
 	private S_GroupObject currentGroupObject;
 	private String fileName;
 	private boolean smoothing = true;
@@ -82,43 +82,43 @@ public class HFRWavefrontObject implements IModelCustom {
 				} else if(currentLine.startsWith("v ")) {
 					Vertex vertex = parseVertex(currentLine, lineCount);
 					if(vertex != null) {
-						vertices.add(vertex);
+						this.vertices.add(vertex);
 					}
 				} else if(currentLine.startsWith("vn ")) {
 					Vertex vertex = parseVertexNormal(currentLine, lineCount);
 					if(vertex != null) {
-						vertexNormals.add(vertex);
+						this.vertexNormals.add(vertex);
 					}
 				} else if(currentLine.startsWith("vt ")) {
 					TextureCoordinate textureCoordinate = parseTextureCoordinate(currentLine, lineCount);
 					if(textureCoordinate != null) {
-						textureCoordinates.add(textureCoordinate);
+						this.textureCoordinates.add(textureCoordinate);
 					}
 				} else if(currentLine.startsWith("f ")) {
 
-					if(currentGroupObject == null) {
-						currentGroupObject = new S_GroupObject("Default");
+					if(this.currentGroupObject == null) {
+						this.currentGroupObject = new S_GroupObject("Default");
 					}
 
 					S_Face face = parseFace(currentLine, lineCount);
 
 					if(face != null) {
-						currentGroupObject.faces.add(face);
+						this.currentGroupObject.faces.add(face);
 					}
 				} else if(currentLine.startsWith("g ") | currentLine.startsWith("o ")) {
 					S_GroupObject group = parseGroupObject(currentLine, lineCount);
 
 					if(group != null) {
-						if(currentGroupObject != null) {
-							groupObjects.add(currentGroupObject);
+						if(this.currentGroupObject != null) {
+							this.groupObjects.add(this.currentGroupObject);
 						}
 					}
 
-					currentGroupObject = group;
+					this.currentGroupObject = group;
 				}
 			}
 
-			groupObjects.add(currentGroupObject);
+			this.groupObjects.add(this.currentGroupObject);
 		} catch(IOException e) {
 			throw new ModelFormatException("IO Exception reading model format", e);
 		} finally {
@@ -141,8 +141,8 @@ public class HFRWavefrontObject implements IModelCustom {
 	public void renderAll() {
 		Tessellator tessellator = Tessellator.instance;
 
-		if(currentGroupObject != null) {
-			tessellator.startDrawing(currentGroupObject.glDrawingMode);
+		if(this.currentGroupObject != null) {
+			tessellator.startDrawing(this.currentGroupObject.glDrawingMode);
 		} else {
 			tessellator.startDrawing(GL11.GL_TRIANGLES);
 		}
@@ -153,7 +153,7 @@ public class HFRWavefrontObject implements IModelCustom {
 
 	@SideOnly(Side.CLIENT)
 	public void tessellateAll(Tessellator tessellator) {
-		for(S_GroupObject groupObject : groupObjects) {
+		for(S_GroupObject groupObject : this.groupObjects) {
 			groupObject.render(tessellator);
 		}
 	}
@@ -161,7 +161,7 @@ public class HFRWavefrontObject implements IModelCustom {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void renderOnly(String... groupNames) {
-		for(S_GroupObject groupObject : groupObjects) {
+		for(S_GroupObject groupObject : this.groupObjects) {
 			for(String groupName : groupNames) {
 				if(groupName.equalsIgnoreCase(groupObject.name)) {
 					groupObject.render();
@@ -172,7 +172,7 @@ public class HFRWavefrontObject implements IModelCustom {
 
 	@SideOnly(Side.CLIENT)
 	public void tessellateOnly(Tessellator tessellator, String... groupNames) {
-		for(S_GroupObject groupObject : groupObjects) {
+		for(S_GroupObject groupObject : this.groupObjects) {
 			for(String groupName : groupNames) {
 				if(groupName.equalsIgnoreCase(groupObject.name)) {
 					groupObject.render(tessellator);
@@ -184,7 +184,7 @@ public class HFRWavefrontObject implements IModelCustom {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void renderPart(String partName) {
-		for(S_GroupObject groupObject : groupObjects) {
+		for(S_GroupObject groupObject : this.groupObjects) {
 			if(partName.equalsIgnoreCase(groupObject.name)) {
 				groupObject.render();
 			}
@@ -193,7 +193,7 @@ public class HFRWavefrontObject implements IModelCustom {
 
 	@SideOnly(Side.CLIENT)
 	public void tessellatePart(Tessellator tessellator, String partName) {
-		for(S_GroupObject groupObject : groupObjects) {
+		for(S_GroupObject groupObject : this.groupObjects) {
 			if(partName.equalsIgnoreCase(groupObject.name)) {
 				groupObject.render(tessellator);
 			}
@@ -203,7 +203,7 @@ public class HFRWavefrontObject implements IModelCustom {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void renderAllExcept(String... excludedGroupNames) {
-		for(S_GroupObject groupObject : groupObjects) {
+		for(S_GroupObject groupObject : this.groupObjects) {
 			boolean skipPart = false;
 			for(String excludedGroupName : excludedGroupNames) {
 				if(excludedGroupName.equalsIgnoreCase(groupObject.name)) {
@@ -219,7 +219,7 @@ public class HFRWavefrontObject implements IModelCustom {
 	@SideOnly(Side.CLIENT)
 	public void tessellateAllExcept(Tessellator tessellator, String... excludedGroupNames) {
 		boolean exclude;
-		for(S_GroupObject groupObject : groupObjects) {
+		for(S_GroupObject groupObject : this.groupObjects) {
 			exclude = false;
 			for(String excludedGroupName : excludedGroupNames) {
 				if(excludedGroupName.equalsIgnoreCase(groupObject.name)) {
@@ -235,7 +235,7 @@ public class HFRWavefrontObject implements IModelCustom {
 	private Vertex parseVertex(String line, int lineCount) throws ModelFormatException {
 		Vertex vertex = null;
 
-		if(isValidVertexLine(line)) {
+		if(HFRWavefrontObject.isValidVertexLine(line)) {
 			line = line.substring(line.indexOf(" ") + 1);
 			String[] tokens = line.split(" ");
 
@@ -249,7 +249,7 @@ public class HFRWavefrontObject implements IModelCustom {
 				throw new ModelFormatException(String.format("Number formatting error at line %d", lineCount), e);
 			}
 		} else {
-			throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName + "' - Incorrect format");
+			throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + this.fileName + "' - Incorrect format");
 		}
 
 		return vertex;
@@ -258,7 +258,7 @@ public class HFRWavefrontObject implements IModelCustom {
 	private Vertex parseVertexNormal(String line, int lineCount) throws ModelFormatException {
 		Vertex vertexNormal = null;
 
-		if(isValidVertexNormalLine(line)) {
+		if(HFRWavefrontObject.isValidVertexNormalLine(line)) {
 			line = line.substring(line.indexOf(" ") + 1);
 			String[] tokens = line.split(" ");
 
@@ -269,7 +269,7 @@ public class HFRWavefrontObject implements IModelCustom {
 				throw new ModelFormatException(String.format("Number formatting error at line %d", lineCount), e);
 			}
 		} else {
-			throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName + "' - Incorrect format");
+			throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + this.fileName + "' - Incorrect format");
 		}
 
 		return vertexNormal;
@@ -278,7 +278,7 @@ public class HFRWavefrontObject implements IModelCustom {
 	private TextureCoordinate parseTextureCoordinate(String line, int lineCount) throws ModelFormatException {
 		TextureCoordinate textureCoordinate = null;
 
-		if(isValidTextureCoordinateLine(line)) {
+		if(HFRWavefrontObject.isValidTextureCoordinateLine(line)) {
 			line = line.substring(line.indexOf(" ") + 1);
 			String[] tokens = line.split(" ");
 
@@ -291,7 +291,7 @@ public class HFRWavefrontObject implements IModelCustom {
 				throw new ModelFormatException(String.format("Number formatting error at line %d", lineCount), e);
 			}
 		} else {
-			throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName + "' - Incorrect format");
+			throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + this.fileName + "' - Incorrect format");
 		}
 
 		return textureCoordinate;
@@ -300,7 +300,7 @@ public class HFRWavefrontObject implements IModelCustom {
 	private S_Face parseFace(String line, int lineCount) throws ModelFormatException {
 		S_Face face = null;
 
-		if(isValidFaceLine(line)) {
+		if(HFRWavefrontObject.isValidFaceLine(line)) {
 			face = new S_Face(this.smoothing);
 
 			String trimmedLine = line.substring(line.indexOf(" ") + 1);
@@ -308,23 +308,23 @@ public class HFRWavefrontObject implements IModelCustom {
 			String[] subTokens = null;
 
 			if(tokens.length == 3) {
-				if(currentGroupObject.glDrawingMode == -1) {
-					currentGroupObject.glDrawingMode = GL11.GL_TRIANGLES;
-				} else if(currentGroupObject.glDrawingMode != GL11.GL_TRIANGLES) {
-					throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName
+				if(this.currentGroupObject.glDrawingMode == -1) {
+					this.currentGroupObject.glDrawingMode = GL11.GL_TRIANGLES;
+				} else if(this.currentGroupObject.glDrawingMode != GL11.GL_TRIANGLES) {
+					throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + this.fileName
 							+ "' - Invalid number of points for face (expected 4, found " + tokens.length + ")");
 				}
 			} else if(tokens.length == 4) {
-				if(currentGroupObject.glDrawingMode == -1) {
-					currentGroupObject.glDrawingMode = GL11.GL_QUADS;
-				} else if(currentGroupObject.glDrawingMode != GL11.GL_QUADS) {
-					throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName
+				if(this.currentGroupObject.glDrawingMode == -1) {
+					this.currentGroupObject.glDrawingMode = GL11.GL_QUADS;
+				} else if(this.currentGroupObject.glDrawingMode != GL11.GL_QUADS) {
+					throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + this.fileName
 							+ "' - Invalid number of points for face (expected 3, found " + tokens.length + ")");
 				}
 			}
 
 			// f v1/vt1/vn1 v2/vt2/vn2 v3/vt3/vn3 ...
-			if(isValidFace_V_VT_VN_Line(line)) {
+			if(HFRWavefrontObject.isValidFace_V_VT_VN_Line(line)) {
 				face.vertices = new Vertex[tokens.length];
 				face.textureCoordinates = new TextureCoordinate[tokens.length];
 				face.vertexNormals = new Vertex[tokens.length];
@@ -332,55 +332,55 @@ public class HFRWavefrontObject implements IModelCustom {
 				for(int i = 0; i < tokens.length; ++i) {
 					subTokens = tokens[i].split("/");
 
-					face.vertices[i] = vertices.get(Integer.parseInt(subTokens[0]) - 1);
-					face.textureCoordinates[i] = textureCoordinates.get(Integer.parseInt(subTokens[1]) - 1);
-					face.vertexNormals[i] = vertexNormals.get(Integer.parseInt(subTokens[2]) - 1);
+					face.vertices[i] = this.vertices.get(Integer.parseInt(subTokens[0]) - 1);
+					face.textureCoordinates[i] = this.textureCoordinates.get(Integer.parseInt(subTokens[1]) - 1);
+					face.vertexNormals[i] = this.vertexNormals.get(Integer.parseInt(subTokens[2]) - 1);
 				}
 
 				face.faceNormal = face.calculateFaceNormal();
 			}
 			// f v1/vt1 v2/vt2 v3/vt3 ...
-			else if(isValidFace_V_VT_Line(line)) {
+			else if(HFRWavefrontObject.isValidFace_V_VT_Line(line)) {
 				face.vertices = new Vertex[tokens.length];
 				face.textureCoordinates = new TextureCoordinate[tokens.length];
 
 				for(int i = 0; i < tokens.length; ++i) {
 					subTokens = tokens[i].split("/");
 
-					face.vertices[i] = vertices.get(Integer.parseInt(subTokens[0]) - 1);
-					face.textureCoordinates[i] = textureCoordinates.get(Integer.parseInt(subTokens[1]) - 1);
+					face.vertices[i] = this.vertices.get(Integer.parseInt(subTokens[0]) - 1);
+					face.textureCoordinates[i] = this.textureCoordinates.get(Integer.parseInt(subTokens[1]) - 1);
 				}
 
 				face.faceNormal = face.calculateFaceNormal();
 			}
 			// f v1//vn1 v2//vn2 v3//vn3 ...
-			else if(isValidFace_V_VN_Line(line)) {
+			else if(HFRWavefrontObject.isValidFace_V_VN_Line(line)) {
 				face.vertices = new Vertex[tokens.length];
 				face.vertexNormals = new Vertex[tokens.length];
 
 				for(int i = 0; i < tokens.length; ++i) {
 					subTokens = tokens[i].split("//");
 
-					face.vertices[i] = vertices.get(Integer.parseInt(subTokens[0]) - 1);
-					face.vertexNormals[i] = vertexNormals.get(Integer.parseInt(subTokens[1]) - 1);
+					face.vertices[i] = this.vertices.get(Integer.parseInt(subTokens[0]) - 1);
+					face.vertexNormals[i] = this.vertexNormals.get(Integer.parseInt(subTokens[1]) - 1);
 				}
 
 				face.faceNormal = face.calculateFaceNormal();
 			}
 			// f v1 v2 v3 ...
-			else if(isValidFace_V_Line(line)) {
+			else if(HFRWavefrontObject.isValidFace_V_Line(line)) {
 				face.vertices = new Vertex[tokens.length];
 
 				for(int i = 0; i < tokens.length; ++i) {
-					face.vertices[i] = vertices.get(Integer.parseInt(tokens[i]) - 1);
+					face.vertices[i] = this.vertices.get(Integer.parseInt(tokens[i]) - 1);
 				}
 
 				face.faceNormal = face.calculateFaceNormal();
 			} else {
-				throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName + "' - Incorrect format");
+				throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + this.fileName + "' - Incorrect format");
 			}
 		} else {
-			throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName + "' - Incorrect format");
+			throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + this.fileName + "' - Incorrect format");
 		}
 
 		return face;
@@ -389,93 +389,93 @@ public class HFRWavefrontObject implements IModelCustom {
 	private S_GroupObject parseGroupObject(String line, int lineCount) throws ModelFormatException {
 		S_GroupObject group = null;
 
-		if(isValidGroupObjectLine(line)) {
+		if(HFRWavefrontObject.isValidGroupObjectLine(line)) {
 			String trimmedLine = line.substring(line.indexOf(" ") + 1);
 
 			if(trimmedLine.length() > 0) {
 				group = new S_GroupObject(trimmedLine);
 			}
 		} else {
-			throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName + "' - Incorrect format");
+			throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + this.fileName + "' - Incorrect format");
 		}
 
 		return group;
 	}
 
 	private static boolean isValidVertexLine(String line) {
-		if(vertexMatcher != null) {
-			vertexMatcher.reset();
+		if(HFRWavefrontObject.vertexMatcher != null) {
+			HFRWavefrontObject.vertexMatcher.reset();
 		}
 
-		vertexMatcher = vertexPattern.matcher(line);
-		return vertexMatcher.matches();
+		HFRWavefrontObject.vertexMatcher = HFRWavefrontObject.vertexPattern.matcher(line);
+		return HFRWavefrontObject.vertexMatcher.matches();
 	}
 
 	private static boolean isValidVertexNormalLine(String line) {
-		if(vertexNormalMatcher != null) {
-			vertexNormalMatcher.reset();
+		if(HFRWavefrontObject.vertexNormalMatcher != null) {
+			HFRWavefrontObject.vertexNormalMatcher.reset();
 		}
 
-		vertexNormalMatcher = vertexNormalPattern.matcher(line);
-		return vertexNormalMatcher.matches();
+		HFRWavefrontObject.vertexNormalMatcher = HFRWavefrontObject.vertexNormalPattern.matcher(line);
+		return HFRWavefrontObject.vertexNormalMatcher.matches();
 	}
 
 	private static boolean isValidTextureCoordinateLine(String line) {
-		if(textureCoordinateMatcher != null) {
-			textureCoordinateMatcher.reset();
+		if(HFRWavefrontObject.textureCoordinateMatcher != null) {
+			HFRWavefrontObject.textureCoordinateMatcher.reset();
 		}
 
-		textureCoordinateMatcher = textureCoordinatePattern.matcher(line);
-		return textureCoordinateMatcher.matches();
+		HFRWavefrontObject.textureCoordinateMatcher = HFRWavefrontObject.textureCoordinatePattern.matcher(line);
+		return HFRWavefrontObject.textureCoordinateMatcher.matches();
 	}
 
 	private static boolean isValidFace_V_VT_VN_Line(String line) {
-		if(face_V_VT_VN_Matcher != null) {
-			face_V_VT_VN_Matcher.reset();
+		if(HFRWavefrontObject.face_V_VT_VN_Matcher != null) {
+			HFRWavefrontObject.face_V_VT_VN_Matcher.reset();
 		}
 
-		face_V_VT_VN_Matcher = face_V_VT_VN_Pattern.matcher(line);
-		return face_V_VT_VN_Matcher.matches();
+		HFRWavefrontObject.face_V_VT_VN_Matcher = HFRWavefrontObject.face_V_VT_VN_Pattern.matcher(line);
+		return HFRWavefrontObject.face_V_VT_VN_Matcher.matches();
 	}
 
 	private static boolean isValidFace_V_VT_Line(String line) {
-		if(face_V_VT_Matcher != null) {
-			face_V_VT_Matcher.reset();
+		if(HFRWavefrontObject.face_V_VT_Matcher != null) {
+			HFRWavefrontObject.face_V_VT_Matcher.reset();
 		}
 
-		face_V_VT_Matcher = face_V_VT_Pattern.matcher(line);
-		return face_V_VT_Matcher.matches();
+		HFRWavefrontObject.face_V_VT_Matcher = HFRWavefrontObject.face_V_VT_Pattern.matcher(line);
+		return HFRWavefrontObject.face_V_VT_Matcher.matches();
 	}
 
 	private static boolean isValidFace_V_VN_Line(String line) {
-		if(face_V_VN_Matcher != null) {
-			face_V_VN_Matcher.reset();
+		if(HFRWavefrontObject.face_V_VN_Matcher != null) {
+			HFRWavefrontObject.face_V_VN_Matcher.reset();
 		}
 
-		face_V_VN_Matcher = face_V_VN_Pattern.matcher(line);
-		return face_V_VN_Matcher.matches();
+		HFRWavefrontObject.face_V_VN_Matcher = HFRWavefrontObject.face_V_VN_Pattern.matcher(line);
+		return HFRWavefrontObject.face_V_VN_Matcher.matches();
 	}
 
 	private static boolean isValidFace_V_Line(String line) {
-		if(face_V_Matcher != null) {
-			face_V_Matcher.reset();
+		if(HFRWavefrontObject.face_V_Matcher != null) {
+			HFRWavefrontObject.face_V_Matcher.reset();
 		}
 
-		face_V_Matcher = face_V_Pattern.matcher(line);
-		return face_V_Matcher.matches();
+		HFRWavefrontObject.face_V_Matcher = HFRWavefrontObject.face_V_Pattern.matcher(line);
+		return HFRWavefrontObject.face_V_Matcher.matches();
 	}
 
 	private static boolean isValidFaceLine(String line) {
-		return isValidFace_V_VT_VN_Line(line) || isValidFace_V_VT_Line(line) || isValidFace_V_VN_Line(line) || isValidFace_V_Line(line);
+		return HFRWavefrontObject.isValidFace_V_VT_VN_Line(line) || HFRWavefrontObject.isValidFace_V_VT_Line(line) || HFRWavefrontObject.isValidFace_V_VN_Line(line) || HFRWavefrontObject.isValidFace_V_Line(line);
 	}
 
 	private static boolean isValidGroupObjectLine(String line) {
-		if(groupObjectMatcher != null) {
-			groupObjectMatcher.reset();
+		if(HFRWavefrontObject.groupObjectMatcher != null) {
+			HFRWavefrontObject.groupObjectMatcher.reset();
 		}
 
-		groupObjectMatcher = groupObjectPattern.matcher(line);
-		return groupObjectMatcher.matches();
+		HFRWavefrontObject.groupObjectMatcher = HFRWavefrontObject.groupObjectPattern.matcher(line);
+		return HFRWavefrontObject.groupObjectMatcher.matches();
 	}
 
 	@Override

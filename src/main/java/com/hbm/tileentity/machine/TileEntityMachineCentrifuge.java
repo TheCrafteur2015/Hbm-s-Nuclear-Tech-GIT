@@ -45,6 +45,7 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 		super(8);
 	}
 	
+	@Override
 	public String getName() {
 		return "container.centrifuge";
 	}
@@ -56,21 +57,21 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
-		return slot_io;
+		return TileEntityMachineCentrifuge.slot_io;
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
-		power = nbt.getLong("power");
-		progress = nbt.getShort("progress");
+		this.power = nbt.getLong("power");
+		this.progress = nbt.getShort("progress");
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setLong("power", power);
-		nbt.setShort("progress", (short) progress);
+		nbt.setLong("power", this.power);
+		nbt.setShort("progress", (short) this.progress);
 	}
 
 	@Override
@@ -79,19 +80,19 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 	}
 
 	public int getCentrifugeProgressScaled(int i) {
-		return (progress * i) / processingSpeed;
+		return (this.progress * i) / TileEntityMachineCentrifuge.processingSpeed;
 	}
 
 	public long getPowerRemainingScaled(int i) {
-		return (power * i) / maxPower;
+		return (this.power * i) / TileEntityMachineCentrifuge.maxPower;
 	}
 
 	public boolean canProcess() {
 
-		if(slots[0] == null) {
+		if(this.slots[0] == null) {
 			return false;
 		}
-		ItemStack[] out = CentrifugeRecipes.getOutput(slots[0]);
+		ItemStack[] out = CentrifugeRecipes.getOutput(this.slots[0]);
 		
 		if(out == null) {
 			return false;
@@ -100,13 +101,7 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 		for(int i = 0; i < Math.min(4, out.length); i++) {
 
 			//either the slot is null, the output is null or the output can be added to the existing slot
-			if(slots[i + 2] == null)
-				continue;
-
-			if(out[i] == null)
-				continue;
-
-			if(slots[i + 2].isItemEqual(out[i]) && slots[i + 2].stackSize + out[i].stackSize <= out[i].getMaxStackSize())
+			if((this.slots[i + 2] == null) || (out[i] == null) || (this.slots[i + 2].isItemEqual(out[i]) && this.slots[i + 2].stackSize + out[i].stackSize <= out[i].getMaxStackSize()))
 				continue;
 
 			return false;
@@ -116,26 +111,26 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 	}
 
 	private void processItem() {
-		ItemStack[] out = CentrifugeRecipes.getOutput(slots[0]);
+		ItemStack[] out = CentrifugeRecipes.getOutput(this.slots[0]);
 
 		for(int i = 0; i < Math.min(4, out.length); i++) {
 
 			if(out[i] == null)
 				continue;
 
-			if(slots[i + 2] == null) {
-				slots[i + 2] = out[i].copy();
+			if(this.slots[i + 2] == null) {
+				this.slots[i + 2] = out[i].copy();
 			} else {
-				slots[i + 2].stackSize += out[i].stackSize;
+				this.slots[i + 2].stackSize += out[i].stackSize;
 			}
 		}
 
-		this.decrStackSize(0, 1);
-		this.markDirty();
+		decrStackSize(0, 1);
+		markDirty();
 	}
 
 	public boolean hasPower() {
-		return power > 0;
+		return this.power > 0;
 	}
 
 	public boolean isProcessing() {
@@ -145,16 +140,16 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 	@Override
 	public void updateEntity() {
 
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			this.updateStandardConnections(worldObj, xCoord, yCoord, zCoord);
+			this.updateStandardConnections(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 
-			power = Library.chargeTEFromItems(slots, 1, power, maxPower);
+			this.power = Library.chargeTEFromItems(this.slots, 1, this.power, TileEntityMachineCentrifuge.maxPower);
 			
 			int consumption = 200;
 			int speed = 1;
 			
-			UpgradeManager.eval(slots, 6, 7);
+			UpgradeManager.eval(this.slots, 6, 7);
 			speed += Math.min(UpgradeManager.getLevel(UpgradeType.SPEED), 3);
 			consumption += Math.min(UpgradeManager.getLevel(UpgradeType.SPEED), 3) * 200;
 			
@@ -172,53 +167,53 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 			}
 
 			if(hasPower() && canProcess()) {
-				isProgressing = true;
+				this.isProgressing = true;
 			} else {
-				isProgressing = false;
+				this.isProgressing = false;
 			}
 
-			if(isProgressing) {
-				progress += speed;
+			if(this.isProgressing) {
+				this.progress += speed;
 
 				if(this.progress >= TileEntityMachineCentrifuge.processingSpeed) {
 					this.progress = 0;
-					this.processItem();
+					processItem();
 				}
 			} else {
-				progress = 0;
+				this.progress = 0;
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setLong("power", power);
-			data.setInteger("progress", progress);
-			data.setBoolean("isProgressing", isProgressing);
-			this.networkPack(data, 50);
+			data.setLong("power", this.power);
+			data.setInteger("progress", this.progress);
+			data.setBoolean("isProgressing", this.isProgressing);
+			networkPack(data, 50);
 		} else {
 			
-			if(isProgressing) {
-				audioDuration += 2;
+			if(this.isProgressing) {
+				this.audioDuration += 2;
 			} else {
-				audioDuration -= 3;
+				this.audioDuration -= 3;
 			}
 			
-			audioDuration = MathHelper.clamp_int(audioDuration, 0, 60);
+			this.audioDuration = MathHelper.clamp_int(this.audioDuration, 0, 60);
 			
-			if(audioDuration > 10) {
+			if(this.audioDuration > 10) {
 				
-				if(audio == null) {
-					audio = createAudioLoop();
-					audio.startSound();
-				} else if(!audio.isPlaying()) {
-					audio = rebootAudio(audio);
+				if(this.audio == null) {
+					this.audio = createAudioLoop();
+					this.audio.startSound();
+				} else if(!this.audio.isPlaying()) {
+					this.audio = rebootAudio(this.audio);
 				}
 				
-				audio.updatePitch((audioDuration - 10) / 100F + 0.5F);
+				this.audio.updatePitch((this.audioDuration - 10) / 100F + 0.5F);
 				
 			} else {
 				
-				if(audio != null) {
-					audio.stopSound();
-					audio = null;
+				if(this.audio != null) {
+					this.audio.stopSound();
+					this.audio = null;
 				}
 			}
 		}
@@ -233,15 +228,15 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 
 	@Override
 	public AudioWrapper createAudioLoop() {
-		return MainRegistry.proxy.getLoopedSound("hbm:block.centrifugeOperate", xCoord, yCoord, zCoord, 1.0F, 10F, 1.0F);
+		return MainRegistry.proxy.getLoopedSound("hbm:block.centrifugeOperate", this.xCoord, this.yCoord, this.zCoord, 1.0F, 10F, 1.0F);
 	}
 
 	@Override
 	public void onChunkUnload() {
 
-		if(audio != null) {
-			audio.stopSound();
-			audio = null;
+		if(this.audio != null) {
+			this.audio.stopSound();
+			this.audio = null;
 		}
 	}
 
@@ -250,9 +245,9 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 
 		super.invalidate();
 
-		if(audio != null) {
-			audio.stopSound();
-			audio = null;
+		if(this.audio != null) {
+			this.audio.stopSound();
+			this.audio = null;
 		}
 	}
 	
@@ -261,18 +256,18 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord,
-					yCoord,
-					zCoord,
-					xCoord + 1,
-					yCoord + 4,
-					zCoord + 1
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord,
+					this.yCoord,
+					this.zCoord,
+					this.xCoord + 1,
+					this.yCoord + 4,
+					this.zCoord + 1
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 
 	@Override
@@ -283,18 +278,18 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 
 	@Override
 	public void setPower(long i) {
-		power = i;
+		this.power = i;
 	}
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 
 	}
 
 	@Override
 	public long getMaxPower() {
-		return maxPower;
+		return TileEntityMachineCentrifuge.maxPower;
 	}
 
 	@Override

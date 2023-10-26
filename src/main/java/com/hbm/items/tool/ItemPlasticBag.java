@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 public class ItemPlasticBag extends Item implements IGUIProvider {
 
 	public ItemPlasticBag() {
-		this.setMaxStackSize(1);
+		setMaxStackSize(1);
 	}
 	
 	@Override
@@ -55,16 +55,16 @@ public class ItemPlasticBag extends Item implements IGUIProvider {
 		public InventoryPlasticBag(EntityPlayer player, ItemStack box) {
 			this.player = player;
 			this.bag = box;
-			slots = new ItemStack[this.getSizeInventory()];
+			this.slots = new ItemStack[getSizeInventory()];
 			
 			if(!box.hasTagCompound())
 				box.setTagCompound(new NBTTagCompound());
 			
-			ItemStack[] fromNBT = ItemStackUtil.readStacksFromNBT(box, slots.length);
+			ItemStack[] fromNBT = ItemStackUtil.readStacksFromNBT(box, this.slots.length);
 			
 			if(fromNBT != null) {
-				for(int i = 0; i < slots.length; i++) {
-					slots[i] = fromNBT[i];
+				for(int i = 0; i < this.slots.length; i++) {
+					this.slots[i] = fromNBT[i];
 				}
 			}
 		}
@@ -94,10 +94,10 @@ public class ItemPlasticBag extends Item implements IGUIProvider {
 		public void setInventorySlotContents(int slot, ItemStack stack) {
 			
 			if(stack != null) {
-				stack.stackSize = Math.min(stack.stackSize, this.getInventoryStackLimit());
+				stack.stackSize = Math.min(stack.stackSize, getInventoryStackLimit());
 			}
 			
-			slots[slot] = stack;
+			this.slots[slot] = stack;
 			markDirty();
 		}
 
@@ -106,17 +106,17 @@ public class ItemPlasticBag extends Item implements IGUIProvider {
 			
 			for(int i = 0; i < getSizeInventory(); ++i) {
 				if(getStackInSlot(i) != null && getStackInSlot(i).stackSize == 0) {
-					slots[i] = null;
+					this.slots[i] = null;
 				}
 			}
 			
-			ItemStackUtil.addStacksToNBT(bag, slots);
+			ItemStackUtil.addStacksToNBT(this.bag, this.slots);
 		}
 
 		@Override public int getSizeInventory() { return 1; }
-		@Override public ItemStack getStackInSlot(int slot) { return slots[slot]; }
+		@Override public ItemStack getStackInSlot(int slot) { return this.slots[slot]; }
 		@Override public String getInventoryName() { return "container.plasticBag"; }
-		@Override public boolean hasCustomInventoryName() { return bag.hasDisplayName(); }
+		@Override public boolean hasCustomInventoryName() { return this.bag.hasDisplayName(); }
 		@Override public int getInventoryStackLimit() { return 1; }
 		@Override public boolean isUseableByPlayer(EntityPlayer player) { return true; }
 		@Override public void openInventory() { }

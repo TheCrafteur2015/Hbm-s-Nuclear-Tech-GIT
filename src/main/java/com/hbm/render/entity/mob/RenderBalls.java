@@ -27,8 +27,8 @@ public class RenderBalls extends Render {
 		GL11.glRotatef(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * f1 - 90.0F, 0.0F, 1.0F, 0.0F);
 		GL11.glRotatef(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * f1 - 90, 0.0F, 0.0F, 1.0F);
 		
-		this.bindEntityTexture(entity);
-		capsule.renderAll();
+		bindEntityTexture(entity);
+		RenderBalls.capsule.renderAll();
 		
 		GL11.glPopMatrix();
 	}

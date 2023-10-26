@@ -21,13 +21,13 @@ public class ArmorRPA extends ArmorFSBPowered {
 	@SideOnly(Side.CLIENT)
 	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot) {
 		
-		if(models == null) {
-			models = new ModelArmorRPA[4];
+		if(this.models == null) {
+			this.models = new ModelArmorRPA[4];
 			
 			for(int i = 0; i < 4; i++)
-				models[i] = new ModelArmorRPA(i);
+				this.models[i] = new ModelArmorRPA(i);
 		}
 		
-		return models[armorSlot];
+		return this.models[armorSlot];
 	}
 }

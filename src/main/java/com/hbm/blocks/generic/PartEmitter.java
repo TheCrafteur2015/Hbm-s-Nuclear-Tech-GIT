@@ -37,7 +37,7 @@ public class PartEmitter extends BlockContainer implements IToolable, ITooltipPr
 
 		if(tool == ToolType.HAND_DRILL) {
 			TileEntityPartEmitter te = (TileEntityPartEmitter) world.getTileEntity(x, y, z);
-			te.effect = (te.effect + 1) % te.effectCount;
+			te.effect = (te.effect + 1) % TileEntityPartEmitter.effectCount;
 			te.markDirty();
 			return true;
 		}
@@ -54,40 +54,40 @@ public class PartEmitter extends BlockContainer implements IToolable, ITooltipPr
 		@Override
 		public void updateEntity() {
 			
-			if(!worldObj.isRemote) {
+			if(!this.worldObj.isRemote) {
 
-				double x = xCoord + 0.5;
-				double y = yCoord + 0.5;
-				double z = zCoord + 0.5;
+				double x = this.xCoord + 0.5;
+				double y = this.yCoord + 0.5;
+				double z = this.zCoord + 0.5;
 				NBTTagCompound data = new NBTTagCompound();
 				
-				if(effect == 1) {
-					ParticleUtil.spawnGasFlame(worldObj, xCoord + worldObj.rand.nextDouble(), yCoord + 4.5 + worldObj.rand.nextDouble(), zCoord + worldObj.rand.nextDouble(), worldObj.rand.nextGaussian() * 0.2, 0.1, worldObj.rand.nextGaussian() * 0.2);
+				if(this.effect == 1) {
+					ParticleUtil.spawnGasFlame(this.worldObj, this.xCoord + this.worldObj.rand.nextDouble(), this.yCoord + 4.5 + this.worldObj.rand.nextDouble(), this.zCoord + this.worldObj.rand.nextDouble(), this.worldObj.rand.nextGaussian() * 0.2, 0.1, this.worldObj.rand.nextGaussian() * 0.2);
 				}
 				
-				if(effect == 2) {
+				if(this.effect == 2) {
 					data.setString("type", "tower");
 					data.setFloat("lift", 5F);
 					data.setFloat("base", 0.25F);
 					data.setFloat("max", 5F);
-					data.setInteger("life", 560 + worldObj.rand.nextInt(20));
+					data.setInteger("life", 560 + this.worldObj.rand.nextInt(20));
 					data.setInteger("color",0x404040);
 				}
-				if(effect == 3) {
+				if(this.effect == 3) {
 					data.setString("type", "tower");
 					data.setFloat("lift", 0.5F);
 					data.setFloat("base", 1F);
 					data.setFloat("max", 10F);
-					data.setInteger("life", 750 + worldObj.rand.nextInt(250));
+					data.setInteger("life", 750 + this.worldObj.rand.nextInt(250));
 		
-					x = xCoord + 0.5 + worldObj.rand.nextDouble() * 3 - 1.5;
-					y =  yCoord + 1;
-					z = zCoord + 0.5 + worldObj.rand.nextDouble() * 3 - 1.5;
+					x = this.xCoord + 0.5 + this.worldObj.rand.nextDouble() * 3 - 1.5;
+					y =  this.yCoord + 1;
+					z = this.zCoord + 0.5 + this.worldObj.rand.nextDouble() * 3 - 1.5;
 					
 				}
 				
 				if(data.hasKey("type")) {
-					PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, x, y, z), new TargetPoint(this.worldObj.provider.dimensionId, xCoord, yCoord, zCoord, range));
+					PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, x, y, z), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, TileEntityPartEmitter.range));
 				}
 			}
 		}
@@ -95,13 +95,13 @@ public class PartEmitter extends BlockContainer implements IToolable, ITooltipPr
 		@Override
 		public Packet getDescriptionPacket() {
 			NBTTagCompound nbt = new NBTTagCompound();
-			this.writeToNBT(nbt);
+			writeToNBT(nbt);
 			return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, nbt);
 		}
 		
 		@Override
 		public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-			this.readFromNBT(pkt.func_148857_g());
+			readFromNBT(pkt.func_148857_g());
 		}
 
 		@Override
@@ -117,6 +117,7 @@ public class PartEmitter extends BlockContainer implements IToolable, ITooltipPr
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		list.add(EnumChatFormatting.GOLD + "Use hand drill to cycle special effects");

@@ -25,10 +25,12 @@ public class ParticleText extends EntityFX {
 		this.noClip = true;
 	}
 
+	@Override
 	public int getFXLayer() {
 		return 3;
 	}
 
+	@Override
 	public void renderParticle(Tessellator tess, float interp, float x, float y, float z, float tx, float tz) {
 
 		GL11.glPushMatrix();
@@ -43,18 +45,18 @@ public class ParticleText extends EntityFX {
 		this.rotationYaw = -mc.thePlayer.rotationYaw;
 		this.rotationPitch = mc.thePlayer.rotationPitch;
 
-		float pX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) interp - interpPosX);
-		float pY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) interp - interpPosY);
-		float pZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) interp - interpPosZ);
+		float pX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) interp - EntityFX.interpPosX);
+		float pY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) interp - EntityFX.interpPosY);
+		float pZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) interp - EntityFX.interpPosZ);
 
 		GL11.glTranslatef(pX, pY, pZ);
 		GL11.glRotatef(this.rotationYaw, 0.0F, 1.0F, 0.0F);
 		GL11.glRotatef(this.rotationPitch, 1.0F, 0.0F, 0.0F);
 		GL11.glScalef(-1.0F, -1.0F, 1.0F);
 
-		GL11.glScaled(particleScale * 0.01, particleScale * 0.01, particleScale * 0.01);
+		GL11.glScaled(this.particleScale * 0.01, this.particleScale * 0.01, this.particleScale * 0.01);
 
-		font.drawStringWithShadow(text, -(int) (font.getStringWidth(text) * 0.5F), -(int) (font.FONT_HEIGHT * 0.5F), color);
+		font.drawStringWithShadow(this.text, -(int) (font.getStringWidth(this.text) * 0.5F), -(int) (font.FONT_HEIGHT * 0.5F), this.color);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
 		GL11.glPolygonOffset(0.0F, 0.0F);

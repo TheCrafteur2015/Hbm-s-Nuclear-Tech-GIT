@@ -14,7 +14,7 @@ import net.minecraft.world.gen.structure.StructureStart;
 /** This makes so much more sense! OOP wasn't confusing sometimes, you were just retarded! */
 public class ProceduralStructureStart extends StructureStart {
 	/** List of queued components to call buildComponent on randomly. Iterated over until hard limits reached. */
-	public List<StructureComponent> queuedComponents = new ArrayList();
+	public List<StructureComponent> queuedComponents = new ArrayList<>();
 	/** List of the component weights for this particular structure -- weights removed as components are 'used up.' */
 	protected List<Weight> componentWeightList; //Make sure to initialize the array list to the weight array size, since might as well
 	
@@ -25,28 +25,29 @@ public class ProceduralStructureStart extends StructureStart {
 	}
 	
 	/** 'starter' is just the starting component, so like a village well. meant to be nice and convenient and not needing a super necessarily. */
+	@SuppressWarnings("unchecked")
 	public ProceduralStructureStart buildStart(World world, Random rand, StructureComponent starter, Weight...weights) {
 		prepareWeights(weights);
 		
-		components.add(starter);
-		queuedComponents.add(starter);
-		while(!queuedComponents.isEmpty()) {
-			final int i = rand.nextInt(queuedComponents.size());
-			StructureComponent component = queuedComponents.remove(i);
+		this.components.add(starter);
+		this.queuedComponents.add(starter);
+		while(!this.queuedComponents.isEmpty()) {
+			final int i = rand.nextInt(this.queuedComponents.size());
+			StructureComponent component = this.queuedComponents.remove(i);
 			if(component instanceof ProceduralComponent)
 				((ProceduralComponent) component).buildComponent(this, rand); //additional components are added to the list; the 'last component' is the caller already.
 		}
 		
-		this.updateBoundingBox();
+		updateBoundingBox();
 		return this;
 	}
 	
 	public void prepareWeights(Weight...weights) {
-		componentWeightList = new ArrayList(weights.length);
+		this.componentWeightList = new ArrayList<>(weights.length);
 		
 		for(int i = 0; i < weights.length; i++) {
 			weights[i].instancesSpawned = 0;
-			componentWeightList.add(weights[i]);
+			this.componentWeightList.add(weights[i]);
 		}
 	}
 	
@@ -67,8 +68,8 @@ public class ProceduralStructureStart extends StructureStart {
 		int totalWeight = 0;
 		Weight weight;
 		
-		for(Iterator iterator = componentWeightList.iterator(); iterator.hasNext(); totalWeight += weight.weight) { //Iterates over the entire list to find the total weight
-			weight = (Weight) iterator.next();
+		for(Iterator<Weight> iterator = this.componentWeightList.iterator(); iterator.hasNext(); totalWeight += weight.weight) { //Iterates over the entire list to find the total weight
+			weight = iterator.next();
 			
 			if(weight.instanceLimit >= 0 && weight.instancesSpawned < weight.instanceLimit) //can more structure pieces be added, in general?
 				flag = true;
@@ -85,23 +86,20 @@ public class ProceduralStructureStart extends StructureStart {
 		
 		for(int i = 0; i < 5; i++) {
 			int value = rand.nextInt(totalWeight); //Pick a random value, based on how many parts there are already
-			Iterator iterator = componentWeightList.iterator();
-			
-			while(iterator.hasNext()) {
-				Weight weight = (Weight)iterator.next();
+			for (Weight weight : this.componentWeightList) {
 				value -= weight.weight; //Iterate over the list until the value is less than 0
 				
 				if(value < 0) {
 					if(!weight.canSpawnStructure(componentType, coordMode, last)) //Additional checks based on game state info preventing spawn? start from beginning
 						break;
 					
-					StructureComponent component = weight.lambda.findValidPlacement(components, rand, minX, minY, minZ, coordMode, componentType); //Construct the chosen component
+					StructureComponent component = weight.lambda.findValidPlacement(this.components, rand, minX, minY, minZ, coordMode, componentType); //Construct the chosen component
 					
 					if(component != null) { //If it has been constructed, add it
 						weight.instancesSpawned++;
 						
 						if(!weight.canSpawnMoreStructures()) //Structure can no longer be spawned regardless of game state? remove as an option
-							componentWeightList.remove(weight);
+							this.componentWeightList.remove(weight);
 							
 						return component;
 					}
@@ -118,12 +116,13 @@ public class ProceduralStructureStart extends StructureStart {
 	protected int distanceLimit = 64;
 	
 	/** Gets the next valid component based on the structure start's members */
+	@SuppressWarnings("unchecked")
 	protected StructureComponent getNextValidComponent(StructureComponent last, Random rand, int minX, int minY, int minZ, int coordMode, int componentType) {
 		
-		if(components.size() > sizeLimit) //Hard limit on amount of components
+		if(this.components.size() > this.sizeLimit) //Hard limit on amount of components
 			return null;
 		
-		if(Math.abs(minX - (func_143019_e() * 16 + 8)) <= distanceLimit && Math.abs(minZ - (func_143018_f() * 16 + 8)) <= distanceLimit) { //Hard limit on spread of structure
+		if(Math.abs(minX - (func_143019_e() * 16 + 8)) <= this.distanceLimit && Math.abs(minZ - (func_143018_f() * 16 + 8)) <= this.distanceLimit) { //Hard limit on spread of structure
 			
 			StructureComponent structure = getWeightedComponent(last, rand, minX, minY, minZ, coordMode, componentType + 1); //Returns null if all checks fail
 			
@@ -216,6 +215,7 @@ public class ProceduralStructureStart extends StructureStart {
 	/** Returns a new instance of this structureComponent, or null if not able to be placed.<br>Based on bounding box checks. Please use a method reference in the component. */
 	@FunctionalInterface
 	protected static interface instantiateStructure {
+		@SuppressWarnings("rawtypes")
 		StructureComponent findValidPlacement(List components, Random rand, int minX, int minY, int minZ, int coordMode, int componentType);
 	}
 	

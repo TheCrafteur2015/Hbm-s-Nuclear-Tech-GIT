@@ -26,7 +26,7 @@ public class ItemToolAbilityFueled extends ItemToolAbility implements IFillableI
 		this.maxFuel = maxFuel;
 		this.consumption = consumption;
 		this.fillRate = fillRate;
-		this.setMaxDamage(1);
+		setMaxDamage(1);
 		for(FluidType fuel : acceptedFuels) this.acceptedFuels.add(fuel);
 	}
 
@@ -34,9 +34,9 @@ public class ItemToolAbilityFueled extends ItemToolAbility implements IFillableI
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 
-		list.add(EnumChatFormatting.GOLD + "Fuel: " + this.getFill(stack) + "/" + this.maxFuel + "mB");
+		list.add(EnumChatFormatting.GOLD + "Fuel: " + getFill(stack) + "/" + this.maxFuel + "mB");
 		
-		for(FluidType type : acceptedFuels) {
+		for(FluidType type : this.acceptedFuels) {
 			list.add(EnumChatFormatting.YELLOW + "- " + type.getLocalizedName());
 		}
 
@@ -45,12 +45,12 @@ public class ItemToolAbilityFueled extends ItemToolAbility implements IFillableI
 
 	@Override
 	public boolean showDurabilityBar(ItemStack stack) {
-		return getFill(stack) < maxFuel;
+		return getFill(stack) < this.maxFuel;
 	}
 
 	@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
-		return 1 - (double) getFill(stack) / (double) maxFuel;
+		return 1 - (double) getFill(stack) / (double) this.maxFuel;
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class ItemToolAbilityFueled extends ItemToolAbility implements IFillableI
 
 	@Override
 	public void setDamage(ItemStack stack, int damage) {
-		this.setFill(stack, Math.max(this.getFill(stack) - damage * consumption, 0));
+		setFill(stack, Math.max(getFill(stack) - damage * this.consumption, 0));
 	}
 
 	@Override
@@ -71,8 +71,8 @@ public class ItemToolAbilityFueled extends ItemToolAbility implements IFillableI
 	public int getFill(ItemStack stack) {
 		if(stack.stackTagCompound == null) {
 			stack.stackTagCompound = new NBTTagCompound();
-			setFill(stack, maxFuel);
-			return maxFuel;
+			setFill(stack, this.maxFuel);
+			return this.maxFuel;
 		}
 		
 		return stack.stackTagCompound.getInteger("fuel");
@@ -98,8 +98,8 @@ public class ItemToolAbilityFueled extends ItemToolAbility implements IFillableI
 			return amount;
 		
 		int toFill = Math.min(amount, this.fillRate);
-		toFill = Math.min(toFill, this.maxFuel - this.getFill(stack));
-		this.setFill(stack, this.getFill(stack) + toFill);
+		toFill = Math.min(toFill, this.maxFuel - getFill(stack));
+		setFill(stack, getFill(stack) + toFill);
 		
 		return amount - toFill;
 	}

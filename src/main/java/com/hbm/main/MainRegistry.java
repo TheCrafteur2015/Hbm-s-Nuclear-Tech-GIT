@@ -1,21 +1,103 @@
 package com.hbm.main;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Random;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.google.common.collect.ImmutableList;
 import com.hbm.blocks.BlockEnums.EnumStoneType;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.generic.BlockMotherOfAllOres;
 import com.hbm.blocks.generic.BlockToolConversion;
+import com.hbm.commands.CommandClearChat;
+import com.hbm.commands.CommandDebug;
 import com.hbm.commands.CommandDebugChunkLoad;
 import com.hbm.commands.CommandReloadRecipes;
 import com.hbm.commands.CommandSatellites;
-import com.hbm.config.*;
+import com.hbm.config.BombConfig;
+import com.hbm.config.CustomMachineConfigJSON;
+import com.hbm.config.FalloutConfigJSON;
+import com.hbm.config.GeneralConfig;
+import com.hbm.config.MachineConfig;
+import com.hbm.config.MachineDynConfig;
+import com.hbm.config.MobConfig;
+import com.hbm.config.PotionConfig;
+import com.hbm.config.RadiationConfig;
+import com.hbm.config.StructureConfig;
+import com.hbm.config.ToolConfig;
+import com.hbm.config.WeaponConfig;
+import com.hbm.config.WorldConfig;
 import com.hbm.crafting.RodRecipes;
-import com.hbm.creativetabs.*;
+import com.hbm.creativetabs.BlockTab;
+import com.hbm.creativetabs.ConsumableTab;
+import com.hbm.creativetabs.ControlTab;
+import com.hbm.creativetabs.MachineTab;
+import com.hbm.creativetabs.MissileTab;
+import com.hbm.creativetabs.NukeTab;
+import com.hbm.creativetabs.PartsTab;
+import com.hbm.creativetabs.TemplateTab;
+import com.hbm.creativetabs.WeaponTab;
 import com.hbm.entity.EntityMappings;
-import com.hbm.entity.grenade.*;
+import com.hbm.entity.grenade.EntityGrenadeASchrab;
+import com.hbm.entity.grenade.EntityGrenadeBlackHole;
+import com.hbm.entity.grenade.EntityGrenadeBreach;
+import com.hbm.entity.grenade.EntityGrenadeBurst;
+import com.hbm.entity.grenade.EntityGrenadeCloud;
+import com.hbm.entity.grenade.EntityGrenadeCluster;
+import com.hbm.entity.grenade.EntityGrenadeDynamite;
+import com.hbm.entity.grenade.EntityGrenadeElectric;
+import com.hbm.entity.grenade.EntityGrenadeFire;
+import com.hbm.entity.grenade.EntityGrenadeFlare;
+import com.hbm.entity.grenade.EntityGrenadeFrag;
+import com.hbm.entity.grenade.EntityGrenadeGas;
+import com.hbm.entity.grenade.EntityGrenadeGascan;
+import com.hbm.entity.grenade.EntityGrenadeGeneric;
+import com.hbm.entity.grenade.EntityGrenadeIFBouncy;
+import com.hbm.entity.grenade.EntityGrenadeIFBrimstone;
+import com.hbm.entity.grenade.EntityGrenadeIFConcussion;
+import com.hbm.entity.grenade.EntityGrenadeIFGeneric;
+import com.hbm.entity.grenade.EntityGrenadeIFHE;
+import com.hbm.entity.grenade.EntityGrenadeIFHopwire;
+import com.hbm.entity.grenade.EntityGrenadeIFImpact;
+import com.hbm.entity.grenade.EntityGrenadeIFIncendiary;
+import com.hbm.entity.grenade.EntityGrenadeIFMystery;
+import com.hbm.entity.grenade.EntityGrenadeIFNull;
+import com.hbm.entity.grenade.EntityGrenadeIFSpark;
+import com.hbm.entity.grenade.EntityGrenadeIFSticky;
+import com.hbm.entity.grenade.EntityGrenadeIFToxic;
+import com.hbm.entity.grenade.EntityGrenadeImpactGeneric;
+import com.hbm.entity.grenade.EntityGrenadeLemon;
+import com.hbm.entity.grenade.EntityGrenadeMIRV;
+import com.hbm.entity.grenade.EntityGrenadeMk2;
+import com.hbm.entity.grenade.EntityGrenadeNuclear;
+import com.hbm.entity.grenade.EntityGrenadeNuke;
+import com.hbm.entity.grenade.EntityGrenadePC;
+import com.hbm.entity.grenade.EntityGrenadePlasma;
+import com.hbm.entity.grenade.EntityGrenadePoison;
+import com.hbm.entity.grenade.EntityGrenadePulse;
+import com.hbm.entity.grenade.EntityGrenadeSchrabidium;
+import com.hbm.entity.grenade.EntityGrenadeShrapnel;
+import com.hbm.entity.grenade.EntityGrenadeSmart;
+import com.hbm.entity.grenade.EntityGrenadeStrong;
+import com.hbm.entity.grenade.EntityGrenadeTau;
+import com.hbm.entity.grenade.EntityGrenadeZOMG;
+import com.hbm.entity.grenade.EntityWastePearl;
 import com.hbm.entity.logic.IChunkLoader;
 import com.hbm.entity.mob.siege.SiegeTier;
-import com.hbm.handler.*;
+import com.hbm.handler.BobmazonOfferFactory;
+import com.hbm.handler.BulletConfigSyncingUtil;
+import com.hbm.handler.FuelHandler;
+import com.hbm.handler.GUIHandler;
+import com.hbm.handler.HTTPHandler;
+import com.hbm.handler.HazmatRegistry;
+import com.hbm.handler.HbmKeybinds;
+import com.hbm.handler.SiegeOrchestrator;
 import com.hbm.handler.imc.IMCBlastFurnace;
 import com.hbm.handler.imc.IMCCentrifuge;
 import com.hbm.handler.imc.IMCCrystallizer;
@@ -27,7 +109,12 @@ import com.hbm.inventory.FluidContainerRegistry;
 import com.hbm.inventory.OreDictManager;
 import com.hbm.inventory.OreDictManager.DictFrame;
 import com.hbm.inventory.fluid.Fluids;
-import com.hbm.inventory.recipes.*;
+import com.hbm.inventory.recipes.AssemblerRecipes;
+import com.hbm.inventory.recipes.GasCentrifugeRecipes;
+import com.hbm.inventory.recipes.MagicRecipes;
+import com.hbm.inventory.recipes.RadiolysisRecipes;
+import com.hbm.inventory.recipes.RefineryRecipes;
+import com.hbm.inventory.recipes.SILEXRecipes;
 import com.hbm.inventory.recipes.anvil.AnvilRecipes;
 import com.hbm.inventory.recipes.loader.SerializableRecipe;
 import com.hbm.items.ItemAmmoEnums.Ammo4Gauge;
@@ -46,12 +133,17 @@ import com.hbm.tileentity.bomb.TileEntityNukeCustom;
 import com.hbm.tileentity.machine.TileEntityMachineReactorLarge;
 import com.hbm.tileentity.machine.TileEntityNukeFurnace;
 import com.hbm.tileentity.machine.rbmk.RBMKDials;
-import com.hbm.util.*;
+import com.hbm.util.AchievementHandler;
+import com.hbm.util.ArmorUtil;
+import com.hbm.util.Compat;
+import com.hbm.util.StatHelper;
+import com.hbm.util.SuicideThreadDump;
 import com.hbm.world.feature.BedrockOre;
 import com.hbm.world.feature.OreCave;
 import com.hbm.world.feature.OreLayer3D;
 import com.hbm.world.feature.SchistStratum;
 import com.hbm.world.generator.CellularDungeonFactory;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -59,10 +151,15 @@ import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.Metadata;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
 import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
+import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.event.FMLMissingMappingsEvent.MissingMapping;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartedEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -91,15 +188,6 @@ import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.util.EnumHelper;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.io.File;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Random;
 
 @Mod(modid = RefStrings.MODID, name = RefStrings.NAME, version = RefStrings.VERSION)
 public class MainRegistry {
@@ -250,21 +338,21 @@ public class MainRegistry {
 	@EventHandler
 	public void PreLoad(FMLPreInitializationEvent PreEvent) {
 		
-		startupTime = System.currentTimeMillis();
-		configDir = PreEvent.getModConfigurationDirectory();
-		configHbmDir = new File(configDir.getAbsolutePath() + File.separatorChar + "hbmConfig");
+		MainRegistry.startupTime = System.currentTimeMillis();
+		MainRegistry.configDir = PreEvent.getModConfigurationDirectory();
+		MainRegistry.configHbmDir = new File(MainRegistry.configDir.getAbsolutePath() + File.separatorChar + "hbmConfig");
 
-		if(!configHbmDir.exists()) configHbmDir.mkdir();
+		if(!MainRegistry.configHbmDir.exists()) MainRegistry.configHbmDir.mkdir();
 		
-		logger.info("Let us celebrate the fact that the logger finally works again!");
+		MainRegistry.logger.info("Let us celebrate the fact that the logger finally works again!");
 
 		// Reroll Polaroid
-		if(generalOverride > 0 && generalOverride < 19) {
-			polaroidID = generalOverride;
+		if(MainRegistry.generalOverride > 0 && MainRegistry.generalOverride < 19) {
+			MainRegistry.polaroidID = MainRegistry.generalOverride;
 		} else {
-			polaroidID = rand.nextInt(18) + 1;
-			while(polaroidID == 4 || polaroidID == 9)
-				polaroidID = rand.nextInt(18) + 1;
+			MainRegistry.polaroidID = this.rand.nextInt(18) + 1;
+			while(MainRegistry.polaroidID == 4 || MainRegistry.polaroidID == 9)
+				MainRegistry.polaroidID = this.rand.nextInt(18) + 1;
 		}
 
 		loadConfig(PreEvent);
@@ -273,7 +361,7 @@ public class MainRegistry {
 		Fluids.init();
 		ModBlocks.mainRegistry();
 		ModItems.mainRegistry();
-		proxy.registerRenderInfo();
+		MainRegistry.proxy.registerRenderInfo();
 		HbmWorld.mainRegistry();
 		GameRegistry.registerFuelHandler(new FuelHandler());
 		BulletConfigSyncingUtil.loadConfigsForSync();
@@ -298,31 +386,31 @@ public class MainRegistry {
 		Library.superuser.add("4729b498-a81c-42fd-8acd-20d6d9f759e0");
 		Library.superuser.add("c3f5e449-6d8c-4fe3-acc9-47ef50e7e7ae");
 
-		aMatSchrab.customCraftingMaterial = ModItems.ingot_schrabidium;
-		aMatHaz.customCraftingMaterial = ModItems.hazmat_cloth;
-		aMatHaz2.customCraftingMaterial = ModItems.hazmat_cloth_red;
-		aMatHaz3.customCraftingMaterial = ModItems.hazmat_cloth_grey;
-		aMatTitan.customCraftingMaterial = ModItems.ingot_titanium;
-		aMatSteel.customCraftingMaterial = ModItems.ingot_steel;
-		aMatAsbestos.customCraftingMaterial = ModItems.asbestos_cloth;
-		aMatAlloy.customCraftingMaterial = ModItems.ingot_advanced_alloy;
-		aMatPaa.customCraftingMaterial = ModItems.plate_paa;
-		aMatCMB.customCraftingMaterial = ModItems.ingot_combine_steel;
-		aMatAus3.customCraftingMaterial = ModItems.ingot_australium;
-		aMatSecurity.customCraftingMaterial = ModItems.plate_kevlar;
-		aMatCobalt.customCraftingMaterial = ModItems.ingot_cobalt;
-		aMatStarmetal.customCraftingMaterial = ModItems.ingot_starmetal;
-		tMatSchrab.setRepairItem(new ItemStack(ModItems.ingot_schrabidium));
-		tMatHammmer.setRepairItem(new ItemStack(Item.getItemFromBlock(ModBlocks.block_schrabidium)));
-		tMatChainsaw.setRepairItem(new ItemStack(ModItems.ingot_steel));
-		tMatTitan.setRepairItem(new ItemStack(ModItems.ingot_titanium));
-		tMatSteel.setRepairItem(new ItemStack(ModItems.ingot_steel));
-		tMatAlloy.setRepairItem(new ItemStack(ModItems.ingot_advanced_alloy));
-		tMatCMB.setRepairItem(new ItemStack(ModItems.ingot_combine_steel));
-		enumToolMaterialBottleOpener.setRepairItem(new ItemStack(ModItems.plate_steel));
-		tMatDesh.setRepairItem(new ItemStack(ModItems.ingot_desh));
+		MainRegistry.aMatSchrab.customCraftingMaterial = ModItems.ingot_schrabidium;
+		MainRegistry.aMatHaz.customCraftingMaterial = ModItems.hazmat_cloth;
+		MainRegistry.aMatHaz2.customCraftingMaterial = ModItems.hazmat_cloth_red;
+		MainRegistry.aMatHaz3.customCraftingMaterial = ModItems.hazmat_cloth_grey;
+		MainRegistry.aMatTitan.customCraftingMaterial = ModItems.ingot_titanium;
+		MainRegistry.aMatSteel.customCraftingMaterial = ModItems.ingot_steel;
+		MainRegistry.aMatAsbestos.customCraftingMaterial = ModItems.asbestos_cloth;
+		MainRegistry.aMatAlloy.customCraftingMaterial = ModItems.ingot_advanced_alloy;
+		MainRegistry.aMatPaa.customCraftingMaterial = ModItems.plate_paa;
+		MainRegistry.aMatCMB.customCraftingMaterial = ModItems.ingot_combine_steel;
+		MainRegistry.aMatAus3.customCraftingMaterial = ModItems.ingot_australium;
+		MainRegistry.aMatSecurity.customCraftingMaterial = ModItems.plate_kevlar;
+		MainRegistry.aMatCobalt.customCraftingMaterial = ModItems.ingot_cobalt;
+		MainRegistry.aMatStarmetal.customCraftingMaterial = ModItems.ingot_starmetal;
+		MainRegistry.tMatSchrab.setRepairItem(new ItemStack(ModItems.ingot_schrabidium));
+		MainRegistry.tMatHammmer.setRepairItem(new ItemStack(Item.getItemFromBlock(ModBlocks.block_schrabidium)));
+		MainRegistry.tMatChainsaw.setRepairItem(new ItemStack(ModItems.ingot_steel));
+		MainRegistry.tMatTitan.setRepairItem(new ItemStack(ModItems.ingot_titanium));
+		MainRegistry.tMatSteel.setRepairItem(new ItemStack(ModItems.ingot_steel));
+		MainRegistry.tMatAlloy.setRepairItem(new ItemStack(ModItems.ingot_advanced_alloy));
+		MainRegistry.tMatCMB.setRepairItem(new ItemStack(ModItems.ingot_combine_steel));
+		MainRegistry.enumToolMaterialBottleOpener.setRepairItem(new ItemStack(ModItems.plate_steel));
+		MainRegistry.tMatDesh.setRepairItem(new ItemStack(ModItems.ingot_desh));
 
-		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GUIHandler());
+		NetworkRegistry.INSTANCE.registerGuiHandler(MainRegistry.instance, new GUIHandler());
 		
 		TileMappings.writeMappings();
 		MachineDynConfig.initialize();
@@ -364,270 +452,315 @@ public class MainRegistry {
 
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_generic, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeGeneric(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_strong, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeStrong(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_frag, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeFrag(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_fire, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeFire(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_cluster, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeCluster(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_flare, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeFlare(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_electric, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeElectric(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_poison, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadePoison(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_gas, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeGas(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_schrabidium, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeSchrabidium(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_nuke, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeNuke(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_nuclear, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeNuclear(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_pulse, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadePulse(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_plasma, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadePlasma(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_tau, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeTau(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_lemon, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeLemon(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_mk2, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeMk2(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_aschrab, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeASchrab(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_zomg, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeZOMG(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_shrapnel, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeShrapnel(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_black_hole, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeBlackHole(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_gascan, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeGascan(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_cloud, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeCloud(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_pink_cloud, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadePC(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_smart, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeSmart(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_mirv, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeMIRV(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_breach, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeBreach(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_burst, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeBurst(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_if_generic, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeIFGeneric(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_if_he, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeIFHE(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_if_bouncy, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeIFBouncy(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_if_sticky, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeIFSticky(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_if_impact, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeIFImpact(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_if_incendiary, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeIFIncendiary(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_if_toxic, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeIFToxic(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_if_concussion, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeIFConcussion(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_if_brimstone, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeIFBrimstone(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_if_mystery, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeIFMystery(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_if_spark, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeIFSpark(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_if_hopwire, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeIFHopwire(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_if_null, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World p_82499_1_, IPosition p_82499_2_) {
 				return new EntityGrenadeIFNull(p_82499_1_, p_82499_2_.getX(), p_82499_2_.getY(), p_82499_2_.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.nuclear_waste_pearl, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World world, IPosition position) {
 				return new EntityWastePearl(world, position.getX(), position.getY(), position.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.stick_dynamite, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World world, IPosition position) {
 				return new EntityGrenadeDynamite(world, position.getX(), position.getY(), position.getZ());
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.grenade_kyiv, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World world, IPosition position) {
 				return new EntityGrenadeImpactGeneric(world, position.getX(), position.getY(), position.getZ()).setType((ItemGenericGrenade) ModItems.grenade_kyiv);
 			}
 		});
 		BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.stick_dynamite_fishing, new BehaviorProjectileDispense() {
 
+			@Override
 			protected IProjectile getProjectileEntity(World world, IPosition position) {
 				return new EntityGrenadeImpactGeneric(world, position.getX(), position.getY(), position.getZ()).setType((ItemGenericGrenade) ModItems.stick_dynamite_fishing);
 			}
@@ -660,148 +793,148 @@ public class MainRegistry {
 		
 		RodRecipes.registerInit();
 
-		achSacrifice = new Achievement("achievement.sacrifice", "sacrifice", -3, 1, ModItems.burnt_bark, null).initIndependentStat().setSpecial().registerStat();
-		achImpossible = new Achievement("achievement.impossible", "impossible", 18, 10, ModItems.nothing, null).initIndependentStat().setSpecial().registerStat();
-		achTOB = new Achievement("achievement.tasteofblood", "tasteofblood", 3, 10, new ItemStack(ModItems.fluid_icon, 1, Fluids.ASCHRAB.getID()), null).initIndependentStat().setSpecial().registerStat();
-		achGoFish = new Achievement("achievement.goFish", "goFish", 5, 10, DictFrame.fromOne(ModItems.achievement_icon, EnumAchievementType.GOFISH), null).initIndependentStat().setSpecial().registerStat();
-		achFreytag = new Achievement("achievement.freytag", "freytag", 0, -4, ModItems.gun_mp40, null).initIndependentStat().setSpecial().registerStat();
-		achPotato = new Achievement("achievement.potato", "potato", -2, -2, ModItems.battery_potatos, null).initIndependentStat().setSpecial().registerStat();
-		achC44 = new Achievement("achievement.c44", "c44", 2, -4, ModItems.gun_revolver_pip, null).initIndependentStat().setSpecial().registerStat();
-		achC20_5 = new Achievement("achievement.c20_5", "c20_5", 3, 6, ModItems.gun_dampfmaschine, null).initIndependentStat().setSpecial().registerStat();
-		achFiend = new Achievement("achievement.fiend", "fiend", -6, 8, ModItems.shimmer_sledge, null).initIndependentStat().setSpecial().registerStat();
-		achFiend2 = new Achievement("achievement.fiend2", "fiend2", -4, 9, ModItems.shimmer_axe, null).initIndependentStat().setSpecial().registerStat();
-		achStratum = new Achievement("achievement.stratum", "stratum", -4, -2, new ItemStack(ModBlocks.stone_gneiss), null).initIndependentStat().setSpecial().registerStat();
-		achOmega12 = new Achievement("achievement.omega12", "omega12", 17, -1, ModItems.particle_digamma, null).initIndependentStat().setSpecial().registerStat();
+		MainRegistry.achSacrifice = new Achievement("achievement.sacrifice", "sacrifice", -3, 1, ModItems.burnt_bark, null).initIndependentStat().setSpecial().registerStat();
+		MainRegistry.achImpossible = new Achievement("achievement.impossible", "impossible", 18, 10, ModItems.nothing, null).initIndependentStat().setSpecial().registerStat();
+		MainRegistry.achTOB = new Achievement("achievement.tasteofblood", "tasteofblood", 3, 10, new ItemStack(ModItems.fluid_icon, 1, Fluids.ASCHRAB.getID()), null).initIndependentStat().setSpecial().registerStat();
+		MainRegistry.achGoFish = new Achievement("achievement.goFish", "goFish", 5, 10, DictFrame.fromOne(ModItems.achievement_icon, EnumAchievementType.GOFISH), null).initIndependentStat().setSpecial().registerStat();
+		MainRegistry.achFreytag = new Achievement("achievement.freytag", "freytag", 0, -4, ModItems.gun_mp40, null).initIndependentStat().setSpecial().registerStat();
+		MainRegistry.achPotato = new Achievement("achievement.potato", "potato", -2, -2, ModItems.battery_potatos, null).initIndependentStat().setSpecial().registerStat();
+		MainRegistry.achC44 = new Achievement("achievement.c44", "c44", 2, -4, ModItems.gun_revolver_pip, null).initIndependentStat().setSpecial().registerStat();
+		MainRegistry.achC20_5 = new Achievement("achievement.c20_5", "c20_5", 3, 6, ModItems.gun_dampfmaschine, null).initIndependentStat().setSpecial().registerStat();
+		MainRegistry.achFiend = new Achievement("achievement.fiend", "fiend", -6, 8, ModItems.shimmer_sledge, null).initIndependentStat().setSpecial().registerStat();
+		MainRegistry.achFiend2 = new Achievement("achievement.fiend2", "fiend2", -4, 9, ModItems.shimmer_axe, null).initIndependentStat().setSpecial().registerStat();
+		MainRegistry.achStratum = new Achievement("achievement.stratum", "stratum", -4, -2, new ItemStack(ModBlocks.stone_gneiss), null).initIndependentStat().setSpecial().registerStat();
+		MainRegistry.achOmega12 = new Achievement("achievement.omega12", "omega12", 17, -1, ModItems.particle_digamma, null).initIndependentStat().setSpecial().registerStat();
 
-		achWitchtaunter = new Achievement("achievement.witchtaunter", "witchtaunter", -8, 7, ModItems.ammo_4gauge.stackFromEnum(Ammo4Gauge.VAMPIRE), null).initIndependentStat().setSpecial().registerStat();
-		achNo9 = new Achievement("achievement.no9", "no9", -8, 12, ModItems.no9, null).initIndependentStat().registerStat();
-		achSlimeball = new Achievement("achievement.slimeball", "slimeball", -10, 6, DictFrame.fromOne(ModItems.achievement_icon, EnumAchievementType.ACID), null).initIndependentStat().registerStat();
-		achSulfuric = new Achievement("achievement.sulfuric", "sulfuric", -10, 8, DictFrame.fromOne(ModItems.achievement_icon, EnumAchievementType.BALLS), achSlimeball).initIndependentStat().setSpecial().registerStat();
-		achInferno = new Achievement("achievement.inferno", "inferno", -8, 10, ModItems.canister_napalm, null).initIndependentStat().setSpecial().registerStat();
+		MainRegistry.achWitchtaunter = new Achievement("achievement.witchtaunter", "witchtaunter", -8, 7, ModItems.ammo_4gauge.stackFromEnum(Ammo4Gauge.VAMPIRE), null).initIndependentStat().setSpecial().registerStat();
+		MainRegistry.achNo9 = new Achievement("achievement.no9", "no9", -8, 12, ModItems.no9, null).initIndependentStat().registerStat();
+		MainRegistry.achSlimeball = new Achievement("achievement.slimeball", "slimeball", -10, 6, DictFrame.fromOne(ModItems.achievement_icon, EnumAchievementType.ACID), null).initIndependentStat().registerStat();
+		MainRegistry.achSulfuric = new Achievement("achievement.sulfuric", "sulfuric", -10, 8, DictFrame.fromOne(ModItems.achievement_icon, EnumAchievementType.BALLS), MainRegistry.achSlimeball).initIndependentStat().setSpecial().registerStat();
+		MainRegistry.achInferno = new Achievement("achievement.inferno", "inferno", -8, 10, ModItems.canister_napalm, null).initIndependentStat().setSpecial().registerStat();
 		
-		bobHidden = new Achievement("achievement.hidden", "hidden", 15, -4, ModItems.gun_dampfmaschine, null).initIndependentStat().registerStat();
+		MainRegistry.bobHidden = new Achievement("achievement.hidden", "hidden", 15, -4, ModItems.gun_dampfmaschine, null).initIndependentStat().registerStat();
 
-		horizonsStart = new Achievement("achievement.horizonsStart", "horizonsStart", -5, 4, ModItems.sat_gerald, null).initIndependentStat().registerStat();
-		horizonsEnd = new Achievement("achievement.horizonsEnd", "horizonsEnd", -3, 4, ModItems.sat_gerald, horizonsStart).initIndependentStat().registerStat();
-		horizonsBonus = new Achievement("achievement.horizonsBonus", "horizonsBonus", -1, 4, ModItems.sat_gerald, horizonsEnd).initIndependentStat().registerStat().setSpecial();
+		MainRegistry.horizonsStart = new Achievement("achievement.horizonsStart", "horizonsStart", -5, 4, ModItems.sat_gerald, null).initIndependentStat().registerStat();
+		MainRegistry.horizonsEnd = new Achievement("achievement.horizonsEnd", "horizonsEnd", -3, 4, ModItems.sat_gerald, MainRegistry.horizonsStart).initIndependentStat().registerStat();
+		MainRegistry.horizonsBonus = new Achievement("achievement.horizonsBonus", "horizonsBonus", -1, 4, ModItems.sat_gerald, MainRegistry.horizonsEnd).initIndependentStat().registerStat().setSpecial();
 
-		bossCreeper = new Achievement("achievement.bossCreeper", "bossCreeper", -7, 1, ModItems.coin_creeper, null).initIndependentStat().registerStat();
-		bossMeltdown = new Achievement("achievement.bossMeltdown", "bossMeltdown", -8, 3, ModItems.coin_radiation, bossCreeper).initIndependentStat().registerStat();
-		bossMaskman = new Achievement("achievement.bossMaskman", "bossMaskman", -8, -1, ModItems.coin_maskman, bossCreeper).initIndependentStat().registerStat();
-		bossWorm = new Achievement("achievement.bossWorm", "bossWorm", -8, -3, ModItems.coin_worm, bossMaskman).initIndependentStat().registerStat().setSpecial();
-		bossUFO = new Achievement("achievement.bossUFO", "bossUFO", -6, -3, ModItems.coin_ufo, bossWorm).initIndependentStat().registerStat().setSpecial();
+		MainRegistry.bossCreeper = new Achievement("achievement.bossCreeper", "bossCreeper", -7, 1, ModItems.coin_creeper, null).initIndependentStat().registerStat();
+		MainRegistry.bossMeltdown = new Achievement("achievement.bossMeltdown", "bossMeltdown", -8, 3, ModItems.coin_radiation, MainRegistry.bossCreeper).initIndependentStat().registerStat();
+		MainRegistry.bossMaskman = new Achievement("achievement.bossMaskman", "bossMaskman", -8, -1, ModItems.coin_maskman, MainRegistry.bossCreeper).initIndependentStat().registerStat();
+		MainRegistry.bossWorm = new Achievement("achievement.bossWorm", "bossWorm", -8, -3, ModItems.coin_worm, MainRegistry.bossMaskman).initIndependentStat().registerStat().setSpecial();
+		MainRegistry.bossUFO = new Achievement("achievement.bossUFO", "bossUFO", -6, -3, ModItems.coin_ufo, MainRegistry.bossWorm).initIndependentStat().registerStat().setSpecial();
 
-		achRadPoison = new Achievement("achievement.radPoison", "radPoison", -2, 6, ModItems.geiger_counter, null).initIndependentStat().registerStat();
-		achRadDeath = new Achievement("achievement.radDeath", "radDeath", 0, 6, Items.skull, achRadPoison).initIndependentStat().registerStat().setSpecial();
+		MainRegistry.achRadPoison = new Achievement("achievement.radPoison", "radPoison", -2, 6, ModItems.geiger_counter, null).initIndependentStat().registerStat();
+		MainRegistry.achRadDeath = new Achievement("achievement.radDeath", "radDeath", 0, 6, Items.skull, MainRegistry.achRadPoison).initIndependentStat().registerStat().setSpecial();
 
-		achSomeWounds = new Achievement("achievement.someWounds", "someWounds", -2, 10, ModItems.injector_knife, null).initIndependentStat().registerStat();
+		MainRegistry.achSomeWounds = new Achievement("achievement.someWounds", "someWounds", -2, 10, ModItems.injector_knife, null).initIndependentStat().registerStat();
 		
-		digammaSee = new Achievement("achievement.digammaSee", "digammaSee", -1, 8, DictFrame.fromOne(ModItems.achievement_icon, EnumAchievementType.DIGAMMASEE), null).initIndependentStat().registerStat();
-		digammaFeel = new Achievement("achievement.digammaFeel", "digammaFeel", 1, 8, DictFrame.fromOne(ModItems.achievement_icon, EnumAchievementType.DIGAMMAFEEL), digammaSee).initIndependentStat().registerStat();
-		digammaKnow = new Achievement("achievement.digammaKnow", "digammaKnow", 3, 8, DictFrame.fromOne(ModItems.achievement_icon, EnumAchievementType.DIGAMMAKNOW), digammaFeel).initIndependentStat().registerStat().setSpecial();
-		digammaKauaiMoho = new Achievement("achievement.digammaKauaiMoho", "digammaKauaiMoho", 5, 8, DictFrame.fromOne(ModItems.achievement_icon, EnumAchievementType.DIGAMMAKAUAIMOHO), digammaKnow).initIndependentStat().registerStat().setSpecial();
-		digammaUpOnTop = new Achievement("achievement.digammaUpOnTop", "digammaUpOnTop", 7, 8, DictFrame.fromOne(ModItems.achievement_icon, EnumAchievementType.DIGAMMAUPONTOP), digammaKauaiMoho).initIndependentStat().registerStat().setSpecial();
+		MainRegistry.digammaSee = new Achievement("achievement.digammaSee", "digammaSee", -1, 8, DictFrame.fromOne(ModItems.achievement_icon, EnumAchievementType.DIGAMMASEE), null).initIndependentStat().registerStat();
+		MainRegistry.digammaFeel = new Achievement("achievement.digammaFeel", "digammaFeel", 1, 8, DictFrame.fromOne(ModItems.achievement_icon, EnumAchievementType.DIGAMMAFEEL), MainRegistry.digammaSee).initIndependentStat().registerStat();
+		MainRegistry.digammaKnow = new Achievement("achievement.digammaKnow", "digammaKnow", 3, 8, DictFrame.fromOne(ModItems.achievement_icon, EnumAchievementType.DIGAMMAKNOW), MainRegistry.digammaFeel).initIndependentStat().registerStat().setSpecial();
+		MainRegistry.digammaKauaiMoho = new Achievement("achievement.digammaKauaiMoho", "digammaKauaiMoho", 5, 8, DictFrame.fromOne(ModItems.achievement_icon, EnumAchievementType.DIGAMMAKAUAIMOHO), MainRegistry.digammaKnow).initIndependentStat().registerStat().setSpecial();
+		MainRegistry.digammaUpOnTop = new Achievement("achievement.digammaUpOnTop", "digammaUpOnTop", 7, 8, DictFrame.fromOne(ModItems.achievement_icon, EnumAchievementType.DIGAMMAUPONTOP), MainRegistry.digammaKauaiMoho).initIndependentStat().registerStat().setSpecial();
 		
 		//progression achieves
-		achBurnerPress = new Achievement("achievement.burnerPress", "burnerPress", 0, 0, new ItemStack(ModBlocks.machine_press), null).initIndependentStat().registerStat();
-		achBlastFurnace = new Achievement("achievement.blastFurnace", "blastFurnace", 1, 3, new ItemStack(ModBlocks.machine_difurnace_off), achBurnerPress).initIndependentStat().registerStat();
-		achAssembly = new Achievement("achievement.assembly", "assembly", 3, -1, new ItemStack(ModBlocks.machine_assembler), achBurnerPress).initIndependentStat().registerStat();
-		achSelenium = new Achievement("achievement.selenium", "selenium", 3, 2, ModItems.ingot_starmetal, achBurnerPress).initIndependentStat().setSpecial().registerStat();
-		achChemplant = new Achievement("achievement.chemplant", "chemplant", 6, -1, new ItemStack(ModBlocks.machine_chemplant), achAssembly).initIndependentStat().registerStat();
-		achConcrete	= new Achievement("achievement.concrete", "concrete", 6, -4, new ItemStack(ModBlocks.concrete), achChemplant).initIndependentStat().registerStat();
-		achPolymer = new Achievement("achievement.polymer", "polymer", 9, -1, ModItems.ingot_polymer, achChemplant).initIndependentStat().registerStat();
-		achDesh = new Achievement("achievement.desh", "desh", 9, 2, ModItems.ingot_desh, achChemplant).initIndependentStat().registerStat();
-		achTantalum = new Achievement("achievement.tantalum", "tantalum", 7, 3, ModItems.gem_tantalium, achChemplant).initIndependentStat().setSpecial().registerStat();
-		achGasCent = new Achievement("achievement.gasCent", "gasCent", 13, 2, ModItems.ingot_uranium_fuel, achDesh).initIndependentStat().registerStat();
-		achCentrifuge = new Achievement("achievement.centrifuge", "centrifuge", 12, -2, new ItemStack(ModBlocks.machine_centrifuge), achPolymer).initIndependentStat().registerStat();
-		achFOEQ = new Achievement("achievement.FOEQ", "FOEQ", 5, 5, ModItems.sat_foeq, achDesh).initIndependentStat().setSpecial().registerStat();
-		achSoyuz = new Achievement("achievement.soyuz", "soyuz", 7, 6, Items.baked_potato, achDesh).initIndependentStat().setSpecial().registerStat();
-		achSpace = new Achievement("achievement.space", "space", 9, 7, ModItems.missile_carrier, achDesh).initIndependentStat().setSpecial().registerStat();
-		achSchrab = new Achievement("achievement.schrab", "schrab", 11, 3, ModItems.ingot_schrabidium, achDesh).initIndependentStat().registerStat();
-		achAcidizer = new Achievement("achievement.acidizer", "acidizer", 11, 5, new ItemStack(ModBlocks.machine_crystallizer), achDesh).initIndependentStat().registerStat();
-		achRadium = new Achievement("achievement.radium", "radium", 13, -4, ModItems.coffee_radium, achCentrifuge).initIndependentStat().setSpecial().registerStat();
-		achTechnetium = new Achievement("achievement.technetium", "technetium", 15, -2, ModItems.ingot_tcalloy, achCentrifuge).initIndependentStat().registerStat();
-		achZIRNOXBoom = new Achievement("achievement.ZIRNOXBoom", "ZIRNOXBoom", 14, -1, ModItems.debris_element, achCentrifuge).initIndependentStat().setSpecial().registerStat();
-		achChicagoPile = new Achievement("achievement.chicagoPile", "chicagoPile", 13, 0, ModItems.pile_rod_plutonium, achCentrifuge).initIndependentStat().registerStat();
-		achSILEX = new Achievement("achievement.SILEX", "SILEX", 12, 7, new ItemStack(ModBlocks.machine_silex), achAcidizer).initIndependentStat().registerStat();
-		achWatz = new Achievement("achievement.watz", "watz", 14, 3, ModItems.pellet_schrabidium, achSchrab).initIndependentStat().registerStat();
-		achWatzBoom = new Achievement("achievement.watzBoom", "watzBoom", 14, 5, ModItems.bucket_mud, achWatz).initIndependentStat().setSpecial().registerStat();
-		achRBMK = new Achievement("achievement.RBMK", "RBMK", 9, -5, ModItems.rbmk_fuel_ueu, achConcrete).initIndependentStat().registerStat();
-		achRBMKBoom = new Achievement("achievement.RBMKBoom", "RBMKBoom", 9, -7, ModItems.debris_fuel, achRBMK).initIndependentStat().setSpecial().registerStat();
-		achBismuth = new Achievement("achievement.bismuth", "bismuth", 11, -6, ModItems.ingot_bismuth, achRBMK).initIndependentStat().registerStat();
-		achBreeding = new Achievement("achievement.breeding", "breeding", 7, -6, ModItems.ingot_am_mix, achRBMK).initIndependentStat().setSpecial().registerStat();
-		achFusion = new Achievement("achievement.fusion", "fusion", 13, -7, new ItemStack(ModBlocks.iter), achBismuth).initIndependentStat().setSpecial().registerStat();
-		achMeltdown = new Achievement("achievement.meltdown", "meltdown", 15, -7, ModItems.powder_balefire, achFusion).initIndependentStat().setSpecial().registerStat();
-		achRedBalloons = new Achievement("achievement.redBalloons", "redBalloons", 11, 0, ModItems.missile_nuclear, achPolymer).initIndependentStat().setSpecial().registerStat();
-		achManhattan = new Achievement("achievement.manhattan", "manhattan", 11, -4, new ItemStack(ModBlocks.nuke_boy), achPolymer).initIndependentStat().setSpecial().registerStat();
+		MainRegistry.achBurnerPress = new Achievement("achievement.burnerPress", "burnerPress", 0, 0, new ItemStack(ModBlocks.machine_press), null).initIndependentStat().registerStat();
+		MainRegistry.achBlastFurnace = new Achievement("achievement.blastFurnace", "blastFurnace", 1, 3, new ItemStack(ModBlocks.machine_difurnace_off), MainRegistry.achBurnerPress).initIndependentStat().registerStat();
+		MainRegistry.achAssembly = new Achievement("achievement.assembly", "assembly", 3, -1, new ItemStack(ModBlocks.machine_assembler), MainRegistry.achBurnerPress).initIndependentStat().registerStat();
+		MainRegistry.achSelenium = new Achievement("achievement.selenium", "selenium", 3, 2, ModItems.ingot_starmetal, MainRegistry.achBurnerPress).initIndependentStat().setSpecial().registerStat();
+		MainRegistry.achChemplant = new Achievement("achievement.chemplant", "chemplant", 6, -1, new ItemStack(ModBlocks.machine_chemplant), MainRegistry.achAssembly).initIndependentStat().registerStat();
+		MainRegistry.achConcrete	= new Achievement("achievement.concrete", "concrete", 6, -4, new ItemStack(ModBlocks.concrete), MainRegistry.achChemplant).initIndependentStat().registerStat();
+		MainRegistry.achPolymer = new Achievement("achievement.polymer", "polymer", 9, -1, ModItems.ingot_polymer, MainRegistry.achChemplant).initIndependentStat().registerStat();
+		MainRegistry.achDesh = new Achievement("achievement.desh", "desh", 9, 2, ModItems.ingot_desh, MainRegistry.achChemplant).initIndependentStat().registerStat();
+		MainRegistry.achTantalum = new Achievement("achievement.tantalum", "tantalum", 7, 3, ModItems.gem_tantalium, MainRegistry.achChemplant).initIndependentStat().setSpecial().registerStat();
+		MainRegistry.achGasCent = new Achievement("achievement.gasCent", "gasCent", 13, 2, ModItems.ingot_uranium_fuel, MainRegistry.achDesh).initIndependentStat().registerStat();
+		MainRegistry.achCentrifuge = new Achievement("achievement.centrifuge", "centrifuge", 12, -2, new ItemStack(ModBlocks.machine_centrifuge), MainRegistry.achPolymer).initIndependentStat().registerStat();
+		MainRegistry.achFOEQ = new Achievement("achievement.FOEQ", "FOEQ", 5, 5, ModItems.sat_foeq, MainRegistry.achDesh).initIndependentStat().setSpecial().registerStat();
+		MainRegistry.achSoyuz = new Achievement("achievement.soyuz", "soyuz", 7, 6, Items.baked_potato, MainRegistry.achDesh).initIndependentStat().setSpecial().registerStat();
+		MainRegistry.achSpace = new Achievement("achievement.space", "space", 9, 7, ModItems.missile_carrier, MainRegistry.achDesh).initIndependentStat().setSpecial().registerStat();
+		MainRegistry.achSchrab = new Achievement("achievement.schrab", "schrab", 11, 3, ModItems.ingot_schrabidium, MainRegistry.achDesh).initIndependentStat().registerStat();
+		MainRegistry.achAcidizer = new Achievement("achievement.acidizer", "acidizer", 11, 5, new ItemStack(ModBlocks.machine_crystallizer), MainRegistry.achDesh).initIndependentStat().registerStat();
+		MainRegistry.achRadium = new Achievement("achievement.radium", "radium", 13, -4, ModItems.coffee_radium, MainRegistry.achCentrifuge).initIndependentStat().setSpecial().registerStat();
+		MainRegistry.achTechnetium = new Achievement("achievement.technetium", "technetium", 15, -2, ModItems.ingot_tcalloy, MainRegistry.achCentrifuge).initIndependentStat().registerStat();
+		MainRegistry.achZIRNOXBoom = new Achievement("achievement.ZIRNOXBoom", "ZIRNOXBoom", 14, -1, ModItems.debris_element, MainRegistry.achCentrifuge).initIndependentStat().setSpecial().registerStat();
+		MainRegistry.achChicagoPile = new Achievement("achievement.chicagoPile", "chicagoPile", 13, 0, ModItems.pile_rod_plutonium, MainRegistry.achCentrifuge).initIndependentStat().registerStat();
+		MainRegistry.achSILEX = new Achievement("achievement.SILEX", "SILEX", 12, 7, new ItemStack(ModBlocks.machine_silex), MainRegistry.achAcidizer).initIndependentStat().registerStat();
+		MainRegistry.achWatz = new Achievement("achievement.watz", "watz", 14, 3, ModItems.pellet_schrabidium, MainRegistry.achSchrab).initIndependentStat().registerStat();
+		MainRegistry.achWatzBoom = new Achievement("achievement.watzBoom", "watzBoom", 14, 5, ModItems.bucket_mud, MainRegistry.achWatz).initIndependentStat().setSpecial().registerStat();
+		MainRegistry.achRBMK = new Achievement("achievement.RBMK", "RBMK", 9, -5, ModItems.rbmk_fuel_ueu, MainRegistry.achConcrete).initIndependentStat().registerStat();
+		MainRegistry.achRBMKBoom = new Achievement("achievement.RBMKBoom", "RBMKBoom", 9, -7, ModItems.debris_fuel, MainRegistry.achRBMK).initIndependentStat().setSpecial().registerStat();
+		MainRegistry.achBismuth = new Achievement("achievement.bismuth", "bismuth", 11, -6, ModItems.ingot_bismuth, MainRegistry.achRBMK).initIndependentStat().registerStat();
+		MainRegistry.achBreeding = new Achievement("achievement.breeding", "breeding", 7, -6, ModItems.ingot_am_mix, MainRegistry.achRBMK).initIndependentStat().setSpecial().registerStat();
+		MainRegistry.achFusion = new Achievement("achievement.fusion", "fusion", 13, -7, new ItemStack(ModBlocks.iter), MainRegistry.achBismuth).initIndependentStat().setSpecial().registerStat();
+		MainRegistry.achMeltdown = new Achievement("achievement.meltdown", "meltdown", 15, -7, ModItems.powder_balefire, MainRegistry.achFusion).initIndependentStat().setSpecial().registerStat();
+		MainRegistry.achRedBalloons = new Achievement("achievement.redBalloons", "redBalloons", 11, 0, ModItems.missile_nuclear, MainRegistry.achPolymer).initIndependentStat().setSpecial().registerStat();
+		MainRegistry.achManhattan = new Achievement("achievement.manhattan", "manhattan", 11, -4, new ItemStack(ModBlocks.nuke_boy), MainRegistry.achPolymer).initIndependentStat().setSpecial().registerStat();
 		
 		AchievementPage.registerAchievementPage(new AchievementPage("Nuclear Tech", new Achievement[] {
-				achSacrifice,
-				achImpossible,
-				achTOB,
-				achGoFish,
-				achFreytag,
-				achPotato,
-				achC44,
-				achC20_5,
-				achFiend,
-				achFiend2,
-				achStratum,
-				achOmega12,
-				bobHidden,
-				horizonsStart,
-				horizonsEnd,
-				horizonsBonus,
-				achRadPoison,
-				achRadDeath,
-				achWitchtaunter,
-				achNo9,
-				achInferno,
-				achSlimeball,
-				achSulfuric,
-				bossCreeper,
-				bossMeltdown,
-				bossMaskman,
-				bossWorm,
-				bossUFO,
-				achSomeWounds,
-				digammaSee,
-				digammaFeel,
-				digammaKnow,
-				digammaKauaiMoho,
-				digammaUpOnTop,
+				MainRegistry.achSacrifice,
+				MainRegistry.achImpossible,
+				MainRegistry.achTOB,
+				MainRegistry.achGoFish,
+				MainRegistry.achFreytag,
+				MainRegistry.achPotato,
+				MainRegistry.achC44,
+				MainRegistry.achC20_5,
+				MainRegistry.achFiend,
+				MainRegistry.achFiend2,
+				MainRegistry.achStratum,
+				MainRegistry.achOmega12,
+				MainRegistry.bobHidden,
+				MainRegistry.horizonsStart,
+				MainRegistry.horizonsEnd,
+				MainRegistry.horizonsBonus,
+				MainRegistry.achRadPoison,
+				MainRegistry.achRadDeath,
+				MainRegistry.achWitchtaunter,
+				MainRegistry.achNo9,
+				MainRegistry.achInferno,
+				MainRegistry.achSlimeball,
+				MainRegistry.achSulfuric,
+				MainRegistry.bossCreeper,
+				MainRegistry.bossMeltdown,
+				MainRegistry.bossMaskman,
+				MainRegistry.bossWorm,
+				MainRegistry.bossUFO,
+				MainRegistry.achSomeWounds,
+				MainRegistry.digammaSee,
+				MainRegistry.digammaFeel,
+				MainRegistry.digammaKnow,
+				MainRegistry.digammaKauaiMoho,
+				MainRegistry.digammaUpOnTop,
 				
-				achBurnerPress,
-				achBlastFurnace,
-				achAssembly,
-				achSelenium,
-				achChemplant,
-				achConcrete,
-				achPolymer,
-				achDesh,
-				achTantalum,
-				achGasCent,
-				achCentrifuge,
-				achFOEQ,
-				achSoyuz,
-				achSpace,
-				achSchrab,
-				achAcidizer,
-				achRadium,
-				achTechnetium,
-				achZIRNOXBoom,
-				achChicagoPile,
-				achSILEX,
-				achWatz,
-				achWatzBoom,
-				achRBMK,
-				achRBMKBoom,
-				achBismuth,
-				achBreeding,
-				achFusion,
-				achMeltdown,
-				achRedBalloons,
-				achManhattan
+				MainRegistry.achBurnerPress,
+				MainRegistry.achBlastFurnace,
+				MainRegistry.achAssembly,
+				MainRegistry.achSelenium,
+				MainRegistry.achChemplant,
+				MainRegistry.achConcrete,
+				MainRegistry.achPolymer,
+				MainRegistry.achDesh,
+				MainRegistry.achTantalum,
+				MainRegistry.achGasCent,
+				MainRegistry.achCentrifuge,
+				MainRegistry.achFOEQ,
+				MainRegistry.achSoyuz,
+				MainRegistry.achSpace,
+				MainRegistry.achSchrab,
+				MainRegistry.achAcidizer,
+				MainRegistry.achRadium,
+				MainRegistry.achTechnetium,
+				MainRegistry.achZIRNOXBoom,
+				MainRegistry.achChicagoPile,
+				MainRegistry.achSILEX,
+				MainRegistry.achWatz,
+				MainRegistry.achWatzBoom,
+				MainRegistry.achRBMK,
+				MainRegistry.achRBMKBoom,
+				MainRegistry.achBismuth,
+				MainRegistry.achBreeding,
+				MainRegistry.achFusion,
+				MainRegistry.achMeltdown,
+				MainRegistry.achRedBalloons,
+				MainRegistry.achManhattan
 		}));
 
 		// MUST be initialized AFTER achievements!!
@@ -858,7 +991,7 @@ public class MainRegistry {
 		BlockToolConversion.registerRecipes();
 		AchievementHandler.register();
 
-		proxy.registerMissileItems();
+		MainRegistry.proxy.registerMissileItems();
 		
 		BlockMotherOfAllOres.init();
 		
@@ -884,8 +1017,8 @@ public class MainRegistry {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		if(logger == null)
-			logger = event.getModLog();
+		if(MainRegistry.logger == null)
+			MainRegistry.logger = event.getModLog();
 
 		ModEventHandler commonHandler = new ModEventHandler();
 		FMLCommonHandler.instance().bus().register(commonHandler);
@@ -924,15 +1057,17 @@ public class MainRegistry {
 		event.registerServerCommand(new CommandReloadRecipes());
 		event.registerServerCommand(new CommandDebugChunkLoad());
 		event.registerServerCommand(new CommandSatellites());
+		event.registerServerCommand(new CommandDebug());
+		event.registerServerCommand(new CommandClearChat());
 	}
 	
 	@EventHandler
 	public void serverStart(FMLServerStartedEvent event) {
 		
 		if(GeneralConfig.enableStatReRegistering) {
-			logger.info("Attempting to re-register item stats...");
+			MainRegistry.logger.info("Attempting to re-register item stats...");
 			StatHelper.resetStatShitFuck(); //shit yourself
-			logger.info("Item stats re-registered");
+			MainRegistry.logger.info("Item stats re-registered");
 		}
 	}
 	
@@ -956,247 +1091,243 @@ public class MainRegistry {
 		
 		try {
 			if(GeneralConfig.enableThermosPreventer && Class.forName("thermos.ThermosClassTransformer") != null) {
-				throw new IllegalStateException("The mod tried to start on a Thermos or it's fork server and therefore stopped. To allow the server to start on Thermos, change the appropriate "
-						+ "config entry (0.00 in hbm.cfg). This was done because, by default, Thermos "
-						+ "uses a so-called \"optimization\" feature that reduces tile ticking a lot, which will inevitably break a lot of machines. Most people aren't even aware "
-						+ "of this, and start blaming random mods for all their stuff breaking. In order to adjust or even disable this feature, edit \"tileentities.yml\" in your "
-						+ "Thermos install folder. If you believe that crashing the server until a config option is changed is annoying, then I would agree, but it's still preferable "
-						+ "over wasting hours trying to fix an issue that is really just an \"intended feature\" added by Thermos itself, and not a bug in the mod. You'll have to "
-						+ "change Thermos' config anyway so that extra change in NTM's config can't be that big of a burden.");
+				throw new IllegalStateException(
+					"The mod tried to start on a Thermos or it's fork server and therefore stopped. To allow the server to start on Thermos, change the appropriate\n" +
+					"config entry (0.00 in hbm.cfg). This was done because, by default, Thermos\n" +
+					"uses a so-called \"optimization\" feature that reduces tile ticking a lot, which will inevitably break a lot of machines. Most people aren't even aware\n" +
+					"of this, and start blaming random mods for all their stuff breaking. In order to adjust or even disable this feature, edit \"tileentities.yml\" in your\n" +
+					"Thermos install folder. If you believe that crashing the server until a config option is changed is annoying, then I would agree, but it's still preferable\n" +
+					"over wasting hours trying to fix an issue that is really just an \"intended feature\" added by Thermos itself, and not a bug in the mod. You'll have to\n" +
+					"change Thermos' config anyway so that extra change in NTM's config can't be that big of a burden.");
 			}
 		} catch(ClassNotFoundException e) { }
 	}
 	
-	private static HashSet<String> ignoreMappings = new HashSet();
-	private static HashMap<String, Item> remapItems = new HashMap();
+	private static HashSet<String> ignoreMappings = new HashSet<>();
+	private static HashMap<String, Item> remapItems = new HashMap<>();
 	
 
 	@EventHandler
 	public void handleMissingMappings(FMLMissingMappingsEvent event) {
 		
-		ignoreMappings.clear();
-		remapItems.clear();
+		MainRegistry.ignoreMappings.clear();
+		MainRegistry.remapItems.clear();
 		
 		/// IGNORE ///
-		for(int i = 1; i <= 8; i++) ignoreMappings.add("hbm:item.gasflame" + i);
-		ignoreMappings.add("hbm:item.cyclotron_tower");
-		ignoreMappings.add("hbm:item.magnet_dee");
-		ignoreMappings.add("hbm:item.centrifuge_tower");
-		ignoreMappings.add("hbm:item.gun_revolver_nopip_ammo");
-		ignoreMappings.add("hbm:item.gun_revolver_pip_ammo");
-		ignoreMappings.add("hbm:item.gun_calamity_ammo");
-		ignoreMappings.add("hbm:item.gun_lacunae_ammo");
-		ignoreMappings.add("hbm:item.gun_rpg_ammo");
-		ignoreMappings.add("hbm:item.gun_mp40_ammo");
-		ignoreMappings.add("hbm:item.gun_uzi_ammo");
-		ignoreMappings.add("hbm:item.gun_uboinik_ammo");
-		ignoreMappings.add("hbm:item.gun_lever_action_ammo");
-		ignoreMappings.add("hbm:item.gun_bolt_action_ammo");
-		ignoreMappings.add("hbm:item.gun_fatman_ammo");
-		ignoreMappings.add("hbm:item.gun_mirv_ammo");
-		ignoreMappings.add("hbm:item.gun_stinger_ammo");
-		ignoreMappings.add("hbm:item.limiter");
-		ignoreMappings.add("hbm:item.turret_biometry");
-		ignoreMappings.add("hbm:item.thermo_unit_empty");
-		ignoreMappings.add("hbm:item.thermo_unit_endo");
-		ignoreMappings.add("hbm:item.thermo_unit_exo");
-		ignoreMappings.add("hbm:item.gadget_explosive");
-		ignoreMappings.add("hbm:item.man_explosive");
-		ignoreMappings.add("hbm:item.crystal_energy");
-		ignoreMappings.add("hbm:item.pellet_coolant");
-		ignoreMappings.add("hbm:item.turret_control");
-		ignoreMappings.add("hbm:tile.sellafield_0");
-		ignoreMappings.add("hbm:tile.sellafield_1");
-		ignoreMappings.add("hbm:tile.sellafield_2");
-		ignoreMappings.add("hbm:tile.sellafield_3");
-		ignoreMappings.add("hbm:tile.sellafield_4");
-		ignoreMappings.add("hbm:tile.sellafield_core");
-		ignoreMappings.add("hbm:tile.fusion_core");
-		ignoreMappings.add("hbm:tile.machine_telelinker");
-		ignoreMappings.add("hbm:item.dynosphere_base");
-		ignoreMappings.add("hbm:item.dynosphere_desh");
-		ignoreMappings.add("hbm:item.dynosphere_desh_charged");
-		ignoreMappings.add("hbm:item.dynosphere_schrabidium");
-		ignoreMappings.add("hbm:item.dynosphere_schrabidium_charged");
-		ignoreMappings.add("hbm:item.dynosphere_euphemium");
-		ignoreMappings.add("hbm:item.dynosphere_euphemium_charged");
-		ignoreMappings.add("hbm:item.dynosphere_dineutronium");
-		ignoreMappings.add("hbm:item.dynosphere_dineutronium_charged");
-		ignoreMappings.add("hbm:item.factory_core_titanium");
-		ignoreMappings.add("hbm:item.factory_core_advanced");
-		ignoreMappings.add("hbm:tile.factory_titanium_core");
-		ignoreMappings.add("hbm:tile.factory_advanced_core");
-		ignoreMappings.add("hbm:tile.factory_titanium_conductor");
-		ignoreMappings.add("hbm:tile.factory_advanced_conductor");
-		ignoreMappings.add("hbm:tile.factory_titanium_furnace");
-		ignoreMappings.add("hbm:tile.factory_advanced_furnace");
-		ignoreMappings.add("hbm:tile.turret_light");
-		ignoreMappings.add("hbm:tile.turret_heavy");
-		ignoreMappings.add("hbm:tile.turret_rocket");
-		ignoreMappings.add("hbm:tile.turret_flamer");
-		ignoreMappings.add("hbm:tile.turret_tau");
-		ignoreMappings.add("hbm:tile.turret_cwis");
-		ignoreMappings.add("hbm:tile.turret_spitfire");
-		ignoreMappings.add("hbm:tile.turret_cheapo");
-		ignoreMappings.add("hbm:item.turret_light_ammo");
-		ignoreMappings.add("hbm:item.turret_heavy_ammo");
-		ignoreMappings.add("hbm:item.turret_rocket_ammo");
-		ignoreMappings.add("hbm:item.turret_flamer_ammo");
-		ignoreMappings.add("hbm:item.turret_tau_ammo");
-		ignoreMappings.add("hbm:item.turret_cwis_ammo");
-		ignoreMappings.add("hbm:item.turret_spitfire_ammo");
-		ignoreMappings.add("hbm:item.turret_cheapo_ammo");
-		ignoreMappings.add("hbm:tile.cel_prime");
-		ignoreMappings.add("hbm:tile.cel_prime_terminal");
-		ignoreMappings.add("hbm:tile.cel_prime_battery");
-		ignoreMappings.add("hbm:tile.cel_prime_port");
-		ignoreMappings.add("hbm:tile.cel_prime_tanks");
-		ignoreMappings.add("hbm:tile.rf_cable");
-		ignoreMappings.add("hbm:tile.test_container");
-		ignoreMappings.add("hbm:tile.test_bb_bork");
-		ignoreMappings.add("hbm:tile.test_bb_inf");
-		ignoreMappings.add("hbm:tile.test_missile");
-		ignoreMappings.add("hbm:tile.rotation_tester");
-		ignoreMappings.add("hbm:tile.test_ticker");
-		ignoreMappings.add("hbm:tile.dummy_block_flare");
-		ignoreMappings.add("hbm:tile.dummy_port_flare");
-		ignoreMappings.add("hbm:tile.dummy_block_chemplant");
-		ignoreMappings.add("hbm:tile.dummy_port_chemplant");
-		ignoreMappings.add("hbm:tile.dummy_block_pumpjack");
-		ignoreMappings.add("hbm:tile.dummy_port_pumpjack");
-		ignoreMappings.add("hbm:tile.dummy_block_radgen");
-		ignoreMappings.add("hbm:tile.dummy_port_radgen");
-		ignoreMappings.add("hbm:tile.test_conductor");
-		ignoreMappings.add("hbm:tile.dummy_block_fluidtank");
-		ignoreMappings.add("hbm:tile.dummy_port_fluidtank");
-		ignoreMappings.add("hbm:item.telepad");
-		ignoreMappings.add("hbm:item.rubber_gloves");
-		ignoreMappings.add("hbm:item.pirfenidone");
-		ignoreMappings.add("hbm:item.coin_siege");
-		ignoreMappings.add("hbm:item.source");
-		ignoreMappings.add("hbm:item.gun_brimstone");
-		ignoreMappings.add("hbm:item.stamp_schrabidium_flat");
-		ignoreMappings.add("hbm:item.stamp_schrabidium_plate");
-		ignoreMappings.add("hbm:item.stamp_schrabidium_wire");
-		ignoreMappings.add("hbm:item.stamp_schrabidium_circuit");
-		ignoreMappings.add("hbm:item.blades_combine_steel");
-		ignoreMappings.add("hbm:item.blades_schrabidium");
-		ignoreMappings.add("hbm:item.blades_aluminium");
-		ignoreMappings.add("hbm:item.blades_gold");
-		ignoreMappings.add("hbm:item.blades_iron");
-		ignoreMappings.add("hbm:item.cap_aluminium");
-		ignoreMappings.add("hbm:tile.dummy_block_refinery");
-		ignoreMappings.add("hbm:tile.dummy_port_refinery");
-		ignoreMappings.add("hbm:item.gun_revolver_iron");
-		ignoreMappings.add("hbm:item.gun_calamity_dual");
-		ignoreMappings.add("hbm:item.gun_revolver_lead");
-		ignoreMappings.add("hbm:tile.dummy_block_turbofan");
-		ignoreMappings.add("hbm:tile.dummy_port_turbofan");
-		ignoreMappings.add("hbm:item.canister_smear");
-		ignoreMappings.add("hbm:item.canister_canola");
-		ignoreMappings.add("hbm:item.canister_oil");
-		ignoreMappings.add("hbm:item.canister_fuel");
-		ignoreMappings.add("hbm:item.canister_kerosene");
-		ignoreMappings.add("hbm:item.canister_reoil");
-		ignoreMappings.add("hbm:item.canister_petroil");
-		ignoreMappings.add("hbm:item.canister_gasoline");
-		ignoreMappings.add("hbm:item.canister_fracksol");
-		ignoreMappings.add("hbm:item.canister_NITAN");
-		ignoreMappings.add("hbm:item.canister_heavyoil");
-		ignoreMappings.add("hbm:item.canister_bitumen");
-		ignoreMappings.add("hbm:item.canister_heatingoil");
-		ignoreMappings.add("hbm:item.canister_naphtha");
-		ignoreMappings.add("hbm:item.canister_lightoil");
-		ignoreMappings.add("hbm:item.canister_biofuel");
-		ignoreMappings.add("hbm:item.canister_ethanol");
-		ignoreMappings.add("hbm:item.gun_revolver_nightmare2_ammo");
-		ignoreMappings.add("hbm:item.gun_revolver_iron_ammo");
-		ignoreMappings.add("hbm:item.gun_revolver_gold_ammo");
-		ignoreMappings.add("hbm:item.gun_revolver_cursed_ammo");
-		ignoreMappings.add("hbm:item.gun_revolver_ammo");
-		ignoreMappings.add("hbm:item.gun_revolver_nightmare_ammo");
-		ignoreMappings.add("hbm:item.gun_mp_ammo");
-		ignoreMappings.add("hbm:item.gun_revolver_lead_ammo");
-		ignoreMappings.add("hbm:item.gun_revolver_schrabidium_ammo");
-		ignoreMappings.add("hbm:item.tank_waste");
-		ignoreMappings.add("hbm:item.digamma_see");
-		ignoreMappings.add("hbm:item.digamma_feel");
-		ignoreMappings.add("hbm:item.digamma_know");
-		ignoreMappings.add("hbm:item.digamma_kauai_moho");
-		ignoreMappings.add("hbm:item.digamma_up_on_top");
-		ignoreMappings.add("hbm:tile.oil_duct_solid");
-		ignoreMappings.add("hbm:tile.oil_duct");
-		ignoreMappings.add("hbm:tile.gas_duct_solid");
-		ignoreMappings.add("hbm:tile.gas_duct");
-		ignoreMappings.add("hbm:tile.dummy_block_assembler");
-		ignoreMappings.add("hbm:tile.dummy_port_assembler");
-		ignoreMappings.add("hbm:item.canned_beef");
-		ignoreMappings.add("hbm:item.canned_tuna");
-		ignoreMappings.add("hbm:item.canned_mystery");
-		ignoreMappings.add("hbm:item.canned_pashtet");
-		ignoreMappings.add("hbm:item.canned_cheese");
-		ignoreMappings.add("hbm:item.canned_jizz");
-		ignoreMappings.add("hbm:item.canned_milk");
-		ignoreMappings.add("hbm:item.canned_ass");
-		ignoreMappings.add("hbm:item.canned_pizza");
-		ignoreMappings.add("hbm:item.canned_tube");
-		ignoreMappings.add("hbm:item.canned_tomato");
-		ignoreMappings.add("hbm:item.canned_asbestos");
-		ignoreMappings.add("hbm:item.canned_bhole");
-		ignoreMappings.add("hbm:item.canned_hotdogs");
-		ignoreMappings.add("hbm:item.canned_leftovers");
-		ignoreMappings.add("hbm:item.canned_yogurt");
-		ignoreMappings.add("hbm:item.canned_stew");
-		ignoreMappings.add("hbm:item.canned_chinese");
-		ignoreMappings.add("hbm:item.canned_oil");
-		ignoreMappings.add("hbm:item.canned_fist");
-		ignoreMappings.add("hbm:item.canned_spam");
-		ignoreMappings.add("hbm:item.canned_fried");
-		ignoreMappings.add("hbm:item.canned_napalm");
-		ignoreMappings.add("hbm:item.canned_diesel");
-		ignoreMappings.add("hbm:item.canned_kerosene");
-		ignoreMappings.add("hbm:item.canned_recursion");
-		ignoreMappings.add("hbm:item.canned_bark");
-		ignoreMappings.add("hbm:item.primer_357");
-		ignoreMappings.add("hbm:item.primer_44");
-		ignoreMappings.add("hbm:item.primer_9");
-		ignoreMappings.add("hbm:item.primer_50");
-		ignoreMappings.add("hbm:item.primer_buckshot");
-		ignoreMappings.add("hbm:tile.ore_bedrock_coltan");
-		ignoreMappings.add("hbm:item.recycled_ground");
-		ignoreMappings.add("hbm:item.recycled_rock");
-		ignoreMappings.add("hbm:item.recycled_metal");
-		ignoreMappings.add("hbm:item.recycled_refined");
-		ignoreMappings.add("hbm:item.recycled_organic");
-		ignoreMappings.add("hbm:item.recycled_crystal");
-		ignoreMappings.add("hbm:item.recycled_explosive");
-		ignoreMappings.add("hbm:item.recycled_electronic");
-		ignoreMappings.add("hbm:item.recycled_nuclear");
-		ignoreMappings.add("hbm:item.recycled_misc");
-		ignoreMappings.add("hbm:item.gun_bf_ammo");
+		for(int i = 1; i <= 8; i++) MainRegistry.ignoreMappings.add("hbm:item.gasflame" + i);
+		MainRegistry.ignoreMappings.add("hbm:item.cyclotron_tower");
+		MainRegistry.ignoreMappings.add("hbm:item.magnet_dee");
+		MainRegistry.ignoreMappings.add("hbm:item.centrifuge_tower");
+		MainRegistry.ignoreMappings.add("hbm:item.gun_revolver_nopip_ammo");
+		MainRegistry.ignoreMappings.add("hbm:item.gun_revolver_pip_ammo");
+		MainRegistry.ignoreMappings.add("hbm:item.gun_calamity_ammo");
+		MainRegistry.ignoreMappings.add("hbm:item.gun_lacunae_ammo");
+		MainRegistry.ignoreMappings.add("hbm:item.gun_rpg_ammo");
+		MainRegistry.ignoreMappings.add("hbm:item.gun_mp40_ammo");
+		MainRegistry.ignoreMappings.add("hbm:item.gun_uzi_ammo");
+		MainRegistry.ignoreMappings.add("hbm:item.gun_uboinik_ammo");
+		MainRegistry.ignoreMappings.add("hbm:item.gun_lever_action_ammo");
+		MainRegistry.ignoreMappings.add("hbm:item.gun_bolt_action_ammo");
+		MainRegistry.ignoreMappings.add("hbm:item.gun_fatman_ammo");
+		MainRegistry.ignoreMappings.add("hbm:item.gun_mirv_ammo");
+		MainRegistry.ignoreMappings.add("hbm:item.gun_stinger_ammo");
+		MainRegistry.ignoreMappings.add("hbm:item.limiter");
+		MainRegistry.ignoreMappings.add("hbm:item.turret_biometry");
+		MainRegistry.ignoreMappings.add("hbm:item.thermo_unit_empty");
+		MainRegistry.ignoreMappings.add("hbm:item.thermo_unit_endo");
+		MainRegistry.ignoreMappings.add("hbm:item.thermo_unit_exo");
+		MainRegistry.ignoreMappings.add("hbm:item.gadget_explosive");
+		MainRegistry.ignoreMappings.add("hbm:item.man_explosive");
+		MainRegistry.ignoreMappings.add("hbm:item.crystal_energy");
+		MainRegistry.ignoreMappings.add("hbm:item.pellet_coolant");
+		MainRegistry.ignoreMappings.add("hbm:item.turret_control");
+		MainRegistry.ignoreMappings.add("hbm:tile.sellafield_0");
+		MainRegistry.ignoreMappings.add("hbm:tile.sellafield_1");
+		MainRegistry.ignoreMappings.add("hbm:tile.sellafield_2");
+		MainRegistry.ignoreMappings.add("hbm:tile.sellafield_3");
+		MainRegistry.ignoreMappings.add("hbm:tile.sellafield_4");
+		MainRegistry.ignoreMappings.add("hbm:tile.sellafield_core");
+		MainRegistry.ignoreMappings.add("hbm:tile.fusion_core");
+		MainRegistry.ignoreMappings.add("hbm:tile.machine_telelinker");
+		MainRegistry.ignoreMappings.add("hbm:item.dynosphere_base");
+		MainRegistry.ignoreMappings.add("hbm:item.dynosphere_desh");
+		MainRegistry.ignoreMappings.add("hbm:item.dynosphere_desh_charged");
+		MainRegistry.ignoreMappings.add("hbm:item.dynosphere_schrabidium");
+		MainRegistry.ignoreMappings.add("hbm:item.dynosphere_schrabidium_charged");
+		MainRegistry.ignoreMappings.add("hbm:item.dynosphere_euphemium");
+		MainRegistry.ignoreMappings.add("hbm:item.dynosphere_euphemium_charged");
+		MainRegistry.ignoreMappings.add("hbm:item.dynosphere_dineutronium");
+		MainRegistry.ignoreMappings.add("hbm:item.dynosphere_dineutronium_charged");
+		MainRegistry.ignoreMappings.add("hbm:item.factory_core_titanium");
+		MainRegistry.ignoreMappings.add("hbm:item.factory_core_advanced");
+		MainRegistry.ignoreMappings.add("hbm:tile.factory_titanium_core");
+		MainRegistry.ignoreMappings.add("hbm:tile.factory_advanced_core");
+		MainRegistry.ignoreMappings.add("hbm:tile.factory_titanium_conductor");
+		MainRegistry.ignoreMappings.add("hbm:tile.factory_advanced_conductor");
+		MainRegistry.ignoreMappings.add("hbm:tile.factory_titanium_furnace");
+		MainRegistry.ignoreMappings.add("hbm:tile.factory_advanced_furnace");
+		MainRegistry.ignoreMappings.add("hbm:tile.turret_light");
+		MainRegistry.ignoreMappings.add("hbm:tile.turret_heavy");
+		MainRegistry.ignoreMappings.add("hbm:tile.turret_rocket");
+		MainRegistry.ignoreMappings.add("hbm:tile.turret_flamer");
+		MainRegistry.ignoreMappings.add("hbm:tile.turret_tau");
+		MainRegistry.ignoreMappings.add("hbm:tile.turret_cwis");
+		MainRegistry.ignoreMappings.add("hbm:tile.turret_spitfire");
+		MainRegistry.ignoreMappings.add("hbm:tile.turret_cheapo");
+		MainRegistry.ignoreMappings.add("hbm:item.turret_light_ammo");
+		MainRegistry.ignoreMappings.add("hbm:item.turret_heavy_ammo");
+		MainRegistry.ignoreMappings.add("hbm:item.turret_rocket_ammo");
+		MainRegistry.ignoreMappings.add("hbm:item.turret_flamer_ammo");
+		MainRegistry.ignoreMappings.add("hbm:item.turret_tau_ammo");
+		MainRegistry.ignoreMappings.add("hbm:item.turret_cwis_ammo");
+		MainRegistry.ignoreMappings.add("hbm:item.turret_spitfire_ammo");
+		MainRegistry.ignoreMappings.add("hbm:item.turret_cheapo_ammo");
+		MainRegistry.ignoreMappings.add("hbm:tile.cel_prime");
+		MainRegistry.ignoreMappings.add("hbm:tile.cel_prime_terminal");
+		MainRegistry.ignoreMappings.add("hbm:tile.cel_prime_battery");
+		MainRegistry.ignoreMappings.add("hbm:tile.cel_prime_port");
+		MainRegistry.ignoreMappings.add("hbm:tile.cel_prime_tanks");
+		MainRegistry.ignoreMappings.add("hbm:tile.rf_cable");
+		MainRegistry.ignoreMappings.add("hbm:tile.test_container");
+		MainRegistry.ignoreMappings.add("hbm:tile.test_bb_bork");
+		MainRegistry.ignoreMappings.add("hbm:tile.test_bb_inf");
+		MainRegistry.ignoreMappings.add("hbm:tile.test_missile");
+		MainRegistry.ignoreMappings.add("hbm:tile.rotation_tester");
+		MainRegistry.ignoreMappings.add("hbm:tile.test_ticker");
+		MainRegistry.ignoreMappings.add("hbm:tile.dummy_block_flare");
+		MainRegistry.ignoreMappings.add("hbm:tile.dummy_port_flare");
+		MainRegistry.ignoreMappings.add("hbm:tile.dummy_block_chemplant");
+		MainRegistry.ignoreMappings.add("hbm:tile.dummy_port_chemplant");
+		MainRegistry.ignoreMappings.add("hbm:tile.dummy_block_pumpjack");
+		MainRegistry.ignoreMappings.add("hbm:tile.dummy_port_pumpjack");
+		MainRegistry.ignoreMappings.add("hbm:tile.dummy_block_radgen");
+		MainRegistry.ignoreMappings.add("hbm:tile.dummy_port_radgen");
+		MainRegistry.ignoreMappings.add("hbm:tile.test_conductor");
+		MainRegistry.ignoreMappings.add("hbm:tile.dummy_block_fluidtank");
+		MainRegistry.ignoreMappings.add("hbm:tile.dummy_port_fluidtank");
+		MainRegistry.ignoreMappings.add("hbm:item.telepad");
+		MainRegistry.ignoreMappings.add("hbm:item.rubber_gloves");
+		MainRegistry.ignoreMappings.add("hbm:item.pirfenidone");
+		MainRegistry.ignoreMappings.add("hbm:item.coin_siege");
+		MainRegistry.ignoreMappings.add("hbm:item.source");
+		MainRegistry.ignoreMappings.add("hbm:item.gun_brimstone");
+		MainRegistry.ignoreMappings.add("hbm:item.stamp_schrabidium_flat");
+		MainRegistry.ignoreMappings.add("hbm:item.stamp_schrabidium_plate");
+		MainRegistry.ignoreMappings.add("hbm:item.stamp_schrabidium_wire");
+		MainRegistry.ignoreMappings.add("hbm:item.stamp_schrabidium_circuit");
+		MainRegistry.ignoreMappings.add("hbm:item.blades_combine_steel");
+		MainRegistry.ignoreMappings.add("hbm:item.blades_schrabidium");
+		MainRegistry.ignoreMappings.add("hbm:item.blades_aluminium");
+		MainRegistry.ignoreMappings.add("hbm:item.blades_gold");
+		MainRegistry.ignoreMappings.add("hbm:item.blades_iron");
+		MainRegistry.ignoreMappings.add("hbm:item.cap_aluminium");
+		MainRegistry.ignoreMappings.add("hbm:tile.dummy_block_refinery");
+		MainRegistry.ignoreMappings.add("hbm:tile.dummy_port_refinery");
+		MainRegistry.ignoreMappings.add("hbm:item.gun_revolver_iron");
+		MainRegistry.ignoreMappings.add("hbm:item.gun_calamity_dual");
+		MainRegistry.ignoreMappings.add("hbm:item.gun_revolver_lead");
+		MainRegistry.ignoreMappings.add("hbm:tile.dummy_block_turbofan");
+		MainRegistry.ignoreMappings.add("hbm:tile.dummy_port_turbofan");
+		MainRegistry.ignoreMappings.add("hbm:item.canister_smear");
+		MainRegistry.ignoreMappings.add("hbm:item.canister_canola");
+		MainRegistry.ignoreMappings.add("hbm:item.canister_oil");
+		MainRegistry.ignoreMappings.add("hbm:item.canister_fuel");
+		MainRegistry.ignoreMappings.add("hbm:item.canister_kerosene");
+		MainRegistry.ignoreMappings.add("hbm:item.canister_reoil");
+		MainRegistry.ignoreMappings.add("hbm:item.canister_petroil");
+		MainRegistry.ignoreMappings.add("hbm:item.canister_gasoline");
+		MainRegistry.ignoreMappings.add("hbm:item.canister_fracksol");
+		MainRegistry.ignoreMappings.add("hbm:item.canister_NITAN");
+		MainRegistry.ignoreMappings.add("hbm:item.canister_heavyoil");
+		MainRegistry.ignoreMappings.add("hbm:item.canister_bitumen");
+		MainRegistry.ignoreMappings.add("hbm:item.canister_heatingoil");
+		MainRegistry.ignoreMappings.add("hbm:item.canister_naphtha");
+		MainRegistry.ignoreMappings.add("hbm:item.canister_lightoil");
+		MainRegistry.ignoreMappings.add("hbm:item.canister_biofuel");
+		MainRegistry.ignoreMappings.add("hbm:item.canister_ethanol");
+		MainRegistry.ignoreMappings.add("hbm:item.gun_revolver_nightmare2_ammo");
+		MainRegistry.ignoreMappings.add("hbm:item.gun_revolver_iron_ammo");
+		MainRegistry.ignoreMappings.add("hbm:item.gun_revolver_gold_ammo");
+		MainRegistry.ignoreMappings.add("hbm:item.gun_revolver_cursed_ammo");
+		MainRegistry.ignoreMappings.add("hbm:item.gun_revolver_ammo");
+		MainRegistry.ignoreMappings.add("hbm:item.gun_revolver_nightmare_ammo");
+		MainRegistry.ignoreMappings.add("hbm:item.gun_mp_ammo");
+		MainRegistry.ignoreMappings.add("hbm:item.gun_revolver_lead_ammo");
+		MainRegistry.ignoreMappings.add("hbm:item.gun_revolver_schrabidium_ammo");
+		MainRegistry.ignoreMappings.add("hbm:item.tank_waste");
+		MainRegistry.ignoreMappings.add("hbm:item.digamma_see");
+		MainRegistry.ignoreMappings.add("hbm:item.digamma_feel");
+		MainRegistry.ignoreMappings.add("hbm:item.digamma_know");
+		MainRegistry.ignoreMappings.add("hbm:item.digamma_kauai_moho");
+		MainRegistry.ignoreMappings.add("hbm:item.digamma_up_on_top");
+		MainRegistry.ignoreMappings.add("hbm:tile.oil_duct_solid");
+		MainRegistry.ignoreMappings.add("hbm:tile.oil_duct");
+		MainRegistry.ignoreMappings.add("hbm:tile.gas_duct_solid");
+		MainRegistry.ignoreMappings.add("hbm:tile.gas_duct");
+		MainRegistry.ignoreMappings.add("hbm:tile.dummy_block_assembler");
+		MainRegistry.ignoreMappings.add("hbm:tile.dummy_port_assembler");
+		MainRegistry.ignoreMappings.add("hbm:item.canned_beef");
+		MainRegistry.ignoreMappings.add("hbm:item.canned_tuna");
+		MainRegistry.ignoreMappings.add("hbm:item.canned_mystery");
+		MainRegistry.ignoreMappings.add("hbm:item.canned_pashtet");
+		MainRegistry.ignoreMappings.add("hbm:item.canned_cheese");
+		MainRegistry.ignoreMappings.add("hbm:item.canned_jizz");
+		MainRegistry.ignoreMappings.add("hbm:item.canned_milk");
+		MainRegistry.ignoreMappings.add("hbm:item.canned_ass");
+		MainRegistry.ignoreMappings.add("hbm:item.canned_pizza");
+		MainRegistry.ignoreMappings.add("hbm:item.canned_tube");
+		MainRegistry.ignoreMappings.add("hbm:item.canned_tomato");
+		MainRegistry.ignoreMappings.add("hbm:item.canned_asbestos");
+		MainRegistry.ignoreMappings.add("hbm:item.canned_bhole");
+		MainRegistry.ignoreMappings.add("hbm:item.canned_hotdogs");
+		MainRegistry.ignoreMappings.add("hbm:item.canned_leftovers");
+		MainRegistry.ignoreMappings.add("hbm:item.canned_yogurt");
+		MainRegistry.ignoreMappings.add("hbm:item.canned_stew");
+		MainRegistry.ignoreMappings.add("hbm:item.canned_chinese");
+		MainRegistry.ignoreMappings.add("hbm:item.canned_oil");
+		MainRegistry.ignoreMappings.add("hbm:item.canned_fist");
+		MainRegistry.ignoreMappings.add("hbm:item.canned_spam");
+		MainRegistry.ignoreMappings.add("hbm:item.canned_fried");
+		MainRegistry.ignoreMappings.add("hbm:item.canned_napalm");
+		MainRegistry.ignoreMappings.add("hbm:item.canned_diesel");
+		MainRegistry.ignoreMappings.add("hbm:item.canned_kerosene");
+		MainRegistry.ignoreMappings.add("hbm:item.canned_recursion");
+		MainRegistry.ignoreMappings.add("hbm:item.canned_bark");
+		MainRegistry.ignoreMappings.add("hbm:item.primer_357");
+		MainRegistry.ignoreMappings.add("hbm:item.primer_44");
+		MainRegistry.ignoreMappings.add("hbm:item.primer_9");
+		MainRegistry.ignoreMappings.add("hbm:item.primer_50");
+		MainRegistry.ignoreMappings.add("hbm:item.primer_buckshot");
+		MainRegistry.ignoreMappings.add("hbm:tile.ore_bedrock_coltan");
+		MainRegistry.ignoreMappings.add("hbm:item.recycled_ground");
+		MainRegistry.ignoreMappings.add("hbm:item.recycled_rock");
+		MainRegistry.ignoreMappings.add("hbm:item.recycled_metal");
+		MainRegistry.ignoreMappings.add("hbm:item.recycled_refined");
+		MainRegistry.ignoreMappings.add("hbm:item.recycled_organic");
+		MainRegistry.ignoreMappings.add("hbm:item.recycled_crystal");
+		MainRegistry.ignoreMappings.add("hbm:item.recycled_explosive");
+		MainRegistry.ignoreMappings.add("hbm:item.recycled_electronic");
+		MainRegistry.ignoreMappings.add("hbm:item.recycled_nuclear");
+		MainRegistry.ignoreMappings.add("hbm:item.recycled_misc");
+		MainRegistry.ignoreMappings.add("hbm:item.gun_bf_ammo");
 		
 		/// REMAP ///
-		remapItems.put("hbm:item.gadget_explosive8", ModItems.early_explosive_lenses);
-		remapItems.put("hbm:item.man_explosive8", ModItems.explosive_lenses);
-		remapItems.put("hbm:item.briquette_lignite", ModItems.briquette);
+		MainRegistry.remapItems.put("hbm:item.gadget_explosive8", ModItems.early_explosive_lenses);
+		MainRegistry.remapItems.put("hbm:item.man_explosive8", ModItems.explosive_lenses);
+		MainRegistry.remapItems.put("hbm:item.briquette_lignite", ModItems.briquette);
 		
 		for(MissingMapping mapping : event.get()) {
 			
 			// ignore all ammo prefixes because those are from the time we threw out all the ammo items
-			if(mapping.name.startsWith("hbm:item.ammo_")) {
-				mapping.ignore();
-				continue;
-			}
-
-			if(ignoreMappings.contains(mapping.name)) {
+			if(mapping.name.startsWith("hbm:item.ammo_") || MainRegistry.ignoreMappings.contains(mapping.name)) {
 				mapping.ignore();
 				continue;
 			}
 			
 			if(mapping.type == GameRegistry.Type.ITEM) {
 				
-				if(remapItems.get(mapping.name) != null) {
-					mapping.remap(remapItems.get(mapping.name));
+				if(MainRegistry.remapItems.get(mapping.name) != null) {
+					mapping.remap(MainRegistry.remapItems.get(mapping.name));
 					continue;
 				}
 			}

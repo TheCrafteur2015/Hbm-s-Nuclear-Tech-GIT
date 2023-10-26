@@ -26,7 +26,7 @@ public class BusAnimationKeyframe {
 	public int duration;
 	
 	public double[] toArray() {
-		return new double[] {x, y, z};
+		return new double[] {this.x, this.y, this.z};
 	}
 	
 	//this one can be used for "reset" type keyframes

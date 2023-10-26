@@ -23,6 +23,8 @@ public class JungleDungeonRoom extends CellularDungeonRoom {
 		super(parent);
 	}
 
+	@SuppressWarnings({ "unchecked", "serial", "rawtypes" })
+	@Override
 	public void generateMain(final World world, final int x, final int y, final int z) {
 		
 		if(!(this.parent instanceof JungleDungeon))
@@ -33,9 +35,9 @@ public class JungleDungeonRoom extends CellularDungeonRoom {
 			@Override
 			public void work() {
 				
-				DungeonToolbox.generateBox(world, x, y, z, parent.width, 1, parent.width, parent.floor);
-				DungeonToolbox.generateBox(world, x, y + 1, z, parent.width, parent.height - 1, parent.width, Blocks.air);
-				DungeonToolbox.generateBox(world, x, y + parent.height - 1, z, parent.width, 1, parent.width, parent.ceiling);
+				DungeonToolbox.generateBox(world, x, y, z, JungleDungeonRoom.this.parent.width, 1, JungleDungeonRoom.this.parent.width, JungleDungeonRoom.this.parent.floor);
+				DungeonToolbox.generateBox(world, x, y + 1, z, JungleDungeonRoom.this.parent.width, JungleDungeonRoom.this.parent.height - 1, JungleDungeonRoom.this.parent.width, Blocks.air);
+				DungeonToolbox.generateBox(world, x, y + JungleDungeonRoom.this.parent.height - 1, z, JungleDungeonRoom.this.parent.width, 1, JungleDungeonRoom.this.parent.width, JungleDungeonRoom.this.parent.ceiling);
 				
 				int rtd = world.rand.nextInt(50);
 				
@@ -47,11 +49,11 @@ public class JungleDungeonRoom extends CellularDungeonRoom {
 						add(new MetaBlock(ModBlocks.brick_jungle_lava));
 					}};
 					
-					DungeonToolbox.generateBox(world, x + parent.width / 2 - 1, y, z + parent.width / 2 - 1, 3, 1, 3, metas );
+					DungeonToolbox.generateBox(world, x + JungleDungeonRoom.this.parent.width / 2 - 1, y, z + JungleDungeonRoom.this.parent.width / 2 - 1, 3, 1, 3, metas );
 				
 				// 1:5 chance to have a jungle crate
 				} else if(rtd < 10) {
-					world.setBlock(x + 1 + world.rand.nextInt(parent.width - 1), y + 1, z + world.rand.nextInt(parent.width - 1), ModBlocks.crate_jungle, 0, 2);
+					world.setBlock(x + 1 + world.rand.nextInt(JungleDungeonRoom.this.parent.width - 1), y + 1, z + world.rand.nextInt(JungleDungeonRoom.this.parent.width - 1), ModBlocks.crate_jungle, 0, 2);
 
 				// 1:5 chance to try for making a hole
 				} else if(rtd < 20) {
@@ -84,6 +86,7 @@ public class JungleDungeonRoom extends CellularDungeonRoom {
 		TimedGenerator.addOp(world, job);
 	}
 	
+	@Override
 	public void generateWall(final World world, final int x, final int y, final int z, final ForgeDirection wall, final boolean door) {
 		
 		ITimedJob job = new ITimedJob() {
@@ -92,31 +95,31 @@ public class JungleDungeonRoom extends CellularDungeonRoom {
 			public void work() {
 				
 				if(wall == ForgeDirection.NORTH) {
-					DungeonToolbox.generateBox(world, x, y + 1, z, parent.width, parent.height - 2, 1, parent.wall);
+					DungeonToolbox.generateBox(world, x, y + 1, z, JungleDungeonRoom.this.parent.width, JungleDungeonRoom.this.parent.height - 2, 1, JungleDungeonRoom.this.parent.wall);
 					
 					if(door)
-						DungeonToolbox.generateBox(world, x + parent.width / 2 - 1, y + 1, z, 3, 3, 1, Blocks.air);
+						DungeonToolbox.generateBox(world, x + JungleDungeonRoom.this.parent.width / 2 - 1, y + 1, z, 3, 3, 1, Blocks.air);
 				}
 				
 				if(wall == ForgeDirection.SOUTH) {
-					DungeonToolbox.generateBox(world, x, y + 1, z + parent.width - 1, parent.width, parent.height - 2, 1, parent.wall);
+					DungeonToolbox.generateBox(world, x, y + 1, z + JungleDungeonRoom.this.parent.width - 1, JungleDungeonRoom.this.parent.width, JungleDungeonRoom.this.parent.height - 2, 1, JungleDungeonRoom.this.parent.wall);
 					
 					if(door)
-						DungeonToolbox.generateBox(world, x + parent.width / 2 - 1, y + 1, z + parent.width - 1, 3, 3, 1, Blocks.air);
+						DungeonToolbox.generateBox(world, x + JungleDungeonRoom.this.parent.width / 2 - 1, y + 1, z + JungleDungeonRoom.this.parent.width - 1, 3, 3, 1, Blocks.air);
 				}
 				
 				if(wall == ForgeDirection.WEST) {
-					DungeonToolbox.generateBox(world, x, y + 1, z, 1, parent.height - 2, parent.width, parent.wall);
+					DungeonToolbox.generateBox(world, x, y + 1, z, 1, JungleDungeonRoom.this.parent.height - 2, JungleDungeonRoom.this.parent.width, JungleDungeonRoom.this.parent.wall);
 					
 					if(door)
-						DungeonToolbox.generateBox(world, x, y + 1, z + parent.width / 2 - 1, 1, 3, 3, Blocks.air);
+						DungeonToolbox.generateBox(world, x, y + 1, z + JungleDungeonRoom.this.parent.width / 2 - 1, 1, 3, 3, Blocks.air);
 				}
 				
 				if(wall == ForgeDirection.EAST) {
-					DungeonToolbox.generateBox(world, x + parent.width - 1, y + 1, z, 1, parent.height - 2, parent.width, parent.wall);
+					DungeonToolbox.generateBox(world, x + JungleDungeonRoom.this.parent.width - 1, y + 1, z, 1, JungleDungeonRoom.this.parent.height - 2, JungleDungeonRoom.this.parent.width, JungleDungeonRoom.this.parent.wall);
 					
 					if(door)
-						DungeonToolbox.generateBox(world, x + parent.width - 1, y + 1, z + parent.width / 2 - 1, 1, 3, 3, Blocks.air);
+						DungeonToolbox.generateBox(world, x + JungleDungeonRoom.this.parent.width - 1, y + 1, z + JungleDungeonRoom.this.parent.width / 2 - 1, 1, 3, 3, Blocks.air);
 				}
 			}
 		};

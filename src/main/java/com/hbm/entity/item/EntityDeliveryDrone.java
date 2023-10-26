@@ -18,7 +18,7 @@ import net.minecraftforge.common.ForgeChunkManager.Type;
 
 public class EntityDeliveryDrone extends EntityDroneBase implements IInventory, IChunkLoader {
 	
-	protected ItemStack[] slots = new ItemStack[this.getSizeInventory()];
+	protected ItemStack[] slots = new ItemStack[getSizeInventory()];
 	public FluidStack fluid;
 	
 	private Ticket loaderTicket;
@@ -35,15 +35,15 @@ public class EntityDeliveryDrone extends EntityDroneBase implements IInventory, 
 	}
 	
 	public EntityDeliveryDrone setChunkLoading() {
-		init(ForgeChunkManager.requestTicket(MainRegistry.instance, worldObj, Type.ENTITY));
+		init(ForgeChunkManager.requestTicket(MainRegistry.instance, this.worldObj, Type.ENTITY));
 		return this;
 	}
 
 	@Override
 	public void onUpdate() {
 		
-		if(!worldObj.isRemote) {
-			loadNeighboringChunks((int)Math.floor(posX / 16D), (int)Math.floor(posZ / 16D));
+		if(!this.worldObj.isRemote) {
+			loadNeighboringChunks((int)Math.floor(this.posX / 16D), (int)Math.floor(this.posZ / 16D));
 		}
 		
 		super.onUpdate();
@@ -71,9 +71,9 @@ public class EntityDeliveryDrone extends EntityDroneBase implements IInventory, 
 
 		nbt.setTag("Items", nbttaglist);
 		
-		if(fluid != null) {
-			nbt.setString("fluidType", fluid.type.getName());
-			nbt.setInteger("fluidAmount", fluid.fill);
+		if(this.fluid != null) {
+			nbt.setString("fluidType", this.fluid.type.getName());
+			nbt.setInteger("fluidAmount", this.fluid.fill);
 		}
 
 		nbt.setByte("load", this.dataWatcher.getWatchableObjectByte(11));
@@ -84,7 +84,7 @@ public class EntityDeliveryDrone extends EntityDroneBase implements IInventory, 
 		super.readEntityFromNBT(nbt);
 		
 		NBTTagList nbttaglist = nbt.getTagList("Items", 10);
-		this.slots = new ItemStack[this.getSizeInventory()];
+		this.slots = new ItemStack[getSizeInventory()];
 
 		for(int i = 0; i < nbttaglist.tagCount(); ++i) {
 			NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
@@ -104,7 +104,7 @@ public class EntityDeliveryDrone extends EntityDroneBase implements IInventory, 
 
 	@Override
 	public ItemStack getStackInSlot(int slot) {
-		return slots[slot];
+		return this.slots[slot];
 	}
 	
 	@Override
@@ -145,8 +145,8 @@ public class EntityDeliveryDrone extends EntityDroneBase implements IInventory, 
 	public void setInventorySlotContents(int slot, ItemStack stack) {
 		this.slots[slot] = stack;
 
-		if(stack != null && stack.stackSize > this.getInventoryStackLimit()) {
-			stack.stackSize = this.getInventoryStackLimit();
+		if(stack != null && stack.stackSize > getInventoryStackLimit()) {
+			stack.stackSize = getInventoryStackLimit();
 		}
 	}
 
@@ -162,36 +162,36 @@ public class EntityDeliveryDrone extends EntityDroneBase implements IInventory, 
 	@Override public void closeInventory() { }
 
 	public void loadNeighboringChunks(int newChunkX, int newChunkZ) {
-		if(!worldObj.isRemote && loaderTicket != null) {
+		if(!this.worldObj.isRemote && this.loaderTicket != null) {
 			clearChunkLoader();
-			ForgeChunkManager.forceChunk(loaderTicket, new ChunkCoordIntPair(newChunkX, newChunkZ));
-			ForgeChunkManager.forceChunk(loaderTicket, new ChunkCoordIntPair(newChunkX + (int) Math.ceil((this.posX + this.motionX) / 16D), newChunkZ + (int) Math.ceil((this.posZ + this.motionZ) / 16D)));
+			ForgeChunkManager.forceChunk(this.loaderTicket, new ChunkCoordIntPair(newChunkX, newChunkZ));
+			ForgeChunkManager.forceChunk(this.loaderTicket, new ChunkCoordIntPair(newChunkX + (int) Math.ceil((this.posX + this.motionX) / 16D), newChunkZ + (int) Math.ceil((this.posZ + this.motionZ) / 16D)));
 		}
 	}
 	
 	@Override
 	public void setDead() {
 		super.setDead();
-		this.clearChunkLoader();
+		clearChunkLoader();
 	}
 	
 	public void clearChunkLoader() {
-		if(!worldObj.isRemote && loaderTicket != null) {
-			for(ChunkCoordIntPair chunk : loaderTicket.getChunkList()) {
-				ForgeChunkManager.unforceChunk(loaderTicket, chunk);
+		if(!this.worldObj.isRemote && this.loaderTicket != null) {
+			for(ChunkCoordIntPair chunk : this.loaderTicket.getChunkList()) {
+				ForgeChunkManager.unforceChunk(this.loaderTicket, chunk);
 			}
 		}
 	}
 
 	@Override
 	public void init(Ticket ticket) {
-		if(!worldObj.isRemote && ticket != null) {
-			if(loaderTicket == null) {
-				loaderTicket = ticket;
-				loaderTicket.bindEntity(this);
-				loaderTicket.getModData();
+		if(!this.worldObj.isRemote && ticket != null) {
+			if(this.loaderTicket == null) {
+				this.loaderTicket = ticket;
+				this.loaderTicket.bindEntity(this);
+				this.loaderTicket.getModData();
 			}
-			ForgeChunkManager.forceChunk(loaderTicket, new ChunkCoordIntPair(chunkCoordX, chunkCoordZ));
+			ForgeChunkManager.forceChunk(this.loaderTicket, new ChunkCoordIntPair(this.chunkCoordX, this.chunkCoordZ));
 		}
 	}
 }

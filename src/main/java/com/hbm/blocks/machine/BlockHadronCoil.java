@@ -36,15 +36,16 @@ public class BlockHadronCoil extends Block implements IBlockCT, ITooltipProvider
 	@SideOnly(Side.CLIENT)
 	public CTStitchReceiver rec;
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister reg) {
-		this.blockIcon = reg.registerIcon(this.getTextureName());
-		this.rec = IBlockCT.primeReceiver(reg, this.getTextureName(), this.blockIcon);
+		this.blockIcon = reg.registerIcon(getTextureName());
+		this.rec = IBlockCT.primeReceiver(reg, getTextureName(), this.blockIcon);
 	}
 
 	@Override
 	public IIcon[] getFragments(IBlockAccess world, int x, int y, int z) {
-		return rec.fragCache;
+		return this.rec.fragCache;
 	}
 	
 	@Override
@@ -52,8 +53,9 @@ public class BlockHadronCoil extends Block implements IBlockCT, ITooltipProvider
 		return block instanceof BlockHadronCoil;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		list.add(I18nUtil.resolveKey("info.coil") + ": " + String.format(Locale.US, "%,d", factor));
+		list.add(I18nUtil.resolveKey("info.coil") + ": " + String.format(Locale.US, "%,d", this.factor));
 	}
 }

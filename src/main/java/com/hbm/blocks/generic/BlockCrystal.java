@@ -14,7 +14,7 @@ public class BlockCrystal extends BlockDragonProof {
 
 	@Override
 	public int getRenderType() {
-		return renderID;
+		return BlockCrystal.renderID;
 	}
 
 	@Override

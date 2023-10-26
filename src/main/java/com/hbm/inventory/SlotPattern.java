@@ -32,6 +32,6 @@ public class SlotPattern extends Slot {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean func_111238_b() {
-		return canHover;
+		return this.canHover;
 	}
 }

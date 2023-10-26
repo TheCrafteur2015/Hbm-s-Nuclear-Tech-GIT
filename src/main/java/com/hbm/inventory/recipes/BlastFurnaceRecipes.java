@@ -8,8 +8,6 @@ import java.util.Map;
 
 import javax.annotation.CheckForNull;
 
-import static com.hbm.inventory.OreDictManager.*;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonArray;
@@ -19,6 +17,8 @@ import com.google.gson.stream.JsonWriter;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.config.GeneralConfig;
 import com.hbm.handler.imc.IMCBlastFurnace;
+import com.hbm.inventory.OreDictManager;
+import com.hbm.inventory.OreDictManager.DictFrame;
 import com.hbm.inventory.RecipesCommon.AStack;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
 import com.hbm.inventory.RecipesCommon.OreDictStack;
@@ -39,42 +39,42 @@ import net.minecraft.item.ItemStack;
  */
 public class BlastFurnaceRecipes extends SerializableRecipe {
 
-	private static final ArrayList<Triplet<Object, Object, ItemStack>> blastFurnaceRecipes = new ArrayList();
-	private static final ArrayList<ComparableStack> hiddenRecipes = new ArrayList();
+	private static final ArrayList<Triplet<Object, Object, ItemStack>> blastFurnaceRecipes = new ArrayList<>();
+	private static final ArrayList<ComparableStack> hiddenRecipes = new ArrayList<>();
 
 	@Override
 	public void registerDefaults() {
 		/* STEEL */
-		addRecipe(IRON,			COAL,										new ItemStack(ModItems.ingot_steel, 1));
-		addRecipe(IRON,			ANY_COKE,									new ItemStack(ModItems.ingot_steel, 1));
-		addRecipe(IRON.ore(),	COAL,										new ItemStack(ModItems.ingot_steel, 2));
-		addRecipe(IRON.ore(),	ANY_COKE,									new ItemStack(ModItems.ingot_steel, 3));
-		addRecipe(IRON.ore(),	new ComparableStack(ModItems.powder_flux),	new ItemStack(ModItems.ingot_steel, 3));
+		BlastFurnaceRecipes.addRecipe(OreDictManager.IRON,			OreDictManager.COAL,										new ItemStack(ModItems.ingot_steel, 1));
+		BlastFurnaceRecipes.addRecipe(OreDictManager.IRON,			OreDictManager.ANY_COKE,									new ItemStack(ModItems.ingot_steel, 1));
+		BlastFurnaceRecipes.addRecipe(OreDictManager.IRON.ore(),	OreDictManager.COAL,										new ItemStack(ModItems.ingot_steel, 2));
+		BlastFurnaceRecipes.addRecipe(OreDictManager.IRON.ore(),	OreDictManager.ANY_COKE,									new ItemStack(ModItems.ingot_steel, 3));
+		BlastFurnaceRecipes.addRecipe(OreDictManager.IRON.ore(),	new ComparableStack(ModItems.powder_flux),	new ItemStack(ModItems.ingot_steel, 3));
 		
-		addRecipe(CU,									REDSTONE,										new ItemStack(ModItems.ingot_red_copper, 2));
-		addRecipe(STEEL,								MINGRADE,										new ItemStack(ModItems.ingot_advanced_alloy, 2));
-		addRecipe(W,									COAL,											new ItemStack(ModItems.neutron_reflector, 2));
-		addRecipe(W,									ANY_COKE,										new ItemStack(ModItems.neutron_reflector, 2));
-		addRecipe(new ComparableStack(ModItems.canister_full, 1, Fluids.GASOLINE.getID()), "slimeball",	new ItemStack(ModItems.canister_napalm));
-		addRecipe(W,									SA326.nugget(),									new ItemStack(ModItems.ingot_magnetized_tungsten));
-		addRecipe(STEEL,								TC99.nugget(),									new ItemStack(ModItems.ingot_tcalloy));
-		addRecipe(GOLD.plate(),							ModItems.plate_mixed,							new ItemStack(ModItems.plate_paa, 2));
-		addRecipe(BIGMT,								ModItems.powder_meteorite,						new ItemStack(ModItems.ingot_starmetal, 2));
-		addRecipe(CO,									ModBlocks.block_meteor,							new ItemStack(ModItems.ingot_meteorite));
-		addRecipe(ModItems.meteorite_sword_hardened,	CO,												new ItemStack(ModItems.meteorite_sword_alloyed));
-		addRecipe(ModBlocks.block_meteor,				CO,												new ItemStack(ModItems.ingot_meteorite));
+		BlastFurnaceRecipes.addRecipe(OreDictManager.CU,									OreDictManager.REDSTONE,										new ItemStack(ModItems.ingot_red_copper, 2));
+		BlastFurnaceRecipes.addRecipe(OreDictManager.STEEL,								OreDictManager.MINGRADE,										new ItemStack(ModItems.ingot_advanced_alloy, 2));
+		BlastFurnaceRecipes.addRecipe(OreDictManager.W,									OreDictManager.COAL,											new ItemStack(ModItems.neutron_reflector, 2));
+		BlastFurnaceRecipes.addRecipe(OreDictManager.W,									OreDictManager.ANY_COKE,										new ItemStack(ModItems.neutron_reflector, 2));
+		BlastFurnaceRecipes.addRecipe(new ComparableStack(ModItems.canister_full, 1, Fluids.GASOLINE.getID()), "slimeball",	new ItemStack(ModItems.canister_napalm));
+		BlastFurnaceRecipes.addRecipe(OreDictManager.W,									OreDictManager.SA326.nugget(),									new ItemStack(ModItems.ingot_magnetized_tungsten));
+		BlastFurnaceRecipes.addRecipe(OreDictManager.STEEL,								OreDictManager.TC99.nugget(),									new ItemStack(ModItems.ingot_tcalloy));
+		BlastFurnaceRecipes.addRecipe(OreDictManager.GOLD.plate(),							ModItems.plate_mixed,							new ItemStack(ModItems.plate_paa, 2));
+		BlastFurnaceRecipes.addRecipe(OreDictManager.BIGMT,								ModItems.powder_meteorite,						new ItemStack(ModItems.ingot_starmetal, 2));
+		BlastFurnaceRecipes.addRecipe(OreDictManager.CO,									ModBlocks.block_meteor,							new ItemStack(ModItems.ingot_meteorite));
+		BlastFurnaceRecipes.addRecipe(ModItems.meteorite_sword_hardened,	OreDictManager.CO,												new ItemStack(ModItems.meteorite_sword_alloyed));
+		BlastFurnaceRecipes.addRecipe(ModBlocks.block_meteor,				OreDictManager.CO,												new ItemStack(ModItems.ingot_meteorite));
 
 		if(GeneralConfig.enableLBSM && GeneralConfig.enableLBSMSimpleChemsitry) {
-			addRecipe(ModItems.canister_empty, COAL, new ItemStack(ModItems.canister_full, 1, Fluids.OIL.getID()));
+			BlastFurnaceRecipes.addRecipe(ModItems.canister_empty, OreDictManager.COAL, new ItemStack(ModItems.canister_full, 1, Fluids.OIL.getID()));
 		}
 
 		if(!IMCBlastFurnace.buffer.isEmpty()) {
-			blastFurnaceRecipes.addAll(IMCBlastFurnace.buffer);
+			BlastFurnaceRecipes.blastFurnaceRecipes.addAll(IMCBlastFurnace.buffer);
 			MainRegistry.logger.info("Fetched " + IMCBlastFurnace.buffer.size() + " IMC blast furnace recipes!");
 			IMCBlastFurnace.buffer.clear();
 		}
 
-		hiddenRecipes.add(new ComparableStack(ModItems.meteorite_sword_alloyed));
+		BlastFurnaceRecipes.hiddenRecipes.add(new ComparableStack(ModItems.meteorite_sword_alloyed));
 	}
 
 	private static void addRecipe(Object in1, Object in2, ItemStack out) {
@@ -84,16 +84,16 @@ public class BlastFurnaceRecipes extends SerializableRecipe {
 		if(in2 instanceof Item) in2 = new ComparableStack((Item) in2);
 		if(in2 instanceof Block) in2 = new ComparableStack((Block) in2);
 		
-		blastFurnaceRecipes.add(new Triplet<Object, Object, ItemStack>(in1, in2, out));
+		BlastFurnaceRecipes.blastFurnaceRecipes.add(new Triplet<>(in1, in2, out));
 	}
 
 	@CheckForNull
 	public static ItemStack getOutput(ItemStack in1, ItemStack in2) {
-		for(Triplet<Object, Object, ItemStack> recipe : blastFurnaceRecipes) {
-			AStack[] recipeItem1 = getRecipeStacks(recipe.getX());
-			AStack[] recipeItem2 = getRecipeStacks(recipe.getY());
+		for(Triplet<Object, Object, ItemStack> recipe : BlastFurnaceRecipes.blastFurnaceRecipes) {
+			AStack[] recipeItem1 = BlastFurnaceRecipes.getRecipeStacks(recipe.getX());
+			AStack[] recipeItem2 = BlastFurnaceRecipes.getRecipeStacks(recipe.getY());
 
-			if((doStacksMatch(recipeItem1, in1) && doStacksMatch(recipeItem2, in2)) || (doStacksMatch(recipeItem2, in1) && doStacksMatch(recipeItem1, in2))) {
+			if((BlastFurnaceRecipes.doStacksMatch(recipeItem1, in1) && BlastFurnaceRecipes.doStacksMatch(recipeItem2, in2)) || (BlastFurnaceRecipes.doStacksMatch(recipeItem2, in1) && BlastFurnaceRecipes.doStacksMatch(recipeItem1, in2))) {
 				return recipe.getZ().copy();
 			} else {
 				continue;
@@ -137,18 +137,19 @@ public class BlastFurnaceRecipes extends SerializableRecipe {
 		return recipeItem1;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static Map<List<ItemStack>[], ItemStack> getRecipesForNEI() {
 		HashMap<List<ItemStack>[], ItemStack> recipes = new HashMap<>();
 
-		for(Triplet<Object, Object, ItemStack> recipe : blastFurnaceRecipes) {
-			if(!hiddenRecipes.contains(new ComparableStack(recipe.getZ()))) {
+		for(Triplet<Object, Object, ItemStack> recipe : BlastFurnaceRecipes.blastFurnaceRecipes) {
+			if(!BlastFurnaceRecipes.hiddenRecipes.contains(new ComparableStack(recipe.getZ()))) {
 				ItemStack nothing = new ItemStack(ModItems.nothing).setStackDisplayName("If you're reading this, an error has occured! Check the console.");
-				List<ItemStack> in1 = new ArrayList();
-				List<ItemStack> in2 = new ArrayList();
+				List<ItemStack> in1 = new ArrayList<>();
+				List<ItemStack> in2 = new ArrayList<>();
 				in1.add(nothing);
 				in2.add(nothing);
 
-				for(AStack stack : getRecipeStacks(recipe.getX())) {
+				for(AStack stack : BlastFurnaceRecipes.getRecipeStacks(recipe.getX())) {
 					if(stack.extractForNEI().isEmpty())
 						continue;
 					else {
@@ -160,7 +161,7 @@ public class BlastFurnaceRecipes extends SerializableRecipe {
 				if(in1.contains(nothing)) {
 					MainRegistry.logger.error("Blast furnace cannot compile recipes for NEI: apparent nonexistent item #1 in recipe for item: " + recipe.getZ().getDisplayName());
 				}
-				for(AStack stack : getRecipeStacks(recipe.getY())) {
+				for(AStack stack : BlastFurnaceRecipes.getRecipeStacks(recipe.getY())) {
 					if(stack.extractForNEI().isEmpty()) {
 						continue;
 					} else {
@@ -184,8 +185,8 @@ public class BlastFurnaceRecipes extends SerializableRecipe {
 
 	public static List<Triplet<AStack[], AStack[], ItemStack>> getRecipes() {
 		List<Triplet<AStack[], AStack[], ItemStack>> subRecipes = new ArrayList<>();
-		for(Triplet<Object, Object, ItemStack> recipe : blastFurnaceRecipes) {
-			subRecipes.add(new Triplet<AStack[], AStack[], ItemStack>(getRecipeStacks(recipe.getX()), getRecipeStacks(recipe.getY()), recipe.getZ()));
+		for(Triplet<Object, Object, ItemStack> recipe : BlastFurnaceRecipes.blastFurnaceRecipes) {
+			subRecipes.add(new Triplet<>(BlastFurnaceRecipes.getRecipeStacks(recipe.getX()), BlastFurnaceRecipes.getRecipeStacks(recipe.getY()), recipe.getZ()));
 		}
 		return ImmutableList.copyOf(subRecipes);
 	}
@@ -202,54 +203,55 @@ public class BlastFurnaceRecipes extends SerializableRecipe {
 
 	@Override
 	public Object getRecipeObject() {
-		return blastFurnaceRecipes;
+		return BlastFurnaceRecipes.blastFurnaceRecipes;
 	}
 
 	@Override
 	public void readRecipe(JsonElement recipe) {
 		JsonObject rec = (JsonObject) recipe;
 		
-		ItemStack output = this.readItemStack(rec.get("output").getAsJsonArray());
+		ItemStack output = SerializableRecipe.readItemStack(rec.get("output").getAsJsonArray());
 		
 		Object input1 = null;
 		Object input2 = null;
 		
 		JsonArray array1 = rec.get("input1").getAsJsonArray();
-		if(array1.get(0).getAsString().equals("item")) input1 = this.readAStack(array1);
-		if(array1.get(0).getAsString().equals("dict")) input1 = ((OreDictStack) this.readAStack(array1)).name;
-		if(array1.get(0).getAsString().equals("dictframe")) input1 = readDictFrame(array1);
+		if(array1.get(0).getAsString().equals("item")) input1 = SerializableRecipe.readAStack(array1);
+		if(array1.get(0).getAsString().equals("dict")) input1 = ((OreDictStack) SerializableRecipe.readAStack(array1)).name;
+		if(array1.get(0).getAsString().equals("dictframe")) input1 = BlastFurnaceRecipes.readDictFrame(array1);
 		
 		JsonArray array2 = rec.get("input2").getAsJsonArray();
-		if(array2.get(0).getAsString().equals("item")) input2 = this.readAStack(array2);
-		if(array2.get(0).getAsString().equals("dict")) input2 = ((OreDictStack) this.readAStack(array2)).name;
-		if(array2.get(0).getAsString().equals("dictframe")) input2 = readDictFrame(array2);
+		if(array2.get(0).getAsString().equals("item")) input2 = SerializableRecipe.readAStack(array2);
+		if(array2.get(0).getAsString().equals("dict")) input2 = ((OreDictStack) SerializableRecipe.readAStack(array2)).name;
+		if(array2.get(0).getAsString().equals("dictframe")) input2 = BlastFurnaceRecipes.readDictFrame(array2);
 		
 		if(input1 != null && input2 != null) {
-			addRecipe(input1, input2, output);
+			BlastFurnaceRecipes.addRecipe(input1, input2, output);
 			
 			if(rec.has("hidden") && rec.get("hidden").getAsBoolean()) {
-				this.hiddenRecipes.add(new ComparableStack(output));
+				BlastFurnaceRecipes.hiddenRecipes.add(new ComparableStack(output));
 			}
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void writeRecipe(Object recipe, JsonWriter writer) throws IOException {
 		Triplet<Object, Object, ItemStack> rec = (Triplet<Object, Object, ItemStack>) recipe;
 		writer.name("output");
-		this.writeItemStack(rec.getZ(), writer);
+		SerializableRecipe.writeItemStack(rec.getZ(), writer);
 		
 		writer.name("input1");
-		if(rec.getX() instanceof ComparableStack) this.writeAStack((ComparableStack) rec.getX(), writer);
-		if(rec.getX() instanceof String) this.writeAStack(new OreDictStack((String) rec.getX()), writer);
-		if(rec.getX() instanceof DictFrame) this.writeDictFrame((DictFrame) rec.getX(), writer);
+		if(rec.getX() instanceof ComparableStack) SerializableRecipe.writeAStack((ComparableStack) rec.getX(), writer);
+		if(rec.getX() instanceof String) SerializableRecipe.writeAStack(new OreDictStack((String) rec.getX()), writer);
+		if(rec.getX() instanceof DictFrame) BlastFurnaceRecipes.writeDictFrame((DictFrame) rec.getX(), writer);
 		
 		writer.name("input2");
-		if(rec.getY() instanceof ComparableStack) this.writeAStack((ComparableStack) rec.getY(), writer);
-		if(rec.getY() instanceof String) this.writeAStack(new OreDictStack((String) rec.getY()), writer);
-		if(rec.getY() instanceof DictFrame) this.writeDictFrame((DictFrame) rec.getY(), writer);
+		if(rec.getY() instanceof ComparableStack) SerializableRecipe.writeAStack((ComparableStack) rec.getY(), writer);
+		if(rec.getY() instanceof String) SerializableRecipe.writeAStack(new OreDictStack((String) rec.getY()), writer);
+		if(rec.getY() instanceof DictFrame) BlastFurnaceRecipes.writeDictFrame((DictFrame) rec.getY(), writer);
 		
-		if(this.hiddenRecipes.contains(new ComparableStack(rec.getZ()))) {
+		if(BlastFurnaceRecipes.hiddenRecipes.contains(new ComparableStack(rec.getZ()))) {
 			writer.name("hidden").value(true);
 		}
 	}
@@ -269,7 +271,7 @@ public class BlastFurnaceRecipes extends SerializableRecipe {
 
 	@Override
 	public void deleteRecipes() {
-		blastFurnaceRecipes.clear();
-		hiddenRecipes.clear();
+		BlastFurnaceRecipes.blastFurnaceRecipes.clear();
+		BlastFurnaceRecipes.hiddenRecipes.clear();
 	}
 }

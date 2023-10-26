@@ -12,11 +12,11 @@ import net.minecraft.world.World;
 
 public class EntityTeslaCrab extends EntityCyberCrab {
 	
-	public List<double[]> targets = new ArrayList();
+	public List<double[]> targets = new ArrayList<>();
 
 	public EntityTeslaCrab(World p_i1733_1_) {
 		super(p_i1733_1_);
-        this.setSize(0.75F, 1.25F);
+        setSize(0.75F, 1.25F);
         this.ignoreFrustumCheck = true;
 	}
 
@@ -24,13 +24,14 @@ public class EntityTeslaCrab extends EntityCyberCrab {
 	protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(10.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.5F);
+        getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(10.0D);
+        getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.5F);
     }
     
-    public void onLivingUpdate() {
+    @Override
+	public void onLivingUpdate() {
     	
-    	targets = TileEntityTesla.zap(worldObj, posX, posY + 1, posZ, 3, this);
+    	this.targets = TileEntityTesla.zap(this.worldObj, this.posX, this.posY + 1, this.posZ, 3, this);
     	
         super.onLivingUpdate();
     }
@@ -41,8 +42,9 @@ public class EntityTeslaCrab extends EntityCyberCrab {
         return ModItems.wire_advanced_alloy;
     }
 
-    protected void dropRareDrop(int p_70600_1_) {
-    	this.dropItem(ModItems.coil_copper, 1);
+    @Override
+	protected void dropRareDrop(int p_70600_1_) {
+    	dropItem(ModItems.coil_copper, 1);
     }
 
 }

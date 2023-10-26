@@ -55,10 +55,11 @@ public class WasteLog extends Block {
 		return null;
     }
 
-    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+    @Override
+	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
     	
     	if(this == ModBlocks.waste_log && world.rand.nextInt(1000) == 0) {
-	        ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+	        ArrayList<ItemStack> ret = new ArrayList<>();
 	        ret.add(new ItemStack(ModItems.burnt_bark));
 	        return ret;
     	}

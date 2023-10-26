@@ -31,70 +31,70 @@ public class TileEntityDiFurnaceRTG extends TileEntityMachineBase implements IGU
 	}
 
 	public boolean canProcess() {
-		if ((slots[0] == null || slots[1] == null) && !hasPower())
+		if ((this.slots[0] == null || this.slots[1] == null) && !hasPower())
 			return false;
 		
-		ItemStack recipeResult = BlastFurnaceRecipes.getOutput(slots[0], slots[1]);
+		ItemStack recipeResult = BlastFurnaceRecipes.getOutput(this.slots[0], this.slots[1]);
 		if (recipeResult == null)
 			return false;
-		else if (slots[2] == null)
+		else if (this.slots[2] == null)
 			return true;
-		else if (!slots[2].isItemEqual(recipeResult))
+		else if (!this.slots[2].isItemEqual(recipeResult))
 			return false;
-		else if (slots[2].stackSize + recipeResult.stackSize > getInventoryStackLimit())
+		else if (this.slots[2].stackSize + recipeResult.stackSize > getInventoryStackLimit())
 			return false;
-		else if (slots[2].stackSize < getInventoryStackLimit() && slots[2].stackSize < slots[2].getMaxStackSize())
+		else if (this.slots[2].stackSize < getInventoryStackLimit() && this.slots[2].stackSize < this.slots[2].getMaxStackSize())
 			return true;
 		else
-			return slots[2].stackSize < recipeResult.getMaxStackSize();
+			return this.slots[2].stackSize < recipeResult.getMaxStackSize();
 	}
 	
 	@Override
 	public void updateEntity() {
 		
-		if(worldObj.isRemote)
+		if(this.worldObj.isRemote)
 			return;
 		
 		if(canProcess() && hasPower()) {
-			progress += processSpeed;
-			if(progress >= timeRequired) {
+			this.progress += this.processSpeed;
+			if(this.progress >= TileEntityDiFurnaceRTG.timeRequired) {
 				processItem();
-				progress = 0;
+				this.progress = 0;
 			}
 		} else {
-			progress = 0;
+			this.progress = 0;
 		}
 		
-		MachineDiFurnaceRTG.updateBlockState(isProcessing() || (canProcess() && hasPower()), getWorldObj(), xCoord, yCoord, zCoord);
+		MachineDiFurnaceRTG.updateBlockState(isProcessing() || (canProcess() && hasPower()), getWorldObj(), this.xCoord, this.yCoord, this.zCoord);
 
 		NBTTagCompound data = new NBTTagCompound();
-		data.setShort("progress", progress);
-		data.setShort("speed", processSpeed);
+		data.setShort("progress", this.progress);
+		data.setShort("speed", this.processSpeed);
 		networkPack(data, 10);
 	}
 	
 	@Override
 	public void networkUnpack(NBTTagCompound nbt) {
-		progress = nbt.getShort("progress");
-		processSpeed = nbt.getShort("speed");
+		this.progress = nbt.getShort("progress");
+		this.processSpeed = nbt.getShort("speed");
 	}
 	
 	private void processItem() {
 		
 		if(canProcess()) {
-			ItemStack recipeOut = BlastFurnaceRecipes.getOutput(slots[0], slots[1]);
-			if(slots[2] == null)
-				slots[2] = recipeOut.copy();
-			else if(slots[2].isItemEqual(recipeOut))
-				slots[2].stackSize += recipeOut.stackSize;
+			ItemStack recipeOut = BlastFurnaceRecipes.getOutput(this.slots[0], this.slots[1]);
+			if(this.slots[2] == null)
+				this.slots[2] = recipeOut.copy();
+			else if(this.slots[2].isItemEqual(recipeOut))
+				this.slots[2].stackSize += recipeOut.stackSize;
 
 			for(int i = 0; i < 2; i++) {
-				if(slots[i].stackSize <= 0)
-					slots[i] = new ItemStack(slots[i].getItem().setFull3D());
+				if(this.slots[i].stackSize <= 0)
+					this.slots[i] = new ItemStack(this.slots[i].getItem().setFull3D());
 				else
-					slots[i].stackSize--;
-				if(slots[i].stackSize <= 0)
-					slots[i] = null;
+					this.slots[i].stackSize--;
+				if(this.slots[i].stackSize <= 0)
+					this.slots[i] = null;
 			}
 			markDirty();
 		}
@@ -103,24 +103,24 @@ public class TileEntityDiFurnaceRTG extends TileEntityMachineBase implements IGU
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
-		progress = nbt.getShort("progress");
-		processSpeed = nbt.getShort("speed");
+		this.progress = nbt.getShort("progress");
+		this.processSpeed = nbt.getShort("speed");
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setShort("progress", progress);
-		nbt.setShort("speed", processSpeed);
+		nbt.setShort("progress", this.progress);
+		nbt.setShort("speed", this.processSpeed);
 	}
 
 	public int getDiFurnaceProgressScaled(int i) {
-		return (progress * i) / timeRequired;
+		return (this.progress * i) / TileEntityDiFurnaceRTG.timeRequired;
 	}
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack stack) {
-		slots[i] = stack;
+		this.slots[i] = stack;
 		if(stack != null && stack.stackSize > getInventoryStackLimit()) {
 			stack.stackSize = getInventoryStackLimit();
 		}
@@ -132,21 +132,21 @@ public class TileEntityDiFurnaceRTG extends TileEntityMachineBase implements IGU
 	}
 
 	public boolean hasPower() {
-		processSpeed = (short) RTGUtil.updateRTGs(slots, rtgIn);
-		return processSpeed >= 15;
+		this.processSpeed = (short) RTGUtil.updateRTGs(this.slots, TileEntityDiFurnaceRTG.rtgIn);
+		return this.processSpeed >= 15;
 	}
 
 	public int getPower() {
-		return processSpeed;
+		return this.processSpeed;
 	}
 
 	public boolean isProcessing() {
-		return progress > 0;
+		return this.progress > 0;
 	}
 
 	@Override
 	public String getInventoryName() {
-		return this.hasCustomInventoryName() ? this.name : "container.diFurnaceRTG";
+		return hasCustomInventoryName() ? this.name : "container.diFurnaceRTG";
 	}
 
 	@Override

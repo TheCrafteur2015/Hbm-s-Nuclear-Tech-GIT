@@ -48,8 +48,8 @@ public class ArmorFSB extends ItemArmor implements IArmorDisableModel {
 
 	private String texture = "";
 	private ResourceLocation overlay = null;
-	public List<PotionEffect> effects = new ArrayList();
-	public HashMap<String, Float> resistance = new HashMap();
+	public List<PotionEffect> effects = new ArrayList<>();
+	public HashMap<String, Float> resistance = new HashMap<>();
 	public float blastProtection = -1;
 	public float projectileProtection = -1;
 	public float damageCap = -1;
@@ -76,12 +76,12 @@ public class ArmorFSB extends ItemArmor implements IArmorDisableModel {
 	}
 
 	public ArmorFSB addEffect(PotionEffect effect) {
-		effects.add(effect);
+		this.effects.add(effect);
 		return this;
 	}
 
 	public ArmorFSB addResistance(String damage, float mod) {
-		resistance.put(damage, mod);
+		this.resistance.put(damage, mod);
 		return this;
 	}
 
@@ -215,24 +215,26 @@ public class ArmorFSB extends ItemArmor implements IArmorDisableModel {
 
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String layer) {
-		return texture;
+		return this.texture;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 
 		list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("armor.fullSetBonus"));
 
-		if(!effects.isEmpty()) {
+		if(!this.effects.isEmpty()) {
 
-			for(PotionEffect effect : effects) {
+			for(PotionEffect effect : this.effects) {
 				list.add(EnumChatFormatting.AQUA + "  " + I18n.format(Potion.potionTypes[effect.getPotionID()].getName()));
 			}
 		}
 
-		if(!resistance.isEmpty()) {
+		if(!this.resistance.isEmpty()) {
 
-			for(Entry<String, Float> struct : resistance.entrySet()) {
+			for(Entry<String, Float> struct : this.resistance.entrySet()) {
 
 				if(struct.getValue() != 0)
 					list.add(EnumChatFormatting.YELLOW + "  " + I18nUtil.resolveKey("armor.damageModifier", struct.getValue(), I18n.format(struct.getKey())));
@@ -241,64 +243,64 @@ public class ArmorFSB extends ItemArmor implements IArmorDisableModel {
 			}
 		}
 
-		if(blastProtection != -1) {
-			list.add(EnumChatFormatting.YELLOW + "  " + I18nUtil.resolveKey("armor.blastProtection", blastProtection));
+		if(this.blastProtection != -1) {
+			list.add(EnumChatFormatting.YELLOW + "  " + I18nUtil.resolveKey("armor.blastProtection", this.blastProtection));
 		}
 
-		if(projectileProtection != -1) {
-			list.add(EnumChatFormatting.YELLOW + "  " + I18nUtil.resolveKey("armor.projectileProtection", projectileProtection));
+		if(this.projectileProtection != -1) {
+			list.add(EnumChatFormatting.YELLOW + "  " + I18nUtil.resolveKey("armor.projectileProtection", this.projectileProtection));
 		}
 
-		if(damageCap != -1) {
-			list.add(EnumChatFormatting.YELLOW + "  " + I18nUtil.resolveKey("armor.cap", damageCap));
+		if(this.damageCap != -1) {
+			list.add(EnumChatFormatting.YELLOW + "  " + I18nUtil.resolveKey("armor.cap", this.damageCap));
 		}
 
-		if(damageMod != -1) {
-			list.add(EnumChatFormatting.YELLOW + "  " + I18nUtil.resolveKey("armor.modifier", damageMod));
+		if(this.damageMod != -1) {
+			list.add(EnumChatFormatting.YELLOW + "  " + I18nUtil.resolveKey("armor.modifier", this.damageMod));
 		}
 
-		if(damageThreshold > 0) {
-			list.add(EnumChatFormatting.YELLOW + "  " + I18nUtil.resolveKey("armor.threshold", damageThreshold));
+		if(this.damageThreshold > 0) {
+			list.add(EnumChatFormatting.YELLOW + "  " + I18nUtil.resolveKey("armor.threshold", this.damageThreshold));
 		}
 
-		if(fireproof) {
+		if(this.fireproof) {
 			list.add(EnumChatFormatting.RED + "  " + I18nUtil.resolveKey("armor.fireproof"));
 		}
 
-		if(geigerSound) {
+		if(this.geigerSound) {
 			list.add(EnumChatFormatting.GOLD + "  " + I18nUtil.resolveKey("armor.geigerSound"));
 		}
 
-		if(customGeiger) {
+		if(this.customGeiger) {
 			list.add(EnumChatFormatting.GOLD + "  " + I18nUtil.resolveKey("armor.geigerHUD"));
 		}
 
-		if(vats) {
+		if(this.vats) {
 			list.add(EnumChatFormatting.RED + "  " + I18nUtil.resolveKey("armor.vats"));
 		}
 
-		if(thermal) {
+		if(this.thermal) {
 			list.add(EnumChatFormatting.RED + "  " + I18nUtil.resolveKey("armor.thermal"));
 		}
 
-		if(hardLanding) {
+		if(this.hardLanding) {
 			list.add(EnumChatFormatting.RED + "  " + I18nUtil.resolveKey("armor.hardLanding"));
 		}
 
-		if(gravity != 0) {
-			list.add(EnumChatFormatting.BLUE + "  " + I18nUtil.resolveKey("armor.gravity", gravity));
+		if(this.gravity != 0) {
+			list.add(EnumChatFormatting.BLUE + "  " + I18nUtil.resolveKey("armor.gravity", this.gravity));
 		}
 		
-		if(stepSize != 0) {
-			list.add(EnumChatFormatting.BLUE + "  " + I18nUtil.resolveKey("armor.stepSize", stepSize));
+		if(this.stepSize != 0) {
+			list.add(EnumChatFormatting.BLUE + "  " + I18nUtil.resolveKey("armor.stepSize", this.stepSize));
 		}
 		
-		if(dashCount > 0) {
-			list.add(EnumChatFormatting.AQUA + "  " + I18nUtil.resolveKey("armor.dash", dashCount));
+		if(this.dashCount > 0) {
+			list.add(EnumChatFormatting.AQUA + "  " + I18nUtil.resolveKey("armor.dash", this.dashCount));
 		}
 
-		if(protectionYield != 100F) {
-			list.add(EnumChatFormatting.BLUE + "  " + I18nUtil.resolveKey("armor.yield", protectionYield));
+		if(this.protectionYield != 100F) {
+			list.add(EnumChatFormatting.BLUE + "  " + I18nUtil.resolveKey("armor.yield", this.protectionYield));
 		}
 	}
 
@@ -315,13 +317,7 @@ public class ArmorFSB extends ItemArmor implements IArmorDisableModel {
 
 				ItemStack armor = player.inventory.armorInventory[i];
 
-				if(armor == null || !(armor.getItem() instanceof ArmorFSB))
-					return false;
-
-				if(((ArmorFSB) armor.getItem()).getArmorMaterial() != chestplate.getArmorMaterial())
-					return false;
-
-				if(!((ArmorFSB) armor.getItem()).isArmorEnabled(armor))
+				if(armor == null || !(armor.getItem() instanceof ArmorFSB) || (((ArmorFSB) armor.getItem()).getArmorMaterial() != chestplate.getArmorMaterial()) || !((ArmorFSB) armor.getItem()).isArmorEnabled(armor))
 					return false;
 			}
 
@@ -344,10 +340,7 @@ public class ArmorFSB extends ItemArmor implements IArmorDisableModel {
 
 				ItemStack armor = player.inventory.armorInventory[i];
 
-				if(armor == null || !(armor.getItem() instanceof ArmorFSB))
-					return false;
-
-				if(((ArmorFSB) armor.getItem()).getArmorMaterial() != chestplate.getArmorMaterial())
+				if(armor == null || !(armor.getItem() instanceof ArmorFSB) || (((ArmorFSB) armor.getItem()).getArmorMaterial() != chestplate.getArmorMaterial()))
 					return false;
 			}
 
@@ -462,7 +455,7 @@ public class ArmorFSB extends ItemArmor implements IArmorDisableModel {
 					}
 
 					int px = MathHelper.floor_double(player.posX);
-					int py = MathHelper.floor_double(player.posY - 0.2D - (double) player.yOffset);
+					int py = MathHelper.floor_double(player.posY - 0.2D - player.yOffset);
 					int pz = MathHelper.floor_double(player.posZ);
 					Block block = player.worldObj.getBlock(px, py, pz);
 
@@ -569,20 +562,17 @@ public class ArmorFSB extends ItemArmor implements IArmorDisableModel {
 	@Override
 	public void onArmorTick(World world, EntityPlayer entity, ItemStack stack) {
 
-		if(this.armorType != 1)
-			return;
-
-		if(!this.hasFSBArmor(entity) || !this.geigerSound)
+		if((this.armorType != 1) || !hasFSBArmor(entity) || !this.geigerSound)
 			return;
 
 		if(world.getTotalWorldTime() % 5 == 0) {
 			
-			float x = HbmLivingProps.getRadBuf((EntityLivingBase)entity);
+			float x = HbmLivingProps.getRadBuf(entity);
 			
 			if(x > 1E-5) {
 	
 				if(x > 0) {
-					List<Integer> list = new ArrayList<Integer>();
+					List<Integer> list = new ArrayList<>();
 	
 					if(x < 1) list.add(0);
 					if(x < 5) list.add(0);
@@ -619,10 +609,11 @@ public class ArmorFSB extends ItemArmor implements IArmorDisableModel {
 		return true;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void renderHelmetOverlay(ItemStack stack, EntityPlayer player, ScaledResolution resolution, float partialTicks, boolean hasScreen, int mouseX, int mouseY) {
 
-		if(overlay == null)
+		if(this.overlay == null)
 			return;
 
 		GL11.glEnable(GL11.GL_BLEND);
@@ -631,12 +622,12 @@ public class ArmorFSB extends ItemArmor implements IArmorDisableModel {
 		OpenGlHelper.glBlendFunc(770, 771, 1, 0);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glDisable(GL11.GL_ALPHA_TEST);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(overlay);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(this.overlay);
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
-		tessellator.addVertexWithUV(0.0D, (double) resolution.getScaledHeight(), -90.0D, 0.0D, 1.0D);
-		tessellator.addVertexWithUV((double) resolution.getScaledWidth(), (double) resolution.getScaledHeight(), -90.0D, 1.0D, 1.0D);
-		tessellator.addVertexWithUV((double) resolution.getScaledWidth(), 0.0D, -90.0D, 1.0D, 0.0D);
+		tessellator.addVertexWithUV(0.0D, resolution.getScaledHeight(), -90.0D, 0.0D, 1.0D);
+		tessellator.addVertexWithUV(resolution.getScaledWidth(), resolution.getScaledHeight(), -90.0D, 1.0D, 1.0D);
+		tessellator.addVertexWithUV(resolution.getScaledWidth(), 0.0D, -90.0D, 1.0D, 0.0D);
 		tessellator.addVertexWithUV(0.0D, 0.0D, -90.0D, 0.0D, 0.0D);
 		tessellator.draw();
 		GL11.glDepthMask(true);
@@ -645,21 +636,21 @@ public class ArmorFSB extends ItemArmor implements IArmorDisableModel {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	}
 
-	private HashSet<EnumPlayerPart> hidden = new HashSet();
+	private HashSet<EnumPlayerPart> hidden = new HashSet<>();
 	private boolean needsFullSet = false;
 	
 	public ArmorFSB hides(EnumPlayerPart... parts) {
-		Collections.addAll(hidden, parts);
+		Collections.addAll(this.hidden, parts);
 		return this;
 	}
 	
 	public ArmorFSB setFullSetForHide() {
-		needsFullSet = true;
+		this.needsFullSet = true;
 		return this;
 	}
 	
 	@Override
 	public boolean disablesPart(EntityPlayer player, ItemStack stack, EnumPlayerPart part) {
-		return hidden.contains(part) && (!needsFullSet || hasFSBArmorIgnoreCharge(player));
+		return this.hidden.contains(part) && (!this.needsFullSet || ArmorFSB.hasFSBArmorIgnoreCharge(player));
 	}
 }

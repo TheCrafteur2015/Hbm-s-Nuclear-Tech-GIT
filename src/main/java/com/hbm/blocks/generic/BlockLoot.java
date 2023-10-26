@@ -80,12 +80,12 @@ public class BlockLoot extends BlockContainer {
 	
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
-		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.0625F, 1.0F);
+		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.0625F, 1.0F);
 	}
 
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
-		this.setBlockBoundsBasedOnState(world, x, y, z);
+		setBlockBoundsBasedOnState(world, x, y, z);
 		return AxisAlignedBB.getBoundingBox(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
 	}
 
@@ -111,7 +111,7 @@ public class BlockLoot extends BlockContainer {
 
 	public static class TileEntityLoot extends TileEntity {
 		
-		public List<Quartet<ItemStack, Double, Double, Double>> items = new ArrayList();
+		public List<Quartet<ItemStack, Double, Double, Double>> items = new ArrayList<>();
 
 		@Override
 		public boolean canUpdate() {
@@ -119,20 +119,20 @@ public class BlockLoot extends BlockContainer {
 		}
 		
 		public TileEntityLoot addItem(ItemStack stack, double x, double y, double z) {
-			items.add(new Quartet(stack, x, y, z));
+			this.items.add(new Quartet<>(stack, x, y, z));
 			return this;
 		}
 
 		@Override
 		public Packet getDescriptionPacket() {
 			NBTTagCompound nbt = new NBTTagCompound();
-			this.writeToNBT(nbt);
+			writeToNBT(nbt);
 			return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, nbt);
 		}
 		
 		@Override
 		public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-			this.readFromNBT(pkt.func_148857_g());
+			readFromNBT(pkt.func_148857_g());
 		}
 
 		@Override
@@ -147,7 +147,7 @@ public class BlockLoot extends BlockContainer {
 				double x = nbt.getDouble("x" + i);
 				double y = nbt.getDouble("y" + i);
 				double z = nbt.getDouble("z" + i);
-				items.add(new Quartet(stack, x, y, z));
+				this.items.add(new Quartet<>(stack, x, y, z));
 			}
 		}
 
@@ -155,10 +155,10 @@ public class BlockLoot extends BlockContainer {
 		public void writeToNBT(NBTTagCompound nbt) {
 			super.writeToNBT(nbt);
 			
-			nbt.setInteger("count", items.size());
+			nbt.setInteger("count", this.items.size());
 			
-			for(int i = 0; i < items.size(); i++) {
-				Quartet<ItemStack, Double, Double, Double> item = items.get(i);
+			for(int i = 0; i < this.items.size(); i++) {
+				Quartet<ItemStack, Double, Double, Double> item = this.items.get(i);
 				if(item == null || item.getW() == null) continue;
 				NBTTagCompound stack = new NBTTagCompound();
 				item.getW().writeToNBT(stack);

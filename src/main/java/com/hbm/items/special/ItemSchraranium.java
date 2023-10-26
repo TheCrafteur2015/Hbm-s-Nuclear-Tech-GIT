@@ -16,12 +16,14 @@ public class ItemSchraranium extends ItemCustomLore {
 
 	IIcon nikonium;
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister reg) {
-		this.itemIcon = reg.registerIcon(this.getIconString());
+		this.itemIcon = reg.registerIcon(getIconString());
 		this.nikonium = reg.registerIcon("hbm:ingot_nikonium");
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIconFromDamage(int meta) {
 
@@ -30,6 +32,7 @@ public class ItemSchraranium extends ItemCustomLore {
 		return this.itemIcon;
 	}
 
+	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
 
 		if(GeneralConfig.enableLBSM && GeneralConfig.enableLBSMFullSchrab)

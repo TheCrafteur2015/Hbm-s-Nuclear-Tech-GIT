@@ -46,11 +46,11 @@ public class EntityUFO extends EntityFlying implements IMob, IBossDisplayData, I
 	public int hurtCooldown;
 	public int beamTimer;
 	private Entity target;
-	private List<Entity> secondaries = new ArrayList();
+	private List<Entity> secondaries = new ArrayList<>();
 	
 	public EntityUFO(World p_i1587_1_) {
 		super(p_i1587_1_);
-		this.setSize(15F, 4F);
+		setSize(15F, 4F);
 		this.isImmuneToFire = true;
 		this.experienceValue = 500;
 		this.ignoreFrustumCheck = true;
@@ -65,13 +65,13 @@ public class EntityUFO extends EntityFlying implements IMob, IBossDisplayData, I
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
 		
-		if(hurtCooldown > 0)
+		if(this.hurtCooldown > 0)
 			return false;
 		
 		boolean hit = super.attackEntityFrom(source, amount);
 		
 		if(hit)
-			hurtCooldown = 5;
+			this.hurtCooldown = 5;
 		
 		return hit;
 	}
@@ -79,7 +79,7 @@ public class EntityUFO extends EntityFlying implements IMob, IBossDisplayData, I
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20000.0D);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20000.0D);
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class EntityUFO extends EntityFlying implements IMob, IBossDisplayData, I
 		if(!this.worldObj.isRemote) {
 			
 			if(this.worldObj.difficultySetting == EnumDifficulty.PEACEFUL) {
-				this.setDead();
+				setDead();
 				return;
 			}
 			
@@ -109,7 +109,7 @@ public class EntityUFO extends EntityFlying implements IMob, IBossDisplayData, I
 		}
 		
 		if(this.scanCooldown <= 0) {
-			List<Entity> entities = worldObj.getEntitiesWithinAABB(Entity.class, this.boundingBox.expand(100, 50, 100));
+			List<Entity> entities = this.worldObj.getEntitiesWithinAABB(Entity.class, this.boundingBox.expand(100, 50, 100));
 			this.secondaries.clear();
 			this.target = null;
 			
@@ -120,28 +120,25 @@ public class EntityUFO extends EntityFlying implements IMob, IBossDisplayData, I
 				
 				if(entity instanceof EntityPlayer) {
 					
-					if(((EntityPlayer)entity).capabilities.isCreativeMode)
-						continue;
-					
-					if(((EntityPlayer)entity).isPotionActive(Potion.invisibility.id))
+					if(((EntityPlayer)entity).capabilities.isCreativeMode || ((EntityPlayer)entity).isPotionActive(Potion.invisibility.id))
 						continue;
 					
 					if(this.target == null) {
 						this.target = entity;
 					} else {
-						if(this.getDistanceSqToEntity(entity) < this.getDistanceSqToEntity(this.target)) {
+						if(getDistanceSqToEntity(entity) < getDistanceSqToEntity(this.target)) {
 							this.target = entity;
 						}
 					}
 				}
 				
-				if(entity instanceof EntityLivingBase && this.getDistanceSqToEntity(entity) < 100 * 100 && this.canEntityBeSeen(entity) && entity != this.target) {
+				if(entity instanceof EntityLivingBase && getDistanceSqToEntity(entity) < 100 * 100 && canEntityBeSeen(entity) && entity != this.target) {
 					this.secondaries.add(entity);
 				}
 			}
 			
 			if(this.target == null && !this.secondaries.isEmpty())
-				this.target = this.secondaries.get(rand.nextInt(this.secondaries.size()));
+				this.target = this.secondaries.get(this.rand.nextInt(this.secondaries.size()));
 			
 			this.scanCooldown = 50;
 		}
@@ -150,8 +147,8 @@ public class EntityUFO extends EntityFlying implements IMob, IBossDisplayData, I
 			
 			Vec3 vec = Vec3.createVectorHelper(this.posX - this.target.posX, 0, this.posZ - this.target.posZ);
 			
-			if(rand.nextInt(3) > 0)
-				vec.rotateAroundY((float)Math.PI * 2 * rand.nextFloat());
+			if(this.rand.nextInt(3) > 0)
+				vec.rotateAroundY((float)Math.PI * 2 * this.rand.nextFloat());
 			
 			double length = vec.lengthVector();
 			double overshoot = 35;
@@ -159,15 +156,15 @@ public class EntityUFO extends EntityFlying implements IMob, IBossDisplayData, I
 			int wX = (int)Math.floor(this.target.posX - vec.xCoord / length * overshoot);
 			int wZ = (int)Math.floor(this.target.posZ - vec.zCoord / length * overshoot);
 			
-			this.setWaypoint(wX, Math.max(this.worldObj.getHeightValue(wX, wZ) + 20 + rand.nextInt(15), (int) this.target.posY + 15),  wZ);
+			setWaypoint(wX, Math.max(this.worldObj.getHeightValue(wX, wZ) + 20 + this.rand.nextInt(15), (int) this.target.posY + 15),  wZ);
 			
-			this.courseChangeCooldown = 40 + rand.nextInt(20);
+			this.courseChangeCooldown = 40 + this.rand.nextInt(20);
 		}
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			if(beamTimer <= 0 && this.getBeam()) {
-				this.setBeam(false);
+			if(this.beamTimer <= 0 && getBeam()) {
+				setBeam(false);
 			}
 
 			if(this.target != null) {
@@ -176,12 +173,12 @@ public class EntityUFO extends EntityFlying implements IMob, IBossDisplayData, I
 					this.beamTimer = 30;
 			}
 			
-			if(beamTimer > 0) {
+			if(this.beamTimer > 0) {
 				this.beamTimer--;
 				
-				if(!this.getBeam()) {
-					worldObj.playSoundAtEntity(this, "hbm:entity.ufoBeam", 10.0F, 1.0F);
-					this.setBeam(true);
+				if(!getBeam()) {
+					this.worldObj.playSoundAtEntity(this, "hbm:entity.ufoBeam", 10.0F, 1.0F);
+					setBeam(true);
 				}
 
 				int ix = (int)Math.floor(this.posX);
@@ -197,10 +194,10 @@ public class EntityUFO extends EntityFlying implements IMob, IBossDisplayData, I
 				}
 				
 				if(iy < this.posY) {
-					List<Entity> entities = worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(this.posX, iy, this.posZ, this.posX, this.posY, this.posZ).expand(5, 0, 5));
+					List<Entity> entities = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(this.posX, iy, this.posZ, this.posX, this.posY, this.posZ).expand(5, 0, 5));
 					
 					for(Entity e : entities) {
-						if(this.canAttackClass(e.getClass())) {
+						if(canAttackClass(e.getClass())) {
 							e.attackEntityFrom(ModDamageSource.causeCombineDamage(this, e), 1000F);
 							e.setFire(5);
 							
@@ -211,8 +208,8 @@ public class EntityUFO extends EntityFlying implements IMob, IBossDisplayData, I
 					
 					NBTTagCompound data = new NBTTagCompound();
 					data.setString("type", "ufo");
-					PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, posX, iy + 0.5, posZ),  new TargetPoint(dimension, posX, iy + 0.5, posZ, 150));
-					PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, posX + this.motionX * 0.5, iy + 0.5, posZ + this.motionZ * 0.5),  new TargetPoint(dimension, posX + this.motionX * 0.5, iy + 0.5, posZ + this.motionZ * 0.5, 150));
+					PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, this.posX, iy + 0.5, this.posZ),  new TargetPoint(this.dimension, this.posX, iy + 0.5, this.posZ, 150));
+					PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, this.posX + this.motionX * 0.5, iy + 0.5, this.posZ + this.motionZ * 0.5),  new TargetPoint(this.dimension, this.posX + this.motionX * 0.5, iy + 0.5, this.posZ + this.motionZ * 0.5, 150));
 				}
 			}
 			
@@ -221,7 +218,7 @@ public class EntityUFO extends EntityFlying implements IMob, IBossDisplayData, I
 				if(this.ticksExisted % 4 == 0) {
 					
 					if(!this.secondaries.isEmpty()){
-						Entity e = this.secondaries.get(rand.nextInt(this.secondaries.size()));
+						Entity e = this.secondaries.get(this.rand.nextInt(this.secondaries.size()));
 						
 						if(!e.isEntityAlive())
 							this.secondaries.remove(e);
@@ -242,7 +239,7 @@ public class EntityUFO extends EntityFlying implements IMob, IBossDisplayData, I
 				if(this.ticksExisted % 20 == 0) {
 					
 					if(!this.secondaries.isEmpty()){
-						Entity e = this.secondaries.get(rand.nextInt(this.secondaries.size()));
+						Entity e = this.secondaries.get(this.rand.nextInt(this.secondaries.size()));
 						
 						if(!e.isEntityAlive())
 							this.secondaries.remove(e);
@@ -268,15 +265,15 @@ public class EntityUFO extends EntityFlying implements IMob, IBossDisplayData, I
 		
 		if(this.courseChangeCooldown > 0) {
 			
-			double deltaX = this.getX() - this.posX;
-			double deltaY = this.getY() - this.posY;
-			double deltaZ = this.getZ() - this.posZ;
+			double deltaX = getX() - this.posX;
+			double deltaY = getY() - this.posY;
+			double deltaZ = getZ() - this.posZ;
 			Vec3 delta = Vec3.createVectorHelper(deltaX, deltaY, deltaZ);
 			double len = delta.lengthVector();
 			double speed = this.target instanceof EntityPlayer ? 5D : 2D;
 			
 			if(len > 5) {
-				if(isCourseTraversable(this.getX(), this.getY(), this.getZ(), len)) {
+				if(isCourseTraversable(getX(), getY(), getZ(), len)) {
 					this.motionX = delta.xCoord * speed / len;
 					this.motionY = delta.yCoord * speed / len;
 					this.motionZ = delta.zCoord * speed / len;
@@ -287,22 +284,23 @@ public class EntityUFO extends EntityFlying implements IMob, IBossDisplayData, I
 		}
 	}
 	
+	@Override
 	protected void onDeathUpdate() {
 		
-		if(this.getBeam())
-			this.setBeam(false);
+		if(getBeam())
+			setBeam(false);
 		
 		this.motionY -= 0.05D;
 		
 		if(this.deathTime == -10) {
-			worldObj.playSoundAtEntity(this, "hbm:entity.chopperDamage", 10.0F, 1.0F);
+			this.worldObj.playSoundAtEntity(this, "hbm:entity.chopperDamage", 10.0F, 1.0F);
 		}
 		
-		if(this.deathTime == 19 && !worldObj.isRemote) {
-			worldObj.newExplosion(this, posX, posY, posZ, 10F, true, true);
-			ExplosionNukeSmall.explode(worldObj, posX, posY, posZ, ExplosionNukeSmall.PARAMS_MEDIUM);
+		if(this.deathTime == 19 && !this.worldObj.isRemote) {
+			this.worldObj.newExplosion(this, this.posX, this.posY, this.posZ, 10F, true, true);
+			ExplosionNukeSmall.explode(this.worldObj, this.posX, this.posY, this.posZ, ExplosionNukeSmall.PARAMS_MEDIUM);
 			
-			List<EntityPlayer> players = worldObj.getEntitiesWithinAABB(EntityPlayer.class, this.boundingBox.expand(200, 200, 200));
+			List<EntityPlayer> players = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, this.boundingBox.expand(200, 200, 200));
 
 			for(EntityPlayer player : players) {
 				player.triggerAchievement(MainRegistry.bossUFO);
@@ -316,7 +314,7 @@ public class EntityUFO extends EntityFlying implements IMob, IBossDisplayData, I
 	private void laserAttack(Entity e) {
 		
 		Vec3 vec = Vec3.createVectorHelper(this.posX - e.posX, 0, this.posZ - e.posZ);
-		vec.rotateAroundY((float) Math.toRadians(-80 + rand.nextInt(160)));
+		vec.rotateAroundY((float) Math.toRadians(-80 + this.rand.nextInt(160)));
 		vec = vec.normalize();
 
 		double pivotX = this.posX - vec.xCoord * 10;
@@ -331,12 +329,12 @@ public class EntityUFO extends EntityFlying implements IMob, IBossDisplayData, I
 		bullet.setPosition(pivotX, pivotY, pivotZ);
 		bullet.setThrowableHeading(heading.xCoord, heading.yCoord, heading.zCoord, 2F, 0.02F);
 		this.worldObj.spawnEntityInWorld(bullet);
-		this.playSound("hbm:weapon.ballsLaser", 5.0F, 1.0F);
+		playSound("hbm:weapon.ballsLaser", 5.0F, 1.0F);
 	}
 	
 	private void rocketAttack(Entity e) {
 
-		Vec3 heading = Vec3.createVectorHelper(e.posX - this.posX, e.posY + e.height / 2 - posY - 0.5D, e.posZ - this.posZ);
+		Vec3 heading = Vec3.createVectorHelper(e.posX - this.posX, e.posY + e.height / 2 - this.posY - 0.5D, e.posZ - this.posZ);
 		heading = heading.normalize();
 
 		EntityBulletBaseNT bullet = new EntityBulletBaseNT(this.worldObj, BulletConfigSyncingUtil.UFO_ROCKET);
@@ -345,7 +343,7 @@ public class EntityUFO extends EntityFlying implements IMob, IBossDisplayData, I
 		bullet.setThrowableHeading(heading.xCoord, heading.yCoord, heading.zCoord, 2F, 0.02F);
 		bullet.getEntityData().setInteger("homingTarget", e.getEntityId());
 		this.worldObj.spawnEntityInWorld(bullet);
-		this.playSound("hbm:turret.richard_fire", 5.0F, 1.0F);
+		playSound("hbm:turret.richard_fire", 5.0F, 1.0F);
 	}
 	
 	@Override
@@ -364,9 +362,9 @@ public class EntityUFO extends EntityFlying implements IMob, IBossDisplayData, I
 	
 	private boolean isCourseTraversable(double p_70790_1_, double p_70790_3_, double p_70790_5_, double p_70790_7_) {
 		
-		double d4 = (this.getX() - this.posX) / p_70790_7_;
-		double d5 = (this.getY() - this.posY) / p_70790_7_;
-		double d6 = (this.getZ() - this.posZ) / p_70790_7_;
+		double d4 = (getX() - this.posX) / p_70790_7_;
+		double d5 = (getY() - this.posY) / p_70790_7_;
+		double d6 = (getZ() - this.posZ) / p_70790_7_;
 		AxisAlignedBB axisalignedbb = this.boundingBox.copy();
 
 		for(int i = 1; i < p_70790_7_; ++i) {

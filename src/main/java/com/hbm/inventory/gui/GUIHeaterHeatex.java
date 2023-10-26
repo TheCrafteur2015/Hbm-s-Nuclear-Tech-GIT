@@ -28,24 +28,25 @@ public class GUIHeaterHeatex extends GuiInfoContainer {
 
 	public GUIHeaterHeatex(InventoryPlayer invPlayer, TileEntityHeaterHeatex tedf) {
 		super(new ContainerHeaterHeatex(invPlayer, tedf));
-		heater = tedf;
+		this.heater = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 204;
 	}
 
+	@Override
 	public void initGui() {
 
 		super.initGui();
 
 		Keyboard.enableRepeatEvents(true);
-		this.fieldCycles = new GuiTextField(this.fontRendererObj, guiLeft + 74, guiTop + 31, 28, 10);
+		this.fieldCycles = new GuiTextField(this.fontRendererObj, this.guiLeft + 74, this.guiTop + 31, 28, 10);
 		initText(this.fieldCycles);
-		this.fieldCycles.setText(String.valueOf(heater.amountToCool));
+		this.fieldCycles.setText(String.valueOf(this.heater.amountToCool));
 		
-		this.fieldDelay = new GuiTextField(this.fontRendererObj, guiLeft + 74, guiTop + 49, 28, 10);
+		this.fieldDelay = new GuiTextField(this.fontRendererObj, this.guiLeft + 74, this.guiTop + 49, 28, 10);
 		initText(this.fieldDelay);
-		this.fieldDelay.setText(String.valueOf(heater.tickDelay));
+		this.fieldDelay.setText(String.valueOf(this.heater.tickDelay));
 	}
 	
 	protected void initText(GuiTextField field) {
@@ -59,13 +60,13 @@ public class GUIHeaterHeatex extends GuiInfoContainer {
 	public void drawScreen(int x, int y, float f) {
 		super.drawScreen(x, y, f);
 
-		heater.tanks[0].renderTankInfo(this, x, y, guiLeft + 44, guiTop + 36, 16, 52);
-		heater.tanks[1].renderTankInfo(this, x, y, guiLeft + 116, guiTop + 36, 16, 52);
+		this.heater.tanks[0].renderTankInfo(this, x, y, this.guiLeft + 44, this.guiTop + 36, 16, 52);
+		this.heater.tanks[1].renderTankInfo(this, x, y, this.guiLeft + 116, this.guiTop + 36, 16, 52);
 
-		if(guiLeft + 70 <= x && guiLeft + 70 + 36 > x && guiTop + 26 < y && guiTop + 26 + 18 >= y) {
+		if(this.guiLeft + 70 <= x && this.guiLeft + 70 + 36 > x && this.guiTop + 26 < y && this.guiTop + 26 + 18 >= y) {
 			func_146283_a(Arrays.asList(new String[] { "Amount per cycle" }), x, y);
 		}
-		if(guiLeft + 70 <= x && guiLeft + 70 + 36 > x && guiTop + 44 < y && guiTop + 44 + 18 >= y) {
+		if(this.guiLeft + 70 <= x && this.guiLeft + 70 + 36 > x && this.guiTop + 44 < y && this.guiTop + 44 + 18 >= y) {
 			func_146283_a(Arrays.asList(new String[] { "Cycle tick delay" }), x, y);
 		}
 	}
@@ -80,11 +81,11 @@ public class GUIHeaterHeatex extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float interp, int x, int y) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIHeaterHeatex.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
-		heater.tanks[0].renderTank(guiLeft + 44, guiTop + 88, this.zLevel, 16, 52);
-		heater.tanks[1].renderTank(guiLeft + 116, guiTop + 88, this.zLevel, 16, 52);
+		this.heater.tanks[0].renderTank(this.guiLeft + 44, this.guiTop + 88, this.zLevel, 16, 52);
+		this.heater.tanks[1].renderTank(this.guiLeft + 116, this.guiTop + 88, this.zLevel, 16, 52);
 
 		this.fieldCycles.drawTextBox();
 		this.fieldDelay.drawTextBox();
@@ -105,14 +106,14 @@ public class GUIHeaterHeatex extends GuiInfoContainer {
 			int cyc = Math.max(NumberUtils.toInt(this.fieldCycles.getText()), 1);
 			NBTTagCompound data = new NBTTagCompound();
 			data.setInteger("toCool", cyc);
-			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, heater.xCoord, heater.yCoord, heater.zCoord));
+			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, this.heater.xCoord, this.heater.yCoord, this.heater.zCoord));
 			return;
 		}
 		if(this.fieldDelay.textboxKeyTyped(c, i)) {
 			int delay = Math.max(NumberUtils.toInt(this.fieldDelay.getText()), 1);
 			NBTTagCompound data = new NBTTagCompound();
 			data.setInteger("delay", delay);
-			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, heater.xCoord, heater.yCoord, heater.zCoord));
+			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, this.heater.xCoord, this.heater.yCoord, this.heater.zCoord));
 			return;
 		}
 		

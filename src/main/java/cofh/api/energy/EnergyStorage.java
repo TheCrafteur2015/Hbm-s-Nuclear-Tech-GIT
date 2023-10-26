@@ -36,18 +36,18 @@ public class EnergyStorage implements IEnergyStorage {
 
 		this.energy = nbt.getInteger("Energy");
 
-		if (energy > capacity) {
-			energy = capacity;
+		if (this.energy > this.capacity) {
+			this.energy = this.capacity;
 		}
 		return this;
 	}
 
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
-		if (energy < 0) {
-			energy = 0;
+		if (this.energy < 0) {
+			this.energy = 0;
 		}
-		nbt.setInteger("Energy", energy);
+		nbt.setInteger("Energy", this.energy);
 		return nbt;
 	}
 
@@ -55,8 +55,8 @@ public class EnergyStorage implements IEnergyStorage {
 
 		this.capacity = capacity;
 
-		if (energy > capacity) {
-			energy = capacity;
+		if (this.energy > capacity) {
+			this.energy = capacity;
 		}
 	}
 
@@ -78,12 +78,12 @@ public class EnergyStorage implements IEnergyStorage {
 
 	public int getMaxReceive() {
 
-		return maxReceive;
+		return this.maxReceive;
 	}
 
 	public int getMaxExtract() {
 
-		return maxExtract;
+		return this.maxExtract;
 	}
 
 	/**
@@ -96,8 +96,8 @@ public class EnergyStorage implements IEnergyStorage {
 
 		this.energy = energy;
 
-		if (this.energy > capacity) {
-			this.energy = capacity;
+		if (this.energy > this.capacity) {
+			this.energy = this.capacity;
 		} else if (this.energy < 0) {
 			this.energy = 0;
 		}
@@ -113,8 +113,8 @@ public class EnergyStorage implements IEnergyStorage {
 
 		this.energy += energy;
 
-		if (this.energy > capacity) {
-			this.energy = capacity;
+		if (this.energy > this.capacity) {
+			this.energy = this.capacity;
 		} else if (this.energy < 0) {
 			this.energy = 0;
 		}
@@ -124,10 +124,10 @@ public class EnergyStorage implements IEnergyStorage {
 	@Override
 	public int receiveEnergy(int maxReceive, boolean simulate) {
 
-		int energyReceived = Math.min(capacity - energy, Math.min(this.maxReceive, maxReceive));
+		int energyReceived = Math.min(this.capacity - this.energy, Math.min(this.maxReceive, maxReceive));
 
 		if (!simulate) {
-			energy += energyReceived;
+			this.energy += energyReceived;
 		}
 		return energyReceived;
 	}
@@ -135,10 +135,10 @@ public class EnergyStorage implements IEnergyStorage {
 	@Override
 	public int extractEnergy(int maxExtract, boolean simulate) {
 
-		int energyExtracted = Math.min(energy, Math.min(this.maxExtract, maxExtract));
+		int energyExtracted = Math.min(this.energy, Math.min(this.maxExtract, maxExtract));
 
 		if (!simulate) {
-			energy -= energyExtracted;
+			this.energy -= energyExtracted;
 		}
 		return energyExtracted;
 	}
@@ -146,13 +146,13 @@ public class EnergyStorage implements IEnergyStorage {
 	@Override
 	public int getEnergyStored() {
 
-		return energy;
+		return this.energy;
 	}
 
 	@Override
 	public int getMaxEnergyStored() {
 
-		return capacity;
+		return this.capacity;
 	}
 
 }

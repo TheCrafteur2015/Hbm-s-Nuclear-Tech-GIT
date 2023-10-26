@@ -13,11 +13,13 @@ public abstract class BlockContainerBase extends BlockBase implements ITileEntit
 		this.isBlockContainer = true;
 	}
 
+	@Override
 	public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
 		super.breakBlock(world, x, y, z, block, meta);
 		world.removeTileEntity(x, y, z);
 	}
 
+	@Override
 	public boolean onBlockEventReceived(World world, int x, int y, int z, int eventNo, int eventArg) {
 		super.onBlockEventReceived(world, x, y, z, eventNo, eventArg);
 		TileEntity tileentity = world.getTileEntity(x, y, z);

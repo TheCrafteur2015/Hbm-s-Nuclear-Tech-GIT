@@ -14,24 +14,26 @@ public class TileEntityMachinePumpElectric extends TileEntityMachinePumpBase imp
 	
 	public TileEntityMachinePumpElectric() {
 		super();
-		water = new FluidTank(Fluids.WATER, 1_000_000);
+		this.water = new FluidTank(Fluids.WATER, 1_000_000);
 	}
 	
+	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			if(worldObj.getTotalWorldTime() % 20 == 0) for(DirPos pos : getConPos()) {
-				this.trySubscribe(worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			if(this.worldObj.getTotalWorldTime() % 20 == 0) for(DirPos pos : getConPos()) {
+				this.trySubscribe(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 			}
 		}
 		
 		super.updateEntity();
 	}
 	
+	@Override
 	protected NBTTagCompound getSync() {
 		NBTTagCompound data = super.getSync();
-		data.setLong("power", power);
+		data.setLong("power", this.power);
 		return data;
 	}
 
@@ -43,23 +45,23 @@ public class TileEntityMachinePumpElectric extends TileEntityMachinePumpBase imp
 
 	@Override
 	protected boolean canOperate() {
-		return power >= 1_000 && water.getFill() < water.getMaxFill();
+		return this.power >= 1_000 && this.water.getFill() < this.water.getMaxFill();
 	}
 
 	@Override
 	protected void operate() {
 		this.power -= 1_000;
-		water.setFill(Math.min(water.getFill() + 10_000, water.getMaxFill()));
+		this.water.setFill(Math.min(this.water.getFill() + 10_000, this.water.getMaxFill()));
 	}
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 
 	@Override
 	public long getMaxPower() {
-		return maxPower;
+		return TileEntityMachinePumpElectric.maxPower;
 	}
 
 	@Override

@@ -1,16 +1,16 @@
 package com.hbm.inventory.gui;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
 import com.hbm.inventory.container.ContainerNukePrototype;
 import com.hbm.lib.RefStrings;
 import com.hbm.tileentity.bomb.TileEntityNukePrototype;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.ResourceLocation;
 
 public class GUINukePrototype extends GuiContainer {
 	
@@ -19,7 +19,7 @@ public class GUINukePrototype extends GuiContainer {
 	
 	public GUINukePrototype(InventoryPlayer invPlayer, TileEntityNukePrototype tedf) {
 		super(new ContainerNukePrototype(invPlayer, tedf));
-		testNuke = tedf;
+		this.testNuke = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 166;
@@ -36,7 +36,7 @@ public class GUINukePrototype extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUINukePrototype.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 	}
 }

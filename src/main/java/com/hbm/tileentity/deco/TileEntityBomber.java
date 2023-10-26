@@ -16,26 +16,28 @@ public class TileEntityBomber extends TileEntity {
 	@Override
 	public void updateEntity() {
 
-		if (!worldObj.isRemote) {
-			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(xCoord, yCoord, zCoord, yaw, 0), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 150));
-			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(xCoord, yCoord, zCoord, pitch, 1), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 150));
-			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(xCoord, yCoord, zCoord, type, 2), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 150));
+		if (!this.worldObj.isRemote) {
+			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(this.xCoord, this.yCoord, this.zCoord, this.yaw, 0), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 150));
+			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(this.xCoord, this.yCoord, this.zCoord, this.pitch, 1), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 150));
+			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(this.xCoord, this.yCoord, this.zCoord, this.type, 2), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 150));
 		}
 	}
 
+	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		
-		yaw = nbt.getInteger("bomberYaw");
-		pitch = nbt.getInteger("bomberPitch");
-		type = nbt.getInteger("bomberType");
+		this.yaw = nbt.getInteger("bomberYaw");
+		this.pitch = nbt.getInteger("bomberPitch");
+		this.type = nbt.getInteger("bomberType");
 	}
 
+	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setInteger("bomberYaw", yaw);
-		nbt.setInteger("bomberPitch", pitch);
-		nbt.setInteger("bomberType", type);
+		nbt.setInteger("bomberYaw", this.yaw);
+		nbt.setInteger("bomberPitch", this.pitch);
+		nbt.setInteger("bomberType", this.type);
 	}
 
 }

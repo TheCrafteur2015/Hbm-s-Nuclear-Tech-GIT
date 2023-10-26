@@ -27,7 +27,7 @@ public class ItemModHealth extends ItemArmorMod {
 		
 		String color = "" + (System.currentTimeMillis() % 1000 < 500 ? EnumChatFormatting.RED : EnumChatFormatting.LIGHT_PURPLE);
 
-		list.add(color + "+" + (Math.round(health * 10 / 2) * 0.1) + " health");
+		list.add(color + "+" + (Math.round(this.health * 10 / 2) * 0.1) + " health");
 		list.add("");
 		
 		if(this == ModItems.black_diamond) {
@@ -43,7 +43,7 @@ public class ItemModHealth extends ItemArmorMod {
 		
 		String color = "" + (System.currentTimeMillis() % 1000 < 500 ? EnumChatFormatting.RED : EnumChatFormatting.LIGHT_PURPLE);
 		
-		list.add(color + "  " + stack.getDisplayName() + " (+" + (Math.round(health * 10 / 2) * 0.1) + " health)");
+		list.add(color + "  " + stack.getDisplayName() + " (+" + (Math.round(this.health * 10 / 2) * 0.1) + " health)");
 	}
 	
 	@Override
@@ -51,7 +51,7 @@ public class ItemModHealth extends ItemArmorMod {
 		Multimap multimap = super.getAttributeModifiers(armor);
 		
 		multimap.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(),
-				new AttributeModifier(ArmorModHandler.UUIDs[((ItemArmor)armor.getItem()).armorType], "NTM Armor Mod Health", health, 0));
+				new AttributeModifier(ArmorModHandler.UUIDs[((ItemArmor)armor.getItem()).armorType], "NTM Armor Mod Health", this.health, 0));
 		
 		return multimap;
 	}

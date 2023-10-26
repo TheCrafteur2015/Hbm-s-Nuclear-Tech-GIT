@@ -13,8 +13,8 @@ public class EntityBlockSpider extends EntityMob {
 	public EntityBlockSpider(World world) {
 		super(world);
 
-		this.setSize(0.95F, 1.25F);
-		this.getNavigator().setAvoidsWater(true);
+		setSize(0.95F, 1.25F);
+		getNavigator().setAvoidsWater(true);
 		this.tasks.addTask(1, new EntityAIWander(this, 0.5F));
 		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
 	}
@@ -22,8 +22,8 @@ public class EntityBlockSpider extends EntityMob {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(10.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1F);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(10.0D);
+		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1F);
 	}
 	
 	@Override
@@ -48,7 +48,7 @@ public class EntityBlockSpider extends EntityMob {
 		
 		double health = Math.max(1D, block.getExplosionResistance(null));
 
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(health);
-		this.setHealth(this.getMaxHealth());
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(health);
+		setHealth(getMaxHealth());
 	}
 }

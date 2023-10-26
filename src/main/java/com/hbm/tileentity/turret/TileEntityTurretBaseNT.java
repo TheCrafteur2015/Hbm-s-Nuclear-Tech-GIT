@@ -62,17 +62,17 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 
 	@Override
 	public boolean hasPermission(EntityPlayer player) {
-		return this.isUseableByPlayer(player);
+		return isUseableByPlayer(player);
 	}
 
 	@Override
 	public void receiveControl(NBTTagCompound data) {
 		
 		if(data.hasKey("del")) {
-			this.removeName(data.getInteger("del"));
+			removeName(data.getInteger("del"));
 			
 		} else if(data.hasKey("name")) {
-			this.addName(data.getString("name"));
+			addName(data.getString("name"));
 		}
 	}
 
@@ -152,33 +152,33 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	@Override
 	public void updateEntity() {
 		
-		if(worldObj.isRemote) {
+		if(this.worldObj.isRemote) {
 			this.lastRotationPitch = this.rotationPitch;
 			this.lastRotationYaw = this.rotationYaw;
 		}
 
 		this.aligned = false;
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			this.updateConnections();
+			updateConnections();
 			
-			if(this.target != null && !target.isEntityAlive()) {
+			if(this.target != null && !this.target.isEntityAlive()) {
 				this.target = null;
 				this.stattrak++;
 			}
 		}
 		
-		if(target != null) {
-			if(!this.entityInLOS(this.target)) {
+		if(this.target != null) {
+			if(!entityInLOS(this.target)) {
 				this.target = null;
 			}
 		}
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			if(target != null) {
-				this.tPos = this.getEntityPos(target);
+			if(this.target != null) {
+				this.tPos = getEntityPos(this.target);
 			} else {
 				this.tPos = null;
 			}
@@ -186,49 +186,49 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 		
 		if(isOn() && hasPower()) {
 			
-			if(tPos != null)
-				this.alignTurret();
+			if(this.tPos != null)
+				alignTurret();
 		} else {
 
 			this.target = null;
 			this.tPos = null;
 		}
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			if(this.target != null && !target.isEntityAlive()) {
+			if(this.target != null && !this.target.isEntityAlive()) {
 				this.target = null;
 				this.tPos = null;
 				this.stattrak++;
 			}
 			
 			if(isOn() && hasPower()) {
-				searchTimer--;
+				this.searchTimer--;
 				
-				this.setPower(this.getPower() - this.getConsumption());
+				setPower(getPower() - getConsumption());
 				
-				if(searchTimer <= 0) {
-					searchTimer = this.getDecetorInterval();
+				if(this.searchTimer <= 0) {
+					this.searchTimer = getDecetorInterval();
 					
 					if(this.target == null)
-						this.seekNewTarget();
+						seekNewTarget();
 				}
 			} else {
-				searchTimer = 0;
+				this.searchTimer = 0;
 			}
 			
 			if(this.aligned) {
-				this.updateFiringTick();
+				updateFiringTick();
 			}
 			
-			this.power = Library.chargeTEFromItems(slots, 10, this.power, this.getMaxPower());
+			this.power = Library.chargeTEFromItems(this.slots, 10, this.power, getMaxPower());
 			
-			NBTTagCompound data = this.writePacket();
-			this.networkPack(data, 250);
+			NBTTagCompound data = writePacket();
+			networkPack(data, 250);
 			
-			if(usesCasings() && this.casingDelay() > 0) {
-				if(casingDelay > 0) {
-					casingDelay--;
+			if(usesCasings() && casingDelay() > 0) {
+				if(this.casingDelay > 0) {
+					this.casingDelay--;
 				} else {
 					spawnCasing();
 				}
@@ -236,7 +236,7 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 			
 		} else {
 			
-			Vec3 vec = Vec3.createVectorHelper(this.getBarrelLength(), 0, 0);
+			Vec3 vec = Vec3.createVectorHelper(getBarrelLength(), 0, 0);
 			vec.rotateAroundZ((float) -this.rotationPitch);
 			vec.rotateAroundY((float) -(this.rotationYaw + Math.PI * 0.5));
 			
@@ -271,21 +271,21 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	}
 	
 	protected void updateConnections() {
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset).getOpposite();
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset).getOpposite();
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 
 		//how did i even make this? what???
-		this.trySubscribe(worldObj, xCoord + dir.offsetX * -1 + rot.offsetX * 0, yCoord, zCoord + dir.offsetZ * -1 + rot.offsetZ * 0, dir.getOpposite());
-		this.trySubscribe(worldObj, xCoord + dir.offsetX * -1 + rot.offsetX * -1, yCoord, zCoord + dir.offsetZ * -1 + rot.offsetZ * -1, dir.getOpposite());
+		trySubscribe(this.worldObj, this.xCoord + dir.offsetX * -1 + rot.offsetX * 0, this.yCoord, this.zCoord + dir.offsetZ * -1 + rot.offsetZ * 0, dir.getOpposite());
+		trySubscribe(this.worldObj, this.xCoord + dir.offsetX * -1 + rot.offsetX * -1, this.yCoord, this.zCoord + dir.offsetZ * -1 + rot.offsetZ * -1, dir.getOpposite());
 
-		this.trySubscribe(worldObj, xCoord + dir.offsetX * 0 + rot.offsetX * -2, yCoord, zCoord + dir.offsetZ * 0 + rot.offsetZ * -2, rot.getOpposite());
-		this.trySubscribe(worldObj, xCoord + dir.offsetX * 1 + rot.offsetX * -2, yCoord, zCoord + dir.offsetZ * 1 + rot.offsetZ * -2, rot.getOpposite());
+		trySubscribe(this.worldObj, this.xCoord + dir.offsetX * 0 + rot.offsetX * -2, this.yCoord, this.zCoord + dir.offsetZ * 0 + rot.offsetZ * -2, rot.getOpposite());
+		trySubscribe(this.worldObj, this.xCoord + dir.offsetX * 1 + rot.offsetX * -2, this.yCoord, this.zCoord + dir.offsetZ * 1 + rot.offsetZ * -2, rot.getOpposite());
 
-		this.trySubscribe(worldObj, xCoord + dir.offsetX * 0 + rot.offsetX * 1, yCoord, zCoord + dir.offsetZ * 0 + rot.offsetZ * 1, rot);
-		this.trySubscribe(worldObj, xCoord + dir.offsetX * 1 + rot.offsetX * 1, yCoord, zCoord + dir.offsetZ * 1 + rot.offsetZ * 1, rot);
+		trySubscribe(this.worldObj, this.xCoord + dir.offsetX * 0 + rot.offsetX * 1, this.yCoord, this.zCoord + dir.offsetZ * 0 + rot.offsetZ * 1, rot);
+		trySubscribe(this.worldObj, this.xCoord + dir.offsetX * 1 + rot.offsetX * 1, this.yCoord, this.zCoord + dir.offsetZ * 1 + rot.offsetZ * 1, rot);
 
-		this.trySubscribe(worldObj, xCoord + dir.offsetX * 2 + rot.offsetX * 0, yCoord, zCoord + dir.offsetZ * 2 + rot.offsetZ * 0, dir);
-		this.trySubscribe(worldObj, xCoord + dir.offsetX * 2 + rot.offsetX * -1, yCoord, zCoord + dir.offsetZ * 2 + rot.offsetZ * -1, dir);
+		trySubscribe(this.worldObj, this.xCoord + dir.offsetX * 2 + rot.offsetX * 0, this.yCoord, this.zCoord + dir.offsetZ * 2 + rot.offsetZ * 0, dir);
+		trySubscribe(this.worldObj, this.xCoord + dir.offsetX * 2 + rot.offsetX * -1, this.yCoord, this.zCoord + dir.offsetZ * 2 + rot.offsetZ * -1, dir);
 	}
 
 	@Override
@@ -334,13 +334,13 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 		//you know, the weird thing the IItemGunBase does
 		for(int i = 1; i < 10; i++) {
 			
-			if(slots[i] != null) {
+			if(this.slots[i] != null) {
 				
 				for(Integer c : list) { //we can afford all this extra iteration trash on the count that a turret has at most like 4 bullet configs
 					
 					BulletConfiguration conf = BulletConfigSyncingUtil.pullConfig(c);
 					
-					if(conf.ammo != null && conf.ammo.matchesRecipe(slots[i], true))
+					if(conf.ammo != null && conf.ammo.matchesRecipe(this.slots[i], true))
 						return conf;
 				}
 			}
@@ -351,22 +351,22 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	
 	public void spawnBullet(BulletConfiguration bullet) {
 		
-		Vec3 pos = this.getTurretPos();
-		Vec3 vec = Vec3.createVectorHelper(this.getBarrelLength(), 0, 0);
+		Vec3 pos = getTurretPos();
+		Vec3 vec = Vec3.createVectorHelper(getBarrelLength(), 0, 0);
 		vec.rotateAroundZ((float) -this.rotationPitch);
 		vec.rotateAroundY((float) -(this.rotationYaw + Math.PI * 0.5));
 		
-		EntityBulletBaseNT proj = new EntityBulletBaseNT(worldObj, BulletConfigSyncingUtil.getKey(bullet));
+		EntityBulletBaseNT proj = new EntityBulletBaseNT(this.worldObj, BulletConfigSyncingUtil.getKey(bullet));
 		proj.setPositionAndRotation(pos.xCoord + vec.xCoord, pos.yCoord + vec.yCoord, pos.zCoord + vec.zCoord, 0.0F, 0.0F);
 		
 		proj.setThrowableHeading(vec.xCoord, vec.yCoord, vec.zCoord, bullet.velocity, bullet.spread);
-		worldObj.spawnEntityInWorld(proj);
+		this.worldObj.spawnEntityInWorld(proj);
 		
 		if(usesCasings()) {
-			if(this.casingDelay() == 0) {
+			if(casingDelay() == 0) {
 				spawnCasing();
 			} else {
-				casingDelay = this.casingDelay();
+				this.casingDelay = casingDelay();
 			}
 		}
 	}
@@ -375,14 +375,14 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 		
 		for(int i = 1; i < 10; i++) {
 			
-			if(slots[i] != null && ammo.matchesRecipe(slots[i], true)) {
+			if(this.slots[i] != null && ammo.matchesRecipe(this.slots[i], true)) {
 				
-				this.decrStackSize(i, 1);
+				decrStackSize(i, 1);
 				return;
 			}
 		}
 		
-		this.markDirty();
+		markDirty();
 	}
 	
 	/**
@@ -391,14 +391,14 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	 */
 	public List<String> getWhitelist() {
 		
-		if(slots[0] != null && slots[0].getItem() == ModItems.turret_chip) {
+		if(this.slots[0] != null && this.slots[0].getItem() == ModItems.turret_chip) {
 			
-			String[] array = ItemTurretBiometry.getNames(slots[0]);
+			String[] array = ItemTurretBiometry.getNames(this.slots[0]);
 			
 			if(array == null)
 				return null;
 			
-			return Arrays.asList(ItemTurretBiometry.getNames(slots[0]));
+			return Arrays.asList(ItemTurretBiometry.getNames(this.slots[0]));
 		}
 		
 		return null;
@@ -410,8 +410,8 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	 */
 	public void addName(String name) {
 		
-		if(slots[0] != null && slots[0].getItem() == ModItems.turret_chip) {
-			ItemTurretBiometry.addName(slots[0], name);
+		if(this.slots[0] != null && this.slots[0].getItem() == ModItems.turret_chip) {
+			ItemTurretBiometry.addName(this.slots[0], name);
 		}
 	}
 	
@@ -421,52 +421,49 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	 */
 	public void removeName(int index) {
 		
-		if(slots[0] != null && slots[0].getItem() == ModItems.turret_chip) {
+		if(this.slots[0] != null && this.slots[0].getItem() == ModItems.turret_chip) {
 			
-			String[] array = ItemTurretBiometry.getNames(slots[0]);
+			String[] array = ItemTurretBiometry.getNames(this.slots[0]);
 			
 			if(array == null)
 				return;
 			
-			List<String> names = new ArrayList(Arrays.asList(array));
-			ItemTurretBiometry.clearNames(slots[0]);
+			List<String> names = new ArrayList<>(Arrays.asList(array));
+			ItemTurretBiometry.clearNames(this.slots[0]);
 			
 			names.remove(index);
 			
 			for(String name : names)
-				ItemTurretBiometry.addName(slots[0], name);
+				ItemTurretBiometry.addName(this.slots[0], name);
 		}
 	}
 	
 	/**
 	 * Finds the nearest acceptable target within range and in line of sight
 	 */
+	@SuppressWarnings("unchecked")
 	protected void seekNewTarget() {
 		
-		Vec3 pos = this.getTurretPos();
-		double range = this.getDecetorRange();
-		List<Entity> entities = worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(pos.xCoord, pos.yCoord, pos.zCoord, pos.xCoord, pos.yCoord, pos.zCoord).expand(range, range, range));
+		Vec3 pos = getTurretPos();
+		double range = getDecetorRange();
+		List<Entity> entities = this.worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(pos.xCoord, pos.yCoord, pos.zCoord, pos.xCoord, pos.yCoord, pos.zCoord).expand(range, range, range));
 		
 		Entity target = null;
 		double closest = range;
 		
 		for(Entity entity : entities) {
 
-			Vec3 ent = this.getEntityPos(entity);
+			Vec3 ent = getEntityPos(entity);
 			Vec3 delta = Vec3.createVectorHelper(ent.xCoord - pos.xCoord, ent.yCoord - pos.yCoord, ent.zCoord - pos.zCoord);
 			
 			double dist = delta.lengthVector();
 			
 			//check if it's in range
-			if(dist > range)
-				continue;
+			
 			
 			//check if we should even fire at this entity
-			if(!entityAcceptableTarget(entity))
-				continue;
-			
 			//check for visibility
-			if(!entityInLOS(entity))
+			if((dist > range) || !entityAcceptableTarget(entity) || !entityInLOS(entity))
 				continue;
 			
 			//replace current target if this one is closer
@@ -479,7 +476,7 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 		this.target = target;
 		
 		if(target != null)
-			this.tPos = this.getEntityPos(this.target);
+			this.tPos = getEntityPos(this.target);
 	}
 	
 	/**
@@ -487,7 +484,7 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	 * Assumes that the target is not null
 	 */
 	protected void alignTurret() {
-		this.turnTowards(tPos);
+		turnTowards(this.tPos);
 	}
 	
 	/**
@@ -495,19 +492,19 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	 */
 	public void turnTowards(Vec3 ent) {
 
-		Vec3 pos = this.getTurretPos();
+		Vec3 pos = getTurretPos();
 		Vec3 delta = Vec3.createVectorHelper(ent.xCoord - pos.xCoord, ent.yCoord - pos.yCoord, ent.zCoord - pos.zCoord);
 		
 		double targetPitch = Math.asin(delta.yCoord / delta.lengthVector());
 		double targetYaw = -Math.atan2(delta.xCoord, delta.zCoord);
 		
-		this.turnTowardsAngle(targetPitch, targetYaw);
+		turnTowardsAngle(targetPitch, targetYaw);
 	}
 	
 	public void turnTowardsAngle(double targetPitch, double targetYaw) {
 		
-		double turnYaw = Math.toRadians(this.getTurretYawSpeed());
-		double turnPitch = Math.toRadians(this.getTurretPitchSpeed());
+		double turnYaw = Math.toRadians(getTurretYawSpeed());
+		double turnPitch = Math.toRadians(getTurretPitchSpeed());
 		double pi2 = Math.PI * 2;
 		
 		//if we are about to overshoot the target by turning, just snap to the correct rotation
@@ -551,7 +548,7 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 		this.rotationYaw = this.rotationYaw % pi2;
 		this.rotationPitch = this.rotationPitch % pi2;
 		
-		if(deltaAngle <= Math.toRadians(this.getAcceptableInaccuracy())) {
+		if(deltaAngle <= Math.toRadians(getAcceptableInaccuracy())) {
 			this.aligned = true;
 		}
 	}
@@ -568,12 +565,12 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 		if(!hasThermalVision() && e instanceof EntityLivingBase && ((EntityLivingBase)e).isPotionActive(Potion.invisibility))
 			return false;
 		
-		Vec3 pos = this.getTurretPos();
-		Vec3 ent = this.getEntityPos(e);
+		Vec3 pos = getTurretPos();
+		Vec3 ent = getEntityPos(e);
 		Vec3 delta = Vec3.createVectorHelper(ent.xCoord - pos.xCoord, ent.yCoord - pos.yCoord, ent.zCoord - pos.zCoord);
 		double length = delta.lengthVector();
 		
-		if(length < this.getDecetorGrace() || length > this.getDecetorRange() * 1.1) //the latter statement is only relevant for entities that have already been detected
+		if(length < getDecetorGrace() || length > getDecetorRange() * 1.1) //the latter statement is only relevant for entities that have already been detected
 			return false;
 		
 		delta = delta.normalize();
@@ -581,10 +578,10 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 		double pitchDeg = Math.toDegrees(pitch);
 		
 		//check if the entity is within swivel range
-		if(pitchDeg < -this.getTurretDepression() || pitchDeg > this.getTurretElevation())
+		if(pitchDeg < -getTurretDepression() || pitchDeg > getTurretElevation())
 			return false;
 		
-		return !Library.isObstructedOpaque(worldObj, ent.xCoord, ent.yCoord, ent.zCoord, pos.xCoord, pos.yCoord, pos.zCoord);
+		return !Library.isObstructedOpaque(this.worldObj, ent.xCoord, ent.yCoord, ent.zCoord, pos.xCoord, pos.yCoord, pos.zCoord);
 	}
 	
 	/**
@@ -596,9 +593,9 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 		if(e.isDead || !e.isEntityAlive())
 			return false;
 		
-		for(Class c : CompatExternal.turretTargetBlacklist) if(c.isAssignableFrom(e.getClass())) return false;
+		for(Class<?> c : CompatExternal.turretTargetBlacklist) if(c.isAssignableFrom(e.getClass())) return false;
 		
-		for(Class c : CompatExternal.turretTargetCondition.keySet()) {
+		for(Class<?> c : CompatExternal.turretTargetCondition.keySet()) {
 			if(c.isAssignableFrom(e.getClass())) {
 				BiFunction<Entity, Object, Integer> lambda = CompatExternal.turretTargetCondition.get(c);
 				if(lambda != null) {
@@ -624,40 +621,36 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 			}
 		}
 		
-		if(targetAnimals) {
+		if(this.targetAnimals) {
 			
-			if(e instanceof IAnimals) return true;
-			if(e instanceof INpc) return true;
-			for(Class c : CompatExternal.turretTargetFriendly) if(c.isAssignableFrom(e.getClass())) return true;
+			if((e instanceof IAnimals) || (e instanceof INpc)) return true;
+			for(Class<?> c : CompatExternal.turretTargetFriendly) if(c.isAssignableFrom(e.getClass())) return true;
 		}
 		
-		if(targetMobs) {
+		if(this.targetMobs) {
 
 			//never target the ender dragon directly
 			if(e instanceof EntityDragon) return false;
-			if(e instanceof EntityDragonPart) return true;
-			if(e instanceof IMob) return true;
-			for(Class c : CompatExternal.turretTargetHostile) if(c.isAssignableFrom(e.getClass())) return true;
+			if((e instanceof EntityDragonPart) || (e instanceof IMob)) return true;
+			for(Class<?> c : CompatExternal.turretTargetHostile) if(c.isAssignableFrom(e.getClass())) return true;
 		}
 		
-		if(targetMachines) {
+		if(this.targetMachines) {
 
-			if(e instanceof EntityMissileBaseAdvanced) return true;
-			if(e instanceof EntityMissileCustom) return true;
-			if(e instanceof EntityMinecart) return true;
-			if(e instanceof EntityRailCarBase) return true;
+			if((e instanceof EntityMissileBaseAdvanced) || (e instanceof EntityMissileCustom) || (e instanceof EntityMinecart)
+					|| (e instanceof EntityRailCarBase)) return true;
 			if(e instanceof EntityBomber) return true;
 			if(e instanceof EntitySiegeDropship) return true;
-			for(Class c : CompatExternal.turretTargetMachine) if(c.isAssignableFrom(e.getClass())) return true;
+			for(Class<?> c : CompatExternal.turretTargetMachine) if(c.isAssignableFrom(e.getClass())) return true;
 		}
 		
-		if(targetPlayers ) {
+		if(this.targetPlayers ) {
 			
 			if(e instanceof FakePlayer)
 				return false;
 			
 			if(e instanceof EntityPlayer) return true;
-			for(Class c : CompatExternal.turretTargetPlayer) if(c.isAssignableFrom(e.getClass())) return true;
+			for(Class<?> c : CompatExternal.turretTargetPlayer) if(c.isAssignableFrom(e.getClass())) return true;
 		}
 		
 		return false;
@@ -757,7 +750,7 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	 */
 	public Vec3 getTurretPos() {
 		Vec3 offset = getHorizontalOffset();
-		return Vec3.createVectorHelper(xCoord + offset.xCoord, yCoord + getHeightOffset(), zCoord + offset.zCoord);
+		return Vec3.createVectorHelper(this.xCoord + offset.xCoord, this.yCoord + getHeightOffset(), this.zCoord + offset.zCoord);
 	}
 	
 	/**
@@ -765,7 +758,7 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	 * @return
 	 */
 	public Vec3 getHorizontalOffset() {
-		int meta = this.getBlockMetadata() - BlockDummyable.offset;
+		int meta = getBlockMetadata() - BlockDummyable.offset;
 
 		if(meta == 2)
 			return Vec3.createVectorHelper(1, 0, 1);
@@ -797,20 +790,20 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	@SideOnly(Side.CLIENT)
 	public List<ItemStack> getAmmoTypesForDisplay() {
 		
-		if(ammoStacks != null)
-			return ammoStacks;
+		if(this.ammoStacks != null)
+			return this.ammoStacks;
 		
-		ammoStacks = new ArrayList();
+		this.ammoStacks = new ArrayList<>();
 		
 		for(Integer i : getAmmoList()) {
 			BulletConfiguration config = BulletConfigSyncingUtil.pullConfig(i);
 			
 			if(config != null && config.ammo != null) {
-				ammoStacks.add(config.ammo.toStack());
+				this.ammoStacks.add(config.ammo.toStack());
 			}
 		}
 		
-		return ammoStacks;
+		return this.ammoStacks;
 	}
 
 	@Override
@@ -824,7 +817,7 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	}
 
 	public boolean hasPower() {
-		return this.getPower() >= this.getConsumption();
+		return getPower() >= getConsumption();
 	}
 	
 	public boolean isOn() {
@@ -842,7 +835,7 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	}
 	
 	public int getPowerScaled(int scale) {
-		return (int)(power * scale / this.getMaxPower());
+		return (int)(this.power * scale / getMaxPower());
 	}
 	
 	public long getConsumption() {
@@ -862,16 +855,16 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 
 	@Override
 	public void openInventory() {
-		this.worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "hbm:block.openC", 1.0F, 1.0F);
+		this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, "hbm:block.openC", 1.0F, 1.0F);
 	}
 
 	@Override
 	public void closeInventory() {
-		this.worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "hbm:block.closeC", 1.0F, 1.0F);
+		this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, "hbm:block.closeC", 1.0F, 1.0F);
 	}
 	
 	protected Vec3 getCasingSpawnPos() {
-		return this.getTurretPos();
+		return getTurretPos();
 	}
 	
 	protected CasingEjector getEjector() {
@@ -880,20 +873,20 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	
 	protected void spawnCasing() {
 		
-		if(cachedCasingConfig == null) return;
+		if(this.cachedCasingConfig == null) return;
 		CasingEjector ej = getEjector();
 		
-		Vec3 spawn = this.getCasingSpawnPos();
+		Vec3 spawn = getCasingSpawnPos();
 		NBTTagCompound data = new NBTTagCompound();
 		data.setString("type", "casing");
-		data.setFloat("pitch", (float) -rotationPitch);
-		data.setFloat("yaw", (float) rotationYaw);
+		data.setFloat("pitch", (float) -this.rotationPitch);
+		data.setFloat("yaw", (float) this.rotationYaw);
 		data.setBoolean("crouched", false);
-		data.setString("name", cachedCasingConfig.getName());
+		data.setString("name", this.cachedCasingConfig.getName());
 		if(ej != null) data.setInteger("ej", ej.getId());
-		PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, spawn.xCoord, spawn.yCoord, spawn.zCoord), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 50));
+		PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, spawn.xCoord, spawn.yCoord, spawn.zCoord), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 50));
 		
-		cachedCasingConfig = null;
+		this.cachedCasingConfig = null;
 	}
 	
 	@Override

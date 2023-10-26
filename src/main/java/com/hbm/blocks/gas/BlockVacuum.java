@@ -21,8 +21,8 @@ public class BlockVacuum extends Block {
 
 	public BlockVacuum() {
 		super(ModBlocks.materialGas);
-		this.setHardness(0.0F);
-		this.setResistance(0.0F);
+		setHardness(0.0F);
+		setResistance(0.0F);
 	}
 
 	@Override

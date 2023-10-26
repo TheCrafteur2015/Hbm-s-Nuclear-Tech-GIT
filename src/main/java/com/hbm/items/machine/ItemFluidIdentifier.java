@@ -4,10 +4,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import com.hbm.commands.CommandDebug;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.items.ModItems;
 import com.hbm.tileentity.conductor.TileEntityFluidDuctSimple;
+import com.hbm.tileentity.machine.storage.TileEntityBarrel;
 import com.hbm.util.I18nUtil;
 
 import cpw.mods.fml.relauncher.Side;
@@ -18,6 +20,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -28,22 +31,26 @@ public class ItemFluidIdentifier extends Item implements IItemFluidIdentifier {
 	IIcon overlayIcon;
 
 	public ItemFluidIdentifier() {
-		this.setHasSubtypes(true);
-		this.setMaxDamage(0);
+		setHasSubtypes(true);
+		setMaxDamage(0);
 	}
 
+	@Override
 	public ItemStack getContainerItem(ItemStack stack) {
 		return stack.copy();
 	}
 
+	@Override
 	public boolean hasContainerItem() {
 		return true;
 	}
 
+	@Override
 	public boolean doesContainerItemLeaveCraftingGrid(ItemStack stack) {
 		return false;
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tabs, List list) {
@@ -55,6 +62,7 @@ public class ItemFluidIdentifier extends Item implements IItemFluidIdentifier {
 		}
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 
@@ -109,6 +117,14 @@ public class ItemFluidIdentifier extends Item implements IItemFluidIdentifier {
 
 			player.swingItem();
 		}
+		if (te instanceof TileEntityBarrel) {
+			TileEntityBarrel barrel = (TileEntityBarrel) te;
+			if (!world.isRemote && player.isSneaking()) {
+				barrel.setTypeForSync(Fluids.fromID(stack.getItemDamage()), 0);
+			}
+		}
+		if (CommandDebug.isEnabled())
+			player.addChatMessage(new ChatComponentText("Debug=>" + world.getBlock(x, y, z)));
 		return false;
 	}
 

@@ -20,7 +20,7 @@ public class FluidLoaderInfinite extends FluidLoadingHandler {
 		
 		if(item.getType() != null && tank.type != item.getType()) return false;
 		
-		if(item.getChance() <= 1 || rand.nextInt(item.getChance()) == 0) {
+		if(item.getChance() <= 1 || FluidLoaderInfinite.rand.nextInt(item.getChance()) == 0) {
 			tank.setFill(Math.max(tank.getFill() - item.getAmount(), 0));
 		}
 		
@@ -36,7 +36,7 @@ public class FluidLoaderInfinite extends FluidLoadingHandler {
 		
 		if(item.getType() != null && tank.type != item.getType()) return false;
 		
-		if(item.getChance() <= 1 || rand.nextInt(item.getChance()) == 0) {
+		if(item.getChance() <= 1 || FluidLoaderInfinite.rand.nextInt(item.getChance()) == 0) {
 			tank.setFill(Math.min(tank.getFill() + item.getAmount(), tank.getMaxFill()));
 		}
 		

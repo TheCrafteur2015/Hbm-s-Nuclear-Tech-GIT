@@ -42,16 +42,16 @@ public class EntityTSmokeFX extends EntityModFX
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
         
-        if(maxAge < 25)
+        if(this.maxAge < 25)
         {
-        	maxAge = rand.nextInt(6) + 25;
+        	this.maxAge = this.rand.nextInt(6) + 25;
         }
 
         this.particleAge++;
         
-        if (this.particleAge >= maxAge)
+        if (this.particleAge >= this.maxAge)
         {
-            this.setDead();
+            setDead();
         }
 
         this.motionX *= 0.7599999785423279D;

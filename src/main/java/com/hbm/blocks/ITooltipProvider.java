@@ -14,9 +14,9 @@ import net.minecraft.util.EnumChatFormatting;
 
 public interface ITooltipProvider {
 
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext);
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean ext);
 
-	public default void addStandardInfo(ItemStack stack, EntityPlayer player, List list, boolean ext) {
+	public default void addStandardInfo(ItemStack stack, EntityPlayer player, List<String> list, boolean ext) {
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 			for(String s : I18nUtil.resolveKeyArray(((Block)this).getUnlocalizedName() + ".desc")) list.add(EnumChatFormatting.YELLOW + s);
@@ -30,4 +30,5 @@ public interface ITooltipProvider {
 	public default EnumRarity getRarity(ItemStack stack) {
 		return EnumRarity.common;
 	}
+	
 }

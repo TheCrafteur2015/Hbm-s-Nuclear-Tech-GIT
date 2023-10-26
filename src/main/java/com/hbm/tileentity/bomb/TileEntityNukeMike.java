@@ -25,33 +25,33 @@ public class TileEntityNukeMike extends TileEntity implements ISidedInventory, I
 	private String customName;
 	
 	public TileEntityNukeMike() {
-		slots = new ItemStack[8];
+		this.slots = new ItemStack[8];
 	}
 	
 	@Override
 	public int getSizeInventory() {
-		return slots.length;
+		return this.slots.length;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		return slots[i];
+		return this.slots[i];
 	}
 
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			if(slots[i].stackSize <= j)
+			if(this.slots[i].stackSize <= j)
 			{
-				ItemStack itemStack = slots[i];
-				slots[i] = null;
+				ItemStack itemStack = this.slots[i];
+				this.slots[i] = null;
 				return itemStack;
 			}
-			ItemStack itemStack1 = slots[i].splitStack(j);
-			if (slots[i].stackSize == 0)
+			ItemStack itemStack1 = this.slots[i].splitStack(j);
+			if (this.slots[i].stackSize == 0)
 			{
-				slots[i] = null;
+				this.slots[i] = null;
 			}
 			
 			return itemStack1;
@@ -62,10 +62,10 @@ public class TileEntityNukeMike extends TileEntity implements ISidedInventory, I
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			ItemStack itemStack = slots[i];
-			slots[i] = null;
+			ItemStack itemStack = this.slots[i];
+			this.slots[i] = null;
 			return itemStack;
 		} else {
 		return null;
@@ -74,7 +74,7 @@ public class TileEntityNukeMike extends TileEntity implements ISidedInventory, I
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemStack) {
-		slots[i] = itemStack;
+		this.slots[i] = itemStack;
 		if(itemStack != null && itemStack.stackSize > getInventoryStackLimit())
 		{
 			itemStack.stackSize = getInventoryStackLimit();
@@ -83,7 +83,7 @@ public class TileEntityNukeMike extends TileEntity implements ISidedInventory, I
 
 	@Override
 	public String getInventoryName() {
-		return this.hasCustomInventoryName() ? this.customName : "container.nukeMike";
+		return hasCustomInventoryName() ? this.customName : "container.nukeMike";
 	}
 
 	@Override
@@ -102,11 +102,11 @@ public class TileEntityNukeMike extends TileEntity implements ISidedInventory, I
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		if(worldObj.getTileEntity(xCoord, yCoord, zCoord) != this)
+		if(this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this)
 		{
 			return false;
 		}else{
-			return player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <=64;
+			return player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <=64;
 		}
 	}
 
@@ -132,7 +132,7 @@ public class TileEntityNukeMike extends TileEntity implements ISidedInventory, I
 
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemStack, int j) {
-		return this.isItemValidForSlot(i, itemStack);
+		return isItemValidForSlot(i, itemStack);
 	}
 
 	@Override
@@ -144,15 +144,15 @@ public class TileEntityNukeMike extends TileEntity implements ISidedInventory, I
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		NBTTagList list = nbt.getTagList("items", 10);
-		slots = new ItemStack[getSizeInventory()];
+		this.slots = new ItemStack[getSizeInventory()];
 		
 		for(int i = 0; i < list.tagCount(); i++)
 		{
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("slot");
-			if(b0 >= 0 && b0 < slots.length)
+			if(b0 >= 0 && b0 < this.slots.length)
 			{
-				slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
+				this.slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
 			}
 		}
 	}
@@ -162,13 +162,13 @@ public class TileEntityNukeMike extends TileEntity implements ISidedInventory, I
 		super.writeToNBT(nbt);
 		NBTTagList list = new NBTTagList();
 		
-		for(int i = 0; i < slots.length; i++)
+		for(int i = 0; i < this.slots.length; i++)
 		{
-			if(slots[i] != null)
+			if(this.slots[i] != null)
 			{
 				NBTTagCompound nbt1 = new NBTTagCompound();
 				nbt1.setByte("slot", (byte)i);
-				slots[i].writeToNBT(nbt1);
+				this.slots[i].writeToNBT(nbt1);
 				list.appendTag(nbt1);
 			}
 		}
@@ -177,12 +177,12 @@ public class TileEntityNukeMike extends TileEntity implements ISidedInventory, I
 	
 	public boolean isReady() {
 		
-		if(slots[0] != null && slots[1] != null && slots[2] != null && slots[3] != null && slots[4] != null)
-			if(slots[0].getItem() == ModItems.explosive_lenses && 
-			slots[1].getItem() == ModItems.explosive_lenses && 
-			slots[2].getItem() == ModItems.explosive_lenses && 
-			slots[3].getItem() == ModItems.explosive_lenses && 
-			slots[4].getItem() == ModItems.man_core)
+		if(this.slots[0] != null && this.slots[1] != null && this.slots[2] != null && this.slots[3] != null && this.slots[4] != null)
+			if(this.slots[0].getItem() == ModItems.explosive_lenses && 
+			this.slots[1].getItem() == ModItems.explosive_lenses && 
+			this.slots[2].getItem() == ModItems.explosive_lenses && 
+			this.slots[3].getItem() == ModItems.explosive_lenses && 
+			this.slots[4].getItem() == ModItems.man_core)
 			{
 				return true;
 			}
@@ -192,15 +192,15 @@ public class TileEntityNukeMike extends TileEntity implements ISidedInventory, I
 	
 	public boolean isFilled() {
 		
-		if(slots[0] != null && slots[1] != null && slots[2] != null && slots[3] != null && slots[4] != null && slots[5] != null && slots[6] != null && slots[7] != null)
-			if(slots[0].getItem() == ModItems.explosive_lenses && 
-			slots[1].getItem() == ModItems.explosive_lenses && 
-			slots[2].getItem() == ModItems.explosive_lenses && 
-			slots[3].getItem() == ModItems.explosive_lenses && 
-			slots[4].getItem() == ModItems.man_core && 
-			slots[5].getItem() == ModItems.mike_core && 
-			slots[6].getItem() == ModItems.mike_deut && 
-			slots[7].getItem() == ModItems.mike_cooling_unit)
+		if(this.slots[0] != null && this.slots[1] != null && this.slots[2] != null && this.slots[3] != null && this.slots[4] != null && this.slots[5] != null && this.slots[6] != null && this.slots[7] != null)
+			if(this.slots[0].getItem() == ModItems.explosive_lenses && 
+			this.slots[1].getItem() == ModItems.explosive_lenses && 
+			this.slots[2].getItem() == ModItems.explosive_lenses && 
+			this.slots[3].getItem() == ModItems.explosive_lenses && 
+			this.slots[4].getItem() == ModItems.man_core && 
+			this.slots[5].getItem() == ModItems.mike_core && 
+			this.slots[6].getItem() == ModItems.mike_deut && 
+			this.slots[7].getItem() == ModItems.mike_cooling_unit)
 			{
 				return true;
 			}
@@ -209,9 +209,9 @@ public class TileEntityNukeMike extends TileEntity implements ISidedInventory, I
 	}
 	
 	public void clearSlots() {
-		for(int i = 0; i < slots.length; i++)
+		for(int i = 0; i < this.slots.length; i++)
 		{
-			slots[i] = null;
+			this.slots[i] = null;
 		}
 	}
 	

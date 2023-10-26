@@ -29,23 +29,24 @@ public class EntityProcessorCross implements IEntityProcessor {
 		this.nodeDist = nodeDist;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public HashMap<EntityPlayer, Vec3> process(ExplosionVNT explosion, World world, double x, double y, double z, float size) {
 
-		HashMap<EntityPlayer, Vec3> affectedPlayers = new HashMap();
+		HashMap<EntityPlayer, Vec3> affectedPlayers = new HashMap<>();
 
 		size *= 2.0F;
 		
-		if(range != null) {
-			size = range.mutateRange(explosion, size);
+		if(this.range != null) {
+			size = this.range.mutateRange(explosion, size);
 		}
 		
-		double minX = x - (double) size - 1.0D;
-		double maxX = x + (double) size + 1.0D;
-		double minY = y - (double) size - 1.0D;
-		double maxY = y + (double) size + 1.0D;
-		double minZ = z - (double) size - 1.0D;
-		double maxZ = z + (double) size + 1.0D;
+		double minX = x - size - 1.0D;
+		double maxX = x + size + 1.0D;
+		double minY = y - size - 1.0D;
+		double maxY = y + size + 1.0D;
+		double minZ = z - size - 1.0D;
+		double maxZ = z + size + 1.0D;
 		
 		List list = world.getEntitiesWithinAABBExcludingEntity(explosion.exploder, AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ));
 		
@@ -55,12 +56,12 @@ public class EntityProcessorCross implements IEntityProcessor {
 		
 		for(int i = 0; i < 7; i++) {
 			ForgeDirection dir = ForgeDirection.getOrientation(i);
-			nodes[i] = Vec3.createVectorHelper(x + dir.offsetX * nodeDist, y + dir.offsetY * nodeDist, z + dir.offsetZ * nodeDist);
+			nodes[i] = Vec3.createVectorHelper(x + dir.offsetX * this.nodeDist, y + dir.offsetY * this.nodeDist, z + dir.offsetZ * this.nodeDist);
 		}
 
-		for(int index = 0; index < list.size(); ++index) {
+		for (Object element : list) {
 			
-			Entity entity = (Entity) list.get(index);
+			Entity entity = (Entity) element;
 			double distanceScaled = entity.getDistance(x, y, z) / size;
 
 			if(distanceScaled <= 1.0D) {
@@ -87,7 +88,7 @@ public class EntityProcessorCross implements IEntityProcessor {
 					
 					double knockback = (1.0D - distanceScaled) * density;
 					
-					entity.attackEntityFrom(DamageSource.setExplosionSource(explosion.compat), (float) ((int) ((knockback * knockback + knockback) / 2.0D * 8.0D * size + 1.0D)));
+					entity.attackEntityFrom(DamageSource.setExplosionSource(explosion.compat), ((int) ((knockback * knockback + knockback) / 2.0D * 8.0D * size + 1.0D)));
 					double enchKnockback = EnchantmentProtection.func_92092_a(entity, knockback);
 					
 					entity.motionX += deltaX * enchKnockback;
@@ -98,8 +99,8 @@ public class EntityProcessorCross implements IEntityProcessor {
 						affectedPlayers.put((EntityPlayer) entity, Vec3.createVectorHelper(deltaX * knockback, deltaY * knockback, deltaZ * knockback));
 					}
 					
-					if(damage != null) {
-						damage.handleAttack(explosion, entity, distanceScaled);
+					if(this.damage != null) {
+						this.damage.handleAttack(explosion, entity, distanceScaled);
 					}
 				}
 			}
@@ -109,7 +110,7 @@ public class EntityProcessorCross implements IEntityProcessor {
 	}
 	
 	public EntityProcessorCross withRangeMod(float mod) {
-		range = new IEntityRangeMutator() {
+		this.range = new IEntityRangeMutator() {
 			@Override
 			public float mutateRange(ExplosionVNT explosion, float range) {
 				return range * mod;

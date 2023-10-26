@@ -34,14 +34,14 @@ public class GUIMachineExcavator extends GuiInfoContainer {
 	public void drawScreen(int x, int y, float interp) {
 		super.drawScreen(x, y, interp);
 
-		this.drawCustomInfoStat(x, y, guiLeft + 6, guiTop + 42, 20, 40, x, y, I18nUtil.resolveKey("excavator.drill"));
-		this.drawCustomInfoStat(x, y, guiLeft + 30, guiTop + 42, 20, 40, x, y, I18nUtil.resolveKey("excavator.crusher"));
-		this.drawCustomInfoStat(x, y, guiLeft + 54, guiTop + 42, 20, 40, x, y, I18nUtil.resolveKey("excavator.walling"));
-		this.drawCustomInfoStat(x, y, guiLeft + 78, guiTop + 42, 20, 40, x, y, I18nUtil.resolveKey("excavator.veinminer"));
-		this.drawCustomInfoStat(x, y, guiLeft + 102, guiTop + 42, 20, 40, x, y, I18nUtil.resolveKey("excavator.silktouch"));
+		this.drawCustomInfoStat(x, y, this.guiLeft + 6, this.guiTop + 42, 20, 40, x, y, I18nUtil.resolveKey("excavator.drill"));
+		this.drawCustomInfoStat(x, y, this.guiLeft + 30, this.guiTop + 42, 20, 40, x, y, I18nUtil.resolveKey("excavator.crusher"));
+		this.drawCustomInfoStat(x, y, this.guiLeft + 54, this.guiTop + 42, 20, 40, x, y, I18nUtil.resolveKey("excavator.walling"));
+		this.drawCustomInfoStat(x, y, this.guiLeft + 78, this.guiTop + 42, 20, 40, x, y, I18nUtil.resolveKey("excavator.veinminer"));
+		this.drawCustomInfoStat(x, y, this.guiLeft + 102, this.guiTop + 42, 20, 40, x, y, I18nUtil.resolveKey("excavator.silktouch"));
 		
-		this.drawElectricityInfo(this, x, y, guiLeft + 220, guiTop + 18, 16, 52, drill.getPower(), drill.maxPower);
-		this.drill.tank.renderTankInfo(this, x, y, guiLeft + 202, guiTop + 18, 16, 52);
+		drawElectricityInfo(this, x, y, this.guiLeft + 220, this.guiTop + 18, 16, 52, this.drill.getPower(), TileEntityMachineExcavator.maxPower);
+		this.drill.tank.renderTankInfo(this, x, y, this.guiLeft + 202, this.guiTop + 18, 16, 52);
 	}
 
 	@Override
@@ -50,17 +50,17 @@ public class GUIMachineExcavator extends GuiInfoContainer {
 
 		String toggle = null;
 		
-		if(guiLeft + 6 <= x && guiLeft + 6 + 20 > x && guiTop + 42 < y && guiTop + 42 + 40 >= y) toggle = "drill";
-		if(guiLeft + 30 <= x && guiLeft + 30 + 20 > x && guiTop + 42 < y && guiTop + 42 + 40 >= y) toggle = "crusher";
-		if(guiLeft + 54 <= x && guiLeft + 54 + 20 > x && guiTop + 42 < y && guiTop + 42 + 40 >= y) toggle = "walling";
-		if(guiLeft + 78 <= x && guiLeft + 78 + 20 > x && guiTop + 42 < y && guiTop + 42 + 40 >= y) toggle = "veinminer";
-		if(guiLeft + 102 <= x && guiLeft + 102 + 20 > x && guiTop + 42 < y && guiTop + 42 + 40 >= y) toggle = "silktouch";
+		if(this.guiLeft + 6 <= x && this.guiLeft + 6 + 20 > x && this.guiTop + 42 < y && this.guiTop + 42 + 40 >= y) toggle = "drill";
+		if(this.guiLeft + 30 <= x && this.guiLeft + 30 + 20 > x && this.guiTop + 42 < y && this.guiTop + 42 + 40 >= y) toggle = "crusher";
+		if(this.guiLeft + 54 <= x && this.guiLeft + 54 + 20 > x && this.guiTop + 42 < y && this.guiTop + 42 + 40 >= y) toggle = "walling";
+		if(this.guiLeft + 78 <= x && this.guiLeft + 78 + 20 > x && this.guiTop + 42 < y && this.guiTop + 42 + 40 >= y) toggle = "veinminer";
+		if(this.guiLeft + 102 <= x && this.guiLeft + 102 + 20 > x && this.guiTop + 42 < y && this.guiTop + 42 + 40 >= y) toggle = "silktouch";
 
 		if(toggle != null) {
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("hbm:block.leverLarge"), 1.0F));
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("hbm:block.leverLarge"), 1.0F));
 			NBTTagCompound data = new NBTTagCompound();
 			data.setBoolean(toggle, true);
-			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, drill.xCoord, drill.yCoord, drill.zCoord));
+			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, this.drill.xCoord, this.drill.yCoord, this.drill.zCoord));
 		}
 	}
 
@@ -72,50 +72,50 @@ public class GUIMachineExcavator extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float interp, int x, int y) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, 242, 96);
-		drawTexturedModalRect(guiLeft + 33, guiTop + 104, 33, 104, 176, 100);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIMachineExcavator.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, 242, 96);
+		drawTexturedModalRect(this.guiLeft + 33, this.guiTop + 104, 33, 104, 176, 100);
 		
-		int i = (int) (drill.getPower() * 52 / drill.getMaxPower());
-		drawTexturedModalRect(guiLeft + 220, guiTop + 70 - i, 229, 156 - i, 16, i);
+		int i = (int) (this.drill.getPower() * 52 / this.drill.getMaxPower());
+		drawTexturedModalRect(this.guiLeft + 220, this.guiTop + 70 - i, 229, 156 - i, 16, i);
 		
-		if(drill.getPower() > drill.getPowerConsumption()) {
-			drawTexturedModalRect(guiLeft + 224, guiTop + 4, 239, 156, 9, 12);
+		if(this.drill.getPower() > this.drill.getPowerConsumption()) {
+			drawTexturedModalRect(this.guiLeft + 224, this.guiTop + 4, 239, 156, 9, 12);
 		}
 		
-		if(drill.getInstalledDrill() == null && System.currentTimeMillis() % 1000 < 500) {
-			drawTexturedModalRect(guiLeft + 171, guiTop + 74, 209, 154, 18, 18);
+		if(this.drill.getInstalledDrill() == null && System.currentTimeMillis() % 1000 < 500) {
+			drawTexturedModalRect(this.guiLeft + 171, this.guiTop + 74, 209, 154, 18, 18);
 		}
 		
-		if(drill.enableDrill) {
-			drawTexturedModalRect(guiLeft + 6, guiTop + 42, 209, 114, 20, 40);
-			if(drill.getInstalledDrill() != null && drill.getPower() >= drill.getPowerConsumption()) drawTexturedModalRect(guiLeft + 11, guiTop + 5, 209, 104, 10, 10);
-			else if(System.currentTimeMillis() % 1000 < 500) drawTexturedModalRect(guiLeft + 11, guiTop + 5, 219, 104, 10, 10);
+		if(this.drill.enableDrill) {
+			drawTexturedModalRect(this.guiLeft + 6, this.guiTop + 42, 209, 114, 20, 40);
+			if(this.drill.getInstalledDrill() != null && this.drill.getPower() >= this.drill.getPowerConsumption()) drawTexturedModalRect(this.guiLeft + 11, this.guiTop + 5, 209, 104, 10, 10);
+			else if(System.currentTimeMillis() % 1000 < 500) drawTexturedModalRect(this.guiLeft + 11, this.guiTop + 5, 219, 104, 10, 10);
 		}
 		
-		if(drill.enableCrusher) {
-			drawTexturedModalRect(guiLeft + 30, guiTop + 42, 209, 114, 20, 40);
-			drawTexturedModalRect(guiLeft + 35, guiTop + 5, 209, 104, 10, 10);
+		if(this.drill.enableCrusher) {
+			drawTexturedModalRect(this.guiLeft + 30, this.guiTop + 42, 209, 114, 20, 40);
+			drawTexturedModalRect(this.guiLeft + 35, this.guiTop + 5, 209, 104, 10, 10);
 		}
 		
-		if(drill.enableWalling) {
-			drawTexturedModalRect(guiLeft + 54, guiTop + 42, 209, 114, 20, 40);
-			drawTexturedModalRect(guiLeft + 59, guiTop + 5, 209, 104, 10, 10);
+		if(this.drill.enableWalling) {
+			drawTexturedModalRect(this.guiLeft + 54, this.guiTop + 42, 209, 114, 20, 40);
+			drawTexturedModalRect(this.guiLeft + 59, this.guiTop + 5, 209, 104, 10, 10);
 		}
 		
-		if(drill.enableVeinMiner) {
-			drawTexturedModalRect(guiLeft + 78, guiTop + 42, 209, 114, 20, 40);
-			if(drill.canVeinMine()) drawTexturedModalRect(guiLeft + 83, guiTop + 5, 209, 104, 10, 10);
-			else if(System.currentTimeMillis() % 1000 < 500) drawTexturedModalRect(guiLeft + 83, guiTop + 5, 219, 104, 10, 10);
+		if(this.drill.enableVeinMiner) {
+			drawTexturedModalRect(this.guiLeft + 78, this.guiTop + 42, 209, 114, 20, 40);
+			if(this.drill.canVeinMine()) drawTexturedModalRect(this.guiLeft + 83, this.guiTop + 5, 209, 104, 10, 10);
+			else if(System.currentTimeMillis() % 1000 < 500) drawTexturedModalRect(this.guiLeft + 83, this.guiTop + 5, 219, 104, 10, 10);
 			
 		}
 		
-		if(drill.enableSilkTouch) {
-			drawTexturedModalRect(guiLeft + 102, guiTop + 42, 209, 114, 20, 40);
-			if(drill.canSilkTouch()) drawTexturedModalRect(guiLeft + 107, guiTop + 5, 209, 104, 10, 10);
-			else if(System.currentTimeMillis() % 1000 < 500) drawTexturedModalRect(guiLeft + 107, guiTop + 5, 219, 104, 10, 10);
+		if(this.drill.enableSilkTouch) {
+			drawTexturedModalRect(this.guiLeft + 102, this.guiTop + 42, 209, 114, 20, 40);
+			if(this.drill.canSilkTouch()) drawTexturedModalRect(this.guiLeft + 107, this.guiTop + 5, 209, 104, 10, 10);
+			else if(System.currentTimeMillis() % 1000 < 500) drawTexturedModalRect(this.guiLeft + 107, this.guiTop + 5, 219, 104, 10, 10);
 		}
 		
-		drill.tank.renderTank(guiLeft + 202, guiTop + 70, this.zLevel, 16, 52);
+		this.drill.tank.renderTank(this.guiLeft + 202, this.guiTop + 70, this.zLevel, 16, 52);
 	}
 }

@@ -22,10 +22,12 @@ public class ParticleLetter extends EntityFX {
 		this.c = c;
 	}
 
+	@Override
 	public int getFXLayer() {
 		return 3;
 	}
 
+	@Override
 	public void renderParticle(Tessellator tess, float interp, float x, float y, float z, float tx, float tz) {
 
 	    GL11.glPushMatrix();
@@ -44,9 +46,9 @@ public class ParticleLetter extends EntityFX {
 		this.rotationYaw = -mc.thePlayer.rotationYaw;
 		this.rotationPitch = mc.thePlayer.rotationPitch;
 		
-	    float pX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double)interp - interpPosX);
-	    float pY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double)interp - interpPosY);
-	    float pZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double)interp - interpPosZ);
+	    float pX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double)interp - EntityFX.interpPosX);
+	    float pY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double)interp - EntityFX.interpPosY);
+	    float pZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double)interp - EntityFX.interpPosZ);
 	    
 	    GL11.glTranslatef(pX, pY, pZ);
 	    GL11.glRotatef(this.rotationYaw, 0.0F, 1.0F, 0.0F);
@@ -59,10 +61,10 @@ public class ParticleLetter extends EntityFX {
 	    
 		this.particleAlpha = 1 - (((float)this.particleAge + interp) / (float)this.particleMaxAge);
 		
-		if(particleAlpha < 0)
-			particleAlpha = 0;
+		if(this.particleAlpha < 0)
+			this.particleAlpha = 0;
 		
-		int alpha = (int) (particleAlpha * 255);
+		int alpha = (int) (this.particleAlpha * 255);
 		
 		if(alpha > 255)
 			alpha = 255;
@@ -70,11 +72,11 @@ public class ParticleLetter extends EntityFX {
 		if(alpha < 10)
 			alpha = 10;
 		
-		int col = color + (alpha << 24);
+		int col = this.color + (alpha << 24);
 	    
 	    GL11.glScaled(scale, scale, scale);
 	    
-	    font.drawString(String.valueOf(c), -(int)(font.getStringWidth(String.valueOf(c)) * 0.5F), -(int)(font.FONT_HEIGHT * 0.5F), col);
+	    font.drawString(String.valueOf(this.c), -(int)(font.getStringWidth(String.valueOf(this.c)) * 0.5F), -(int)(font.FONT_HEIGHT * 0.5F), col);
 	    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
 		GL11.glPolygonOffset(0.0F, 0.0F);

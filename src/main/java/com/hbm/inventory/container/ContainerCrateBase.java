@@ -11,8 +11,8 @@ public class ContainerCrateBase extends Container {
 	protected IInventory crate;
 
 	public ContainerCrateBase(IInventory tedf) {
-		crate = tedf;
-		crate.openInventory();
+		this.crate = tedf;
+		this.crate.openInventory();
 	}
 
 	@Override
@@ -24,11 +24,11 @@ public class ContainerCrateBase extends Container {
 			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 
-			if(par2 <= crate.getSizeInventory() - 1) {
-				if(!this.mergeItemStack(var5, crate.getSizeInventory(), this.inventorySlots.size(), true)) {
+			if(par2 <= this.crate.getSizeInventory() - 1) {
+				if(!mergeItemStack(var5, this.crate.getSizeInventory(), this.inventorySlots.size(), true)) {
 					return null;
 				}
-			} else if(!this.mergeItemStack(var5, 0, crate.getSizeInventory(), false)) {
+			} else if(!mergeItemStack(var5, 0, this.crate.getSizeInventory(), false)) {
 				return null;
 			}
 
@@ -46,7 +46,7 @@ public class ContainerCrateBase extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return crate.isUseableByPlayer(player);
+		return this.crate.isUseableByPlayer(player);
 	}
 	
 	@Override

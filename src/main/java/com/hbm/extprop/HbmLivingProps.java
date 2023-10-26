@@ -8,6 +8,7 @@ import com.hbm.config.RadiationConfig;
 import com.hbm.entity.mob.EntityDuck;
 import com.hbm.lib.ModDamageSource;
 import com.hbm.main.MainRegistry;
+import com.hbm.main.ServerProxy;
 import com.hbm.packet.AuxParticlePacketNT;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.PlayerInformPacket;
@@ -50,7 +51,7 @@ public class HbmLivingProps implements IExtendedEntityProperties {
 	private int temperature;
 	private boolean frozen = false;
 	private boolean burning = false;
-	private List<ContaminationEffect> contamination = new ArrayList();
+	private List<ContaminationEffect> contamination = new ArrayList<>();
 	
 	public HbmLivingProps(EntityLivingBase entity) {
 		this.entity = entity;
@@ -59,14 +60,14 @@ public class HbmLivingProps implements IExtendedEntityProperties {
 	/// DATA ///
 	public static HbmLivingProps registerData(EntityLivingBase entity) {
 		
-		entity.registerExtendedProperties(key, new HbmLivingProps(entity));
-		return (HbmLivingProps) entity.getExtendedProperties(key);
+		entity.registerExtendedProperties(HbmLivingProps.key, new HbmLivingProps(entity));
+		return (HbmLivingProps) entity.getExtendedProperties(HbmLivingProps.key);
 	}
 	
 	public static HbmLivingProps getData(EntityLivingBase entity) {
 		
-		HbmLivingProps props = (HbmLivingProps) entity.getExtendedProperties(key);
-		return props != null ? props : registerData(entity);
+		HbmLivingProps props = (HbmLivingProps) entity.getExtendedProperties(HbmLivingProps.key);
+		return props != null ? props : HbmLivingProps.registerData(entity);
 	}
 	
 	/// RADIATION ///
@@ -74,59 +75,60 @@ public class HbmLivingProps implements IExtendedEntityProperties {
 		if(!RadiationConfig.enableContamination)
 			return 0;
 
-		return getData(entity).radiation;
+		return HbmLivingProps.getData(entity).radiation;
 	}
 	
 	public static void setRadiation(EntityLivingBase entity, float rad) {
 		if(RadiationConfig.enableContamination)
-			getData(entity).radiation = rad;
+			HbmLivingProps.getData(entity).radiation = rad;
 	}
 	
 	public static void incrementRadiation(EntityLivingBase entity, float rad) {
 		if(!RadiationConfig.enableContamination)
 			return;
 		
-		HbmLivingProps data = getData(entity);
-		float radiation = getData(entity).radiation + rad;
+		@SuppressWarnings("unused")
+		HbmLivingProps data = HbmLivingProps.getData(entity);
+		float radiation = HbmLivingProps.getData(entity).radiation + rad;
 		
 		if(radiation > 2500)
 			radiation = 2500;
 		if(radiation < 0)
 			radiation = 0;
 		
-		data.setRadiation(entity, radiation);
+		HbmLivingProps.setRadiation(entity, radiation);
 	}
 	
 	/// RAD ENV ///
 	public static float getRadEnv(EntityLivingBase entity) {
-		return getData(entity).radEnv;
+		return HbmLivingProps.getData(entity).radEnv;
 	}
 	
 	public static void setRadEnv(EntityLivingBase entity, float rad) {
-		getData(entity).radEnv = rad;
+		HbmLivingProps.getData(entity).radEnv = rad;
 	}
 	
 	/// RAD BUF ///
 	public static float getRadBuf(EntityLivingBase entity) {
-		return getData(entity).radBuf;
+		return HbmLivingProps.getData(entity).radBuf;
 	}
 	
 	public static void setRadBuf(EntityLivingBase entity, float rad) {
-		getData(entity).radBuf = rad;
+		HbmLivingProps.getData(entity).radBuf = rad;
 	}
 	
 	/// CONTAMINATION ///
 	public static List<ContaminationEffect> getCont(EntityLivingBase entity) {
-		return getData(entity).contamination;
+		return HbmLivingProps.getData(entity).contamination;
 	}
 	
 	public static void addCont(EntityLivingBase entity, ContaminationEffect cont) {
-		getData(entity).contamination.add(cont);
+		HbmLivingProps.getData(entity).contamination.add(cont);
 	}
 	
 	/// DIGAMA ///
 	public static float getDigamma(EntityLivingBase entity) {
-		return getData(entity).digamma;
+		return HbmLivingProps.getData(entity).digamma;
 	}
 	
 	public static void setDigamma(EntityLivingBase entity, float digamma) {
@@ -137,17 +139,17 @@ public class HbmLivingProps implements IExtendedEntityProperties {
 		if(entity instanceof EntityDuck)
 			digamma = 0.0F;
 		
-		getData(entity).digamma = digamma;
+		HbmLivingProps.getData(entity).digamma = digamma;
 		
 		float healthMod = (float)Math.pow(0.5, digamma) - 1F;
 		
 		IAttributeInstance attributeinstance = entity.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.maxHealth);
 		
 		try {
-			attributeinstance.removeModifier(attributeinstance.getModifier(digamma_UUID));
+			attributeinstance.removeModifier(attributeinstance.getModifier(HbmLivingProps.digamma_UUID));
 		} catch(Exception ex) { }
 		
-		attributeinstance.applyModifier(new AttributeModifier(digamma_UUID, "digamma", healthMod, 2));
+		attributeinstance.applyModifier(new AttributeModifier(HbmLivingProps.digamma_UUID, "digamma", healthMod, 2));
 		
 		if(entity.getHealth() > entity.getMaxHealth() && entity.getMaxHealth() > 0) {
 			entity.setHealth(entity.getMaxHealth());
@@ -169,7 +171,7 @@ public class HbmLivingProps implements IExtendedEntityProperties {
 		
 		if(entity instanceof EntityPlayer) {
 			
-			float di = getData(entity).digamma;
+			float di = HbmLivingProps.getData(entity).digamma;
 
 			if(di > 0F)
 				((EntityPlayer) entity).triggerAchievement(MainRegistry.digammaSee);
@@ -180,45 +182,46 @@ public class HbmLivingProps implements IExtendedEntityProperties {
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	public static void incrementDigamma(EntityLivingBase entity, float digamma) {
 		
 		if(entity instanceof EntityDuck)
 			digamma = 0.0F;
 		
-		HbmLivingProps data = getData(entity);
-		float dRad = getDigamma(entity) + digamma;
+		HbmLivingProps data = HbmLivingProps.getData(entity);
+		float dRad = HbmLivingProps.getDigamma(entity) + digamma;
 		
 		if(dRad > 10)
 			dRad = 10;
 		if(dRad < 0)
 			dRad = 0;
 		
-		data.setDigamma(entity, dRad);
+		HbmLivingProps.setDigamma(entity, dRad);
 	}
 	
 	
 	/// ASBESTOS ///
 	public static int getAsbestos(EntityLivingBase entity) {
 		if(RadiationConfig.disableAsbestos) return 0;
-		return getData(entity).asbestos;
+		return HbmLivingProps.getData(entity).asbestos;
 	}
 	
 	public static void setAsbestos(EntityLivingBase entity, int asbestos) {
 		if(RadiationConfig.disableAsbestos) return;
-		getData(entity).asbestos = asbestos;
+		HbmLivingProps.getData(entity).asbestos = asbestos;
 		
-		if(asbestos >= maxAsbestos) {
-			getData(entity).asbestos = 0;
+		if(asbestos >= HbmLivingProps.maxAsbestos) {
+			HbmLivingProps.getData(entity).asbestos = 0;
 			entity.attackEntityFrom(ModDamageSource.asbestos, 1000);
 		}
 	}
 	
 	public static void incrementAsbestos(EntityLivingBase entity, int asbestos) {
 		if(RadiationConfig.disableAsbestos) return;
-		setAsbestos(entity, getAsbestos(entity) + asbestos);
+		HbmLivingProps.setAsbestos(entity, HbmLivingProps.getAsbestos(entity) + asbestos);
 		
 		if(entity instanceof EntityPlayerMP) {
-			PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.start("").nextTranslation("info.asbestos").color(EnumChatFormatting.RED).flush(), MainRegistry.proxy.ID_GAS_HAZARD, 3000), (EntityPlayerMP) entity);
+			PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.start("").nextTranslation("info.asbestos").color(EnumChatFormatting.RED).flush(), ServerProxy.ID_GAS_HAZARD, 3000), (EntityPlayerMP) entity);
 		}
 	}
 	
@@ -226,62 +229,62 @@ public class HbmLivingProps implements IExtendedEntityProperties {
 	/// BLACK LUNG DISEASE ///
 	public static int getBlackLung(EntityLivingBase entity) {
 		if(RadiationConfig.disableCoal) return 0;
-		return getData(entity).blacklung;
+		return HbmLivingProps.getData(entity).blacklung;
 	}
 	
 	public static void setBlackLung(EntityLivingBase entity, int blacklung) {
 		if(RadiationConfig.disableCoal) return;
-		getData(entity).blacklung = blacklung;
+		HbmLivingProps.getData(entity).blacklung = blacklung;
 		
-		if(blacklung >= maxBlacklung) {
-			getData(entity).blacklung = 0;
+		if(blacklung >= HbmLivingProps.maxBlacklung) {
+			HbmLivingProps.getData(entity).blacklung = 0;
 			entity.attackEntityFrom(ModDamageSource.blacklung, 1000);
 		}
 	}
 	
 	public static void incrementBlackLung(EntityLivingBase entity, int blacklung) {
 		if(RadiationConfig.disableCoal) return;
-		setBlackLung(entity, getBlackLung(entity) + blacklung);
+		HbmLivingProps.setBlackLung(entity, HbmLivingProps.getBlackLung(entity) + blacklung);
 		
 		if(entity instanceof EntityPlayerMP) {
-			PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.start("").nextTranslation("info.coaldust").color(EnumChatFormatting.RED).flush(), MainRegistry.proxy.ID_GAS_HAZARD, 3000), (EntityPlayerMP) entity);
+			PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.start("").nextTranslation("info.coaldust").color(EnumChatFormatting.RED).flush(), ServerProxy.ID_GAS_HAZARD, 3000), (EntityPlayerMP) entity);
 		}
 	}
 	
 	/// TIME BOMB ///
 	public static int getTimer(EntityLivingBase entity) {
-		return getData(entity).bombTimer;
+		return HbmLivingProps.getData(entity).bombTimer;
 	}
 	
 	public static void setTimer(EntityLivingBase entity, int bombTimer) {
-		getData(entity).bombTimer = bombTimer;
+		HbmLivingProps.getData(entity).bombTimer = bombTimer;
 	}
 	
 	/// CONTAGION ///
 	public static int getContagion(EntityLivingBase entity) {
-		return getData(entity).contagion;
+		return HbmLivingProps.getData(entity).contagion;
 	}
 	
 	public static void setContagion(EntityLivingBase entity, int contageon) {
-		getData(entity).contagion = contageon;
+		HbmLivingProps.getData(entity).contagion = contageon;
 	}
 	
 	/// OIL ///
 	public static int getOil(EntityLivingBase entity) {
-		return getData(entity).oil;
+		return HbmLivingProps.getData(entity).oil;
 	}
 	
 	public static void setOil(EntityLivingBase entity, int oil) {
-		getData(entity).oil = oil;
+		HbmLivingProps.getData(entity).oil = oil;
 	}
 	
 	/// TEMPERATURE ///
 	public static int getTemperature(EntityLivingBase entity) {
-		return getData(entity).temperature;
+		return HbmLivingProps.getData(entity).temperature;
 	}
 	
 	public static void setTemperature(EntityLivingBase entity, int temperature) {
-		HbmLivingProps data = getData(entity);
+		HbmLivingProps data = HbmLivingProps.getData(entity);
 		temperature = MathHelper.clamp_int(temperature, -2500, 2500);
 		data.temperature = temperature;
 		if(temperature > 1000)  data.burning = true;
@@ -290,8 +293,8 @@ public class HbmLivingProps implements IExtendedEntityProperties {
 		if(temperature > -800)  data.frozen = false;
 	}
 
-	public static boolean isFrozen(EntityLivingBase entity) { return getData(entity).frozen; };
-	public static boolean isBurning(EntityLivingBase entity) { return getData(entity).burning; };
+	public static boolean isFrozen(EntityLivingBase entity) { return HbmLivingProps.getData(entity).frozen; };
+	public static boolean isBurning(EntityLivingBase entity) { return HbmLivingProps.getData(entity).burning; };
 
 	@Override
 	public void init(Entity entity, World world) { }
@@ -301,13 +304,13 @@ public class HbmLivingProps implements IExtendedEntityProperties {
 		
 		NBTTagCompound props = new NBTTagCompound();
 		
-		props.setFloat("hfr_radiation", radiation);
-		props.setFloat("hfr_digamma", digamma);
-		props.setInteger("hfr_asbestos", asbestos);
-		props.setInteger("hfr_bomb", bombTimer);
-		props.setInteger("hfr_contagion", contagion);
-		props.setInteger("hfr_blacklung", blacklung);
-		props.setInteger("hfr_oil", oil);
+		props.setFloat("hfr_radiation", this.radiation);
+		props.setFloat("hfr_digamma", this.digamma);
+		props.setInteger("hfr_asbestos", this.asbestos);
+		props.setInteger("hfr_bomb", this.bombTimer);
+		props.setInteger("hfr_contagion", this.contagion);
+		props.setInteger("hfr_blacklung", this.blacklung);
+		props.setInteger("hfr_oil", this.oil);
 		
 		props.setInteger("hfr_cont_count", this.contamination.size());
 		
@@ -324,13 +327,13 @@ public class HbmLivingProps implements IExtendedEntityProperties {
 		NBTTagCompound props = (NBTTagCompound) nbt.getTag("HbmLivingProps");
 		
 		if(props != null) {
-			radiation = props.getFloat("hfr_radiation");
-			digamma = props.getFloat("hfr_digamma");
-			asbestos = props.getInteger("hfr_asbestos");
-			bombTimer = props.getInteger("hfr_bomb");
-			contagion = props.getInteger("hfr_contagion");
-			blacklung = props.getInteger("hfr_blacklung");
-			oil = props.getInteger("hfr_oil");
+			this.radiation = props.getFloat("hfr_radiation");
+			this.digamma = props.getFloat("hfr_digamma");
+			this.asbestos = props.getInteger("hfr_asbestos");
+			this.bombTimer = props.getInteger("hfr_bomb");
+			this.contagion = props.getInteger("hfr_contagion");
+			this.blacklung = props.getInteger("hfr_blacklung");
+			this.oil = props.getInteger("hfr_oil");
 			
 			int cont = props.getInteger("hfr_cont_count");
 			
@@ -354,7 +357,7 @@ public class HbmLivingProps implements IExtendedEntityProperties {
 		}
 		
 		public float getRad() {
-			return maxRad * ((float)time / (float)maxTime);
+			return this.maxRad * ((float)this.time / (float)this.maxTime);
 		}
 		
 		public void save(NBTTagCompound nbt, int index) {
@@ -362,7 +365,7 @@ public class HbmLivingProps implements IExtendedEntityProperties {
 			me.setFloat("maxRad", this.maxRad);
 			me.setInteger("maxTime", this.maxTime);
 			me.setInteger("time", this.time);
-			me.setBoolean("ignoreArmor", ignoreArmor);
+			me.setBoolean("ignoreArmor", this.ignoreArmor);
 			nbt.setTag("cont_" + index, me);
 		}
 		

@@ -44,24 +44,24 @@ public abstract class EntityRailCarElectric extends EntityRailCarRidable {
 	public void onUpdate() {
 		super.onUpdate();
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			if(this.hasChargeSlot()) {
-				ItemStack stack = this.getStackInSlot(this.getChargeSlot());
+			if(hasChargeSlot()) {
+				ItemStack stack = getStackInSlot(getChargeSlot());
 				
 				if(stack != null && stack.getItem() instanceof IBatteryItem) {
 					IBatteryItem battery = (IBatteryItem) stack.getItem();
-					int powerNeeded = this.getMaxPower() - this.getPower();
+					int powerNeeded = getMaxPower() - getPower();
 					long powerProvided = Math.min(battery.getDischargeRate(), battery.getCharge(stack));
 					int powerTransfered = (int) Math.min(powerNeeded, powerProvided);
 					
 					if(powerTransfered > 0) {
 						battery.dischargeBattery(stack, powerTransfered);
-						this.setPower(this.getPower() + powerTransfered);
+						setPower(getPower() + powerTransfered);
 					}
 				} else if(stack != null) {
 					if(stack.getItem() == ModItems.battery_creative || stack.getItem() == ModItems.fusion_core_infinite) {
-						this.setPower(this.getMaxPower());
+						setPower(getMaxPower());
 					}
 				}
 			}

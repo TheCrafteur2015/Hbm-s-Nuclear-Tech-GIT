@@ -30,7 +30,7 @@ public class ItemModLens extends ItemArmorMod implements ISatChip {
 	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		list.add(EnumChatFormatting.AQUA + "Satellite Frequency: " + this.getFreq(itemstack));
+		list.add(EnumChatFormatting.AQUA + "Satellite Frequency: " + getFreq(itemstack));
 		list.add("");
 		
 		super.addInformation(itemstack, player, list, bool);
@@ -44,15 +44,14 @@ public class ItemModLens extends ItemArmorMod implements ISatChip {
 	@Override
 	public void modUpdate(EntityLivingBase entity, ItemStack armor) {
 		World world = entity.worldObj;
-		if(world.isRemote) return;
-		if(!(entity instanceof EntityPlayerMP)) return;
+		if(world.isRemote || !(entity instanceof EntityPlayerMP)) return;
 		
 		EntityPlayerMP player = (EntityPlayerMP) entity;
 		ItemStack lens = ArmorModHandler.pryMods(armor)[ArmorModHandler.extra];
 		
 		if(lens == null) return;
 		
-		int freq = this.getFreq(lens);
+		int freq = getFreq(lens);
 		Satellite sat = SatelliteSavedData.getData(world).getSatFromFreq(freq);
 		if(!(sat instanceof SatelliteScanner)) return;
 

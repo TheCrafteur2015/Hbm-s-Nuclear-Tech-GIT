@@ -18,10 +18,10 @@ import net.minecraft.item.ItemStack;
 
 public class RefineryRecipeHandler extends TemplateRecipeHandler {
 
-	public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<RecipeTransferRect>();
-	public LinkedList<RecipeTransferRect> transferRectsGui = new LinkedList<RecipeTransferRect>();
-	public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<Class<? extends GuiContainer>>();
-	public LinkedList<Class<? extends GuiContainer>> guiGui = new LinkedList<Class<? extends GuiContainer>>();
+	public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<>();
+	public LinkedList<RecipeTransferRect> transferRectsGui = new LinkedList<>();
+	public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<>();
+	public LinkedList<Class<? extends GuiContainer>> guiGui = new LinkedList<>();
 
 	public class SmeltingSet extends TemplateRecipeHandler.CachedRecipe {
 		PositionedStack input;
@@ -43,22 +43,22 @@ public class RefineryRecipeHandler extends TemplateRecipeHandler {
 
 		@Override
 		public List<PositionedStack> getIngredients() {
-			return getCycledIngredients(cycleticks / 48, Arrays.asList(new PositionedStack[] { input }));
+			return getCycledIngredients(RefineryRecipeHandler.this.cycleticks / 48, Arrays.asList(new PositionedStack[] { this.input }));
 		}
 
 		@Override
 		public List<PositionedStack> getOtherStacks() {
-			List<PositionedStack> stacks = new ArrayList<PositionedStack>();
-			stacks.add(result2);
-			stacks.add(result3);
-			stacks.add(result4);
-			stacks.add(result5);
+			List<PositionedStack> stacks = new ArrayList<>();
+			stacks.add(this.result2);
+			stacks.add(this.result3);
+			stacks.add(this.result4);
+			stacks.add(this.result5);
 			return stacks;
 		}
 
 		@Override
 		public PositionedStack getResult() {
-			return result1;
+			return this.result1;
 		}
 	}
     
@@ -147,14 +147,14 @@ public class RefineryRecipeHandler extends TemplateRecipeHandler {
 
 	@Override
 	public void loadTransferRects() {
-		transferRectsGui = new LinkedList<RecipeTransferRect>();
-		guiGui = new LinkedList<Class<? extends GuiContainer>>();
+		this.transferRectsGui = new LinkedList<>();
+		this.guiGui = new LinkedList<>();
 
-		transferRects.add(new RecipeTransferRect(new Rectangle(138 - 1 - 36 - 27, 23, 36, 18), "refinery"));
-		transferRectsGui.add(new RecipeTransferRect(new Rectangle(18 * 2 + 2 + 36, 89 - 7 - 11 - 11, 18 * 4, 18), "refinery"));
-		guiGui.add(GUIMachineRefinery.class);
-		RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), transferRects);
-		RecipeTransferRectHandler.registerRectsToGuis(guiGui, transferRectsGui);
+		this.transferRects.add(new RecipeTransferRect(new Rectangle(138 - 1 - 36 - 27, 23, 36, 18), "refinery"));
+		this.transferRectsGui.add(new RecipeTransferRect(new Rectangle(18 * 2 + 2 + 36, 89 - 7 - 11 - 11, 18 * 4, 18), "refinery"));
+		this.guiGui.add(GUIMachineRefinery.class);
+		RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), this.transferRects);
+		RecipeTransferRectHandler.registerRectsToGuis(this.guiGui, this.transferRectsGui);
 	}
 
 }

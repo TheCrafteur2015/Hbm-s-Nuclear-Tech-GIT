@@ -36,7 +36,7 @@ public class TileEntityHeaterOilburner extends TileEntityMachinePolluting implem
 
 	public TileEntityHeaterOilburner() {
 		super(3, 100);
-		tank = new FluidTank(Fluids.HEATINGOIL, 16000);
+		this.tank = new FluidTank(Fluids.HEATINGOIL, 16000);
 	}
 
 	@Override
@@ -46,102 +46,102 @@ public class TileEntityHeaterOilburner extends TileEntityMachinePolluting implem
 	
 	public DirPos[] getConPos() {
 		return new DirPos[] {
-				new DirPos(xCoord + 2, yCoord, zCoord, Library.POS_X),
-				new DirPos(xCoord - 2, yCoord, zCoord, Library.NEG_X),
-				new DirPos(xCoord, yCoord, zCoord + 2, Library.POS_Z),
-				new DirPos(xCoord, yCoord, zCoord - 2, Library.NEG_Z)
+				new DirPos(this.xCoord + 2, this.yCoord, this.zCoord, Library.POS_X),
+				new DirPos(this.xCoord - 2, this.yCoord, this.zCoord, Library.NEG_X),
+				new DirPos(this.xCoord, this.yCoord, this.zCoord + 2, Library.POS_Z),
+				new DirPos(this.xCoord, this.yCoord, this.zCoord - 2, Library.NEG_Z)
 		};
 	}
 
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			tank.loadTank(0, 1, slots);
-			tank.setType(2, slots);
+			this.tank.loadTank(0, 1, this.slots);
+			this.tank.setType(2, this.slots);
 
-			for(DirPos pos : this.getConPos()) {
-				this.trySubscribe(tank.getTankType(), worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
-				this.sendSmoke(pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			for(DirPos pos : getConPos()) {
+				trySubscribe(this.tank.getTankType(), this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+				sendSmoke(pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 			}
 			
 			boolean shouldCool = true;
 			
-			if(this.isOn && this.heatEnergy < maxHeatEnergy) {
+			if(this.isOn && this.heatEnergy < TileEntityHeaterOilburner.maxHeatEnergy) {
 				
-				if(tank.getTankType().hasTrait(FT_Flammable.class)) {
-					FT_Flammable type = tank.getTankType().getTrait(FT_Flammable.class);
+				if(this.tank.getTankType().hasTrait(FT_Flammable.class)) {
+					FT_Flammable type = this.tank.getTankType().getTrait(FT_Flammable.class);
 					
-					int burnRate = setting;
-					int toBurn = Math.min(burnRate, tank.getFill());
+					int burnRate = this.setting;
+					int toBurn = Math.min(burnRate, this.tank.getFill());
 					
-					tank.setFill(tank.getFill() - toBurn);
+					this.tank.setFill(this.tank.getFill() - toBurn);
 					
 					int heat = (int)(type.getHeatEnergy() / 1000);
 					
 					this.heatEnergy += heat * toBurn;
 
-					if(worldObj.getTotalWorldTime() % 20 == 0 && toBurn > 0) {
-						this.pollute(PollutionType.SOOT, PollutionHandler.SOOT_PER_SECOND * burnRate * 0.5F);
-						if(tank.getTankType().hasTrait(FT_Leaded.class)) this.pollute(PollutionType.HEAVYMETAL, PollutionHandler.HEAVY_METAL_PER_SECOND * burnRate * 0.5F);
+					if(this.worldObj.getTotalWorldTime() % 20 == 0 && toBurn > 0) {
+						pollute(PollutionType.SOOT, PollutionHandler.SOOT_PER_SECOND * burnRate * 0.5F);
+						if(this.tank.getTankType().hasTrait(FT_Leaded.class)) pollute(PollutionType.HEAVYMETAL, PollutionHandler.HEAVY_METAL_PER_SECOND * burnRate * 0.5F);
 					}
 					
 					shouldCool = false;
 				}
 			}
 			
-			if(this.heatEnergy >= maxHeatEnergy)
+			if(this.heatEnergy >= TileEntityHeaterOilburner.maxHeatEnergy)
 				shouldCool = false;
 			
 			if(shouldCool)
 				this.heatEnergy = Math.max(this.heatEnergy - Math.max(this.heatEnergy / 1000, 1), 0);
 			
 			NBTTagCompound data = new NBTTagCompound();
-			tank.writeToNBT(data, "tank");
-			data.setBoolean("isOn", isOn);
-			data.setInteger("h", heatEnergy);
+			this.tank.writeToNBT(data, "tank");
+			data.setBoolean("isOn", this.isOn);
+			data.setInteger("h", this.heatEnergy);
 			data.setByte("s", (byte) this.setting);
-			this.networkPack(data, 25);
+			networkPack(data, 25);
 		}
 	}
 
 	@Override
 	public void networkUnpack(NBTTagCompound nbt) {
-		tank.readFromNBT(nbt, "tank");
-		isOn = nbt.getBoolean("isOn");
-		heatEnergy = nbt.getInteger("h");
-		setting = nbt.getByte("s");
+		this.tank.readFromNBT(nbt, "tank");
+		this.isOn = nbt.getBoolean("isOn");
+		this.heatEnergy = nbt.getInteger("h");
+		this.setting = nbt.getByte("s");
 	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
-		tank.readFromNBT(nbt, "tank");
-		isOn = nbt.getBoolean("isOn");
-		heatEnergy = nbt.getInteger("heatEnergy");
-		setting = nbt.getByte("setting");
+		this.tank.readFromNBT(nbt, "tank");
+		this.isOn = nbt.getBoolean("isOn");
+		this.heatEnergy = nbt.getInteger("heatEnergy");
+		this.setting = nbt.getByte("setting");
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		tank.writeToNBT(nbt, "tank");
-		nbt.setBoolean("isOn", isOn);
-		nbt.setInteger("heatEnergy", heatEnergy);
+		this.tank.writeToNBT(nbt, "tank");
+		nbt.setBoolean("isOn", this.isOn);
+		nbt.setInteger("heatEnergy", this.heatEnergy);
 		nbt.setByte("setting", (byte) this.setting);
 	}
 	
 	public void toggleSetting() {
-		setting++;
+		this.setting++;
 		
-		if(setting > 10)
-			setting = 1;
+		if(this.setting > 10)
+			this.setting = 1;
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks()  {
-		return new FluidTank[] { tank };
+		return new FluidTank[] { this.tank };
 	}
 
 	@Override
@@ -157,7 +157,7 @@ public class TileEntityHeaterOilburner extends TileEntityMachinePolluting implem
 
 	@Override
 	public int getHeatStored() {
-		return heatEnergy;
+		return this.heatEnergy;
 	}
 
 	@Override
@@ -167,7 +167,7 @@ public class TileEntityHeaterOilburner extends TileEntityMachinePolluting implem
 
 	@Override
 	public boolean hasPermission(EntityPlayer player) {
-		return player.getDistanceSq(xCoord, yCoord, zCoord) <= 256;
+		return player.getDistanceSq(this.xCoord, this.yCoord, this.zCoord) <= 256;
 	}
 
 	@Override
@@ -175,7 +175,7 @@ public class TileEntityHeaterOilburner extends TileEntityMachinePolluting implem
 		if(data.hasKey("toggle")) {
 			this.isOn = !this.isOn;
 		}
-		this.markChanged();
+		markChanged();
 	}
 	
 	AxisAlignedBB bb = null;
@@ -183,18 +183,18 @@ public class TileEntityHeaterOilburner extends TileEntityMachinePolluting implem
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 1,
-					yCoord,
-					zCoord - 1,
-					xCoord + 2,
-					yCoord + 2,
-					zCoord + 2
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 1,
+					this.yCoord,
+					this.zCoord - 1,
+					this.xCoord + 2,
+					this.yCoord + 2,
+					this.zCoord + 2
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override
@@ -205,11 +205,11 @@ public class TileEntityHeaterOilburner extends TileEntityMachinePolluting implem
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return new FluidTank[] { tank };
+		return new FluidTank[] { this.tank };
 	}
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return this.getSmokeTanks();
+		return getSmokeTanks();
 	}
 }

@@ -10,9 +10,9 @@ import com.hbm.handler.ImpactWorldHandler;
 import com.hbm.saveddata.TomSaveData;
 import com.hbm.world.WorldProviderNTM;
 
+import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
 import net.minecraft.block.Block;
@@ -34,8 +34,8 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.terraingen.BiomeEvent;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
-import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType;
+import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
 
 public class ModEventHandlerImpact {
@@ -44,6 +44,7 @@ public class ModEventHandlerImpact {
 	private static Random rand = new Random();
 	//////////////////////////////////////////
 	
+	@SuppressWarnings("unchecked")
 	@SubscribeEvent
 	public void worldTick(WorldTickEvent event) {
 
@@ -67,7 +68,7 @@ public class ModEventHandlerImpact {
 			
 			if(!event.world.loadedEntityList.isEmpty()) {
 				
-				List<Object> oList = new ArrayList<Object>();
+				List<Object> oList = new ArrayList<>();
 				oList.addAll(event.world.loadedEntityList);
 				
 				for(Object e : oList) {
@@ -150,11 +151,11 @@ public class ModEventHandlerImpact {
 				event.replacement = Blocks.air;
 				
 			} else if(b == Blocks.cobblestone || b == Blocks.stonebrick) {
-				if(rand.nextInt(3) == 1) {
+				if(ModEventHandlerImpact.rand.nextInt(3) == 1) {
 					event.replacement = Blocks.gravel;
 				}
 			} else if(b == Blocks.sandstone) {
-				if(rand.nextInt(3) == 1) {
+				if(ModEventHandlerImpact.rand.nextInt(3) == 1) {
 					event.replacement = Blocks.sand;
 				}
 			} else if(b == Blocks.farmland) {
@@ -196,13 +197,13 @@ public class ModEventHandlerImpact {
 			EventType type = event.type;
 			
 			if(data.dust > 0 || data.fire > 0) {
-				if(type == event.type.TREE || type == event.type.BIG_SHROOM || type == event.type.GRASS || type == event.type.REED || type == event.type.FLOWERS || type == event.type.DEAD_BUSH
-						|| type == event.type.CACTUS || type == event.type.PUMPKIN || type == event.type.LILYPAD) {
+				if(type == EventType.TREE || type == EventType.BIG_SHROOM || type == EventType.GRASS || type == EventType.REED || type == EventType.FLOWERS || type == EventType.DEAD_BUSH
+						|| type == EventType.CACTUS || type == EventType.PUMPKIN || type == EventType.LILYPAD) {
 					event.setResult(Result.DENY);
 				}
 				
 			} else if(data.dust == 0 && data.fire == 0) {
-				if(type == event.type.TREE || type == event.type.BIG_SHROOM || type == event.type.CACTUS) {
+				if(type == EventType.TREE || type == EventType.BIG_SHROOM || type == EventType.CACTUS) {
 					if(event.world.rand.nextInt(9) == 0) {
 						event.setResult(Result.DEFAULT);
 					} else {
@@ -210,7 +211,7 @@ public class ModEventHandlerImpact {
 					}
 				}
 				
-				if(type == event.type.GRASS || type == event.type.REED) {
+				if(type == EventType.GRASS || type == EventType.REED) {
 					event.setResult(Result.DEFAULT);
 				}
 			}

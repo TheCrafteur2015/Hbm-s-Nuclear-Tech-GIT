@@ -15,23 +15,23 @@ private TileEntityMicrowave microwave;
 	
 	public ContainerMicrowave(InventoryPlayer invPlayer, TileEntityMicrowave tedf) {
 		
-		microwave = tedf;
+		this.microwave = tedf;
 
-		this.addSlotToContainer(new Slot(tedf, 0, 80, 35));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 1, 140, 35));
-		this.addSlotToContainer(new Slot(tedf, 2, 8, 53));
+		addSlotToContainer(new Slot(tedf, 0, 80, 35));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 1, 140, 35));
+		addSlotToContainer(new Slot(tedf, 2, 8, 53));
 		
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++)
 		{
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
 		}
 	}
 	
@@ -45,12 +45,12 @@ private TileEntityMicrowave microwave;
 			var3 = var5.copy();
 
 			if(par2 <= 2) {
-				if(!this.mergeItemStack(var5, 3, this.inventorySlots.size(), true)) {
+				if(!mergeItemStack(var5, 3, this.inventorySlots.size(), true)) {
 					return null;
 				}
 			} else {
-				if(!this.mergeItemStack(var5, 0, 1, true))
-					if(!this.mergeItemStack(var5, 2, 3, true))
+				if(!mergeItemStack(var5, 0, 1, true))
+					if(!mergeItemStack(var5, 2, 3, true))
 						return null;
 			}
 
@@ -66,6 +66,6 @@ private TileEntityMicrowave microwave;
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return microwave.isUseableByPlayer(player);
+		return this.microwave.isUseableByPlayer(player);
 	}
 }

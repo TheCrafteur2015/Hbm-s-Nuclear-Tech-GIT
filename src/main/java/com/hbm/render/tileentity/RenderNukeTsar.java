@@ -44,9 +44,11 @@ public class RenderNukeTsar extends TileEntitySpecialRenderer implements IItemRe
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase() {
+			@Override
 			public void renderInventory() {
 				GL11.glScaled(2.25, 2.25, 2.25);
 			}
+			@Override
 			public void renderCommon() {
 				GL11.glTranslated(1.5, 0, 0);
 				GL11.glDisable(GL11.GL_CULL_FACE);

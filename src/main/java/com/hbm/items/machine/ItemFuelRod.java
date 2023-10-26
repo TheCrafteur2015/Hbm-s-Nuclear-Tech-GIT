@@ -31,11 +31,13 @@ public class ItemFuelRod extends Item {
 		return stack.stackTagCompound.getInteger("life");
 	}
     
-    public boolean showDurabilityBar(ItemStack stack) {
+    @Override
+	public boolean showDurabilityBar(ItemStack stack) {
         return getDurabilityForDisplay(stack) > 0D;
     }
     
-    public double getDurabilityForDisplay(ItemStack stack) {
-        return (double)getLifeTime(stack) / (double)((ItemFuelRod)stack.getItem()).lifeTime;
+    @Override
+	public double getDurabilityForDisplay(ItemStack stack) {
+        return (double)ItemFuelRod.getLifeTime(stack) / (double)((ItemFuelRod)stack.getItem()).lifeTime;
     }
 }

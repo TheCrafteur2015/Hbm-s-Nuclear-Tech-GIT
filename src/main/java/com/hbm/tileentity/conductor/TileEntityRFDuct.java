@@ -17,29 +17,30 @@ public class TileEntityRFDuct extends TileEntity implements IEnergyHandler {
 		this.output = output;
 		this.storage = new EnergyStorage(200);
 
-		storage.setMaxReceive(output);
-		storage.setMaxExtract(output);
-		storage.setMaxTransfer(output);
+		this.storage.setMaxReceive(output);
+		this.storage.setMaxExtract(output);
+		this.storage.setMaxTransfer(output);
 	}
 
+	@Override
 	public void updateEntity() {
-		this.updateConnections();
+		updateConnections();
 
-		if (storage.getEnergyStored() > 0) {
+		if (this.storage.getEnergyStored() > 0) {
 			for (int i = 0; i < 6; i++) {
 
-				int targetX = xCoord + ForgeDirection.getOrientation(i).offsetX;
-				int targetY = yCoord + ForgeDirection.getOrientation(i).offsetY;
-				int targetZ = zCoord + ForgeDirection.getOrientation(i).offsetZ;
+				int targetX = this.xCoord + ForgeDirection.getOrientation(i).offsetX;
+				int targetY = this.yCoord + ForgeDirection.getOrientation(i).offsetY;
+				int targetZ = this.zCoord + ForgeDirection.getOrientation(i).offsetZ;
 
-				TileEntity tile = worldObj.getTileEntity(targetX, targetY, targetZ);
+				TileEntity tile = this.worldObj.getTileEntity(targetX, targetY, targetZ);
 				if (tile instanceof IEnergyReceiver) {
-					int maxExtract = storage.getMaxExtract();
-					int maxAvailable = storage.extractEnergy(maxExtract, true);
+					int maxExtract = this.storage.getMaxExtract();
+					int maxAvailable = this.storage.extractEnergy(maxExtract, true);
 					int energyTransferred = ((IEnergyReceiver) tile)
 							.receiveEnergy(ForgeDirection.getOrientation(i).getOpposite(), maxAvailable, false);
 
-					storage.extractEnergy(energyTransferred, false);
+					this.storage.extractEnergy(energyTransferred, false);
 				}
 			}
 		}
@@ -47,48 +48,48 @@ public class TileEntityRFDuct extends TileEntity implements IEnergyHandler {
 	}
 
 	public void updateConnections() {
-		if (this.worldObj.getTileEntity(xCoord, yCoord + 1, zCoord) instanceof IEnergyConnection)
-			connections[0] = ForgeDirection.UP;
+		if (this.worldObj.getTileEntity(this.xCoord, this.yCoord + 1, this.zCoord) instanceof IEnergyConnection)
+			this.connections[0] = ForgeDirection.UP;
 		else
-			connections[0] = null;
+			this.connections[0] = null;
 
-		if (this.worldObj.getTileEntity(xCoord, yCoord - 1, zCoord) instanceof IEnergyConnection)
-			connections[1] = ForgeDirection.DOWN;
+		if (this.worldObj.getTileEntity(this.xCoord, this.yCoord - 1, this.zCoord) instanceof IEnergyConnection)
+			this.connections[1] = ForgeDirection.DOWN;
 		else
-			connections[1] = null;
+			this.connections[1] = null;
 
-		if (this.worldObj.getTileEntity(xCoord, yCoord, zCoord - 1) instanceof IEnergyConnection)
-			connections[2] = ForgeDirection.NORTH;
+		if (this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord - 1) instanceof IEnergyConnection)
+			this.connections[2] = ForgeDirection.NORTH;
 		else
-			connections[2] = null;
+			this.connections[2] = null;
 
-		if (this.worldObj.getTileEntity(xCoord, yCoord, zCoord + 1) instanceof IEnergyConnection)
-			connections[3] = ForgeDirection.SOUTH;
+		if (this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord + 1) instanceof IEnergyConnection)
+			this.connections[3] = ForgeDirection.SOUTH;
 		else
-			connections[3] = null;
+			this.connections[3] = null;
 
-		if (this.worldObj.getTileEntity(xCoord + 1, yCoord, zCoord) instanceof IEnergyConnection)
-			connections[4] = ForgeDirection.EAST;
+		if (this.worldObj.getTileEntity(this.xCoord + 1, this.yCoord, this.zCoord) instanceof IEnergyConnection)
+			this.connections[4] = ForgeDirection.EAST;
 		else
-			connections[4] = null;
+			this.connections[4] = null;
 
-		if (this.worldObj.getTileEntity(xCoord - 1, yCoord, zCoord) instanceof IEnergyConnection)
-			connections[5] = ForgeDirection.WEST;
+		if (this.worldObj.getTileEntity(this.xCoord - 1, this.yCoord, this.zCoord) instanceof IEnergyConnection)
+			this.connections[5] = ForgeDirection.WEST;
 		else
-			connections[5] = null;
+			this.connections[5] = null;
 	}
 
 	public boolean onlyOneOpposite(ForgeDirection[] directions) {
 		ForgeDirection mainDirection = null;
 		boolean isOpposite = false;
 
-		for (int i = 0; i < directions.length; i++) {
+		for (ForgeDirection direction : directions) {
 
-			if (mainDirection == null && directions[i] != null)
-				mainDirection = directions[i];
+			if (mainDirection == null && direction != null)
+				mainDirection = direction;
 
-			if (directions[i] != null && mainDirection != directions[i]) {
-				if (!isOpposite(mainDirection, directions[i]))
+			if (direction != null && mainDirection != direction) {
+				if (!isOpposite(mainDirection, direction))
 					return false;
 				else
 					isOpposite = true;
@@ -122,23 +123,23 @@ public class TileEntityRFDuct extends TileEntity implements IEnergyHandler {
 
 	@Override
 	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-		return this.storage.receiveEnergy(Math.min(output, maxReceive), simulate);
+		return this.storage.receiveEnergy(Math.min(this.output, maxReceive), simulate);
 	}
 
 	@Override
 	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
 
-		return storage.extractEnergy(storage.getMaxExtract(), simulate);
+		return this.storage.extractEnergy(this.storage.getMaxExtract(), simulate);
 	}
 
 	@Override
 	public int getEnergyStored(ForgeDirection from) {
-		return storage.getEnergyStored();
+		return this.storage.getEnergyStored();
 	}
 
 	@Override
 	public int getMaxEnergyStored(ForgeDirection from) {
-		return storage.getMaxEnergyStored();
+		return this.storage.getMaxEnergyStored();
 	}
 
 }

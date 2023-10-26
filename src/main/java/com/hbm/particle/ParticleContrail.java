@@ -26,8 +26,8 @@ public class ParticleContrail extends EntityFX {
 
 	public ParticleContrail(TextureManager p_i1213_1_, World p_i1218_1_, double p_i1218_2_, double p_i1218_4_, double p_i1218_6_) {
 		super(p_i1218_1_, p_i1218_2_, p_i1218_4_, p_i1218_6_);
-		theRenderEngine = p_i1213_1_;
-		maxAge = 100 + rand.nextInt(40);
+		this.theRenderEngine = p_i1213_1_;
+		this.maxAge = 100 + this.rand.nextInt(40);
 		
         this.particleRed = this.particleGreen = this.particleBlue = 0;
         this.particleScale = 1F;
@@ -35,8 +35,8 @@ public class ParticleContrail extends EntityFX {
 
 	public ParticleContrail(TextureManager p_i1213_1_, World p_i1218_1_, double p_i1218_2_, double p_i1218_4_, double p_i1218_6_, float red, float green, float blue, float scale) {
 		super(p_i1218_1_, p_i1218_2_, p_i1218_4_, p_i1218_6_);
-		theRenderEngine = p_i1213_1_;
-		maxAge = 100 + rand.nextInt(40);
+		this.theRenderEngine = p_i1213_1_;
+		this.maxAge = 100 + this.rand.nextInt(40);
 
         this.particleRed = red;
         this.particleGreen = green;
@@ -45,28 +45,31 @@ public class ParticleContrail extends EntityFX {
         this.particleScale = scale;
 	}
 
+	@Override
 	public void onUpdate() {
 		this.prevPosX = this.posX;
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
 		
-		particleAlpha = 1 - ((float) age / (float) maxAge);
+		this.particleAlpha = 1 - ((float) this.age / (float) this.maxAge);
 		
 		++this.age;
 		
 
 		if (this.age == this.maxAge) {
-			this.setDead();
+			setDead();
 		}
 	}
 
+	@Override
 	public int getFXLayer() {
 		return 3;
 	}
 
+	@Override
 	public void renderParticle(Tessellator p_70539_1_, float p_70539_2_, float p_70539_3_, float p_70539_4_, float p_70539_5_, float p_70539_6_, float p_70539_7_) {
 		
-		this.theRenderEngine.bindTexture(texture);
+		this.theRenderEngine.bindTexture(ParticleContrail.texture);
 		
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glDisable(GL11.GL_LIGHTING);
@@ -75,7 +78,7 @@ public class ParticleContrail extends EntityFX {
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);
 		RenderHelper.disableStandardItemLighting();
 		
-		Random urandom = new Random(this.getEntityId());
+		Random urandom = new Random(getEntityId());
 		
 		for(int i = 0; i < 6; i++) {
 			
@@ -87,10 +90,10 @@ public class ParticleContrail extends EntityFX {
 			p_70539_1_.setNormal(0.0F, 1.0F, 0.0F);
 			p_70539_1_.setBrightness(240);
 			
-			float scale = particleAlpha + 0.5F * this.particleScale;
-	        float pX = (float) ((this.prevPosX + (this.posX - this.prevPosX) * (double)p_70539_2_ - interpPosX) + urandom.nextGaussian() * 0.5);
-	        float pY = (float) ((this.prevPosY + (this.posY - this.prevPosY) * (double)p_70539_2_ - interpPosY) + urandom.nextGaussian() * 0.5);
-	        float pZ = (float) ((this.prevPosZ + (this.posZ - this.prevPosZ) * (double)p_70539_2_ - interpPosZ) + urandom.nextGaussian() * 0.5);
+			float scale = this.particleAlpha + 0.5F * this.particleScale;
+	        float pX = (float) ((this.prevPosX + (this.posX - this.prevPosX) * (double)p_70539_2_ - EntityFX.interpPosX) + urandom.nextGaussian() * 0.5);
+	        float pY = (float) ((this.prevPosY + (this.posY - this.prevPosY) * (double)p_70539_2_ - EntityFX.interpPosY) + urandom.nextGaussian() * 0.5);
+	        float pZ = (float) ((this.prevPosZ + (this.posZ - this.prevPosZ) * (double)p_70539_2_ - EntityFX.interpPosZ) + urandom.nextGaussian() * 0.5);
 	        
 			p_70539_1_.addVertexWithUV((double)(pX - p_70539_3_ * scale - p_70539_6_ * scale), (double)(pY - p_70539_4_ * scale), (double)(pZ - p_70539_5_ * scale - p_70539_7_ * scale), 1, 1);
 			p_70539_1_.addVertexWithUV((double)(pX - p_70539_3_ * scale + p_70539_6_ * scale), (double)(pY + p_70539_4_ * scale), (double)(pZ - p_70539_5_ * scale + p_70539_7_ * scale), 1, 0);

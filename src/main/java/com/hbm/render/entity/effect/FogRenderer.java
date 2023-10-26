@@ -63,7 +63,7 @@ public class FogRenderer extends Render {
 			GL11.glScaled(size, size, size);
 
 			GL11.glPushMatrix();
-			this.bindEntityTexture(p_76986_1_);
+			bindEntityTexture(p_76986_1_);
 			Tessellator tess = Tessellator.instance;
 			
 			tess.startDrawingQuads();

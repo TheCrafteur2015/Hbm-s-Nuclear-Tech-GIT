@@ -53,34 +53,34 @@ public class ItemRenderTransformer implements IItemRenderer {
 		switch(type) {
 		
 		case EQUIPPED_FIRST_PERSON:
-			GL11.glRotated(rfp[1], 0, 1, 0);
-			GL11.glRotated(rfp[2], 0, 0, 1);
-			GL11.glRotated(rfp[0], 1, 0, 0);
+			GL11.glRotated(this.rfp[1], 0, 1, 0);
+			GL11.glRotated(this.rfp[2], 0, 0, 1);
+			GL11.glRotated(this.rfp[0], 1, 0, 0);
 			GL11.glTranslated(0.5, 0.5, 0);
 			GL11.glTranslated(-0.5, -0.5, 0);
 			GL11.glRotated(180, 0, 1, 0);
 			GL11.glRotated(-90, 0, 0, 1);
 			GL11.glTranslated(0.5, 0.5, 0);
-			GL11.glScaled(sfp[0] * 2, sfp[1] * 2, sfp[2] * 2);
+			GL11.glScaled(this.sfp[0] * 2, this.sfp[1] * 2, this.sfp[2] * 2);
 			GL11.glTranslated(-0.5, -0.5, 0.25);
 			break;
 		case EQUIPPED:
-			GL11.glRotated(rtp[1], 0, 1, 0);
-			GL11.glRotated(rtp[2], 0, 0, 1);
-			GL11.glRotated(rtp[0], 1, 0, 0);
-			GL11.glTranslated(ttp[0], ttp[1], ttp[2]);
+			GL11.glRotated(this.rtp[1], 0, 1, 0);
+			GL11.glRotated(this.rtp[2], 0, 0, 1);
+			GL11.glRotated(this.rtp[0], 1, 0, 0);
+			GL11.glTranslated(this.ttp[0], this.ttp[1], this.ttp[2]);
 			GL11.glRotated(45, 0, 0, 1);
 			GL11.glRotated(180, 0, 1, 0);
 			GL11.glRotated(-45, 0, 0, 1);
-			GL11.glScaled(stp[0], stp[1], stp[2]);
+			GL11.glScaled(this.stp[0], this.stp[1], this.stp[2]);
 			break;
 		case INVENTORY:
-			GL11.glRotated(rir[0], 1, 0, 0);
-			GL11.glRotated(rir[1], 0, 1, 0);
-			GL11.glRotated(rir[2], 0, 0, 1);
-			GL11.glTranslated(tir[0] * 0.0625, tir[1] * 0.0625, tir[2] * 0.0625);
+			GL11.glRotated(this.rir[0], 1, 0, 0);
+			GL11.glRotated(this.rir[1], 0, 1, 0);
+			GL11.glRotated(this.rir[2], 0, 0, 1);
+			GL11.glTranslated(this.tir[0] * 0.0625, this.tir[1] * 0.0625, this.tir[2] * 0.0625);
 			GL11.glTranslated(8, 8, 0);
-			GL11.glScaled(sir[0], sir[1], sir[2]);
+			GL11.glScaled(this.sir[0], this.sir[1], this.sir[2]);
 			GL11.glTranslated(-8, -8, 0);
 			break;
 			

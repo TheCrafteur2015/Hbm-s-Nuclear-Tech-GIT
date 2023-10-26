@@ -16,6 +16,7 @@ import com.hbm.util.Compat;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -37,7 +38,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockDynamicSlag extends BlockContainer {
 	
-	private HashMap<NTMMaterial, IIcon> iconMap = new HashMap();
+	private HashMap<NTMMaterial, IIcon> iconMap = new HashMap<>();
 
 	public BlockDynamicSlag() {
 		super(Material.iron);
@@ -49,6 +50,7 @@ public class BlockDynamicSlag extends BlockContainer {
 		return new TileEntitySlag();
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister reg) {
 		super.registerBlockIcons(reg);
@@ -58,10 +60,10 @@ public class BlockDynamicSlag extends BlockContainer {
 			
 			for(NTMMaterial mat : Mats.orderedList) {
 				if(mat.solidColorLight != mat.solidColorDark) {
-					String placeholderName = this.getTextureName() + "-" + mat.names[0];
+					String placeholderName = getTextureName() + "-" + mat.names[0];
 					TextureAtlasSpriteMutatable mutableIcon = new TextureAtlasSpriteMutatable(placeholderName, new RGBMutatorInterpolatedComponentRemap(0xFFFFFF, 0x505050, mat.solidColorLight, mat.solidColorDark)).setBlockAtlas();
 					map.setTextureEntry(placeholderName, mutableIcon);
-					iconMap.put(mat, mutableIcon);
+					this.iconMap.put(mat, mutableIcon);
 				}
 			}
 		}
@@ -74,7 +76,7 @@ public class BlockDynamicSlag extends BlockContainer {
 		TileEntitySlag tile = (TileEntitySlag) world.getTileEntity(x, y, z);
 		
 		if(tile != null && tile.mat != null) {
-			IIcon override = iconMap.get(tile.mat);
+			IIcon override = this.iconMap.get(tile.mat);
 			if(override != null) {
 				return override;
 			}
@@ -90,7 +92,7 @@ public class BlockDynamicSlag extends BlockContainer {
 		TileEntitySlag tile = (TileEntitySlag) world.getTileEntity(x, y, z);
 		
 		if(tile != null && tile.mat != null) {
-			if(!iconMap.containsKey(tile.mat)) {
+			if(!this.iconMap.containsKey(tile.mat)) {
 				return tile.mat.moltenColor;
 			}
 		}
@@ -107,7 +109,7 @@ public class BlockDynamicSlag extends BlockContainer {
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
 		TileEntitySlag tile = (TileEntitySlag) world.getTileEntity(x, y, z);
 		if(tile != null) {
-			this.setBlockBounds(0F, 0F, 0F, 1F, (float) tile.amount / (float) TileEntitySlag.maxAmount, 1F);
+			setBlockBounds(0F, 0F, 0F, 1F, (float) tile.amount / (float) TileEntitySlag.maxAmount, 1F);
 		}
 	}
 
@@ -115,7 +117,7 @@ public class BlockDynamicSlag extends BlockContainer {
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
 		TileEntitySlag tile = (TileEntitySlag) world.getTileEntity(x, y, z);
 		if(tile != null) {
-			this.setBlockBounds(0F, 0F, 0F, 1F, (float) tile.amount / (float) TileEntitySlag.maxAmount, 1F);
+			setBlockBounds(0F, 0F, 0F, 1F, (float) tile.amount / (float) TileEntitySlag.maxAmount, 1F);
 		}
 		return AxisAlignedBB.getBoundingBox(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
 	}
@@ -176,7 +178,7 @@ public class BlockDynamicSlag extends BlockContainer {
 			}
 		}
 		
-		if(self.amount >= self.maxAmount / 5 && count > 0) {
+		if(self.amount >= TileEntitySlag.maxAmount / 5 && count > 0) {
 			int toSpread = Math.max(self.amount / (count * 2), 1);
 			
 			for(ForgeDirection dir : sides) {
@@ -201,21 +203,21 @@ public class BlockDynamicSlag extends BlockContainer {
 	public void onBlockHarvested(World world, int x, int y, int z, int meta, EntityPlayer player) {
 		
 		if(!player.capabilities.isCreativeMode) {
-			harvesters.set(player);
+			this.harvesters.set(player);
 			this.dropBlockAsItem(world, x, y, z, meta, 0);
-			harvesters.set(null);
+			this.harvesters.set(null);
 		}
 	}
 	
 	@Override
 	public void harvestBlock(World world, EntityPlayer player, int x, int y, int z, int meta) {
-		player.addStat(StatList.mineBlockStatArray[getIdFromBlock(this)], 1);
+		player.addStat(StatList.mineBlockStatArray[Block.getIdFromBlock(this)], 1);
 		player.addExhaustion(0.025F);
 	}
 
 	@Override
 	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+		ArrayList<ItemStack> ret = new ArrayList<>();
 		
 		TileEntitySlag tile = (TileEntitySlag) world.getTileEntity(x, y, z);
 		
@@ -252,13 +254,13 @@ public class BlockDynamicSlag extends BlockContainer {
 		@Override
 		public Packet getDescriptionPacket() {
 			NBTTagCompound nbt = new NBTTagCompound();
-			this.writeToNBT(nbt);
+			writeToNBT(nbt);
 			return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, nbt);
 		}
 		
 		@Override
 		public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-			this.readFromNBT(pkt.func_148857_g());
+			readFromNBT(pkt.func_148857_g());
 		}
 
 		@Override

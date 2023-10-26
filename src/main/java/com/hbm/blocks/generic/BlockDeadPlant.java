@@ -28,7 +28,7 @@ public class BlockDeadPlant extends BlockEnumMulti {
 
 	@Override
 	public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-		return super.canPlaceBlockAt(world, x, y, z) && this.canBlockStay(world, x, y, z);
+		return super.canPlaceBlockAt(world, x, y, z) && canBlockStay(world, x, y, z);
 	}
 
 	protected boolean canPlaceBlockOn(Block block) {
@@ -38,13 +38,13 @@ public class BlockDeadPlant extends BlockEnumMulti {
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
 		super.onNeighborBlockChange(world, x, y, z, block);
-		this.checkAndDropBlock(world, x, y, z);
+		checkAndDropBlock(world, x, y, z);
 	}
 	
 	protected void checkAndDropBlock(World world, int x, int y, int z) {
-		if(!this.canBlockStay(world, x, y, z)) {
+		if(!canBlockStay(world, x, y, z)) {
 			this.dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
-			world.setBlock(x, y, z, getBlockById(0), 0, 2);
+			world.setBlock(x, y, z, Block.getBlockById(0), 0, 2);
 		}
 	}
 

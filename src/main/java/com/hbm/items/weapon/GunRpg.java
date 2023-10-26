@@ -28,7 +28,7 @@ public class GunRpg extends Item {
 	private IIcon[] iconArray;
 	public GunRpg() {
 		this.maxStackSize = 1;
-		this.setMaxDamage(500);
+		setMaxDamage(500);
 	}
 
 	/**
@@ -37,7 +37,7 @@ public class GunRpg extends Item {
 	 */
 	@Override
 	public void onPlayerStoppedUsing(ItemStack p_77615_1_, World p_77615_2_, EntityPlayer p_77615_3_, int p_77615_4_) {
-		int j = this.getMaxItemUseDuration(p_77615_1_) - p_77615_4_;
+		int j = getMaxItemUseDuration(p_77615_1_) - p_77615_4_;
 
 		ArrowLooseEvent event = new ArrowLooseEvent(p_77615_3_, p_77615_1_, j);
 		MinecraftForge.EVENT_BUS.post(event);
@@ -111,7 +111,7 @@ public class GunRpg extends Item {
 		ArrowNockEvent event = new ArrowNockEvent(p_77659_3_, p_77659_1_);
 		MinecraftForge.EVENT_BUS.post(event);
 		
-		p_77659_3_.setItemInUse(p_77659_1_, this.getMaxItemUseDuration(p_77659_1_));
+		p_77659_3_.setItemInUse(p_77659_1_, getMaxItemUseDuration(p_77659_1_));
 
 		return p_77659_1_;
 	}
@@ -125,6 +125,7 @@ public class GunRpg extends Item {
 		return 1;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
@@ -134,11 +135,12 @@ public class GunRpg extends Item {
 		list.add("Projectiles explode on impact.");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Multimap getItemAttributeModifiers() {
 		Multimap multimap = super.getItemAttributeModifiers();
 		multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
-				new AttributeModifier(field_111210_e, "Weapon modifier", 4, 0));
+				new AttributeModifier(Item.field_111210_e, "Weapon modifier", 4, 0));
 		return multimap;
 	}
 }

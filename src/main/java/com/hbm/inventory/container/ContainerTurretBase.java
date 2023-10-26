@@ -14,30 +14,30 @@ public class ContainerTurretBase extends Container {
 	private TileEntityTurretBaseNT turret;
 
 	public ContainerTurretBase(InventoryPlayer invPlayer, TileEntityTurretBaseNT te) {
-		turret = te;
-		turret.openInventory();
+		this.turret = te;
+		this.turret.openInventory();
 		
-		this.addSlotToContainer(new Slot(te, 0, 98, 27));
+		addSlotToContainer(new Slot(te, 0, 98, 27));
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 3; j++) {
-				this.addSlotToContainer(new Slot(te, 1 + i * 3 + j, 80 + j * 18, 63 + i * 18));
+				addSlotToContainer(new Slot(te, 1 + i * 3 + j, 80 + j * 18, 63 + i * 18));
 			}
 		}
 		
-		this.addSlotToContainer(new Slot(te, 10, 152, 99));
+		addSlotToContainer(new Slot(te, 10, 152, 99));
 		
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + (18 * 3) + 2));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + (18 * 3) + 2));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++)
 		{
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + (18 * 3) + 2));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + (18 * 3) + 2));
 		}
 	}
 
@@ -50,16 +50,16 @@ public class ContainerTurretBase extends Container {
 			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 
-			if(par2 <= turret.getSizeInventory() - 1) {
-				if(!this.mergeItemStack(var5, turret.getSizeInventory(), this.inventorySlots.size(), true)) {
+			if(par2 <= this.turret.getSizeInventory() - 1) {
+				if(!mergeItemStack(var5, this.turret.getSizeInventory(), this.inventorySlots.size(), true)) {
 					return null;
 				}
 			} else if(var5.getItem() == ModItems.turret_chip) {
 				
-				if(!this.mergeItemStack(var5, 0, 1, false))
+				if(!mergeItemStack(var5, 0, 1, false))
 					return null;
 				
-			} else if(!this.mergeItemStack(var5, 1, turret.getSizeInventory(), false)) {
+			} else if(!mergeItemStack(var5, 1, this.turret.getSizeInventory(), false)) {
 				return null;
 			}
 
@@ -77,7 +77,7 @@ public class ContainerTurretBase extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return turret.isUseableByPlayer(player);
+		return this.turret.isUseableByPlayer(player);
 	}
 	
 	@Override

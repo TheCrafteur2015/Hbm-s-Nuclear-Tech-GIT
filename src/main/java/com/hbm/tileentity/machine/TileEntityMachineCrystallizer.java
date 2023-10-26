@@ -44,7 +44,7 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 
 	public TileEntityMachineCrystallizer() {
 		super(8);
-		tank = new FluidTank(Fluids.ACID, 8000);
+		this.tank = new FluidTank(Fluids.ACID, 8000);
 	}
 
 	@Override
@@ -55,49 +55,49 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			this.updateConnections();
+			updateConnections();
 			
-			power = Library.chargeTEFromItems(slots, 1, power, maxPower);
-			tank.setType(7, slots);
-			tank.loadTank(3, 4, slots);
+			this.power = Library.chargeTEFromItems(this.slots, 1, this.power, TileEntityMachineCrystallizer.maxPower);
+			this.tank.setType(7, this.slots);
+			this.tank.loadTank(3, 4, this.slots);
 			
 			for(int i = 0; i < getCycleCount(); i++) {
 				
 				if(canProcess()) {
 					
-					progress++;
-					power -= getPowerRequired();
+					this.progress++;
+					this.power -= getPowerRequired();
 					
-					if(progress > getDuration()) {
-						progress = 0;
+					if(this.progress > getDuration()) {
+						this.progress = 0;
 						processItem();
 						
-						this.markDirty();
+						markDirty();
 					}
 					
 				} else {
-					progress = 0;
+					this.progress = 0;
 				}
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setShort("progress", progress);
+			data.setShort("progress", this.progress);
 			data.setShort("duration", getDuration());
-			data.setLong("power", power);
-			tank.writeToNBT(data, "t");
-			this.networkPack(data, 25);
+			data.setLong("power", this.power);
+			this.tank.writeToNBT(data, "t");
+			networkPack(data, 25);
 		} else {
 			
-			prevAngle = angle;
+			this.prevAngle = this.angle;
 			
-			if(progress > 0) {
-				angle += 5F * this.getCycleCount();
+			if(this.progress > 0) {
+				this.angle += 5F * getCycleCount();
 				
-				if(angle >= 360) {
-					angle -= 360;
-					prevAngle -= 360;
+				if(this.angle >= 360) {
+					this.angle -= 360;
+					this.prevAngle -= 360;
 				}
 			}
 		}
@@ -106,34 +106,35 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 	private void updateConnections() {
 		
 		for(DirPos pos : getConPos()) {
-			this.trySubscribe(worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
-			this.trySubscribe(tank.getTankType(), worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			this.trySubscribe(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			this.trySubscribe(this.tank.getTankType(), this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 		}
 	}
 	
 	protected DirPos[] getConPos() {
 
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
 
 		if(dir == ForgeDirection.NORTH || dir == ForgeDirection.SOUTH) {
 			
 			return new DirPos[] {
-				new DirPos(xCoord + 2, yCoord + 5, zCoord, Library.POS_X),
-				new DirPos(xCoord - 2, yCoord + 5, zCoord, Library.NEG_X)
+				new DirPos(this.xCoord + 2, this.yCoord + 5, this.zCoord, Library.POS_X),
+				new DirPos(this.xCoord - 2, this.yCoord + 5, this.zCoord, Library.NEG_X)
 			};
 		}
 
 		if(dir == ForgeDirection.EAST || dir == ForgeDirection.WEST) {
 			
 			return new DirPos[] {
-				new DirPos(xCoord, yCoord + 5, zCoord + 2, Library.POS_Z),
-				new DirPos(xCoord, yCoord + 5, zCoord - 2, Library.NEG_Z)
+				new DirPos(this.xCoord, this.yCoord + 5, this.zCoord + 2, Library.POS_Z),
+				new DirPos(this.xCoord, this.yCoord + 5, this.zCoord - 2, Library.NEG_Z)
 			};
 		}
 		
 		return new DirPos[0];
 	}
 	
+	@Override
 	public void networkUnpack(NBTTagCompound data) {
 		
 		this.power = data.getLong("power");
@@ -144,55 +145,52 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 	
 	private void processItem() {
 
-		CrystallizerRecipe result = CrystallizerRecipes.getOutput(slots[0], tank.getTankType());
+		CrystallizerRecipe result = CrystallizerRecipes.getOutput(this.slots[0], this.tank.getTankType());
 		
 		if(result == null) //never happens but you can't be sure enough
 			return;
 		
 		ItemStack stack = result.output.copy();
 		
-		if(slots[2] == null)
-			slots[2] = stack;
-		else if(slots[2].stackSize + stack.stackSize <= slots[2].getMaxStackSize())
-			slots[2].stackSize += stack.stackSize;
+		if(this.slots[2] == null)
+			this.slots[2] = stack;
+		else if(this.slots[2].stackSize + stack.stackSize <= this.slots[2].getMaxStackSize())
+			this.slots[2].stackSize += stack.stackSize;
 		
-		tank.setFill(tank.getFill() - result.acidAmount);
+		this.tank.setFill(this.tank.getFill() - result.acidAmount);
 		
-		float freeChance = this.getFreeChance();
+		float freeChance = getFreeChance();
 		
-		if(freeChance == 0 || freeChance < worldObj.rand.nextFloat())
-			this.decrStackSize(0, result.itemAmount);
+		if(freeChance == 0 || freeChance < this.worldObj.rand.nextFloat())
+			decrStackSize(0, result.itemAmount);
 	}
 	
 	private boolean canProcess() {
 		
 		//Is there no input?
-		if(slots[0] == null)
+		if((this.slots[0] == null) || (this.power < getPowerRequired()))
 			return false;
 		
-		if(power < getPowerRequired())
-			return false;
-		
-		CrystallizerRecipe result = CrystallizerRecipes.getOutput(slots[0], tank.getTankType());
+		CrystallizerRecipe result = CrystallizerRecipes.getOutput(this.slots[0], this.tank.getTankType());
 		
 		//Or output?
 		if(result == null)
 			return false;
 		
 		//Not enough of the input item?
-		if(slots[0].stackSize < result.itemAmount)
+		if(this.slots[0].stackSize < result.itemAmount)
 			return false;
 		
-		if(tank.getFill() < result.acidAmount) return false;
+		if(this.tank.getFill() < result.acidAmount) return false;
 		
 		ItemStack stack = result.output.copy();
 		
 		//Does the output not match?
-		if(slots[2] != null && (slots[2].getItem() != stack.getItem() || slots[2].getItemDamage() != stack.getItemDamage()))
+		if(this.slots[2] != null && (this.slots[2].getItem() != stack.getItem() || this.slots[2].getItemDamage() != stack.getItemDamage()))
 			return false;
 		
 		//Or is the output slot already full?
-		if(slots[2] != null && slots[2].stackSize + stack.stackSize > slots[2].getMaxStackSize())
+		if(this.slots[2] != null && this.slots[2].stackSize + stack.stackSize > this.slots[2].getMaxStackSize())
 			return false;
 		
 		return true;
@@ -202,11 +200,11 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 		
 		for(int i = 5; i <= 6; i++) {
 
-			if(slots[i] != null && slots[i].getItem() == ModItems.upgrade_effect_1)
+			if(this.slots[i] != null && this.slots[i].getItem() == ModItems.upgrade_effect_1)
 				base *= 3;
-			if(slots[i] != null && slots[i].getItem() == ModItems.upgrade_effect_2)
+			if(this.slots[i] != null && this.slots[i].getItem() == ModItems.upgrade_effect_2)
 				base *= 4;
-			if(slots[i] != null && slots[i].getItem() == ModItems.upgrade_effect_3)
+			if(this.slots[i] != null && this.slots[i].getItem() == ModItems.upgrade_effect_3)
 				base *= 5;
 		}
 		
@@ -219,11 +217,11 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 		
 		for(int i = 5; i <= 6; i++) {
 
-			if(slots[i] != null && slots[i].getItem() == ModItems.upgrade_effect_1)
+			if(this.slots[i] != null && this.slots[i].getItem() == ModItems.upgrade_effect_1)
 				chance += 0.05F;
-			if(slots[i] != null && slots[i].getItem() == ModItems.upgrade_effect_2)
+			if(this.slots[i] != null && this.slots[i].getItem() == ModItems.upgrade_effect_2)
 				chance += 0.1F;
-			if(slots[i] != null && slots[i].getItem() == ModItems.upgrade_effect_3)
+			if(this.slots[i] != null && this.slots[i].getItem() == ModItems.upgrade_effect_3)
 				chance += 0.15F;
 		}
 		
@@ -233,17 +231,17 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 	public short getDuration() {
 		
 		float durationMod = 1;
-		CrystallizerRecipe result = CrystallizerRecipes.getOutput(slots[0], tank.getTankType());
+		CrystallizerRecipe result = CrystallizerRecipes.getOutput(this.slots[0], this.tank.getTankType());
 		
 		int base = result != null ? result.duration : 600;
 		
 		for(int i = 5; i <= 6; i++) {
 
-			if(slots[i] != null && slots[i].getItem() == ModItems.upgrade_speed_1)
+			if(this.slots[i] != null && this.slots[i].getItem() == ModItems.upgrade_speed_1)
 				durationMod -= 0.25F;
-			if(slots[i] != null && slots[i].getItem() == ModItems.upgrade_speed_2)
+			if(this.slots[i] != null && this.slots[i].getItem() == ModItems.upgrade_speed_2)
 				durationMod -= 0.50F;
-			if(slots[i] != null && slots[i].getItem() == ModItems.upgrade_speed_3)
+			if(this.slots[i] != null && this.slots[i].getItem() == ModItems.upgrade_speed_3)
 				durationMod -= 0.75F;
 		}
 		
@@ -256,15 +254,15 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 		
 		for(int i = 5; i <= 6; i++) {
 
-			if(slots[i] != null && slots[i].getItem() == ModItems.upgrade_speed_1)
+			if(this.slots[i] != null && this.slots[i].getItem() == ModItems.upgrade_speed_1)
 				consumption += 1000;
-			if(slots[i] != null && slots[i].getItem() == ModItems.upgrade_speed_2)
+			if(this.slots[i] != null && this.slots[i].getItem() == ModItems.upgrade_speed_2)
 				consumption += 2000;
-			if(slots[i] != null && slots[i].getItem() == ModItems.upgrade_speed_3)
+			if(this.slots[i] != null && this.slots[i].getItem() == ModItems.upgrade_speed_3)
 				consumption += 3000;
 		}
 		
-		return (int) (demand + Math.min(consumption, 3000));
+		return (int) (TileEntityMachineCrystallizer.demand + Math.min(consumption, 3000));
 	}
 	
 	public float getCycleCount() {
@@ -273,11 +271,11 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 		
 		for(int i = 5; i <= 6; i++) {
 
-			if(slots[i] != null && slots[i].getItem() == ModItems.upgrade_overdrive_1)
+			if(this.slots[i] != null && this.slots[i].getItem() == ModItems.upgrade_overdrive_1)
 				cycles += 2;
-			if(slots[i] != null && slots[i].getItem() == ModItems.upgrade_overdrive_2)
+			if(this.slots[i] != null && this.slots[i].getItem() == ModItems.upgrade_overdrive_2)
 				cycles += 4;
-			if(slots[i] != null && slots[i].getItem() == ModItems.upgrade_overdrive_3)
+			if(this.slots[i] != null && this.slots[i].getItem() == ModItems.upgrade_overdrive_3)
 				cycles += 6;
 		}
 		
@@ -285,11 +283,11 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 	}
 	
 	public long getPowerScaled(int i) {
-		return (power * i) / maxPower;
+		return (this.power * i) / TileEntityMachineCrystallizer.maxPower;
 	}
 	
 	public int getProgressScaled(int i) {
-		return (progress * i) / duration;
+		return (this.progress * i) / this.duration;
 	}
 
 	@Override
@@ -299,39 +297,35 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 
 	@Override
 	public long getMaxPower() {
-		return maxPower;
+		return TileEntityMachineCrystallizer.maxPower;
 	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		
-		power = nbt.getLong("power");
-		tank.readFromNBT(nbt, "tank");
+		this.power = nbt.getLong("power");
+		this.tank.readFromNBT(nbt, "tank");
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		
-		nbt.setLong("power", power);
-		tank.writeToNBT(nbt, "tank");
+		nbt.setLong("power", this.power);
+		this.tank.writeToNBT(nbt, "tank");
 	}
 
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemStack) {
 		
-		CrystallizerRecipe recipe = CrystallizerRecipes.getOutput(itemStack, tank.getTankType());
-		if(i == 0 && recipe != null) {
-			return true;
-		}
-		
-		if(i == 1 && itemStack.getItem() instanceof IBatteryItem)
+		CrystallizerRecipe recipe = CrystallizerRecipes.getOutput(itemStack, this.tank.getTankType());
+		if((i == 0 && recipe != null) || (i == 1 && itemStack.getItem() instanceof IBatteryItem))
 			return true;
 		
 		return false;
@@ -364,18 +358,18 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 		super.setInventorySlotContents(i, stack);
 		
 		if(stack != null && i >= 5 && i <= 6 && stack.getItem() instanceof ItemMachineUpgrade) {
-			worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "hbm:item.upgradePlug", 1.0F, 1.0F);
+			this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, "hbm:item.upgradePlug", 1.0F, 1.0F);
 		}
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] {tank};
+		return new FluidTank[] {this.tank};
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return new FluidTank[] { tank };
+		return new FluidTank[] { this.tank };
 	}
 
 	@Override

@@ -19,12 +19,12 @@ public class CompressorRecipes extends SerializableRecipe {
 
 	@Override
 	public void registerDefaults() {
-		recipes.put(new Pair(Fluids.STEAM, 0), new CompressorRecipe(1_000, new FluidStack(Fluids.HOTSTEAM, 100)));
-		recipes.put(new Pair(Fluids.HOTSTEAM, 0), new CompressorRecipe(1_000, new FluidStack(Fluids.SUPERHOTSTEAM, 100)));
-		recipes.put(new Pair(Fluids.SUPERHOTSTEAM, 0), new CompressorRecipe(1_000, new FluidStack(Fluids.ULTRAHOTSTEAM, 100)));
+		CompressorRecipes.recipes.put(new Pair(Fluids.STEAM, 0), new CompressorRecipe(1_000, new FluidStack(Fluids.HOTSTEAM, 100)));
+		CompressorRecipes.recipes.put(new Pair(Fluids.HOTSTEAM, 0), new CompressorRecipe(1_000, new FluidStack(Fluids.SUPERHOTSTEAM, 100)));
+		CompressorRecipes.recipes.put(new Pair(Fluids.SUPERHOTSTEAM, 0), new CompressorRecipe(1_000, new FluidStack(Fluids.ULTRAHOTSTEAM, 100)));
 
-		recipes.put(new Pair(Fluids.PETROLEUM, 0), new CompressorRecipe(2_000, new FluidStack(Fluids.PETROLEUM, 2_000, 1), 20));
-		recipes.put(new Pair(Fluids.PETROLEUM, 1), new CompressorRecipe(2_000, new FluidStack(Fluids.LPG, 1_000, 0), 20));
+		CompressorRecipes.recipes.put(new Pair(Fluids.PETROLEUM, 0), new CompressorRecipe(2_000, new FluidStack(Fluids.PETROLEUM, 2_000, 1), 20));
+		CompressorRecipes.recipes.put(new Pair(Fluids.PETROLEUM, 1), new CompressorRecipe(2_000, new FluidStack(Fluids.LPG, 1_000, 0), 20));
 	}
 	
 	public static class CompressorRecipe {
@@ -51,22 +51,22 @@ public class CompressorRecipes extends SerializableRecipe {
 
 	@Override
 	public Object getRecipeObject() {
-		return recipes;
+		return CompressorRecipes.recipes;
 	}
 
 	@Override
 	public void deleteRecipes() {
-		recipes.clear();
+		CompressorRecipes.recipes.clear();
 	}
 
 	@Override
 	public void readRecipe(JsonElement recipe) {
 		JsonObject obj = recipe.getAsJsonObject();
 
-		FluidStack input = this.readFluidStack(obj.get("input").getAsJsonArray());
-		FluidStack output = this.readFluidStack(obj.get("output").getAsJsonArray());
+		FluidStack input = readFluidStack(obj.get("input").getAsJsonArray());
+		FluidStack output = readFluidStack(obj.get("output").getAsJsonArray());
 		
-		recipes.put(new Pair(input.type, input.pressure), new CompressorRecipe(input.fill, output));
+		CompressorRecipes.recipes.put(new Pair(input.type, input.pressure), new CompressorRecipe(input.fill, output));
 	}
 
 	@Override
@@ -74,8 +74,8 @@ public class CompressorRecipes extends SerializableRecipe {
 		Entry<Pair<FluidType, Integer>, CompressorRecipe> entry = (Entry) recipe;
 		
 		writer.name("input");
-		this.writeFluidStack(new FluidStack(entry.getKey().getKey(), entry.getValue().inputAmount, entry.getKey().getValue()), writer);
+		writeFluidStack(new FluidStack(entry.getKey().getKey(), entry.getValue().inputAmount, entry.getKey().getValue()), writer);
 		writer.name("output");
-		this.writeFluidStack(entry.getValue().output, writer);
+		writeFluidStack(entry.getValue().output, writer);
 	}
 }

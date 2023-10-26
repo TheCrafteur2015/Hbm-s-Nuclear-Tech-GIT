@@ -17,16 +17,16 @@ public class ContainerAshpit extends Container {
 		this.ashpit = ashpit;
 		this.ashpit.openInventory();
 		
-		for(int i = 0; i < 5; i++) this.addSlotToContainer(new SlotTakeOnly(ashpit, i, 44 + i * 18, 27));
+		for(int i = 0; i < 5; i++) addSlotToContainer(new SlotTakeOnly(ashpit, i, 44 + i * 18, 27));
 		
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 86 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 86 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 144));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 144));
 		}
 	}
 
@@ -40,7 +40,7 @@ public class ContainerAshpit extends Container {
 			stack = originalStack.copy();
 
 			if(index <= 4) {
-				if(!this.mergeItemStack(originalStack, 5, this.inventorySlots.size(), true)) {
+				if(!mergeItemStack(originalStack, 5, this.inventorySlots.size(), true)) {
 					return null;
 				}
 				
@@ -62,7 +62,7 @@ public class ContainerAshpit extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return ashpit.isUseableByPlayer(player);
+		return this.ashpit.isUseableByPlayer(player);
 	}
 
 	@Override

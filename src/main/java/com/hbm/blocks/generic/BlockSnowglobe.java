@@ -95,17 +95,17 @@ public class BlockSnowglobe extends BlockContainer {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
-		
 		for(int i = 1; i < SnowglobeType.values().length; i++)
 			list.add(new ItemStack(item, 1, i));
 	}
 
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
-		int meta = MathHelper.floor_double((double)((player.rotationYaw + 180.0F) * 16.0F / 360.0F) + 0.5D) & 15;
+		int meta = MathHelper.floor_double((player.rotationYaw + 180.0F) * 16.0F / 360.0F + 0.5D) & 15;
 		world.setBlockMetadataWithNotify(x, y, z, meta, 2);
 		
 		TileEntitySnowglobe bobble = (TileEntitySnowglobe) world.getTileEntity(x, y, z);
@@ -130,13 +130,13 @@ public class BlockSnowglobe extends BlockContainer {
 		@Override
 		public Packet getDescriptionPacket() {
 			NBTTagCompound nbt = new NBTTagCompound();
-			this.writeToNBT(nbt);
+			writeToNBT(nbt);
 			return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, nbt);
 		}
 		
 		@Override
 		public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-			this.readFromNBT(pkt.func_148857_g());
+			readFromNBT(pkt.func_148857_g());
 		}
 
 		@Override
@@ -148,13 +148,13 @@ public class BlockSnowglobe extends BlockContainer {
 		@Override
 		public void writeToNBT(NBTTagCompound nbt) {
 			super.writeToNBT(nbt);
-			nbt.setByte("type", (byte) type.ordinal());
+			nbt.setByte("type", (byte) this.type.ordinal());
 		}
 	}
 	
 	public static enum SnowglobeType {
 		NONE("NONE", new WorldInAJar(1, 1, 1)),
-		TEST("Test", getTestJar());
+		TEST("Test", BlockSnowglobe.getTestJar());
 		
 		public String label;
 		public WorldInAJar scene;

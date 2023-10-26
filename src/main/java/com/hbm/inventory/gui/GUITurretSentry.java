@@ -14,7 +14,8 @@ public class GUITurretSentry extends GUITurretBase {
 		super(invPlayer, tedf);
 	}
 	
+	@Override
 	protected ResourceLocation getTexture() {
-		return texture;
+		return GUITurretSentry.texture;
 	}
 }

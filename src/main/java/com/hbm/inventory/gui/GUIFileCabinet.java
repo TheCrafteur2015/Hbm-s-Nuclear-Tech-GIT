@@ -19,7 +19,7 @@ public class GUIFileCabinet extends GuiContainer {
 	
 	public GUIFileCabinet(InventoryPlayer invPlayer, TileEntityFileCabinet tile) {
 		super(new ContainerFileCabinet(invPlayer, tile));
-		cabinet = tile;
+		this.cabinet = tile;
 		
 		this.xSize = 176;
 		this.ySize = 170;
@@ -36,7 +36,7 @@ public class GUIFileCabinet extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIFileCabinet.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 	}
 }

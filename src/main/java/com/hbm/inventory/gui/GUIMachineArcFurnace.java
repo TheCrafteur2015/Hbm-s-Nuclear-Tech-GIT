@@ -18,7 +18,7 @@ public class GUIMachineArcFurnace extends GuiInfoContainer {
 
 	public GUIMachineArcFurnace(InventoryPlayer invPlayer, TileEntityMachineArcFurnace tedf) {
 		super(new ContainerMachineArcFurnace(invPlayer, tedf));
-		diFurnace = tedf;
+		this.diFurnace = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 166;
@@ -28,7 +28,7 @@ public class GUIMachineArcFurnace extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 8, guiTop + 51 - 34, 16, 34, diFurnace.power, diFurnace.maxPower);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 8, this.guiTop + 51 - 34, 16, 34, this.diFurnace.power, TileEntityMachineArcFurnace.maxPower);
 	}
 	
 	@Override
@@ -42,23 +42,23 @@ public class GUIMachineArcFurnace extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIMachineArcFurnace.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		if(diFurnace.isInvalid() && diFurnace.getWorldObj().getTileEntity(diFurnace.xCoord, diFurnace.yCoord, diFurnace.zCoord) instanceof TileEntityMachineArcFurnace)
-			diFurnace = (TileEntityMachineArcFurnace) diFurnace.getWorldObj().getTileEntity(diFurnace.xCoord, diFurnace.yCoord, diFurnace.zCoord);
+		if(this.diFurnace.isInvalid() && this.diFurnace.getWorldObj().getTileEntity(this.diFurnace.xCoord, this.diFurnace.yCoord, this.diFurnace.zCoord) instanceof TileEntityMachineArcFurnace)
+			this.diFurnace = (TileEntityMachineArcFurnace) this.diFurnace.getWorldObj().getTileEntity(this.diFurnace.xCoord, this.diFurnace.yCoord, this.diFurnace.zCoord);
 		
-		if(diFurnace.hasPower()) {
-			int i = (int)diFurnace.getPowerRemainingScaled(34);
-			drawTexturedModalRect(guiLeft + 8, guiTop + 51 - i, 176, 67 - i, 16, i);
+		if(this.diFurnace.hasPower()) {
+			int i = (int)this.diFurnace.getPowerRemainingScaled(34);
+			drawTexturedModalRect(this.guiLeft + 8, this.guiTop + 51 - i, 176, 67 - i, 16, i);
 		}
 		
-		if(diFurnace.canProcess() && diFurnace.hasPower())
+		if(this.diFurnace.canProcess() && this.diFurnace.hasPower())
 		{
-			drawTexturedModalRect(guiLeft + 55, guiTop + 35, 176, 0, 15, 16);
+			drawTexturedModalRect(this.guiLeft + 55, this.guiTop + 35, 176, 0, 15, 16);
 		}
 		
-		int j1 = diFurnace.getDiFurnaceProgressScaled(24);
-		drawTexturedModalRect(guiLeft + 79, guiTop + 34, 176, 16, j1 + 1, 17);
+		int j1 = this.diFurnace.getDiFurnaceProgressScaled(24);
+		drawTexturedModalRect(this.guiLeft + 79, this.guiTop + 34, 176, 16, j1 + 1, 17);
 	}
 }

@@ -29,14 +29,14 @@ public class EntityMissileShuttle extends EntityMissileBaseAdvanced {
 
 	@Override
 	public void onImpact() {
-		ExplosionNT explosion = new ExplosionNT(worldObj, null, this.posX + 0.5F, this.posY + 0.5F, this.posZ + 0.5F, 20.0F).overrideResolution(64);
+		ExplosionNT explosion = new ExplosionNT(this.worldObj, null, this.posX + 0.5F, this.posY + 0.5F, this.posZ + 0.5F, 20.0F).overrideResolution(64);
 		explosion.atttributes.add(ExAttrib.NOSOUND);
 		explosion.atttributes.add(ExAttrib.NOPARTICLE);
 		explosion.explode();
 		NBTTagCompound data = new NBTTagCompound();
 		data.setString("type", "rbmkmush");
 		data.setFloat("scale", 10);
-		PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, this.posX + 0.5, this.posY + 1, this.posZ + 0.5), new TargetPoint(worldObj.provider.dimensionId,this.posX + 0.5, this.posY + 1, this.posZ + 0.5, 250));
+		PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, this.posX + 0.5, this.posY + 1, this.posZ + 0.5), new TargetPoint(this.worldObj.provider.dimensionId,this.posX + 0.5, this.posY + 1, this.posZ + 0.5, 250));
 		MainRegistry.proxy.effectNT(data);
 
 		this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "hbm:weapon.robin_explosion", 4.0F, (1.0F + (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F) * 0.7F);	
@@ -44,7 +44,7 @@ public class EntityMissileShuttle extends EntityMissileBaseAdvanced {
 
 	@Override
 	public List<ItemStack> getDebris() {
-		List<ItemStack> list = new ArrayList<ItemStack>();
+		List<ItemStack> list = new ArrayList<>();
 
 		list.add(new ItemStack(ModItems.plate_steel, 8));
 		list.add(new ItemStack(ModItems.thruster_medium, 2));

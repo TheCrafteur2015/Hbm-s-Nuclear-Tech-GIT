@@ -47,34 +47,34 @@ public class TileEntityMachineBoilerElectric extends TileEntityLoadedBase implem
 	public static final long maxPower = 10000;
 	public static final int maxHeat = 80000;
 	public int age = 0;
-	public List<IFluidAcceptor> list = new ArrayList();
+	public List<IFluidAcceptor> list = new ArrayList<>();
 	public FluidTank[] tanks;
 	
 	private String customName;
 	
 	public TileEntityMachineBoilerElectric() {
-		slots = new ItemStack[7];
-		tanks = new FluidTank[2];
-		tanks[0] = new FluidTank(Fluids.OIL, 16000, 0);
-		tanks[1] = new FluidTank(Fluids.HOTOIL, 16000, 1);
+		this.slots = new ItemStack[7];
+		this.tanks = new FluidTank[2];
+		this.tanks[0] = new FluidTank(Fluids.OIL, 16000, 0);
+		this.tanks[1] = new FluidTank(Fluids.HOTOIL, 16000, 1);
 	}
 
 	@Override
 	public int getSizeInventory() {
-		return slots.length;
+		return this.slots.length;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		return slots[i];
+		return this.slots[i];
 	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			ItemStack itemStack = slots[i];
-			slots[i] = null;
+			ItemStack itemStack = this.slots[i];
+			this.slots[i] = null;
 			return itemStack;
 		} else {
 		return null;
@@ -83,7 +83,7 @@ public class TileEntityMachineBoilerElectric extends TileEntityLoadedBase implem
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemStack) {
-		slots[i] = itemStack;
+		this.slots[i] = itemStack;
 		if(itemStack != null && itemStack.stackSize > getInventoryStackLimit())
 		{
 			itemStack.stackSize = getInventoryStackLimit();
@@ -92,7 +92,7 @@ public class TileEntityMachineBoilerElectric extends TileEntityLoadedBase implem
 
 	@Override
 	public String getInventoryName() {
-		return this.hasCustomInventoryName() ? this.customName : "container.machineElectricBoiler";
+		return hasCustomInventoryName() ? this.customName : "container.machineElectricBoiler";
 	}
 
 	@Override
@@ -111,11 +111,11 @@ public class TileEntityMachineBoilerElectric extends TileEntityLoadedBase implem
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		if(worldObj.getTileEntity(xCoord, yCoord, zCoord) != this)
+		if(this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this)
 		{
 			return false;
 		}else{
-			return player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <=64;
+			return player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <=64;
 		}
 	}
 	
@@ -137,18 +137,18 @@ public class TileEntityMachineBoilerElectric extends TileEntityLoadedBase implem
 	
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			if(slots[i].stackSize <= j)
+			if(this.slots[i].stackSize <= j)
 			{
-				ItemStack itemStack = slots[i];
-				slots[i] = null;
+				ItemStack itemStack = this.slots[i];
+				this.slots[i] = null;
 				return itemStack;
 			}
-			ItemStack itemStack1 = slots[i].splitStack(j);
-			if (slots[i].stackSize == 0)
+			ItemStack itemStack1 = this.slots[i].splitStack(j);
+			if (this.slots[i].stackSize == 0)
 			{
-				slots[i] = null;
+				this.slots[i] = null;
 			}
 			
 			return itemStack1;
@@ -162,19 +162,19 @@ public class TileEntityMachineBoilerElectric extends TileEntityLoadedBase implem
 		super.readFromNBT(nbt);
 		NBTTagList list = nbt.getTagList("items", 10);
 
-		heat = nbt.getInteger("heat");
-		power = nbt.getLong("power");
-		tanks[0].readFromNBT(nbt, "water");
-		tanks[1].readFromNBT(nbt, "steam");
-		slots = new ItemStack[getSizeInventory()];
+		this.heat = nbt.getInteger("heat");
+		this.power = nbt.getLong("power");
+		this.tanks[0].readFromNBT(nbt, "water");
+		this.tanks[1].readFromNBT(nbt, "steam");
+		this.slots = new ItemStack[getSizeInventory()];
 		
 		for(int i = 0; i < list.tagCount(); i++)
 		{
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("slot");
-			if(b0 >= 0 && b0 < slots.length)
+			if(b0 >= 0 && b0 < this.slots.length)
 			{
-				slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
+				this.slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
 			}
 		}
 	}
@@ -182,19 +182,19 @@ public class TileEntityMachineBoilerElectric extends TileEntityLoadedBase implem
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setInteger("heat", heat);
-		nbt.setLong("power", power);
-		tanks[0].writeToNBT(nbt, "water");
-		tanks[1].writeToNBT(nbt, "steam");
+		nbt.setInteger("heat", this.heat);
+		nbt.setLong("power", this.power);
+		this.tanks[0].writeToNBT(nbt, "water");
+		this.tanks[1].writeToNBT(nbt, "steam");
 		NBTTagList list = new NBTTagList();
 		
-		for(int i = 0; i < slots.length; i++)
+		for(int i = 0; i < this.slots.length; i++)
 		{
-			if(slots[i] != null)
+			if(this.slots[i] != null)
 			{
 				NBTTagCompound nbt1 = new NBTTagCompound();
 				nbt1.setByte("slot", (byte)i);
-				slots[i].writeToNBT(nbt1);
+				this.slots[i].writeToNBT(nbt1);
 				list.appendTag(nbt1);
 			}
 		}
@@ -217,11 +217,11 @@ public class TileEntityMachineBoilerElectric extends TileEntityLoadedBase implem
 	}
 	
 	public int getHeatScaled(int i) {
-		return (heat * i) / maxHeat;
+		return (this.heat * i) / TileEntityMachineBoilerElectric.maxHeat;
 	}
 	
 	public long getPowerScaled(int i) {
-		return (power * i) / maxPower;
+		return (this.power * i) / TileEntityMachineBoilerElectric.maxPower;
 	}
 	
 	@Override
@@ -229,101 +229,101 @@ public class TileEntityMachineBoilerElectric extends TileEntityLoadedBase implem
 		
 		boolean mark = false;
 		
-		if(!worldObj.isRemote)
+		if(!this.worldObj.isRemote)
 		{
-			this.updateConnections();
-			this.subscribeToAllAround(tanks[0].getTankType(), this);
-			this.sendFluidToAll(tanks[1], this);
+			updateConnections();
+			this.subscribeToAllAround(this.tanks[0].getTankType(), this);
+			this.sendFluidToAll(this.tanks[1], this);
 			
-			age++;
-			if(age >= 20)
+			this.age++;
+			if(this.age >= 20)
 			{
-				age = 0;
+				this.age = 0;
 			}
 			
-			if(age == 9 || age == 19)
-				fillFluidInit(tanks[1].getTankType());
+			if(this.age == 9 || this.age == 19)
+				fillFluidInit(this.tanks[1].getTankType());
 
-			power = Library.chargeTEFromItems(slots, 4, power, maxPower);
+			this.power = Library.chargeTEFromItems(this.slots, 4, this.power, TileEntityMachineBoilerElectric.maxPower);
 			
-			tanks[0].setType(0, 1, slots);
-			tanks[0].loadTank(2, 3, slots);
+			this.tanks[0].setType(0, 1, this.slots);
+			this.tanks[0].loadTank(2, 3, this.slots);
 			
-			Object[] outs = MachineRecipes.getBoilerOutput(tanks[0].getTankType());
+			Object[] outs = MachineRecipes.getBoilerOutput(this.tanks[0].getTankType());
 			
 			if(outs == null) {
-				tanks[1].setTankType(Fluids.NONE);
+				this.tanks[1].setTankType(Fluids.NONE);
 			} else {
-				tanks[1].setTankType((FluidType) outs[0]);
+				this.tanks[1].setTankType((FluidType) outs[0]);
 			}
 			
-			tanks[1].unloadTank(5, 6, slots);
+			this.tanks[1].unloadTank(5, 6, this.slots);
 			
 			for(int i = 0; i < 2; i++)
-				tanks[i].updateTank(xCoord, yCoord, zCoord, worldObj.provider.dimensionId);
+				this.tanks[i].updateTank(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId);
 			
-			if(heat > 2000) {
-				heat -= 30;
+			if(this.heat > 2000) {
+				this.heat -= 30;
 			}
 			
-			if(power >= 150) {
-				power -= 150;
-				heat += Math.min(((double)power / (double)maxPower * 300), 150);
+			if(this.power >= 150) {
+				this.power -= 150;
+				this.heat += Math.min(((double)this.power / (double)TileEntityMachineBoilerElectric.maxPower * 300), 150);
 			} else {
-				heat -= 100;
+				this.heat -= 100;
 			}
 			
-			if(power <= 0 && worldObj.getBlock(xCoord, yCoord, zCoord) == ModBlocks.machine_boiler_electric_on) {
-				power = 0;
-				MachineBoiler.updateBlockState(false, worldObj, xCoord, yCoord, zCoord);
+			if(this.power <= 0 && this.worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord) == ModBlocks.machine_boiler_electric_on) {
+				this.power = 0;
+				MachineBoiler.updateBlockState(false, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 				mark = true;
 			}
 			
-			if(heat > maxHeat)
-				heat = maxHeat;
+			if(this.heat > TileEntityMachineBoilerElectric.maxHeat)
+				this.heat = TileEntityMachineBoilerElectric.maxHeat;
 			
-			if(power > 0 && worldObj.getBlock(xCoord, yCoord, zCoord) == ModBlocks.machine_boiler_electric_off) {
-				MachineBoiler.updateBlockState(true, worldObj, xCoord, yCoord, zCoord);
+			if(this.power > 0 && this.worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord) == ModBlocks.machine_boiler_electric_off) {
+				MachineBoiler.updateBlockState(true, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 				mark = true;
 			}
 			
 			if(outs != null) {
 				
-				for(int i = 0; i < (heat / ((Integer)outs[3]).intValue()); i++) {
-					if(tanks[0].getFill() >= ((Integer)outs[2]).intValue() && tanks[1].getFill() + ((Integer)outs[1]).intValue() <= tanks[1].getMaxFill()) {
-						tanks[0].setFill(tanks[0].getFill() - ((Integer)outs[2]).intValue());
-						tanks[1].setFill(tanks[1].getFill() + ((Integer)outs[1]).intValue());
+				for(int i = 0; i < (this.heat / ((Integer)outs[3]).intValue()); i++) {
+					if(this.tanks[0].getFill() >= ((Integer)outs[2]).intValue() && this.tanks[1].getFill() + ((Integer)outs[1]).intValue() <= this.tanks[1].getMaxFill()) {
+						this.tanks[0].setFill(this.tanks[0].getFill() - ((Integer)outs[2]).intValue());
+						this.tanks[1].setFill(this.tanks[1].getFill() + ((Integer)outs[1]).intValue());
 						
 						if(i == 0)
-							heat -= 35;
+							this.heat -= 35;
 						else
-							heat -= 50;
+							this.heat -= 50;
 					}
 				}
 			}
 			
-			if(heat < 2000) {
-				heat = 2000;
+			if(this.heat < 2000) {
+				this.heat = 2000;
 			}
 
-			PacketDispatcher.wrapper.sendToAllAround(new AuxElectricityPacket(xCoord, yCoord, zCoord, power), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 50));
-			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(xCoord, yCoord, zCoord, heat, 0), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 50));
+			PacketDispatcher.wrapper.sendToAllAround(new AuxElectricityPacket(this.xCoord, this.yCoord, this.zCoord, this.power), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 50));
+			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(this.xCoord, this.yCoord, this.zCoord, this.heat, 0), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 50));
 		}
 		
 		if(mark) {
-			this.markDirty();
+			markDirty();
 		}
 	}
 	
 	private void updateConnections() {
 		
 		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-			this.trySubscribe(worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, dir);
+			this.trySubscribe(this.worldObj, this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ, dir);
 	}
 	
 	public boolean isItemValid() {
 
-		if(slots[1] != null && TileEntityFurnace.getItemBurnTime(slots[1]) > 0)
+		if(this.slots[1] != null && TileEntityFurnace.getItemBurnTime(this.slots[1]) > 0)
 		{
 			return true;
 		}
@@ -344,12 +344,12 @@ public class TileEntityMachineBoilerElectric extends TileEntityLoadedBase implem
 
 	@Override
 	public void fillFluid(int x, int y, int z, boolean newTact, FluidType type) {
-		Library.transmitFluid(x, y, z, newTact, this, worldObj, type);
+		Library.transmitFluid(x, y, z, newTact, this, this.worldObj, type);
 	}
 	
 	@Override
 	public boolean getTact() {
-		if(age >= 0 && age < 10)
+		if(this.age >= 0 && this.age < 10)
 		{
 			return true;
 		}
@@ -359,81 +359,81 @@ public class TileEntityMachineBoilerElectric extends TileEntityLoadedBase implem
 
 	@Override
 	public void setFluidFill(int i, FluidType type) {
-		if(type.name().equals(tanks[0].getTankType().name()))
-			tanks[0].setFill(i);
-		else if(type.name().equals(tanks[1].getTankType().name()))
-			tanks[1].setFill(i);
+		if(type.name().equals(this.tanks[0].getTankType().name()))
+			this.tanks[0].setFill(i);
+		else if(type.name().equals(this.tanks[1].getTankType().name()))
+			this.tanks[1].setFill(i);
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		if(type.name().equals(tanks[0].getTankType().name()))
-			return tanks[0].getFill();
-		else if(type.name().equals(tanks[1].getTankType().name()))
-			return tanks[1].getFill();
+		if(type.name().equals(this.tanks[0].getTankType().name()))
+			return this.tanks[0].getFill();
+		else if(type.name().equals(this.tanks[1].getTankType().name()))
+			return this.tanks[1].getFill();
 		
 		return 0;
 	}
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		if(type.name().equals(tanks[0].getTankType().name()))
-			return tanks[0].getMaxFill();
+		if(type.name().equals(this.tanks[0].getTankType().name()))
+			return this.tanks[0].getMaxFill();
 		
 		return 0;
 	}
 
 	@Override
 	public void setFillForSync(int fill, int index) {
-		if(index < 2 && tanks[index] != null)
-			tanks[index].setFill(fill);
+		if(index < 2 && this.tanks[index] != null)
+			this.tanks[index].setFill(fill);
 	}
 
 	@Override
 	public void setTypeForSync(FluidType type, int index) {
-		if(index < 2 && tanks[index] != null)
-			tanks[index].setTankType(type);
+		if(index < 2 && this.tanks[index] != null)
+			this.tanks[index].setTankType(type);
 	}
 	
 	@Override
 	public List<IFluidAcceptor> getFluidList(FluidType type) {
-		return list;
+		return this.list;
 	}
 	
 	@Override
 	public void clearFluidList(FluidType type) {
-		list.clear();
+		this.list.clear();
 	}
 
 	@Override
 	public void setPower(long i) {
-		power = i;
+		this.power = i;
 	}
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 		
 	}
 
 	@Override
 	public long getMaxPower() {
-		return maxPower;
+		return TileEntityMachineBoilerElectric.maxPower;
 	}
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return new FluidTank[] {tanks[1]};
+		return new FluidTank[] {this.tanks[1]};
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] {tanks[0]};
+		return new FluidTank[] {this.tanks[0]};
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return tanks;
+		return this.tanks;
 	}
 
 	@Override

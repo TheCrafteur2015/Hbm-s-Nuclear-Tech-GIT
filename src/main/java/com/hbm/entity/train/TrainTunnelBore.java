@@ -11,7 +11,7 @@ public class TrainTunnelBore extends EntityRailCarRidable {
 
 	public TrainTunnelBore(World world) {
 		super(world);
-		this.setSize(6F, 4F);
+		setSize(6F, 4F);
 	}
 
 	@Override public double getPoweredAcceleration() { return 0.01; }
@@ -26,7 +26,7 @@ public class TrainTunnelBore extends EntityRailCarRidable {
 	@Override public Vec3 getRiderSeatPosition() { return Vec3.createVectorHelper(0.0, 2.375, -2.375); }
 	@Override public boolean shouldRiderSit() { return true; }
 	@Override public int getSizeInventory() { return 0; }
-	@Override public String getInventoryName() { return this.hasCustomInventoryName() ? this.getEntityName() : "container.trainTunnelBore"; }
+	@Override public String getInventoryName() { return hasCustomInventoryName() ? getEntityName() : "container.trainTunnelBore"; }
 	@Override public double getCouplingDist(TrainCoupling coupling) { return coupling != null ? 2.75 : 0; }
 
 	@Override public boolean canAccelerate() { return true; }
@@ -46,7 +46,7 @@ public class TrainTunnelBore extends EntityRailCarRidable {
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
 		if(!this.worldObj.isRemote && !this.isDead) {
-			this.setDead();
+			setDead();
 		}
 		
 		return true;

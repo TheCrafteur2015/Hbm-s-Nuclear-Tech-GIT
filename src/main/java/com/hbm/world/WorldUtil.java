@@ -2,6 +2,7 @@ package com.hbm.world;
 
 import com.hbm.packet.BiomeSyncPacket;
 import com.hbm.packet.PacketDispatcher;
+
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
@@ -40,6 +41,7 @@ public class WorldUtil {
 	/*fun fact: this is based off of joinEntityInSurroundings in World
 	  however, since mojang is staffed by field mice, that function is client side only and half-baked
 	 */
+	@SuppressWarnings("unchecked")
 	public static void loadAndSpawnEntityInWorld(Entity entity) {
 
 		World world = entity.worldObj;
@@ -68,6 +70,7 @@ public class WorldUtil {
 
 	public static void syncBiomeChange(World world, int x, int z) {
 		Chunk chunk = world.getChunkFromBlockCoords(x, z);
+		@SuppressWarnings("unused")
 		byte biome = chunk.getBiomeArray()[(z & 15) << 4 | (x & 15)];
 		PacketDispatcher.wrapper.sendToAllAround(new BiomeSyncPacket(x, z, chunk.getBiomeArray()), new TargetPoint(world.provider.dimensionId, x, 128, z, 1024D));
 	}

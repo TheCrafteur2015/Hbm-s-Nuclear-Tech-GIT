@@ -31,13 +31,14 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+@SuppressWarnings("deprecation")
 public class TileEntityTurretFritz extends TileEntityTurretBaseNT implements IFluidAcceptor, IFluidStandardReceiver {
 	
 	public FluidTank tank;
 	
 	public TileEntityTurretFritz() {
 		super();
-		this.tank = new FluidTank(Fluids.DIESEL, 16000, 0);
+		this.tank = new FluidTank(Fluids.DIESEL, 16000);
 	}
 	
 	@Override
@@ -50,23 +51,24 @@ public class TileEntityTurretFritz extends TileEntityTurretBaseNT implements IFl
 		return null;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public List<ItemStack> getAmmoTypesForDisplay() {
 		
-		if(ammoStacks != null)
-			return ammoStacks;
+		if(this.ammoStacks != null)
+			return this.ammoStacks;
 		
-		ammoStacks = new ArrayList();
+		this.ammoStacks = new ArrayList<>();
 
-		ammoStacks.add(new ItemStack(ModItems.ammo_fuel));
+		this.ammoStacks.add(new ItemStack(ModItems.ammo_fuel));
 		
 		for(FluidType type : Fluids.getInNiceOrder()) {
 			if(type.hasTrait(FT_Combustible.class) && type.hasTrait(FT_Liquid.class)) {
-				ammoStacks.add(new ItemStack(ModItems.fluid_icon, 1, type.getID()));
+				this.ammoStacks.add(new ItemStack(ModItems.fluid_icon, 1, type.getID()));
 			}
 		}
 		
-		return ammoStacks;
+		return this.ammoStacks;
 	}
 	
 	@Override
@@ -108,26 +110,26 @@ public class TileEntityTurretFritz extends TileEntityTurretBaseNT implements IFl
 			BulletConfiguration conf = BulletConfigSyncingUtil.pullConfig(BulletConfigSyncingUtil.FLA_NORMAL);
 			this.tank.setFill(this.tank.getFill() - 2);
 			
-			Vec3 pos = this.getTurretPos();
-			Vec3 vec = Vec3.createVectorHelper(this.getBarrelLength(), 0, 0);
+			Vec3 pos = getTurretPos();
+			Vec3 vec = Vec3.createVectorHelper(getBarrelLength(), 0, 0);
 			vec.rotateAroundZ((float) -this.rotationPitch);
 			vec.rotateAroundY((float) -(this.rotationYaw + Math.PI * 0.5));
 			
-			EntityBulletBaseNT proj = new EntityBulletBaseNT(worldObj, BulletConfigSyncingUtil.getKey(conf));
+			EntityBulletBaseNT proj = new EntityBulletBaseNT(this.worldObj, BulletConfigSyncingUtil.getKey(conf));
 			proj.setPositionAndRotation(pos.xCoord + vec.xCoord, pos.yCoord + vec.yCoord, pos.zCoord + vec.zCoord, 0.0F, 0.0F);
-			proj.overrideDamage = (float) (trait.getHeatEnergy() / 500_000F);
+			proj.overrideDamage = trait.getHeatEnergy() / 500_000F;
 			
 			proj.setThrowableHeading(vec.xCoord, vec.yCoord, vec.zCoord, conf.velocity, conf.spread);
-			worldObj.spawnEntityInWorld(proj);
+			this.worldObj.spawnEntityInWorld(proj);
 			
-			worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:weapon.flamethrowerShoot", 2F, 1F + worldObj.rand.nextFloat() * 0.5F);
+			this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:weapon.flamethrowerShoot", 2F, 1F + this.worldObj.rand.nextFloat() * 0.5F);
 			
 			NBTTagCompound data = new NBTTagCompound();
 			data.setString("type", "vanillaburst");
 			data.setString("mode", "flame");
 			data.setInteger("count", 2);
 			data.setDouble("motion", 0.025D);
-			PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, pos.xCoord + vec.xCoord, pos.yCoord + vec.yCoord, pos.zCoord + vec.zCoord), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 50));
+			PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, pos.xCoord + vec.xCoord, pos.yCoord + vec.yCoord, pos.zCoord + vec.zCoord), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 50));
 		}
 	}
 	
@@ -139,17 +141,17 @@ public class TileEntityTurretFritz extends TileEntityTurretBaseNT implements IFl
 	public void updateEntity() {
 		super.updateEntity();
 		
-		if(!worldObj.isRemote) {
-			tank.setType(9, 9, slots);
-			tank.loadTank(0, 1, slots);
-			tank.updateTank(xCoord, yCoord, zCoord, worldObj.provider.dimensionId);
+		if(!this.worldObj.isRemote) {
+			this.tank.setType(9, 9, this.slots);
+			this.tank.loadTank(0, 1, this.slots);
+			this.tank.updateTank(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId);
 			
 			for(int i = 1; i < 10; i++) {
 				
-				if(slots[i] != null && slots[i].getItem() == ModItems.ammo_fuel) {
+				if(this.slots[i] != null && this.slots[i].getItem() == ModItems.ammo_fuel) {
 					if(this.tank.getTankType() == Fluids.DIESEL && this.tank.getFill() + 1000 <= this.tank.getMaxFill()) {
 						this.tank.setFill(this.tank.getFill() + 1000);
-						this.decrStackSize(i, 1);
+						decrStackSize(i, 1);
 					}
 				}
 			}
@@ -158,26 +160,26 @@ public class TileEntityTurretFritz extends TileEntityTurretBaseNT implements IFl
 
 	@Override //TODO: clean this shit up
 	protected void updateConnections() {
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset).getOpposite();
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset).getOpposite();
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 
-		this.trySubscribe(worldObj, xCoord + dir.offsetX * -1 + rot.offsetX * 0, yCoord, zCoord + dir.offsetZ * -1 + rot.offsetZ * 0, dir.getOpposite());
-		this.trySubscribe(worldObj, xCoord + dir.offsetX * -1 + rot.offsetX * -1, yCoord, zCoord + dir.offsetZ * -1 + rot.offsetZ * -1, dir.getOpposite());
-		this.trySubscribe(worldObj, xCoord + dir.offsetX * 0 + rot.offsetX * -2, yCoord, zCoord + dir.offsetZ * 0 + rot.offsetZ * -2, rot.getOpposite());
-		this.trySubscribe(worldObj, xCoord + dir.offsetX * 1 + rot.offsetX * -2, yCoord, zCoord + dir.offsetZ * 1 + rot.offsetZ * -2, rot.getOpposite());
-		this.trySubscribe(worldObj, xCoord + dir.offsetX * 0 + rot.offsetX * 1, yCoord, zCoord + dir.offsetZ * 0 + rot.offsetZ * 1, rot);
-		this.trySubscribe(worldObj, xCoord + dir.offsetX * 1 + rot.offsetX * 1, yCoord, zCoord + dir.offsetZ * 1 + rot.offsetZ * 1, rot);
-		this.trySubscribe(worldObj, xCoord + dir.offsetX * 2 + rot.offsetX * 0, yCoord, zCoord + dir.offsetZ * 2 + rot.offsetZ * 0, dir);
-		this.trySubscribe(worldObj, xCoord + dir.offsetX * 2 + rot.offsetX * -1, yCoord, zCoord + dir.offsetZ * 2 + rot.offsetZ * -1, dir);
+		this.trySubscribe(this.worldObj, this.xCoord + dir.offsetX * -1 + rot.offsetX * 0, this.yCoord, this.zCoord + dir.offsetZ * -1 + rot.offsetZ * 0, dir.getOpposite());
+		this.trySubscribe(this.worldObj, this.xCoord + dir.offsetX * -1 + rot.offsetX * -1, this.yCoord, this.zCoord + dir.offsetZ * -1 + rot.offsetZ * -1, dir.getOpposite());
+		this.trySubscribe(this.worldObj, this.xCoord + dir.offsetX * 0 + rot.offsetX * -2, this.yCoord, this.zCoord + dir.offsetZ * 0 + rot.offsetZ * -2, rot.getOpposite());
+		this.trySubscribe(this.worldObj, this.xCoord + dir.offsetX * 1 + rot.offsetX * -2, this.yCoord, this.zCoord + dir.offsetZ * 1 + rot.offsetZ * -2, rot.getOpposite());
+		this.trySubscribe(this.worldObj, this.xCoord + dir.offsetX * 0 + rot.offsetX * 1, this.yCoord, this.zCoord + dir.offsetZ * 0 + rot.offsetZ * 1, rot);
+		this.trySubscribe(this.worldObj, this.xCoord + dir.offsetX * 1 + rot.offsetX * 1, this.yCoord, this.zCoord + dir.offsetZ * 1 + rot.offsetZ * 1, rot);
+		this.trySubscribe(this.worldObj, this.xCoord + dir.offsetX * 2 + rot.offsetX * 0, this.yCoord, this.zCoord + dir.offsetZ * 2 + rot.offsetZ * 0, dir);
+		this.trySubscribe(this.worldObj, this.xCoord + dir.offsetX * 2 + rot.offsetX * -1, this.yCoord, this.zCoord + dir.offsetZ * 2 + rot.offsetZ * -1, dir);
 
-		this.trySubscribe(tank.getTankType(), worldObj, xCoord + dir.offsetX * -1 + rot.offsetX * 0, yCoord, zCoord + dir.offsetZ * -1 + rot.offsetZ * 0, dir.getOpposite());
-		this.trySubscribe(tank.getTankType(), worldObj, xCoord + dir.offsetX * -1 + rot.offsetX * -1, yCoord, zCoord + dir.offsetZ * -1 + rot.offsetZ * -1, dir.getOpposite());
-		this.trySubscribe(tank.getTankType(), worldObj, xCoord + dir.offsetX * 0 + rot.offsetX * -2, yCoord, zCoord + dir.offsetZ * 0 + rot.offsetZ * -2, rot.getOpposite());
-		this.trySubscribe(tank.getTankType(), worldObj, xCoord + dir.offsetX * 1 + rot.offsetX * -2, yCoord, zCoord + dir.offsetZ * 1 + rot.offsetZ * -2, rot.getOpposite());
-		this.trySubscribe(tank.getTankType(), worldObj, xCoord + dir.offsetX * 0 + rot.offsetX * 1, yCoord, zCoord + dir.offsetZ * 0 + rot.offsetZ * 1, rot);
-		this.trySubscribe(tank.getTankType(), worldObj, xCoord + dir.offsetX * 1 + rot.offsetX * 1, yCoord, zCoord + dir.offsetZ * 1 + rot.offsetZ * 1, rot);
-		this.trySubscribe(tank.getTankType(), worldObj, xCoord + dir.offsetX * 2 + rot.offsetX * 0, yCoord, zCoord + dir.offsetZ * 2 + rot.offsetZ * 0, dir);
-		this.trySubscribe(tank.getTankType(), worldObj, xCoord + dir.offsetX * 2 + rot.offsetX * -1, yCoord, zCoord + dir.offsetZ * 2 + rot.offsetZ * -1, dir);
+		this.trySubscribe(this.tank.getTankType(), this.worldObj, this.xCoord + dir.offsetX * -1 + rot.offsetX * 0, this.yCoord, this.zCoord + dir.offsetZ * -1 + rot.offsetZ * 0, dir.getOpposite());
+		this.trySubscribe(this.tank.getTankType(), this.worldObj, this.xCoord + dir.offsetX * -1 + rot.offsetX * -1, this.yCoord, this.zCoord + dir.offsetZ * -1 + rot.offsetZ * -1, dir.getOpposite());
+		this.trySubscribe(this.tank.getTankType(), this.worldObj, this.xCoord + dir.offsetX * 0 + rot.offsetX * -2, this.yCoord, this.zCoord + dir.offsetZ * 0 + rot.offsetZ * -2, rot.getOpposite());
+		this.trySubscribe(this.tank.getTankType(), this.worldObj, this.xCoord + dir.offsetX * 1 + rot.offsetX * -2, this.yCoord, this.zCoord + dir.offsetZ * 1 + rot.offsetZ * -2, rot.getOpposite());
+		this.trySubscribe(this.tank.getTankType(), this.worldObj, this.xCoord + dir.offsetX * 0 + rot.offsetX * 1, this.yCoord, this.zCoord + dir.offsetZ * 0 + rot.offsetZ * 1, rot);
+		this.trySubscribe(this.tank.getTankType(), this.worldObj, this.xCoord + dir.offsetX * 1 + rot.offsetX * 1, this.yCoord, this.zCoord + dir.offsetZ * 1 + rot.offsetZ * 1, rot);
+		this.trySubscribe(this.tank.getTankType(), this.worldObj, this.xCoord + dir.offsetX * 2 + rot.offsetX * 0, this.yCoord, this.zCoord + dir.offsetZ * 2 + rot.offsetZ * 0, dir);
+		this.trySubscribe(this.tank.getTankType(), this.worldObj, this.xCoord + dir.offsetX * 2 + rot.offsetX * -1, this.yCoord, this.zCoord + dir.offsetZ * 2 + rot.offsetZ * -1, dir);
 	}
 	
 	@Override
@@ -199,38 +201,38 @@ public class TileEntityTurretFritz extends TileEntityTurretBaseNT implements IFl
 
 	@Override
 	public void setFillForSync(int fill, int index) {
-		tank.setFill(fill);
+		this.tank.setFill(fill);
 	}
 
 	@Override
 	public void setTypeForSync(FluidType type, int index) {
-		tank.setTankType(type);
+		this.tank.setTankType(type);
 	}
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		return type.name().equals(this.tank.getTankType().name()) ? tank.getMaxFill() : 0;
+		return type.name().equals(this.tank.getTankType().name()) ? this.tank.getMaxFill() : 0;
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		return type.name().equals(this.tank.getTankType().name()) ? tank.getFill() : 0;
+		return type.name().equals(this.tank.getTankType().name()) ? this.tank.getFill() : 0;
 	}
 
 	@Override
 	public void setFluidFill(int i, FluidType type) {
-		if(type.name().equals(tank.getTankType().name()))
-			tank.setFill(i);
+		if(type.name().equals(this.tank.getTankType().name()))
+			this.tank.setFill(i);
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] { tank };
+		return new FluidTank[] { this.tank };
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return new FluidTank[] { tank };
+		return new FluidTank[] { this.tank };
 	}
 
 	@Override

@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 public abstract class EntityRailCarCargo extends EntityRailCarBase implements IInventory {
 
 	protected String entityName;
-	protected ItemStack[] slots = new ItemStack[this.getSizeInventory()];
+	protected ItemStack[] slots = new ItemStack[getSizeInventory()];
 
 	public EntityRailCarCargo(World world) {
 		super(world);
@@ -25,8 +25,8 @@ public abstract class EntityRailCarCargo extends EntityRailCarBase implements II
 	public int countVacantSlots() {
 		int slots = 0;
 		
-		for(int i = 0; i < this.getSizeInventory(); i++) {
-			if(this.getStackInSlot(i) != null) slots++;
+		for(int i = 0; i < getSizeInventory(); i++) {
+			if(getStackInSlot(i) != null) slots++;
 		}
 		
 		return slots;
@@ -34,7 +34,7 @@ public abstract class EntityRailCarCargo extends EntityRailCarBase implements II
 
 	@Override
 	public ItemStack getStackInSlot(int slot) {
-		return slots[slot];
+		return this.slots[slot];
 	}
 	
 	@Override
@@ -53,11 +53,11 @@ public abstract class EntityRailCarCargo extends EntityRailCarBase implements II
 					this.slots[slot] = null;
 				}
 
-				if(!this.worldObj.isRemote) this.dataWatcher.updateObject(10, this.countVacantSlots());
+				if(!this.worldObj.isRemote) this.dataWatcher.updateObject(10, countVacantSlots());
 				return itemstack;
 			}
 		} else {
-			if(!this.worldObj.isRemote) this.dataWatcher.updateObject(10, this.countVacantSlots());
+			if(!this.worldObj.isRemote) this.dataWatcher.updateObject(10, countVacantSlots());
 			return null;
 		}
 	}
@@ -67,10 +67,10 @@ public abstract class EntityRailCarCargo extends EntityRailCarBase implements II
 		if(this.slots[slot] != null) {
 			ItemStack itemstack = this.slots[slot];
 			this.slots[slot] = null;
-			if(!this.worldObj.isRemote) this.dataWatcher.updateObject(10, this.countVacantSlots());
+			if(!this.worldObj.isRemote) this.dataWatcher.updateObject(10, countVacantSlots());
 			return itemstack;
 		} else {
-			if(!this.worldObj.isRemote) this.dataWatcher.updateObject(10, this.countVacantSlots());
+			if(!this.worldObj.isRemote) this.dataWatcher.updateObject(10, countVacantSlots());
 			return null;
 		}
 	}
@@ -79,11 +79,11 @@ public abstract class EntityRailCarCargo extends EntityRailCarBase implements II
 	public void setInventorySlotContents(int slot, ItemStack stack) {
 		this.slots[slot] = stack;
 
-		if(stack != null && stack.stackSize > this.getInventoryStackLimit()) {
-			stack.stackSize = this.getInventoryStackLimit();
+		if(stack != null && stack.stackSize > getInventoryStackLimit()) {
+			stack.stackSize = getInventoryStackLimit();
 		}
 		
-		if(!this.worldObj.isRemote) this.dataWatcher.updateObject(10, this.countVacantSlots());
+		if(!this.worldObj.isRemote) this.dataWatcher.updateObject(10, countVacantSlots());
 	}
 
 	@Override
@@ -131,7 +131,7 @@ public abstract class EntityRailCarCargo extends EntityRailCarBase implements II
 	protected void readEntityFromNBT(NBTTagCompound nbt) {
 		super.readEntityFromNBT(nbt);
 		NBTTagList nbttaglist = nbt.getTagList("Items", 10);
-		this.slots = new ItemStack[this.getSizeInventory()];
+		this.slots = new ItemStack[getSizeInventory()];
 
 		for(int i = 0; i < nbttaglist.tagCount(); ++i) {
 			NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
@@ -142,7 +142,7 @@ public abstract class EntityRailCarCargo extends EntityRailCarBase implements II
 			}
 		}
 		
-		this.dataWatcher.updateObject(10, this.countVacantSlots());
+		this.dataWatcher.updateObject(10, countVacantSlots());
 	}
 	
 	@Override

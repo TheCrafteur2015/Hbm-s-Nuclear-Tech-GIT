@@ -9,21 +9,21 @@ public interface IFluidAcceptor extends IFluidContainer {
 	
 	@Deprecated
 	public default void setFluidFillForReceive(int fill, FluidType type) {
-		this.setFluidFill(fill, type);
+		setFluidFill(fill, type);
 	}
 
 	@Deprecated
 	public default int getFluidFillForReceive(FluidType type) {
-		return this.getFluidFill(type);
+		return getFluidFill(type);
 	}
 
 	@Deprecated
 	public default int getMaxFluidFillForReceive(FluidType type) {
-		return this.getMaxFluidFill(type);
+		return getMaxFluidFill(type);
 	}
 
 	@Deprecated
 	public default void receiveFluid(int amount, FluidType type) {
-		this.setFluidFill(this.getFluidFill(type) + amount, type);
+		setFluidFill(getFluidFill(type) + amount, type);
 	}
 }

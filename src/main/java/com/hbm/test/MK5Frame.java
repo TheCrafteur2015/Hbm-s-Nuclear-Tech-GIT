@@ -16,8 +16,8 @@ import net.minecraft.world.ChunkCoordIntPair;
 
 public class MK5Frame {
 
-	public HashMap<ChunkCoordIntPair, List<FloatTriplet>> perChunk = new HashMap(); //for future: optimize blockmap further by using sub-chunks instead of chunks
-	public List<ChunkCoordIntPair> orderedChunks = new ArrayList();
+	public HashMap<ChunkCoordIntPair, List<FloatTriplet>> perChunk = new HashMap<>(); //for future: optimize blockmap further by using sub-chunks instead of chunks
+	public List<ChunkCoordIntPair> orderedChunks = new ArrayList<>();
 	private CoordComparator comparator = new CoordComparator();
 	int posX;
 	int posY;
@@ -84,22 +84,22 @@ public class MK5Frame {
 
 		while (this.gspNumMax >= this.gspNum){
 			// Get Cartesian coordinates for spherical coordinates
-			Vec3 vec = this.getSpherical2cartesian();
+			Vec3 vec = getSpherical2cartesian();
 
-			int length = (int)Math.ceil(strength);
-			float res = strength;
+			int length = (int)Math.ceil(this.strength);
+			float res = this.strength;
 
 			FloatTriplet lastPos = null;
-			HashSet<ChunkCoordIntPair> chunkCoords = new HashSet();
+			HashSet<ChunkCoordIntPair> chunkCoords = new HashSet<>();
 
 			for(int i = 0; i < length; i ++) {
 
 				if(i > this.length)
 					break;
 
-				float x0 = (float) (posX + (vec.xCoord * i));
-				float y0 = (float) (posY + (vec.yCoord * i));
-				float z0 = (float) (posZ + (vec.zCoord * i));
+				float x0 = (float) (this.posX + (vec.xCoord * i));
+				float y0 = (float) (this.posY + (vec.yCoord * i));
+				float z0 = (float) (this.posZ + (vec.zCoord * i));
 
 				int iX = (int) Math.floor(x0);
 				int iY = (int) Math.floor(y0);
@@ -111,19 +111,19 @@ public class MK5Frame {
 				Block block = null;
 				boolean withinThreshold = (double) i / (double) length <= ExplosionTests.BUFFER_THRESHOLD;
 				
-				Float buffered = withinThreshold ? buffer.getBufferedResult(iX, iY, iZ) : null;
+				Float buffered = withinThreshold ? this.buffer.getBufferedResult(iX, iY, iZ) : null;
 				
 				float f = 0;
 				
 				if(buffered == null) {
 					
-					block = world.getBlock(iX, iY, iZ);
+					block = this.world.getBlock(iX, iY, iZ);
 
 					if(!block.getMaterial().isLiquid()) {
 						f = (float) Math.pow(block.getExplosionResistance(null), 7.5D - fac);
 					}
 					
-					if(withinThreshold) buffer.setBufferedResult(iX, iY, iZ, f);
+					if(withinThreshold) this.buffer.setBufferedResult(iX, iY, iZ, f);
 					
 				} else {
 					f = buffered;
@@ -144,18 +144,18 @@ public class MK5Frame {
 			}
 			
 			for(ChunkCoordIntPair pos : chunkCoords) {
-				List<FloatTriplet> triplets = perChunk.get(pos);
+				List<FloatTriplet> triplets = this.perChunk.get(pos);
 				
 				if(triplets == null) {
-					triplets = new ArrayList();
-					perChunk.put(pos, triplets); //we re-use the same pos instead of using individualized per-chunk ones to save on RAM
+					triplets = new ArrayList<>();
+					this.perChunk.put(pos, triplets); //we re-use the same pos instead of using individualized per-chunk ones to save on RAM
 				}
 				
 				triplets.add(lastPos);
 			}
 			
 			// Raise one generalized spiral points
-			this.generateGspUp();
+			generateGspUp();
 
 			amountProcessed++;
 			if(amountProcessed >= count) {
@@ -164,10 +164,10 @@ public class MK5Frame {
 			}
 		}
 		
-		orderedChunks.addAll(perChunk.keySet());
-		orderedChunks.sort(comparator);
+		this.orderedChunks.addAll(this.perChunk.keySet());
+		this.orderedChunks.sort(this.comparator);
 		
-		isCollectionComplete = true;
+		this.isCollectionComplete = true;
 		TimeAnalyzer.endCount();
 	}
 	
@@ -186,22 +186,22 @@ public class MK5Frame {
 		@Override public void setBufferedResult(int x, int y, int z, float f) { }
 	}
 	public static class BufferMap implements ResultBuffer {
-		HashMap<BlockPos, Float> map = new HashMap();
-		@Override public Float getBufferedResult(int x, int y, int z) { if(y < 0 || y > 255) return null; return map.get(new BlockPos(x, y, z)); }
-		@Override public void setBufferedResult(int x, int y, int z, float f) { if(y < 0 || y > 255) return; map.put(new BlockPos(x, y, z), f); }
+		HashMap<BlockPos, Float> map = new HashMap<>();
+		@Override public Float getBufferedResult(int x, int y, int z) { if(y < 0 || y > 255) return null; return this.map.get(new BlockPos(x, y, z)); }
+		@Override public void setBufferedResult(int x, int y, int z, float f) { if(y < 0 || y > 255) return; this.map.put(new BlockPos(x, y, z), f); }
 	}
 	public static class BufferArray implements ResultBuffer {
-		BlockPos center; Float[][][] buffer; int size; public BufferArray(int x, int y, int z, int size) { this.size = (int) (size * 2.1); center = new BlockPos(x, y, z); buffer = new Float[this.size][256][this.size];}
-		HashMap<BlockPos, Float> map = new HashMap();
+		BlockPos center; Float[][][] buffer; int size; public BufferArray(int x, int y, int z, int size) { this.size = (int) (size * 2.1); this.center = new BlockPos(x, y, z); this.buffer = new Float[this.size][256][this.size];}
+		HashMap<BlockPos, Float> map = new HashMap<>();
 		@Override public Float getBufferedResult(int x, int y, int z) {
 			if(y < 0 || y > 255) return null;
-			int iX = x - center.getX() + size * 100; int iZ = z - center.getZ() + size * 100;
-			return buffer[iX % size][y][iZ % size];
+			int iX = x - this.center.getX() + this.size * 100; int iZ = z - this.center.getZ() + this.size * 100;
+			return this.buffer[iX % this.size][y][iZ % this.size];
 		}
 		@Override public void setBufferedResult(int x, int y, int z, float f) {
 			if(y < 0 || y > 255) return;
-			int iX = x - center.getX() + size * 100; int iZ = z - center.getZ() + size * 100;
-			buffer[iX % size][y][iZ % size] = f;
+			int iX = x - this.center.getX() + this.size * 100; int iZ = z - this.center.getZ() + this.size * 100;
+			this.buffer[iX % this.size][y][iZ % this.size] = f;
 		}
 	}
 	/* TEST INSERT END */
@@ -230,15 +230,15 @@ public class MK5Frame {
 			return;
 		}
 		
-		ChunkCoordIntPair coord = orderedChunks.get(0);
-		List<FloatTriplet> list = perChunk.get(coord);
-		HashSet<BlockPos> toRem = new HashSet();
+		ChunkCoordIntPair coord = this.orderedChunks.get(0);
+		List<FloatTriplet> list = this.perChunk.get(coord);
+		HashSet<BlockPos> toRem = new HashSet<>();
 		int chunkX = coord.chunkXPos;
 		int chunkZ = coord.chunkZPos;
 		
-		int enter = (int) (Math.min(
-				Math.abs(posX - (chunkX << 4)),
-				Math.abs(posZ - (chunkZ << 4)))) - 16; //jump ahead to cut back on NOPs
+		int enter = (Math.min(
+				Math.abs(this.posX - (chunkX << 4)),
+				Math.abs(this.posZ - (chunkZ << 4)))) - 16; //jump ahead to cut back on NOPs
 		
 		for(FloatTriplet triplet : list) {
 			float x = triplet.xCoord;
@@ -251,9 +251,9 @@ public class MK5Frame {
 			
 			boolean inChunk = false;
 			for(int i = enter; i < vec.lengthVector(); i++) {
-				int x0 = (int) Math.floor(posX + pX * i);
-				int y0 = (int) Math.floor(posY + pY * i);
-				int z0 = (int) Math.floor(posZ + pZ * i);
+				int x0 = (int) Math.floor(this.posX + pX * i);
+				int y0 = (int) Math.floor(this.posY + pY * i);
+				int z0 = (int) Math.floor(this.posZ + pZ * i);
 				
 				if(x0 >> 4 != chunkX || z0 >> 4 != chunkZ) {
 					if(inChunk) {
@@ -265,18 +265,18 @@ public class MK5Frame {
 				
 				inChunk = true;
 
-				if(!world.isAirBlock(x0, y0, z0)) {
+				if(!this.world.isAirBlock(x0, y0, z0)) {
 					toRem.add(new BlockPos(x0, y0, z0));
 				}
 			}
 		}
 		
 		for(BlockPos pos : toRem) {
-			world.setBlock(pos.getX(), pos.getY(), pos.getZ(), Blocks.air);
+			this.world.setBlock(pos.getX(), pos.getY(), pos.getZ(), Blocks.air);
 		}
 		
-		perChunk.remove(coord);
-		orderedChunks.remove(0);
+		this.perChunk.remove(coord);
+		this.orderedChunks.remove(0);
 		
 		TimeAnalyzer.endCount();
 	}
@@ -287,9 +287,9 @@ public class MK5Frame {
 		public float zCoord;
 		
 		public FloatTriplet(float x, float y, float z) {
-			xCoord = x;
-			yCoord = y;
-			zCoord = z;
+			this.xCoord = x;
+			this.yCoord = y;
+			this.zCoord = z;
 		}
 	}
 }

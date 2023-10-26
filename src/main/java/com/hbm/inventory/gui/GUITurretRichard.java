@@ -14,7 +14,8 @@ public class GUITurretRichard extends GUITurretBase {
 		super(invPlayer, tedf);
 	}
 	
+	@Override
 	protected ResourceLocation getTexture() {
-		return texture;
+		return GUITurretRichard.texture;
 	}
 }

@@ -6,6 +6,7 @@ import java.util.Random;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.config.GeneralConfig;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 

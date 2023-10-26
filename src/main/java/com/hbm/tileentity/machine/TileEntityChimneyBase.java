@@ -23,42 +23,42 @@ public abstract class TileEntityChimneyBase extends TileEntityLoadedBase impleme
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			if(worldObj.getTotalWorldTime() % 20 == 0) {
+			if(this.worldObj.getTotalWorldTime() % 20 == 0) {
 				FluidType[] types = new FluidType[] {Fluids.SMOKE, Fluids.SMOKE_LEADED, Fluids.SMOKE_POISON};
 				
 				for(FluidType type : types) {
-					this.trySubscribe(type, worldObj, xCoord + 2, yCoord, zCoord, Library.POS_X);
-					this.trySubscribe(type, worldObj, xCoord - 2, yCoord, zCoord, Library.NEG_X);
-					this.trySubscribe(type, worldObj, xCoord, yCoord, zCoord + 2, Library.POS_Z);
-					this.trySubscribe(type, worldObj, xCoord, yCoord, zCoord - 2, Library.NEG_Z);
+					trySubscribe(type, this.worldObj, this.xCoord + 2, this.yCoord, this.zCoord, Library.POS_X);
+					trySubscribe(type, this.worldObj, this.xCoord - 2, this.yCoord, this.zCoord, Library.NEG_X);
+					trySubscribe(type, this.worldObj, this.xCoord, this.yCoord, this.zCoord + 2, Library.POS_Z);
+					trySubscribe(type, this.worldObj, this.xCoord, this.yCoord, this.zCoord - 2, Library.NEG_Z);
 				}
 			}
 			
-			if(ashTick > 0 || sootTick > 0) {
+			if(this.ashTick > 0 || this.sootTick > 0) {
 
-				TileEntity below = worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
+				TileEntity below = this.worldObj.getTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
 				
 				if(below instanceof TileEntityAshpit) {
 					TileEntityAshpit ashpit = (TileEntityAshpit) below;
-					ashpit.ashLevelFly += ashTick;
-					ashpit.ashLevelSoot += sootTick;
+					ashpit.ashLevelFly += this.ashTick;
+					ashpit.ashLevelSoot += this.sootTick;
 				}
 				this.ashTick = 0;
 				this.sootTick = 0;
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setInteger("onTicks", onTicks);
+			data.setInteger("onTicks", this.onTicks);
 			INBTPacketReceiver.networkPack(this, data, 150);
 			
-			if(onTicks > 0) onTicks--;
+			if(this.onTicks > 0) this.onTicks--;
 			
 		} else {
 			
-			if(onTicks > 0) {
-				this.spawnParticles();
+			if(this.onTicks > 0) {
+				spawnParticles();
 			}
 		}
 	}
@@ -73,6 +73,7 @@ public abstract class TileEntityChimneyBase extends TileEntityLoadedBase impleme
 	
 	public void spawnParticles() { }
 	
+	@Override
 	public void networkUnpack(NBTTagCompound nbt) {
 		this.onTicks = nbt.getInteger("onTicks");
 	}
@@ -85,16 +86,16 @@ public abstract class TileEntityChimneyBase extends TileEntityLoadedBase impleme
 
 	@Override
 	public long transferFluid(FluidType type, int pressure, long fluid) {
-		onTicks = 20;
+		this.onTicks = 20;
 
-		if(cpaturesAsh()) ashTick += fluid;
-		if(cpaturesSoot()) sootTick += fluid;
+		if(cpaturesAsh()) this.ashTick += fluid;
+		if(cpaturesSoot()) this.sootTick += fluid;
 		
 		fluid *= getPollutionMod();
 
-		if(type == Fluids.SMOKE) PollutionHandler.incrementPollution(worldObj, xCoord, yCoord, zCoord, PollutionType.SOOT, fluid / 100F);
-		if(type == Fluids.SMOKE_LEADED) PollutionHandler.incrementPollution(worldObj, xCoord, yCoord, zCoord, PollutionType.HEAVYMETAL, fluid / 100F);
-		if(type == Fluids.SMOKE_POISON) PollutionHandler.incrementPollution(worldObj, xCoord, yCoord, zCoord, PollutionType.POISON, fluid / 100F);
+		if(type == Fluids.SMOKE) PollutionHandler.incrementPollution(this.worldObj, this.xCoord, this.yCoord, this.zCoord, PollutionType.SOOT, fluid / 100F);
+		if(type == Fluids.SMOKE_LEADED) PollutionHandler.incrementPollution(this.worldObj, this.xCoord, this.yCoord, this.zCoord, PollutionType.HEAVYMETAL, fluid / 100F);
+		if(type == Fluids.SMOKE_POISON) PollutionHandler.incrementPollution(this.worldObj, this.xCoord, this.yCoord, this.zCoord, PollutionType.POISON, fluid / 100F);
 		
 		return 0;
 	}

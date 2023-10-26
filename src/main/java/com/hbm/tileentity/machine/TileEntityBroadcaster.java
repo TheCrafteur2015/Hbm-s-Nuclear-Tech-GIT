@@ -18,15 +18,16 @@ import net.minecraft.util.AxisAlignedBB;
 
 public class TileEntityBroadcaster extends TileEntity {
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void updateEntity() {
 		
-		List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBox(xCoord + 0.5 - 25, yCoord + 0.5 - 25, zCoord + 0.5 - 25, xCoord + 0.5 + 25, yCoord + 0.5 + 25, zCoord + 0.5 + 25));
+		List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBox(this.xCoord + 0.5 - 25, this.yCoord + 0.5 - 25, this.zCoord + 0.5 - 25, this.xCoord + 0.5 + 25, this.yCoord + 0.5 + 25, this.zCoord + 0.5 + 25));
 		
-		for(int i = 0; i < list.size(); i++) {
-			if(list.get(i) instanceof EntityLivingBase) {
-				EntityLivingBase e = (EntityLivingBase)list.get(i);
-				double d = Math.sqrt(Math.pow(e.posX - (xCoord + 0.5), 2) + Math.pow(e.posY - (yCoord + 0.5), 2) + Math.pow(e.posZ - (zCoord + 0.5), 2));
+		for (Entity element : list) {
+			if(element instanceof EntityLivingBase) {
+				EntityLivingBase e = (EntityLivingBase)element;
+				double d = Math.sqrt(Math.pow(e.posX - (this.xCoord + 0.5), 2) + Math.pow(e.posY - (this.yCoord + 0.5), 2) + Math.pow(e.posZ - (this.zCoord + 0.5), 2));
 				
 				if(d <= 25) {
 					if(e.getActivePotionEffect(Potion.confusion) == null || e.getActivePotionEffect(Potion.confusion).getDuration() < 100)
@@ -40,8 +41,8 @@ public class TileEntityBroadcaster extends TileEntity {
 			}
 		}
 
-		if(!worldObj.isRemote) {
-			PacketDispatcher.wrapper.sendToAllAround(new LoopedSoundPacket(xCoord, yCoord, zCoord), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 150));
+		if(!this.worldObj.isRemote) {
+			PacketDispatcher.wrapper.sendToAllAround(new LoopedSoundPacket(this.xCoord, this.yCoord, this.zCoord), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 150));
 		}
 	}
 	

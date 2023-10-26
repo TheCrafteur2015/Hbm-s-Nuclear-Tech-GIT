@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import com.hbm.inventory.container.ContainerMachineEPress;
 import com.hbm.lib.RefStrings;
 import com.hbm.tileentity.machine.TileEntityMachineEPress;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -17,7 +18,7 @@ public class GUIMachineEPress extends GuiInfoContainer {
 	
 	public GUIMachineEPress(InventoryPlayer invPlayer, TileEntityMachineEPress tedf) {
 		super(new ContainerMachineEPress(invPlayer, tedf));
-		press = tedf;
+		this.press = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 166;
@@ -27,7 +28,7 @@ public class GUIMachineEPress extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 		
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 17, guiTop + 69 - 52, 16, 52, press.power, press.maxPower);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 17, this.guiTop + 69 - 52, 16, 52, this.press.power, TileEntityMachineEPress.maxPower);
 	}
 
 	@Override
@@ -41,13 +42,13 @@ public class GUIMachineEPress extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIMachineEPress.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		int i = (int) (press.power * 52 / press.maxPower);
-		drawTexturedModalRect(guiLeft + 17, guiTop + 69 - i, 176, 52 - i, 16, i);
+		int i = (int) (this.press.power * 52 / TileEntityMachineEPress.maxPower);
+		drawTexturedModalRect(this.guiLeft + 17, this.guiTop + 69 - i, 176, 52 - i, 16, i);
 		
-		int k = (int) (press.renderPress * 16 / press.maxPress);
-		this.drawTexturedModalRect(guiLeft + 79, guiTop + 35, 192, 0, 18, k);
+		int k = (int) (this.press.renderPress * 16 / TileEntityMachineEPress.maxPress);
+		drawTexturedModalRect(this.guiLeft + 79, this.guiTop + 35, 192, 0, 18, k);
 	}
 }

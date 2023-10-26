@@ -19,37 +19,40 @@ public class ParticleExSmoke extends EntityFX {
 
 	public ParticleExSmoke(TextureManager p_i1213_1_, World p_i1218_1_, double p_i1218_2_, double p_i1218_4_, double p_i1218_6_) {
 		super(p_i1218_1_, p_i1218_2_, p_i1218_4_, p_i1218_6_);
-		particleIcon = ModEventHandlerClient.particleBase;
-		maxAge = 100 + rand.nextInt(40);
+		this.particleIcon = ModEventHandlerClient.particleBase;
+		this.maxAge = 100 + this.rand.nextInt(40);
 	}
 
+	@Override
 	public void onUpdate() {
 		this.prevPosX = this.posX;
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
 		
-		particleAlpha = 1 - ((float) age / (float) maxAge);
+		this.particleAlpha = 1 - ((float) this.age / (float) this.maxAge);
 		
 		++this.age;
 
 		if (this.age == this.maxAge) {
-			this.setDead();
+			setDead();
 		}
 
 		this.motionX *= 0.7599999785423279D;
 		this.motionY *= 0.7599999785423279D;
 		this.motionZ *= 0.7599999785423279D;
 		
-        this.moveEntity(this.motionX, this.motionY, this.motionZ);
+        moveEntity(this.motionX, this.motionY, this.motionZ);
 	}
 
+	@Override
 	public int getFXLayer() {
 		return 1;
 	}
 
+	@Override
 	public void renderParticle(Tessellator p_70539_1_, float p_70539_2_, float p_70539_3_, float p_70539_4_, float p_70539_5_, float p_70539_6_, float p_70539_7_) {
 		
-		Random urandom = new Random(this.getEntityId());
+		Random urandom = new Random(getEntityId());
 		
 		for(int i = 0; i < 6; i++) {
 			
@@ -59,14 +62,14 @@ public class ParticleExSmoke extends EntityFX {
 			p_70539_1_.setNormal(0.0F, 1.0F, 0.0F);
 			
 			float scale = urandom.nextFloat() + 0.5F;
-	        float pX = (float) ((this.prevPosX + (this.posX - this.prevPosX) * (double)p_70539_2_ - interpPosX) + (urandom.nextGaussian() - 1D) * 0.75F);
-	        float pY = (float) ((this.prevPosY + (this.posY - this.prevPosY) * (double)p_70539_2_ - interpPosY) + (urandom.nextGaussian() - 1D) * 0.75F);
-	        float pZ = (float) ((this.prevPosZ + (this.posZ - this.prevPosZ) * (double)p_70539_2_ - interpPosZ) + (urandom.nextGaussian() - 1D) * 0.75F);
+	        float pX = (float) ((this.prevPosX + (this.posX - this.prevPosX) * (double)p_70539_2_ - EntityFX.interpPosX) + (urandom.nextGaussian() - 1D) * 0.75F);
+	        float pY = (float) ((this.prevPosY + (this.posY - this.prevPosY) * (double)p_70539_2_ - EntityFX.interpPosY) + (urandom.nextGaussian() - 1D) * 0.75F);
+	        float pZ = (float) ((this.prevPosZ + (this.posZ - this.prevPosZ) * (double)p_70539_2_ - EntityFX.interpPosZ) + (urandom.nextGaussian() - 1D) * 0.75F);
 	        
-			p_70539_1_.addVertexWithUV((double)(pX - p_70539_3_ * scale - p_70539_6_ * scale), (double)(pY - p_70539_4_ * scale), (double)(pZ - p_70539_5_ * scale - p_70539_7_ * scale), particleIcon.getMaxU(), particleIcon.getMaxV());
-			p_70539_1_.addVertexWithUV((double)(pX - p_70539_3_ * scale + p_70539_6_ * scale), (double)(pY + p_70539_4_ * scale), (double)(pZ - p_70539_5_ * scale + p_70539_7_ * scale), particleIcon.getMaxU(), particleIcon.getMinV());
-			p_70539_1_.addVertexWithUV((double)(pX + p_70539_3_ * scale + p_70539_6_ * scale), (double)(pY + p_70539_4_ * scale), (double)(pZ + p_70539_5_ * scale + p_70539_7_ * scale), particleIcon.getMinU(), particleIcon.getMinV());
-			p_70539_1_.addVertexWithUV((double)(pX + p_70539_3_ * scale - p_70539_6_ * scale), (double)(pY - p_70539_4_ * scale), (double)(pZ + p_70539_5_ * scale - p_70539_7_ * scale), particleIcon.getMinU(), particleIcon.getMaxV());
+			p_70539_1_.addVertexWithUV((double)(pX - p_70539_3_ * scale - p_70539_6_ * scale), (double)(pY - p_70539_4_ * scale), (double)(pZ - p_70539_5_ * scale - p_70539_7_ * scale), this.particleIcon.getMaxU(), this.particleIcon.getMaxV());
+			p_70539_1_.addVertexWithUV((double)(pX - p_70539_3_ * scale + p_70539_6_ * scale), (double)(pY + p_70539_4_ * scale), (double)(pZ - p_70539_5_ * scale + p_70539_7_ * scale), this.particleIcon.getMaxU(), this.particleIcon.getMinV());
+			p_70539_1_.addVertexWithUV((double)(pX + p_70539_3_ * scale + p_70539_6_ * scale), (double)(pY + p_70539_4_ * scale), (double)(pZ + p_70539_5_ * scale + p_70539_7_ * scale), this.particleIcon.getMinU(), this.particleIcon.getMinV());
+			p_70539_1_.addVertexWithUV((double)(pX + p_70539_3_ * scale - p_70539_6_ * scale), (double)(pY - p_70539_4_ * scale), (double)(pZ + p_70539_5_ * scale - p_70539_7_ * scale), this.particleIcon.getMinU(), this.particleIcon.getMaxV());
 		}
 	}
 }

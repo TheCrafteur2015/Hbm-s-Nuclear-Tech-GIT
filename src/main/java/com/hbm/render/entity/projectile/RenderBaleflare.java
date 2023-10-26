@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.hbm.lib.RefStrings;
 import com.hbm.render.model.ModelBaleflare;
+
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -13,7 +14,7 @@ public class RenderBaleflare extends Render {
     private ModelBaleflare miniNuke;
 	
 	public RenderBaleflare() {
-		miniNuke = new ModelBaleflare();
+		this.miniNuke = new ModelBaleflare();
 	}
 
 	@Override
@@ -26,7 +27,7 @@ public class RenderBaleflare extends Render {
         GL11.glScalef(1.5F, 1.5F, 1.5F);
         
         bindTexture(new ResourceLocation(RefStrings.MODID + ":textures/models/BaleFlare.png"));
-        miniNuke.renderAll(0.0625F);
+        this.miniNuke.renderAll(0.0625F);
 		GL11.glPopMatrix();
 	}
 

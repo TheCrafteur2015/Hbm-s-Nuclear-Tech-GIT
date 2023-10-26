@@ -37,7 +37,7 @@ public class TileEntitySteamEngine extends TileEntityLoadedBase implements IFlui
 	public float rotor;
 	public float lastRotor;
 	private float syncRotor;
-	public List<IFluidAcceptor> list2 = new ArrayList();
+	public List<IFluidAcceptor> list2 = new ArrayList<>();
 	public FluidTank[] tanks;
 
 	private int turnProgress;
@@ -50,9 +50,9 @@ public class TileEntitySteamEngine extends TileEntityLoadedBase implements IFlui
 	
 	public TileEntitySteamEngine() {
 		
-		tanks = new FluidTank[2];
-		tanks[0] = new FluidTank(Fluids.STEAM, steamCap, 0);
-		tanks[1] = new FluidTank(Fluids.SPENTSTEAM, ldsCap, 1);
+		this.tanks = new FluidTank[2];
+		this.tanks[0] = new FluidTank(Fluids.STEAM, TileEntitySteamEngine.steamCap, 0);
+		this.tanks[1] = new FluidTank(Fluids.SPENTSTEAM, TileEntitySteamEngine.ldsCap, 1);
 	}
 
 	@Override
@@ -62,39 +62,39 @@ public class TileEntitySteamEngine extends TileEntityLoadedBase implements IFlui
 
 	@Override
 	public void readIfPresent(JsonObject obj) {
-		steamCap = IConfigurableMachine.grab(obj, "I:steamCap", steamCap);
-		ldsCap = IConfigurableMachine.grab(obj, "I:ldsCap", ldsCap);
-		efficiency = IConfigurableMachine.grab(obj, "D:efficiency", efficiency);
+		TileEntitySteamEngine.steamCap = IConfigurableMachine.grab(obj, "I:steamCap", TileEntitySteamEngine.steamCap);
+		TileEntitySteamEngine.ldsCap = IConfigurableMachine.grab(obj, "I:ldsCap", TileEntitySteamEngine.ldsCap);
+		TileEntitySteamEngine.efficiency = IConfigurableMachine.grab(obj, "D:efficiency", TileEntitySteamEngine.efficiency);
 	}
 
 	@Override
 	public void writeConfig(JsonWriter writer) throws IOException {
-		writer.name("I:steamCap").value(steamCap);
-		writer.name("I:ldsCap").value(ldsCap);
-		writer.name("D:efficiency").value(efficiency);
+		writer.name("I:steamCap").value(TileEntitySteamEngine.steamCap);
+		writer.name("I:ldsCap").value(TileEntitySteamEngine.ldsCap);
+		writer.name("D:efficiency").value(TileEntitySteamEngine.efficiency);
 	}
 	
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			this.powerBuffer = 0;
 
-			tanks[0].setTankType(Fluids.STEAM);
-			tanks[1].setTankType(Fluids.SPENTSTEAM);
+			this.tanks[0].setTankType(Fluids.STEAM);
+			this.tanks[1].setTankType(Fluids.SPENTSTEAM);
 			
 			NBTTagCompound data = new NBTTagCompound();
-			tanks[0].writeToNBT(data, "s");
+			this.tanks[0].writeToNBT(data, "s");
 
-			FT_Coolable trait = tanks[0].getTankType().getTrait(FT_Coolable.class);
-			double eff = trait.getEfficiency(CoolingType.TURBINE) * efficiency;
+			FT_Coolable trait = this.tanks[0].getTankType().getTrait(FT_Coolable.class);
+			double eff = trait.getEfficiency(CoolingType.TURBINE) * TileEntitySteamEngine.efficiency;
 			
-			int inputOps = tanks[0].getFill() / trait.amountReq;
-			int outputOps = (tanks[1].getMaxFill() - tanks[1].getFill()) / trait.amountProduced;
+			int inputOps = this.tanks[0].getFill() / trait.amountReq;
+			int outputOps = (this.tanks[1].getMaxFill() - this.tanks[1].getFill()) / trait.amountProduced;
 			int ops = Math.min(inputOps, outputOps);
-			tanks[0].setFill(tanks[0].getFill() - ops * trait.amountReq);
-			tanks[1].setFill(tanks[1].getFill() + ops * trait.amountProduced);
+			this.tanks[0].setFill(this.tanks[0].getFill() - ops * trait.amountReq);
+			this.tanks[1].setFill(this.tanks[1].getFill() + ops * trait.amountProduced);
 			this.powerBuffer += (ops * trait.heatEnergy * eff);
 			
 			if(ops > 0) {
@@ -109,20 +109,20 @@ public class TileEntitySteamEngine extends TileEntityLoadedBase implements IFlui
 			if(this.rotor >= 360D) {
 				this.rotor -= 360D;
 				
-				this.worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:block.steamEngineOperate", 1.0F, 0.5F + (acceleration / 80F));
+				this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:block.steamEngineOperate", 1.0F, 0.5F + (this.acceleration / 80F));
 			}
 			
 			data.setLong("power", this.powerBuffer);
 			data.setFloat("rotor", this.rotor);
-			tanks[1].writeToNBT(data, "w");
+			this.tanks[1].writeToNBT(data, "w");
 
 			for(DirPos pos : getConPos()) {
 				if(this.powerBuffer > 0)
-					this.sendPower(worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
-				this.trySubscribe(tanks[0].getTankType(), worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
-				this.sendFluid(tanks[1], worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+					sendPower(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+				this.trySubscribe(this.tanks[0].getTankType(), this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+				this.sendFluid(this.tanks[1], this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 			}
-			if(tanks[1].getFill() > 0) fillFluidInit(tanks[1].getTankType());
+			if(this.tanks[1].getFill() > 0) fillFluidInit(this.tanks[1].getTankType());
 			
 			INBTPacketReceiver.networkPack(this, data, 150);
 		} else {
@@ -139,13 +139,13 @@ public class TileEntitySteamEngine extends TileEntityLoadedBase implements IFlui
 	}
 	
 	protected DirPos[] getConPos() {
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 		
 		return new DirPos[] {
-				new DirPos(xCoord + rot.offsetX * 2, yCoord + 1, zCoord + rot.offsetZ * 2, rot),
-				new DirPos(xCoord + rot.offsetX * 2 + dir.offsetX, yCoord + 1, zCoord + rot.offsetZ * 2 + dir.offsetZ, rot),
-				new DirPos(xCoord + rot.offsetX * 2 - dir.offsetX, yCoord + 1, zCoord + rot.offsetZ * 2 - dir.offsetZ, rot)
+				new DirPos(this.xCoord + rot.offsetX * 2, this.yCoord + 1, this.zCoord + rot.offsetZ * 2, rot),
+				new DirPos(this.xCoord + rot.offsetX * 2 + dir.offsetX, this.yCoord + 1, this.zCoord + rot.offsetZ * 2 + dir.offsetZ, rot),
+				new DirPos(this.xCoord + rot.offsetX * 2 - dir.offsetX, this.yCoord + 1, this.zCoord + rot.offsetZ * 2 - dir.offsetZ, rot)
 		};
 	}
 	
@@ -163,10 +163,10 @@ public class TileEntitySteamEngine extends TileEntityLoadedBase implements IFlui
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 
-		nbt.setLong("powerBuffer", powerBuffer);
-		nbt.setFloat("acceleration", acceleration);
-		tanks[0].writeToNBT(nbt, "s");
-		tanks[1].writeToNBT(nbt, "w");
+		nbt.setLong("powerBuffer", this.powerBuffer);
+		nbt.setFloat("acceleration", this.acceleration);
+		this.tanks[0].writeToNBT(nbt, "s");
+		this.tanks[1].writeToNBT(nbt, "w");
 	}
 
 	@Override
@@ -176,60 +176,60 @@ public class TileEntitySteamEngine extends TileEntityLoadedBase implements IFlui
 
 	@Override
 	public void fillFluid(int x, int y, int z, boolean newTact, FluidType type) {
-		Library.transmitFluid(x, y, z, newTact, this, worldObj, type);
+		Library.transmitFluid(x, y, z, newTact, this, this.worldObj, type);
 	}
 	
 	@Override
 	public boolean getTact() {
-		return worldObj.getTotalWorldTime() % 2 == 0;
+		return this.worldObj.getTotalWorldTime() % 2 == 0;
 	}
 
 	@Override
 	public void setFluidFill(int i, FluidType type) {
-		if(type == tanks[0].getTankType())
-			tanks[0].setFill(i);
-		else if(type == tanks[1].getTankType())
-			tanks[1].setFill(i);
+		if(type == this.tanks[0].getTankType())
+			this.tanks[0].setFill(i);
+		else if(type == this.tanks[1].getTankType())
+			this.tanks[1].setFill(i);
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		if(type == tanks[0].getTankType())
-			return tanks[0].getFill();
-		else if(type == tanks[1].getTankType())
-			return tanks[1].getFill();
+		if(type == this.tanks[0].getTankType())
+			return this.tanks[0].getFill();
+		else if(type == this.tanks[1].getTankType())
+			return this.tanks[1].getFill();
 		
 		return 0;
 	}
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		if(type == tanks[0].getTankType())
-			return tanks[0].getMaxFill();
+		if(type == this.tanks[0].getTankType())
+			return this.tanks[0].getMaxFill();
 		
 		return 0;
 	}
 
 	@Override
 	public void setFillForSync(int fill, int index) {
-		if(index < 2 && tanks[index] != null)
-			tanks[index].setFill(fill);
+		if(index < 2 && this.tanks[index] != null)
+			this.tanks[index].setFill(fill);
 	}
 
 	@Override
 	public void setTypeForSync(FluidType type, int index) {
-		if(index < 2 && tanks[index] != null)
-			tanks[index].setTankType(type);
+		if(index < 2 && this.tanks[index] != null)
+			this.tanks[index].setTankType(type);
 	}
 	
 	@Override
 	public List<IFluidAcceptor> getFluidList(FluidType type) {
-		return list2;
+		return this.list2;
 	}
 	
 	@Override
 	public void clearFluidList(FluidType type) {
-		list2.clear();
+		this.list2.clear();
 	}
 	
 	@Override
@@ -250,12 +250,12 @@ public class TileEntitySteamEngine extends TileEntityLoadedBase implements IFlui
 
 	@Override
 	public long getPower() {
-		return powerBuffer;
+		return this.powerBuffer;
 	}
 
 	@Override
 	public long getMaxPower() {
-		return powerBuffer;
+		return this.powerBuffer;
 	}
 
 	@Override
@@ -265,17 +265,17 @@ public class TileEntitySteamEngine extends TileEntityLoadedBase implements IFlui
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return new FluidTank[] {tanks[1]};
+		return new FluidTank[] {this.tanks[1]};
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] {tanks[0]};
+		return new FluidTank[] {this.tanks[0]};
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return tanks;
+		return this.tanks;
 	}
 
 	@Override

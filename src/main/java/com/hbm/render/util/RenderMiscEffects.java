@@ -60,10 +60,10 @@ public class RenderMiscEffects {
     }
 
 	public static void renderClassicGlint(World world, float interpol, IModelCustom model, String part, float r, float g, float b, float speed, float scale) {
-		renderClassicGlint(world, interpol, model, part, 0.5F, r, g, b, speed, scale);
+		RenderMiscEffects.renderClassicGlint(world, interpol, model, part, 0.5F, r, g, b, speed, scale);
     }
 
 	public static void renderClassicGlint(World world, float interpol, IModelCustom model, String part) {
-		renderClassicGlint(world, interpol, model, part, 0.5F, 0.25F, 0.8F, 20.0F, 1F/3F);
+		RenderMiscEffects.renderClassicGlint(world, interpol, model, part, 0.5F, 0.25F, 0.8F, 20.0F, 1F/3F);
     }
 }

@@ -15,7 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class IMCCrystallizer extends IMCHandler {
 	
-	public static HashMap<Pair<Object, FluidType>, CrystallizerRecipe> buffer = new HashMap();
+	public static HashMap<Pair<Object, FluidType>, CrystallizerRecipe> buffer = new HashMap<>();
 
 	@Override
 	public void process(IMCMessage message) {
@@ -26,7 +26,7 @@ public class IMCCrystallizer extends IMCHandler {
 		ItemStack out = ItemStack.loadItemStackFromNBT(output);
 		
 		if(out == null) {
-			this.printError(message, "Output stack could not be read!");
+			printError(message, "Output stack could not be read!");
 			return;
 		}
 		
@@ -46,14 +46,14 @@ public class IMCCrystallizer extends IMCHandler {
 		recipe.acidAmount = acid.fill;
 		
 		if(in != null) {
-			buffer.put(new Pair(new RecipesCommon.ComparableStack(in), acid.type), recipe);
+			IMCCrystallizer.buffer.put(new Pair<>(new RecipesCommon.ComparableStack(in), acid.type), recipe);
 		} else {
 			String dict = data.getString("oredict");
 			
 			if(!dict.isEmpty()) {
-				buffer.put(new Pair(dict, acid.type), recipe);
+				IMCCrystallizer.buffer.put(new Pair<>(dict, acid.type), recipe);
 			} else {
-				this.printError(message, "Input stack could not be read!");
+				printError(message, "Input stack could not be read!");
 			}
 		}
 	}

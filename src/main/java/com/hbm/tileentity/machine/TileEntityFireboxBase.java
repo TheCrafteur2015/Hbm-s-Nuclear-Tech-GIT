@@ -44,56 +44,56 @@ public abstract class TileEntityFireboxBase extends TileEntityMachinePolluting i
 	
 	@Override
 	public void openInventory() {
-		if(!worldObj.isRemote) this.playersUsing++;
+		if(!this.worldObj.isRemote) this.playersUsing++;
 	}
 	
 	@Override
 	public void closeInventory() {
-		if(!worldObj.isRemote) this.playersUsing--;
+		if(!this.worldObj.isRemote) this.playersUsing--;
 	}
 
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			for(int i = 2; i < 6; i++) {
 				ForgeDirection dir = ForgeDirection.getOrientation(i);
 				ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 				
 				for(int j = -1; j <= 1; j++) {
-					this.sendSmoke(xCoord + dir.offsetX * 2 + rot.offsetX * j, yCoord, zCoord + dir.offsetZ * 2 + rot.offsetZ * j, dir);
+					sendSmoke(this.xCoord + dir.offsetX * 2 + rot.offsetX * j, this.yCoord, this.zCoord + dir.offsetZ * 2 + rot.offsetZ * j, dir);
 				}
 			}
 			
-			wasOn = false;
+			this.wasOn = false;
 			
-			if(burnTime <= 0) {
+			if(this.burnTime <= 0) {
 				
 				for(int i = 0; i < 2; i++) {
-					if(slots[i] != null) {
+					if(this.slots[i] != null) {
 						
-						int baseTime = getModule().getBurnTime(slots[i]);
+						int baseTime = getModule().getBurnTime(this.slots[i]);
 						
 						if(baseTime > 0) {
 							int fuel = (int) (baseTime * getTimeMult());
 							
-							TileEntity below = worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
+							TileEntity below = this.worldObj.getTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
 							
 							if(below instanceof TileEntityAshpit) {
 								TileEntityAshpit ashpit = (TileEntityAshpit) below;
-								EnumAshType type = this.getAshFromFuel(slots[i]);
+								EnumAshType type = getAshFromFuel(this.slots[i]);
 								if(type == EnumAshType.WOOD) ashpit.ashLevelWood += baseTime;
 								if(type == EnumAshType.COAL) ashpit.ashLevelCoal += baseTime;
 								if(type == EnumAshType.MISC) ashpit.ashLevelMisc += baseTime;
 							}
 							
 							this.maxBurnTime = this.burnTime = fuel;
-							this.burnHeat = getModule().getBurnHeat(getBaseHeat(), slots[i]);
-							slots[i].stackSize--;
+							this.burnHeat = getModule().getBurnHeat(getBaseHeat(), this.slots[i]);
+							this.slots[i].stackSize--;
 
-							if(slots[i].stackSize == 0) {
-								slots[i] = slots[i].getItem().getContainerItem(slots[i]);
+							if(this.slots[i].stackSize == 0) {
+								this.slots[i] = this.slots[i].getItem().getContainerItem(this.slots[i]);
 							}
 
 							this.wasOn = true;
@@ -104,17 +104,17 @@ public abstract class TileEntityFireboxBase extends TileEntityMachinePolluting i
 			} else {
 				
 				if(this.heatEnergy < getMaxHeat()) {
-					burnTime--;
-					if(worldObj.getTotalWorldTime() % 20 == 0) this.pollute(PollutionType.SOOT, PollutionHandler.SOOT_PER_SECOND * 3);
+					this.burnTime--;
+					if(this.worldObj.getTotalWorldTime() % 20 == 0) pollute(PollutionType.SOOT, PollutionHandler.SOOT_PER_SECOND * 3);
 				}
 				this.wasOn = true;
 				
-				if(worldObj.rand.nextInt(15) == 0) {
-					worldObj.playSoundEffect(xCoord, yCoord, zCoord, "fire.fire", 1.0F, 0.5F + worldObj.rand.nextFloat() * 0.5F);
+				if(this.worldObj.rand.nextInt(15) == 0) {
+					this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "fire.fire", 1.0F, 0.5F + this.worldObj.rand.nextFloat() * 0.5F);
 				}
 			}
 			
-			if(wasOn) {
+			if(this.wasOn) {
 				this.heatEnergy = Math.min(this.heatEnergy + this.burnHeat, getMaxHeat());
 			} else {
 				this.heatEnergy = Math.max(this.heatEnergy - Math.max(this.heatEnergy / 1000, 1), 0);
@@ -128,10 +128,10 @@ public abstract class TileEntityFireboxBase extends TileEntityMachinePolluting i
 			data.setInteger("heatEnergy", this.heatEnergy);
 			data.setInteger("playersUsing", this.playersUsing);
 			data.setBoolean("wasOn", this.wasOn);
-			this.networkPack(data, 50);
+			networkPack(data, 50);
 		} else {
 			this.prevDoorAngle = this.doorAngle;
-			float swingSpeed = (doorAngle / 10F) + 3;
+			float swingSpeed = (this.doorAngle / 10F) + 3;
 			
 			if(this.playersUsing > 0) {
 				this.doorAngle += swingSpeed;
@@ -141,12 +141,12 @@ public abstract class TileEntityFireboxBase extends TileEntityMachinePolluting i
 			
 			this.doorAngle = MathHelper.clamp_float(this.doorAngle, 0F, 135F);
 			
-			if(wasOn && worldObj.getTotalWorldTime() % 5 == 0) {
-				ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
-				double x = xCoord + 0.5 + dir.offsetX;
-				double y = yCoord + 0.25;
-				double z = zCoord + 0.5 + dir.offsetZ;
-				worldObj.spawnParticle("flame", x + worldObj.rand.nextDouble() * 0.5 - 0.25, y + worldObj.rand.nextDouble() * 0.25, z + worldObj.rand.nextDouble() * 0.5 - 0.25, 0, 0, 0);
+			if(this.wasOn && this.worldObj.getTotalWorldTime() % 5 == 0) {
+				ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
+				double x = this.xCoord + 0.5 + dir.offsetX;
+				double y = this.yCoord + 0.25;
+				double z = this.zCoord + 0.5 + dir.offsetZ;
+				this.worldObj.spawnParticle("flame", x + this.worldObj.rand.nextDouble() * 0.5 - 0.25, y + this.worldObj.rand.nextDouble() * 0.25, z + this.worldObj.rand.nextDouble() * 0.5 - 0.25, 0, 0, 0);
 			}
 		}
 	}
@@ -156,9 +156,7 @@ public abstract class TileEntityFireboxBase extends TileEntityMachinePolluting i
 		List<String> names = ItemStackUtil.getOreDictNames(stack);
 		
 		for(String name : names) {
-			if(name.contains("Coke"))		return EnumAshType.COAL;
-			if(name.contains("Coal"))		return EnumAshType.COAL;
-			if(name.contains("Lignite"))	return EnumAshType.COAL;
+			if(name.contains("Coke") || name.contains("Coal") || name.contains("Lignite"))	return EnumAshType.COAL;
 			if(name.startsWith("log"))		return EnumAshType.WOOD;
 			if(name.contains("Wood"))		return EnumAshType.WOOD;
 			if(name.contains("Sapling"))	return EnumAshType.WOOD;
@@ -206,15 +204,15 @@ public abstract class TileEntityFireboxBase extends TileEntityMachinePolluting i
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("maxBurnTime", maxBurnTime);
-		nbt.setInteger("burnTime", burnTime);
-		nbt.setInteger("burnHeat", burnHeat);
-		nbt.setInteger("heatEnergy", heatEnergy);
+		nbt.setInteger("maxBurnTime", this.maxBurnTime);
+		nbt.setInteger("burnTime", this.burnTime);
+		nbt.setInteger("burnHeat", this.burnHeat);
+		nbt.setInteger("heatEnergy", this.heatEnergy);
 	}
 
 	@Override
 	public int getHeatStored() {
-		return heatEnergy;
+		return this.heatEnergy;
 	}
 
 	@Override
@@ -227,18 +225,18 @@ public abstract class TileEntityFireboxBase extends TileEntityMachinePolluting i
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 1,
-					yCoord,
-					zCoord - 1,
-					xCoord + 2,
-					yCoord + 1,
-					zCoord + 2
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 1,
+					this.yCoord,
+					this.zCoord - 1,
+					this.xCoord + 2,
+					this.yCoord + 1,
+					this.zCoord + 2
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override
@@ -254,7 +252,7 @@ public abstract class TileEntityFireboxBase extends TileEntityMachinePolluting i
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return this.getSmokeTanks();
+		return getSmokeTanks();
 	}
 	
 	@Override

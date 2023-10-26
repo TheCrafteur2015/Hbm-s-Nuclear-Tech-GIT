@@ -32,11 +32,11 @@ public class ParticleGiblet extends EntityFX {
 		this.motionY = mY;
 		this.motionZ = mZ;
 		this.theRenderEngine = texman;
-		this.particleMaxAge = 140 + rand.nextInt(20);
+		this.particleMaxAge = 140 + this.rand.nextInt(20);
 		this.particleGravity = 2F;
 
-		this.momentumYaw = (float) rand.nextGaussian() * 15F;
-		this.momentumPitch = (float) rand.nextGaussian() * 15F;
+		this.momentumYaw = (float) this.rand.nextGaussian() * 15F;
+		this.momentumPitch = (float) this.rand.nextGaussian() * 15F;
 	}
 	
 	@Override
@@ -55,8 +55,8 @@ public class ParticleGiblet extends EntityFX {
 			this.rotationPitch += this.momentumPitch;
 			this.rotationYaw += this.momentumYaw;
 			
-			EntityFX fx = new net.minecraft.client.particle.EntityBlockDustFX(worldObj, posX, posY, posZ, 0, 0, 0, Blocks.redstone_block, 0);
-			ReflectionHelper.setPrivateValue(EntityFX.class, fx, 20 + rand.nextInt(20), "particleMaxAge", "field_70547_e");
+			EntityFX fx = new net.minecraft.client.particle.EntityBlockDustFX(this.worldObj, this.posX, this.posY, this.posZ, 0, 0, 0, Blocks.redstone_block, 0);
+			ReflectionHelper.setPrivateValue(EntityFX.class, fx, 20 + this.rand.nextInt(20), "particleMaxAge", "field_70547_e");
 			Minecraft.getMinecraft().effectRenderer.addEffect(fx);
 		}
 	}
@@ -66,7 +66,7 @@ public class ParticleGiblet extends EntityFX {
 
 		GL11.glPushMatrix();
 		GL11.glDisable(GL11.GL_LIGHTING);
-		this.theRenderEngine.bindTexture(texture);
+		this.theRenderEngine.bindTexture(ParticleGiblet.texture);
 		
 		/* use this instead of EntityFX.interpPosN since interpPosN isn't set up correctly for the current tick for layer 3 particles */
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;

@@ -53,7 +53,7 @@ public class MachineFENSU extends BlockDummyable implements ILookOverlay, IPersi
 			return true;
 		} else if(!player.isSneaking())
 		{
-			int[] pos = this.findCore(world, x, y, z);
+			int[] pos = findCore(world, x, y, z);
 			
 			if(pos == null)
 				return false;
@@ -71,7 +71,7 @@ public class MachineFENSU extends BlockDummyable implements ILookOverlay, IPersi
 
 	@Override
 	public void printHook(Pre event, World world, int x, int y, int z) {
-		int[] pos = this.findCore(world, x, y, z);
+		int[] pos = findCore(world, x, y, z);
 		
 		if(pos == null)
 			return;
@@ -83,7 +83,7 @@ public class MachineFENSU extends BlockDummyable implements ILookOverlay, IPersi
 		
 		TileEntityMachineBattery battery = (TileEntityMachineBattery) te;
 		
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		text.add(BobMathUtil.getShortNumber(battery.getPower()) + " / " + BobMathUtil.getShortNumber(battery.getMaxPower()) + "HE");
 		
 		double percent = (double) battery.getPower() / (double) battery.getMaxPower();
@@ -95,6 +95,7 @@ public class MachineFENSU extends BlockDummyable implements ILookOverlay, IPersi
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, NBTTagCompound persistentTag, EntityPlayer player, List list, boolean ext) {
 		list.add(EnumChatFormatting.YELLOW + "" + BobMathUtil.getShortNumber(persistentTag.getLong("power")) + "/" + BobMathUtil.getShortNumber(Long.MAX_VALUE) + "HE");

@@ -20,7 +20,7 @@ public class WasteLeaves extends Block {
 
 	public WasteLeaves(Material mat) {
 		super(mat);
-		this.setTickRandomly(true);
+		setTickRandomly(true);
 	}
 
 	@Override
@@ -66,6 +66,7 @@ public class WasteLeaves extends Block {
 		}
 	}
 
+	@Override
 	public boolean renderAsNormalBlock() {
 		return false;
 	}
@@ -75,6 +76,7 @@ public class WasteLeaves extends Block {
 		return false;
 	}
 
+	@Override
 	protected boolean canSilkHarvest() {
 		return false;
 	}

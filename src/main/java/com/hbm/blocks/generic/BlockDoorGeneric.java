@@ -38,7 +38,7 @@ public class BlockDoorGeneric extends BlockDummyable {
 
 	@Override
 	public int[] getDimensions(){
-		return type.getDimensions();
+		return this.type.getDimensions();
 	}
 
 	@Override
@@ -70,9 +70,10 @@ public class BlockDoorGeneric extends BlockDummyable {
 		TileEntity te = world.getTileEntity(x, y, z);
 		int meta = world.getBlockMetadata(x, y, z);
 		boolean open = hasExtra(meta) || (te instanceof TileEntityDoorGeneric && ((TileEntityDoorGeneric)te).shouldUseBB);
-		return type.isLadder(open);
+		return this.type.isLadder(open);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addCollisionBoxesToList(World worldIn, int x, int y, int z, AxisAlignedBB entityBox, List collidingBoxes, Entity entityIn) {
 		AxisAlignedBB box = getBoundingBox(worldIn, x, y ,z);
@@ -118,7 +119,7 @@ public class BlockDoorGeneric extends BlockDummyable {
 	public AxisAlignedBB getBoundingBox(World world, int x, int y, int z) {
 		int meta = world.getBlockMetadata(x, y, z);
 		TileEntity te = world.getTileEntity(x, y, z);
-		int[] core = this.findCore(world, x, y, z);
+		int[] core = findCore(world, x, y, z);
 		boolean open = hasExtra(meta) || (te instanceof TileEntityDoorGeneric && ((TileEntityDoorGeneric)te).state != 0);
 		if(core == null){
 			return AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1);
@@ -126,9 +127,9 @@ public class BlockDoorGeneric extends BlockDummyable {
 		TileEntity te2 = world.getTileEntity(core[0], core[1], core[2]);
 		ForgeDirection dir = ForgeDirection.getOrientation(te2.getBlockMetadata() - BlockDummyable.offset);
 		BlockPos pos = new BlockPos(x - core[0], y - core[1], z - core[2]).rotate(Rotation.getBlockRotation(dir).add(Rotation.COUNTERCLOCKWISE_90));
-		AxisAlignedBB box = type.getBlockBound(pos.getX(), pos.getY(), pos.getZ(), open);
+		AxisAlignedBB box = this.type.getBlockBound(pos.getX(), pos.getY(), pos.getZ(), open);
 		
-		switch(te2.getBlockMetadata() - offset){
+		switch(te2.getBlockMetadata() - BlockDummyable.offset){
 		case 2: return AxisAlignedBB.getBoundingBox(x + 1 - box.minX, y + box.minY, z + 1 - box.minZ, x + 1 - box.maxX, y + box.maxY, z + 1 - box.maxZ);
 		case 4: return AxisAlignedBB.getBoundingBox(x + 1 - box.minZ, y + box.minY, z + box.minX, x + 1 - box.maxZ, y + box.maxY, z + box.maxX);
 		case 3: return AxisAlignedBB.getBoundingBox(x + box.minX, y + box.minY, z + box.minZ, x + box.maxX, y + box.maxY, z + box.maxZ);

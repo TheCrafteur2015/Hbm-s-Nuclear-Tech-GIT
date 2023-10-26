@@ -42,17 +42,17 @@ public class TileEntityMachineDiesel extends TileEntityMachinePolluting implemen
 
 	public long power;
 	public int soundCycle = 0;
-	public long powerCap = maxPower;
+	public long powerCap = TileEntityMachineDiesel.maxPower;
 	public FluidTank tank;
 	
 	/* CONFIGURABLE CONSTANTS */
 	public static long maxPower = 50000;
 	public static int fluidCap = 16000;
-	public static HashMap<FuelGrade, Double> fuelEfficiency = new HashMap();
+	public static HashMap<FuelGrade, Double> fuelEfficiency = new HashMap<>();
 	static {
-		fuelEfficiency.put(FuelGrade.MEDIUM,	0.5D);
-		fuelEfficiency.put(FuelGrade.HIGH,		0.75D);
-		fuelEfficiency.put(FuelGrade.AERO,		0.1D);
+		TileEntityMachineDiesel.fuelEfficiency.put(FuelGrade.MEDIUM,	0.5D);
+		TileEntityMachineDiesel.fuelEfficiency.put(FuelGrade.HIGH,		0.75D);
+		TileEntityMachineDiesel.fuelEfficiency.put(FuelGrade.AERO,		0.1D);
 	}
 	public static boolean shutUp = false;
 
@@ -62,7 +62,7 @@ public class TileEntityMachineDiesel extends TileEntityMachinePolluting implemen
 
 	public TileEntityMachineDiesel() {
 		super(5, 100);
-		tank = new FluidTank(Fluids.DIESEL, 4_000, 0);
+		this.tank = new FluidTank(Fluids.DIESEL, 4_000, 0);
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class TileEntityMachineDiesel extends TileEntityMachinePolluting implemen
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack stack) {
 		if (i == 0)
-			if (FluidContainerRegistry.getFluidContent(stack, tank.getTankType()) > 0)
+			if (FluidContainerRegistry.getFluidContent(stack, this.tank.getTankType()) > 0)
 				return true;
 		if (i == 2)
 			if (stack.getItem() instanceof IBatteryItem)
@@ -88,21 +88,21 @@ public class TileEntityMachineDiesel extends TileEntityMachinePolluting implemen
 
 		this.power = nbt.getLong("powerTime");
 		this.powerCap = nbt.getLong("powerCap");
-		tank.readFromNBT(nbt, "fuel");
+		this.tank.readFromNBT(nbt, "fuel");
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		
-		nbt.setLong("powerTime", power);
-		nbt.setLong("powerCap", powerCap);
-		tank.writeToNBT(nbt, "fuel");
+		nbt.setLong("powerTime", this.power);
+		nbt.setLong("powerCap", this.powerCap);
+		this.tank.writeToNBT(nbt, "fuel");
 	}
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
-		return side == 0 ? slots_bottom : (side == 1 ? slots_top : slots_side);
+		return side == 0 ? TileEntityMachineDiesel.slots_bottom : (side == 1 ? TileEntityMachineDiesel.slots_top : TileEntityMachineDiesel.slots_side);
 	}
 
 	@Override
@@ -122,49 +122,50 @@ public class TileEntityMachineDiesel extends TileEntityMachinePolluting implemen
 	}
 
 	public long getPowerScaled(long i) {
-		return (power * i) / powerCap;
+		return (this.power * i) / this.powerCap;
 	}
 
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-				this.sendPower(worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, dir);
-				this.sendSmoke(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, dir);
+				sendPower(this.worldObj, this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ, dir);
+				sendSmoke(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ, dir);
 			}
 
 			//Tank Management
-			FluidType last = tank.getTankType();
-			if(tank.setType(3, 4, slots)) this.unsubscribeToAllAround(last, this);
-			tank.loadTank(0, 1, slots);
-			tank.updateTank(xCoord, yCoord, zCoord, worldObj.provider.dimensionId);
+			FluidType last = this.tank.getTankType();
+			if(this.tank.setType(3, 4, this.slots)) this.unsubscribeToAllAround(last, this);
+			this.tank.loadTank(0, 1, this.slots);
+			this.tank.updateTank(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId);
 			
-			this.subscribeToAllAround(tank.getTankType(), this);
+			this.subscribeToAllAround(this.tank.getTankType(), this);
 
-			FluidType type = tank.getTankType();
+			FluidType type = this.tank.getTankType();
 			if(type == Fluids.NITAN)
-				powerCap = maxPower * 10;
+				this.powerCap = TileEntityMachineDiesel.maxPower * 10;
 			else
-				powerCap = maxPower;
+				this.powerCap = TileEntityMachineDiesel.maxPower;
 			
 			// Battery Item
-			power = Library.chargeItemsFromTE(slots, 2, power, powerCap);
+			this.power = Library.chargeItemsFromTE(this.slots, 2, this.power, this.powerCap);
 
 			generate();
 
 			NBTTagCompound data = new NBTTagCompound();
-			data.setInteger("power", (int) power);
-			data.setInteger("powerCap", (int) powerCap);
-			this.networkPack(data, 50);
+			data.setInteger("power", (int) this.power);
+			data.setInteger("powerCap", (int) this.powerCap);
+			networkPack(data, 50);
 		}
 	}
 	
+	@Override
 	public void networkUnpack(NBTTagCompound data) {
 
-		power = data.getInteger("power");
-		powerCap = data.getInteger("powerCap");
+		this.power = data.getInteger("power");
+		this.powerCap = data.getInteger("powerCap");
 	}
 	
 	public boolean hasAcceptableFuel() {
@@ -172,7 +173,7 @@ public class TileEntityMachineDiesel extends TileEntityMachinePolluting implemen
 	}
 	
 	public long getHEFromFuel() {
-		return getHEFromFuel(tank.getTankType());
+		return TileEntityMachineDiesel.getHEFromFuel(this.tank.getTankType());
 	}
 	
 	public static long getHEFromFuel(FluidType type) {
@@ -180,7 +181,7 @@ public class TileEntityMachineDiesel extends TileEntityMachinePolluting implemen
 		if(type.hasTrait(FT_Combustible.class)) {
 			FT_Combustible fuel = type.getTrait(FT_Combustible.class);
 			FuelGrade grade = fuel.getGrade();
-			double efficiency = fuelEfficiency.containsKey(grade) ? fuelEfficiency.get(grade) : 0;
+			double efficiency = TileEntityMachineDiesel.fuelEfficiency.containsKey(grade) ? TileEntityMachineDiesel.fuelEfficiency.get(grade) : 0;
 			
 			if(fuel.getGrade() != FuelGrade.LOW) {
 				return (long) (fuel.getCombustionEnergy() / 1000L * efficiency);
@@ -193,29 +194,29 @@ public class TileEntityMachineDiesel extends TileEntityMachinePolluting implemen
 	public void generate() {
 		
 		if(hasAcceptableFuel()) {
-			if (tank.getFill() > 0) {
+			if (this.tank.getFill() > 0) {
 				
-				if(!shutUp) {
-					if (soundCycle == 0) {
-						this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "fireworks.blast", 0.75F * this.getVolume(3), 0.5F);
+				if(!TileEntityMachineDiesel.shutUp) {
+					if (this.soundCycle == 0) {
+						this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "fireworks.blast", 0.75F * getVolume(3), 0.5F);
 					}
-					soundCycle++;
+					this.soundCycle++;
 				}
 
-				if(soundCycle >= 3)
-					soundCycle = 0;
+				if(this.soundCycle >= 3)
+					this.soundCycle = 0;
 
-				tank.setFill(tank.getFill() - 1);
-				if(tank.getFill() < 0)
-					tank.setFill(0);
+				this.tank.setFill(this.tank.getFill() - 1);
+				if(this.tank.getFill() < 0)
+					this.tank.setFill(0);
 				
-				this.pollute(PollutionType.SOOT, PollutionHandler.SOOT_PER_SECOND * 0.5F);
-				if(tank.getTankType().hasTrait(FT_Leaded.class)) this.pollute(PollutionType.HEAVYMETAL, PollutionHandler.HEAVY_METAL_PER_SECOND * 0.5F);
+				pollute(PollutionType.SOOT, PollutionHandler.SOOT_PER_SECOND * 0.5F);
+				if(this.tank.getTankType().hasTrait(FT_Leaded.class)) pollute(PollutionType.HEAVYMETAL, PollutionHandler.HEAVY_METAL_PER_SECOND * 0.5F);
 
-				if(power + getHEFromFuel() <= powerCap) {
-					power += getHEFromFuel();
+				if(this.power + getHEFromFuel() <= this.powerCap) {
+					this.power += getHEFromFuel();
 				} else {
-					power = powerCap;
+					this.power = this.powerCap;
 				}
 			}
 		}
@@ -223,7 +224,7 @@ public class TileEntityMachineDiesel extends TileEntityMachinePolluting implemen
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 
 	@Override
@@ -233,43 +234,43 @@ public class TileEntityMachineDiesel extends TileEntityMachinePolluting implemen
 
 	@Override
 	public long getMaxPower() {
-		return this.maxPower;
+		return TileEntityMachineDiesel.maxPower;
 	}
 
 	@Override
 	public void setFillForSync(int fill, int index) {
-		tank.setFill(fill);
+		this.tank.setFill(fill);
 	}
 
 	@Override
 	public void setTypeForSync(FluidType type, int index) {
-		tank.setTankType(type);
+		this.tank.setTankType(type);
 	}
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		return type == this.tank.getTankType() ? tank.getMaxFill() : 0;
+		return type == this.tank.getTankType() ? this.tank.getMaxFill() : 0;
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		return type == this.tank.getTankType() ? tank.getFill() : 0;
+		return type == this.tank.getTankType() ? this.tank.getFill() : 0;
 	}
 
 	@Override
 	public void setFluidFill(int i, FluidType type) {
-		if(type == tank.getTankType())
-			tank.setFill(i);
+		if(type == this.tank.getTankType())
+			this.tank.setFill(i);
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] {tank};
+		return new FluidTank[] {this.tank};
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return new FluidTank[] { tank };
+		return new FluidTank[] { this.tank };
 	}
 
 	@Override
@@ -279,22 +280,22 @@ public class TileEntityMachineDiesel extends TileEntityMachinePolluting implemen
 
 	@Override
 	public void readIfPresent(JsonObject obj) {
-		maxPower = IConfigurableMachine.grab(obj, "L:powerCap", maxPower);
-		fluidCap = IConfigurableMachine.grab(obj, "I:fuelCap", fluidCap);
+		TileEntityMachineDiesel.maxPower = IConfigurableMachine.grab(obj, "L:powerCap", TileEntityMachineDiesel.maxPower);
+		TileEntityMachineDiesel.fluidCap = IConfigurableMachine.grab(obj, "I:fuelCap", TileEntityMachineDiesel.fluidCap);
 		
 		if(obj.has("D[:efficiency")) {
 			JsonArray array = obj.get("D[:efficiency").getAsJsonArray();
 			for(FuelGrade grade : FuelGrade.values()) {
-				fuelEfficiency.put(grade, array.get(grade.ordinal()).getAsDouble());
+				TileEntityMachineDiesel.fuelEfficiency.put(grade, array.get(grade.ordinal()).getAsDouble());
 			}
 		}
-		shutUp = IConfigurableMachine.grab(obj, "B:shutUp", shutUp);
+		TileEntityMachineDiesel.shutUp = IConfigurableMachine.grab(obj, "B:shutUp", TileEntityMachineDiesel.shutUp);
 	}
 
 	@Override
 	public void writeConfig(JsonWriter writer) throws IOException {
-		writer.name("L:powerCap").value(maxPower);
-		writer.name("I:fuelCap").value(fluidCap);
+		writer.name("L:powerCap").value(TileEntityMachineDiesel.maxPower);
+		writer.name("I:fuelCap").value(TileEntityMachineDiesel.fluidCap);
 		
 		String info = "Fuel grades in order: ";
 		for(FuelGrade grade : FuelGrade.values()) info += grade.name() + " ";
@@ -303,11 +304,11 @@ public class TileEntityMachineDiesel extends TileEntityMachinePolluting implemen
 		
 		writer.name("D[:efficiency").beginArray().setIndent("");
 		for(FuelGrade grade : FuelGrade.values()) {
-			double d = fuelEfficiency.containsKey(grade) ? fuelEfficiency.get(grade) : 0.0D;
+			double d = TileEntityMachineDiesel.fuelEfficiency.containsKey(grade) ? TileEntityMachineDiesel.fuelEfficiency.get(grade) : 0.0D;
 			writer.value(d);
 		}
 		writer.endArray().setIndent("  ");
-		writer.name("B:shutUp").value(shutUp);
+		writer.name("B:shutUp").value(TileEntityMachineDiesel.shutUp);
 	}
 
 	@Override
@@ -323,6 +324,6 @@ public class TileEntityMachineDiesel extends TileEntityMachinePolluting implemen
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return this.getSmokeTanks();
+		return getSmokeTanks();
 	}
 }

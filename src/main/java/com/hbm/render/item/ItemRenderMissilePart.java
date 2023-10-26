@@ -39,7 +39,7 @@ public class ItemRenderMissilePart implements IItemRenderer {
 	@Override
 	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
 		
-		if(part == null)
+		if(this.part == null)
 			return;
 
 		GL11.glPushMatrix();
@@ -53,14 +53,14 @@ public class ItemRenderMissilePart implements IItemRenderer {
 			double s = 0.4;
 			GL11.glScaled(s, s, s);
 			
-			Minecraft.getMinecraft().renderEngine.bindTexture(part.texture);
-			part.model.renderAll();
+			Minecraft.getMinecraft().renderEngine.bindTexture(this.part.texture);
+			this.part.model.renderAll();
 			
 			break;
 			
 		case INVENTORY:
 			
-			double height = part.guiheight;
+			double height = this.part.guiheight;
 			
 			if(height == 0D)
 				height = 4D;
@@ -72,11 +72,11 @@ public class ItemRenderMissilePart implements IItemRenderer {
 			GL11.glRotated(135, 0, 0, 1);
 			GL11.glRotated(145, 1, 0, 0);
 			
-			if(part.type == PartType.WARHEAD) {
+			if(this.part.type == PartType.WARHEAD) {
 				GL11.glTranslated(0, height / 8 * scale, 0);
 			}
 			
-			if(part.type == PartType.FUSELAGE) {
+			if(this.part.type == PartType.FUSELAGE) {
 				GL11.glTranslated(0, height / 4 * scale, 0);
 			}
 			
@@ -84,8 +84,8 @@ public class ItemRenderMissilePart implements IItemRenderer {
 			GL11.glScaled(-scale, -scale, -scale);
 
 			GL11.glRotatef(System.currentTimeMillis() / 25 % 360, 0, -1, 0);
-			Minecraft.getMinecraft().renderEngine.bindTexture(part.texture);
-			part.model.renderAll();
+			Minecraft.getMinecraft().renderEngine.bindTexture(this.part.texture);
+			this.part.model.renderAll();
 			
 			break;
 		default: break;

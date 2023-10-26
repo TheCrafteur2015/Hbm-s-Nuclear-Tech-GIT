@@ -63,44 +63,44 @@ public class TileEntityMachineCompressor extends TileEntityMachineBase implement
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			if(worldObj.getTotalWorldTime() % 20 == 0) {
-				this.updateConnections();
+			if(this.worldObj.getTotalWorldTime() % 20 == 0) {
+				updateConnections();
 			}
 			
-			this.power = Library.chargeTEFromItems(slots, 1, power, maxPower);
-			this.tanks[0].setType(0, slots);
-			this.setupTanks();
+			this.power = Library.chargeTEFromItems(this.slots, 1, this.power, TileEntityMachineCompressor.maxPower);
+			this.tanks[0].setType(0, this.slots);
+			setupTanks();
 			
-			UpgradeManager.eval(slots, 1, 3);
+			UpgradeManager.eval(this.slots, 1, 3);
 
 			int speedLevel = Math.min(UpgradeManager.getLevel(UpgradeType.SPEED), 3);
 			int powerLevel = Math.min(UpgradeManager.getLevel(UpgradeType.POWER), 3);
 			int overLevel = UpgradeManager.getLevel(UpgradeType.OVERDRIVE);
 			
-			CompressorRecipe rec = CompressorRecipes.recipes.get(new Pair(tanks[0].getTankType(), tanks[0].getPressure()));
-			int timeBase = this.processTimeBase;
+			CompressorRecipe rec = CompressorRecipes.recipes.get(new Pair<>(this.tanks[0].getTankType(), this.tanks[0].getPressure()));
+			int timeBase = TileEntityMachineCompressor.processTimeBase;
 			if(rec != null) timeBase = rec.duration;
 
 			//there is a reason to do this but i'm not telling you
-			if(timeBase == this.processTimeBase) this.processTime = speedLevel == 3 ? 10 : speedLevel == 2 ? 20 : speedLevel == 1 ? 60 : timeBase;
+			if(timeBase == TileEntityMachineCompressor.processTimeBase) this.processTime = speedLevel == 3 ? 10 : speedLevel == 2 ? 20 : speedLevel == 1 ? 60 : timeBase;
 			else this.processTime = timeBase / (speedLevel + 1);
-			this.powerRequirement = this.powerRequirementBase / (powerLevel + 1);
+			this.powerRequirement = TileEntityMachineCompressor.powerRequirementBase / (powerLevel + 1);
 			this.processTime = this.processTime / (overLevel + 1);
 			this.powerRequirement = this.powerRequirement * ((overLevel * 2) + 1);
 			
-			if(processTime <= 0) processTime = 1;
+			if(this.processTime <= 0) this.processTime = 1;
 			
 			if(canProcess()) {
 				this.progress++;
 				this.isOn = true;
-				this.power -= powerRequirement;
+				this.power -= this.powerRequirement;
 				
-				if(progress >= this.processTime) {
-					progress = 0;
-					this.process();
-					this.markChanged();
+				if(this.progress >= this.processTime) {
+					this.progress = 0;
+					process();
+					markChanged();
 				}
 				
 			} else {
@@ -109,18 +109,18 @@ public class TileEntityMachineCompressor extends TileEntityMachineBase implement
 			}
 			
 			for(DirPos pos : getConPos()) {
-				this.sendFluid(tanks[1], worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+				this.sendFluid(this.tanks[1], this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setInteger("progress", progress);
-			data.setInteger("processTime", processTime);
-			data.setInteger("powerRequirement", powerRequirement);
-			data.setLong("power", power);
-			tanks[0].writeToNBT(data, "0");
-			tanks[1].writeToNBT(data, "1");
-			data.setBoolean("isOn", isOn);
-			this.networkPack(data, 100);
+			data.setInteger("progress", this.progress);
+			data.setInteger("processTime", this.processTime);
+			data.setInteger("powerRequirement", this.powerRequirement);
+			data.setLong("power", this.power);
+			this.tanks[0].writeToNBT(data, "0");
+			this.tanks[1].writeToNBT(data, "1");
+			data.setBoolean("isOn", this.isOn);
+			networkPack(data, 100);
 			
 		} else {
 			
@@ -136,15 +136,15 @@ public class TileEntityMachineCompressor extends TileEntityMachineBase implement
 				}
 				
 				if(this.pistonDir) {
-					this.piston -= randSpeed;
+					this.piston -= this.randSpeed;
 					if(this.piston <= 0) {
-						MainRegistry.proxy.playSoundClient(xCoord, yCoord, zCoord, "hbm:item.boltgun", 0.5F, 0.75F);
+						MainRegistry.proxy.playSoundClient(this.xCoord, this.yCoord, this.zCoord, "hbm:item.boltgun", 0.5F, 0.75F);
 						this.pistonDir = !this.pistonDir;
 					}
 				} else {
 					this.piston += 0.05F;
 					if(this.piston >= 1) {
-						this.randSpeed = 0.085F + worldObj.rand.nextFloat() * 0.03F;
+						this.randSpeed = 0.085F + this.worldObj.rand.nextFloat() * 0.03F;
 						this.pistonDir = !this.pistonDir;
 					}
 				}
@@ -156,87 +156,88 @@ public class TileEntityMachineCompressor extends TileEntityMachineBase implement
 	
 	private float randSpeed = 0.1F;
 	
+	@Override
 	public void networkUnpack(NBTTagCompound nbt) {
 		this.progress = nbt.getInteger("progress");
 		this.processTime = nbt.getInteger("processTime");
 		this.powerRequirement = nbt.getInteger("powerRequirement");
 		this.power = nbt.getLong("power");
-		tanks[0].readFromNBT(nbt, "0");
-		tanks[1].readFromNBT(nbt, "1");
+		this.tanks[0].readFromNBT(nbt, "0");
+		this.tanks[1].readFromNBT(nbt, "1");
 		this.isOn = nbt.getBoolean("isOn");
 	}
 	
 	private void updateConnections() {
 		for(DirPos pos : getConPos()) {
-			this.trySubscribe(worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
-			this.trySubscribe(tanks[0].getTankType(), worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			this.trySubscribe(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			this.trySubscribe(this.tanks[0].getTankType(), this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 		}
 	}
 	
 	public DirPos[] getConPos() {
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 		
 		return new DirPos[] {
-				new DirPos(xCoord + rot.offsetX * 2, yCoord, zCoord + rot.offsetZ * 2, rot),
-				new DirPos(xCoord - rot.offsetX * 2, yCoord, zCoord - rot.offsetZ * 2, rot.getOpposite()),
-				new DirPos(xCoord - dir.offsetX * 2, yCoord, zCoord - dir.offsetZ * 2, dir.getOpposite()),
+				new DirPos(this.xCoord + rot.offsetX * 2, this.yCoord, this.zCoord + rot.offsetZ * 2, rot),
+				new DirPos(this.xCoord - rot.offsetX * 2, this.yCoord, this.zCoord - rot.offsetZ * 2, rot.getOpposite()),
+				new DirPos(this.xCoord - dir.offsetX * 2, this.yCoord, this.zCoord - dir.offsetZ * 2, dir.getOpposite()),
 		};
 	}
 	
 	public boolean canProcess() {
 		
-		if(this.power <= powerRequirement) return false;
+		if(this.power <= this.powerRequirement) return false;
 		
-		CompressorRecipe recipe = CompressorRecipes.recipes.get(new Pair(tanks[0].getTankType(), tanks[0].getPressure()));
+		CompressorRecipe recipe = CompressorRecipes.recipes.get(new Pair<>(this.tanks[0].getTankType(), this.tanks[0].getPressure()));
 		
 		if(recipe == null) {
-			return tanks[0].getFill() >= 1000 && tanks[1].getFill() + 1000 <= tanks[1].getMaxFill();
+			return this.tanks[0].getFill() >= 1000 && this.tanks[1].getFill() + 1000 <= this.tanks[1].getMaxFill();
 		}
 		
-		return tanks[0].getFill() > recipe.inputAmount && tanks[1].getFill() + recipe.output.fill <= tanks[1].getMaxFill();
+		return this.tanks[0].getFill() > recipe.inputAmount && this.tanks[1].getFill() + recipe.output.fill <= this.tanks[1].getMaxFill();
 	}
 	
 	public void process() {
 		
-		CompressorRecipe recipe = CompressorRecipes.recipes.get(new Pair(tanks[0].getTankType(), tanks[0].getPressure()));
+		CompressorRecipe recipe = CompressorRecipes.recipes.get(new Pair<>(this.tanks[0].getTankType(), this.tanks[0].getPressure()));
 		
 		if(recipe == null) {
-			tanks[0].setFill(tanks[0].getFill() - 1_000);
-			tanks[1].setFill(tanks[1].getFill() + 1_000);
+			this.tanks[0].setFill(this.tanks[0].getFill() - 1_000);
+			this.tanks[1].setFill(this.tanks[1].getFill() + 1_000);
 		} else {
-			tanks[0].setFill(tanks[0].getFill() - recipe.inputAmount);
-			tanks[1].setFill(tanks[1].getFill() + recipe.output.fill);
+			this.tanks[0].setFill(this.tanks[0].getFill() - recipe.inputAmount);
+			this.tanks[1].setFill(this.tanks[1].getFill() + recipe.output.fill);
 		}
 	}
 	
 	protected void setupTanks() {
 		
-		CompressorRecipe recipe = CompressorRecipes.recipes.get(new Pair(tanks[0].getTankType(), tanks[0].getPressure()));
+		CompressorRecipe recipe = CompressorRecipes.recipes.get(new Pair<>(this.tanks[0].getTankType(), this.tanks[0].getPressure()));
 		
 		if(recipe == null) {
-			tanks[1].withPressure(tanks[0].getPressure() + 1).setTankType(tanks[0].getTankType());
+			this.tanks[1].withPressure(this.tanks[0].getPressure() + 1).setTankType(this.tanks[0].getTankType());
 		} else {
-			tanks[1].withPressure(recipe.output.pressure).setTankType(recipe.output.type);
+			this.tanks[1].withPressure(recipe.output.pressure).setTankType(recipe.output.type);
 		}
 	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
-		power = nbt.getLong("power");
-		progress = nbt.getInteger("progress");
-		tanks[0].readFromNBT(nbt, "0");
-		tanks[1].readFromNBT(nbt, "1");
+		this.power = nbt.getLong("power");
+		this.progress = nbt.getInteger("progress");
+		this.tanks[0].readFromNBT(nbt, "0");
+		this.tanks[1].readFromNBT(nbt, "1");
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setLong("power", power);
-		nbt.setInteger("progress", progress);
-		tanks[0].writeToNBT(nbt, "0");
-		tanks[1].writeToNBT(nbt, "1");
+		nbt.setLong("power", this.power);
+		nbt.setInteger("progress", this.progress);
+		this.tanks[0].writeToNBT(nbt, "0");
+		this.tanks[1].writeToNBT(nbt, "1");
 	}
 
 	@Override
@@ -252,31 +253,31 @@ public class TileEntityMachineCompressor extends TileEntityMachineBase implement
 
 	@Override
 	public boolean hasPermission(EntityPlayer player) {
-		return this.isUseableByPlayer(player);
+		return isUseableByPlayer(player);
 	}
 
 	@Override
 	public void receiveControl(NBTTagCompound data) {
 		int compression = data.getInteger("compression");
 		
-		if(compression != tanks[0].getPressure()) {
-			tanks[0].withPressure(compression);
+		if(compression != this.tanks[0].getPressure()) {
+			this.tanks[0].withPressure(compression);
 			
-			CompressorRecipe recipe = CompressorRecipes.recipes.get(new Pair(tanks[0].getTankType(), compression));
+			CompressorRecipe recipe = CompressorRecipes.recipes.get(new Pair<>(this.tanks[0].getTankType(), compression));
 			
 			if(recipe == null) {
-				tanks[1].withPressure(compression + 1);
+				this.tanks[1].withPressure(compression + 1);
 			} else {
-				tanks[1].withPressure(recipe.output.pressure).setTankType(recipe.output.type);
+				this.tanks[1].withPressure(recipe.output.pressure).setTankType(recipe.output.type);
 			}
 			
-			this.markChanged();
+			markChanged();
 		}
 	}
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 
 	@Override
@@ -286,22 +287,22 @@ public class TileEntityMachineCompressor extends TileEntityMachineBase implement
 
 	@Override
 	public long getMaxPower() {
-		return maxPower;
+		return TileEntityMachineCompressor.maxPower;
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return tanks;
+		return this.tanks;
 	}
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return new FluidTank[] {tanks[1]};
+		return new FluidTank[] {this.tanks[1]};
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] {tanks[0]};
+		return new FluidTank[] {this.tanks[0]};
 	}
 	
 	AxisAlignedBB bb = null;
@@ -309,18 +310,18 @@ public class TileEntityMachineCompressor extends TileEntityMachineBase implement
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 2,
-					yCoord,
-					zCoord - 2,
-					xCoord + 3,
-					yCoord + 9,
-					zCoord + 3
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 2,
+					this.yCoord,
+					this.zCoord - 2,
+					this.xCoord + 3,
+					this.yCoord + 9,
+					this.zCoord + 3
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override

@@ -29,16 +29,16 @@ public class EntityPlasticBag extends EntityWaterMob {
 
 	public EntityPlasticBag(World world) {
 		super(world);
-		this.setSize(0.45F, 0.45F);
+		setSize(0.45F, 0.45F);
 		this.rotationVelocity = 1.0F / (this.rand.nextFloat() + 1.0F) * 0.2F;
 	}
 
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
 		
-		if(!worldObj.isRemote) {
-			this.setDead();
-			this.dropItem(ModItems.plastic_bag, 1);
+		if(!this.worldObj.isRemote) {
+			setDead();
+			dropItem(ModItems.plastic_bag, 1);
 		}
 		
 		return true;
@@ -49,8 +49,8 @@ public class EntityPlasticBag extends EntityWaterMob {
 		if(stack.stackSize != 0 && stack.getItem() != null) {
 			EntityItemBuoyant entityitem = new EntityItemBuoyant(this.worldObj, this.posX, this.posY + (double) offset, this.posZ, stack);
 			entityitem.delayBeforeCanPickup = 10;
-			if(captureDrops) {
-				capturedDrops.add(entityitem);
+			if(this.captureDrops) {
+				this.capturedDrops.add(entityitem);
 			} else {
 				this.worldObj.spawnEntityInWorld(entityitem);
 			}
@@ -99,7 +99,7 @@ public class EntityPlasticBag extends EntityWaterMob {
 			}
 		}
 
-		if(this.isInWater()) {
+		if(isInWater()) {
 			float f;
 
 			if(this.rotation < (float) Math.PI) {
@@ -134,7 +134,7 @@ public class EntityPlasticBag extends EntityWaterMob {
 
 	@Override
 	public void moveEntityWithHeading(float forward, float strafe) {
-		this.moveEntity(this.motionX, this.motionY, this.motionZ);
+		moveEntity(this.motionX, this.motionY, this.motionZ);
 	}
 
 	@Override
@@ -150,7 +150,7 @@ public class EntityPlasticBag extends EntityWaterMob {
 			this.randomMotionVecZ = MathHelper.sin(f) * 0.2F;
 		}
 
-		this.despawnEntity();
+		despawnEntity();
 	}
 
 	@Override

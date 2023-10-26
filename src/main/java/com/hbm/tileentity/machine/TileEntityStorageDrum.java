@@ -41,15 +41,15 @@ public class TileEntityStorageDrum extends TileEntityMachineBase implements IFlu
 
 	public FluidTank[] tanks;
 	private static final int[] slots_arr = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 };
-	public List<IFluidAcceptor> list = new ArrayList();
-	public List<IFluidAcceptor> list2 = new ArrayList();
+	public List<IFluidAcceptor> list = new ArrayList<>();
+	public List<IFluidAcceptor> list2 = new ArrayList<>();
 	public int age = 0;
 
 	public TileEntityStorageDrum() {
 		super(24);
-		tanks = new FluidTank[2];
-		tanks[0] = new FluidTank(Fluids.WASTEFLUID, 16000, 0);
-		tanks[1] = new FluidTank(Fluids.WASTEGAS, 16000, 1);
+		this.tanks = new FluidTank[2];
+		this.tanks[0] = new FluidTank(Fluids.WASTEFLUID, 16000, 0);
+		this.tanks[1] = new FluidTank(Fluids.WASTEGAS, 16000, 1);
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class TileEntityStorageDrum extends TileEntityMachineBase implements IFlu
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			float rad = 0;
 			
@@ -69,63 +69,63 @@ public class TileEntityStorageDrum extends TileEntityMachineBase implements IFlu
 			
 			for(int i = 0; i < 24; i++) {
 				
-				if(slots[i] != null) {
+				if(this.slots[i] != null) {
 					
-					Item item = slots[i].getItem();
+					Item item = this.slots[i].getItem();
 					
-					if(worldObj.getTotalWorldTime() % 20 == 0) {
-						rad += HazardSystem.getHazardLevelFromStack(slots[i], HazardRegistry.RADIATION);
+					if(this.worldObj.getTotalWorldTime() % 20 == 0) {
+						rad += HazardSystem.getHazardLevelFromStack(this.slots[i], HazardRegistry.RADIATION);
 					}
 					
-					int meta = slots[i].getItemDamage();
+					int meta = this.slots[i].getItemDamage();
 					
-					if(item == ModItems.nuclear_waste_long && worldObj.rand.nextInt(VersatileConfig.getLongDecayChance()) == 0) {
+					if(item == ModItems.nuclear_waste_long && this.worldObj.rand.nextInt(VersatileConfig.getLongDecayChance()) == 0) {
 						ItemWasteLong.WasteClass wasteClass = ItemWasteLong.WasteClass.values()[ItemWasteLong.rectify(meta)];
 						liquid += wasteClass.liquid;
 						gas += wasteClass.gas;
-						slots[i] = new ItemStack(ModItems.nuclear_waste_long_depleted, 1, meta);
+						this.slots[i] = new ItemStack(ModItems.nuclear_waste_long_depleted, 1, meta);
 					}
 					
-					if(item == ModItems.nuclear_waste_long_tiny && worldObj.rand.nextInt(VersatileConfig.getLongDecayChance() / 10) == 0) {
+					if(item == ModItems.nuclear_waste_long_tiny && this.worldObj.rand.nextInt(VersatileConfig.getLongDecayChance() / 10) == 0) {
 						ItemWasteLong.WasteClass wasteClass = ItemWasteLong.WasteClass.values()[ItemWasteLong.rectify(meta)];
 						liquid += wasteClass.liquid / 10;
 						gas += wasteClass.gas / 10;
-						slots[i] = new ItemStack(ModItems.nuclear_waste_long_depleted_tiny, 1, meta);
+						this.slots[i] = new ItemStack(ModItems.nuclear_waste_long_depleted_tiny, 1, meta);
 					}
 					
-					if(item == ModItems.nuclear_waste_short && worldObj.rand.nextInt(VersatileConfig.getShortDecayChance()) == 0) {
+					if(item == ModItems.nuclear_waste_short && this.worldObj.rand.nextInt(VersatileConfig.getShortDecayChance()) == 0) {
 						ItemWasteShort.WasteClass wasteClass = ItemWasteShort.WasteClass.values()[ItemWasteLong.rectify(meta)];
 						liquid += wasteClass.liquid;
 						gas += wasteClass.gas;
-						slots[i] = new ItemStack(ModItems.nuclear_waste_short_depleted, 1, meta);
+						this.slots[i] = new ItemStack(ModItems.nuclear_waste_short_depleted, 1, meta);
 					}
 					
-					if(item == ModItems.nuclear_waste_short_tiny && worldObj.rand.nextInt(VersatileConfig.getShortDecayChance() / 10) == 0) {
+					if(item == ModItems.nuclear_waste_short_tiny && this.worldObj.rand.nextInt(VersatileConfig.getShortDecayChance() / 10) == 0) {
 						ItemWasteShort.WasteClass wasteClass = ItemWasteShort.WasteClass.values()[ItemWasteLong.rectify(meta)];
 						liquid += wasteClass.liquid / 10;
 						gas += wasteClass.gas / 10;
-						slots[i] = new ItemStack(ModItems.nuclear_waste_short_depleted_tiny, 1, meta);
+						this.slots[i] = new ItemStack(ModItems.nuclear_waste_short_depleted_tiny, 1, meta);
 					}
 					
-					if(item == ModItems.ingot_au198 && worldObj.rand.nextInt(VersatileConfig.getShortDecayChance() / 20) == 0) {
-						slots[i] = new ItemStack(ModItems.ingot_mercury, 1, meta);
+					if(item == ModItems.ingot_au198 && this.worldObj.rand.nextInt(VersatileConfig.getShortDecayChance() / 20) == 0) {
+						this.slots[i] = new ItemStack(ModItems.ingot_mercury, 1, meta);
 					}
-					if(item == ModItems.nugget_au198 && worldObj.rand.nextInt(VersatileConfig.getShortDecayChance() / 100) == 0) {
-						slots[i] = new ItemStack(ModItems.nugget_mercury, 1, meta);
+					if(item == ModItems.nugget_au198 && this.worldObj.rand.nextInt(VersatileConfig.getShortDecayChance() / 100) == 0) {
+						this.slots[i] = new ItemStack(ModItems.nugget_mercury, 1, meta);
 					}
 					
-					if(item == ModItems.ingot_pb209 && worldObj.rand.nextInt(VersatileConfig.getShortDecayChance() / 10) == 0) {
-						slots[i] = new ItemStack(ModItems.ingot_bismuth, 1, meta);
+					if(item == ModItems.ingot_pb209 && this.worldObj.rand.nextInt(VersatileConfig.getShortDecayChance() / 10) == 0) {
+						this.slots[i] = new ItemStack(ModItems.ingot_bismuth, 1, meta);
 					}
-					if(item == ModItems.nugget_pb209 && worldObj.rand.nextInt(VersatileConfig.getShortDecayChance() / 50) == 0) {
-						slots[i] = new ItemStack(ModItems.nugget_bismuth, 1, meta);
+					if(item == ModItems.nugget_pb209 && this.worldObj.rand.nextInt(VersatileConfig.getShortDecayChance() / 50) == 0) {
+						this.slots[i] = new ItemStack(ModItems.nugget_bismuth, 1, meta);
 					}
 
-					if(item == ModItems.powder_sr90 && worldObj.rand.nextInt(VersatileConfig.getShortDecayChance() / 10) == 0) {
-						slots[i] = new ItemStack(ModItems.powder_zirconium, 1, meta);
+					if(item == ModItems.powder_sr90 && this.worldObj.rand.nextInt(VersatileConfig.getShortDecayChance() / 10) == 0) {
+						this.slots[i] = new ItemStack(ModItems.powder_zirconium, 1, meta);
 					}
-					if(item == ModItems.nugget_sr90 && worldObj.rand.nextInt(VersatileConfig.getShortDecayChance() / 50) == 0) {
-						slots[i] = new ItemStack(ModItems.nugget_zirconium, 1, meta);
+					if(item == ModItems.nugget_sr90 && this.worldObj.rand.nextInt(VersatileConfig.getShortDecayChance() / 50) == 0) {
+						this.slots[i] = new ItemStack(ModItems.nugget_zirconium, 1, meta);
 					}
 				}
 			}
@@ -143,30 +143,31 @@ public class TileEntityStorageDrum extends TileEntityMachineBase implements IFlu
 				}
 			}
 			
-			age++;
+			this.age++;
 			
-			if(age >= 20)
-				age -= 20;
+			if(this.age >= 20)
+				this.age -= 20;
 			
-			if(age == 9 || age == 19) {
-				fillFluidInit(tanks[0].getTankType());
+			if(this.age == 9 || this.age == 19) {
+				fillFluidInit(this.tanks[0].getTankType());
 			}
-			if(age == 8 || age == 18) {
-				fillFluidInit(tanks[1].getTankType());
+			if(this.age == 8 || this.age == 18) {
+				fillFluidInit(this.tanks[1].getTankType());
 			}
 
-			this.sendFluidToAll(tanks[0], this);
-			this.sendFluidToAll(tanks[1], this);
+			this.sendFluidToAll(this.tanks[0], this);
+			this.sendFluidToAll(this.tanks[1], this);
 
-			tanks[0].updateTank(xCoord, yCoord, zCoord, worldObj.provider.dimensionId);
-			tanks[1].updateTank(xCoord, yCoord, zCoord, worldObj.provider.dimensionId);
+			this.tanks[0].updateTank(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId);
+			this.tanks[1].updateTank(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId);
 			
 			if(rad > 0) {
-				radiate(worldObj, xCoord, yCoord, zCoord, rad);
+				radiate(this.worldObj, this.xCoord, this.yCoord, this.zCoord, rad);
 			}
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void radiate(World world, int x, int y, int z, float rads) {
 		
 		double range = 32D;
@@ -194,7 +195,7 @@ public class TileEntityStorageDrum extends TileEntityMachineBase implements IFlu
 				res = 1;
 			
 			float eRads = rads;
-			eRads /= (float)res;
+			eRads /= res;
 			eRads /= (float)(len * len);
 			
 			ContaminationUtil.contaminate(e, HazardType.RADIATION, ContaminationType.CREATIVE, eRads);
@@ -218,7 +219,7 @@ public class TileEntityStorageDrum extends TileEntityMachineBase implements IFlu
 
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemStack, int j) {
-		return this.isItemValidForSlot(i, itemStack);
+		return isItemValidForSlot(i, itemStack);
 	}
 
 	@Override
@@ -243,12 +244,12 @@ public class TileEntityStorageDrum extends TileEntityMachineBase implements IFlu
 	
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
-		return slots_arr;
+		return TileEntityStorageDrum.slots_arr;
 	}
 
 	@Override
 	public boolean getTact() {
-		return age < 10;
+		return this.age < 10;
 	}
 
 	@Override
@@ -263,55 +264,55 @@ public class TileEntityStorageDrum extends TileEntityMachineBase implements IFlu
 
 	@Override
 	public void fillFluid(int x, int y, int z, boolean newTact, FluidType type) {
-		Library.transmitFluid(x, y, z, newTact, this, worldObj, type);
+		Library.transmitFluid(x, y, z, newTact, this, this.worldObj, type);
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		if(type == tanks[0].getTankType())
-			return tanks[0].getFill();
-		else if(type == tanks[1].getTankType())
-			return tanks[1].getFill();
+		if(type == this.tanks[0].getTankType())
+			return this.tanks[0].getFill();
+		else if(type == this.tanks[1].getTankType())
+			return this.tanks[1].getFill();
 
 		return 0;
 	}
 
 	@Override
 	public void setFluidFill(int i, FluidType type) {
-		if(type == tanks[0].getTankType())
-			tanks[0].setFill(i);
-		else if(type == tanks[1].getTankType())
-			tanks[1].setFill(i);
+		if(type == this.tanks[0].getTankType())
+			this.tanks[0].setFill(i);
+		else if(type == this.tanks[1].getTankType())
+			this.tanks[1].setFill(i);
 	}
 
 	@Override
 	public List<IFluidAcceptor> getFluidList(FluidType type) {
-		if(type == tanks[0].getTankType())
-			return list;
-		if(type == tanks[1].getTankType())
-			return list2;
+		if(type == this.tanks[0].getTankType())
+			return this.list;
+		if(type == this.tanks[1].getTankType())
+			return this.list2;
 		
-		return new ArrayList();
+		return new ArrayList<>();
 	}
 
 	@Override
 	public void clearFluidList(FluidType type) {
-		if(type == tanks[0].getTankType())
+		if(type == this.tanks[0].getTankType())
 			this.list.clear();
-		if(type == tanks[1].getTankType())
+		if(type == this.tanks[1].getTankType())
 			this.list2.clear();
 	}
 
 	@Override
 	public void setFillForSync(int fill, int index) {
-		if(index < 2 && tanks[index] != null)
-			tanks[index].setFill(fill);
+		if(index < 2 && this.tanks[index] != null)
+			this.tanks[index].setFill(fill);
 	}
 
 	@Override
 	public void setTypeForSync(FluidType type, int index) {
-		if(index < 2 && tanks[index] != null)
-			tanks[index].setTankType(type);
+		if(index < 2 && this.tanks[index] != null)
+			this.tanks[index].setTankType(type);
 	}
 	
 	@Override
@@ -330,12 +331,12 @@ public class TileEntityStorageDrum extends TileEntityMachineBase implements IFlu
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return new FluidTank[] { tanks[0], tanks[1] };
+		return new FluidTank[] { this.tanks[0], this.tanks[1] };
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return tanks;
+		return this.tanks;
 	}
 
 	@Override

@@ -25,7 +25,7 @@ public class GUIMassStorage extends GuiInfoContainer {
 
 	public GUIMassStorage(InventoryPlayer invPlayer, TileEntityMassStorage tile) {
 		super(new ContainerMassStorage(invPlayer, tile));
-		storage = tile;
+		this.storage = tile;
 		
 		this.xSize = 176;
 		this.ySize = 221;
@@ -35,32 +35,32 @@ public class GUIMassStorage extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 		
-		String percent = (((int) (storage.getStockpile() * 1000D / (double) storage.getCapacity())) / 10D) + "%";
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 96, guiTop + 16, 18, 90, mouseX, mouseY, new String[]
-				{ String.format(Locale.US, "%,d", storage.getStockpile()) + " / " + String.format(Locale.US, "%,d", storage.getCapacity()), percent });
+		String percent = (((int) (this.storage.getStockpile() * 1000D / (double) this.storage.getCapacity())) / 10D) + "%";
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 96, this.guiTop + 16, 18, 90, mouseX, mouseY, new String[]
+				{ String.format(Locale.US, "%,d", this.storage.getStockpile()) + " / " + String.format(Locale.US, "%,d", this.storage.getCapacity()), percent });
 
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 62, guiTop + 72, 14, 14, mouseX, mouseY, new String[] { "Click: Provide one", "Shift-click: Provide stack" });
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 80, guiTop + 72, 14, 14, mouseX, mouseY, new String[] { "Toggle output" });
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 62, this.guiTop + 72, 14, 14, mouseX, mouseY, new String[] { "Click: Provide one", "Shift-click: Provide stack" });
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 80, this.guiTop + 72, 14, 14, mouseX, mouseY, new String[] { "Toggle output" });
 	}
 
 	@Override
 	protected void mouseClicked(int x, int y, int i) {
 		super.mouseClicked(x, y, i);
 
-		if(guiLeft + 62 <= x && guiLeft + 62 + 14 > x && guiTop + 72 < y && guiTop + 72 + 14 >= y) {
+		if(this.guiLeft + 62 <= x && this.guiLeft + 62 + 14 > x && this.guiTop + 72 < y && this.guiTop + 72 + 14 >= y) {
 
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 			NBTTagCompound data = new NBTTagCompound();
 			data.setBoolean("provide", Keyboard.isKeyDown(Keyboard.KEY_LSHIFT));
-			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, storage.xCoord, storage.yCoord, storage.zCoord));
+			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, this.storage.xCoord, this.storage.yCoord, this.storage.zCoord));
 		}
 
-		if(guiLeft + 80 <= x && guiLeft + 80 + 14 > x && guiTop + 72 < y && guiTop + 72 + 14 >= y) {
+		if(this.guiLeft + 80 <= x && this.guiLeft + 80 + 14 > x && this.guiTop + 72 < y && this.guiTop + 72 + 14 >= y) {
 
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 			NBTTagCompound data = new NBTTagCompound();
 			data.setBoolean("toggle", false);
-			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, storage.xCoord, storage.yCoord, storage.zCoord));
+			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, this.storage.xCoord, this.storage.yCoord, this.storage.zCoord));
 		}
 	}
 	
@@ -75,13 +75,13 @@ public class GUIMassStorage extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIMassStorage.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		int gauge = storage.getStockpile() * 88 / storage.getCapacity();
-		drawTexturedModalRect(guiLeft + 97, guiTop + 105 - gauge, 176, 88 - gauge, 16, gauge);
+		int gauge = this.storage.getStockpile() * 88 / this.storage.getCapacity();
+		drawTexturedModalRect(this.guiLeft + 97, this.guiTop + 105 - gauge, 176, 88 - gauge, 16, gauge);
 		
-		if(storage.output)
-			drawTexturedModalRect(guiLeft + 80, guiTop + 72, 192, 0, 14, 14);
+		if(this.storage.output)
+			drawTexturedModalRect(this.guiLeft + 80, this.guiTop + 72, 192, 0, 14, 14);
 	}
 }

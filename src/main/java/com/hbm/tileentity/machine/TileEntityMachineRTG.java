@@ -38,25 +38,25 @@ public class TileEntityMachineRTG extends TileEntityLoadedBase implements ISided
 	private String customName;
 	
 	public TileEntityMachineRTG() {
-		slots = new ItemStack[15];
+		this.slots = new ItemStack[15];
 	}
 
 	@Override
 	public int getSizeInventory() {
-		return slots.length;
+		return this.slots.length;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		return slots[i];
+		return this.slots[i];
 	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			ItemStack itemStack = slots[i];
-			slots[i] = null;
+			ItemStack itemStack = this.slots[i];
+			this.slots[i] = null;
 			return itemStack;
 		} else {
 		return null;
@@ -65,7 +65,7 @@ public class TileEntityMachineRTG extends TileEntityLoadedBase implements ISided
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemStack) {
-		slots[i] = itemStack;
+		this.slots[i] = itemStack;
 		if(itemStack != null && itemStack.stackSize > getInventoryStackLimit())
 		{
 			itemStack.stackSize = getInventoryStackLimit();
@@ -74,7 +74,7 @@ public class TileEntityMachineRTG extends TileEntityLoadedBase implements ISided
 
 	@Override
 	public String getInventoryName() {
-		return this.hasCustomInventoryName() ? this.customName : "container.rtg";
+		return hasCustomInventoryName() ? this.customName : "container.rtg";
 	}
 
 	@Override
@@ -93,11 +93,11 @@ public class TileEntityMachineRTG extends TileEntityLoadedBase implements ISided
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		if(worldObj.getTileEntity(xCoord, yCoord, zCoord) != this)
+		if(this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this)
 		{
 			return false;
 		}else{
-			return player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <=64;
+			return player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <=64;
 		}
 	}
 	
@@ -114,18 +114,18 @@ public class TileEntityMachineRTG extends TileEntityLoadedBase implements ISided
 	
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			if(slots[i].stackSize <= j)
+			if(this.slots[i].stackSize <= j)
 			{
-				ItemStack itemStack = slots[i];
-				slots[i] = null;
+				ItemStack itemStack = this.slots[i];
+				this.slots[i] = null;
 				return itemStack;
 			}
-			ItemStack itemStack1 = slots[i].splitStack(j);
-			if (slots[i].stackSize == 0)
+			ItemStack itemStack1 = this.slots[i].splitStack(j);
+			if (this.slots[i].stackSize == 0)
 			{
-				slots[i] = null;
+				this.slots[i] = null;
 			}
 			
 			return itemStack1;
@@ -139,17 +139,17 @@ public class TileEntityMachineRTG extends TileEntityLoadedBase implements ISided
 		super.readFromNBT(nbt);
 		NBTTagList list = nbt.getTagList("items", 10);
 
-		power = nbt.getLong("power");
-		heat = nbt.getInteger("heat");
-		slots = new ItemStack[getSizeInventory()];
+		this.power = nbt.getLong("power");
+		this.heat = nbt.getInteger("heat");
+		this.slots = new ItemStack[getSizeInventory()];
 		
 		for(int i = 0; i < list.tagCount(); i++)
 		{
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("slot");
-			if(b0 >= 0 && b0 < slots.length)
+			if(b0 >= 0 && b0 < this.slots.length)
 			{
-				slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
+				this.slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
 			}
 		}
 	}
@@ -157,15 +157,15 @@ public class TileEntityMachineRTG extends TileEntityLoadedBase implements ISided
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setLong("power", power);
-		nbt.setInteger("heat", heat);
+		nbt.setLong("power", this.power);
+		nbt.setInteger("heat", this.heat);
 		NBTTagList list = new NBTTagList();
 		
-		for(int i = 0; i < slots.length; i++) {
-			if(slots[i] != null) {
+		for(int i = 0; i < this.slots.length; i++) {
+			if(this.slots[i] != null) {
 				NBTTagCompound nbt1 = new NBTTagCompound();
 				nbt1.setByte("slot", (byte) i);
-				slots[i].writeToNBT(nbt1);
+				this.slots[i].writeToNBT(nbt1);
 				list.appendTag(nbt1);
 			}
 		}
@@ -174,12 +174,12 @@ public class TileEntityMachineRTG extends TileEntityLoadedBase implements ISided
 	
 	@Override
 	public int[] getAccessibleSlotsFromSide(int p_94128_1_) {
-		return slot_io;
+		return TileEntityMachineRTG.slot_io;
 	}
 
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemStack, int j) {
-		return this.isItemValidForSlot(i, itemStack);
+		return isItemValidForSlot(i, itemStack);
 	}
 
 	@Override
@@ -188,50 +188,50 @@ public class TileEntityMachineRTG extends TileEntityLoadedBase implements ISided
 	}
 	
 	public long getPowerScaled(long i) {
-		return (power * i) / powerMax;
+		return (this.power * i) / this.powerMax;
 	}
 	
 	public int getHeatScaled(int i) {
-		return (heat * i) / heatMax;
+		return (this.heat * i) / this.heatMax;
 	}
 	
 	public boolean hasPower() {
-		return power > 0;
+		return this.power > 0;
 	}
 	
 	public boolean hasHeat() {
-		return RTGUtil.hasHeat(slots, slot_io);
+		return RTGUtil.hasHeat(this.slots, TileEntityMachineRTG.slot_io);
 	}
 
 	@Override
 	public void updateEntity() {
 
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-				this.sendPower(worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, dir);
+				sendPower(this.worldObj, this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ, dir);
 			
-			heat = RTGUtil.updateRTGs(slots, slot_io);
+			this.heat = RTGUtil.updateRTGs(this.slots, TileEntityMachineRTG.slot_io);
 			
-			if(heat > heatMax)
-				heat = heatMax;
+			if(this.heat > this.heatMax)
+				this.heat = this.heatMax;
 			
-			power += heat * 5;
-			if(power > powerMax)
-				power = powerMax;
+			this.power += this.heat * 5;
+			if(this.power > this.powerMax)
+				this.power = this.powerMax;
 			
-			PacketDispatcher.wrapper.sendToAllAround(new AuxElectricityPacket(xCoord, yCoord, zCoord, power), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 50));
+			PacketDispatcher.wrapper.sendToAllAround(new AuxElectricityPacket(this.xCoord, this.yCoord, this.zCoord, this.power), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 50));
 		}
 	}
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 
 	@Override
 	public long getMaxPower() {
-		return powerMax;
+		return this.powerMax;
 	}
 
 	@Override

@@ -17,7 +17,7 @@ import net.minecraft.world.WorldServer;
 
 public abstract class TileEntityPylonBase extends TileEntityCableBaseNT {
 	
-	public List<int[]> connected = new ArrayList<int[]>();
+	public List<int[]> connected = new ArrayList<>();
 	
 	public static int canConnect(TileEntityPylonBase first, TileEntityPylonBase second) {
 		
@@ -43,26 +43,26 @@ public abstract class TileEntityPylonBase extends TileEntityCableBaseNT {
 	
 	public void addConnection(int x, int y, int z) {
 		
-		connected.add(new int[] {x, y, z});
+		this.connected.add(new int[] {x, y, z});
 		
-		if(this.getPowerNet() != null) {
-			this.getPowerNet().reevaluate();
+		if(getPowerNet() != null) {
+			getPowerNet().reevaluate();
 			this.network = null;
 		}
 		
-		this.markDirty();
+		markDirty();
 		
-		if(worldObj instanceof WorldServer) {
-			WorldServer world = (WorldServer) worldObj;
-			world.getPlayerManager().markBlockForUpdate(xCoord, yCoord, zCoord);
+		if(this.worldObj instanceof WorldServer) {
+			WorldServer world = (WorldServer) this.worldObj;
+			world.getPlayerManager().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
 		}
 	}
 	
 	public void disconnectAll() {
 		
-		for(int[] pos : connected) {
+		for(int[] pos : this.connected) {
 			
-			TileEntity te = worldObj.getTileEntity(pos[0], pos[1], pos[2]);
+			TileEntity te = this.worldObj.getTileEntity(pos[0], pos[1], pos[2]);
 			
 			if(te == this)
 				continue;
@@ -73,7 +73,7 @@ public abstract class TileEntityPylonBase extends TileEntityCableBaseNT {
 				for(int i = 0; i < pylon.connected.size(); i++) {
 					int[] conPos = pylon.connected.get(i);
 					
-					if(conPos[0] == xCoord && conPos[1] == yCoord && conPos[2] == zCoord) {
+					if(conPos[0] == this.xCoord && conPos[1] == this.yCoord && conPos[2] == this.zCoord) {
 						pylon.connected.remove(i);
 						i--;
 					}
@@ -81,8 +81,8 @@ public abstract class TileEntityPylonBase extends TileEntityCableBaseNT {
 				
 				pylon.markDirty();
 				
-				if(worldObj instanceof WorldServer) {
-					WorldServer world = (WorldServer) worldObj;
+				if(this.worldObj instanceof WorldServer) {
+					WorldServer world = (WorldServer) this.worldObj;
 					world.getPlayerManager().markBlockForUpdate(pylon.xCoord, pylon.yCoord, pylon.zCoord);
 				}
 			}
@@ -94,18 +94,18 @@ public abstract class TileEntityPylonBase extends TileEntityCableBaseNT {
 		
 		for(int[] pos : getConnectionPoints()) {
 			
-			TileEntity te = worldObj.getTileEntity(pos[0], pos[1], pos[2]);
+			TileEntity te = this.worldObj.getTileEntity(pos[0], pos[1], pos[2]);
 			
 			if(te instanceof IEnergyConductor) {
 				
 				IEnergyConductor conductor = (IEnergyConductor) te;
 				
-				if(this.getPowerNet() == null && conductor.getPowerNet() != null) {
+				if(getPowerNet() == null && conductor.getPowerNet() != null) {
 					conductor.getPowerNet().joinLink(this);
 				}
 				
-				if(this.getPowerNet() != null && conductor.getPowerNet() != null && this.getPowerNet() != conductor.getPowerNet()) {
-					conductor.getPowerNet().joinNetworks(this.getPowerNet());
+				if(getPowerNet() != null && conductor.getPowerNet() != null && getPowerNet() != conductor.getPowerNet()) {
+					conductor.getPowerNet().joinNetworks(getPowerNet());
 				}
 			}
 		}
@@ -113,7 +113,7 @@ public abstract class TileEntityPylonBase extends TileEntityCableBaseNT {
 	
 	@Override
 	public List<int[]> getConnectionPoints() {
-		return new ArrayList(connected);
+		return new ArrayList<>(this.connected);
 	}
 	
 	public abstract ConnectionType getConnectionType();
@@ -121,22 +121,22 @@ public abstract class TileEntityPylonBase extends TileEntityCableBaseNT {
 	public abstract double getMaxWireLength();
 	
 	public Vec3 getConnectionPoint() {
-		Vec3[] mounts = this.getMountPos();
+		Vec3[] mounts = getMountPos();
 		
 		if(mounts == null || mounts.length == 0)
-			return Vec3.createVectorHelper(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
+			return Vec3.createVectorHelper(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5);
 		
-		return mounts[0].addVector(xCoord, yCoord, zCoord);
+		return mounts[0].addVector(this.xCoord, this.yCoord, this.zCoord);
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		
-		nbt.setInteger("conCount", connected.size());
+		nbt.setInteger("conCount", this.connected.size());
 		
-		for(int i = 0; i < connected.size(); i++) {
-			nbt.setIntArray("con" + i, connected.get(i));
+		for(int i = 0; i < this.connected.size(); i++) {
+			nbt.setIntArray("con" + i, this.connected.get(i));
 		}
 	}
 	
@@ -149,7 +149,7 @@ public abstract class TileEntityPylonBase extends TileEntityCableBaseNT {
 		this.connected.clear();
 		
 		for(int i = 0; i < count; i++) {
-			connected.add(nbt.getIntArray("con" + i));
+			this.connected.add(nbt.getIntArray("con" + i));
 		}
 	}
 
@@ -157,13 +157,13 @@ public abstract class TileEntityPylonBase extends TileEntityCableBaseNT {
 	public Packet getDescriptionPacket() {
 		
 		NBTTagCompound nbt = new NBTTagCompound();
-		this.writeToNBT(nbt);
+		writeToNBT(nbt);
 		return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, nbt);
 	}
 	
 	@Override
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-		this.readFromNBT(pkt.func_148857_g());
+		readFromNBT(pkt.func_148857_g());
 	}
 
 	public static enum ConnectionType {

@@ -21,7 +21,7 @@ public class ModelWormHead extends ModelBase {
 		GL11.glRotatef(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * f5 - 90.0F, 0.0F, 1.0F, 0.0F);
 		GL11.glRotatef(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * f5 - 90, 0.0F, 0.0F, 1.0F);
 		
-		head.renderAll();
+		ModelWormHead.head.renderAll();
 	}
 
 }

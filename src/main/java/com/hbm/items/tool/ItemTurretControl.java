@@ -25,6 +25,7 @@ import net.minecraftforge.event.entity.player.ArrowNockEvent;
 
 public class ItemTurretControl extends Item {
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onUpdate(ItemStack stack, World world, Entity entity, int i, boolean bool) {
 		
@@ -86,6 +87,7 @@ public class ItemTurretControl extends Item {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		if(itemstack.stackTagCompound != null) {
@@ -158,10 +160,11 @@ public class ItemTurretControl extends Item {
 		return EnumAction.bow;
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityPlayer player, int i) {
 
-		int j = this.getMaxItemUseDuration(stack) - i;
+		int j = getMaxItemUseDuration(stack) - i;
 		ArrowLooseEvent event = new ArrowLooseEvent(player, stack, j);
 		MinecraftForge.EVENT_BUS.post(event);
 
@@ -186,7 +189,7 @@ public class ItemTurretControl extends Item {
 		ArrowNockEvent event = new ArrowNockEvent(p_77659_3_, p_77659_1_);
 		MinecraftForge.EVENT_BUS.post(event);
 		{
-			p_77659_3_.setItemInUse(p_77659_1_, this.getMaxItemUseDuration(p_77659_1_));
+			p_77659_3_.setItemInUse(p_77659_1_, getMaxItemUseDuration(p_77659_1_));
 		}
 
 		return p_77659_1_;
@@ -204,6 +207,7 @@ public class ItemTurretControl extends Item {
 
 			if(world.getBlock(x, y, z) instanceof TurretBase) {
 
+				@SuppressWarnings("unused")
 				TileEntity te = world.getTileEntity(x, y, z);
 				
 				/// ///

@@ -4,9 +4,9 @@ import java.util.Random;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.generic.BlockLoot.TileEntityLoot;
+import com.hbm.items.ItemAmmoEnums.AmmoFatman;
 import com.hbm.items.ModItems;
 import com.hbm.items.special.ItemBookLore;
-import com.hbm.items.ItemAmmoEnums.AmmoFatman;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -43,11 +43,11 @@ public class LootGenerator {
 				loot.addItem(new ItemStack(ModItems.ammo_rocket), -0.25, 0, -0.25);
 
 			for(int i = 0; i < 4; i++)
-				addItemWithDeviation(loot, world.rand, new ItemStack(ModItems.cap_nuka, 2), 0.125, i * 0.03125, 0.25);
+				LootGenerator.addItemWithDeviation(loot, world.rand, new ItemStack(ModItems.cap_nuka, 2), 0.125, i * 0.03125, 0.25);
 			for(int i = 0; i < 2; i++)
-				addItemWithDeviation(loot, world.rand, new ItemStack(ModItems.syringe_metal_stimpak, 1), -0.25, i * 0.03125, 0.25);
+				LootGenerator.addItemWithDeviation(loot, world.rand, new ItemStack(ModItems.syringe_metal_stimpak, 1), -0.25, i * 0.03125, 0.25);
 			for(int i = 0; i < 6; i++)
-				addItemWithDeviation(loot, world.rand, new ItemStack(ModItems.cap_nuka, 2), 0.125, i * 0.03125, -0.25);
+				LootGenerator.addItemWithDeviation(loot, world.rand, new ItemStack(ModItems.cap_nuka, 2), 0.125, i * 0.03125, -0.25);
 		}
 	}
 	
@@ -60,12 +60,12 @@ public class LootGenerator {
 			for(int i = 0; i < 4; i++) {
 				int type = world.rand.nextInt(4);
 				Item syringe = type < 2 ? ModItems.syringe_metal_stimpak : type == 2 ? ModItems.syringe_metal_medx : ModItems.syringe_metal_psycho;
-				addItemWithDeviation(loot, world.rand, new ItemStack(syringe), 0.125, i * 0.03125, 0.25);
+				LootGenerator.addItemWithDeviation(loot, world.rand, new ItemStack(syringe), 0.125, i * 0.03125, 0.25);
 			}
 			
 			int type = world.rand.nextInt(8);
 			Item syringe = type < 2 ? ModItems.radaway : type < 4 ? ModItems.radx : type < 7 ? ModItems.iv_blood : ModItems.siox;
-			addItemWithDeviation(loot, world.rand, new ItemStack(syringe), -0.25, 0, -0.125);
+			LootGenerator.addItemWithDeviation(loot, world.rand, new ItemStack(syringe), -0.25, 0, -0.125);
 		}
 	}
 	
@@ -85,9 +85,9 @@ public class LootGenerator {
 					for(int k = 0; k < count; k++) {
 						
 						if(cap == ModItems.cap_sunset && world.rand.nextInt(10) == 0)
-							addItemWithDeviation(loot, world.rand, new ItemStack(ModItems.cap_star, 1), i * 0.3125, k * 0.03125, j * 0.3125);
+							LootGenerator.addItemWithDeviation(loot, world.rand, new ItemStack(ModItems.cap_star, 1), i * 0.3125, k * 0.03125, j * 0.3125);
 						else
-							addItemWithDeviation(loot, world.rand, new ItemStack(cap, 4), i * 0.3125, k * 0.03125, j * 0.3125);
+							LootGenerator.addItemWithDeviation(loot, world.rand, new ItemStack(cap, 4), i * 0.3125, k * 0.03125, j * 0.3125);
 					}
 				}
 			}
@@ -101,22 +101,22 @@ public class LootGenerator {
 		if(loot != null && loot.items.isEmpty()) {
 			
 			if(world.rand.nextInt(2) == 0)
-				addItemWithDeviation(loot, world.rand, new ItemStack(ModItems.gun_lever_action), 0, 0, 0.125);
+				LootGenerator.addItemWithDeviation(loot, world.rand, new ItemStack(ModItems.gun_lever_action), 0, 0, 0.125);
 			
 			int count = world.rand.nextInt(2) + 1;
 			for(int i = 0; i < count; i++) {
 				int type = world.rand.nextInt(2);
 				Item parts = type < 1 ? ModItems.plate_steel : ModItems.mechanism_rifle_1;
-				addItemWithDeviation(loot, world.rand, new ItemStack(parts), -0.3125, i * 0.03125, 0.3125);
+				LootGenerator.addItemWithDeviation(loot, world.rand, new ItemStack(parts), -0.3125, i * 0.03125, 0.3125);
 			}
 			
 			count = world.rand.nextInt(2) + 2;
 			for(int i = 0; i < count; i++)
-				addItemWithDeviation(loot, world.rand, new ItemStack(ModItems.wire_aluminium), 0.3125, i * 0.03125, -0.125);
+				LootGenerator.addItemWithDeviation(loot, world.rand, new ItemStack(ModItems.wire_aluminium), 0.3125, i * 0.03125, -0.125);
 			
 			int type = world.rand.nextInt(4);
 			Item tool = type > 2 ? ModItems.wrench : ModItems.screwdriver;
-			addItemWithDeviation(loot, world.rand, new ItemStack(tool), 0.005, 0, -0.3125);
+			LootGenerator.addItemWithDeviation(loot, world.rand, new ItemStack(tool), 0.005, 0, -0.3125);
 		}
 	}
 	

@@ -30,13 +30,13 @@ public class RenderBlastDoor extends TileEntitySpecialRenderer {
     		GL11.glRotatef(90, 0F, 1F, 0F);
         
         if(tileEntity.state == 0)
-        	timer = getAnimationFromSysTime(5000);
+        	timer = RenderBlastDoor.getAnimationFromSysTime(5000);
         else if(tileEntity.state == 2)
         	timer = 0;
         else if(tileEntity.isOpening)
-        	timer = getAnimationFromSysTime(tileEntity.sysTime + 5000 - System.currentTimeMillis());
+        	timer = RenderBlastDoor.getAnimationFromSysTime(tileEntity.sysTime + 5000 - System.currentTimeMillis());
         else
-        	timer = getAnimationFromSysTime(System.currentTimeMillis() - tileEntity.sysTime);
+        	timer = RenderBlastDoor.getAnimationFromSysTime(System.currentTimeMillis() - tileEntity.sysTime);
 
         bindTexture(ResourceManager.blast_door_base_tex);
         ResourceManager.blast_door_base.renderAll();

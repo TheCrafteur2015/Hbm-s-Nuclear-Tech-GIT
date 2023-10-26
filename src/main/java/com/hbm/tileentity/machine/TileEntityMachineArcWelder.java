@@ -58,22 +58,22 @@ public class TileEntityMachineArcWelder extends TileEntityMachineBase implements
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			this.power = Library.chargeTEFromItems(slots, 4, power, maxPower);
-			this.tank.setType(5, slots);
+			this.power = Library.chargeTEFromItems(this.slots, 4, this.power, this.maxPower);
+			this.tank.setType(5, this.slots);
 			
-			if(worldObj.getTotalWorldTime() % 20 == 0) {
+			if(this.worldObj.getTotalWorldTime() % 20 == 0) {
 				for(DirPos pos : getConPos()) {
-					this.trySubscribe(worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
-					if(tank.getTankType() != Fluids.NONE) this.trySubscribe(tank.getTankType(), worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+					this.trySubscribe(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+					if(this.tank.getTankType() != Fluids.NONE) this.trySubscribe(this.tank.getTankType(), this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 				}
 			}
 			
-			ArcWelderRecipe recipe = ArcWelderRecipes.getRecipe(slots[0], slots[1], slots[2]);
+			ArcWelderRecipe recipe = ArcWelderRecipes.getRecipe(this.slots[0], this.slots[1], this.slots[2]);
 			long intendedMaxPower;
 			
-			UpgradeManager.eval(slots, 6, 7);
+			UpgradeManager.eval(this.slots, 6, 7);
 			int redLevel = Math.min(UpgradeManager.getLevel(UpgradeType.SPEED), 3);
 			int blueLevel = Math.min(UpgradeManager.getLevel(UpgradeType.POWER), 3);
 			
@@ -86,25 +86,25 @@ public class TileEntityMachineArcWelder extends TileEntityMachineBase implements
 					this.progress++;
 					this.power -= this.consumption;
 					
-					if(progress >= processTime) {
+					if(this.progress >= this.processTime) {
 						this.progress = 0;
-						this.consumeItems(recipe);
+						consumeItems(recipe);
 						
-						if(slots[3] == null) {
-							slots[3] = recipe.output.copy();
+						if(this.slots[3] == null) {
+							this.slots[3] = recipe.output.copy();
 						} else {
-							slots[3].stackSize += recipe.output.stackSize;
+							this.slots[3].stackSize += recipe.output.stackSize;
 						}
 						
-						this.markDirty();
+						markDirty();
 					}
 					
-					if(worldObj.getTotalWorldTime() % 2 == 0) {
-						ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - 10);
+					if(this.worldObj.getTotalWorldTime() % 2 == 0) {
+						ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - 10);
 						NBTTagCompound dPart = new NBTTagCompound();
-						dPart.setString("type", worldObj.getTotalWorldTime() % 20 == 0 ? "tau" : "hadron");
+						dPart.setString("type", this.worldObj.getTotalWorldTime() % 20 == 0 ? "tau" : "hadron");
 						dPart.setByte("count", (byte) 5);
-						PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(dPart, xCoord + 0.5 - dir.offsetX * 0.5, yCoord + 1.25, zCoord + 0.5 - dir.offsetZ * 0.5), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 25));
+						PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(dPart, this.xCoord + 0.5 - dir.offsetX * 0.5, this.yCoord + 1.25, this.zCoord + 0.5 - dir.offsetZ * 0.5), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 25));
 					}
 					
 				} else {
@@ -117,20 +117,20 @@ public class TileEntityMachineArcWelder extends TileEntityMachineBase implements
 				intendedMaxPower = 2000;
 			}
 			
-			this.maxPower = Math.max(intendedMaxPower, power);
+			this.maxPower = Math.max(intendedMaxPower, this.power);
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setLong("power", power);
-			data.setLong("maxPower", maxPower);
-			data.setLong("consumption", consumption);
-			data.setInteger("progress", progress);
-			data.setInteger("processTime", processTime);
+			data.setLong("power", this.power);
+			data.setLong("maxPower", this.maxPower);
+			data.setLong("consumption", this.consumption);
+			data.setInteger("progress", this.progress);
+			data.setInteger("processTime", this.processTime);
 			if(recipe != null) {
 				data.setInteger("display", Item.getIdFromItem(recipe.output.getItem()));
 				data.setInteger("displayMeta", recipe.output.getItemDamage());
 			}
 			this.tank.writeToNBT(data, "t");
-			this.networkPack(data, 25);
+			networkPack(data, 25);
 		}
 	}
 	
@@ -139,14 +139,11 @@ public class TileEntityMachineArcWelder extends TileEntityMachineBase implements
 		if(this.power < recipe.consumption) return false;
 		
 		if(recipe.fluid != null) {
-			if(this.tank.getTankType() != recipe.fluid.type) return false;
-			if(this.tank.getFill() < recipe.fluid.fill) return false;
+			if((this.tank.getTankType() != recipe.fluid.type) || (this.tank.getFill() < recipe.fluid.fill)) return false;
 		}
 		
-		if(slots[3] != null) {
-			if(slots[3].getItem() != recipe.output.getItem()) return false;
-			if(slots[3].getItemDamage() != recipe.output.getItemDamage()) return false;
-			if(slots[3].stackSize + recipe.output.stackSize > slots[3].getMaxStackSize()) return false;
+		if(this.slots[3] != null) {
+			if((this.slots[3].getItem() != recipe.output.getItem()) || (this.slots[3].getItemDamage() != recipe.output.getItemDamage()) || (this.slots[3].stackSize + recipe.output.stackSize > this.slots[3].getMaxStackSize())) return false;
 		}
 		
 		return true;
@@ -157,35 +154,35 @@ public class TileEntityMachineArcWelder extends TileEntityMachineBase implements
 		for(AStack aStack : recipe.ingredients) {
 			
 			for(int i = 0; i < 3; i++) {
-				ItemStack stack = slots[i];
+				ItemStack stack = this.slots[i];
 				if(aStack.matchesRecipe(stack, true) && stack.stackSize >= aStack.stacksize) {
-					this.decrStackSize(i, aStack.stacksize);
+					decrStackSize(i, aStack.stacksize);
 					break;
 				}
 			}
 		}
 		
 		if(recipe.fluid != null) {
-			this.tank.setFill(tank.getFill() - recipe.fluid.fill);
+			this.tank.setFill(this.tank.getFill() - recipe.fluid.fill);
 		}
 	}
 	
 	protected DirPos[] getConPos() {
 		
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - 10);
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - 10);
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 		
 		return new DirPos[] {
-				new DirPos(xCoord + dir.offsetX, yCoord, zCoord + dir.offsetZ, dir),
-				new DirPos(xCoord + dir.offsetX + rot.offsetX, yCoord, zCoord + dir.offsetZ + rot.offsetZ, dir),
-				new DirPos(xCoord + dir.offsetX - rot.offsetX, yCoord, zCoord + dir.offsetZ - rot.offsetZ, dir),
-				new DirPos(xCoord - dir.offsetX * 2, yCoord, zCoord - dir.offsetZ * 2, dir.getOpposite()),
-				new DirPos(xCoord - dir.offsetX * 2 + rot.offsetX, yCoord, zCoord - dir.offsetZ * 2 + rot.offsetZ, dir.getOpposite()),
-				new DirPos(xCoord - dir.offsetX * 2 - rot.offsetX, yCoord, zCoord - dir.offsetZ * 2 - rot.offsetZ, dir.getOpposite()),
-				new DirPos(xCoord + rot.offsetX * 2, yCoord, zCoord + rot.offsetZ * 2, rot),
-				new DirPos(xCoord - dir.offsetX + rot.offsetX * 2, yCoord, zCoord - dir.offsetZ + rot.offsetZ * 2, rot),
-				new DirPos(xCoord - rot.offsetX * 2, yCoord, zCoord - rot.offsetZ * 2, rot.getOpposite()),
-				new DirPos(xCoord - dir.offsetX - rot.offsetX * 2, yCoord, zCoord - dir.offsetZ - rot.offsetZ * 2, rot.getOpposite())
+				new DirPos(this.xCoord + dir.offsetX, this.yCoord, this.zCoord + dir.offsetZ, dir),
+				new DirPos(this.xCoord + dir.offsetX + rot.offsetX, this.yCoord, this.zCoord + dir.offsetZ + rot.offsetZ, dir),
+				new DirPos(this.xCoord + dir.offsetX - rot.offsetX, this.yCoord, this.zCoord + dir.offsetZ - rot.offsetZ, dir),
+				new DirPos(this.xCoord - dir.offsetX * 2, this.yCoord, this.zCoord - dir.offsetZ * 2, dir.getOpposite()),
+				new DirPos(this.xCoord - dir.offsetX * 2 + rot.offsetX, this.yCoord, this.zCoord - dir.offsetZ * 2 + rot.offsetZ, dir.getOpposite()),
+				new DirPos(this.xCoord - dir.offsetX * 2 - rot.offsetX, this.yCoord, this.zCoord - dir.offsetZ * 2 - rot.offsetZ, dir.getOpposite()),
+				new DirPos(this.xCoord + rot.offsetX * 2, this.yCoord, this.zCoord + rot.offsetZ * 2, rot),
+				new DirPos(this.xCoord - dir.offsetX + rot.offsetX * 2, this.yCoord, this.zCoord - dir.offsetZ + rot.offsetZ * 2, rot),
+				new DirPos(this.xCoord - rot.offsetX * 2, this.yCoord, this.zCoord - rot.offsetZ * 2, rot.getOpposite()),
+				new DirPos(this.xCoord - dir.offsetX - rot.offsetX * 2, this.yCoord, this.zCoord - dir.offsetZ - rot.offsetZ * 2, rot.getOpposite())
 		};
 	}
 
@@ -214,23 +211,23 @@ public class TileEntityMachineArcWelder extends TileEntityMachineBase implements
 		this.maxPower = nbt.getLong("maxPower");
 		this.progress = nbt.getInteger("progress");
 		this.processTime = nbt.getInteger("processTime");
-		tank.readFromNBT(nbt, "t");
+		this.tank.readFromNBT(nbt, "t");
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 
-		nbt.setLong("power", power);
-		nbt.setLong("maxPower", maxPower);
-		nbt.setInteger("progress", progress);
-		nbt.setInteger("processTime", processTime);
-		tank.writeToNBT(nbt, "t");
+		nbt.setLong("power", this.power);
+		nbt.setLong("maxPower", this.maxPower);
+		nbt.setInteger("progress", this.progress);
+		nbt.setInteger("processTime", this.processTime);
+		this.tank.writeToNBT(nbt, "t");
 	}
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 
 	@Override
@@ -240,17 +237,17 @@ public class TileEntityMachineArcWelder extends TileEntityMachineBase implements
 
 	@Override
 	public long getMaxPower() {
-		return maxPower;
+		return this.maxPower;
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return new FluidTank[] {tank};
+		return new FluidTank[] {this.tank};
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] {tank};
+		return new FluidTank[] {this.tank};
 	}
 
 	@Override
@@ -286,9 +283,9 @@ public class TileEntityMachineArcWelder extends TileEntityMachineBase implements
 	@Override
 	public int[] getAccessibleSlotsFromSide(int x, int y, int z, int side) {
 		BlockPos pos = new BlockPos(x, y, z);
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - 10);
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - 10);
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
-		BlockPos core = new BlockPos(xCoord, yCoord, zCoord);
+		BlockPos core = new BlockPos(this.xCoord, this.yCoord, this.zCoord);
 		
 		//Red
 		if(pos.equals(core.clone().offset(rot)) || pos.equals(core.clone().offset(rot.getOpposite()).offset(dir.getOpposite())))
@@ -321,18 +318,18 @@ public class TileEntityMachineArcWelder extends TileEntityMachineBase implements
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 1,
-					yCoord,
-					zCoord - 1,
-					xCoord + 2,
-					yCoord + 3,
-					zCoord + 2
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 1,
+					this.yCoord,
+					this.zCoord - 1,
+					this.xCoord + 2,
+					this.yCoord + 3,
+					this.zCoord + 2
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override

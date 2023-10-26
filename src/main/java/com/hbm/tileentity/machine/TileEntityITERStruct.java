@@ -128,19 +128,19 @@ public class TileEntityITERStruct extends TileEntity {
 	@Override
 	public void updateEntity() {
 		
-		if(worldObj.isRemote)
+		if(this.worldObj.isRemote)
 			return;
 		
-		age++;
+		this.age++;
 		
-		if(age < 20)
+		if(this.age < 20)
 			return;
 		
-		age = 0;
+		this.age = 0;
 		
 		for(int y = 0; y < 5; y++) {
-			for(int x = 0; x < layout[0].length; x++) {
-				for(int z = 0; z < layout[0][0].length; z++) {
+			for(int x = 0; x < TileEntityITERStruct.layout[0].length; x++) {
+				for(int z = 0; z < TileEntityITERStruct.layout[0][0].length; z++) {
 					
 					int ly = y > 2 ? 4 - y : y;
 					
@@ -149,9 +149,9 @@ public class TileEntityITERStruct extends TileEntity {
 					if(x == width && y == 0 && z == width)
 						continue;
 					
-					int b = layout[ly][x][z];
-					Block block = worldObj.getBlock(xCoord + x - width, yCoord + y, zCoord + z - width);
-					int meta = worldObj.getBlockMetadata(xCoord + x - width, yCoord + y, zCoord + z - width);
+					int b = TileEntityITERStruct.layout[ly][x][z];
+					Block block = this.worldObj.getBlock(this.xCoord + x - width, this.yCoord + y, this.zCoord + z - width);
+					int meta = this.worldObj.getBlockMetadata(this.xCoord + x - width, this.yCoord + y, this.zCoord + z - width);
 					
 					switch(b) {
 					case 1: if(block != ModBlocks.fusion_conductor || meta != 1) { return; } break;
@@ -166,11 +166,11 @@ public class TileEntityITERStruct extends TileEntity {
 		for(int x = -2; x <= 2; x++)
 			for(int y = 1; y <= 3; y++)
 				for(int z = -2; z <= 2; z++)
-					worldObj.setBlockToAir(xCoord + x, yCoord + y, zCoord + z);
+					this.worldObj.setBlockToAir(this.xCoord + x, this.yCoord + y, this.zCoord + z);
 		
 		BlockDummyable.safeRem = true;
-		worldObj.setBlock(xCoord, yCoord + 2, zCoord, ModBlocks.iter, 12, 3);
-		((MachineITER)ModBlocks.iter).fillSpace(worldObj, xCoord, yCoord, zCoord, ForgeDirection.UNKNOWN, 0);
+		this.worldObj.setBlock(this.xCoord, this.yCoord + 2, this.zCoord, ModBlocks.iter, 12, 3);
+		((MachineITER)ModBlocks.iter).fillSpace(this.worldObj, this.xCoord, this.yCoord, this.zCoord, ForgeDirection.UNKNOWN, 0);
 		BlockDummyable.safeRem = false;
 	}
 	

@@ -21,14 +21,14 @@ public class ItemSoyuz extends Item {
 	IIcon[] icons = new IIcon[3];
 	
 	public ItemSoyuz() {
-        this.setHasSubtypes(true);
+        setHasSubtypes(true);
 	}
     
     @Override
 	@SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs tab, List list) {
     	
-    	for(int i = 0; i < icons.length; i++)
+    	for(int i = 0; i < this.icons.length; i++)
     		list.add(new ItemStack(item, 1, i));
     }
     
@@ -59,19 +59,21 @@ public class ItemSoyuz extends Item {
 		}
 	}
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister reg)
     {
-    	for(int i = 0; i < icons.length; i++) {
-    		icons[i] = reg.registerIcon(RefStrings.MODID + ":soyuz_" + i);
+    	for(int i = 0; i < this.icons.length; i++) {
+    		this.icons[i] = reg.registerIcon(RefStrings.MODID + ":soyuz_" + i);
     	}
     }
 	
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public IIcon getIconFromDamage(int meta)
     {
-        int j = MathHelper.clamp_int(meta, 0, icons.length - 1);
-        return icons[j];
+        int j = MathHelper.clamp_int(meta, 0, this.icons.length - 1);
+        return this.icons[j];
     }
 
 }

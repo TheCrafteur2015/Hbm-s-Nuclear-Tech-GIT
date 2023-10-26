@@ -15,6 +15,7 @@ import com.hbm.util.I18nUtil;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,10 +38,10 @@ public class GUIScreenGuide extends GuiScreen {
 
 	public GUIScreenGuide(EntityPlayer player) {
 		
-		type = BookType.getType(player.getHeldItem().getItemDamage());
+		this.type = BookType.getType(player.getHeldItem().getItemDamage());
 		
-		page = -1;
-		maxPage = (int)Math.ceil(type.pages.size() / 2D) - 1;
+		this.page = -1;
+		this.maxPage = (int)Math.ceil(this.type.pages.size() / 2D) - 1;
 
 		this.xSize = 272;
 		this.ySize = 182;
@@ -55,42 +56,42 @@ public class GUIScreenGuide extends GuiScreen {
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float f) {
-		this.drawDefaultBackground();
-		this.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
+		drawDefaultBackground();
+		drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
 		GL11.glDisable(GL11.GL_LIGHTING);
-		this.drawGuiContainerForegroundLayer(mouseX, mouseY);
+		drawGuiContainerForegroundLayer(mouseX, mouseY);
 		GL11.glEnable(GL11.GL_LIGHTING);
 	}
 
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
-		if(page < 0) {
-			Minecraft.getMinecraft().getTextureManager().bindTexture(texture_cover);
-			func_146110_a(guiLeft, guiTop, 0, 0, xSize, ySize, 512, 512);
+		if(this.page < 0) {
+			Minecraft.getMinecraft().getTextureManager().bindTexture(GUIScreenGuide.texture_cover);
+			Gui.func_146110_a(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize, 512, 512);
 			return;
 		}
 		
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		func_146110_a(guiLeft, guiTop, 0, 0, xSize, ySize, 512, 512);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIScreenGuide.texture);
+		Gui.func_146110_a(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize, 512, 512);
 
-		boolean overLeft = i >= guiLeft + 24 && i < guiLeft + 42 && j >= guiTop + 155 && j < guiTop + 165;
-		boolean overRight = i >= guiLeft + 230 && i < guiLeft + 248 && j >= guiTop + 155 && j < guiTop + 165;
+		boolean overLeft = i >= this.guiLeft + 24 && i < this.guiLeft + 42 && j >= this.guiTop + 155 && j < this.guiTop + 165;
+		boolean overRight = i >= this.guiLeft + 230 && i < this.guiLeft + 248 && j >= this.guiTop + 155 && j < this.guiTop + 165;
 
 		if(this.page > 0) {
 			
 			if(!overLeft)
-				func_146110_a(guiLeft + 24, guiTop + 155, 3, 207, 18, 10, 512, 512);
+				Gui.func_146110_a(this.guiLeft + 24, this.guiTop + 155, 3, 207, 18, 10, 512, 512);
 			else
-				func_146110_a(guiLeft + 24, guiTop + 155, 26, 207, 18, 10, 512, 512);
+				Gui.func_146110_a(this.guiLeft + 24, this.guiTop + 155, 26, 207, 18, 10, 512, 512);
 		}
 		
 		if(this.page < this.maxPage) {
 			
 			if(!overRight)
-				func_146110_a(guiLeft + 230, guiTop + 155, 3, 194, 18, 10, 512, 512);
+				Gui.func_146110_a(this.guiLeft + 230, this.guiTop + 155, 3, 194, 18, 10, 512, 512);
 			else
-				func_146110_a(guiLeft + 230, guiTop + 155, 26, 194, 18, 10, 512, 512);
+				Gui.func_146110_a(this.guiLeft + 230, this.guiTop + 155, 26, 194, 18, 10, 512, 512);
 		}
 	}
 
@@ -120,7 +121,7 @@ public class GUIScreenGuide extends GuiScreen {
 				
 				GL11.glPushMatrix();
 				GL11.glScalef(scale, scale, 1F);
-				this.fontRendererObj.drawString(cover, (int)((guiLeft + ((this.xSize / 2) - (this.fontRendererObj.getStringWidth(cover) / 2 * scale))) / scale), (int)((guiTop + 50 + i * 10 * scale) / scale), 0xfece00);
+				this.fontRendererObj.drawString(cover, (int)((this.guiLeft + ((this.xSize / 2) - (this.fontRendererObj.getStringWidth(cover) / 2 * scale))) / scale), (int)((this.guiTop + 50 + i * 10 * scale) / scale), 0xfece00);
 				GL11.glPopMatrix();
 			}
 			
@@ -143,7 +144,7 @@ public class GUIScreenGuide extends GuiScreen {
  					int width = textBox.width;
  					
  					int widthScaled = (int) (width * scale);
- 					List<String> lines = new ArrayList();
+ 					List<String> lines = new ArrayList<>();
  					String[] words = text.split(" ");
  					
  					lines.add(words[0]);
@@ -176,7 +177,7 @@ public class GUIScreenGuide extends GuiScreen {
  					}
  					
  					for(int l = 0; l < lines.size(); l++) {
- 						this.fontRendererObj.drawString(lines.get(l), (int)((guiLeft + 20 + i * sideOffset + textBox.xOffset) * scale), (int)((guiTop + 30 + topOffset) * scale + (12 * l)), 4210752);
+ 						this.fontRendererObj.drawString(lines.get(l), (int)((this.guiLeft + 20 + i * sideOffset + textBox.xOffset) * scale), (int)((this.guiTop + 30 + topOffset) * scale + (12 * l)), 4210752);
  					}
  					
  					GL11.glPopMatrix();
@@ -189,7 +190,7 @@ public class GUIScreenGuide extends GuiScreen {
 					
 					GL11.glPushMatrix();
 					GL11.glScalef(1F/tScale, 1F/tScale, 1F);
-					this.fontRendererObj.drawString(titleLoc, (int)((guiLeft + 20 + i * sideOffset + ((100 / 2) - (this.fontRendererObj.getStringWidth(titleLoc) / 2 / tScale))) * tScale), (int)((guiTop + 20) * tScale), page.titleColor);
+					this.fontRendererObj.drawString(titleLoc, (int)((this.guiLeft + 20 + i * sideOffset + ((100 / 2) - (this.fontRendererObj.getStringWidth(titleLoc) / 2 / tScale))) * tScale), (int)((this.guiTop + 20) * tScale), page.titleColor);
 					
 					GL11.glPopMatrix();
 				}
@@ -204,12 +205,12 @@ public class GUIScreenGuide extends GuiScreen {
 						if(ix == -1)
 							ix = 100 / 2 - image.sizeX / 2;
 						
-						drawImage(guiLeft + 20 + ix + sideOffset * i, guiTop + image.y, image.sizeX, image.sizeY);
+						GUIScreenGuide.drawImage(this.guiLeft + 20 + ix + sideOffset * i, this.guiTop + image.y, image.sizeX, image.sizeY);
 					}
 				}
 				
 				String pageLabel = (defacto + 1) + "/" + (this.type.pages.size());
-				this.fontRendererObj.drawString(pageLabel, guiLeft + 44 + i * 185 - i * this.fontRendererObj.getStringWidth(pageLabel), guiTop + 156, 4210752);
+				this.fontRendererObj.drawString(pageLabel, this.guiLeft + 44 + i * 185 - i * this.fontRendererObj.getStringWidth(pageLabel), this.guiTop + 156, 4210752);
 			}
 		}
 	}
@@ -228,23 +229,23 @@ public class GUIScreenGuide extends GuiScreen {
 	@Override
 	protected void mouseClicked(int i, int j, int k) {
 		
-		if(page < 0) {
-			page = 0;
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+		if(this.page < 0) {
+			this.page = 0;
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 			return;
 		}
 		
-		boolean overLeft = i >= guiLeft + 24 && i < guiLeft + 42 && j >= guiTop + 155 && j < guiTop + 165;
-		boolean overRight = i >= guiLeft + 230 && i < guiLeft + 248 && j >= guiTop + 155 && j < guiTop + 165;
+		boolean overLeft = i >= this.guiLeft + 24 && i < this.guiLeft + 42 && j >= this.guiTop + 155 && j < this.guiTop + 165;
+		boolean overRight = i >= this.guiLeft + 230 && i < this.guiLeft + 248 && j >= this.guiTop + 155 && j < this.guiTop + 165;
 		
-		if(overLeft && page > 0) {
-			page--;
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+		if(overLeft && this.page > 0) {
+			this.page--;
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 		}
 		
-		if(overRight && page < maxPage) {
-			page++;
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+		if(overRight && this.page < this.maxPage) {
+			this.page++;
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 		}
 	}
 

@@ -21,6 +21,7 @@ import api.hbm.energy.IEnergyUser;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -57,16 +58,16 @@ public class MachineCapacitor extends BlockContainer implements ILookOverlay, IP
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		super.registerBlockIcons(iconRegister);
-		this.iconTop = iconRegister.registerIcon(RefStrings.MODID + ":capacitor_" + name + "_top");
-		this.iconSide = iconRegister.registerIcon(RefStrings.MODID + ":capacitor_" + name + "_side");
-		this.iconBottom = iconRegister.registerIcon(RefStrings.MODID + ":capacitor_" + name + "_bottom");
-		this.iconInnerTop = iconRegister.registerIcon(RefStrings.MODID + ":capacitor_" + name + "_inner_top");
-		this.iconInnerSide = iconRegister.registerIcon(RefStrings.MODID + ":capacitor_" + name + "_inner_side");
+		this.iconTop = iconRegister.registerIcon(RefStrings.MODID + ":capacitor_" + this.name + "_top");
+		this.iconSide = iconRegister.registerIcon(RefStrings.MODID + ":capacitor_" + this.name + "_side");
+		this.iconBottom = iconRegister.registerIcon(RefStrings.MODID + ":capacitor_" + this.name + "_bottom");
+		this.iconInnerTop = iconRegister.registerIcon(RefStrings.MODID + ":capacitor_" + this.name + "_inner_top");
+		this.iconInnerSide = iconRegister.registerIcon(RefStrings.MODID + ":capacitor_" + this.name + "_inner_side");
 	}
 
 	public static int renderID = RenderingRegistry.getNextAvailableRenderId();
 
-	@Override public int getRenderType() { return renderID; }
+	@Override public int getRenderType() { return MachineCapacitor.renderID; }
 	@Override public boolean isOpaqueCube() { return false; }
 	@Override public boolean renderAsNormalBlock() { return false; }
 
@@ -89,7 +90,7 @@ public class MachineCapacitor extends BlockContainer implements ILookOverlay, IP
 			return;
 		
 		TileEntityCapacitor battery = (TileEntityCapacitor) te;
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		text.add(BobMathUtil.getShortNumber(battery.getPower()) + " / " + BobMathUtil.getShortNumber(battery.getMaxPower()) + "HE");
 		
 		double percent = (double) battery.getPower() / (double) battery.getMaxPower();
@@ -102,11 +103,13 @@ public class MachineCapacitor extends BlockContainer implements ILookOverlay, IP
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, NBTTagCompound persistentTag, EntityPlayer player, List list, boolean ext) {
 		list.add(EnumChatFormatting.YELLOW + "" + BobMathUtil.getShortNumber(persistentTag.getLong("power")) + "/" + BobMathUtil.getShortNumber(persistentTag.getLong("maxPower")) + "HE");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		
@@ -133,15 +136,15 @@ public class MachineCapacitor extends BlockContainer implements ILookOverlay, IP
 	public void onBlockHarvested(World world, int x, int y, int z, int meta, EntityPlayer player) {
 		
 		if(!player.capabilities.isCreativeMode) {
-			harvesters.set(player);
+			this.harvesters.set(player);
 			this.dropBlockAsItem(world, x, y, z, meta, 0);
-			harvesters.set(null);
+			this.harvesters.set(null);
 		}
 	}
 	
 	@Override
 	public void harvestBlock(World world, EntityPlayer player, int x, int y, int z, int meta) {
-		player.addStat(StatList.mineBlockStatArray[getIdFromBlock(this)], 1);
+		player.addStat(StatList.mineBlockStatArray[Block.getIdFromBlock(this)], 1);
 		player.addExhaustion(0.025F);
 	}
 
@@ -162,20 +165,20 @@ public class MachineCapacitor extends BlockContainer implements ILookOverlay, IP
 		@Override
 		public void updateEntity() {
 			
-			if(!worldObj.isRemote) {
+			if(!this.worldObj.isRemote) {
 				
-				long gain = power - prevPower;
+				long gain = this.power - this.prevPower;
 
-				ForgeDirection opp = ForgeDirection.getOrientation(this.getBlockMetadata());
+				ForgeDirection opp = ForgeDirection.getOrientation(getBlockMetadata());
 				ForgeDirection dir = opp.getOpposite();
 				
-				BlockPos pos = new BlockPos(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
+				BlockPos pos = new BlockPos(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
 				
 				boolean didStep = false;
 				ForgeDirection last = null;
 				
-				while(worldObj.getBlock(pos.getX(), pos.getY(), pos.getZ()) == ModBlocks.capacitor_bus) {
-					ForgeDirection current = ForgeDirection.getOrientation(worldObj.getBlockMetadata(pos.getX(), pos.getY(), pos.getZ()));
+				while(this.worldObj.getBlock(pos.getX(), pos.getY(), pos.getZ()) == ModBlocks.capacitor_bus) {
+					ForgeDirection current = ForgeDirection.getOrientation(this.worldObj.getBlockMetadata(pos.getX(), pos.getY(), pos.getZ()));
 					if(!didStep) last = current;
 					didStep = true;
 					
@@ -187,23 +190,23 @@ public class MachineCapacitor extends BlockContainer implements ILookOverlay, IP
 					pos = pos.offset(current);
 				}
 				
-				long preSend = power;
+				long preSend = this.power;
 				if(pos != null && last != null) {
-					this.tryUnsubscribe(worldObj, pos.getX(), pos.getY(), pos.getZ());
-					this.sendPower(worldObj, pos.getX(), pos.getY(), pos.getZ(), last);
+					tryUnsubscribe(this.worldObj, pos.getX(), pos.getY(), pos.getZ());
+					sendPower(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), last);
 				}
-				long sent = preSend - power;
+				long sent = preSend - this.power;
 				
-				this.trySubscribe(worldObj, xCoord + opp.offsetX, yCoord+ opp.offsetY, zCoord + opp.offsetZ, opp);
+				trySubscribe(this.worldObj, this.xCoord + opp.offsetX, this.yCoord+ opp.offsetY, this.zCoord + opp.offsetZ, opp);
 				
 				NBTTagCompound data = new NBTTagCompound();
-				data.setLong("power", power);
-				data.setLong("maxPower", maxPower);
+				data.setLong("power", this.power);
+				data.setLong("maxPower", this.maxPower);
 				data.setLong("rec", gain);
 				data.setLong("sent", sent);
 				INBTPacketReceiver.networkPack(this, data, 15);
 				
-				this.prevPower = power;
+				this.prevPower = this.power;
 			}
 		}
 
@@ -217,12 +220,12 @@ public class MachineCapacitor extends BlockContainer implements ILookOverlay, IP
 
 		@Override
 		public long getPower() {
-			return power;
+			return this.power;
 		}
 
 		@Override
 		public long getMaxPower() {
-			return maxPower;
+			return this.maxPower;
 		}
 
 		@Override
@@ -237,20 +240,20 @@ public class MachineCapacitor extends BlockContainer implements ILookOverlay, IP
 		
 		@Override
 		public boolean canConnect(ForgeDirection dir) {
-			return dir == ForgeDirection.getOrientation(this.getBlockMetadata());
+			return dir == ForgeDirection.getOrientation(getBlockMetadata());
 		}
 
 		@Override
 		public void writeNBT(NBTTagCompound nbt) {
 			NBTTagCompound data = new NBTTagCompound();
-			data.setLong("power", power);
-			data.setLong("maxPower", maxPower);
-			nbt.setTag(NBT_PERSISTENT_KEY, data);
+			data.setLong("power", this.power);
+			data.setLong("maxPower", this.maxPower);
+			nbt.setTag(IPersistentNBT.NBT_PERSISTENT_KEY, data);
 		}
 
 		@Override
 		public void readNBT(NBTTagCompound nbt) {
-			NBTTagCompound data = nbt.getCompoundTag(NBT_PERSISTENT_KEY);
+			NBTTagCompound data = nbt.getCompoundTag(IPersistentNBT.NBT_PERSISTENT_KEY);
 			this.power = data.getLong("power");
 			this.maxPower = data.getLong("maxPower");
 		}
@@ -265,8 +268,8 @@ public class MachineCapacitor extends BlockContainer implements ILookOverlay, IP
 		@Override
 		public void writeToNBT(NBTTagCompound nbt) {
 			super.writeToNBT(nbt);
-			nbt.setLong("power", power);
-			nbt.setLong("maxPower", maxPower);
+			nbt.setLong("power", this.power);
+			nbt.setLong("maxPower", this.maxPower);
 		}
 	}
 }

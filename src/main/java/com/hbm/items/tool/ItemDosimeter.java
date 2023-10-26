@@ -36,7 +36,7 @@ public class ItemDosimeter extends Item {
 		if(world.getTotalWorldTime() % 5 == 0) {
 			
 			if(x > 1E-5) {
-				List<Integer> list = new ArrayList<Integer>();
+				List<Integer> list = new ArrayList<>();
 
 				if(x < 0.5)
 					list.add(0);
@@ -47,13 +47,13 @@ public class ItemDosimeter extends Item {
 				if(x >= 1 && x >= 2)
 					list.add(3);
 			
-				int r = list.get(rand.nextInt(list.size()));
+				int r = list.get(this.rand.nextInt(list.size()));
 				
 				if(r > 0)
 					world.playSoundAtEntity(entity, "hbm:item.geiger" + r, 1.0F, 1.0F); //TODO: rip new sounds either from BM or FO3
 				
-			} else if(rand.nextInt(100) == 0) {
-				world.playSoundAtEntity(entity, "hbm:item.geiger"+ (1 + rand.nextInt(1)), 1.0F, 1.0F);
+			} else if(this.rand.nextInt(100) == 0) {
+				world.playSoundAtEntity(entity, "hbm:item.geiger"+ (1 + this.rand.nextInt(1)), 1.0F, 1.0F);
 			}
 		}
 	}

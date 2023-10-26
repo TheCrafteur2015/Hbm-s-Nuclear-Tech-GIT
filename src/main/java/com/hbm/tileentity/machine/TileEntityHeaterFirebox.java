@@ -49,22 +49,22 @@ public class TileEntityHeaterFirebox extends TileEntityFireboxBase implements IC
 
 	@Override
 	public ModuleBurnTime getModule() {
-		return burnModule;
+		return TileEntityHeaterFirebox.burnModule;
 	}
 
 	@Override
 	public int getBaseHeat() {
-		return baseHeat;
+		return TileEntityHeaterFirebox.baseHeat;
 	}
 
 	@Override
 	public double getTimeMult() {
-		return timeMult;
+		return TileEntityHeaterFirebox.timeMult;
 	}
 
 	@Override
 	public int getMaxHeat() {
-		return maxHeatEnergy;
+		return TileEntityHeaterFirebox.maxHeatEnergy;
 	}
 
 	@Override
@@ -77,8 +77,8 @@ public class TileEntityHeaterFirebox extends TileEntityFireboxBase implements IC
 	@Override
 	@SideOnly(Side.CLIENT)
 	public GuiScreen provideGUI(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		if(texture == null) texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/machine/gui_firebox.png");
-		return new GUIFirebox(player.inventory, this, texture);
+		if(this.texture == null) this.texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/machine/gui_firebox.png");
+		return new GUIFirebox(player.inventory, this, this.texture);
 	}
 
 	@Override
@@ -88,21 +88,21 @@ public class TileEntityHeaterFirebox extends TileEntityFireboxBase implements IC
 
 	@Override
 	public void readIfPresent(JsonObject obj) {
-		baseHeat = IConfigurableMachine.grab(obj, "I:baseHeat", baseHeat);
-		timeMult = IConfigurableMachine.grab(obj, "D:burnTimeMult", timeMult);
-		maxHeatEnergy = IConfigurableMachine.grab(obj, "I:heatCap", maxHeatEnergy);
+		TileEntityHeaterFirebox.baseHeat = IConfigurableMachine.grab(obj, "I:baseHeat", TileEntityHeaterFirebox.baseHeat);
+		TileEntityHeaterFirebox.timeMult = IConfigurableMachine.grab(obj, "D:burnTimeMult", TileEntityHeaterFirebox.timeMult);
+		TileEntityHeaterFirebox.maxHeatEnergy = IConfigurableMachine.grab(obj, "I:heatCap", TileEntityHeaterFirebox.maxHeatEnergy);
 		if(obj.has("burnModule")) {
-			burnModule.readIfPresent(obj.get("M:burnModule").getAsJsonObject());
+			TileEntityHeaterFirebox.burnModule.readIfPresent(obj.get("M:burnModule").getAsJsonObject());
 		}
 	}
 
 	@Override
 	public void writeConfig(JsonWriter writer) throws IOException {
-		writer.name("I:baseHeat").value(baseHeat);
-		writer.name("D:burnTimeMult").value(timeMult);
-		writer.name("I:heatCap").value(maxHeatEnergy);
+		writer.name("I:baseHeat").value(TileEntityHeaterFirebox.baseHeat);
+		writer.name("D:burnTimeMult").value(TileEntityHeaterFirebox.timeMult);
+		writer.name("I:heatCap").value(TileEntityHeaterFirebox.maxHeatEnergy);
 		writer.name("M:burnModule").beginObject();
-		burnModule.writeConfig(writer);
+		TileEntityHeaterFirebox.burnModule.writeConfig(writer);
 		writer.endObject();
 	}
 }

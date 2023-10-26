@@ -58,7 +58,7 @@ public class MachineAutosaw extends BlockContainer implements ILookOverlay, IToo
 				TileEntityMachineAutosaw saw = (TileEntityMachineAutosaw) world.getTileEntity(x, y, z);
 				
 				FluidType type = ((IItemFluidIdentifier) player.getHeldItem().getItem()).getType(world, x, y, z, player.getHeldItem());
-				if(saw.acceptedFuels.contains(type)) {
+				if(TileEntityMachineAutosaw.acceptedFuels.contains(type)) {
 					saw.tank.setTankType(type);
 					saw.markDirty();
 					player.addChatComponentMessage(new ChatComponentText("Changed type to ").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)).appendSibling(new ChatComponentTranslation(type.getConditionalName())).appendSibling(new ChatComponentText("!")));
@@ -82,7 +82,7 @@ public class MachineAutosaw extends BlockContainer implements ILookOverlay, IToo
 		
 		TileEntityMachineAutosaw saw = (TileEntityMachineAutosaw) te;
 		
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		text.add(saw.tank.getTankType().getLocalizedName() + ": " + saw.tank.getFill() + "/" + saw.tank.getMaxFill() + "mB");
 		
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
@@ -90,6 +90,6 @@ public class MachineAutosaw extends BlockContainer implements ILookOverlay, IToo
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		this.addStandardInfo(stack, player, list, ext);
+		addStandardInfo(stack, player, list, ext);
 	}
 }

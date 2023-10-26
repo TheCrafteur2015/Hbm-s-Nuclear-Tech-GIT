@@ -34,12 +34,12 @@ public class RenderRBMKDebris extends Render {
 		DebrisType type = debris.getType();
 		
 		switch(type) {
-		case BLANK: bindTexture(tex_blank); ResourceManager.deb_blank.renderAll(); break;
-		case ELEMENT: bindTexture(tex_element); ResourceManager.deb_element.renderAll(); break;
-		case FUEL: bindTexture(tex_element); ResourceManager.deb_fuel.renderAll(); break;
-		case GRAPHITE: bindTexture(tex_graphite); ResourceManager.deb_graphite.renderAll(); break;
-		case LID: bindTexture(tex_blank); ResourceManager.deb_lid.renderAll(); break;
-		case ROD: bindTexture(tex_control); ResourceManager.deb_rod.renderAll(); break;
+		case BLANK: bindTexture(RenderRBMKDebris.tex_blank); ResourceManager.deb_blank.renderAll(); break;
+		case ELEMENT: bindTexture(RenderRBMKDebris.tex_element); ResourceManager.deb_element.renderAll(); break;
+		case FUEL: bindTexture(RenderRBMKDebris.tex_element); ResourceManager.deb_fuel.renderAll(); break;
+		case GRAPHITE: bindTexture(RenderRBMKDebris.tex_graphite); ResourceManager.deb_graphite.renderAll(); break;
+		case LID: bindTexture(RenderRBMKDebris.tex_blank); ResourceManager.deb_lid.renderAll(); break;
+		case ROD: bindTexture(RenderRBMKDebris.tex_control); ResourceManager.deb_rod.renderAll(); break;
 		default: break;
 		}
 		
@@ -48,7 +48,7 @@ public class RenderRBMKDebris extends Render {
 
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity) {
-		return tex_base;
+		return RenderRBMKDebris.tex_base;
 	}
 
 }

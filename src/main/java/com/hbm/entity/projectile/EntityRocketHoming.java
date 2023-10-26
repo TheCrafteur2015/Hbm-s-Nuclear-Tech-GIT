@@ -1,8 +1,5 @@
 package com.hbm.entity.projectile;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +11,8 @@ import com.hbm.handler.radiation.ChunkRadiationManager;
 import com.hbm.items.ModItems;
 import com.hbm.lib.Library;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -66,15 +65,15 @@ public class EntityRocketHoming extends Entity implements IProjectile
     {
         super(p_i1753_1_);
         this.renderDistanceWeight = 10.0D;
-        this.setSize(0.5F, 0.5F);
+        setSize(0.5F, 0.5F);
     }
 
     public EntityRocketHoming(World p_i1754_1_, double p_i1754_2_, double p_i1754_4_, double p_i1754_6_)
     {
         super(p_i1754_1_);
         this.renderDistanceWeight = 10.0D;
-        this.setSize(0.5F, 0.5F);
-        this.setPosition(p_i1754_2_, p_i1754_4_, p_i1754_6_);
+        setSize(0.5F, 0.5F);
+        setPosition(p_i1754_2_, p_i1754_4_, p_i1754_6_);
         this.yOffset = 0.0F;
     }
 
@@ -102,10 +101,10 @@ public class EntityRocketHoming extends Entity implements IProjectile
             float f3 = (float)(-(Math.atan2(d1, d3) * 180.0D / Math.PI));
             double d4 = d0 / d3;
             double d5 = d2 / d3;
-            this.setLocationAndAngles(p_i1755_2_.posX + d4, this.posY, p_i1755_2_.posZ + d5, f2, f3);
+            setLocationAndAngles(p_i1755_2_.posX + d4, this.posY, p_i1755_2_.posZ + d5, f2, f3);
             this.yOffset = 0.0F;
             float f4 = (float)d3 * 0.2F;
-            this.setThrowableHeading(d0, d1 + f4, d2, p_i1755_4_, p_i1755_5_);
+            setThrowableHeading(d0, d1 + f4, d2, p_i1755_4_, p_i1755_5_);
         }
     }
 
@@ -121,17 +120,17 @@ public class EntityRocketHoming extends Entity implements IProjectile
             this.canBePickedUp = 1;
         }
 
-        this.setSize(0.5F, 0.5F);
-        this.setLocationAndAngles(p_i1756_2_.posX, p_i1756_2_.posY + p_i1756_2_.getEyeHeight(), p_i1756_2_.posZ, p_i1756_2_.rotationYaw, p_i1756_2_.rotationPitch);
+        setSize(0.5F, 0.5F);
+        setLocationAndAngles(p_i1756_2_.posX, p_i1756_2_.posY + p_i1756_2_.getEyeHeight(), p_i1756_2_.posZ, p_i1756_2_.rotationYaw, p_i1756_2_.rotationPitch);
         this.posX -= MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * 0.16F;
         this.posY -= 0.10000000149011612D;
         this.posZ -= MathHelper.sin(this.rotationYaw / 180.0F * (float)Math.PI) * 0.16F;
-        this.setPosition(this.posX, this.posY, this.posZ);
+        setPosition(this.posX, this.posY, this.posZ);
         this.yOffset = 0.0F;
         this.motionX = -MathHelper.sin(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI);
         this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI);
         this.motionY = (-MathHelper.sin(this.rotationPitch / 180.0F * (float)Math.PI));
-        this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, p_i1756_3_ * 1.5F, 1.0F);
+        setThrowableHeading(this.motionX, this.motionY, this.motionZ, p_i1756_3_ * 1.5F, 1.0F);
         this.explosionStrength = strength;
     }
 
@@ -187,8 +186,8 @@ public class EntityRocketHoming extends Entity implements IProjectile
 	@SideOnly(Side.CLIENT)
     public void setPositionAndRotation2(double p_70056_1_, double p_70056_3_, double p_70056_5_, float p_70056_7_, float p_70056_8_, int p_70056_9_)
     {
-        this.setPosition(p_70056_1_, p_70056_3_, p_70056_5_);
-        this.setRotation(p_70056_7_, p_70056_8_);
+        setPosition(p_70056_1_, p_70056_3_, p_70056_5_);
+        setRotation(p_70056_7_, p_70056_8_);
     }
 
     /**
@@ -209,7 +208,7 @@ public class EntityRocketHoming extends Entity implements IProjectile
             this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(p_70016_3_, f) * 180.0D / Math.PI);
             this.prevRotationPitch = this.rotationPitch;
             this.prevRotationYaw = this.rotationYaw;
-            this.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+            setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
             this.ticksInGround = 0;
         }
     }
@@ -283,7 +282,7 @@ public class EntityRocketHoming extends Entity implements IProjectile
                 explosion.posZ = this.posZ;
                 this.worldObj.spawnEntityInWorld(explosion);*/
             }
-        	this.setDead();
+        	setDead();
         }
         else
         {
@@ -354,7 +353,7 @@ public class EntityRocketHoming extends Entity implements IProjectile
                     f2 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
                     int k = MathHelper.ceiling_double_int(f2 * this.damage);
 
-                    if (this.getIsCritical())
+                    if (getIsCritical())
                     {
                         k += this.rand.nextInt(k / 2 + 2);
                     }
@@ -370,7 +369,7 @@ public class EntityRocketHoming extends Entity implements IProjectile
                         damagesource = DamageSource.causeIndirectMagicDamage(this, this);
                     }
 
-                    if (this.isBurning() && !(movingobjectposition.entityHit instanceof EntityEnderman))
+                    if (isBurning() && !(movingobjectposition.entityHit instanceof EntityEnderman))
                     {
                         movingobjectposition.entityHit.setFire(5);
                     }
@@ -410,7 +409,7 @@ public class EntityRocketHoming extends Entity implements IProjectile
                             	//this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 2.5F, true);
                             	Explode(this.type, this.explosionStrength);
                             }
-                        	this.setDead();
+                        	setDead();
                         }
                     }
                     else
@@ -420,7 +419,7 @@ public class EntityRocketHoming extends Entity implements IProjectile
                         	//this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 2.5F, true);
                         	Explode(this.type, this.explosionStrength);
                         }
-                    	this.setDead();
+                    	setDead();
                     }
                 }
                 else
@@ -439,7 +438,7 @@ public class EntityRocketHoming extends Entity implements IProjectile
                     this.posZ -= this.motionZ / f2 * 0.05000000074505806D;
                     this.inGround = true;
                     this.arrowShake = 7;
-                    this.setIsCritical(false);
+                    setIsCritical(false);
 
                     if (this.field_145790_g.getMaterial() != Material.air)
                     {
@@ -453,8 +452,8 @@ public class EntityRocketHoming extends Entity implements IProjectile
                 //for (i = 0; i < 4; ++i)
                 {
                 	//this.worldObj.spawnParticle("cloud", this.posX, this.posY, this.posZ, /*0, 0, 0 this.posX + this.motionX * (double)i / 4.0D, this.posY + this.motionY * (double)i / 4.0D, this.posZ + this.motionZ * (double)i / 4.0D,*/ -this.motionX/4, -this.motionY/4, -this.motionZ/4);
-                	if(!worldObj.isRemote && this.ticksExisted > 1)
-                		this.worldObj.spawnEntityInWorld(new EntityTSmokeFX(worldObj, this.posX, this.posY, this.posZ, 0, 0, 0));
+                	if(!this.worldObj.isRemote && this.ticksExisted > 1)
+                		this.worldObj.spawnEntityInWorld(new EntityTSmokeFX(this.worldObj, this.posX, this.posY, this.posZ, 0, 0, 0));
                 }
             }
 
@@ -484,7 +483,7 @@ public class EntityRocketHoming extends Entity implements IProjectile
 
             f1 = 0.05F;
 
-            if (this.isInWater())
+            if (isInWater())
             {
                 for (int l = 0; l < 4; ++l)
                 {
@@ -493,24 +492,24 @@ public class EntityRocketHoming extends Entity implements IProjectile
                 }
             }
 
-            if (this.isWet())
+            if (isWet())
             {
-                this.extinguish();
+                extinguish();
             }
 
             /*this.motionX *= f3;
             this.motionY *= f3;
             this.motionZ *= f3;*/
             //this.motionY -= gravity;
-            this.setPosition(this.posX, this.posY, this.posZ);
-            this.func_145775_I();
+            setPosition(this.posX, this.posY, this.posZ);
+            func_145775_I();
         }
 
         if(!steer())
-        	lockonTicks = 0;
+        	this.lockonTicks = 0;
 
 		if (this.ticksExisted > 250)
-			this.setDead();
+			setDead();
     }
 
     public int homingRadius = 35;
@@ -522,13 +521,13 @@ public class EntityRocketHoming extends Entity implements IProjectile
     private boolean steer() {
     	List<Entity> all = null;
     	if(this.type == 42) {
-    		all = worldObj.getEntitiesWithinAABB(EntitySkeleton.class, AxisAlignedBB.getBoundingBox(posX - homingRadius, posY - homingRadius, posZ - homingRadius, posX + homingRadius, posY + homingRadius, posZ + homingRadius));
+    		all = this.worldObj.getEntitiesWithinAABB(EntitySkeleton.class, AxisAlignedBB.getBoundingBox(this.posX - this.homingRadius, this.posY - this.homingRadius, this.posZ - this.homingRadius, this.posX + this.homingRadius, this.posY + this.homingRadius, this.posZ + this.homingRadius));
     	} else {
-    		all = worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(posX - homingRadius, posY - homingRadius, posZ - homingRadius, posX + homingRadius, posY + homingRadius, posZ + homingRadius));
+    		all = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(this.posX - this.homingRadius, this.posY - this.homingRadius, this.posZ - this.homingRadius, this.posX + this.homingRadius, this.posY + this.homingRadius, this.posZ + this.homingRadius));
     	}
     	
     	HashMap<Entity, Double> targetable = new HashMap();
-    	Vec3 path = Vec3.createVectorHelper(motionX, motionY, motionZ);
+    	Vec3 path = Vec3.createVectorHelper(this.motionX, this.motionY, this.motionZ);
     	double startSpeed = path.lengthVector();
     	path.normalize();
     	
@@ -541,14 +540,14 @@ public class EntityRocketHoming extends Entity implements IProjectile
     		if(e == this.shootingEntity)
     			continue;
     		
-    		Vec3 rel = Vec3.createVectorHelper(e.posX - posX, e.posY + e.getEyeHeight() - posY, e.posZ - posZ);
+    		Vec3 rel = Vec3.createVectorHelper(e.posX - this.posX, e.posY + e.getEyeHeight() - this.posY, e.posZ - this.posZ);
     		double vecProd = rel.xCoord * path.xCoord + rel.yCoord * path.yCoord + rel.zCoord * path.zCoord;
     		double bot = rel.lengthVector() * path.lengthVector();
     		double angle = Math.acos(vecProd / bot) * 180 / Math.PI;
     		
-    		if(angle <= acceptance);
+    		if(angle <= this.acceptance);
     			if(e.height * e.width * e.width >= 0.5D)
-    				if(!Library.isObstructed(worldObj, e.posX, e.posY, e.posZ, posX, posY, posZ))
+    				if(!Library.isObstructed(this.worldObj, e.posX, e.posY, e.posZ, this.posX, this.posY, this.posZ))
     					targetable.put(e, angle);
     	}
     	
@@ -569,13 +568,13 @@ public class EntityRocketHoming extends Entity implements IProjectile
     	if(nearestE == null)
     		return false;
     	
-    	Vec3 winVec = Vec3.createVectorHelper(nearestE.posX - posX, nearestE.posY - posY, nearestE.posZ - posZ);
+    	Vec3 winVec = Vec3.createVectorHelper(nearestE.posX - this.posX, nearestE.posY - this.posY, nearestE.posZ - this.posZ);
     	
     	winVec.normalize();
     	
-    	double newX = ((path.xCoord * (smallest * homingMod - 1)) + winVec.xCoord) / (smallest * homingMod);
-    	double newY = ((path.yCoord * (smallest * homingMod - 1)) + winVec.yCoord) / (smallest * homingMod);
-    	double newZ = ((path.zCoord * (smallest * homingMod - 1)) + winVec.zCoord) / (smallest * homingMod);
+    	double newX = ((path.xCoord * (smallest * this.homingMod - 1)) + winVec.xCoord) / (smallest * this.homingMod);
+    	double newY = ((path.yCoord * (smallest * this.homingMod - 1)) + winVec.yCoord) / (smallest * this.homingMod);
+    	double newZ = ((path.zCoord * (smallest * this.homingMod - 1)) + winVec.zCoord) / (smallest * this.homingMod);
 
     	Vec3 newPath = Vec3.createVectorHelper(newX, newY, newZ);
     	newPath.normalize();
@@ -583,18 +582,18 @@ public class EntityRocketHoming extends Entity implements IProjectile
     	newPath.yCoord *= startSpeed;
     	newPath.zCoord *= startSpeed;
 
-    	motionX = newPath.xCoord;
-    	motionY = newPath.yCoord;
-    	motionZ = newPath.zCoord;
-        this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, (float)startSpeed, 0.0F);
+    	this.motionX = newPath.xCoord;
+    	this.motionY = newPath.yCoord;
+    	this.motionZ = newPath.zCoord;
+        setThrowableHeading(this.motionX, this.motionY, this.motionZ, (float)startSpeed, 0.0F);
         
-        lockonTicks++;
-        if(lockonTicks == 5 && !hasBeeped) {
-        	if(this.getIsCritical())
-        		worldObj.playSoundAtEntity(this, "hbm:weapon.stingerLockOn", 10F, 0.75F);
+        this.lockonTicks++;
+        if(this.lockonTicks == 5 && !this.hasBeeped) {
+        	if(getIsCritical())
+        		this.worldObj.playSoundAtEntity(this, "hbm:weapon.stingerLockOn", 10F, 0.75F);
         	else
-        		worldObj.playSoundAtEntity(this, "hbm:weapon.stingerLockOn", 10F, 1F);
-        	hasBeeped = true;
+        		this.worldObj.playSoundAtEntity(this, "hbm:weapon.stingerLockOn", 10F, 1F);
+        	this.hasBeeped = true;
         }
         
         return true;
@@ -670,7 +669,7 @@ public class EntityRocketHoming extends Entity implements IProjectile
             if (flag)
             {
                 p_70100_1_.onItemPickup(this, 1);
-                this.setDead();
+                setDead();
             }
         }
     }
@@ -747,13 +746,13 @@ public class EntityRocketHoming extends Entity implements IProjectile
     
     public void Explode(int type, float strength) {
     	switch(type) {
-    		case 42: ChunkRadiationManager.proxy.incrementRad(worldObj, (int)posX, (int)posY, (int)posZ, 2000);
-    		case 0: ExplosionLarge.explode(worldObj, posX, posY, posZ, strength, true, false, true); break;
-    		case 1: ExplosionLarge.explode(worldObj, posX, posY, posZ, strength * 2, true, false, true); break;
-    		case 2: ExplosionLarge.explodeFire(worldObj, posX, posY, posZ, strength, true, false, false); break;
+    		case 42: ChunkRadiationManager.proxy.incrementRad(this.worldObj, (int)this.posX, (int)this.posY, (int)this.posZ, 2000);
+    		case 0: ExplosionLarge.explode(this.worldObj, this.posX, this.posY, this.posZ, strength, true, false, true); break;
+    		case 1: ExplosionLarge.explode(this.worldObj, this.posX, this.posY, this.posZ, strength * 2, true, false, true); break;
+    		case 2: ExplosionLarge.explodeFire(this.worldObj, this.posX, this.posY, this.posZ, strength, true, false, false); break;
     		case 4:
     			//ExplosionLarge.explode(worldObj, posX, posY, posZ, strength * 3, false, false, true);
-    			ExplosionNukeSmall.explode(worldObj, posX, posY, posZ, ExplosionNukeSmall.PARAMS_MEDIUM);
+    			ExplosionNukeSmall.explode(this.worldObj, this.posX, this.posY, this.posZ, ExplosionNukeSmall.PARAMS_MEDIUM);
     			break;
     		default: break;
     	}

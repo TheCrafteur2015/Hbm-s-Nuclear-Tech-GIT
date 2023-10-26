@@ -42,14 +42,14 @@ public class BlockFluidBarrel extends BlockContainer implements ITooltipProvider
 
 	@Override
 	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
-		return new TileEntityBarrel(capacity);
+		return new TileEntityBarrel(this.capacity);
 	}
     
     public static int renderID = RenderingRegistry.getNextAvailableRenderId();
 	
 	@Override
 	public int getRenderType(){
-		return renderID;
+		return BlockFluidBarrel.renderID;
 	}
 	
 	@Override
@@ -79,13 +79,13 @@ public class BlockFluidBarrel extends BlockContainer implements ITooltipProvider
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess p_149719_1_, int p_149719_2_, int p_149719_3_, int p_149719_4_) {
 		float f = 0.0625F;
-		this.setBlockBounds(2 * f, 0.0F, 2 * f, 14 * f, 1.0F, 14 * f);
+		setBlockBounds(2 * f, 0.0F, 2 * f, 14 * f, 1.0F, 14 * f);
 	}
 
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
 		float f = 0.0625F;
-		this.setBlockBounds(2 * f, 0.0F, 2 * f, 14 * f, 1.0F, 14 * f);
+		setBlockBounds(2 * f, 0.0F, 2 * f, 14 * f, 1.0F, 14 * f);
 		return AxisAlignedBB.getBoundingBox(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
 	}
 
@@ -94,7 +94,7 @@ public class BlockFluidBarrel extends BlockContainer implements ITooltipProvider
 
 	@Override
 	public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_) {
-		if(!keepInventory) {
+		if(!BlockFluidBarrel.keepInventory) {
 			ISidedInventory tileentityfurnace = (ISidedInventory) p_149749_1_.getTileEntity(p_149749_2_, p_149749_3_, p_149749_4_);
 
 			if(tileentityfurnace != null) {
@@ -151,15 +151,15 @@ public class BlockFluidBarrel extends BlockContainer implements ITooltipProvider
 	public void onBlockHarvested(World world, int x, int y, int z, int meta, EntityPlayer player) {
 		
 		if(!player.capabilities.isCreativeMode) {
-			harvesters.set(player);
+			this.harvesters.set(player);
 			this.dropBlockAsItem(world, x, y, z, meta, 0);
-			harvesters.set(null);
+			this.harvesters.set(null);
 		}
 	}
 	
 	@Override
 	public void harvestBlock(World world, EntityPlayer player, int x, int y, int z, int meta) {
-		player.addStat(StatList.mineBlockStatArray[getIdFromBlock(this)], 1);
+		player.addStat(StatList.mineBlockStatArray[Block.getIdFromBlock(this)], 1);
 		player.addExhaustion(0.025F);
 	}
 
@@ -181,14 +181,14 @@ public class BlockFluidBarrel extends BlockContainer implements ITooltipProvider
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, NBTTagCompound persistentTag, EntityPlayer player, List list, boolean ext) {
+	public void addInformation(ItemStack stack, NBTTagCompound persistentTag, EntityPlayer player, List<String> list, boolean ext) {
 		FluidTank tank = new FluidTank(Fluids.NONE, 0);
 		tank.readFromNBT(persistentTag, "tank");
 		list.add(EnumChatFormatting.YELLOW + "" + tank.getFill() + "/" + tank.getMaxFill() + "mB " + tank.getTankType().getLocalizedName());
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean ext) {
 		
 		if(this == ModBlocks.barrel_plastic) {
 			list.add(EnumChatFormatting.AQUA + "Capacity: 12,000mB");

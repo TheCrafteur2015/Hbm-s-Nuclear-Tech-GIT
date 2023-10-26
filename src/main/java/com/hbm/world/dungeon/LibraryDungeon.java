@@ -2,11 +2,10 @@
 
 package com.hbm.world.dungeon;
 
-import static net.minecraftforge.common.ChestGenHooks.DUNGEON_CHEST;
-
 import java.util.Random;
 
 import com.hbm.config.GeneralConfig;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityChest;
@@ -183,7 +182,7 @@ public class LibraryDungeon extends WorldGenerator
 
         if (tileentitymobspawner != null)
         {
-            tileentitymobspawner.func_145881_a().setEntityName(this.pickMobSpawner(rand));
+            tileentitymobspawner.func_145881_a().setEntityName(pickMobSpawner(rand));
         }
         else
         {
@@ -215,7 +214,7 @@ public class LibraryDungeon extends WorldGenerator
 
         if (tileentitychest != null)
         {
-            WeightedRandomChestContent.generateChestContents(rand, ChestGenHooks.getItems(DUNGEON_CHEST, rand), tileentitychest, ChestGenHooks.getCount(DUNGEON_CHEST, rand));
+            WeightedRandomChestContent.generateChestContents(rand, ChestGenHooks.getItems(ChestGenHooks.DUNGEON_CHEST, rand), tileentitychest, ChestGenHooks.getCount(ChestGenHooks.DUNGEON_CHEST, rand));
         }
 		world.setBlock(x + 2, y + 1, z + 5, Blocks.air, 0, 3);
 		world.setBlock(x + 3, y + 1, z + 5, Blocks.air, 0, 3);
@@ -248,7 +247,7 @@ public class LibraryDungeon extends WorldGenerator
 
         if (tileentitychest1 != null)
         {
-            WeightedRandomChestContent.generateChestContents(rand, ChestGenHooks.getItems(DUNGEON_CHEST, rand), tileentitychest1, ChestGenHooks.getCount(DUNGEON_CHEST, rand));
+            WeightedRandomChestContent.generateChestContents(rand, ChestGenHooks.getItems(ChestGenHooks.DUNGEON_CHEST, rand), tileentitychest1, ChestGenHooks.getCount(ChestGenHooks.DUNGEON_CHEST, rand));
         }
 		world.setBlock(x + 2, y + 1, z + 8, Blocks.air, 0, 3);
 		world.setBlock(x + 3, y + 1, z + 8, Blocks.air, 0, 3);
@@ -261,7 +260,7 @@ public class LibraryDungeon extends WorldGenerator
 
         if (tileentitymobspawner1 != null)
         {
-            tileentitymobspawner1.func_145881_a().setEntityName(this.pickMobSpawner(rand));
+            tileentitymobspawner1.func_145881_a().setEntityName(pickMobSpawner(rand));
         }
         else
         {
@@ -320,7 +319,7 @@ public class LibraryDungeon extends WorldGenerator
 
         if (tileentitychest2 != null)
         {
-            WeightedRandomChestContent.generateChestContents(rand, ChestGenHooks.getItems(DUNGEON_CHEST, rand), tileentitychest2, ChestGenHooks.getCount(DUNGEON_CHEST, rand));
+            WeightedRandomChestContent.generateChestContents(rand, ChestGenHooks.getItems(ChestGenHooks.DUNGEON_CHEST, rand), tileentitychest2, ChestGenHooks.getCount(ChestGenHooks.DUNGEON_CHEST, rand));
         }
 		world.setBlock(x + 2, y + 2, z + 3, Blocks.air, 0, 3);
 		world.setBlock(x + 3, y + 2, z + 3, Blocks.air, 0, 3);
@@ -539,7 +538,7 @@ public class LibraryDungeon extends WorldGenerator
 
         if (tileentitychest3 != null)
         {
-            WeightedRandomChestContent.generateChestContents(rand, ChestGenHooks.getItems(DUNGEON_CHEST, rand), tileentitychest3, ChestGenHooks.getCount(DUNGEON_CHEST, rand));
+            WeightedRandomChestContent.generateChestContents(rand, ChestGenHooks.getItems(ChestGenHooks.DUNGEON_CHEST, rand), tileentitychest3, ChestGenHooks.getCount(ChestGenHooks.DUNGEON_CHEST, rand));
         }
 		world.setBlock(x + 2, y + 4, z + 5, Blocks.air, 0, 3);
 		world.setBlock(x + 3, y + 4, z + 5, Blocks.bedrock, 0, 3);
@@ -549,7 +548,7 @@ public class LibraryDungeon extends WorldGenerator
 
         if (tileentitymobspawner2 != null)
         {
-            tileentitymobspawner2.func_145881_a().setEntityName(this.pickMobSpawner(rand));
+            tileentitymobspawner2.func_145881_a().setEntityName(pickMobSpawner(rand));
         }
         else
         {
@@ -594,7 +593,7 @@ public class LibraryDungeon extends WorldGenerator
 
         if (tileentitychest4 != null)
         {
-            WeightedRandomChestContent.generateChestContents(rand, ChestGenHooks.getItems(DUNGEON_CHEST, rand), tileentitychest4, ChestGenHooks.getCount(DUNGEON_CHEST, rand));
+            WeightedRandomChestContent.generateChestContents(rand, ChestGenHooks.getItems(ChestGenHooks.DUNGEON_CHEST, rand), tileentitychest4, ChestGenHooks.getCount(ChestGenHooks.DUNGEON_CHEST, rand));
         }
 		world.setBlock(x + 3, y + 4, z + 9, getShelf(rand), 0, 3);
 		world.setBlock(x + 4, y + 4, z + 9, Blocks.air, 0, 3);
@@ -678,7 +677,7 @@ public class LibraryDungeon extends WorldGenerator
 
         if (tileentitychest5 != null)
         {
-            WeightedRandomChestContent.generateChestContents(rand, ChestGenHooks.getItems(DUNGEON_CHEST, rand), tileentitychest5, ChestGenHooks.getCount(DUNGEON_CHEST, rand));
+            WeightedRandomChestContent.generateChestContents(rand, ChestGenHooks.getItems(ChestGenHooks.DUNGEON_CHEST, rand), tileentitychest5, ChestGenHooks.getCount(ChestGenHooks.DUNGEON_CHEST, rand));
         }
 		world.setBlock(x + 2, y + 5, z + 7, Blocks.air, 0, 3);
 		world.setBlock(x + 3, y + 5, z + 7, Blocks.air, 0, 3);
@@ -733,7 +732,7 @@ public class LibraryDungeon extends WorldGenerator
 
         if (tileentitychest6 != null)
         {
-            WeightedRandomChestContent.generateChestContents(rand, ChestGenHooks.getItems(DUNGEON_CHEST, rand), tileentitychest6, ChestGenHooks.getCount(DUNGEON_CHEST, rand));
+            WeightedRandomChestContent.generateChestContents(rand, ChestGenHooks.getItems(ChestGenHooks.DUNGEON_CHEST, rand), tileentitychest6, ChestGenHooks.getCount(ChestGenHooks.DUNGEON_CHEST, rand));
         }
 		world.setBlock(x + 7, y + 6, z + 1, getShelf(rand), 0, 3);
 		world.setBlock(x + 8, y + 6, z + 1, Blocks.stonebrick, getBrick(rand), 3);
@@ -767,7 +766,7 @@ public class LibraryDungeon extends WorldGenerator
 
         if (tileentitymobspawner3 != null)
         {
-            tileentitymobspawner3.func_145881_a().setEntityName(this.pickMobSpawner(rand));
+            tileentitymobspawner3.func_145881_a().setEntityName(pickMobSpawner(rand));
         }
         else
         {
@@ -779,7 +778,7 @@ public class LibraryDungeon extends WorldGenerator
 
         if (tileentitychest7 != null)
         {
-            WeightedRandomChestContent.generateChestContents(rand, ChestGenHooks.getItems(DUNGEON_CHEST, rand), tileentitychest7, ChestGenHooks.getCount(DUNGEON_CHEST, rand));
+            WeightedRandomChestContent.generateChestContents(rand, ChestGenHooks.getItems(ChestGenHooks.DUNGEON_CHEST, rand), tileentitychest7, ChestGenHooks.getCount(ChestGenHooks.DUNGEON_CHEST, rand));
         }
 		world.setBlock(x + 8, y + 6, z + 4, Blocks.stonebrick, getBrick(rand), 3);
 		world.setBlock(x + 0, y + 6, z + 5, Blocks.stonebrick, getBrick(rand), 3);

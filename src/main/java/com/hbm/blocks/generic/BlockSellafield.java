@@ -28,7 +28,7 @@ public class BlockSellafield extends BlockHazard {
 	//...Ah, fuck it! Noone cares anyway.
 	public BlockSellafield(Material mat) {
 		super(mat);
-		this.setCreativeTab(MainRegistry.blockTab);
+		setCreativeTab(MainRegistry.blockTab);
 		this.needsRandomTick = true;
 		this.rad = 0.5F;
 	}
@@ -66,6 +66,7 @@ public class BlockSellafield extends BlockHazard {
 		return meta;
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tabs, List list) {
@@ -78,10 +79,10 @@ public class BlockSellafield extends BlockHazard {
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		super.registerBlockIcons(iconRegister);
-		icons =  new IIcon[6];
+		this.icons =  new IIcon[6];
 		
 		for(byte i = 0; i < 6; i++)
-			icons[i] = iconRegister.registerIcon(RefStrings.MODID + ":sellafield_" + i);
+			this.icons[i] = iconRegister.registerIcon(RefStrings.MODID + ":sellafield_" + i);
 	}
 	
 	@Override

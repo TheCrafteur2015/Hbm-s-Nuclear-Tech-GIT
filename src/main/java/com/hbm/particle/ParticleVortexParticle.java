@@ -23,10 +23,10 @@ public class ParticleVortexParticle extends EntityFX {
 	public ParticleVortexParticle(World worldIn, double posXIn, double posYIn, double posZIn, float scale) {
 		super(worldIn, posXIn, posYIn, posZIn);
 		this.particleScale = scale;
-		this.motionX = (rand.nextFloat() - 0.5) * 0.02;
-		this.motionY = (rand.nextFloat() - 0.5) * 0.02;
-		this.motionZ = (rand.nextFloat() - 0.5) * 0.02;
-		timeUntilChange = rand.nextInt(5) + 1;
+		this.motionX = (this.rand.nextFloat() - 0.5) * 0.02;
+		this.motionY = (this.rand.nextFloat() - 0.5) * 0.02;
+		this.motionZ = (this.rand.nextFloat() - 0.5) * 0.02;
+		this.timeUntilChange = this.rand.nextInt(5) + 1;
 	}
 
 	public ParticleVortexParticle color(float colR, float colG, float colB, float colA) {
@@ -34,7 +34,7 @@ public class ParticleVortexParticle extends EntityFX {
 		this.particleGreen = colG;
 		this.particleBlue = colB;
 		this.particleAlpha = colA;
-		workingAlpha = colA;
+		this.workingAlpha = colA;
 		return this;
 	}
 
@@ -47,26 +47,26 @@ public class ParticleVortexParticle extends EntityFX {
 	public void onUpdate() {
 
 		this.particleAge++;
-		timeUntilChange--;
+		this.timeUntilChange--;
 
 		if(this.particleAge >= this.particleMaxAge) {
-			this.setDead();
+			setDead();
 		}
 
-		this.prevPosX = posX;
-		this.prevPosY = posY;
-		this.prevPosZ = posZ;
+		this.prevPosX = this.posX;
+		this.prevPosY = this.posY;
+		this.prevPosZ = this.posZ;
 		this.posX += this.motionX;
 		this.posY += this.motionY;
 		this.posZ += this.motionZ;
 
-		if(timeUntilChange == 0) {
-			timeUntilChange = rand.nextInt(5) + 1;
+		if(this.timeUntilChange == 0) {
+			this.timeUntilChange = this.rand.nextInt(5) + 1;
 			// Not quite as smooth as the actual noise I think xonotic uses, but
 			// it's good enough.
-			this.motionX = (rand.nextFloat() - 0.5) * 0.02;
-			this.motionY = (rand.nextFloat() - 0.5) * 0.02;
-			this.motionZ = (rand.nextFloat() - 0.5) * 0.02;
+			this.motionX = (this.rand.nextFloat() - 0.5) * 0.02;
+			this.motionY = (this.rand.nextFloat() - 0.5) * 0.02;
+			this.motionZ = (this.rand.nextFloat() - 0.5) * 0.02;
 		}
 	}
 
@@ -78,7 +78,7 @@ public class ParticleVortexParticle extends EntityFX {
 	@Override
 	public void renderParticle(Tessellator tess, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
 
-		Minecraft.getMinecraft().getTextureManager().bindTexture(fresnel_ms);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(ParticleVortexParticle.fresnel_ms);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 		GL11.glDisable(GL11.GL_ALPHA_TEST);
 		GL11.glDepthMask(false);
@@ -86,13 +86,13 @@ public class ParticleVortexParticle extends EntityFX {
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 		float timeScale = (this.particleAge + partialTicks) / (float) this.particleMaxAge;
 		float shrink = MathHelper.clamp_float(1 - BobMathUtil.remap((float) MathHelper.clamp_float(timeScale, 0, 1), 0.6F, 1F, 0.6F, 1F), 0, 1);
-		this.workingAlpha = shrink * particleAlpha;
+		this.workingAlpha = shrink * this.particleAlpha;
 
-		float f4 = 0.1F * (this.particleScale + shrink * particleScale * 4);
+		float f4 = 0.1F * (this.particleScale + shrink * this.particleScale * 4);
 
-		float f5 = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks - interpPosX);
-		float f6 = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks - interpPosY);
-		float f7 = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks - interpPosZ);
+		float f5 = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks - EntityFX.interpPosX);
+		float f6 = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks - EntityFX.interpPosY);
+		float f7 = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks - EntityFX.interpPosZ);
 		Vec3[] avec3d = new Vec3[] {
 				Vec3.createVectorHelper((double) (-rotationX * f4 - rotationXY * f4), (double) (-rotationZ * f4), (double) (-rotationYZ * f4 - rotationXZ * f4)),
 				Vec3.createVectorHelper((double) (-rotationX * f4 + rotationXY * f4), (double) (rotationZ * f4), (double) (-rotationYZ * f4 + rotationXZ * f4)),

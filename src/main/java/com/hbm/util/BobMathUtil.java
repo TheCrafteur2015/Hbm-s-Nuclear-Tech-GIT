@@ -30,9 +30,9 @@ public class BobMathUtil {
 	
 	public static Vec3 interpVec(Vec3 vec1, Vec3 vec2, float interp) {
 		return Vec3.createVectorHelper(
-				interp(vec1.xCoord,  vec2.xCoord, interp),
-				interp(vec1.yCoord,  vec2.yCoord, interp),
-				interp(vec1.zCoord,  vec2.zCoord, interp)
+				BobMathUtil.interp(vec1.xCoord,  vec2.xCoord, interp),
+				BobMathUtil.interp(vec1.yCoord,  vec2.yCoord, interp),
+				BobMathUtil.interp(vec1.zCoord,  vec2.zCoord, interp)
 				);
 	}
 	
@@ -80,6 +80,7 @@ public class BobMathUtil {
 		return MathHelper.clamp_float((num - min1) / (max1 - min1), 0, 1);
 	}
 	
+	@SuppressWarnings({ "unchecked", "serial", "rawtypes" })
 	public static ForgeDirection[] getShuffledDirs() {
 		
 		ForgeDirection[] dirs = new ForgeDirection[6];
@@ -106,7 +107,7 @@ public class BobMathUtil {
 		long year = Math.floorDiv(ticks, tickYear);
 		byte day = (byte) Math.floorDiv(ticks - tickYear * year, tickDay);
 		float time = ticks - (tickYear * year + tickDay * day);
-		time = (float) convertScale(time, 0, tickDay, 0, 10F);
+		time = (float) BobMathUtil.convertScale(time, 0, tickDay, 0, 10F);
 		dateOut[0] = String.valueOf(year);
 		dateOut[1] = String.valueOf(day);
 		dateOut[2] = String.valueOf(time);

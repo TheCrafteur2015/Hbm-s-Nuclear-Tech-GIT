@@ -37,23 +37,23 @@ public class SchrabidicBlock extends BlockFluidClassic {
 
 	public SchrabidicBlock(Fluid fluid, Material material, DamageSource damage) {
 		super(fluid, material);
-		damageSource = damage;
+		SchrabidicBlock.damageSource = damage;
 		setQuantaPerBlock(4);
 		setCreativeTab(null);
-		displacements.put(this, false);
+		this.displacements.put(this, false);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
-		return (side == 0 || side == 1) ? stillIcon : flowingIcon;
+		return (side == 0 || side == 1) ? SchrabidicBlock.stillIcon : SchrabidicBlock.flowingIcon;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister register) {
-		stillIcon = register.registerIcon(RefStrings.MODID + ":schrabidic_acid_still");
-		flowingIcon = register.registerIcon(RefStrings.MODID + ":schrabidic_acid_flowing");
+		SchrabidicBlock.stillIcon = register.registerIcon(RefStrings.MODID + ":schrabidic_acid_still");
+		SchrabidicBlock.flowingIcon = register.registerIcon(RefStrings.MODID + ":schrabidic_acid_flowing");
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class SchrabidicBlock extends BlockFluidClassic {
 	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
 		
-		if(this.getMaterial() == ModBlocks.fluidschrabidic)
+		if(getMaterial() == ModBlocks.fluidschrabidic)
 			entity.setInWeb();
 		
 		if(entity instanceof EntityLivingBase)
@@ -98,7 +98,7 @@ public class SchrabidicBlock extends BlockFluidClassic {
 	}
 	
 	public boolean reactToBlocks(World world, int x, int y, int z) {
-		if(world.getBlock(x, y, z).getMaterial() != this.getMaterial()) {
+		if(world.getBlock(x, y, z).getMaterial() != getMaterial()) {
 			if(world.getBlock(x, y, z).getMaterial().isLiquid()) {
 				return true;
 			}
@@ -117,6 +117,7 @@ public class SchrabidicBlock extends BlockFluidClassic {
 		return 0;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
 		super.randomDisplayTick(world, x, y, z, rand);

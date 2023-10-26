@@ -26,26 +26,26 @@ public class ExplosionVanillaNewTechnologyCompressedAffectedBlockPositionDataFor
 	private double posY;
 	private double posZ;
 	private float size;
-	private List affectedBlocks;
+	private List<ChunkPosition> affectedBlocks;
 
 	public ExplosionVanillaNewTechnologyCompressedAffectedBlockPositionDataForClientEffectsAndParticleHandlingPacket() { }
 
-	public ExplosionVanillaNewTechnologyCompressedAffectedBlockPositionDataForClientEffectsAndParticleHandlingPacket(double x, double y, double z, float size, List blocks) {
+	public ExplosionVanillaNewTechnologyCompressedAffectedBlockPositionDataForClientEffectsAndParticleHandlingPacket(double x, double y, double z, float size, List<ChunkPosition> blocks) {
 		this.posX = x;
 		this.posY = y;
 		this.posZ = z;
 		this.size = size;
-		this.affectedBlocks = new ArrayList(blocks);
+		this.affectedBlocks = new ArrayList<>(blocks);
 	}
-
+	
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		this.posX = (double) buf.readFloat();
-		this.posY = (double) buf.readFloat();
-		this.posZ = (double) buf.readFloat();
+		this.posX = buf.readFloat();
+		this.posY = buf.readFloat();
+		this.posZ = buf.readFloat();
 		this.size = buf.readFloat();
 		int i = buf.readInt();
-		this.affectedBlocks = new ArrayList(i);
+		this.affectedBlocks = new ArrayList<>(i);
 		int j = (int) this.posX;
 		int k = (int) this.posY;
 		int l = (int) this.posZ;
@@ -68,10 +68,10 @@ public class ExplosionVanillaNewTechnologyCompressedAffectedBlockPositionDataFor
 		int i = (int) this.posX;
 		int j = (int) this.posY;
 		int k = (int) this.posZ;
-		Iterator iterator = this.affectedBlocks.iterator();
+		Iterator<ChunkPosition> iterator = this.affectedBlocks.iterator();
 
 		while(iterator.hasNext()) {
-			ChunkPosition chunkposition = (ChunkPosition) iterator.next();
+			ChunkPosition chunkposition = iterator.next();
 			int l = chunkposition.chunkPosX - i;
 			int i1 = chunkposition.chunkPosY - j;
 			int j1 = chunkposition.chunkPosZ - k;

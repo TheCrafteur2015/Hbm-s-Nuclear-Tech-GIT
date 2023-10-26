@@ -18,18 +18,18 @@ public class ContainerFileCabinet extends Container {
 		
 		for(int i = 0; i < 2; i++) {
 			for(int j = 0; j < 4; j++) {
-				this.addSlotToContainer(new Slot(tile, j + i * 4, 53 + j * 18, 18 + i * 36));
+				addSlotToContainer(new Slot(tile, j + i * 4, 53 + j * 18, 18 + i * 36));
 			}
 		}
 		
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 88 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 88 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 146));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 146));
 		}
 	}
 	
@@ -43,13 +43,13 @@ public class ContainerFileCabinet extends Container {
 			returnStack = originalStack.copy();
 
 			if(index <= 7) {
-				if(!this.mergeItemStack(originalStack, 8, this.inventorySlots.size(), true)) {
+				if(!mergeItemStack(originalStack, 8, this.inventorySlots.size(), true)) {
 					return null;
 				}
 				
 				slot.onSlotChange(originalStack, returnStack);
 				
-			} else if(!this.mergeItemStack(originalStack, 0, 8, false)) {
+			} else if(!mergeItemStack(originalStack, 0, 8, false)) {
 				return null;
 			}
 
@@ -65,7 +65,7 @@ public class ContainerFileCabinet extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return cabinet.isUseableByPlayer(player);
+		return this.cabinet.isUseableByPlayer(player);
 	}
 	
 	@Override

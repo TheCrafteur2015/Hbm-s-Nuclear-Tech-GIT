@@ -14,7 +14,7 @@ public class RBMKDebris extends Block {
 	
 	@Override
 	public int getRenderType(){
-		return this.renderID;
+		return RBMKDebris.renderID;
 	}
 
 	@Override

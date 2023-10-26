@@ -17,13 +17,13 @@ public class BusAnimationSequence {
 		SCALE
 	}
 
-	private List<BusAnimationKeyframe> keyframes = new ArrayList();
+	private List<BusAnimationKeyframe> keyframes = new ArrayList<>();
 	public EnumTransformation transformationType;
 	
 	//appends a keyframe at the end of the sequence
 	public BusAnimationSequence addKeyframe(BusAnimationKeyframe keyframe) {
 		
-		keyframes.add(keyframe);
+		this.keyframes.add(keyframe);
 		
 		return this;
 	}
@@ -63,7 +63,7 @@ public class BusAnimationSequence {
 
 		int time = 0;
 		
-		for(BusAnimationKeyframe frame : keyframes) {
+		for(BusAnimationKeyframe frame : this.keyframes) {
 			time += frame.duration;
 			
 			if(millis < time)
@@ -75,19 +75,19 @@ public class BusAnimationSequence {
 	
 	public BusAnimationKeyframe getPreviousFrame(BusAnimationKeyframe frame) {
 
-		int index = keyframes.indexOf(frame);
+		int index = this.keyframes.indexOf(frame);
 		
 		if(index == 0)
 			return null;
 		
-		return keyframes.get(index - 1);
+		return this.keyframes.get(index - 1);
 	}
 	
 	public int getStartingTime(BusAnimationKeyframe start) {
 		
 		int time = 0;
 		
-		for(BusAnimationKeyframe frame : keyframes) {
+		for(BusAnimationKeyframe frame : this.keyframes) {
 			
 			if(frame == start)
 				break;
@@ -102,7 +102,7 @@ public class BusAnimationSequence {
 		
 		int time = 0;
 		
-		for(BusAnimationKeyframe frame : keyframes) {
+		for(BusAnimationKeyframe frame : this.keyframes) {
 			time += frame.duration;
 		}
 		

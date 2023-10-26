@@ -29,7 +29,7 @@ public class BlockNTMGlassPane extends BlockPane
 		this.renderLayer = layer;
 		this.doesDrop = doesDrop;
 		this.opaque = true;
-		this.setLightOpacity(1);
+		setLightOpacity(1);
 	}
 
 	@Override
@@ -41,12 +41,12 @@ public class BlockNTMGlassPane extends BlockPane
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getRenderBlockPass() {
-		return renderLayer;
+		return this.renderLayer;
 	}
 
 	@Override
 	public int quantityDropped(Random rand) {
-		return doesDrop ? 1 : 0;
+		return this.doesDrop ? 1 : 0;
 	}
 
 }

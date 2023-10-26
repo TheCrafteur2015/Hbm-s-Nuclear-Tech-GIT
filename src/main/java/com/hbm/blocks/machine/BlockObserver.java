@@ -46,7 +46,7 @@ public class BlockObserver extends Block {
 	public IIcon getIcon(int side, int metadata) {
 		ForgeDirection dir = ForgeDirection.getOrientation(metadata);
 		ForgeDirection opp = dir.getOpposite();
-		return side == dir.ordinal() ? iconFront : side == opp.ordinal() ? iconBack : blockIcon;
+		return side == dir.ordinal() ? this.iconFront : side == opp.ordinal() ? this.iconBack : this.blockIcon;
 	}
 	
 	@Override

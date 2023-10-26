@@ -20,22 +20,23 @@ public abstract class TileEntityPileBase extends TileEntity {
 	@Override
 	public abstract void updateEntity();
 	
+	@SuppressWarnings("unchecked")
 	protected void castRay(int flux, int range) {
-		Random rand = worldObj.rand;
+		Random rand = this.worldObj.rand;
 		Vec3 vec = Vec3.createVectorHelper(1, 0, 0);
 		vec.rotateAroundZ((float)(rand.nextDouble() * Math.PI * 2D));
 		vec.rotateAroundY((float)(rand.nextDouble() * Math.PI * 2D));
 		vec.rotateAroundX((float)(rand.nextDouble() * Math.PI * 2D));
 		
-		int prevX = xCoord;
-		int prevY = yCoord;
-		int prevZ = zCoord;
+		int prevX = this.xCoord;
+		int prevY = this.yCoord;
+		int prevZ = this.zCoord;
 		
 		for(float i = 1; i <= range; i += 0.5F) {
 
-			int x = (int)Math.floor(xCoord + 0.5 + vec.xCoord * i);
-			int y = (int)Math.floor(yCoord + 0.5 + vec.yCoord * i);
-			int z = (int)Math.floor(zCoord + 0.5 + vec.zCoord * i);
+			int x = (int)Math.floor(this.xCoord + 0.5 + vec.xCoord * i);
+			int y = (int)Math.floor(this.yCoord + 0.5 + vec.yCoord * i);
+			int z = (int)Math.floor(this.zCoord + 0.5 + vec.zCoord * i);
 			
 			if(x == prevX && y == prevY && z == prevZ)
 				continue;
@@ -55,7 +56,7 @@ public abstract class TileEntityPileBase extends TileEntity {
 				MainRegistry.proxy.effectNT(data2);
 			}*/
 			
-			Block b = worldObj.getBlock(x, y, z);
+			Block b = this.worldObj.getBlock(x, y, z);
 			
 			if(b == ModBlocks.concrete || b == ModBlocks.concrete_smooth || b == ModBlocks.concrete_asbestos || b == ModBlocks.concrete_colored || b == ModBlocks.brick_concrete)
 				flux *= 0.25;
@@ -63,12 +64,12 @@ public abstract class TileEntityPileBase extends TileEntity {
 			if(b == ModBlocks.block_boron)
 				return;
 			
-			int meta = worldObj.getBlockMetadata(x, y, z);
+			int meta = this.worldObj.getBlockMetadata(x, y, z);
 			
 			if(b == ModBlocks.block_graphite_rod && (meta & 8) == 0)
 				return;
 			
-			TileEntity te = worldObj.getTileEntity(x, y, z);
+			TileEntity te = this.worldObj.getTileEntity(x, y, z);
 			
 			if(te instanceof IPileNeutronReceiver) {
 				
@@ -84,7 +85,7 @@ public abstract class TileEntityPileBase extends TileEntity {
 					return;
 			}
 			
-			List<EntityLivingBase> entities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(x + 0.5, y + 0.5, z + 0.5, x + 0.5, y + 0.5, z + 0.5));
+			List<EntityLivingBase> entities = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(x + 0.5, y + 0.5, z + 0.5, x + 0.5, y + 0.5, z + 0.5));
 			
 			if(entities != null)
 				for(EntityLivingBase e : entities) {

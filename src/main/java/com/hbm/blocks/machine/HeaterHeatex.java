@@ -45,13 +45,13 @@ public class HeaterHeatex extends BlockDummyable implements ILookOverlay, IToolt
 	
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-		return this.standardOpenBehavior(world, x, y, z, player, 0);
+		return standardOpenBehavior(world, x, y, z, player, 0);
 	}
 
 	@Override
 	public void printHook(Pre event, World world, int x, int y, int z) {
 		
-		int[] pos = this.findCore(world, x, y, z);
+		int[] pos = findCore(world, x, y, z);
 		
 		if(pos == null)
 			return;
@@ -63,7 +63,7 @@ public class HeaterHeatex extends BlockDummyable implements ILookOverlay, IToolt
 		
 		TileEntityHeaterHeatex heater = (TileEntityHeaterHeatex) te;
 
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		text.add(String.format(Locale.US, "%,d", heater.heatEnergy) + " TU");
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}
@@ -75,14 +75,14 @@ public class HeaterHeatex extends BlockDummyable implements ILookOverlay, IToolt
 		x += dir.offsetX * o;
 		z += dir.offsetZ * o;
 
-		this.makeExtra(world, x + 1, y, z + 1);
-		this.makeExtra(world, x + 1, y, z - 1);
-		this.makeExtra(world, x - 1, y, z + 1);
-		this.makeExtra(world, x - 1, y, z - 1);
+		makeExtra(world, x + 1, y, z + 1);
+		makeExtra(world, x + 1, y, z - 1);
+		makeExtra(world, x - 1, y, z + 1);
+		makeExtra(world, x - 1, y, z - 1);
 	}
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		this.addStandardInfo(stack, player, list, ext);
+		addStandardInfo(stack, player, list, ext);
 	}
 }

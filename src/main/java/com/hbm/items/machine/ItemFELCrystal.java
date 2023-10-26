@@ -19,15 +19,15 @@ public class ItemFELCrystal extends Item {
 	public ItemFELCrystal(EnumWavelengths wavelength)
 	{
 		this.wavelength = wavelength;
-		this.setMaxStackSize(1);
+		setMaxStackSize(1);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-		String desc = (stack.getItem() == ModItems.laser_crystal_digamma) ? (EnumChatFormatting.OBFUSCATED + "THERADIANCEOFATHOUSANDSUNS") : (this.getUnlocalizedNameInefficiently(stack) + ".desc");
+		String desc = (stack.getItem() == ModItems.laser_crystal_digamma) ? (EnumChatFormatting.OBFUSCATED + "THERADIANCEOFATHOUSANDSUNS") : (getUnlocalizedNameInefficiently(stack) + ".desc");
 		list.add(I18nUtil.resolveKey(desc));
-		list.add(wavelength.textColor + I18nUtil.resolveKey(wavelength.name) + " - " + wavelength.textColor + I18nUtil.resolveKey(this.wavelength.wavelengthRange));
+		list.add(this.wavelength.textColor + I18nUtil.resolveKey(this.wavelength.name) + " - " + this.wavelength.textColor + I18nUtil.resolveKey(this.wavelength.wavelengthRange));
 	}
 
 	public static enum EnumWavelengths{

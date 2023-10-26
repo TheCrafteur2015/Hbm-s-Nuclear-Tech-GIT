@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 
 public class ItemStructurePattern extends ItemStructureTool {
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		super.addInformation(stack, player, list, ext);
@@ -27,7 +28,7 @@ public class ItemStructurePattern extends ItemStructureTool {
 	@Override
 	protected void doTheThing(ItemStack stack, World world, int x, int y, int z) {
 		
-		BlockPos pos = this.getAnchor(stack);
+		BlockPos pos = getAnchor(stack);
 		if(pos == null) return;
 		
 		String message = "";

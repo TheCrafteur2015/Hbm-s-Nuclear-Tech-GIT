@@ -23,8 +23,8 @@ public class MachineTransformer extends BlockContainer {
 
 	public MachineTransformer(Material p_i45394_1_, long b, int d) {
 		super(p_i45394_1_);
-		buffer = b;
-		delay = d;
+		this.buffer = b;
+		this.delay = d;
 	}
 	
 	@Override

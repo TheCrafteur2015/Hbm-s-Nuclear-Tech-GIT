@@ -6,9 +6,9 @@ import com.hbm.config.RadiationConfig;
 import com.hbm.extprop.HbmLivingProps;
 import com.hbm.hazard.modifier.HazardModifier;
 import com.hbm.util.ArmorRegistry;
+import com.hbm.util.ArmorRegistry.HazardClass;
 import com.hbm.util.ArmorUtil;
 import com.hbm.util.I18nUtil;
-import com.hbm.util.ArmorRegistry.HazardClass;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;

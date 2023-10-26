@@ -8,6 +8,7 @@ import com.hbm.lib.RefStrings;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.IGUIProvider;
 import com.hbm.util.I18nUtil;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.GuiScreen;
@@ -28,7 +29,7 @@ import net.minecraft.world.World;
 public class ItemBookLore extends Item implements IGUIProvider {
 	
 	public ItemBookLore() {
-		this.setMaxStackSize(1);
+		setMaxStackSize(1);
 	}
 	
 	@Override
@@ -85,7 +86,7 @@ public class ItemBookLore extends Item implements IGUIProvider {
 	@SideOnly(Side.CLIENT)
 	public IIcon getIconFromDamageForRenderPass(int meta, int pass) {
 		if(pass == 0) return this.itemIcon;
-		return overlays[pass - 1];
+		return this.overlays[pass - 1];
 	}
 	
 	@Override

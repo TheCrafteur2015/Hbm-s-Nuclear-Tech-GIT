@@ -55,7 +55,7 @@ public class RadioTorchCounter extends RadioTorchBase {
 		
 		if(te instanceof TileEntityRadioTorchCounter) {
 			TileEntityRadioTorchCounter radio = (TileEntityRadioTorchCounter) te;
-			List<String> text = new ArrayList();
+			List<String> text = new ArrayList<>();
 			
 			for(int i = 0; i < 3; i++) {
 				if(!radio.channel[i].isEmpty()) {

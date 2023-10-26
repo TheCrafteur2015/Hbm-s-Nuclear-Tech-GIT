@@ -20,35 +20,35 @@ public class AnvilSmithingMold extends AnvilSmithingRecipe {
 		super(1, new ItemStack(ModItems.mold, 1, meta), demo, new ComparableStack(ModItems.mold_base));
 		
 		if(o instanceof OreDictStack)
-			matchesPrefix = (OreDictStack) o;
+			this.matchesPrefix = (OreDictStack) o;
 		if(o instanceof ItemStack[])
-			matchesStack = (ItemStack[]) o;
+			this.matchesStack = (ItemStack[]) o;
 	}
 	
 	@Override
 	public boolean matches(ItemStack left, ItemStack right) {
 		if(!doesStackMatch(right, this.right)) return false;
 		
-		if(matchesPrefix != null && left.stackSize == matchesPrefix.stacksize) {
+		if(this.matchesPrefix != null && left.stackSize == this.matchesPrefix.stacksize) {
 			List<String> names = ItemStackUtil.getOreDictNames(left);
 			
 			for(String name : names) {
 				
 				for(String otherPrefix : OreNames.prefixes) {
-					if(otherPrefix.length() > matchesPrefix.name.length() && name.startsWith(otherPrefix)) {
+					if(otherPrefix.length() > this.matchesPrefix.name.length() && name.startsWith(otherPrefix)) {
 						return false; //ignore if there's a longer prefix that matches (i.e. a more accurate match)
 					}
 				}
 				
-				if(name.startsWith(matchesPrefix.name)) {
+				if(name.startsWith(this.matchesPrefix.name)) {
 					return true;
 				}
 			}
 		}
 		
-		if(matchesStack != null) {
+		if(this.matchesStack != null) {
 			
-			for(ItemStack stack : matchesStack) {
+			for(ItemStack stack : this.matchesStack) {
 				if(left.getItem() == stack.getItem() && left.getItemDamage() == stack.getItemDamage() && left.stackSize  == stack.stackSize) {
 					return true;
 				}
@@ -63,6 +63,7 @@ public class AnvilSmithingMold extends AnvilSmithingRecipe {
 		return matches(left, right) ? 0 : -1;
 	}
 	
+	@Override
 	public int amountConsumed(int index, boolean mirrored) {
 		return index;
 	}

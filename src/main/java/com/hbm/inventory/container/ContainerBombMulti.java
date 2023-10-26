@@ -14,26 +14,26 @@ private TileEntityBombMulti bombMulti;
 	
 	public ContainerBombMulti(InventoryPlayer invPlayer, TileEntityBombMulti tedf) {
 		
-		bombMulti = tedf;
+		this.bombMulti = tedf;
 		
-		this.addSlotToContainer(new Slot(tedf, 0, 44, 26));
-		this.addSlotToContainer(new Slot(tedf, 1, 62, 26));
-		this.addSlotToContainer(new Slot(tedf, 2, 80, 26));
-		this.addSlotToContainer(new Slot(tedf, 3, 44, 44));
-		this.addSlotToContainer(new Slot(tedf, 4, 62, 44));
-		this.addSlotToContainer(new Slot(tedf, 5, 80, 44));
+		addSlotToContainer(new Slot(tedf, 0, 44, 26));
+		addSlotToContainer(new Slot(tedf, 1, 62, 26));
+		addSlotToContainer(new Slot(tedf, 2, 80, 26));
+		addSlotToContainer(new Slot(tedf, 3, 44, 44));
+		addSlotToContainer(new Slot(tedf, 4, 62, 44));
+		addSlotToContainer(new Slot(tedf, 5, 80, 44));
 		
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++)
 		{
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
 		}
 	}
 	
@@ -49,7 +49,7 @@ private TileEntityBombMulti bombMulti;
 			var3 = var5.copy();
 			
             if (par2 <= 5) {
-				if (!this.mergeItemStack(var5, 6, this.inventorySlots.size(), true))
+				if (!mergeItemStack(var5, 6, this.inventorySlots.size(), true))
 				{
 					return null;
 				}
@@ -72,7 +72,7 @@ private TileEntityBombMulti bombMulti;
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return bombMulti.isUseableByPlayer(player);
+		return this.bombMulti.isUseableByPlayer(player);
 	}
 
 }

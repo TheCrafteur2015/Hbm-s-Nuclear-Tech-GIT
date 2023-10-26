@@ -23,12 +23,12 @@ public class EntityMissileBurst extends EntityMissileBaseAdvanced {
 	public void onImpact() {
 		for(int i = 0; i < 4; i++)
 			this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 50.0F, true);
-		ExplosionLarge.explode(worldObj, posX, posY, posZ, 50.0F, true, true, true);
+		ExplosionLarge.explode(this.worldObj, this.posX, this.posY, this.posZ, 50.0F, true, true, true);
 	}
 
 	@Override
 	public List<ItemStack> getDebris() {
-		List<ItemStack> list = new ArrayList<ItemStack>();
+		List<ItemStack> list = new ArrayList<>();
 
 		list.add(new ItemStack(ModItems.plate_steel, 16));
 		list.add(new ItemStack(ModItems.plate_titanium, 10));

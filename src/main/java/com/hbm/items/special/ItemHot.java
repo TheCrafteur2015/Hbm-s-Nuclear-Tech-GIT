@@ -17,20 +17,23 @@ public class ItemHot extends Item {
 	protected static int heat;
 
 	public ItemHot(int heat) {
-		this.heat = heat;
+		ItemHot.heat = heat;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister reg) {
 		super.registerIcons(reg);
-		this.hotIcon = reg.registerIcon(this.getIconString() + "_hot");
+		this.hotIcon = reg.registerIcon(getIconString() + "_hot");
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIconFromDamage(int meta) {
 		return this.itemIcon;
 	}
 
+	@Override
 	public void onUpdate(ItemStack stack, World world, Entity entity, int i, boolean bool) {
 
 		if(!world.isRemote && stack.hasTagCompound()) {
@@ -53,7 +56,7 @@ public class ItemHot extends Item {
 		if(!stack.hasTagCompound())
 			stack.stackTagCompound = new NBTTagCompound();
 
-		stack.stackTagCompound.setInteger("heat", getMaxHeat(stack));
+		stack.stackTagCompound.setInteger("heat", ItemHot.getMaxHeat(stack));
 		return stack;
 	}
 
@@ -65,24 +68,21 @@ public class ItemHot extends Item {
 		if(!stack.hasTagCompound())
 			stack.stackTagCompound = new NBTTagCompound();
 
-		stack.stackTagCompound.setInteger("heat", (int) (d * getMaxHeat(stack)));
+		stack.stackTagCompound.setInteger("heat", (int) (d * ItemHot.getMaxHeat(stack)));
 		return stack;
 	}
 
 	public static double getHeat(ItemStack stack) {
 
-		if(!(stack.getItem() instanceof ItemHot))
-			return 0;
-
-		if(!stack.hasTagCompound())
+		if(!(stack.getItem() instanceof ItemHot) || !stack.hasTagCompound())
 			return 0;
 
 		int h = stack.stackTagCompound.getInteger("heat");
 
-		return (double) h / (double) heat;
+		return (double) h / (double) ItemHot.heat;
 	}
 
 	public static int getMaxHeat(ItemStack stack) {
-		return heat;
+		return ItemHot.heat;
 	}
 }

@@ -30,20 +30,20 @@ public class ItemModInsert extends ItemArmorMod {
 		this.projectileMod = projectileMod;
 		this.explosionMod = explosionMod;
 		this.speed = speed;
-		this.setMaxDamage(durability);
+		setMaxDamage(durability);
 	}
     
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 
-		if(damageMod != 1F)
-			list.add(EnumChatFormatting.RED + (damageMod < 1 ? "-" : "+") + Math.abs(Math.round((1F - damageMod) * 100)) + "% damage");
-		if(projectileMod != 1F)
-			list.add(EnumChatFormatting.YELLOW + "-" + Math.round((1F - projectileMod) * 100) + "% projectile damage");
-		if(explosionMod != 1F)
-			list.add(EnumChatFormatting.YELLOW + "-" + Math.round((1F - explosionMod) * 100) + "% explosion damage");
-		if(speed != 1F)
-			list.add(EnumChatFormatting.BLUE + "-" + Math.round((1F - speed) * 100) + "% speed");
+		if(this.damageMod != 1F)
+			list.add(EnumChatFormatting.RED + (this.damageMod < 1 ? "-" : "+") + Math.abs(Math.round((1F - this.damageMod) * 100)) + "% damage");
+		if(this.projectileMod != 1F)
+			list.add(EnumChatFormatting.YELLOW + "-" + Math.round((1F - this.projectileMod) * 100) + "% projectile damage");
+		if(this.explosionMod != 1F)
+			list.add(EnumChatFormatting.YELLOW + "-" + Math.round((1F - this.explosionMod) * 100) + "% explosion damage");
+		if(this.speed != 1F)
+			list.add(EnumChatFormatting.BLUE + "-" + Math.round((1F - this.speed) * 100) + "% speed");
 		
 		if(this == ModItems.insert_polonium)
 			list.add(EnumChatFormatting.DARK_RED + "+100 RAD/s");
@@ -57,16 +57,16 @@ public class ItemModInsert extends ItemArmorMod {
 	@Override
 	public void addDesc(List list, ItemStack stack, ItemStack armor) {
 		
-		List<String> desc = new ArrayList();
+		List<String> desc = new ArrayList<>();
 
-		if(damageMod != 1F)
-			desc.add((damageMod < 1 ? "-" : "+") + Math.abs(Math.round((1F - damageMod) * 100)) + "% dmg");
-		if(projectileMod != 1F)
-			desc.add("-" + Math.round((1F - projectileMod) * 100) + "% proj");
-		if(explosionMod != 1F)
-			desc.add("-" + Math.round((1F - explosionMod) * 100) + "% exp");
-		if(explosionMod != 1F)
-			desc.add("-" + Math.round((1F - speed) * 100) + "% speed");
+		if(this.damageMod != 1F)
+			desc.add((this.damageMod < 1 ? "-" : "+") + Math.abs(Math.round((1F - this.damageMod) * 100)) + "% dmg");
+		if(this.projectileMod != 1F)
+			desc.add("-" + Math.round((1F - this.projectileMod) * 100) + "% proj");
+		if(this.explosionMod != 1F)
+			desc.add("-" + Math.round((1F - this.explosionMod) * 100) + "% exp");
+		if(this.explosionMod != 1F)
+			desc.add("-" + Math.round((1F - this.speed) * 100) + "% speed");
 
 		if(this == ModItems.insert_polonium)
 			desc.add("+100 RAD/s");
@@ -79,13 +79,13 @@ public class ItemModInsert extends ItemArmorMod {
 	@Override
 	public void modDamage(LivingHurtEvent event, ItemStack armor) {
 		
-		event.ammount *= damageMod;
+		event.ammount *= this.damageMod;
 		
 		if(event.source.isProjectile())
-			event.ammount *= projectileMod;
+			event.ammount *= this.projectileMod;
 		
 		if(event.source.isExplosion())
-			event.ammount *= explosionMod;
+			event.ammount *= this.explosionMod;
 		
 		ItemStack insert = ArmorModHandler.pryMods(armor)[ArmorModHandler.kevlar];
 		
@@ -116,13 +116,13 @@ public class ItemModInsert extends ItemArmorMod {
 	@Override
 	public Multimap getModifiers(ItemStack armor) {
 		
-		if(speed == 1)
+		if(this.speed == 1)
 			return null;
 
 		Multimap multimap = super.getAttributeModifiers(armor);
 		
 		multimap.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(),
-				new AttributeModifier(ArmorModHandler.UUIDs[((ItemArmor)armor.getItem()).armorType], "NTM Armor Mod Speed", -1F + speed, 2));
+				new AttributeModifier(ArmorModHandler.UUIDs[((ItemArmor)armor.getItem()).armorType], "NTM Armor Mod Speed", -1F + this.speed, 2));
 		
 		return multimap;
 	}

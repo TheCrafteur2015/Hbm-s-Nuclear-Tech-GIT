@@ -47,38 +47,38 @@ public class EntityMagnusCartus extends EntityMinecart {
 	public void onUpdate() {
 		super.onUpdate();
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			double dist = 3.0D;
 			double force = 0.3D;
 			
-			if(bogie == null) {
+			if(this.bogie == null) {
 				Vec3 vec = Vec3.createVectorHelper(dist, 0, 0);
-				vec.rotateAroundY(rand.nextFloat() * 6.28F);
-				EntityMinecartBogie bog = new EntityMinecartBogie(worldObj, posX + vec.xCoord, posY + vec.yCoord, posZ + vec.zCoord);
-				this.setBogie(bog);
-				worldObj.spawnEntityInWorld(bog);
+				vec.rotateAroundY(this.rand.nextFloat() * 6.28F);
+				EntityMinecartBogie bog = new EntityMinecartBogie(this.worldObj, this.posX + vec.xCoord, this.posY + vec.yCoord, this.posZ + vec.zCoord);
+				setBogie(bog);
+				this.worldObj.spawnEntityInWorld(bog);
 			}
 			
-			Vec3 delta = Vec3.createVectorHelper(posX - bogie.posX, posY - bogie.posY, posZ - bogie.posZ);
+			Vec3 delta = Vec3.createVectorHelper(this.posX - this.bogie.posX, this.posY - this.bogie.posY, this.posZ - this.bogie.posZ);
 			delta = delta.normalize();
 			delta.xCoord *= dist;
 			delta.yCoord *= dist;
 			delta.zCoord *= dist;
 
-			double x = posX - delta.xCoord;
-			double y = posY - delta.yCoord;
-			double z = posZ - delta.zCoord;
+			double x = this.posX - delta.xCoord;
+			double y = this.posY - delta.yCoord;
+			double z = this.posZ - delta.zCoord;
 			
 			NBTTagCompound data = new NBTTagCompound();
 			data.setString("type", "vanillaExt");
 			data.setString("mode", "reddust");
 			PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, x, y, z), new TargetPoint(this.dimension, x, y, z, 25));
 			
-			Vec3 pull = Vec3.createVectorHelper(x - bogie.posX, y - bogie.posY, z - bogie.posZ);
-			bogie.motionX += pull.xCoord * force;
-			bogie.motionY += pull.yCoord * force;
-			bogie.motionZ += pull.zCoord * force;
+			Vec3 pull = Vec3.createVectorHelper(x - this.bogie.posX, y - this.bogie.posY, z - this.bogie.posZ);
+			this.bogie.motionX += pull.xCoord * force;
+			this.bogie.motionY += pull.yCoord * force;
+			this.bogie.motionZ += pull.zCoord * force;
 			
 			if(pull.lengthVector() > 1) {
 				this.motionX -= pull.xCoord * force;
@@ -92,16 +92,16 @@ public class EntityMagnusCartus extends EntityMinecart {
 	protected void readEntityFromNBT(NBTTagCompound nbt) {
 		super.readEntityFromNBT(nbt);
 		int bogieID = nbt.getInteger("bogie");
-		Entity e = worldObj.getEntityByID(bogieID);
+		Entity e = this.worldObj.getEntityByID(bogieID);
 		
 		if(e instanceof EntityMinecartBogie) {
-			this.setBogie((EntityMinecartBogie) e);
+			setBogie((EntityMinecartBogie) e);
 		}
 	}
 
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound nbt) {
 		super.writeEntityToNBT(nbt);
-		nbt.setInteger("bogie", this.getBogieID());
+		nbt.setInteger("bogie", getBogieID());
 	}
 }

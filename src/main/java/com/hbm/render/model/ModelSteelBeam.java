@@ -22,15 +22,15 @@ public class ModelSteelBeam extends ModelBase
   
   public ModelSteelBeam()
   {
-    textureWidth = 64;
-    textureHeight = 32;
+    this.textureWidth = 64;
+    this.textureHeight = 32;
     
-      Shape1 = new ModelRenderer(this, 0, 0);
-      Shape1.addBox(0F, 0F, 0F, 2, 16, 2);
-      Shape1.setRotationPoint(-1F, 8F, -1F);
-      Shape1.setTextureSize(64, 32);
-      Shape1.mirror = true;
-      setRotation(Shape1, 0F, 0F, 0F);
+      this.Shape1 = new ModelRenderer(this, 0, 0);
+      this.Shape1.addBox(0F, 0F, 0F, 2, 16, 2);
+      this.Shape1.setRotationPoint(-1F, 8F, -1F);
+      this.Shape1.setTextureSize(64, 32);
+      this.Shape1.mirror = true;
+      setRotation(this.Shape1, 0F, 0F, 0F);
   }
   
   @Override
@@ -38,7 +38,7 @@ public void render(Entity entity, float f, float f1, float f2, float f3, float f
   {
     super.render(entity, f, f1, f2, f3, f4, f5);
     setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-    Shape1.render(f5);
+    this.Shape1.render(f5);
   }
   
   private void setRotation(ModelRenderer model, float x, float y, float z)
@@ -50,7 +50,7 @@ public void render(Entity entity, float f, float f1, float f2, float f3, float f
   
   public void renderModel(float f)
   {
-	    Shape1.render(f);
+	    this.Shape1.render(f);
   }
   
   @Override

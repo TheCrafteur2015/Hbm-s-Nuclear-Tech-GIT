@@ -82,12 +82,12 @@ public class DroneCrate extends BlockContainer implements ILookOverlay, ITooltip
 					ItemStack itemstack = tileentityfurnace.getStackInSlot(i1);
 
 					if(itemstack != null) {
-						float f = this.rand.nextFloat() * 0.8F + 0.1F;
-						float f1 = this.rand.nextFloat() * 0.8F + 0.1F;
-						float f2 = this.rand.nextFloat() * 0.8F + 0.1F;
+						float f = DroneCrate.rand.nextFloat() * 0.8F + 0.1F;
+						float f1 = DroneCrate.rand.nextFloat() * 0.8F + 0.1F;
+						float f2 = DroneCrate.rand.nextFloat() * 0.8F + 0.1F;
 
 						while(itemstack.stackSize > 0) {
-							int j1 = this.rand.nextInt(21) + 10;
+							int j1 = DroneCrate.rand.nextInt(21) + 10;
 
 							if(j1 > itemstack.stackSize) {
 								j1 = itemstack.stackSize;
@@ -101,9 +101,9 @@ public class DroneCrate extends BlockContainer implements ILookOverlay, ITooltip
 							}
 
 							float f3 = 0.05F;
-							entityitem.motionX = (float) this.rand.nextGaussian() * f3;
-							entityitem.motionY = (float) this.rand.nextGaussian() * f3 + 0.2F;
-							entityitem.motionZ = (float) this.rand.nextGaussian() * f3;
+							entityitem.motionX = (float) DroneCrate.rand.nextGaussian() * f3;
+							entityitem.motionY = (float) DroneCrate.rand.nextGaussian() * f3 + 0.2F;
+							entityitem.motionZ = (float) DroneCrate.rand.nextGaussian() * f3;
 							world.spawnEntityInWorld(entityitem);
 						}
 					}
@@ -123,7 +123,7 @@ public class DroneCrate extends BlockContainer implements ILookOverlay, ITooltip
 	@Override
 	public void printHook(Pre event, World world, int x, int y, int z) {
 		TileEntityDroneCrate tile = (TileEntityDroneCrate) world.getTileEntity(x, y, z);
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		
 		if(tile.nextY != -1) {
 			text.add("Next waypoint: " + tile.nextX + " / " + tile.nextY + " / " + tile.nextZ);

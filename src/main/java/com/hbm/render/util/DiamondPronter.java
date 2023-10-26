@@ -17,7 +17,7 @@ public class DiamondPronter {
 		
 		GL11.glPushMatrix();
 		
-		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+		Minecraft.getMinecraft().renderEngine.bindTexture(DiamondPronter.texture);
 		
 		float p = 1F/256F;
 		float s = 1F/139F;

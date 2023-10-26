@@ -37,7 +37,7 @@ public class ItemModMilk extends ItemArmorMod {
 	@Override
 	public void modUpdate(EntityLivingBase entity, ItemStack armor) {
 		
-		List<Integer> ints = new ArrayList();
+		List<Integer> ints = new ArrayList<>();
 
 		Iterator iterator = ((Collection) entity.getActivePotionEffects()).iterator();
 

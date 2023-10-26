@@ -14,10 +14,10 @@ import net.minecraft.item.ItemStack;
 
 public class ArmorRegistry {
 
-	public static HashMap<Item, ArrayList<HazardClass>> hazardClasses = new HashMap();
+	public static HashMap<Item, ArrayList<HazardClass>> hazardClasses = new HashMap<>();
 	
 	public static void registerHazard(Item item, HazardClass... hazards) {
-		hazardClasses.put(item, new ArrayList<HazardClass>(Arrays.asList(hazards)));
+		ArmorRegistry.hazardClasses.put(item, new ArrayList<>(Arrays.asList(hazards)));
 	}
 	
 	public static boolean hasAllProtection(EntityLivingBase entity, int slot, HazardClass... clazz) {
@@ -25,7 +25,7 @@ public class ArmorRegistry {
 		if(ArmorUtil.checkArmorNull(entity, slot))
 			return false;
 		
-		List<HazardClass> list = getProtectionFromItem(entity.getEquipmentInSlot(slot + 1), entity);
+		List<HazardClass> list = ArmorRegistry.getProtectionFromItem(entity.getEquipmentInSlot(slot + 1), entity);
 		return list.containsAll(Arrays.asList(clazz));
 	}
 	
@@ -34,7 +34,7 @@ public class ArmorRegistry {
 		if(ArmorUtil.checkArmorNull(entity, slot))
 			return false;
 		
-		List<HazardClass> list = getProtectionFromItem(entity.getEquipmentInSlot(slot + 1), entity);
+		List<HazardClass> list = ArmorRegistry.getProtectionFromItem(entity.getEquipmentInSlot(slot + 1), entity);
 		
 		if(list == null)
 			return false;
@@ -51,7 +51,7 @@ public class ArmorRegistry {
 		if(ArmorUtil.checkArmorNull(entity, slot))
 			return false;
 		
-		List<HazardClass> list = getProtectionFromItem(entity.getEquipmentInSlot(slot + 1), entity);
+		List<HazardClass> list = ArmorRegistry.getProtectionFromItem(entity.getEquipmentInSlot(slot + 1), entity);
 		
 		if(list == null)
 			return false;
@@ -61,13 +61,13 @@ public class ArmorRegistry {
 	
 	public static List<HazardClass> getProtectionFromItem(ItemStack stack, EntityLivingBase entity) {
 
-		List<HazardClass> prot = new ArrayList();
+		List<HazardClass> prot = new ArrayList<>();
 		
 		Item item = stack.getItem();
 		
 		//if the item has HazardClasses assigned to it, add those
-		if(hazardClasses.containsKey(item))
-			prot.addAll(hazardClasses.get(item));
+		if(ArmorRegistry.hazardClasses.containsKey(item))
+			prot.addAll(ArmorRegistry.hazardClasses.get(item));
 		
 		if(item instanceof IGasMask) {
 			IGasMask mask = (IGasMask) item;
@@ -75,7 +75,7 @@ public class ArmorRegistry {
 
 			if(filter != null) {
 				//add the HazardClasses from the filter, then remove the ones blacklisted by the mask
-				List<HazardClass> filProt = hazardClasses.get(filter.getItem());
+				List<HazardClass> filProt = ArmorRegistry.hazardClasses.get(filter.getItem());
 				
 				for(HazardClass c : mask.getBlacklist(stack, entity))
 					filProt.remove(c);
@@ -92,7 +92,7 @@ public class ArmorRegistry {
 				
 				//recursion! run the exact same procedure on every mod, in case future mods will have filter support
 				if(mod != null)
-					prot.addAll(getProtectionFromItem(mod, entity));
+					prot.addAll(ArmorRegistry.getProtectionFromItem(mod, entity));
 			}
 		}
 		

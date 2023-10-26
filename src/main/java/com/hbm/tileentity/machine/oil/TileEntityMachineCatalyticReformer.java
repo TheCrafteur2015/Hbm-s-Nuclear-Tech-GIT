@@ -53,88 +53,86 @@ public class TileEntityMachineCatalyticReformer extends TileEntityMachineBase im
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			this.updateConnections();
-			power = Library.chargeTEFromItems(slots, 0, power, maxPower);
-			tanks[0].setType(9, slots);
-			tanks[0].loadTank(1, 2, slots);
+			updateConnections();
+			this.power = Library.chargeTEFromItems(this.slots, 0, this.power, TileEntityMachineCatalyticReformer.maxPower);
+			this.tanks[0].setType(9, this.slots);
+			this.tanks[0].loadTank(1, 2, this.slots);
 			
 			reform();
 
-			tanks[1].unloadTank(3, 4, slots);
-			tanks[2].unloadTank(5, 6, slots);
-			tanks[3].unloadTank(7, 8, slots);
+			this.tanks[1].unloadTank(3, 4, this.slots);
+			this.tanks[2].unloadTank(5, 6, this.slots);
+			this.tanks[3].unloadTank(7, 8, this.slots);
 			
 			for(DirPos pos : getConPos()) {
 				for(int i = 1; i < 4; i++) {
-					if(tanks[i].getFill() > 0) {
-						this.sendFluid(tanks[i], worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+					if(this.tanks[i].getFill() > 0) {
+						this.sendFluid(this.tanks[i], this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 					}
 				}
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
 			data.setLong("power", this.power);
-			for(int i = 0; i < 4; i++) tanks[i].writeToNBT(data, "" + i);
-			this.networkPack(data, 150);
+			for(int i = 0; i < 4; i++) this.tanks[i].writeToNBT(data, "" + i);
+			networkPack(data, 150);
 		}
 	}
 	
 	@Override
 	public void networkUnpack(NBTTagCompound nbt) {
 		this.power = nbt.getLong("power");
-		for(int i = 0; i < 4; i++) tanks[i].readFromNBT(nbt, "" + i);
+		for(int i = 0; i < 4; i++) this.tanks[i].readFromNBT(nbt, "" + i);
 	}
 	
 	private void reform() {
 		
-		Triplet<FluidStack, FluidStack, FluidStack> out = ReformingRecipes.getOutput(tanks[0].getTankType());
+		Triplet<FluidStack, FluidStack, FluidStack> out = ReformingRecipes.getOutput(this.tanks[0].getTankType());
 		if(out == null) {
-			tanks[1].setTankType(Fluids.NONE);
-			tanks[2].setTankType(Fluids.NONE);
-			tanks[3].setTankType(Fluids.NONE);
+			this.tanks[1].setTankType(Fluids.NONE);
+			this.tanks[2].setTankType(Fluids.NONE);
+			this.tanks[3].setTankType(Fluids.NONE);
 			return;
 		}
 
-		tanks[1].setTankType(out.getX().type);
-		tanks[2].setTankType(out.getY().type);
-		tanks[3].setTankType(out.getZ().type);
+		this.tanks[1].setTankType(out.getX().type);
+		this.tanks[2].setTankType(out.getY().type);
+		this.tanks[3].setTankType(out.getZ().type);
 		
-		if(power < 20_000) return;
-		if(tanks[0].getFill() < 100) return;
-		if(slots[10] == null || slots[10].getItem() != ModItems.catalytic_converter) return;
+		if((this.power < 20_000) || (this.tanks[0].getFill() < 100) || this.slots[10] == null || this.slots[10].getItem() != ModItems.catalytic_converter) return;
 
-		if(tanks[1].getFill() + out.getX().fill > tanks[1].getMaxFill()) return;
-		if(tanks[2].getFill() + out.getY().fill > tanks[2].getMaxFill()) return;
-		if(tanks[3].getFill() + out.getZ().fill > tanks[3].getMaxFill()) return;
+		if(this.tanks[1].getFill() + out.getX().fill > this.tanks[1].getMaxFill()) return;
+		if(this.tanks[2].getFill() + out.getY().fill > this.tanks[2].getMaxFill()) return;
+		if(this.tanks[3].getFill() + out.getZ().fill > this.tanks[3].getMaxFill()) return;
 
-		tanks[0].setFill(tanks[0].getFill() - 100);
-		tanks[1].setFill(tanks[1].getFill() + out.getX().fill);
-		tanks[2].setFill(tanks[2].getFill() + out.getY().fill);
-		tanks[3].setFill(tanks[3].getFill() + out.getZ().fill);
+		this.tanks[0].setFill(this.tanks[0].getFill() - 100);
+		this.tanks[1].setFill(this.tanks[1].getFill() + out.getX().fill);
+		this.tanks[2].setFill(this.tanks[2].getFill() + out.getY().fill);
+		this.tanks[3].setFill(this.tanks[3].getFill() + out.getZ().fill);
 		
-		power -= 20_000;
+		this.power -= 20_000;
 	}
 	
 	private void updateConnections() {
 		for(DirPos pos : getConPos()) {
-			this.trySubscribe(worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
-			this.trySubscribe(tanks[0].getTankType(), worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			this.trySubscribe(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			this.trySubscribe(this.tanks[0].getTankType(), this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 		}
 	}
 	
 	public DirPos[] getConPos() {
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 		
 		return new DirPos[] {
-				new DirPos(xCoord + dir.offsetX * 2 + rot.offsetX, yCoord, zCoord + dir.offsetZ * 2 + rot.offsetZ, dir),
-				new DirPos(xCoord + dir.offsetX * 2 - rot.offsetX, yCoord, zCoord + dir.offsetZ * 2 - rot.offsetZ, dir),
-				new DirPos(xCoord - dir.offsetX * 2 + rot.offsetX, yCoord, zCoord - dir.offsetZ * 2 + rot.offsetZ, dir.getOpposite()),
-				new DirPos(xCoord - dir.offsetX * 2 - rot.offsetX, yCoord, zCoord - dir.offsetZ * 2 - rot.offsetZ, dir.getOpposite()),
-				new DirPos(xCoord + rot.offsetX * 3, yCoord, zCoord + rot.offsetZ * 3, rot),
-				new DirPos(xCoord - rot.offsetX * 3, yCoord, zCoord - rot.offsetZ * 3, rot.getOpposite())
+				new DirPos(this.xCoord + dir.offsetX * 2 + rot.offsetX, this.yCoord, this.zCoord + dir.offsetZ * 2 + rot.offsetZ, dir),
+				new DirPos(this.xCoord + dir.offsetX * 2 - rot.offsetX, this.yCoord, this.zCoord + dir.offsetZ * 2 - rot.offsetZ, dir),
+				new DirPos(this.xCoord - dir.offsetX * 2 + rot.offsetX, this.yCoord, this.zCoord - dir.offsetZ * 2 + rot.offsetZ, dir.getOpposite()),
+				new DirPos(this.xCoord - dir.offsetX * 2 - rot.offsetX, this.yCoord, this.zCoord - dir.offsetZ * 2 - rot.offsetZ, dir.getOpposite()),
+				new DirPos(this.xCoord + rot.offsetX * 3, this.yCoord, this.zCoord + rot.offsetZ * 3, rot),
+				new DirPos(this.xCoord - rot.offsetX * 3, this.yCoord, this.zCoord - rot.offsetZ * 3, rot.getOpposite())
 		};
 	}
 	
@@ -142,22 +140,22 @@ public class TileEntityMachineCatalyticReformer extends TileEntityMachineBase im
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 
-		power = nbt.getLong("power");
-		tanks[0].readFromNBT(nbt, "input");
-		tanks[1].readFromNBT(nbt, "o1");
-		tanks[2].readFromNBT(nbt, "o2");
-		tanks[3].readFromNBT(nbt, "o3");
+		this.power = nbt.getLong("power");
+		this.tanks[0].readFromNBT(nbt, "input");
+		this.tanks[1].readFromNBT(nbt, "o1");
+		this.tanks[2].readFromNBT(nbt, "o2");
+		this.tanks[3].readFromNBT(nbt, "o3");
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		
-		nbt.setLong("power", power);
-		tanks[0].writeToNBT(nbt, "input");
-		tanks[1].writeToNBT(nbt, "o1");
-		tanks[2].writeToNBT(nbt, "o2");
-		tanks[3].writeToNBT(nbt, "o3");
+		nbt.setLong("power", this.power);
+		this.tanks[0].writeToNBT(nbt, "input");
+		this.tanks[1].writeToNBT(nbt, "o1");
+		this.tanks[2].writeToNBT(nbt, "o2");
+		this.tanks[3].writeToNBT(nbt, "o3");
 	}
 	
 	AxisAlignedBB bb = null;
@@ -165,18 +163,18 @@ public class TileEntityMachineCatalyticReformer extends TileEntityMachineBase im
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 2,
-					yCoord,
-					zCoord - 2,
-					xCoord + 3,
-					yCoord + 7,
-					zCoord + 3
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 2,
+					this.yCoord,
+					this.zCoord - 2,
+					this.xCoord + 3,
+					this.yCoord + 7,
+					this.zCoord + 3
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override
@@ -187,7 +185,7 @@ public class TileEntityMachineCatalyticReformer extends TileEntityMachineBase im
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 
 	@Override
@@ -197,22 +195,22 @@ public class TileEntityMachineCatalyticReformer extends TileEntityMachineBase im
 
 	@Override
 	public long getMaxPower() {
-		return maxPower;
+		return TileEntityMachineCatalyticReformer.maxPower;
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return tanks;
+		return this.tanks;
 	}
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return new FluidTank[] {tanks[1], tanks[2], tanks[3]};
+		return new FluidTank[] {this.tanks[1], this.tanks[2], this.tanks[3]};
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] {tanks[0]};
+		return new FluidTank[] {this.tanks[0]};
 	}
 
 	@Override
@@ -227,15 +225,15 @@ public class TileEntityMachineCatalyticReformer extends TileEntityMachineBase im
 
 	@Override
 	public void writeNBT(NBTTagCompound nbt) {
-		if(tanks[0].getFill() == 0 && tanks[1].getFill() == 0 && tanks[2].getFill() == 0 && tanks[3].getFill() == 0) return;
+		if(this.tanks[0].getFill() == 0 && this.tanks[1].getFill() == 0 && this.tanks[2].getFill() == 0 && this.tanks[3].getFill() == 0) return;
 		NBTTagCompound data = new NBTTagCompound();
 		for(int i = 0; i < 4; i++) this.tanks[i].writeToNBT(data, "" + i);
-		nbt.setTag(NBT_PERSISTENT_KEY, data);
+		nbt.setTag(IPersistentNBT.NBT_PERSISTENT_KEY, data);
 	}
 
 	@Override
 	public void readNBT(NBTTagCompound nbt) {
-		NBTTagCompound data = nbt.getCompoundTag(NBT_PERSISTENT_KEY);
+		NBTTagCompound data = nbt.getCompoundTag(IPersistentNBT.NBT_PERSISTENT_KEY);
 		for(int i = 0; i < 4; i++) this.tanks[i].readFromNBT(data, "" + i);
 	}
 

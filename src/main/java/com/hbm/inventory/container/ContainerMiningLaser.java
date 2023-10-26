@@ -14,25 +14,25 @@ public class ContainerMiningLaser extends Container {
 	private TileEntityMachineMiningLaser diFurnace;
 	
 	public ContainerMiningLaser(InventoryPlayer invPlayer, TileEntityMachineMiningLaser tedf) {
-		diFurnace = tedf;
+		this.diFurnace = tedf;
 
 		//Battery
-		this.addSlotToContainer(new Slot(tedf, 0, 8, 108));
+		addSlotToContainer(new Slot(tedf, 0, 8, 108));
 		//Upgrades
 		for(int i = 0; i < 2; i++)
 			for(int j = 0; j < 4; j++)
-				this.addSlotToContainer(new SlotUpgrade(tedf, 1 + i * 4 + j, 98 + j * 18, 18 + i * 18));
+				addSlotToContainer(new SlotUpgrade(tedf, 1 + i * 4 + j, 98 + j * 18, 18 + i * 18));
 		//Output
 		for(int i = 0; i < 3; i++)
 			for(int j = 0; j < 7; j++)
-				this.addSlotToContainer(new Slot(tedf, 9 + i * 7 + j, 44 + j * 18, 72 + i * 18));
+				addSlotToContainer(new Slot(tedf, 9 + i * 7 + j, 44 + j * 18, 72 + i * 18));
 		
 		for(int i = 0; i < 3; i++)
 			for(int j = 0; j < 9; j++)
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 56));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 56));
 		
 		for(int i = 0; i < 9; i++)
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 56));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 56));
 	}
 	
 	@Override
@@ -46,14 +46,14 @@ public class ContainerMiningLaser extends Container {
 			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 			
-            if (par2 <= diFurnace.getSizeInventory() - 1) {
-				if (!this.mergeItemStack(var5, diFurnace.getSizeInventory(), this.inventorySlots.size(), true))
+            if (par2 <= this.diFurnace.getSizeInventory() - 1) {
+				if (!mergeItemStack(var5, this.diFurnace.getSizeInventory(), this.inventorySlots.size(), true))
 				{
 					return null;
 				}
 			} else {
 				
-				if (!this.mergeItemStack(var5, 0, 9, false))
+				if (!mergeItemStack(var5, 0, 9, false))
 					return null;
 			}
 			
@@ -72,6 +72,6 @@ public class ContainerMiningLaser extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return diFurnace.isUseableByPlayer(player);
+		return this.diFurnace.isUseableByPlayer(player);
 	}
 }

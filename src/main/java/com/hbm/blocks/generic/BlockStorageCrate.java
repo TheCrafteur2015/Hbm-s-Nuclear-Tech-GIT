@@ -13,7 +13,13 @@ import com.hbm.items.tool.ItemLock;
 import com.hbm.lib.RefStrings;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.machine.TileEntityLockableBase;
-import com.hbm.tileentity.machine.storage.*;
+import com.hbm.tileentity.machine.storage.TileEntityCrateBase;
+import com.hbm.tileentity.machine.storage.TileEntityCrateDesh;
+import com.hbm.tileentity.machine.storage.TileEntityCrateIron;
+import com.hbm.tileentity.machine.storage.TileEntityCrateSteel;
+import com.hbm.tileentity.machine.storage.TileEntityCrateTemplate;
+import com.hbm.tileentity.machine.storage.TileEntityCrateTungsten;
+import com.hbm.tileentity.machine.storage.TileEntitySafe;
 
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -154,9 +160,9 @@ public class BlockStorageCrate extends BlockContainer implements IBlockMulti, IT
 			world.spawnEntityInWorld(new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, drop));
 		}
 		
-		dropInv = false;
+		BlockStorageCrate.dropInv = false;
 		boolean flag = world.setBlockToAir(x, y, z);
-		dropInv = true;
+		BlockStorageCrate.dropInv = true;
 		
 		return flag;
 	}
@@ -223,7 +229,7 @@ public class BlockStorageCrate extends BlockContainer implements IBlockMulti, IT
 	@Override
 	public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
 
-		if(dropInv) {
+		if(BlockStorageCrate.dropInv) {
 			ISidedInventory sided = (ISidedInventory) world.getTileEntity(x, y, z);
 			Random rand = world.rand;
 	
@@ -286,11 +292,12 @@ public class BlockStorageCrate extends BlockContainer implements IBlockMulti, IT
 		return Container.calcRedstoneFromInventory((IInventory) world.getTileEntity(x, y, z));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		if(stack.hasTagCompound()) {
 			
-			List<String> contents = new ArrayList();
+			List<String> contents = new ArrayList<>();
 			int amount = 0;
 			
 			for(int i = 0; i < 100; i++) { //whatever the biggest container is, i can't be bothered to check

@@ -16,7 +16,7 @@ public class ItemRenderMIRVLauncher implements IItemRenderer {
 	protected ModelMIRVLauncher swordModel;
 	
 	public ItemRenderMIRVLauncher() {
-		swordModel = new ModelMIRVLauncher();
+		this.swordModel = new ModelMIRVLauncher();
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class ItemRenderMIRVLauncher implements IItemRenderer {
 				Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(RefStrings.MODID +":textures/models/MIRVLauncher.png"));
 				GL11.glRotatef(-150.0F, 0.0F, 0.0F, 1.0F);
 				GL11.glTranslatef(-0.8F, -0.1F, -0.2F);
-				swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, item);
+				this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, item);
 			GL11.glPopMatrix();
 			break;
 		case EQUIPPED:
@@ -59,7 +59,7 @@ public class ItemRenderMIRVLauncher implements IItemRenderer {
 				GL11.glRotatef(-5.0F, 0.0F, 0.0F, 1.0F);
 				GL11.glTranslatef(0.5F, -0.2F, 0.0F);
 				GL11.glScalef(1.5F, 1.5F, 1.5F);
-				swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, item);
+				this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, item);
 			GL11.glPopMatrix();
 		default: break;
 		}

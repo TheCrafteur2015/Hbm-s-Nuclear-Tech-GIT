@@ -32,7 +32,7 @@ public class MachineGenerator extends Block {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int metadata) {
-		return side == 0 ? blockIcon : (side == 1 ? blockIcon : iconSide);
+		return side == 0 ? this.blockIcon : (side == 1 ? this.blockIcon : this.iconSide);
 	}
 
 	@Override

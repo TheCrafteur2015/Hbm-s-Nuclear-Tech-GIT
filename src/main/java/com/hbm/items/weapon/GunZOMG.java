@@ -7,6 +7,7 @@ import com.google.common.collect.Multimap;
 import com.hbm.entity.projectile.EntityBullet;
 import com.hbm.entity.projectile.EntityRainbow;
 import com.hbm.items.ModItems;
+
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -42,7 +43,7 @@ public class GunZOMG extends Item {
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
 		new ArrowNockEvent(player, stack);
 		{
-			player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
+			player.setItemInUse(stack, getMaxItemUseDuration(stack));
 		}
 
 		if (!stack.hasTagCompound()) {
@@ -129,14 +130,14 @@ public class GunZOMG extends Item {
 						EntityBullet entityarrow3 = new EntityBullet(world, player, 3.0F, 35, 45, false, "chopper");
 						EntityBullet entityarrow4 = new EntityBullet(world, player, 3.0F, 35, 45, false, "chopper");
 						EntityBullet entityarrow5 = new EntityBullet(world, player, 3.0F, 35, 45, false, "chopper");
-						entityarrow.setDamage(35 + rand.nextInt(45 - 35));
-						entityarrow1.setDamage(35 + rand.nextInt(45 - 35));
-						entityarrow2.setDamage(35 + rand.nextInt(45 - 35));
-						entityarrow3.setDamage(35 + rand.nextInt(45 - 35));
-						entityarrow4.setDamage(35 + rand.nextInt(45 - 35));
-						entityarrow5.setDamage(35 + rand.nextInt(45 - 35));
+						entityarrow.setDamage(35 + this.rand.nextInt(45 - 35));
+						entityarrow1.setDamage(35 + this.rand.nextInt(45 - 35));
+						entityarrow2.setDamage(35 + this.rand.nextInt(45 - 35));
+						entityarrow3.setDamage(35 + this.rand.nextInt(45 - 35));
+						entityarrow4.setDamage(35 + this.rand.nextInt(45 - 35));
+						entityarrow5.setDamage(35 + this.rand.nextInt(45 - 35));
 
-						world.playSoundAtEntity(player, "hbm:weapon.osiprShoot", 1.0F, 0.6F + (rand.nextFloat() * 0.4F));
+						world.playSoundAtEntity(player, "hbm:weapon.osiprShoot", 1.0F, 0.6F + (this.rand.nextFloat() * 0.4F));
 
 						if (!world.isRemote) {
 							world.spawnEntityInWorld(entityarrow);
@@ -152,14 +153,14 @@ public class GunZOMG extends Item {
 						EntityRainbow entityarrow2 = new EntityRainbow(world, player, 1F);
 						EntityRainbow entityarrow3 = new EntityRainbow(world, player, 1F);
 						EntityRainbow entityarrow4 = new EntityRainbow(world, player, 1F);
-						entityarrow.setDamage(10000 + rand.nextInt(90000));
-						entityarrow1.setDamage(10000 + rand.nextInt(90000));
-						entityarrow2.setDamage(10000 + rand.nextInt(90000));
-						entityarrow3.setDamage(10000 + rand.nextInt(90000));
-						entityarrow4.setDamage(10000 + rand.nextInt(90000));
+						entityarrow.setDamage(10000 + this.rand.nextInt(90000));
+						entityarrow1.setDamage(10000 + this.rand.nextInt(90000));
+						entityarrow2.setDamage(10000 + this.rand.nextInt(90000));
+						entityarrow3.setDamage(10000 + this.rand.nextInt(90000));
+						entityarrow4.setDamage(10000 + this.rand.nextInt(90000));
 
 						//world.playSoundAtEntity(player, "random.explode", 1.0F, 1.5F + (rand.nextFloat() / 4));
-						world.playSoundAtEntity(player, "hbm:weapon.zomgShoot", 1.0F, 0.8F + (rand.nextFloat() * 0.4F));
+						world.playSoundAtEntity(player, "hbm:weapon.zomgShoot", 1.0F, 0.8F + (this.rand.nextFloat() * 0.4F));
 
 						if (!world.isRemote) {
 							world.spawnEntityInWorld(entityarrow);
@@ -188,6 +189,7 @@ public class GunZOMG extends Item {
 		return 0;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
@@ -216,11 +218,12 @@ public class GunZOMG extends Item {
 		//	list.add("How do I use the ZOMG? How do I use the ZOMG? How do I use the ZOMG?");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Multimap getItemAttributeModifiers() {
 		Multimap multimap = super.getItemAttributeModifiers();
 		multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
-				new AttributeModifier(field_111210_e, "Weapon modifier", 6, 0));
+				new AttributeModifier(Item.field_111210_e, "Weapon modifier", 6, 0));
 		return multimap;
 	}
 }

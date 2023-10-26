@@ -10,7 +10,8 @@ import net.minecraft.util.IIcon;
 
 public class BlockPinkLog extends BlockLog {
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister reg)
     {
         this.field_150167_a = new IIcon[1];

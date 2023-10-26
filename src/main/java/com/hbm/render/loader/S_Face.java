@@ -40,9 +40,9 @@ public class S_Face {
 		
 		if ((this.textureCoordinates != null) && (this.textureCoordinates.length > 0)) {
 			
-			for (int i = 0; i < this.textureCoordinates.length; i++) {
-				averageU += this.textureCoordinates[i].u;
-				averageV += this.textureCoordinates[i].v;
+			for (TextureCoordinate textureCoordinate : this.textureCoordinates) {
+				averageU += textureCoordinate.u;
+				averageV += textureCoordinate.v;
 			}
 			
 			averageU /= this.textureCoordinates.length;

@@ -19,7 +19,7 @@ public class ItemSatDesignator extends ItemSatChip {
 		
 		if(!world.isRemote) {
 			
-			Satellite sat = SatelliteSavedData.getData(world).getSatFromFreq(this.getFreq(stack));
+			Satellite sat = SatelliteSavedData.getData(world).getSatFromFreq(getFreq(stack));
 			
 			if(sat != null) {
 				MovingObjectPosition pos = Library.rayTrace(player, 300, 1);

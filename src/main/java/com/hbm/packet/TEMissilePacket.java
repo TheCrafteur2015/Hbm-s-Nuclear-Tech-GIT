@@ -30,77 +30,77 @@ public class TEMissilePacket implements IMessage {
 		this.type = 0;
 		if(stack != null) {
 			if(stack.getItem() == ModItems.missile_generic)
-				type = 1;
+				this.type = 1;
 			if(stack.getItem() == ModItems.missile_strong)
-				type = 2;
+				this.type = 2;
 			if(stack.getItem() == ModItems.missile_cluster)
-				type = 3;
+				this.type = 3;
 			if(stack.getItem() == ModItems.missile_nuclear)
-				type = 4;
+				this.type = 4;
 			if(stack.getItem() == ModItems.missile_incendiary)
-				type = 5;
+				this.type = 5;
 			if(stack.getItem() == ModItems.missile_buster)
-				type = 6;
+				this.type = 6;
 			if(stack.getItem() == ModItems.missile_incendiary_strong)
-				type = 7;
+				this.type = 7;
 			if(stack.getItem() == ModItems.missile_cluster_strong)
-				type = 8;
+				this.type = 8;
 			if(stack.getItem() == ModItems.missile_buster_strong)
-				type = 9;
+				this.type = 9;
 			if(stack.getItem() == ModItems.missile_burst)
-				type = 10;
+				this.type = 10;
 			if(stack.getItem() == ModItems.missile_inferno)
-				type = 11;
+				this.type = 11;
 			if(stack.getItem() == ModItems.missile_rain)
-				type = 12;
+				this.type = 12;
 			if(stack.getItem() == ModItems.missile_drill)
-				type = 13;
+				this.type = 13;
 			if(stack.getItem() == ModItems.missile_endo)
-				type = 14;
+				this.type = 14;
 			if(stack.getItem() == ModItems.missile_exo)
-				type = 15;
+				this.type = 15;
 			if(stack.getItem() == ModItems.missile_nuclear_cluster)
-				type = 16;
+				this.type = 16;
 			if(stack.getItem() == ModItems.missile_doomsday)
-				type = 17;
+				this.type = 17;
 			if(stack.getItem() == ModItems.missile_taint)
-				type = 18;
+				this.type = 18;
 			if(stack.getItem() == ModItems.missile_micro)
-				type = 19;
+				this.type = 19;
 			if(stack.getItem() == ModItems.missile_carrier)
-				type = 20;
+				this.type = 20;
 			if(stack.getItem() == ModItems.missile_anti_ballistic)
-				type = 21;
+				this.type = 21;
 			if(stack.getItem() == ModItems.missile_bhole)
-				type = 22;
+				this.type = 22;
 			if(stack.getItem() == ModItems.missile_schrabidium)
-				type = 23;
+				this.type = 23;
 			if(stack.getItem() == ModItems.missile_emp)
-				type = 24;
+				this.type = 24;
 			if(stack.getItem() == ModItems.missile_emp_strong)
-				type = 25;
+				this.type = 25;
 			if(stack.getItem() == ModItems.missile_volcano)
-				type = 26;
+				this.type = 26;
 			if(stack.getItem() == ModItems.missile_shuttle)
-				type = 27;
+				this.type = 27;
 			
 		}
 	}
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		x = buf.readInt();
-		y = buf.readInt();
-		z = buf.readInt();
-		type = buf.readInt();
+		this.x = buf.readInt();
+		this.y = buf.readInt();
+		this.z = buf.readInt();
+		this.type = buf.readInt();
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeInt(x);
-		buf.writeInt(y);
-		buf.writeInt(z);
-		buf.writeInt(type);
+		buf.writeInt(this.x);
+		buf.writeInt(this.y);
+		buf.writeInt(this.z);
+		buf.writeInt(this.type);
 	}
 
 	public static class Handler implements IMessageHandler<TEMissilePacket, IMessage> {

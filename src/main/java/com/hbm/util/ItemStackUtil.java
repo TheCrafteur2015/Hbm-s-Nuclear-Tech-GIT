@@ -32,7 +32,7 @@ public class ItemStackUtil {
 	 * @return
 	 */
 	public static ItemStack[] carefulCopyArray(ItemStack[] array) {
-		return carefulCopyArray(array, 0, array.length - 1);
+		return ItemStackUtil.carefulCopyArray(array, 0, array.length - 1);
 	}
 	
 	/**
@@ -49,7 +49,7 @@ public class ItemStackUtil {
 		ItemStack[] copy = new ItemStack[array.length];
 		
 		for(int i = start; i <= end; i++) {
-			copy[i] = carefulCopy(array[i]);
+			copy[i] = ItemStackUtil.carefulCopy(array[i]);
 		}
 		
 		return copy;
@@ -70,7 +70,7 @@ public class ItemStackUtil {
 		ItemStack[] copy = new ItemStack[length];
 		
 		for(int i = 0; i < length; i++) {
-			copy[i] = carefulCopy(array[start + i]);
+			copy[i] = ItemStackUtil.carefulCopy(array[start + i]);
 		}
 		
 		return copy;
@@ -143,7 +143,7 @@ public class ItemStackUtil {
 	}
 	
 	public static ItemStack[] readStacksFromNBT(ItemStack stack) {
-		return readStacksFromNBT(stack, 0);
+		return ItemStackUtil.readStacksFromNBT(stack, 0);
 	}
 	
 	/**
@@ -152,7 +152,7 @@ public class ItemStackUtil {
 	 * @return
 	 */
 	public static List<String> getOreDictNames(ItemStack stack) {
-		List<String> list = new ArrayList();
+		List<String> list = new ArrayList<>();
 		
 		int ids[] = OreDictionary.getOreIDs(stack);
 		for(int i : ids) {

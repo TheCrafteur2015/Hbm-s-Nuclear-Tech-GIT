@@ -20,8 +20,8 @@ public class ElectrolyserMetalHandler extends NEIUniversalHandler {
 	@Override
 	public void loadTransferRects() {
 		super.loadTransferRects();
-		transferRectsGui.add(new RecipeTransferRect(new Rectangle(2, 35, 22, 25), "ntmElectrolysisMetal"));
-		guiGui.add(GUIElectrolyserMetal.class);
-		RecipeTransferRectHandler.registerRectsToGuis(guiGui, transferRectsGui);
+		this.transferRectsGui.add(new RecipeTransferRect(new Rectangle(2, 35, 22, 25), "ntmElectrolysisMetal"));
+		this.guiGui.add(GUIElectrolyserMetal.class);
+		RecipeTransferRectHandler.registerRectsToGuis(this.guiGui, this.transferRectsGui);
 	}
 }

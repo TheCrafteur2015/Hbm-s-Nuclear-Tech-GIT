@@ -3,8 +3,8 @@ package com.hbm.items.machine;
 import java.util.List;
 
 import com.hbm.inventory.fluid.FluidType;
-import com.hbm.inventory.fluid.Fluids.CD_Canister;
 import com.hbm.inventory.fluid.Fluids;
+import com.hbm.inventory.fluid.Fluids.CD_Canister;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -20,8 +20,8 @@ public class ItemCanister extends Item {
 	IIcon overlayIcon;
 
 	public ItemCanister() {
-		this.setHasSubtypes(true);
-		this.setMaxDamage(0);
+		setHasSubtypes(true);
+		setMaxDamage(0);
 	}
 
 	@Override
@@ -38,6 +38,7 @@ public class ItemCanister extends Item {
 		}
 	}
 
+	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
 		String s = ("" + StatCollector.translateToLocal(this.getUnlocalizedName() + ".name")).trim();
 		String s1 = ("" + StatCollector.translateToLocal(Fluids.fromID(stack.getItemDamage()).getConditionalName())).trim();

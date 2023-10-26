@@ -23,39 +23,39 @@ public class ModelT45Boots extends ModelBiped {
 	ModelRenderer Shape4;
 
 	public ModelT45Boots() {
-		textureWidth = 64;
-		textureHeight = 32;
+		this.textureWidth = 64;
+		this.textureHeight = 32;
 
-		leftleg = new ModelRenderer(this, 0, 0);
-		rightleg = new ModelRenderer(this, 0, 0);
-		Shape1 = new ModelRenderer(this, 0, 0);
-		Shape1.addBox(0F, 0F, 0F, 4, 2, 6);
-		Shape1.setRotationPoint(-4F + 2, 0F + 9.5F, -4F);
-		Shape1.setTextureSize(64, 32);
-		Shape1.mirror = true;
-		setRotation(Shape1, 0F, 0F, 0F);
-		convertToChild(leftleg, Shape1);
-		Shape2 = new ModelRenderer(this, 0, 8);
-		Shape2.addBox(0F, 0F, 0F, 4, 2, 6);
-		Shape2.setRotationPoint(0F - 2, 0F + 9.5F, -4F);
-		Shape2.setTextureSize(64, 32);
-		Shape2.mirror = true;
-		setRotation(Shape2, 0F, 0F, 0F);
-		convertToChild(rightleg, Shape2);
-		Shape3 = new ModelRenderer(this, 0, 16);
-		Shape3.addBox(0F, -1F, 0F, 4, 2, 4);
-		Shape3.setRotationPoint(-4F + 2, 0F + 9.5F, -4F);
-		Shape3.setTextureSize(64, 32);
-		Shape3.mirror = true;
-		setRotation(Shape3, 0.2617994F, 0F, 0F);
-		convertToChild(leftleg, Shape3);
-		Shape4 = new ModelRenderer(this, 0, 22);
-		Shape4.addBox(0F, -1F, 0F, 4, 2, 4);
-		Shape4.setRotationPoint(0F - 2, 0F + 9.5F, -4F);
-		Shape4.setTextureSize(64, 32);
-		Shape4.mirror = true;
-		setRotation(Shape4, 0.2617994F, 0F, 0F);
-		convertToChild(rightleg, Shape4);
+		this.leftleg = new ModelRenderer(this, 0, 0);
+		this.rightleg = new ModelRenderer(this, 0, 0);
+		this.Shape1 = new ModelRenderer(this, 0, 0);
+		this.Shape1.addBox(0F, 0F, 0F, 4, 2, 6);
+		this.Shape1.setRotationPoint(-4F + 2, 0F + 9.5F, -4F);
+		this.Shape1.setTextureSize(64, 32);
+		this.Shape1.mirror = true;
+		setRotation(this.Shape1, 0F, 0F, 0F);
+		convertToChild(this.leftleg, this.Shape1);
+		this.Shape2 = new ModelRenderer(this, 0, 8);
+		this.Shape2.addBox(0F, 0F, 0F, 4, 2, 6);
+		this.Shape2.setRotationPoint(0F - 2, 0F + 9.5F, -4F);
+		this.Shape2.setTextureSize(64, 32);
+		this.Shape2.mirror = true;
+		setRotation(this.Shape2, 0F, 0F, 0F);
+		convertToChild(this.rightleg, this.Shape2);
+		this.Shape3 = new ModelRenderer(this, 0, 16);
+		this.Shape3.addBox(0F, -1F, 0F, 4, 2, 4);
+		this.Shape3.setRotationPoint(-4F + 2, 0F + 9.5F, -4F);
+		this.Shape3.setTextureSize(64, 32);
+		this.Shape3.mirror = true;
+		setRotation(this.Shape3, 0.2617994F, 0F, 0F);
+		convertToChild(this.leftleg, this.Shape3);
+		this.Shape4 = new ModelRenderer(this, 0, 22);
+		this.Shape4.addBox(0F, -1F, 0F, 4, 2, 4);
+		this.Shape4.setRotationPoint(0F - 2, 0F + 9.5F, -4F);
+		this.Shape4.setTextureSize(64, 32);
+		this.Shape4.mirror = true;
+		setRotation(this.Shape4, 0.2617994F, 0F, 0F);
+		convertToChild(this.rightleg, this.Shape4);
 	}
 
 	/*

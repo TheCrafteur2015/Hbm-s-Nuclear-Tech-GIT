@@ -20,18 +20,18 @@ public class EntityFBIDrone extends EntityUFOBase {
 		if(this.courseChangeCooldown > 0) this.courseChangeCooldown--;
 		if(this.scanCooldown > 0) this.scanCooldown--;
 
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			if(attackCooldown > 0) attackCooldown--;
+			if(this.attackCooldown > 0) this.attackCooldown--;
 			
-			if(this.target != null && attackCooldown <= 0) {
+			if(this.target != null && this.attackCooldown <= 0) {
 				
-				Vec3 vec = Vec3.createVectorHelper(posX - target.posX, posY - target.posY, posZ - target.posZ);
+				Vec3 vec = Vec3.createVectorHelper(this.posX - this.target.posX, this.posY - this.target.posY, this.posZ - this.target.posZ);
 				if(Math.abs(vec.xCoord) < 5 && Math.abs(vec.zCoord) < 5 && vec.yCoord > 3) {
-					attackCooldown = 60;
-					EntityGrenadeStrong grenade = new EntityGrenadeStrong(worldObj);
-					grenade.setPosition(posX, posY, posZ);
-					worldObj.spawnEntityInWorld(grenade);
+					this.attackCooldown = 60;
+					EntityGrenadeStrong grenade = new EntityGrenadeStrong(this.worldObj);
+					grenade.setPosition(this.posX, this.posY, this.posZ);
+					this.worldObj.spawnEntityInWorld(grenade);
 				}
 			}
 		}
@@ -44,7 +44,7 @@ public class EntityFBIDrone extends EntityUFOBase {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(35.0D);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(35.0D);
 	}
 
 	@Override
@@ -54,11 +54,11 @@ public class EntityFBIDrone extends EntityUFOBase {
 
 	@Override
 	protected int targetHeightOffset() {
-		return 7 + rand.nextInt(4);
+		return 7 + this.rand.nextInt(4);
 	}
 
 	@Override
 	protected int wanderHeightOffset() {
-		return 7 + rand.nextInt(4);
+		return 7 + this.rand.nextInt(4);
 	}
 }

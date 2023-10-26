@@ -13,26 +13,26 @@ public class ContainerBarrel extends Container {
 	
 	private TileEntityBarrel diFurnace;
 	public ContainerBarrel(InventoryPlayer invPlayer, TileEntityBarrel tedf) {
-		diFurnace = tedf;
+		this.diFurnace = tedf;
 		
-		this.addSlotToContainer(new Slot(tedf, 0, 8, 17));
-		this.addSlotToContainer(new Slot(tedf, 1, 8, 53));
-		this.addSlotToContainer(new Slot(tedf, 2, 53 - 18, 17));
-		this.addSlotToContainer(new Slot(tedf, 3, 53 - 18, 53));
-		this.addSlotToContainer(new Slot(tedf, 4, 125, 17));
-		this.addSlotToContainer(new Slot(tedf, 5, 125, 53));
+		addSlotToContainer(new Slot(tedf, 0, 8, 17));
+		addSlotToContainer(new Slot(tedf, 1, 8, 53));
+		addSlotToContainer(new Slot(tedf, 2, 53 - 18, 17));
+		addSlotToContainer(new Slot(tedf, 3, 53 - 18, 53));
+		addSlotToContainer(new Slot(tedf, 4, 125, 17));
+		addSlotToContainer(new Slot(tedf, 5, 125, 53));
 		
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++)
 		{
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
 		}
 	}
 	
@@ -53,12 +53,12 @@ public class ContainerBarrel extends Container {
 			var3 = var5.copy();
 			
             if (par2 <= 5) {
-				if (!this.mergeItemStack(var5, 7, this.inventorySlots.size(), true))
+				if (!mergeItemStack(var5, 7, this.inventorySlots.size(), true))
 				{
 					return null;
 				}
 			}
-			else if (!this.mergeItemStack(var5, 0, 6, false))
+			else if (!mergeItemStack(var5, 0, 6, false))
 			{
 				return null;
 			}
@@ -78,6 +78,6 @@ public class ContainerBarrel extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return diFurnace.isUseableByPlayer(player);
+		return this.diFurnace.isUseableByPlayer(player);
 	}
 }

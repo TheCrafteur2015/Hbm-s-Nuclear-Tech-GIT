@@ -23,8 +23,8 @@ import net.minecraft.world.World;
 public class ItemGuideBook extends Item implements IGUIProvider {
 	
 	public ItemGuideBook() {
-		this.setMaxStackSize(1);
-		this.setHasSubtypes(true);
+		setMaxStackSize(1);
+		setHasSubtypes(true);
 	}
 
 	@Override
@@ -36,6 +36,8 @@ public class ItemGuideBook extends Item implements IGUIProvider {
 		return stack;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tab, List list) {
 		
@@ -43,6 +45,7 @@ public class ItemGuideBook extends Item implements IGUIProvider {
 			list.add(new ItemStack(item, 1, i));
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		list.add(String.join(" ", I18nUtil.resolveKeyArray(BookType.getType(stack.getItemDamage()).title)));
@@ -50,10 +53,10 @@ public class ItemGuideBook extends Item implements IGUIProvider {
 
 	public enum BookType {
 
-		TEST("book.test.cover", 2F, statFacTest()),
-		RBMK("book.rbmk.cover", 1.5F, statFacRBMK()),
-		HADRON("book.error.cover", 1.5F, statFacHadron()),
-		STARTER("book.starter.cover", 1.5F, statFacStarter());
+		TEST("book.test.cover", 2F, ItemGuideBook.statFacTest()),
+		RBMK("book.rbmk.cover", 1.5F, ItemGuideBook.statFacRBMK()),
+		HADRON("book.error.cover", 1.5F, ItemGuideBook.statFacHadron()),
+		STARTER("book.starter.cover", 1.5F, ItemGuideBook.statFacStarter());
 		
 		public List<GuidePage> pages;
 		public float titleScale;
@@ -72,7 +75,7 @@ public class ItemGuideBook extends Item implements IGUIProvider {
 	
 	public static List<GuidePage> statFacTest() {
 		
-		List<GuidePage> pages = new ArrayList();
+		List<GuidePage> pages = new ArrayList<>();
 		
 		pages.add(new GuidePage().addTitle("Title LMAO", 0x800000, 1F)
 				.addText("book.test.page1", 2F)
@@ -92,7 +95,7 @@ public class ItemGuideBook extends Item implements IGUIProvider {
 	//TODO: Make sure this is all correct
 	public static List<GuidePage> statFacRBMK() {
 		
-		List<GuidePage> pages = new ArrayList();
+		List<GuidePage> pages = new ArrayList<>();
 		pages.add(new GuidePage().addTitle("book.rbmk.title1", 0x800000, 1F)
 				.addText("book.rbmk.page1", 2F)
 				.addImage(new ResourceLocation(RefStrings.MODID + ":textures/gui/book/rbmk1.png"), 90, 80, 60));
@@ -146,7 +149,7 @@ public class ItemGuideBook extends Item implements IGUIProvider {
 	
 	public static List<GuidePage> statFacHadron() {
 		
-		List<GuidePage> pages = new ArrayList();
+		List<GuidePage> pages = new ArrayList<>();
 		
 		for(int i = 1; i <= 9; i++) {
 			pages.add(new GuidePage().addTitle("book.error.title" + i, 0x800000, 1F).addText("book.error.page" + i, 2F));
@@ -160,7 +163,7 @@ public class ItemGuideBook extends Item implements IGUIProvider {
 	 */
 	public static List<GuidePage> statFacStarter() {
 		
-		List<GuidePage> pages = new ArrayList();
+		List<GuidePage> pages = new ArrayList<>();
 		
 		pages.add(new GuidePage().addTitle("book.starter.title1", 0x800000, 1F)
 				.addText("book.starter.page1", 2F)
@@ -232,8 +235,8 @@ public class ItemGuideBook extends Item implements IGUIProvider {
 		public int titleColor;
 		public float titleScale;
 		
-		public List<GuideText> texts = new ArrayList();
-		public List<GuideImage> images = new ArrayList();
+		public List<GuideText> texts = new ArrayList<>();
+		public List<GuideImage> images = new ArrayList<>();
 		
 		public GuidePage() { }
 		
@@ -245,33 +248,33 @@ public class ItemGuideBook extends Item implements IGUIProvider {
 		}
 		
 		public GuidePage addText(String text) {
-			texts.add(new GuideText(text));
+			this.texts.add(new GuideText(text));
 			return this;
 		}
 		
 		public GuidePage addText(String text, float scale) {
-			texts.add(new GuideText(text).setScale(scale));
+			this.texts.add(new GuideText(text).setScale(scale));
 			return this;
 		}
 		
 		public GuidePage addText(String text, int xOffset, int yOffset, int width) {
-			texts.add(new GuideText(text).setSize(xOffset, yOffset, width));
+			this.texts.add(new GuideText(text).setSize(xOffset, yOffset, width));
 			return this;
 		}
 		
 		public GuidePage addText(String text, float scale, int xOffset, int yOffset, int width) {
-			texts.add(new GuideText(text).setSize(xOffset, yOffset, width).setScale(scale));
+			this.texts.add(new GuideText(text).setSize(xOffset, yOffset, width).setScale(scale));
 			return this;
 		}
 		
 		public GuidePage addImage(ResourceLocation image, int xOffset, int yOffset, int sizeX, int sizeY) {
-			images.add(new GuideImage(image, xOffset, yOffset, sizeX, sizeY));
+			this.images.add(new GuideImage(image, xOffset, yOffset, sizeX, sizeY));
 			return this;
 		}
 		
 		//xOffset = -1 for automatic centering
 		public GuidePage addImage(ResourceLocation image, int yOffset, int sizeX, int sizeY) {
-			images.add(new GuideImage(image, -1, yOffset, sizeX, sizeY));
+			this.images.add(new GuideImage(image, -1, yOffset, sizeX, sizeY));
 			return this;
 		}
 	}

@@ -26,14 +26,14 @@ public class EntityMissileBunkerBuster extends EntityMissileBaseAdvanced {
 			this.worldObj.createExplosion(this, this.posX, this.posY - i, this.posZ, 5F, true);
 		}
 		
-		ExplosionLarge.spawnParticles(worldObj, this.posX, this.posY, this.posZ, 5);
-		ExplosionLarge.spawnShrapnels(worldObj, this.posX, this.posY, this.posZ, 5);
-		ExplosionLarge.spawnRubble(worldObj, this.posX, this.posY, this.posZ, 5);
+		ExplosionLarge.spawnParticles(this.worldObj, this.posX, this.posY, this.posZ, 5);
+		ExplosionLarge.spawnShrapnels(this.worldObj, this.posX, this.posY, this.posZ, 5);
+		ExplosionLarge.spawnRubble(this.worldObj, this.posX, this.posY, this.posZ, 5);
 	}
 
 	@Override
 	public List<ItemStack> getDebris() {
-		List<ItemStack> list = new ArrayList<ItemStack>();
+		List<ItemStack> list = new ArrayList<>();
 
 		list.add(new ItemStack(ModItems.plate_titanium, 4));
 		list.add(new ItemStack(ModItems.thruster_small, 1));

@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.hbm.lib.RefStrings;
 import com.hbm.render.model.ModelCryolator;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
@@ -15,7 +16,7 @@ public class ItemRenderCryolator implements IItemRenderer {
 	protected ModelCryolator swordModel;
 	
 	public ItemRenderCryolator() {
-		swordModel = new ModelCryolator();
+		this.swordModel = new ModelCryolator();
 	}
 
 	@Override
@@ -47,7 +48,7 @@ public class ItemRenderCryolator implements IItemRenderer {
 				GL11.glScalef(0.5F, 0.5F, 0.5F);
 				//GL11.glTranslatef(-0.4F, -0.1F, 0.1F);
 				GL11.glTranslatef(-0.2F, -0.1F, -0.1F);
-				swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			GL11.glPopMatrix();
 			break;
 		case EQUIPPED:
@@ -63,7 +64,7 @@ public class ItemRenderCryolator implements IItemRenderer {
 				GL11.glTranslatef(0.5F, -0.2F, 0.0F);
 				GL11.glScalef(1.25F, 1.25F, 1.25F);
 				GL11.glTranslatef(-0.8F, 0.0F, 0.0F);
-				swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			GL11.glPopMatrix();
 		default: break;
 		}

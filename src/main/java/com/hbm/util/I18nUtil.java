@@ -30,7 +30,7 @@ public class I18nUtil {
 	 */
 	@SideOnly(Side.CLIENT)
 	public static String[] resolveKeyArray(String s, Object... args) {
-		return resolveKey(s, args).split("\\$");
+		return I18nUtil.resolveKey(s, args).split("\\$");
 	}
 	
 	/**
@@ -44,10 +44,10 @@ public class I18nUtil {
 	public static List<String> autoBreakWithParagraphs(FontRenderer fontRenderer, String text, int width) {
 
 		String[] paragraphs = text.split("\\$");
-		List<String> lines = new ArrayList();
+		List<String> lines = new ArrayList<>();
 		
 		for(String paragraph : paragraphs) {
-			lines.addAll(autoBreak(fontRenderer, paragraph, width));
+			lines.addAll(I18nUtil.autoBreak(fontRenderer, paragraph, width));
 		}
 		
 		return lines;
@@ -63,7 +63,7 @@ public class I18nUtil {
 	@SideOnly(Side.CLIENT)
 	public static List<String> autoBreak(FontRenderer fontRenderer, String text, int width) {
 
-		List<String> lines = new ArrayList();
+		List<String> lines = new ArrayList<>();
 		//split the text by all spaces
 		String[] words = text.split(" ");
 		

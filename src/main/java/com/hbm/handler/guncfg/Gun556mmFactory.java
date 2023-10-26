@@ -64,7 +64,7 @@ public class Gun556mmFactory {
 		
 		config.comment.add("Why is this gun so sticky?");
 		
-		//config.config = new ArrayList();
+		//config.config = new ArrayList<>();
 		//config.config.add(BulletConfigSyncingUtil.R556_GOLD);
 		
 		config.config = HbmCollection.r556;
@@ -108,7 +108,7 @@ public class Gun556mmFactory {
 
 		config.config = HbmCollection.r556Flechette;
 		
-		config.ejector = EJECTOR_RIFLE;
+		config.ejector = Gun556mmFactory.EJECTOR_RIFLE;
 		
 		return config;
 	}
@@ -134,7 +134,7 @@ public class Gun556mmFactory {
 		
 		config.config = HbmCollection.grenade;
 		
-		config.ejector = EJECTOR_GRENADE;
+		config.ejector = Gun556mmFactory.EJECTOR_GRENADE;
 		
 		return config;
 	}
@@ -145,18 +145,18 @@ public class Gun556mmFactory {
 		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_556.stackFromEnum(Ammo556mm.STOCK));
-		bullet.spread *= inaccuracy;
+		bullet.spread *= Gun556mmFactory.inaccuracy;
 		bullet.dmgMin = 16;
 		bullet.dmgMax = 20;
 		
-		bullet.spentCasing = CASING556.clone().register("556Stock");
+		bullet.spentCasing = Gun556mmFactory.CASING556.clone().register("556Stock");
 		
 		return bullet;
 	}
 
 	public static BulletConfiguration get556GoldConfig() {
 		
-		BulletConfiguration bullet = get556Config();
+		BulletConfiguration bullet = Gun556mmFactory.get556Config();
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_556.stackFromEnum(Ammo556mm.GOLD));
 		bullet.dmgMin = 250;
@@ -170,7 +170,7 @@ public class Gun556mmFactory {
 
 	public static BulletConfiguration get556PhosphorusConfig() {
 		
-		BulletConfiguration bullet = get556Config();
+		BulletConfiguration bullet = Gun556mmFactory.get556Config();
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_556.stackFromEnum(Ammo556mm.PHOSPHORUS));
 		bullet.wear = 15;
@@ -179,7 +179,7 @@ public class Gun556mmFactory {
 		
 		PotionEffect eff = new PotionEffect(HbmPotion.phosphorus.id, 20 * 20, 0, true);
 		eff.getCurativeItems().clear();
-		bullet.effects = new ArrayList();
+		bullet.effects = new ArrayList<>();
 		bullet.effects.add(new PotionEffect(eff));
 		
 		bullet.bntImpact = (bulletnt, x, y, z, sideHit) -> {
@@ -193,14 +193,14 @@ public class Gun556mmFactory {
 			PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, bulletnt.posX, bulletnt.posY, bulletnt.posZ), new TargetPoint(bulletnt.dimension, bulletnt.posX, bulletnt.posY, bulletnt.posZ, 50));
 		};
 		
-		bullet.spentCasing = CASING556.clone().register("556Phos");
+		bullet.spentCasing = Gun556mmFactory.CASING556.clone().register("556Phos");
 		
 		return bullet;
 	}
 
 	public static BulletConfiguration get556APConfig() {
 		
-		BulletConfiguration bullet = get556Config();
+		BulletConfiguration bullet = Gun556mmFactory.get556Config();
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_556.stackFromEnum(Ammo556mm.AP));
 		bullet.dmgMin = 20;
@@ -208,14 +208,14 @@ public class Gun556mmFactory {
 		bullet.wear = 15;
 		bullet.leadChance = 10;
 		
-		bullet.spentCasing = CASING556.clone().register("556AP");
+		bullet.spentCasing = Gun556mmFactory.CASING556.clone().register("556AP");
 		
 		return bullet;
 	}
 
 	public static BulletConfiguration get556DUConfig() {
 		
-		BulletConfiguration bullet = get556Config();
+		BulletConfiguration bullet = Gun556mmFactory.get556Config();
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_556.stackFromEnum(Ammo556mm.DU));
 		bullet.dmgMin = 24;
@@ -223,14 +223,14 @@ public class Gun556mmFactory {
 		bullet.wear = 25;
 		bullet.leadChance = 50;
 		
-		bullet.spentCasing = CASING556.clone().register("556DU");
+		bullet.spentCasing = Gun556mmFactory.CASING556.clone().register("556DU");
 		
 		return bullet;
 	}
 
 	public static BulletConfiguration get556StarConfig() {
 		
-		BulletConfiguration bullet = get556Config();
+		BulletConfiguration bullet = Gun556mmFactory.get556Config();
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_556.stackFromEnum(Ammo556mm.STAR));
 		bullet.dmgMin = 30;
@@ -238,14 +238,14 @@ public class Gun556mmFactory {
 		bullet.wear = 25;
 		bullet.leadChance = 100;
 		
-		bullet.spentCasing = CASING556.clone().register("556Star");
+		bullet.spentCasing = Gun556mmFactory.CASING556.clone().register("556Star");
 		
 		return bullet;
 	}
 
 	public static BulletConfiguration get556SleekConfig() {
 		
-		BulletConfiguration bullet = get556Config();
+		BulletConfiguration bullet = Gun556mmFactory.get556Config();
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_556.stackFromEnum(Ammo556mm.SLEEK));
 		bullet.dmgMin = 45;
@@ -268,10 +268,7 @@ public class Gun556mmFactory {
 
 		bullet.bntImpact = (bulletnt, x, y, z, sideHit) -> {
 
-			if(bulletnt.worldObj.isRemote)
-				return;
-
-			if(y == -1)
+			if(bulletnt.worldObj.isRemote || (y == -1))
 				return;
 
 			EntityBulletBaseNT meteor = new EntityBulletBaseNT(bulletnt.worldObj, BulletConfigSyncingUtil.MASKMAN_METEOR);
@@ -281,26 +278,26 @@ public class Gun556mmFactory {
 			bulletnt.worldObj.spawnEntityInWorld(meteor);
 		};
 		
-		bullet.spentCasing = CASING556.clone().register("556IF");
+		bullet.spentCasing = Gun556mmFactory.CASING556.clone().register("556IF");
 		
 		return bullet;
 	}
 
 	public static BulletConfiguration get556TracerConfig() {
 		
-		BulletConfiguration bullet = get556Config();
+		BulletConfiguration bullet = Gun556mmFactory.get556Config();
 
 		bullet.ammo = new ComparableStack(ModItems.ammo_556.stackFromEnum(Ammo556mm.TRACER));
 		bullet.vPFX = "reddust";
 		
-		bullet.spentCasing = CASING556.clone().register("556Trac");
+		bullet.spentCasing = Gun556mmFactory.CASING556.clone().register("556Trac");
 		
 		return bullet;
 	}
 
 	public static BulletConfiguration get556FlechetteConfig() {
 		
-		BulletConfiguration bullet = get556Config();
+		BulletConfiguration bullet = Gun556mmFactory.get556Config();
 
 		bullet.ammo = new ComparableStack(ModItems.ammo_556.stackFromEnum(Ammo556mm.FLECHETTE));
 		bullet.dmgMin = 26;
@@ -312,34 +309,34 @@ public class Gun556mmFactory {
 		bullet.doesPenetrate = false;
 		BulletConfigFactory.makeFlechette(bullet);
 		
-		bullet.spentCasing = CASING556.clone().register("556Flec");
+		bullet.spentCasing = Gun556mmFactory.CASING556.clone().register("556Flec");
 		
 		return bullet;
 	}
 
 	public static BulletConfiguration get556FlechetteIncendiaryConfig() {
 		
-		BulletConfiguration bullet = get556FlechetteConfig();
+		BulletConfiguration bullet = Gun556mmFactory.get556FlechetteConfig();
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_556.stackFromEnum(Ammo556mm.FLECHETTE_INCENDIARY));
 		bullet.incendiary = 5;
 		BulletConfigFactory.makeFlechette(bullet);
 		
-		bullet.spentCasing = CASING556.clone().register("556FlecInc");
+		bullet.spentCasing = Gun556mmFactory.CASING556.clone().register("556FlecInc");
 		
 		return bullet;
 	}
 
 	public static BulletConfiguration get556FlechettePhosphorusConfig() {
 		
-		BulletConfiguration bullet = get556FlechetteConfig();
+		BulletConfiguration bullet = Gun556mmFactory.get556FlechetteConfig();
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_556.stackFromEnum(Ammo556mm.FLECHETTE_PHOSPHORUS));
 		bullet.incendiary = 5;
 		
 		PotionEffect eff = new PotionEffect(HbmPotion.phosphorus.id, 20 * 20, 0, true);
 		eff.getCurativeItems().clear();
-		bullet.effects = new ArrayList();
+		bullet.effects = new ArrayList<>();
 		bullet.effects.add(new PotionEffect(eff));
 		
 		bullet.bntImpact = (bulletnt, x, y, z, sideHit) -> {
@@ -353,14 +350,14 @@ public class Gun556mmFactory {
 			PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, bulletnt.posX, bulletnt.posY, bulletnt.posZ), new TargetPoint(bulletnt.dimension, bulletnt.posX, bulletnt.posY, bulletnt.posZ, 50));
 		};
 		
-		bullet.spentCasing = CASING556.clone().register("556FlecPhos");
+		bullet.spentCasing = Gun556mmFactory.CASING556.clone().register("556FlecPhos");
 		
 		return bullet;
 	}
 
 	public static BulletConfiguration get556FlechetteDUConfig() {
 		
-		BulletConfiguration bullet = get556FlechetteConfig();
+		BulletConfiguration bullet = Gun556mmFactory.get556FlechetteConfig();
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_556.stackFromEnum(Ammo556mm.FLECHETTE_DU));
 		bullet.dmgMin = 46;
@@ -369,14 +366,14 @@ public class Gun556mmFactory {
 		bullet.leadChance = 50;
 		bullet.doesPenetrate = true;
 		
-		bullet.spentCasing = CASING556.clone().register("556FlecDU");
+		bullet.spentCasing = Gun556mmFactory.CASING556.clone().register("556FlecDU");
 		
 		return bullet;
 	}
 
 	public static BulletConfiguration get556FlechetteSleekConfig() {
 		
-		BulletConfiguration bullet = get556FlechetteConfig();
+		BulletConfiguration bullet = Gun556mmFactory.get556FlechetteConfig();
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_556.stackFromEnum(Ammo556mm.FLECHETTE_SLEEK));
 		bullet.dmgMin = 45;
@@ -399,10 +396,7 @@ public class Gun556mmFactory {
 		
 		bullet.bntImpact = (bulletnt, x, y, z, sideHit) -> {
 
-			if(bulletnt.worldObj.isRemote)
-				return;
-
-			if(y == -1)
+			if(bulletnt.worldObj.isRemote || (y == -1))
 				return;
 
 			EntityBulletBaseNT meteor = new EntityBulletBaseNT(bulletnt.worldObj, BulletConfigSyncingUtil.MASKMAN_METEOR);
@@ -412,7 +406,7 @@ public class Gun556mmFactory {
 			bulletnt.worldObj.spawnEntityInWorld(meteor);
 		};
 		
-		bullet.spentCasing = CASING556.clone().register("556FlecIF");
+		bullet.spentCasing = Gun556mmFactory.CASING556.clone().register("556FlecIF");
 		
 		return bullet;
 	}

@@ -39,10 +39,10 @@ public class ItemFluidIDMulti extends Item implements IItemFluidIdentifier, IIte
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
 		
 		if(!world.isRemote && !player.isSneaking()) {
-			FluidType primary = getType(stack, true);
-			FluidType secondary = getType(stack, false);
-			setType(stack, secondary, true);
-			setType(stack, primary, false);
+			FluidType primary = ItemFluidIDMulti.getType(stack, true);
+			FluidType secondary = ItemFluidIDMulti.getType(stack, false);
+			ItemFluidIDMulti.setType(stack, secondary, true);
+			ItemFluidIDMulti.setType(stack, primary, false);
 			world.playSoundAtEntity(player, "random.orb", 0.25F, 1.25F);
 			PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.startTranslation(secondary.getConditionalName()).flush(), /*MainRegistry.proxy.ID_DETONATOR*/ 7, 3000), (EntityPlayerMP) player);
 		}
@@ -57,19 +57,19 @@ public class ItemFluidIDMulti extends Item implements IItemFluidIdentifier, IIte
 	@Override
 	public void receiveControl(ItemStack stack, NBTTagCompound data) {
 		if(data.hasKey("primary")) {
-			setType(stack, Fluids.fromID(data.getInteger("primary")), true);
+			ItemFluidIDMulti.setType(stack, Fluids.fromID(data.getInteger("primary")), true);
 		}
 		if(data.hasKey("secondary")) {
-			setType(stack, Fluids.fromID(data.getInteger("secondary")), false);
+			ItemFluidIDMulti.setType(stack, Fluids.fromID(data.getInteger("secondary")), false);
 		}
 	}
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		list.add(I18nUtil.resolveKey(getUnlocalizedName() + ".info"));
-		list.add("   " + getType(stack, true).getLocalizedName());
+		list.add("   " + ItemFluidIDMulti.getType(stack, true).getLocalizedName());
 		list.add(I18nUtil.resolveKey(getUnlocalizedName() + ".info2"));
-		list.add("   " + getType(stack, false).getLocalizedName());
+		list.add("   " + ItemFluidIDMulti.getType(stack, false).getLocalizedName());
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class ItemFluidIDMulti extends Item implements IItemFluidIdentifier, IIte
 
 	@Override
 	public FluidType getType(World world, int x, int y, int z, ItemStack stack) {
-		return getType(stack, true);
+		return ItemFluidIDMulti.getType(stack, true);
 	}
 
 	@Override
@@ -123,7 +123,7 @@ public class ItemFluidIDMulti extends Item implements IItemFluidIdentifier, IIte
 		if(pass == 0) {
 			return 16777215;
 		} else {
-			int j = getType(stack, true).getColor();
+			int j = ItemFluidIDMulti.getType(stack, true).getColor();
 
 			if(j < 0) {
 				j = 16777215;

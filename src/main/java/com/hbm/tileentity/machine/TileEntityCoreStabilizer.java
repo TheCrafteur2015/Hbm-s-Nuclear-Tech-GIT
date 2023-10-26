@@ -47,76 +47,77 @@ public class TileEntityCoreStabilizer extends TileEntityMachineBase implements I
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			this.updateConnections();
+			updateConnections();
 			
-			watts = MathHelper.clamp_int(watts, 1, 100);
-			int demand = (int) Math.pow(watts, 4);
+			this.watts = MathHelper.clamp_int(this.watts, 1, 100);
+			int demand = (int) Math.pow(this.watts, 4);
 
-			beam = 0;
+			this.beam = 0;
 			
-			if(power >= demand && slots[0] != null && slots[0].getItem() == ModItems.ams_lens && ItemLens.getLensDamage(slots[0]) < ((ItemLens)ModItems.ams_lens).maxDamage) {
+			if(this.power >= demand && this.slots[0] != null && this.slots[0].getItem() == ModItems.ams_lens && ItemLens.getLensDamage(this.slots[0]) < ((ItemLens)ModItems.ams_lens).maxDamage) {
 				
-				ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata());
-				for(int i = 1; i <= range; i++) {
+				ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata());
+				for(int i = 1; i <= TileEntityCoreStabilizer.range; i++) {
 	
-					int x = xCoord + dir.offsetX * i;
-					int y = yCoord + dir.offsetY * i;
-					int z = zCoord + dir.offsetZ * i;
+					int x = this.xCoord + dir.offsetX * i;
+					int y = this.yCoord + dir.offsetY * i;
+					int z = this.zCoord + dir.offsetZ * i;
 					
-					TileEntity te = worldObj.getTileEntity(x, y, z);
+					TileEntity te = this.worldObj.getTileEntity(x, y, z);
 	
 					if(te instanceof TileEntityCore) {
 						
 						TileEntityCore core = (TileEntityCore)te;
-						core.field = Math.max(core.field, watts);
+						core.field = Math.max(core.field, this.watts);
 						this.power -= demand;
-						beam = i;
+						this.beam = i;
 						
-						long dmg = ItemLens.getLensDamage(slots[0]);
-						dmg += watts;
+						long dmg = ItemLens.getLensDamage(this.slots[0]);
+						dmg += this.watts;
 						
 						if(dmg >= ((ItemLens)ModItems.ams_lens).maxDamage)
-							slots[0] = null;
+							this.slots[0] = null;
 						else
-							ItemLens.setLensDamage(slots[0], dmg);
+							ItemLens.setLensDamage(this.slots[0], dmg);
 						
 						break;
 					}
 					
-					if(!worldObj.getBlock(x, y, z).isAir(worldObj, x, y, z))
+					if(!this.worldObj.getBlock(x, y, z).isAir(this.worldObj, x, y, z))
 						break;
 				}
 			}
 
 			NBTTagCompound data = new NBTTagCompound();
-			data.setLong("power", power);
-			data.setInteger("watts", watts);
-			data.setInteger("beam", beam);
-			this.networkPack(data, 250);
+			data.setLong("power", this.power);
+			data.setInteger("watts", this.watts);
+			data.setInteger("beam", this.beam);
+			networkPack(data, 250);
 		}
 	}
 	
 	private void updateConnections() {
 		
 		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-			this.trySubscribe(worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, dir);
+			trySubscribe(this.worldObj, this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ, dir);
 	}
 	
+	@Override
 	public void networkUnpack(NBTTagCompound data) {
 
-		power = data.getLong("power");
-		watts = data.getInteger("watts");
-		beam = data.getInteger("beam");
+		this.power = data.getLong("power");
+		this.watts = data.getInteger("watts");
+		this.beam = data.getInteger("beam");
 	}
 	
 	public long getPowerScaled(long i) {
-		return (power * i) / maxPower;
+		return (this.power * i) / TileEntityCoreStabilizer.maxPower;
 	}
 	
 	public int getWattsScaled(int i) {
-		return (watts * i) / 100;
+		return (this.watts * i) / 100;
 	}
 
 	@Override
@@ -131,7 +132,7 @@ public class TileEntityCoreStabilizer extends TileEntityMachineBase implements I
 
 	@Override
 	public long getMaxPower() {
-		return this.maxPower;
+		return TileEntityCoreStabilizer.maxPower;
 	}
 
 	@Override
@@ -154,16 +155,16 @@ public class TileEntityCoreStabilizer extends TileEntityMachineBase implements I
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		
-		power = nbt.getLong("power");
-		watts = nbt.getInteger("watts");
+		this.power = nbt.getLong("power");
+		this.watts = nbt.getInteger("watts");
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		
-		nbt.setLong("power", power);
-		nbt.setInteger("watts", watts);
+		nbt.setLong("power", this.power);
+		nbt.setInteger("watts", this.watts);
 	}
 
 	// do some opencomputer stuff
@@ -181,14 +182,14 @@ public class TileEntityCoreStabilizer extends TileEntityMachineBase implements I
 	@Callback(direct = true, limit = 4)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getInput(Context context, Arguments args) {
-		return new Object[] {watts};
+		return new Object[] {this.watts};
 	}
 
 	@Callback(direct = true, limit = 4)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getDurability(Context context, Arguments args) {
-		if(slots[0] != null && slots[0].getItem() == ModItems.ams_lens && ItemLens.getLensDamage(slots[0]) < ((ItemLens)ModItems.ams_lens).maxDamage) {
-			return new Object[] {ItemLens.getLensDamage(slots[0])};
+		if(this.slots[0] != null && this.slots[0].getItem() == ModItems.ams_lens && ItemLens.getLensDamage(this.slots[0]) < ((ItemLens)ModItems.ams_lens).maxDamage) {
+			return new Object[] {ItemLens.getLensDamage(this.slots[0])};
 		}
 		return new Object[] {"N/A"};
 	}
@@ -197,12 +198,12 @@ public class TileEntityCoreStabilizer extends TileEntityMachineBase implements I
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getInfo(Context context, Arguments args) {
 		Object lens_damage_buf;
-		if(slots[0] != null && slots[0].getItem() == ModItems.ams_lens && ItemLens.getLensDamage(slots[0]) < ((ItemLens)ModItems.ams_lens).maxDamage) {
-			lens_damage_buf = ItemLens.getLensDamage(slots[0]);
+		if(this.slots[0] != null && this.slots[0].getItem() == ModItems.ams_lens && ItemLens.getLensDamage(this.slots[0]) < ((ItemLens)ModItems.ams_lens).maxDamage) {
+			lens_damage_buf = ItemLens.getLensDamage(this.slots[0]);
 		} else {
 			lens_damage_buf = "N/A";
 		}
-		return new Object[] {power, maxPower, watts, lens_damage_buf};
+		return new Object[] {this.power, TileEntityCoreStabilizer.maxPower, this.watts, lens_damage_buf};
 	}
 
 	@Callback(direct = true, limit = 2)
@@ -214,7 +215,7 @@ public class TileEntityCoreStabilizer extends TileEntityMachineBase implements I
 		} else if (newOutput < 0) {
 			newOutput = 0;
 		}
-		watts = newOutput;
+		this.watts = newOutput;
 		return new Object[] {};
 	}
 

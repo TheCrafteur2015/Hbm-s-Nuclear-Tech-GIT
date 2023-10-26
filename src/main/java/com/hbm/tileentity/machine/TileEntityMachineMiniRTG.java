@@ -14,18 +14,18 @@ public class TileEntityMachineMiniRTG extends TileEntityLoadedBase implements IE
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 
-			if(this.getBlockType() == ModBlocks.machine_powerrtg)
-				power += 2500;
+			if(getBlockType() == ModBlocks.machine_powerrtg)
+				this.power += 2500;
 			else
-				power += 700;
+				this.power += 700;
 			
-			if(power > getMaxPower())
-				power = getMaxPower();
+			if(this.power > getMaxPower())
+				this.power = getMaxPower();
 
 			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-				this.sendPower(worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, dir);
+				sendPower(this.worldObj, this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ, dir);
 		}
 	}
 
@@ -33,7 +33,7 @@ public class TileEntityMachineMiniRTG extends TileEntityLoadedBase implements IE
 	@Override
 	public long getMaxPower() {
 		
-		if(this.getBlockType() == ModBlocks.machine_powerrtg)
+		if(getBlockType() == ModBlocks.machine_powerrtg)
 			return 50000;
 		
 		return 1400;
@@ -41,11 +41,11 @@ public class TileEntityMachineMiniRTG extends TileEntityLoadedBase implements IE
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 
 	@Override
 	public void setPower(long i) {
-		power = i;
+		this.power = i;
 	}
 }

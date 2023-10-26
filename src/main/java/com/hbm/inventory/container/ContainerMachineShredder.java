@@ -17,47 +17,47 @@ public class ContainerMachineShredder extends Container {
 
 	public ContainerMachineShredder(InventoryPlayer invPlayer, TileEntityMachineShredder tedf) {
 
-		diFurnace = tedf;
+		this.diFurnace = tedf;
 
-		this.addSlotToContainer(new Slot(tedf, 0, 44, 18));
-		this.addSlotToContainer(new Slot(tedf, 1, 62, 18));
-		this.addSlotToContainer(new Slot(tedf, 2, 80, 18));
-		this.addSlotToContainer(new Slot(tedf, 3, 44, 36));
-		this.addSlotToContainer(new Slot(tedf, 4, 62, 36));
-		this.addSlotToContainer(new Slot(tedf, 5, 80, 36));
-		this.addSlotToContainer(new Slot(tedf, 6, 44, 54));
-		this.addSlotToContainer(new Slot(tedf, 7, 62, 54));
-		this.addSlotToContainer(new Slot(tedf, 8, 80, 54));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 9, 116, 18));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 10, 134, 18));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 11, 152, 18));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 12, 116, 36));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 13, 134, 36));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 14, 152, 36));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 15, 116, 54));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 16, 134, 54));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 17, 152, 54));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 18, 116, 72));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 19, 134, 72));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 20, 152, 72));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 21, 116, 90));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 22, 134, 90));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 23, 152, 90));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 24, 116, 108));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 25, 134, 108));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 26, 152, 108));
-		this.addSlotToContainer(new Slot(tedf, 27, 44, 108));
-		this.addSlotToContainer(new Slot(tedf, 28, 80, 108));
-		this.addSlotToContainer(new Slot(tedf, 29, 8, 108));
+		addSlotToContainer(new Slot(tedf, 0, 44, 18));
+		addSlotToContainer(new Slot(tedf, 1, 62, 18));
+		addSlotToContainer(new Slot(tedf, 2, 80, 18));
+		addSlotToContainer(new Slot(tedf, 3, 44, 36));
+		addSlotToContainer(new Slot(tedf, 4, 62, 36));
+		addSlotToContainer(new Slot(tedf, 5, 80, 36));
+		addSlotToContainer(new Slot(tedf, 6, 44, 54));
+		addSlotToContainer(new Slot(tedf, 7, 62, 54));
+		addSlotToContainer(new Slot(tedf, 8, 80, 54));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 9, 116, 18));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 10, 134, 18));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 11, 152, 18));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 12, 116, 36));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 13, 134, 36));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 14, 152, 36));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 15, 116, 54));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 16, 134, 54));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 17, 152, 54));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 18, 116, 72));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 19, 134, 72));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 20, 152, 72));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 21, 116, 90));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 22, 134, 90));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 23, 152, 90));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 24, 116, 108));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 25, 134, 108));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 26, 152, 108));
+		addSlotToContainer(new Slot(tedf, 27, 44, 108));
+		addSlotToContainer(new Slot(tedf, 28, 80, 108));
+		addSlotToContainer(new Slot(tedf, 29, 8, 108));
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 56));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 56));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 56));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 56));
 		}
 	}
 
@@ -77,12 +77,12 @@ public class ContainerMachineShredder extends Container {
 			var3 = var5.copy();
 
 			if(par2 <= 29) {
-				if(!this.mergeItemStack(var5, 30, this.inventorySlots.size(), true)) {
+				if(!mergeItemStack(var5, 30, this.inventorySlots.size(), true)) {
 					return null;
 				}
 			} else {
-				if(!this.mergeItemStack(var5, 0, 9, false))
-					if(!this.mergeItemStack(var5, 27, 30, false))
+				if(!mergeItemStack(var5, 0, 9, false))
+					if(!mergeItemStack(var5, 27, 30, false))
 						return null;
 			}
 
@@ -98,15 +98,15 @@ public class ContainerMachineShredder extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return diFurnace.isUseableByPlayer(player);
+		return this.diFurnace.isUseableByPlayer(player);
 	}
 
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 
-		for(int i = 0; i < this.crafters.size(); i++) {
-			ICrafting par1 = (ICrafting) this.crafters.get(i);
+		for (Object element : this.crafters) {
+			ICrafting par1 = (ICrafting) element;
 
 			if(this.progress != this.diFurnace.progress) {
 				par1.sendProgressBarUpdate(this, 1, this.diFurnace.progress);
@@ -119,7 +119,7 @@ public class ContainerMachineShredder extends Container {
 	@Override
 	public void updateProgressBar(int i, int j) {
 		if(i == 1) {
-			diFurnace.progress = j;
+			this.diFurnace.progress = j;
 		}
 	}
 }

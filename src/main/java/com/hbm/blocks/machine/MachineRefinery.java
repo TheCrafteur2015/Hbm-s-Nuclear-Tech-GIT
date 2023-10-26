@@ -19,6 +19,7 @@ import api.hbm.block.IToolable;
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -52,7 +53,7 @@ public class MachineRefinery extends BlockDummyable implements IPersistentInfoPr
 		if(world.isRemote) {
 			return true;
 		} else if(!player.isSneaking()) {
-			int[] pos = this.findCore(world, x, y, z);
+			int[] pos = findCore(world, x, y, z);
 
 			if(pos == null)
 				return false;
@@ -72,10 +73,10 @@ public class MachineRefinery extends BlockDummyable implements IPersistentInfoPr
 	protected void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		super.fillSpace(world, x, y, z, dir, o);
 
-		this.makeExtra(world, x - dir.offsetX + 1, y, z - dir.offsetZ + 1);
-		this.makeExtra(world, x - dir.offsetX + 1, y, z - dir.offsetZ - 1);
-		this.makeExtra(world, x - dir.offsetX - 1, y, z - dir.offsetZ + 1);
-		this.makeExtra(world, x - dir.offsetX - 1, y, z - dir.offsetZ - 1);
+		makeExtra(world, x - dir.offsetX + 1, y, z - dir.offsetZ + 1);
+		makeExtra(world, x - dir.offsetX + 1, y, z - dir.offsetZ - 1);
+		makeExtra(world, x - dir.offsetX - 1, y, z - dir.offsetZ + 1);
+		makeExtra(world, x - dir.offsetX - 1, y, z - dir.offsetZ - 1);
 	}
 
 	@Override
@@ -92,9 +93,9 @@ public class MachineRefinery extends BlockDummyable implements IPersistentInfoPr
 	public void onBlockHarvested(World world, int x, int y, int z, int meta, EntityPlayer player) {
 		
 		if(!player.capabilities.isCreativeMode) {
-			harvesters.set(player);
+			this.harvesters.set(player);
 			this.dropBlockAsItem(world, x, y, z, meta, 0);
-			harvesters.set(null);
+			this.harvesters.set(null);
 		}
 	}
 	
@@ -105,7 +106,7 @@ public class MachineRefinery extends BlockDummyable implements IPersistentInfoPr
 	
 	@Override
 	public void harvestBlock(World world, EntityPlayer player, int x, int y, int z, int meta) {
-		player.addStat(StatList.mineBlockStatArray[getIdFromBlock(this)], 1);
+		player.addStat(StatList.mineBlockStatArray[Block.getIdFromBlock(this)], 1);
 		player.addExhaustion(0.025F);
 	}
 
@@ -127,7 +128,7 @@ public class MachineRefinery extends BlockDummyable implements IPersistentInfoPr
 	@Override
 	public void onBlockExploded(World world, int x, int y, int z, Explosion explosion) {
 
-		int[] pos = this.findCore(world, x, y, z);
+		int[] pos = findCore(world, x, y, z);
 		if(pos == null) return;
 		TileEntity core = world.getTileEntity(pos[0], pos[1], pos[2]);
 		if(!(core instanceof TileEntityMachineRefinery)) return;

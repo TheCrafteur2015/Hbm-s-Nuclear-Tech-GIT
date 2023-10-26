@@ -1,11 +1,12 @@
 package com.hbm.tileentity.network;
 
-import api.hbm.conveyor.IConveyorBelt;
 import com.hbm.entity.item.EntityMovingPackage;
 import com.hbm.interfaces.IControlReceiver;
 import com.hbm.inventory.container.ContainerCraneBoxer;
 import com.hbm.inventory.gui.GUICraneBoxer;
 import com.hbm.tileentity.IGUIProvider;
+
+import api.hbm.conveyor.IConveyorBelt;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -41,14 +42,14 @@ public class TileEntityCraneBoxer extends TileEntityCraneBase implements IGUIPro
 	@Override
 	public void updateEntity() {
 		super.updateEntity();
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			boolean redstone = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
+			boolean redstone = this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);
 			
-			if(mode == MODE_REDSTONE && redstone && !lastRedstone) {
+			if(this.mode == TileEntityCraneBoxer.MODE_REDSTONE && redstone && !this.lastRedstone) {
 				
 				ForgeDirection outputSide = getOutputSide();
-				Block b = worldObj.getBlock(xCoord + outputSide.offsetX, yCoord + outputSide.offsetY, zCoord + outputSide.offsetZ);
+				Block b = this.worldObj.getBlock(this.xCoord + outputSide.offsetX, this.yCoord + outputSide.offsetY, this.zCoord + outputSide.offsetZ);
 				IConveyorBelt belt = null;
 				
 				if(b instanceof IConveyorBelt) {
@@ -57,8 +58,8 @@ public class TileEntityCraneBoxer extends TileEntityCraneBase implements IGUIPro
 				
 				int pack = 0;
 
-				for(int i = 0; i < slots.length; i++) {
-					if(slots[i] != null) {
+				for (ItemStack slot : this.slots) {
+					if(slot != null) {
 						pack++;
 					}
 				}
@@ -67,30 +68,30 @@ public class TileEntityCraneBoxer extends TileEntityCraneBase implements IGUIPro
 					
 					ItemStack[] box = new ItemStack[pack];
 					
-					for(int i = 0; i < slots.length && pack > 0; i++) {
+					for(int i = 0; i < this.slots.length && pack > 0; i++) {
 						
-						if(slots[i] != null) {
+						if(this.slots[i] != null) {
 							pack--;
-							box[pack] = slots[i].copy();
-							slots[i] = null;
+							box[pack] = this.slots[i].copy();
+							this.slots[i] = null;
 						}
 					}
 					
-					EntityMovingPackage moving = new EntityMovingPackage(worldObj);
-					Vec3 pos = Vec3.createVectorHelper(xCoord + 0.5 + outputSide.offsetX * 0.55, yCoord + 0.5 + outputSide.offsetY * 0.55, zCoord + 0.5 + outputSide.offsetZ * 0.55);
-					Vec3 snap = belt.getClosestSnappingPosition(worldObj, xCoord + outputSide.offsetX, yCoord + outputSide.offsetY, zCoord + outputSide.offsetZ, pos);
+					EntityMovingPackage moving = new EntityMovingPackage(this.worldObj);
+					Vec3 pos = Vec3.createVectorHelper(this.xCoord + 0.5 + outputSide.offsetX * 0.55, this.yCoord + 0.5 + outputSide.offsetY * 0.55, this.zCoord + 0.5 + outputSide.offsetZ * 0.55);
+					Vec3 snap = belt.getClosestSnappingPosition(this.worldObj, this.xCoord + outputSide.offsetX, this.yCoord + outputSide.offsetY, this.zCoord + outputSide.offsetZ, pos);
 					moving.setPosition(snap.xCoord, snap.yCoord, snap.zCoord);
 					moving.setItemStacks(box);
-					worldObj.spawnEntityInWorld(moving);
+					this.worldObj.spawnEntityInWorld(moving);
 				}
 			}
 					
 			this.lastRedstone = redstone;
 			
-			if(mode != MODE_REDSTONE && worldObj.getTotalWorldTime() % 2 == 0) {
+			if(this.mode != TileEntityCraneBoxer.MODE_REDSTONE && this.worldObj.getTotalWorldTime() % 2 == 0) {
 				int pack = 1;
 				
-				switch(mode) {
+				switch(this.mode) {
 				case MODE_4: pack = 4; break;
 				case MODE_8: pack = 8; break;
 				case MODE_16: pack = 16; break;
@@ -107,15 +108,15 @@ public class TileEntityCraneBoxer extends TileEntityCraneBase implements IGUIPro
 					}
 				}*/
 				
-				for(int i = 0; i < slots.length; i++) {
+				for (ItemStack slot : this.slots) {
 					
-					if(slots[i] != null && slots[i].stackSize == slots[i].getMaxStackSize()) {
+					if(slot != null && slot.stackSize == slot.getMaxStackSize()) {
 						fullStacks++;
 					}
 				}
 				
 				ForgeDirection outputSide = getOutputSide();
-				Block b = worldObj.getBlock(xCoord + outputSide.offsetX, yCoord + outputSide.offsetY, zCoord + outputSide.offsetZ);
+				Block b = this.worldObj.getBlock(this.xCoord + outputSide.offsetX, this.yCoord + outputSide.offsetY, this.zCoord + outputSide.offsetZ);
 				IConveyorBelt belt = null;
 				
 				if(b instanceof IConveyorBelt) {
@@ -126,30 +127,31 @@ public class TileEntityCraneBoxer extends TileEntityCraneBase implements IGUIPro
 					
 					ItemStack[] box = new ItemStack[pack];
 					
-					for(int i = 0; i < slots.length && pack > 0; i++) {
+					for(int i = 0; i < this.slots.length && pack > 0; i++) {
 						
-						if(slots[i] != null && slots[i].stackSize == slots[i].getMaxStackSize()) {
+						if(this.slots[i] != null && this.slots[i].stackSize == this.slots[i].getMaxStackSize()) {
 							pack--;
-							box[pack] = slots[i].copy();
-							slots[i] = null;
+							box[pack] = this.slots[i].copy();
+							this.slots[i] = null;
 						}
 					}
 					
-					EntityMovingPackage moving = new EntityMovingPackage(worldObj);
-					Vec3 pos = Vec3.createVectorHelper(xCoord + 0.5 + outputSide.offsetX * 0.55, yCoord + 0.5 + outputSide.offsetY * 0.55, zCoord + 0.5 + outputSide.offsetZ * 0.55);
-					Vec3 snap = belt.getClosestSnappingPosition(worldObj, xCoord + outputSide.offsetX, yCoord + outputSide.offsetY, zCoord + outputSide.offsetZ, pos);
+					EntityMovingPackage moving = new EntityMovingPackage(this.worldObj);
+					Vec3 pos = Vec3.createVectorHelper(this.xCoord + 0.5 + outputSide.offsetX * 0.55, this.yCoord + 0.5 + outputSide.offsetY * 0.55, this.zCoord + 0.5 + outputSide.offsetZ * 0.55);
+					Vec3 snap = belt.getClosestSnappingPosition(this.worldObj, this.xCoord + outputSide.offsetX, this.yCoord + outputSide.offsetY, this.zCoord + outputSide.offsetZ, pos);
 					moving.setPosition(snap.xCoord, snap.yCoord, snap.zCoord);
 					moving.setItemStacks(box);
-					worldObj.spawnEntityInWorld(moving);
+					this.worldObj.spawnEntityInWorld(moving);
 				}
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setByte("mode", mode);
-			this.networkPack(data, 15);
+			data.setByte("mode", this.mode);
+			networkPack(data, 15);
 		}
 	}
 	
+	@Override
 	public void networkUnpack(NBTTagCompound nbt) {
 		this.mode = nbt.getByte("mode");
 	}
@@ -174,8 +176,8 @@ public class TileEntityCraneBoxer extends TileEntityCraneBase implements IGUIPro
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setByte("mode", mode);
-		nbt.setBoolean("lastRedstone", lastRedstone);
+		nbt.setByte("mode", this.mode);
+		nbt.setBoolean("lastRedstone", this.lastRedstone);
 	}
 
 	@Override
@@ -191,7 +193,7 @@ public class TileEntityCraneBoxer extends TileEntityCraneBase implements IGUIPro
 
 	@Override
 	public boolean hasPermission(EntityPlayer player) {
-		return Vec3.createVectorHelper(xCoord - player.posX, yCoord - player.posY, zCoord - player.posZ).lengthVector() < 20;
+		return Vec3.createVectorHelper(this.xCoord - player.posX, this.yCoord - player.posY, this.zCoord - player.posZ).lengthVector() < 20;
 	}
 
 	@Override

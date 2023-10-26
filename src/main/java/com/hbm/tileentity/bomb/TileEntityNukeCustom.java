@@ -31,33 +31,33 @@ public class TileEntityNukeCustom extends TileEntity implements ISidedInventory,
 	private String customName;
 	
 	public TileEntityNukeCustom() {
-		slots = new ItemStack[27];
+		this.slots = new ItemStack[27];
 	}
 	
 	@Override
 	public int getSizeInventory() {
-		return slots.length;
+		return this.slots.length;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		return slots[i];
+		return this.slots[i];
 	}
 
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			if(slots[i].stackSize <= j)
+			if(this.slots[i].stackSize <= j)
 			{
-				ItemStack itemStack = slots[i];
-				slots[i] = null;
+				ItemStack itemStack = this.slots[i];
+				this.slots[i] = null;
 				return itemStack;
 			}
-			ItemStack itemStack1 = slots[i].splitStack(j);
-			if (slots[i].stackSize == 0)
+			ItemStack itemStack1 = this.slots[i].splitStack(j);
+			if (this.slots[i].stackSize == 0)
 			{
-				slots[i] = null;
+				this.slots[i] = null;
 			}
 			
 			return itemStack1;
@@ -68,10 +68,10 @@ public class TileEntityNukeCustom extends TileEntity implements ISidedInventory,
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			ItemStack itemStack = slots[i];
-			slots[i] = null;
+			ItemStack itemStack = this.slots[i];
+			this.slots[i] = null;
 			return itemStack;
 		} else {
 		return null;
@@ -80,7 +80,7 @@ public class TileEntityNukeCustom extends TileEntity implements ISidedInventory,
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemStack) {
-		slots[i] = itemStack;
+		this.slots[i] = itemStack;
 		if(itemStack != null && itemStack.stackSize > getInventoryStackLimit())
 		{
 			itemStack.stackSize = getInventoryStackLimit();
@@ -89,7 +89,7 @@ public class TileEntityNukeCustom extends TileEntity implements ISidedInventory,
 
 	@Override
 	public String getInventoryName() {
-		return this.hasCustomInventoryName() ? this.customName : "container.nukeCustom";
+		return hasCustomInventoryName() ? this.customName : "container.nukeCustom";
 	}
 
 	@Override
@@ -108,11 +108,11 @@ public class TileEntityNukeCustom extends TileEntity implements ISidedInventory,
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		if(worldObj.getTileEntity(xCoord, yCoord, zCoord) != this)
+		if(this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this)
 		{
 			return false;
 		}else{
-			return player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <=64;
+			return player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <=64;
 		}
 	}
 
@@ -138,7 +138,7 @@ public class TileEntityNukeCustom extends TileEntity implements ISidedInventory,
 
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemStack, int j) {
-		return this.isItemValidForSlot(i, itemStack);
+		return isItemValidForSlot(i, itemStack);
 	}
 
 	@Override
@@ -151,15 +151,15 @@ public class TileEntityNukeCustom extends TileEntity implements ISidedInventory,
 		super.readFromNBT(nbt);
 		
 		NBTTagList list = nbt.getTagList("items", 10);
-		slots = new ItemStack[getSizeInventory()];
+		this.slots = new ItemStack[getSizeInventory()];
 		
 		for(int i = 0; i < list.tagCount(); i++)
 		{
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("slot");
-			if(b0 >= 0 && b0 < slots.length)
+			if(b0 >= 0 && b0 < this.slots.length)
 			{
-				slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
+				this.slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
 			}
 		}
 	}
@@ -170,84 +170,84 @@ public class TileEntityNukeCustom extends TileEntity implements ISidedInventory,
 		
 		NBTTagList list = new NBTTagList();
 		
-		for(int i = 0; i < slots.length; i++)
+		for(int i = 0; i < this.slots.length; i++)
 		{
-			if(slots[i] != null)
+			if(this.slots[i] != null)
 			{
 				NBTTagCompound nbt1 = new NBTTagCompound();
 				nbt1.setByte("slot", (byte)i);
-				slots[i].writeToNBT(nbt1);
+				this.slots[i].writeToNBT(nbt1);
 				list.appendTag(nbt1);
 			}
 		}
 		nbt.setTag("items", list);
 	}
 	
-	public static HashMap<ComparableStack, CustomNukeEntry> entries = new HashMap();
+	public static HashMap<ComparableStack, CustomNukeEntry> entries = new HashMap<>();
 	
 	public static void registerBombItems() {
 
-		entries.put(new ComparableStack(Items.gunpowder), new CustomNukeEntry(EnumBombType.TNT, 0.8F));
-		entries.put(new ComparableStack(Blocks.tnt), new CustomNukeEntry(EnumBombType.TNT, 4F));
-		entries.put(new ComparableStack(ModBlocks.det_cord), new CustomNukeEntry(EnumBombType.TNT, 1.5F));
-		entries.put(new ComparableStack(ModItems.ingot_semtex), new CustomNukeEntry(EnumBombType.TNT, 8F));
-		entries.put(new ComparableStack(ModBlocks.det_charge), new CustomNukeEntry(EnumBombType.TNT, 15F));
-		entries.put(new ComparableStack(ModBlocks.red_barrel), new CustomNukeEntry(EnumBombType.TNT, 2.5F));
-		entries.put(new ComparableStack(ModBlocks.pink_barrel), new CustomNukeEntry(EnumBombType.TNT, 4F));
-		entries.put(new ComparableStack(ModItems.custom_tnt), new CustomNukeEntry(EnumBombType.TNT, 10F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(Items.gunpowder), new CustomNukeEntry(EnumBombType.TNT, 0.8F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(Blocks.tnt), new CustomNukeEntry(EnumBombType.TNT, 4F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModBlocks.det_cord), new CustomNukeEntry(EnumBombType.TNT, 1.5F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.ingot_semtex), new CustomNukeEntry(EnumBombType.TNT, 8F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModBlocks.det_charge), new CustomNukeEntry(EnumBombType.TNT, 15F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModBlocks.red_barrel), new CustomNukeEntry(EnumBombType.TNT, 2.5F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModBlocks.pink_barrel), new CustomNukeEntry(EnumBombType.TNT, 4F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.custom_tnt), new CustomNukeEntry(EnumBombType.TNT, 10F));
 
-		entries.put(new ComparableStack(ModItems.ingot_u235), new CustomNukeEntry(EnumBombType.NUKE, 15F));
-		entries.put(new ComparableStack(ModItems.ingot_pu239), new CustomNukeEntry(EnumBombType.NUKE, 25F));
-		entries.put(new ComparableStack(ModItems.ingot_neptunium), new CustomNukeEntry(EnumBombType.NUKE, 30F));
-		entries.put(new ComparableStack(ModItems.nugget_u235), new CustomNukeEntry(EnumBombType.NUKE, 1.5F));
-		entries.put(new ComparableStack(ModItems.nugget_pu239), new CustomNukeEntry(EnumBombType.NUKE, 2.5F));
-		entries.put(new ComparableStack(ModItems.nugget_neptunium), new CustomNukeEntry(EnumBombType.NUKE, 3.0F));
-		entries.put(new ComparableStack(ModItems.powder_neptunium), new CustomNukeEntry(EnumBombType.NUKE, 30F));
-		entries.put(new ComparableStack(ModItems.custom_nuke), new CustomNukeEntry(EnumBombType.NUKE, 30F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.ingot_u235), new CustomNukeEntry(EnumBombType.NUKE, 15F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.ingot_pu239), new CustomNukeEntry(EnumBombType.NUKE, 25F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.ingot_neptunium), new CustomNukeEntry(EnumBombType.NUKE, 30F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.nugget_u235), new CustomNukeEntry(EnumBombType.NUKE, 1.5F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.nugget_pu239), new CustomNukeEntry(EnumBombType.NUKE, 2.5F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.nugget_neptunium), new CustomNukeEntry(EnumBombType.NUKE, 3.0F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.powder_neptunium), new CustomNukeEntry(EnumBombType.NUKE, 30F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.custom_nuke), new CustomNukeEntry(EnumBombType.NUKE, 30F));
 
-		entries.put(new ComparableStack(ModItems.cell_deuterium), new CustomNukeEntry(EnumBombType.HYDRO, 20F));
-		entries.put(new ComparableStack(ModItems.cell_tritium), new CustomNukeEntry(EnumBombType.HYDRO, 30F));
-		entries.put(new ComparableStack(ModItems.lithium), new CustomNukeEntry(EnumBombType.HYDRO, 20F));
-		entries.put(new ComparableStack(ModItems.tritium_deuterium_cake), new CustomNukeEntry(EnumBombType.HYDRO, 200F));
-		entries.put(new ComparableStack(ModItems.custom_hydro), new CustomNukeEntry(EnumBombType.HYDRO, 30F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.cell_deuterium), new CustomNukeEntry(EnumBombType.HYDRO, 20F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.cell_tritium), new CustomNukeEntry(EnumBombType.HYDRO, 30F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.lithium), new CustomNukeEntry(EnumBombType.HYDRO, 20F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.tritium_deuterium_cake), new CustomNukeEntry(EnumBombType.HYDRO, 200F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.custom_hydro), new CustomNukeEntry(EnumBombType.HYDRO, 30F));
 
-		entries.put(new ComparableStack(ModItems.cell_antimatter), new CustomNukeEntry(EnumBombType.AMAT, 5F));
-		entries.put(new ComparableStack(ModItems.custom_amat), new CustomNukeEntry(EnumBombType.AMAT, 15F));
-		entries.put(new ComparableStack(ModItems.egg_balefire_shard), new CustomNukeEntry(EnumBombType.AMAT, 15F));
-		entries.put(new ComparableStack(ModItems.egg_balefire), new CustomNukeEntry(EnumBombType.AMAT, 150F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.cell_antimatter), new CustomNukeEntry(EnumBombType.AMAT, 5F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.custom_amat), new CustomNukeEntry(EnumBombType.AMAT, 15F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.egg_balefire_shard), new CustomNukeEntry(EnumBombType.AMAT, 15F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.egg_balefire), new CustomNukeEntry(EnumBombType.AMAT, 150F));
 
-		entries.put(new ComparableStack(ModItems.ingot_tungsten), new CustomNukeEntry(EnumBombType.DIRTY, 1F));
-		entries.put(new ComparableStack(ModItems.custom_dirty), new CustomNukeEntry(EnumBombType.DIRTY, 10F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.ingot_tungsten), new CustomNukeEntry(EnumBombType.DIRTY, 1F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.custom_dirty), new CustomNukeEntry(EnumBombType.DIRTY, 10F));
 
-		entries.put(new ComparableStack(ModItems.ingot_schrabidium), new CustomNukeEntry(EnumBombType.SCHRAB, 5F));
-		entries.put(new ComparableStack(ModBlocks.block_schrabidium), new CustomNukeEntry(EnumBombType.SCHRAB, 50F));
-		entries.put(new ComparableStack(ModItems.nugget_schrabidium), new CustomNukeEntry(EnumBombType.SCHRAB, 0.5F));
-		entries.put(new ComparableStack(ModItems.powder_schrabidium), new CustomNukeEntry(EnumBombType.SCHRAB, 5F));
-		entries.put(new ComparableStack(ModItems.cell_sas3), new CustomNukeEntry(EnumBombType.SCHRAB, 7.5F));
-		entries.put(new ComparableStack(ModItems.cell_anti_schrabidium), new CustomNukeEntry(EnumBombType.SCHRAB, 15F));
-		entries.put(new ComparableStack(ModItems.custom_schrab), new CustomNukeEntry(EnumBombType.SCHRAB, 15F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.ingot_schrabidium), new CustomNukeEntry(EnumBombType.SCHRAB, 5F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModBlocks.block_schrabidium), new CustomNukeEntry(EnumBombType.SCHRAB, 50F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.nugget_schrabidium), new CustomNukeEntry(EnumBombType.SCHRAB, 0.5F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.powder_schrabidium), new CustomNukeEntry(EnumBombType.SCHRAB, 5F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.cell_sas3), new CustomNukeEntry(EnumBombType.SCHRAB, 7.5F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.cell_anti_schrabidium), new CustomNukeEntry(EnumBombType.SCHRAB, 15F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.custom_schrab), new CustomNukeEntry(EnumBombType.SCHRAB, 15F));
 
-		entries.put(new ComparableStack(ModItems.nugget_euphemium), new CustomNukeEntry(EnumBombType.EUPH, 1F));
-		entries.put(new ComparableStack(ModItems.ingot_euphemium), new CustomNukeEntry(EnumBombType.EUPH, 1F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.nugget_euphemium), new CustomNukeEntry(EnumBombType.EUPH, 1F));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.ingot_euphemium), new CustomNukeEntry(EnumBombType.EUPH, 1F));
 
-		entries.put(new ComparableStack(Items.redstone), new CustomNukeEntry(EnumBombType.TNT, 1.05F, EnumEntryType.MULT));
-		entries.put(new ComparableStack(Blocks.redstone_block), new CustomNukeEntry(EnumBombType.TNT, 1.5F, EnumEntryType.MULT));
+		TileEntityNukeCustom.entries.put(new ComparableStack(Items.redstone), new CustomNukeEntry(EnumBombType.TNT, 1.05F, EnumEntryType.MULT));
+		TileEntityNukeCustom.entries.put(new ComparableStack(Blocks.redstone_block), new CustomNukeEntry(EnumBombType.TNT, 1.5F, EnumEntryType.MULT));
 
-		entries.put(new ComparableStack(ModItems.ingot_uranium), new CustomNukeEntry(EnumBombType.NUKE, 1.05F, EnumEntryType.MULT));
-		entries.put(new ComparableStack(ModItems.ingot_plutonium), new CustomNukeEntry(EnumBombType.NUKE, 1.15F, EnumEntryType.MULT));
-		entries.put(new ComparableStack(ModItems.ingot_u238), new CustomNukeEntry(EnumBombType.NUKE, 1.1F, EnumEntryType.MULT));
-		entries.put(new ComparableStack(ModItems.ingot_pu238), new CustomNukeEntry(EnumBombType.NUKE, 1.15F, EnumEntryType.MULT));
-		entries.put(new ComparableStack(ModItems.nugget_uranium), new CustomNukeEntry(EnumBombType.NUKE, 1.005F, EnumEntryType.MULT));
-		entries.put(new ComparableStack(ModItems.nugget_plutonium), new CustomNukeEntry(EnumBombType.NUKE, 1.15F, EnumEntryType.MULT));
-		entries.put(new ComparableStack(ModItems.nugget_u238), new CustomNukeEntry(EnumBombType.NUKE, 1.01F, EnumEntryType.MULT));
-		entries.put(new ComparableStack(ModItems.nugget_pu238), new CustomNukeEntry(EnumBombType.NUKE, 1.015F, EnumEntryType.MULT));
-		entries.put(new ComparableStack(ModItems.powder_uranium), new CustomNukeEntry(EnumBombType.NUKE, 1.05F, EnumEntryType.MULT));
-		entries.put(new ComparableStack(ModItems.powder_plutonium), new CustomNukeEntry(EnumBombType.NUKE, 1.15F, EnumEntryType.MULT));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.ingot_uranium), new CustomNukeEntry(EnumBombType.NUKE, 1.05F, EnumEntryType.MULT));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.ingot_plutonium), new CustomNukeEntry(EnumBombType.NUKE, 1.15F, EnumEntryType.MULT));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.ingot_u238), new CustomNukeEntry(EnumBombType.NUKE, 1.1F, EnumEntryType.MULT));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.ingot_pu238), new CustomNukeEntry(EnumBombType.NUKE, 1.15F, EnumEntryType.MULT));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.nugget_uranium), new CustomNukeEntry(EnumBombType.NUKE, 1.005F, EnumEntryType.MULT));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.nugget_plutonium), new CustomNukeEntry(EnumBombType.NUKE, 1.15F, EnumEntryType.MULT));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.nugget_u238), new CustomNukeEntry(EnumBombType.NUKE, 1.01F, EnumEntryType.MULT));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.nugget_pu238), new CustomNukeEntry(EnumBombType.NUKE, 1.015F, EnumEntryType.MULT));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.powder_uranium), new CustomNukeEntry(EnumBombType.NUKE, 1.05F, EnumEntryType.MULT));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.powder_plutonium), new CustomNukeEntry(EnumBombType.NUKE, 1.15F, EnumEntryType.MULT));
 
-		entries.put(new ComparableStack(ModItems.ingot_pu240), new CustomNukeEntry(EnumBombType.DIRTY, 1.05F, EnumEntryType.MULT));
-		entries.put(new ComparableStack(ModItems.nuclear_waste), new CustomNukeEntry(EnumBombType.DIRTY, 1.025F, EnumEntryType.MULT));
-		entries.put(new ComparableStack(ModBlocks.block_waste), new CustomNukeEntry(EnumBombType.DIRTY, 1.25F, EnumEntryType.MULT));
-		entries.put(new ComparableStack(ModBlocks.yellow_barrel), new CustomNukeEntry(EnumBombType.DIRTY, 1.2F, EnumEntryType.MULT));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.ingot_pu240), new CustomNukeEntry(EnumBombType.DIRTY, 1.05F, EnumEntryType.MULT));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModItems.nuclear_waste), new CustomNukeEntry(EnumBombType.DIRTY, 1.025F, EnumEntryType.MULT));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModBlocks.block_waste), new CustomNukeEntry(EnumBombType.DIRTY, 1.25F, EnumEntryType.MULT));
+		TileEntityNukeCustom.entries.put(new ComparableStack(ModBlocks.yellow_barrel), new CustomNukeEntry(EnumBombType.DIRTY, 1.2F, EnumEntryType.MULT));
 	}
 
 	public float tnt;
@@ -270,13 +270,13 @@ public class TileEntityNukeCustom extends TileEntity implements ISidedInventory,
 		float schrab = 0F,	schrabMod = 1F;
 		float euph = 0F;
 		
-		for(ItemStack stack : slots) {
+		for(ItemStack stack : this.slots) {
 			
 			if(stack == null)
 				continue;
 			
 			ComparableStack comp = new ComparableStack(stack).makeSingular();
-			CustomNukeEntry ent = entries.get(comp);
+			CustomNukeEntry ent = TileEntityNukeCustom.entries.get(comp);
 			
 			if(ent == null)
 				continue;
@@ -330,39 +330,39 @@ public class TileEntityNukeCustom extends TileEntity implements ISidedInventory,
 	
 	public float getNukeAdj() {
 		
-		if(nuke == 0)
+		if(this.nuke == 0)
 			return 0;
 		
-		return Math.min(nuke + tnt / 2, NukeCustom.maxNuke);
+		return Math.min(this.nuke + this.tnt / 2, NukeCustom.maxNuke);
 	}
 	
 	public float getHydroAdj() {
 		
-		if(hydro == 0)
+		if(this.hydro == 0)
 			return 0;
 		
-		return Math.min(hydro + nuke / 2 + tnt / 4, NukeCustom.maxHydro);
+		return Math.min(this.hydro + this.nuke / 2 + this.tnt / 4, NukeCustom.maxHydro);
 	}
 	
 	public float getAmatAdj() {
 		
-		if(amat == 0)
+		if(this.amat == 0)
 			return 0;
 		
-		return Math.min(amat + hydro / 2 + nuke / 4 + tnt / 8, NukeCustom.maxAmat);
+		return Math.min(this.amat + this.hydro / 2 + this.nuke / 4 + this.tnt / 8, NukeCustom.maxAmat);
 	}
 	
 	public float getSchrabAdj() {
 		
-		if(schrab == 0)
+		if(this.schrab == 0)
 			return 0;
 		
-		return Math.min(schrab + amat / 2 + hydro / 4 + nuke / 8 + tnt / 16, NukeCustom.maxSchrab);
+		return Math.min(this.schrab + this.amat / 2 + this.hydro / 4 + this.nuke / 8 + this.tnt / 16, NukeCustom.maxSchrab);
 	}
 	
 	public boolean isFalling() {
 		
-		for(ItemStack stack : slots) {
+		for(ItemStack stack : this.slots) {
 			if(stack != null && stack.getItem() == ModItems.custom_fall)
 				return true;
 		}
@@ -373,13 +373,13 @@ public class TileEntityNukeCustom extends TileEntity implements ISidedInventory,
 	public void destruct() {
 		
 		clearSlots();
-		worldObj.func_147480_a(xCoord, yCoord, xCoord, false);
+		this.worldObj.func_147480_a(this.xCoord, this.yCoord, this.xCoord, false);
 	}
 	
 	public void clearSlots() {
-		for(int i = 0; i < slots.length; i++)
+		for(int i = 0; i < this.slots.length; i++)
 		{
-			slots[i] = null;
+			this.slots[i] = null;
 		}
 	}
 	
@@ -412,7 +412,7 @@ public class TileEntityNukeCustom extends TileEntity implements ISidedInventory,
 		
 		@Override
 		public String toString() {
-			return name;
+			return this.name;
 		}
 	}
 	

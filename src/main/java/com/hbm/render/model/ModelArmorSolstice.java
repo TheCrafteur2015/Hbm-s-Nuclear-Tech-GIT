@@ -10,10 +10,10 @@ public class ModelArmorSolstice extends ModelArmorWings {
 	public ModelArmorSolstice() {
 		super(0);
 
-		wingLB = new ModelRendererObj(ResourceManager.armor_solstice, "WingLB");
-		wingLT = new ModelRendererObj(ResourceManager.armor_solstice, "WingLT");
-		wingRB = new ModelRendererObj(ResourceManager.armor_solstice, "WingRB");
-		wingRT = new ModelRendererObj(ResourceManager.armor_solstice, "WingRT");
+		this.wingLB = new ModelRendererObj(ResourceManager.armor_solstice, "WingLB");
+		this.wingLT = new ModelRendererObj(ResourceManager.armor_solstice, "WingLT");
+		this.wingRB = new ModelRendererObj(ResourceManager.armor_solstice, "WingRB");
+		this.wingRT = new ModelRendererObj(ResourceManager.armor_solstice, "WingRT");
 	}
 	
 	@Override

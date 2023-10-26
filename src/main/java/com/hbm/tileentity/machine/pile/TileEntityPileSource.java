@@ -7,12 +7,12 @@ public class TileEntityPileSource extends TileEntityPileBase {
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			int n = this.getBlockType() == ModBlocks.block_graphite_source ? 1 : 2;
+			int n = getBlockType() == ModBlocks.block_graphite_source ? 1 : 2;
 			
 			for(int i = 0; i < 12; i++) {
-				this.castRay(n, 5);
+				castRay(n, 5);
 			}
 		}
 	}

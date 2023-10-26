@@ -32,7 +32,7 @@ public class PowerDetector extends BlockContainer {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int metadata) {
-		return metadata == 1 ? iconOn : blockIcon;
+		return metadata == 1 ? this.iconOn : this.blockIcon;
 	}
 
 	@Override
@@ -40,11 +40,13 @@ public class PowerDetector extends BlockContainer {
 		return new TileEntityMachineDetector();
 	}
 	
-    public boolean canProvidePower() {
+    @Override
+	public boolean canProvidePower() {
         return true;
     }
     
-    public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side) {
+    @Override
+	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side) {
         return world.getBlockMetadata(x, y, z) == 1 ? 15 : 0;
     }
 

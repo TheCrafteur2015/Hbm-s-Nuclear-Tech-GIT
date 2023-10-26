@@ -17,8 +17,8 @@ public class RenderTestMissile extends Render {
     private ResourceLocation boyTexture;
 	
 	public RenderTestMissile() {
-		boyModel = AdvancedModelLoader.loadModel(objTesterModelRL);
-		boyTexture = new ResourceLocation(RefStrings.MODID, "textures/models/Missile.png");
+		this.boyModel = AdvancedModelLoader.loadModel(RenderTestMissile.objTesterModelRL);
+		this.boyTexture = new ResourceLocation(RefStrings.MODID, "textures/models/Missile.png");
 	}
 
 	@Override
@@ -29,8 +29,8 @@ public class RenderTestMissile extends Render {
         GL11.glRotatef(p_76986_1_.prevRotationYaw + (p_76986_1_.rotationYaw - p_76986_1_.prevRotationYaw) * p_76986_9_ - 90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(p_76986_1_.prevRotationPitch + (p_76986_1_.rotationPitch - p_76986_1_.prevRotationPitch) * p_76986_9_, 0.0F, 0.0F, 1.0F);
         
-        bindTexture(boyTexture);
-        boyModel.renderAll();
+        bindTexture(this.boyTexture);
+        this.boyModel.renderAll();
 		GL11.glPopMatrix();
 	}
 

@@ -6,6 +6,7 @@ import com.hbm.entity.grenade.EntityGrenadeImpactGeneric;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -22,11 +23,11 @@ public class ItemGenericGrenade extends ItemGrenade {
 			--stack.stackSize;
 		}
 
-		world.playSoundAtEntity(player, "random.bow", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+		world.playSoundAtEntity(player, "random.bow", 0.5F, 0.4F / (Item.itemRand.nextFloat() * 0.4F + 0.8F));
 		
 		if(!world.isRemote) {
 			
-			if(fuse == -1)
+			if(this.fuse == -1)
 				world.spawnEntityInWorld(new EntityGrenadeImpactGeneric(world, player).setType(this));
 			else
 				world.spawnEntityInWorld(new EntityGrenadeBouncyGeneric(world, player).setType(this));

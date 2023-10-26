@@ -33,7 +33,7 @@ public class RenderSawblade extends Render {
 		
 		GL11.glTranslated(0, -1.375, 0);
 		
-		this.bindEntityTexture(cog);
+		bindEntityTexture(cog);
 		ResourceManager.sawmill.renderPart("Blade");
 		
 		GL11.glPopMatrix();

@@ -17,7 +17,7 @@ public class FT_PWRModerator extends FluidTrait {
 	}
 	
 	public double getMultiplier() {
-		return multiplier;
+		return this.multiplier;
 	}
 	
 	@Override
@@ -27,13 +27,13 @@ public class FT_PWRModerator extends FluidTrait {
 
 	@Override
 	public void addInfoHidden(List<String> info) {
-		int mult = (int) (multiplier * 100 - 100);
+		int mult = (int) (this.multiplier * 100 - 100);
 		info.add(EnumChatFormatting.BLUE + "Core flux " + (mult >= 0 ? "+" : "") + mult + "%");
 	}
 
 	@Override
 	public void serializeJSON(JsonWriter writer) throws IOException {
-		writer.name("multiplier").value(multiplier);
+		writer.name("multiplier").value(this.multiplier);
 	}
 	
 	@Override

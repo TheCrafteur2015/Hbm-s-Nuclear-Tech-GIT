@@ -46,9 +46,9 @@ public class MachineDeuteriumExtractor extends BlockContainer implements ILookOv
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int metadata) {
 		if(side == 0 || side == 1) {
-			return iconTopH2O;
+			return this.iconTopH2O;
 		} else {
-			return blockIcon;
+			return this.blockIcon;
 		}
 	}
 
@@ -62,7 +62,7 @@ public class MachineDeuteriumExtractor extends BlockContainer implements ILookOv
 		
 		TileEntityDeuteriumExtractor extractor = (TileEntityDeuteriumExtractor) te;
 		
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		text.add((extractor.power < extractor.getMaxPower() / 20 ? EnumChatFormatting.RED : EnumChatFormatting.GREEN) + "Power: " + BobMathUtil.getShortNumber(extractor.power) + "HE");
 
 		for(int i = 0; i < extractor.tanks.length; i++)

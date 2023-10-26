@@ -19,7 +19,7 @@ public class TileEntitySafe extends TileEntityCrateBase implements ISidedInvento
 
 	@Override
 	public String getInventoryName() {
-		return this.hasCustomInventoryName() ? this.customName : "container.safe";
+		return hasCustomInventoryName() ? this.customName : "container.safe";
 	}
 
 	@Override

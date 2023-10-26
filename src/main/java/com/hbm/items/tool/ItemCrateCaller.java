@@ -19,9 +19,10 @@ public class ItemCrateCaller extends Item {
 	
 	public ItemCrateCaller() {
 		this.canRepair = false;
-		this.setMaxDamage(4);
+		setMaxDamage(4);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool)
 	{
@@ -33,12 +34,12 @@ public class ItemCrateCaller extends Item {
 		
 		stack.damageItem(1, player);
 
-		int x = rand.nextInt(31) - 15;
-		int z = rand.nextInt(31) - 15;
+		int x = this.rand.nextInt(31) - 15;
+		int z = this.rand.nextInt(31) - 15;
 		
 		Block crate = ModBlocks.crate;
 		
-		int i = rand.nextInt(1000);
+		int i = this.rand.nextInt(1000);
 		
 		if(i < 350)
 			crate = ModBlocks.crate_weapon;

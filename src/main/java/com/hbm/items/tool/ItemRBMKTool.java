@@ -85,6 +85,7 @@ public class ItemRBMKTool extends Item {
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		
@@ -92,11 +93,12 @@ public class ItemRBMKTool extends Item {
 			list.add(EnumChatFormatting.YELLOW + s);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Multimap getAttributeModifiers(ItemStack stack) {
 		
 		Multimap multimap = super.getAttributeModifiers(stack);
-		multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Weapon modifier", 2, 0));
+		multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(Item.field_111210_e, "Weapon modifier", 2, 0));
 		return multimap;
 	}
 }

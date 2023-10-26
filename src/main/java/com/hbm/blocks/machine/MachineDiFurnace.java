@@ -40,7 +40,7 @@ public class MachineDiFurnace extends BlockContainer {
 
 	public MachineDiFurnace(boolean blockState) {
 		super(Material.rock);
-		isActive = blockState;
+		this.isActive = blockState;
 	}
 
 	@Override
@@ -59,18 +59,20 @@ public class MachineDiFurnace extends BlockContainer {
 		this.iconBottom = iconRegister.registerIcon(RefStrings.MODID + ":brick_fire");
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
 		int meta = world.getBlockMetadata(x, y, z);
 		
 		boolean covered = world.getBlock(x, y + 1, z) == ModBlocks.machine_difurnace_extension;
 		
-		if(side == 0) return iconBottom;
+		if(side == 0) return this.iconBottom;
 		
 		if(covered) return meta == 0 && side == 3 ? this.iconFrontCovered : (side == meta ? this.iconFrontCovered : (side == 1 ? this.iconBottom : this.blockIconCovered));
 		return meta == 0 && side == 3 ? this.iconFront : (side == meta ? this.iconFront : (side == 1 ? this.iconTop : this.blockIcon));
 	}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
 		return meta == 0 && side == 3 ? this.iconFront : (side == meta ? this.iconFront : (side == 1 ? this.iconTop : this.blockIcon));
@@ -112,14 +114,14 @@ public class MachineDiFurnace extends BlockContainer {
 	public static void updateBlockState(boolean isProcessing, World world, int x, int y, int z) {
 		int i = world.getBlockMetadata(x, y, z);
 		TileEntity entity = world.getTileEntity(x, y, z);
-		keepInventory = true;
+		MachineDiFurnace.keepInventory = true;
 		
 		if(isProcessing)
 			world.setBlock(x, y, z, ModBlocks.machine_difurnace_on);
 		else
 			world.setBlock(x, y, z, ModBlocks.machine_difurnace_off);
 		
-		keepInventory = false;
+		MachineDiFurnace.keepInventory = false;
 		world.setBlockMetadataWithNotify(x, y, z, i, 2);
 		
 		if(entity != null) {
@@ -131,7 +133,7 @@ public class MachineDiFurnace extends BlockContainer {
 	@Override
 	public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
 		
-		if(!keepInventory) {
+		if(!MachineDiFurnace.keepInventory) {
 			TileEntityDiFurnace tileentityfurnace = (TileEntityDiFurnace) world.getTileEntity(x, y, z);
 
 			if(tileentityfurnace != null) {
@@ -177,7 +179,7 @@ public class MachineDiFurnace extends BlockContainer {
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
 		
-		if(isActive) {
+		if(this.isActive) {
 			int meta = world.getBlockMetadata(x, y, z);
 			float x0 = x + 0.5F;
 			float y0 = y + 0.25F + rand.nextFloat() * 6.0F / 16.0F;

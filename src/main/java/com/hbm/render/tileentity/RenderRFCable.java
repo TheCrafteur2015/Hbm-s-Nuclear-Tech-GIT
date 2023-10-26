@@ -21,14 +21,13 @@ public class RenderRFCable extends TileEntitySpecialRenderer {
 	public void renderTileEntityAt(TileEntity tileentity, double offsetX, double offsetY, double offsetZ, float f) {
 		GL11.glTranslated(offsetX, offsetY, offsetZ);
 		GL11.glDisable(GL11.GL_LIGHTING);
-		this.bindTexture(texture);
+		bindTexture(this.texture);
 		drawCore(tileentity);
 		TileEntityRFDuct cable = (TileEntityRFDuct) tileentity;
-		for(int i = 0; i < cable.connections.length; i++)
-		{
-			if(cable.connections[i] != null)
+		for (ForgeDirection connection : cable.connections) {
+			if(connection != null)
 			{
-				drawConnection(cable.connections[i]);
+				drawConnection(connection);
 			}
 		}
 		GL11.glTranslated(-offsetX, -offsetY, -offsetZ);
@@ -39,35 +38,35 @@ public class RenderRFCable extends TileEntitySpecialRenderer {
 	public void drawCore(TileEntity tileentity) {
 		Tessellator tesseract = Tessellator.instance;
 		tesseract.startDrawingQuads();
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 11 * pixel / 2,  1 - 11 * pixel / 2, 5 * textureP, 5 * textureP);
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 1 - 11 * pixel / 2, 1 - 11 * pixel / 2, 5 * textureP, 0 * textureP);
-			tesseract.addVertexWithUV(11 * pixel / 2, 1 - 11 * pixel / 2, 1 - 11 * pixel / 2, 0 * textureP, 0 * textureP);
-			tesseract.addVertexWithUV(11 * pixel / 2, 11 * pixel / 2, 1 - 11 * pixel / 2, 0 * textureP, 5 * textureP);
+			tesseract.addVertexWithUV(1 - 11 * this.pixel / 2, 11 * this.pixel / 2,  1 - 11 * this.pixel / 2, 5 * this.textureP, 5 * this.textureP);
+			tesseract.addVertexWithUV(1 - 11 * this.pixel / 2, 1 - 11 * this.pixel / 2, 1 - 11 * this.pixel / 2, 5 * this.textureP, 0 * this.textureP);
+			tesseract.addVertexWithUV(11 * this.pixel / 2, 1 - 11 * this.pixel / 2, 1 - 11 * this.pixel / 2, 0 * this.textureP, 0 * this.textureP);
+			tesseract.addVertexWithUV(11 * this.pixel / 2, 11 * this.pixel / 2, 1 - 11 * this.pixel / 2, 0 * this.textureP, 5 * this.textureP);
 
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 11 * pixel / 2,  11 * pixel / 2, 5 * textureP, 5 * textureP);
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 1 - 11 * pixel / 2, 11 * pixel / 2, 5 * textureP, 0 * textureP);
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 1 - 11 * pixel / 2, 1 - 11 * pixel / 2, 0 * textureP, 0 * textureP);
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 11 * pixel / 2, 1 - 11 * pixel / 2, 0 * textureP, 5 * textureP);
+			tesseract.addVertexWithUV(1 - 11 * this.pixel / 2, 11 * this.pixel / 2,  11 * this.pixel / 2, 5 * this.textureP, 5 * this.textureP);
+			tesseract.addVertexWithUV(1 - 11 * this.pixel / 2, 1 - 11 * this.pixel / 2, 11 * this.pixel / 2, 5 * this.textureP, 0 * this.textureP);
+			tesseract.addVertexWithUV(1 - 11 * this.pixel / 2, 1 - 11 * this.pixel / 2, 1 - 11 * this.pixel / 2, 0 * this.textureP, 0 * this.textureP);
+			tesseract.addVertexWithUV(1 - 11 * this.pixel / 2, 11 * this.pixel / 2, 1 - 11 * this.pixel / 2, 0 * this.textureP, 5 * this.textureP);
 
-			tesseract.addVertexWithUV(11 * pixel / 2, 11 * pixel / 2, 11 * pixel / 2, 5 * textureP, 5 * textureP);
-			tesseract.addVertexWithUV(11 * pixel / 2, 1 - 11 * pixel / 2, 11 * pixel / 2, 5 * textureP, 0 * textureP);
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 1 - 11 * pixel / 2, 11 * pixel / 2, 0 * textureP, 0 * textureP);
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 11 * pixel / 2,  11 * pixel / 2, 0 * textureP, 5 * textureP);
+			tesseract.addVertexWithUV(11 * this.pixel / 2, 11 * this.pixel / 2, 11 * this.pixel / 2, 5 * this.textureP, 5 * this.textureP);
+			tesseract.addVertexWithUV(11 * this.pixel / 2, 1 - 11 * this.pixel / 2, 11 * this.pixel / 2, 5 * this.textureP, 0 * this.textureP);
+			tesseract.addVertexWithUV(1 - 11 * this.pixel / 2, 1 - 11 * this.pixel / 2, 11 * this.pixel / 2, 0 * this.textureP, 0 * this.textureP);
+			tesseract.addVertexWithUV(1 - 11 * this.pixel / 2, 11 * this.pixel / 2,  11 * this.pixel / 2, 0 * this.textureP, 5 * this.textureP);
 
-			tesseract.addVertexWithUV(11 * pixel / 2, 11 * pixel / 2, 1 - 11 * pixel / 2, 5 * textureP, 5 * textureP);
-			tesseract.addVertexWithUV(11 * pixel / 2, 1 - 11 * pixel / 2, 1 - 11 * pixel / 2, 5 * textureP, 0 * textureP);
-			tesseract.addVertexWithUV(11 * pixel / 2, 1 - 11 * pixel / 2, 11 * pixel / 2, 0 * textureP, 0 * textureP);
-			tesseract.addVertexWithUV(11 * pixel / 2, 11 * pixel / 2,  11 * pixel / 2, 0 * textureP, 5 * textureP);
+			tesseract.addVertexWithUV(11 * this.pixel / 2, 11 * this.pixel / 2, 1 - 11 * this.pixel / 2, 5 * this.textureP, 5 * this.textureP);
+			tesseract.addVertexWithUV(11 * this.pixel / 2, 1 - 11 * this.pixel / 2, 1 - 11 * this.pixel / 2, 5 * this.textureP, 0 * this.textureP);
+			tesseract.addVertexWithUV(11 * this.pixel / 2, 1 - 11 * this.pixel / 2, 11 * this.pixel / 2, 0 * this.textureP, 0 * this.textureP);
+			tesseract.addVertexWithUV(11 * this.pixel / 2, 11 * this.pixel / 2,  11 * this.pixel / 2, 0 * this.textureP, 5 * this.textureP);
 
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 1 - 11 * pixel / 2, 1 - 11 * pixel / 2, 5 * textureP, 5 * textureP);
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 1 - 11 * pixel / 2, 11 * pixel / 2, 5 * textureP, 0 * textureP);
-			tesseract.addVertexWithUV(11 * pixel / 2, 1 - 11 * pixel / 2, 11 * pixel / 2, 0 * textureP, 0 * textureP);
-			tesseract.addVertexWithUV(11 * pixel / 2, 1 - 11 * pixel / 2,  1 - 11 * pixel / 2, 0 * textureP, 5 * textureP);
+			tesseract.addVertexWithUV(1 - 11 * this.pixel / 2, 1 - 11 * this.pixel / 2, 1 - 11 * this.pixel / 2, 5 * this.textureP, 5 * this.textureP);
+			tesseract.addVertexWithUV(1 - 11 * this.pixel / 2, 1 - 11 * this.pixel / 2, 11 * this.pixel / 2, 5 * this.textureP, 0 * this.textureP);
+			tesseract.addVertexWithUV(11 * this.pixel / 2, 1 - 11 * this.pixel / 2, 11 * this.pixel / 2, 0 * this.textureP, 0 * this.textureP);
+			tesseract.addVertexWithUV(11 * this.pixel / 2, 1 - 11 * this.pixel / 2,  1 - 11 * this.pixel / 2, 0 * this.textureP, 5 * this.textureP);
 
-			tesseract.addVertexWithUV(11 * pixel / 2, 11 * pixel / 2,  1 - 11 * pixel / 2, 5 * textureP, 5 * textureP);
-			tesseract.addVertexWithUV(11 * pixel / 2, 11 * pixel / 2, 11 * pixel / 2, 5 * textureP, 0 * textureP);
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 11 * pixel / 2, 11 * pixel / 2, 0 * textureP, 0 * textureP);
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 11 * pixel / 2, 1 - 11 * pixel / 2, 0 * textureP, 5 * textureP);
+			tesseract.addVertexWithUV(11 * this.pixel / 2, 11 * this.pixel / 2,  1 - 11 * this.pixel / 2, 5 * this.textureP, 5 * this.textureP);
+			tesseract.addVertexWithUV(11 * this.pixel / 2, 11 * this.pixel / 2, 11 * this.pixel / 2, 5 * this.textureP, 0 * this.textureP);
+			tesseract.addVertexWithUV(1 - 11 * this.pixel / 2, 11 * this.pixel / 2, 11 * this.pixel / 2, 0 * this.textureP, 0 * this.textureP);
+			tesseract.addVertexWithUV(1 - 11 * this.pixel / 2, 11 * this.pixel / 2, 1 - 11 * this.pixel / 2, 0 * this.textureP, 5 * this.textureP);
 		tesseract.draw();
 		
 		// Muehsam muss ich hier im BSH meine genialen Mods schreiben, obwohl ich die Zeit eigentlich doch besser nutzen koennte.
@@ -108,25 +107,25 @@ public class RenderRFCable extends TileEntitySpecialRenderer {
 			}
 			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 			
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 1 - 11 * pixel / 2,  1 - 11 * pixel / 2, 5 * textureP, 5 * textureP);
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 1, 1 - 11 * pixel / 2, 10 * textureP, 5 * textureP);
-			tesseract.addVertexWithUV(11 * pixel / 2, 1, 1 - 11 * pixel / 2, 10 * textureP, 0 * textureP);
-			tesseract.addVertexWithUV(11 * pixel / 2, 1 - 11 * pixel / 2, 1 - 11 * pixel / 2, 5 * textureP, 0 * textureP);
+			tesseract.addVertexWithUV(1 - 11 * this.pixel / 2, 1 - 11 * this.pixel / 2,  1 - 11 * this.pixel / 2, 5 * this.textureP, 5 * this.textureP);
+			tesseract.addVertexWithUV(1 - 11 * this.pixel / 2, 1, 1 - 11 * this.pixel / 2, 10 * this.textureP, 5 * this.textureP);
+			tesseract.addVertexWithUV(11 * this.pixel / 2, 1, 1 - 11 * this.pixel / 2, 10 * this.textureP, 0 * this.textureP);
+			tesseract.addVertexWithUV(11 * this.pixel / 2, 1 - 11 * this.pixel / 2, 1 - 11 * this.pixel / 2, 5 * this.textureP, 0 * this.textureP);
 
-			tesseract.addVertexWithUV(11 * pixel / 2, 1 - 11 * pixel / 2, 11 * pixel / 2, 5 * textureP, 5 * textureP);
-			tesseract.addVertexWithUV(11 * pixel / 2, 1, 11 * pixel / 2, 10 * textureP, 5 * textureP);
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 1, 11 * pixel / 2, 10 * textureP, 0 * textureP);
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 1 - 11 * pixel / 2, 11 * pixel / 2, 5 * textureP, 0 * textureP);
+			tesseract.addVertexWithUV(11 * this.pixel / 2, 1 - 11 * this.pixel / 2, 11 * this.pixel / 2, 5 * this.textureP, 5 * this.textureP);
+			tesseract.addVertexWithUV(11 * this.pixel / 2, 1, 11 * this.pixel / 2, 10 * this.textureP, 5 * this.textureP);
+			tesseract.addVertexWithUV(1 - 11 * this.pixel / 2, 1, 11 * this.pixel / 2, 10 * this.textureP, 0 * this.textureP);
+			tesseract.addVertexWithUV(1 - 11 * this.pixel / 2, 1 - 11 * this.pixel / 2, 11 * this.pixel / 2, 5 * this.textureP, 0 * this.textureP);
 
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 1 - 11 * pixel / 2, 11 * pixel / 2, 5 * textureP, 5 * textureP);
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 1, 11 * pixel / 2, 10 * textureP, 5 * textureP);
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 1, 1 - 11 * pixel / 2, 10 * textureP, 0 * textureP);
-			tesseract.addVertexWithUV(1 - 11 * pixel / 2, 1 - 11 * pixel / 2, 1 - 11 * pixel / 2, 5 * textureP, 0 * textureP);
+			tesseract.addVertexWithUV(1 - 11 * this.pixel / 2, 1 - 11 * this.pixel / 2, 11 * this.pixel / 2, 5 * this.textureP, 5 * this.textureP);
+			tesseract.addVertexWithUV(1 - 11 * this.pixel / 2, 1, 11 * this.pixel / 2, 10 * this.textureP, 5 * this.textureP);
+			tesseract.addVertexWithUV(1 - 11 * this.pixel / 2, 1, 1 - 11 * this.pixel / 2, 10 * this.textureP, 0 * this.textureP);
+			tesseract.addVertexWithUV(1 - 11 * this.pixel / 2, 1 - 11 * this.pixel / 2, 1 - 11 * this.pixel / 2, 5 * this.textureP, 0 * this.textureP);
 
-			tesseract.addVertexWithUV(11 * pixel / 2, 1 - 11 * pixel / 2, 1 - 11 * pixel / 2, 5 * textureP, 5 * textureP);
-			tesseract.addVertexWithUV(11 * pixel / 2, 1, 1 - 11 * pixel / 2, 10 * textureP, 5 * textureP);
-			tesseract.addVertexWithUV(11 * pixel / 2, 1, 11 * pixel / 2, 10 * textureP, 0 * textureP);
-			tesseract.addVertexWithUV(11 * pixel / 2, 1 - 11 * pixel / 2, 11 * pixel / 2, 5 * textureP, 0 * textureP);
+			tesseract.addVertexWithUV(11 * this.pixel / 2, 1 - 11 * this.pixel / 2, 1 - 11 * this.pixel / 2, 5 * this.textureP, 5 * this.textureP);
+			tesseract.addVertexWithUV(11 * this.pixel / 2, 1, 1 - 11 * this.pixel / 2, 10 * this.textureP, 5 * this.textureP);
+			tesseract.addVertexWithUV(11 * this.pixel / 2, 1, 11 * this.pixel / 2, 10 * this.textureP, 0 * this.textureP);
+			tesseract.addVertexWithUV(11 * this.pixel / 2, 1 - 11 * this.pixel / 2, 11 * this.pixel / 2, 5 * this.textureP, 0 * this.textureP);
 		tesseract.draw();
 		
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);

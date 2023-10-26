@@ -30,19 +30,19 @@ public class ItemPlasmaSpear extends Item implements IFillableItem, ISyncButtons
 
 	@Override
 	public boolean showDurabilityBar(ItemStack stack) {
-		return getFill(stack) < maxFuel;
+		return getFill(stack) < ItemPlasmaSpear.maxFuel;
 	}
 
 	@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
-		return 1 - (double) getFill(stack) / (double) maxFuel;
+		return 1 - (double) getFill(stack) / (double) ItemPlasmaSpear.maxFuel;
 	}
 
 	public int getFill(ItemStack stack) {
 		if(stack.stackTagCompound == null) {
 			stack.stackTagCompound = new NBTTagCompound();
-			setFill(stack, maxFuel);
-			return maxFuel;
+			setFill(stack, ItemPlasmaSpear.maxFuel);
+			return ItemPlasmaSpear.maxFuel;
 		}
 		
 		return stack.stackTagCompound.getInteger("fuel");
@@ -91,10 +91,7 @@ public class ItemPlasmaSpear extends Item implements IFillableItem, ISyncButtons
 	@Override
 	public boolean onEntitySwing(EntityLivingBase entityLiving, ItemStack stack) {
 		
-		if(!(entityLiving instanceof EntityPlayerMP))
-			return false;
-		
-		if(getFill(stack) <= 0)
+		if(!(entityLiving instanceof EntityPlayerMP) || (getFill(stack) <= 0))
 			return false;
 
 		if(stack.hasTagCompound() && stack.stackTagCompound.getBoolean("melee")) {
@@ -124,6 +121,7 @@ public class ItemPlasmaSpear extends Item implements IFillableItem, ISyncButtons
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void receiveMouse(EntityPlayer player, ItemStack stack, int button, boolean buttonstate) {
 		Vec3 start = Vec3.createVectorHelper(player.posX, player.posY + player.getEyeHeight() - player.yOffset, player.posZ);
@@ -158,12 +156,12 @@ public class ItemPlasmaSpear extends Item implements IFillableItem, ISyncButtons
 	@Override
 	public int tryFill(FluidType type, int amount, ItemStack stack) {
 		
-		int fill = this.getFill(stack);
-		int toFill = this.maxFuel - fill;
+		int fill = getFill(stack);
+		int toFill = ItemPlasmaSpear.maxFuel - fill;
 		toFill = Math.min(toFill, amount);
 		toFill = Math.min(toFill, 10);
 		
-		this.setFill(stack, fill + toFill);
+		setFill(stack, fill + toFill);
 		
 		return amount - toFill;
 	}

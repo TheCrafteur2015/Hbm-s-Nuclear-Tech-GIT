@@ -29,13 +29,14 @@ public class JetpackBreak extends JetpackBase {
 		return "hbm:textures/models/JetPackBlue.png";
 	}
 
+	@Override
 	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
 		
 		HbmPlayerProps props = HbmPlayerProps.getData(player);
 		
 		if(!world.isRemote) {
 			
-			if(getFuel(stack) > 0 && (props.isJetpackActive() || (!player.onGround && !player.isSneaking() && props.enableBackpack))) {
+			if(JetpackBase.getFuel(stack) > 0 && (props.isJetpackActive() || (!player.onGround && !player.isSneaking() && props.enableBackpack))) {
 
 	    		NBTTagCompound data = new NBTTagCompound();
 	    		data.setString("type", "jetpack");
@@ -44,7 +45,7 @@ public class JetpackBreak extends JetpackBase {
 			}
 		}
 
-		if(getFuel(stack) > 0) {
+		if(JetpackBase.getFuel(stack) > 0) {
 			
 			if(props.isJetpackActive()) {
 				player.fallDistance = 0;
@@ -53,7 +54,7 @@ public class JetpackBreak extends JetpackBase {
 					player.motionY += 0.1D;
 				
 				world.playSoundEffect(player.posX, player.posY, player.posZ, "hbm:weapon.flamethrowerShoot", 0.25F, 1.5F);
-				this.useUpFuel(player, stack, 5);
+				useUpFuel(player, stack, 5);
 				
 			} else if(!player.isSneaking() && !player.onGround && props.enableBackpack) {
 				player.fallDistance = 0;
@@ -69,12 +70,13 @@ public class JetpackBreak extends JetpackBase {
 				player.motionZ *= 1.025D;
 				
 				world.playSoundEffect(player.posX, player.posY, player.posZ, "hbm:weapon.flamethrowerShoot", 0.25F, 1.5F);
-				this.useUpFuel(player, stack, 10);
+				useUpFuel(player, stack, 10);
 			}
 		}
     }
     
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 
     	list.add("Regular jetpack that will automatically hover mid-air.");

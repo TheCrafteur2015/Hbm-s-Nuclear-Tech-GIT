@@ -54,7 +54,7 @@ public class ExplosionLarge {
 	public static void spawnBurst(World world, double x, double y, double z, int count, double strength) {
 		
 		Vec3 vec = Vec3.createVectorHelper(strength, 0, 0);
-		vec.rotateAroundY(rand.nextInt(360));
+		vec.rotateAroundY(ExplosionLarge.rand.nextInt(360));
 		
 		for(int i = 0; i < count; i++) {
 			ParticleUtil.spawnGasFlame(world, x, y, z, vec.xCoord, 0.0, vec.zCoord);
@@ -70,9 +70,9 @@ public class ExplosionLarge {
 			rubble.posX = x;
 			rubble.posY = y;
 			rubble.posZ = z;
-			rubble.motionY = 0.75						* (1 + ((count + rand.nextInt(count * 5))) / 25);
-			rubble.motionX = rand.nextGaussian() * 0.75	* (1 + (count / 50));
-			rubble.motionZ = rand.nextGaussian() * 0.75	* (1 + (count / 50));
+			rubble.motionY = 0.75						* (1 + ((count + ExplosionLarge.rand.nextInt(count * 5))) / 25);
+			rubble.motionX = ExplosionLarge.rand.nextGaussian() * 0.75	* (1 + (count / 50));
+			rubble.motionZ = ExplosionLarge.rand.nextGaussian() * 0.75	* (1 + (count / 50));
 			rubble.setMetaBasedOnBlock(Blocks.stone, 0);
 			world.spawnEntityInWorld(rubble);
 		}
@@ -85,10 +85,10 @@ public class ExplosionLarge {
 			shrapnel.posX = x;
 			shrapnel.posY = y;
 			shrapnel.posZ = z;
-			shrapnel.motionY = ((rand.nextFloat() * 0.5) + 0.5) * (1 + (count / (15 + rand.nextInt(21)))) + (rand.nextFloat() / 50 * count);
-			shrapnel.motionX = rand.nextGaussian() * 1	* (1 + (count / 50));
-			shrapnel.motionZ = rand.nextGaussian() * 1	* (1 + (count / 50));
-			shrapnel.setTrail(rand.nextInt(3) == 0);
+			shrapnel.motionY = ((ExplosionLarge.rand.nextFloat() * 0.5) + 0.5) * (1 + (count / (15 + ExplosionLarge.rand.nextInt(21)))) + (ExplosionLarge.rand.nextFloat() / 50 * count);
+			shrapnel.motionX = ExplosionLarge.rand.nextGaussian() * 1	* (1 + (count / 50));
+			shrapnel.motionZ = ExplosionLarge.rand.nextGaussian() * 1	* (1 + (count / 50));
+			shrapnel.setTrail(ExplosionLarge.rand.nextInt(3) == 0);
 			world.spawnEntityInWorld(shrapnel);
 		}
 	}
@@ -100,9 +100,9 @@ public class ExplosionLarge {
 			shrapnel.posX = x;
 			shrapnel.posY = y;
 			shrapnel.posZ = z;
-			shrapnel.motionY = ((rand.nextFloat() * 0.5) + 0.5) * (1 + (count / (15 + rand.nextInt(21)))) + (rand.nextFloat() / 50 * count) * 0.25F;
-			shrapnel.motionX = rand.nextGaussian() * 1	* (1 + (count / 50)) * 0.25F;
-			shrapnel.motionZ = rand.nextGaussian() * 1	* (1 + (count / 50)) * 0.25F;
+			shrapnel.motionY = ((ExplosionLarge.rand.nextFloat() * 0.5) + 0.5) * (1 + (count / (15 + ExplosionLarge.rand.nextInt(21)))) + (ExplosionLarge.rand.nextFloat() / 50 * count) * 0.25F;
+			shrapnel.motionX = ExplosionLarge.rand.nextGaussian() * 1	* (1 + (count / 50)) * 0.25F;
+			shrapnel.motionZ = ExplosionLarge.rand.nextGaussian() * 1	* (1 + (count / 50)) * 0.25F;
 			shrapnel.setTrail(true);
 			world.spawnEntityInWorld(shrapnel);
 		}
@@ -115,10 +115,10 @@ public class ExplosionLarge {
 			shrapnel.posX = x;
 			shrapnel.posY = y;
 			shrapnel.posZ = z;
-			shrapnel.motionX = motionX + rand.nextGaussian() * deviation;
-			shrapnel.motionY = motionY + rand.nextGaussian() * deviation;
-			shrapnel.motionZ = motionZ + rand.nextGaussian() * deviation;
-			shrapnel.setTrail(rand.nextInt(3) == 0);
+			shrapnel.motionX = motionX + ExplosionLarge.rand.nextGaussian() * deviation;
+			shrapnel.motionY = motionY + ExplosionLarge.rand.nextGaussian() * deviation;
+			shrapnel.motionZ = motionZ + ExplosionLarge.rand.nextGaussian() * deviation;
+			shrapnel.setTrail(ExplosionLarge.rand.nextInt(3) == 0);
 			world.spawnEntityInWorld(shrapnel);
 		}
 	}
@@ -126,14 +126,14 @@ public class ExplosionLarge {
 	public static void spawnMissileDebris(World world, double x, double y, double z, double motionX, double motionY, double motionZ, double deviation, List<ItemStack> debris, ItemStack rareDrop) {
 		
 		if(debris != null) {
-			for(int i = 0; i < debris.size(); i++) {
-				if(debris.get(i) != null) {
-					int k = rand.nextInt(debris.get(i).stackSize + 1);
+			for (ItemStack element : debris) {
+				if(element != null) {
+					int k = ExplosionLarge.rand.nextInt(element.stackSize + 1);
 					for(int j = 0; j < k; j++) {
-						EntityItem item = new EntityItem(world, x, y, z, new ItemStack(debris.get(i).getItem()));
-						item.motionX = (motionX + rand.nextGaussian() * deviation) * 0.85;
-						item.motionY = (motionY + rand.nextGaussian() * deviation) * 0.85;
-						item.motionZ = (motionZ + rand.nextGaussian() * deviation) * 0.85;
+						EntityItem item = new EntityItem(world, x, y, z, new ItemStack(element.getItem()));
+						item.motionX = (motionX + ExplosionLarge.rand.nextGaussian() * deviation) * 0.85;
+						item.motionY = (motionY + ExplosionLarge.rand.nextGaussian() * deviation) * 0.85;
+						item.motionZ = (motionZ + ExplosionLarge.rand.nextGaussian() * deviation) * 0.85;
 						item.posX = item.posX + item.motionX * 2;
 						item.posY = item.posY + item.motionY * 2;
 						item.posZ = item.posZ + item.motionZ * 2;
@@ -144,11 +144,11 @@ public class ExplosionLarge {
 			}
 		}
 		
-		if(rareDrop != null && rand.nextInt(10) == 0) {
+		if(rareDrop != null && ExplosionLarge.rand.nextInt(10) == 0) {
 			EntityItem item = new EntityItem(world, x, y, z, rareDrop.copy());
-			item.motionX = motionX + rand.nextGaussian() * deviation * 0.1;
-			item.motionY = motionY + rand.nextGaussian() * deviation * 0.1;
-			item.motionZ = motionZ + rand.nextGaussian() * deviation * 0.1;
+			item.motionX = motionX + ExplosionLarge.rand.nextGaussian() * deviation * 0.1;
+			item.motionY = motionY + ExplosionLarge.rand.nextGaussian() * deviation * 0.1;
+			item.motionZ = motionZ + ExplosionLarge.rand.nextGaussian() * deviation * 0.1;
 			
 			world.spawnEntityInWorld(item);
 		}
@@ -161,9 +161,9 @@ public class ExplosionLarge {
 			shrapnel.posX = x;
 			shrapnel.posY = y;
 			shrapnel.posZ = z;
-			shrapnel.motionY = ((rand.nextFloat() * 0.5) + 0.5) * (1 + (count / (15 + rand.nextInt(21)))) + (rand.nextFloat() / 50 * count) * 0.25F;
-			shrapnel.motionX = rand.nextGaussian() * 1	* (1 + (count / 50)) * 0.15F;
-			shrapnel.motionZ = rand.nextGaussian() * 1	* (1 + (count / 50)) * 0.15F;
+			shrapnel.motionY = ((ExplosionLarge.rand.nextFloat() * 0.5) + 0.5) * (1 + (count / (15 + ExplosionLarge.rand.nextInt(21)))) + (ExplosionLarge.rand.nextFloat() / 50 * count) * 0.25F;
+			shrapnel.motionX = ExplosionLarge.rand.nextGaussian() * 1	* (1 + (count / 50)) * 0.15F;
+			shrapnel.motionZ = ExplosionLarge.rand.nextGaussian() * 1	* (1 + (count / 50)) * 0.15F;
 			world.spawnEntityInWorld(shrapnel);
 		}
 	}
@@ -171,31 +171,31 @@ public class ExplosionLarge {
 	public static void explode(World world, double x, double y, double z, float strength, boolean cloud, boolean rubble, boolean shrapnel, Entity exploder) {
 		world.createExplosion(exploder, x, y, z, strength, true);
 		if(cloud)
-			spawnParticles(world, x, y, z, cloudFunction((int)strength));
+			ExplosionLarge.spawnParticles(world, x, y, z, ExplosionLarge.cloudFunction((int)strength));
 		if(rubble)
-			spawnRubble(world, x, y, z, rubbleFunction((int)strength));
+			ExplosionLarge.spawnRubble(world, x, y, z, ExplosionLarge.rubbleFunction((int)strength));
 		if(shrapnel)
-			spawnShrapnels(world, x, y, z, shrapnelFunction((int)strength));
+			ExplosionLarge.spawnShrapnels(world, x, y, z, ExplosionLarge.shrapnelFunction((int)strength));
 	}
 	
 	public static void explode(World world, double x, double y, double z, float strength, boolean cloud, boolean rubble, boolean shrapnel) {
 		world.createExplosion(null, x, y, z, strength, true);
 		if(cloud)
-			spawnParticles(world, x, y, z, cloudFunction((int)strength));
+			ExplosionLarge.spawnParticles(world, x, y, z, ExplosionLarge.cloudFunction((int)strength));
 		if(rubble)
-			spawnRubble(world, x, y, z, rubbleFunction((int)strength));
+			ExplosionLarge.spawnRubble(world, x, y, z, ExplosionLarge.rubbleFunction((int)strength));
 		if(shrapnel)
-			spawnShrapnels(world, x, y, z, shrapnelFunction((int)strength));
+			ExplosionLarge.spawnShrapnels(world, x, y, z, ExplosionLarge.shrapnelFunction((int)strength));
 	}
 	
 	public static void explodeFire(World world, double x, double y, double z, float strength, boolean cloud, boolean rubble, boolean shrapnel) {
 		world.newExplosion((Entity)null, (float)x, (float)y, (float)z, strength, true, true);
 		if(cloud)
-			spawnParticles(world, x, y, z, cloudFunction((int)strength));
+			ExplosionLarge.spawnParticles(world, x, y, z, ExplosionLarge.cloudFunction((int)strength));
 		if(rubble)
-			spawnRubble(world, x, y, z, rubbleFunction((int)strength));
+			ExplosionLarge.spawnRubble(world, x, y, z, ExplosionLarge.rubbleFunction((int)strength));
 		if(shrapnel)
-			spawnShrapnels(world, x, y, z, shrapnelFunction((int)strength));
+			ExplosionLarge.spawnShrapnels(world, x, y, z, ExplosionLarge.shrapnelFunction((int)strength));
 	}
 	
 	public static void buster(World world, double x, double y, double z, Vec3 vector, float strength, float depth) {
@@ -212,8 +212,8 @@ public class ExplosionLarge {
 		
 		for(int j = 0; j < count; j++) {
 			
-			double phi = rand.nextDouble() * (Math.PI * 2);
-			double costheta = rand.nextDouble() * 2 - 1;
+			double phi = ExplosionLarge.rand.nextDouble() * (Math.PI * 2);
+			double costheta = ExplosionLarge.rand.nextDouble() * 2 - 1;
 			double theta = Math.acos(costheta);
 			double x = Math.sin( theta) * Math.cos( phi );
 			double y = Math.sin( theta) * Math.sin( phi );

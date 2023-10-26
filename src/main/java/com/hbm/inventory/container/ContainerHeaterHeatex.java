@@ -13,18 +13,18 @@ public class ContainerHeaterHeatex extends Container {
 	private TileEntityHeaterHeatex heater;
 
 	public ContainerHeaterHeatex(InventoryPlayer invPlayer, TileEntityHeaterHeatex tedf) {
-		heater = tedf;
+		this.heater = tedf;
 		
-		this.addSlotToContainer(new Slot(tedf, 0, 80, 72));
+		addSlotToContainer(new Slot(tedf, 0, 80, 72));
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 122 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 122 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 180));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 180));
 		}
 	}
 
@@ -38,11 +38,11 @@ public class ContainerHeaterHeatex extends Container {
 			var3 = var5.copy();
 
 			if(par2 == 0) {
-				if(!this.mergeItemStack(var5, 1, this.inventorySlots.size(), true)) {
+				if(!mergeItemStack(var5, 1, this.inventorySlots.size(), true)) {
 					return null;
 				}
 			} else {
-				if(!this.mergeItemStack(var5, 0, 1, false)) {
+				if(!mergeItemStack(var5, 0, 1, false)) {
 					return null;
 				}
 			}
@@ -59,6 +59,6 @@ public class ContainerHeaterHeatex extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return heater.isUseableByPlayer(player);
+		return this.heater.isUseableByPlayer(player);
 	}
 }

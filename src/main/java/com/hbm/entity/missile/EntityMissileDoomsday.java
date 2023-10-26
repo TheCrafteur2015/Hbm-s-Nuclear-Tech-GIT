@@ -19,38 +19,39 @@ public class EntityMissileDoomsday extends EntityMissileBaseAdvanced {
 
 	@Override
 	public void onImpact() {
-		ExplosionLarge.explode(worldObj, posX, posY, posZ, 10.0F, true, true, true);
+		ExplosionLarge.explode(this.worldObj, this.posX, this.posY, this.posZ, 10.0F, true, true, true);
 	}
 	
+	@Override
 	public void onUpdate() {
 		super.onUpdate();
-		if(motionY <= 0) {
-			if(!worldObj.isRemote) {
-				this.setDead();
-				EntityBombletTheta bomblet1 = new EntityBombletTheta(worldObj);
-				EntityBombletTheta bomblet2 = new EntityBombletTheta(worldObj);
-				EntityBombletTheta bomblet3 = new EntityBombletTheta(worldObj);
-				EntityBombletTheta bomblet4 = new EntityBombletTheta(worldObj);
-				EntityBombletTheta bomblet5 = new EntityBombletTheta(worldObj);
-				EntityBombletTheta bomblet6 = new EntityBombletTheta(worldObj);
-				bomblet1.motionX = this.motionX * (rand.nextFloat() + 0.5F);
-				bomblet1.motionY = this.motionY * (rand.nextFloat() + 0.5F);
-				bomblet1.motionZ = this.motionZ * (rand.nextFloat() + 0.5F);
-				bomblet2.motionX = this.motionX * (rand.nextFloat() + 0.5F);
-				bomblet2.motionY = this.motionY * (rand.nextFloat() + 0.5F);
-				bomblet2.motionZ = this.motionZ * (rand.nextFloat() + 0.5F);
-				bomblet3.motionX = this.motionX * (rand.nextFloat() + 0.5F);
-				bomblet3.motionY = this.motionY * (rand.nextFloat() + 0.5F);
-				bomblet3.motionZ = this.motionZ * (rand.nextFloat() + 0.5F);
-				bomblet4.motionX = this.motionX * (rand.nextFloat() + 0.5F);
-				bomblet4.motionY = this.motionY * (rand.nextFloat() + 0.5F);
-				bomblet4.motionZ = this.motionZ * (rand.nextFloat() + 0.5F);
-				bomblet5.motionX = this.motionX * (rand.nextFloat() + 0.5F);
-				bomblet5.motionY = this.motionY * (rand.nextFloat() + 0.5F);
-				bomblet5.motionZ = this.motionZ * (rand.nextFloat() + 0.5F);
-				bomblet6.motionX = this.motionX * (rand.nextFloat() + 0.5F);
-				bomblet6.motionY = this.motionY * (rand.nextFloat() + 0.5F);
-				bomblet6.motionZ = this.motionZ * (rand.nextFloat() + 0.5F);
+		if(this.motionY <= 0) {
+			if(!this.worldObj.isRemote) {
+				setDead();
+				EntityBombletTheta bomblet1 = new EntityBombletTheta(this.worldObj);
+				EntityBombletTheta bomblet2 = new EntityBombletTheta(this.worldObj);
+				EntityBombletTheta bomblet3 = new EntityBombletTheta(this.worldObj);
+				EntityBombletTheta bomblet4 = new EntityBombletTheta(this.worldObj);
+				EntityBombletTheta bomblet5 = new EntityBombletTheta(this.worldObj);
+				EntityBombletTheta bomblet6 = new EntityBombletTheta(this.worldObj);
+				bomblet1.motionX = this.motionX * (this.rand.nextFloat() + 0.5F);
+				bomblet1.motionY = this.motionY * (this.rand.nextFloat() + 0.5F);
+				bomblet1.motionZ = this.motionZ * (this.rand.nextFloat() + 0.5F);
+				bomblet2.motionX = this.motionX * (this.rand.nextFloat() + 0.5F);
+				bomblet2.motionY = this.motionY * (this.rand.nextFloat() + 0.5F);
+				bomblet2.motionZ = this.motionZ * (this.rand.nextFloat() + 0.5F);
+				bomblet3.motionX = this.motionX * (this.rand.nextFloat() + 0.5F);
+				bomblet3.motionY = this.motionY * (this.rand.nextFloat() + 0.5F);
+				bomblet3.motionZ = this.motionZ * (this.rand.nextFloat() + 0.5F);
+				bomblet4.motionX = this.motionX * (this.rand.nextFloat() + 0.5F);
+				bomblet4.motionY = this.motionY * (this.rand.nextFloat() + 0.5F);
+				bomblet4.motionZ = this.motionZ * (this.rand.nextFloat() + 0.5F);
+				bomblet5.motionX = this.motionX * (this.rand.nextFloat() + 0.5F);
+				bomblet5.motionY = this.motionY * (this.rand.nextFloat() + 0.5F);
+				bomblet5.motionZ = this.motionZ * (this.rand.nextFloat() + 0.5F);
+				bomblet6.motionX = this.motionX * (this.rand.nextFloat() + 0.5F);
+				bomblet6.motionY = this.motionY * (this.rand.nextFloat() + 0.5F);
+				bomblet6.motionZ = this.motionZ * (this.rand.nextFloat() + 0.5F);
 				bomblet1.posX = this.posX;
 				bomblet1.posY = this.posY;
 				bomblet1.posZ = this.posZ;
@@ -82,14 +83,14 @@ public class EntityMissileDoomsday extends EntityMissileBaseAdvanced {
 				bomblet4.accelXZ = this.accelXZ;
 				bomblet5.accelXZ = this.accelXZ;
 				bomblet6.accelXZ = this.accelXZ;
-				worldObj.spawnEntityInWorld(bomblet1);
-				worldObj.spawnEntityInWorld(bomblet2);
-				worldObj.spawnEntityInWorld(bomblet3);
-				worldObj.spawnEntityInWorld(bomblet4);
-				worldObj.spawnEntityInWorld(bomblet5);
-				worldObj.spawnEntityInWorld(bomblet6);
-				ExplosionLarge.spawnParticles(worldObj, posX, posY, posZ, ExplosionLarge.cloudFunction(25));
-				ExplosionLarge.spawnTracers(worldObj, posX, posY, posZ, 10);
+				this.worldObj.spawnEntityInWorld(bomblet1);
+				this.worldObj.spawnEntityInWorld(bomblet2);
+				this.worldObj.spawnEntityInWorld(bomblet3);
+				this.worldObj.spawnEntityInWorld(bomblet4);
+				this.worldObj.spawnEntityInWorld(bomblet5);
+				this.worldObj.spawnEntityInWorld(bomblet6);
+				ExplosionLarge.spawnParticles(this.worldObj, this.posX, this.posY, this.posZ, ExplosionLarge.cloudFunction(25));
+				ExplosionLarge.spawnTracers(this.worldObj, this.posX, this.posY, this.posZ, 10);
 			}
 		}
 	}

@@ -83,7 +83,7 @@ public class Library {
 	
 	//the old list that allowed superuser mode for the ZOMG
 	//currently unused
-	public static List<String> superuser = new ArrayList<String>();
+	public static List<String> superuser = new ArrayList<>();
 	
 	public static boolean checkForHeld(EntityPlayer player, Item item) {
 		
@@ -200,9 +200,9 @@ public class Library {
 		double d4 = -1.0D;
 		EntityLivingBase entityplayer = null;
 
-		for (int i = 0; i < world.loadedEntityList.size(); ++i) {
-			if (world.loadedEntityList.get(i) instanceof EntityLivingBase && !(world.loadedEntityList.get(i) instanceof EntityHunterChopper)) {
-				EntityLivingBase entityplayer1 = (EntityLivingBase) world.loadedEntityList.get(i);
+		for (Object element : world.loadedEntityList) {
+			if (element instanceof EntityLivingBase && !(element instanceof EntityHunterChopper)) {
+				EntityLivingBase entityplayer1 = (EntityLivingBase) element;
 
 				if (entityplayer1.isEntityAlive() && !(entityplayer1 instanceof EntityPlayer && ((EntityPlayer)entityplayer1).capabilities.disableDamage)) {
 					double d5 = entityplayer1.getDistanceSq(x, y, z);
@@ -227,8 +227,8 @@ public class Library {
 		double d4 = -1.0D;
 		EntityPlayer entity = null;
 
-		for (int i = 0; i < world.loadedEntityList.size(); ++i) {
-				Entity entityplayer1 = (Entity)world.loadedEntityList.get(i);
+		for (Object element : world.loadedEntityList) {
+				Entity entityplayer1 = (Entity)element;
 
 				if (entityplayer1.isEntityAlive() && entityplayer1 instanceof EntityPlayer) {
 					double d5 = entityplayer1.getDistanceSq(x, y, z);
@@ -248,8 +248,8 @@ public class Library {
 		double d4 = -1.0D;
 		EntityHunterChopper entity = null;
 
-		for (int i = 0; i < world.loadedEntityList.size(); ++i) {
-				Entity entityplayer1 = (Entity)world.loadedEntityList.get(i);
+		for (Object element : world.loadedEntityList) {
+				Entity entityplayer1 = (Entity)element;
 
 				if (entityplayer1.isEntityAlive() && entityplayer1 instanceof EntityHunterChopper) {
 					double d5 = entityplayer1.getDistanceSq(x, y, z);
@@ -269,8 +269,8 @@ public class Library {
 		double d4 = -1.0D;
 		EntityChopperMine entity = null;
 
-		for (int i = 0; i < world.loadedEntityList.size(); ++i) {
-				Entity entityplayer1 = (Entity)world.loadedEntityList.get(i);
+		for (Object element : world.loadedEntityList) {
+				Entity entityplayer1 = (Entity)element;
 
 				if (entityplayer1.isEntityAlive() && entityplayer1 instanceof EntityChopperMine) {
 					double d5 = entityplayer1.getDistanceSq(x, y, z);
@@ -287,7 +287,7 @@ public class Library {
 	}
 	
 	public static MovingObjectPosition rayTrace(EntityPlayer player, double length, float interpolation) {
-		Vec3 vec3 = getPosition(interpolation, player);
+		Vec3 vec3 = Library.getPosition(interpolation, player);
 		vec3.yCoord += player.eyeHeight;
 		Vec3 vec31 = player.getLook(interpolation);
 		Vec3 vec32 = vec3.addVector(vec31.xCoord * length, vec31.yCoord * length, vec31.zCoord * length);
@@ -295,7 +295,7 @@ public class Library {
 	}
 
 	public static MovingObjectPosition rayTrace(EntityPlayer player, double length, float interpolation, boolean allowLiquids, boolean disallowNonCollidingBlocks, boolean mopOnMiss) {
-		Vec3 vec3 = getPosition(interpolation, player);
+		Vec3 vec3 = Library.getPosition(interpolation, player);
 		vec3.yCoord += player.eyeHeight;
 		Vec3 vec31 = player.getLook(interpolation);
 		Vec3 vec32 = vec3.addVector(vec31.xCoord * length, vec31.yCoord * length, vec31.zCoord * length);
@@ -314,7 +314,7 @@ public class Library {
 	}
 	
 	public static List<int[]> getBlockPosInPath(int x, int y, int z, int length, Vec3 vec0) {
-		List<int[]> list = new ArrayList<int[]>();
+		List<int[]> list = new ArrayList<>();
 		
 		for(int i = 0; i <= length; i++) {
 			list.add(new int[] { (int)(x + (vec0.xCoord * i)), y, (int)(z + (vec0.zCoord * i)), i });
@@ -351,11 +351,7 @@ public class Library {
 	
 	public static long chargeTEFromItems(ItemStack[] slots, int index, long power, long maxPower) {
 
-		if(slots[index] != null && slots[index].getItem() == ModItems.battery_creative) {
-			return maxPower;
-		}
-
-		if(slots[index] != null && slots[index].getItem() == ModItems.fusion_core_infinite) {
+		if((slots[index] != null && slots[index].getItem() == ModItems.battery_creative) || (slots[index] != null && slots[index].getItem() == ModItems.fusion_core_infinite)) {
 			return maxPower;
 		}
 
@@ -460,19 +456,18 @@ public class Library {
 			{
 				if(Library.checkUnionListForFluids(((TileEntityFluidDuctSimple)tileentity).uoteab, that))
 				{
-					for(int i = 0; i < ((TileEntityFluidDuctSimple)tileentity).uoteab.size(); i++)
-					{
-						if(((TileEntityFluidDuctSimple)tileentity).uoteab.get(i).source == that)
+					for (UnionOfTileEntitiesAndBooleansForFluids element : ((TileEntityFluidDuctSimple)tileentity).uoteab) {
+						if(element.source == that)
 						{
-							if(((TileEntityFluidDuctSimple)tileentity).uoteab.get(i).ticked != newTact)
+							if(element.ticked != newTact)
 							{
-								((TileEntityFluidDuctSimple)tileentity).uoteab.get(i).ticked = newTact;
-								transmitFluid(x, y + 1, z, that.getTact(), that, worldObj, type);
-								transmitFluid(x, y - 1, z, that.getTact(), that, worldObj, type);
-								transmitFluid(x - 1, y, z, that.getTact(), that, worldObj, type);
-								transmitFluid(x + 1, y, z, that.getTact(), that, worldObj, type);
-								transmitFluid(x, y, z - 1, that.getTact(), that, worldObj, type);
-								transmitFluid(x, y, z + 1, that.getTact(), that, worldObj, type);
+								element.ticked = newTact;
+								Library.transmitFluid(x, y + 1, z, that.getTact(), that, worldObj, type);
+								Library.transmitFluid(x, y - 1, z, that.getTact(), that, worldObj, type);
+								Library.transmitFluid(x - 1, y, z, that.getTact(), that, worldObj, type);
+								Library.transmitFluid(x + 1, y, z, that.getTact(), that, worldObj, type);
+								Library.transmitFluid(x, y, z - 1, that.getTact(), that, worldObj, type);
+								Library.transmitFluid(x, y, z + 1, that.getTact(), that, worldObj, type);
 							}
 						}
 					}
@@ -514,15 +509,13 @@ public class Library {
 	}
 	
 	public static boolean isArrayEmpty(Object[] array) {
-		if(array == null)
-			return true;
-		if(array.length == 0)
+		if((array == null) || (array.length == 0))
 			return true;
 		
 		boolean flag = true;
 		
-		for(int i = 0; i < array.length; i++) {
-			if(array[i] != null)
+		for (Object element : array) {
+			if(element != null)
 				flag = false;
 		}
 		
@@ -548,7 +541,7 @@ public class Library {
 	}
 	
 	public static Block getRandomConcrete() {
-		int i = rand.nextInt(20);
+		int i = Library.rand.nextInt(20);
 
 		if(i <= 1)
 			return ModBlocks.brick_concrete_broken;

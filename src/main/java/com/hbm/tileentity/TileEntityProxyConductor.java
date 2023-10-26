@@ -17,7 +17,7 @@ public class TileEntityProxyConductor extends TileEntityProxyBase implements IEn
 	@Override
 	public long transferPower(long power) {
 		
-		TileEntity te = this.getTE();
+		TileEntity te = getTE();
 		
 		if(te instanceof IEnergyConductor) {
 			return ((IEnergyConductor)te).transferPower(power);
@@ -29,7 +29,7 @@ public class TileEntityProxyConductor extends TileEntityProxyBase implements IEn
 	@Override
 	public long getPower() {
 		
-		TileEntity te = this.getTE();
+		TileEntity te = getTE();
 		
 		if(te instanceof IEnergyConductor) {
 			return ((IEnergyConductor)te).getPower();
@@ -41,7 +41,7 @@ public class TileEntityProxyConductor extends TileEntityProxyBase implements IEn
 	@Override
 	public long getMaxPower() {
 		
-		TileEntity te = this.getTE();
+		TileEntity te = getTE();
 		
 		if(te instanceof IEnergyConductor) {
 			return ((IEnergyConductor)te).getMaxPower();
@@ -53,7 +53,7 @@ public class TileEntityProxyConductor extends TileEntityProxyBase implements IEn
 	@Override
 	public IPowerNet getPowerNet() {
 		
-		TileEntity te = this.getTE();
+		TileEntity te = getTE();
 		
 		if(te instanceof IEnergyConductor) {
 			return ((IEnergyConductor)te).getPowerNet();
@@ -65,7 +65,7 @@ public class TileEntityProxyConductor extends TileEntityProxyBase implements IEn
 	@Override
 	public void setPowerNet(IPowerNet network) {
 		
-		TileEntity te = this.getTE();
+		TileEntity te = getTE();
 		
 		if(te instanceof IEnergyConductor) {
 			((IEnergyConductor)te).setPowerNet(network);
@@ -82,6 +82,6 @@ public class TileEntityProxyConductor extends TileEntityProxyBase implements IEn
 		}*/
 		
 		/* Proxy TE doesn't need to implement proxying here because the conductor main TE already has a network-specific proxying system */
-		return new ArrayList();
+		return new ArrayList<>();
 	}
 }

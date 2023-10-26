@@ -25,10 +25,10 @@ public class TileEntityPylon extends TileEntityPylonBase {
 	
 	@Override
 	public List<int[]> getConnectionPoints() {
-		List<int[]> pos = new ArrayList(connected);
+		List<int[]> pos = new ArrayList<>(this.connected);
 		
 		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-			pos.add(new int[] {xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ});
+			pos.add(new int[] {this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ});
 		}
 		return pos;
 	}

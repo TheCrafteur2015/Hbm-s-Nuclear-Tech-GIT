@@ -20,22 +20,22 @@ public class ContainerCraneGrabber extends Container {
 		//filter
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 3; j++) {
-				this.addSlotToContainer(new Slot(grabber, j + i * 3, 40 + j * 18, 17 + i * 18));
+				addSlotToContainer(new Slot(grabber, j + i * 3, 40 + j * 18, 17 + i * 18));
 			}
 		}
 		
 		//upgrades
-		this.addSlotToContainer(new SlotUpgrade(grabber, 9, 121, 23));
-		this.addSlotToContainer(new SlotUpgrade(grabber, 10, 121, 47));
+		addSlotToContainer(new SlotUpgrade(grabber, 9, 121, 23));
+		addSlotToContainer(new SlotUpgrade(grabber, 10, 121, 47));
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 103 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 103 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 161));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 161));
 		}
 	}
 
@@ -52,17 +52,17 @@ public class ContainerCraneGrabber extends Container {
 				return null;
 			}
 
-			if(slot <= grabber.getSizeInventory() - 1) {
-				if(!this.mergeItemStack(var5, grabber.getSizeInventory(), this.inventorySlots.size(), true)) {
+			if(slot <= this.grabber.getSizeInventory() - 1) {
+				if(!mergeItemStack(var5, this.grabber.getSizeInventory(), this.inventorySlots.size(), true)) {
 					return null;
 				}
 			} else {
 				
 				if(var3.getItem() == ModItems.upgrade_stack) {
-					 if(!this.mergeItemStack(var5, 9, 10, false))
+					 if(!mergeItemStack(var5, 9, 10, false))
 						 return null;
 				} else if(var3.getItem() == ModItems.upgrade_ejector) {
-					 if(!this.mergeItemStack(var5, 10, 11, false))
+					 if(!mergeItemStack(var5, 10, 11, false))
 						 return null;
 				}
 				
@@ -83,7 +83,7 @@ public class ContainerCraneGrabber extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return grabber.isUseableByPlayer(player);
+		return this.grabber.isUseableByPlayer(player);
 	}
 
 	@Override
@@ -98,7 +98,7 @@ public class ContainerCraneGrabber extends Container {
 			return super.slotClick(index, button, mode, player);
 		}
 
-		Slot slot = this.getSlot(index);
+		Slot slot = getSlot(index);
 		
 		ItemStack ret = null;
 		ItemStack held = player.inventory.getItemStack();
@@ -107,7 +107,7 @@ public class ContainerCraneGrabber extends Container {
 			ret = slot.getStack().copy();
 		
 		if(button == 1 && mode == 0 && slot.getHasStack()) {
-			grabber.nextMode(index);
+			this.grabber.nextMode(index);
 			return ret;
 			
 		} else {
@@ -118,7 +118,7 @@ public class ContainerCraneGrabber extends Container {
 			}
 			
 			slot.onSlotChanged();
-			grabber.matcher.initPatternStandard(grabber.getWorldObj(), slot.getStack(), index);
+			this.grabber.matcher.initPatternStandard(this.grabber.getWorldObj(), slot.getStack(), index);
 			
 			return ret;
 		}

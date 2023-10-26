@@ -37,16 +37,16 @@ public class AudioDynamic extends MovingSound {
 		float f = 0;
 		
 		if(player != null) {
-			f = (float)Math.sqrt(Math.pow(xPosF - player.posX, 2) + Math.pow(yPosF - player.posY, 2) + Math.pow(zPosF - player.posZ, 2));
-			volume = func(f);
+			f = (float)Math.sqrt(Math.pow(this.xPosF - player.posX, 2) + Math.pow(this.yPosF - player.posY, 2) + Math.pow(this.zPosF - player.posZ, 2));
+			this.volume = func(f);
 		} else {
-			volume = maxVolume;
+			this.volume = this.maxVolume;
 		}
 		
 		if(this.shouldExpire) {
 			
 			if(this.timeSinceKA > this.keepAlive) {
-				this.stop();
+				stop();
 			}
 			
 			this.timeSinceKA++;
@@ -83,7 +83,7 @@ public class AudioDynamic extends MovingSound {
 	}
 	
 	public float func(float dist) {
-		return (dist / range) * -maxVolume + maxVolume;
+		return (dist / this.range) * -this.maxVolume + this.maxVolume;
 	}
 
 	public boolean isPlaying() {

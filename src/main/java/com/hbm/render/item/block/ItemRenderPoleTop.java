@@ -16,7 +16,7 @@ public class ItemRenderPoleTop implements IItemRenderer {
 	protected ModelPoleTop swordModel;
 	
 	public ItemRenderPoleTop() {
-		swordModel = new ModelPoleTop();
+		this.swordModel = new ModelPoleTop();
 	}
 	
 	@Override
@@ -44,7 +44,7 @@ public class ItemRenderPoleTop implements IItemRenderer {
 			GL11.glScalef(0.5F, 0.5F, 0.5F);
 			GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
 			GL11.glTranslatef(0.0F, -1.0F, 0.0F);
-			swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+			this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 		GL11.glPopMatrix();
 		break;
 		case EQUIPPED:
@@ -53,7 +53,7 @@ public class ItemRenderPoleTop implements IItemRenderer {
 				GL11.glScalef(0.5F, 0.5F, 0.5F);
 				GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
 				GL11.glTranslatef(0.8F, -1.8F, -0.1F);
-				swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			GL11.glPopMatrix();
 			break;
 		case EQUIPPED_FIRST_PERSON:
@@ -62,7 +62,7 @@ public class ItemRenderPoleTop implements IItemRenderer {
 				GL11.glRotatef(-135.0F, 0.0F, 0.0F, 1.0F);
 				GL11.glTranslatef(-0.6F, -0.6F, -0.1F);
 				GL11.glScalef(0.5F, 0.5F, 0.5F);
-			swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+			this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 		GL11.glPopMatrix();
 			break;
 		default: break;

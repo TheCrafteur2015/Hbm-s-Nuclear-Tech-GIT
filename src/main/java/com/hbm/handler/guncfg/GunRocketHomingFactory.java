@@ -38,7 +38,7 @@ public class GunRocketHomingFactory {
 		config.manufacturer = EnumGunManufacturer.RAYTHEON;
 		config.comment.add("Woosh, beep-beep-beep!");
 
-		config.config = new ArrayList<Integer>();
+		config.config = new ArrayList<>();
 		config.config.add(BulletConfigSyncingUtil.ROCKET_STINGER);
 		config.config.add(BulletConfigSyncingUtil.ROCKET_STINGER_HE);
 		config.config.add(BulletConfigSyncingUtil.ROCKET_STINGER_INCENDIARY);
@@ -76,7 +76,7 @@ GunConfiguration config = new GunConfiguration();
 		config.comment.add("");
 		config.comment.add("[LEGENDARY WEAPON]");
 
-		config.config = new ArrayList<Integer>();
+		config.config = new ArrayList<>();
 		config.config.add(BulletConfigSyncingUtil.ROCKET_STINGER);
 		config.config.add(BulletConfigSyncingUtil.ROCKET_STINGER_HE);
 		config.config.add(BulletConfigSyncingUtil.ROCKET_STINGER_INCENDIARY);

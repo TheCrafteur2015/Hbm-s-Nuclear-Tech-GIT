@@ -1,16 +1,16 @@
 package com.hbm.inventory.gui;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
 import com.hbm.inventory.container.ContainerRtgFurnace;
 import com.hbm.lib.RefStrings;
 import com.hbm.tileentity.machine.TileEntityRtgFurnace;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.ResourceLocation;
 
 public class GUIRtgFurnace extends GuiContainer {
 	
@@ -19,7 +19,7 @@ public class GUIRtgFurnace extends GuiContainer {
 
 	public GUIRtgFurnace(InventoryPlayer invPlayer, TileEntityRtgFurnace tedf) {
 		super(new ContainerRtgFurnace(invPlayer, tedf));
-		diFurnace = tedf;
+		this.diFurnace = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 166;
@@ -36,15 +36,15 @@ public class GUIRtgFurnace extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIRtgFurnace.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		if(diFurnace.hasPower())
+		if(this.diFurnace.hasPower())
 		{
-			drawTexturedModalRect(guiLeft + 55, guiTop + 35, 176, 0, 18, 16);
+			drawTexturedModalRect(this.guiLeft + 55, this.guiTop + 35, 176, 0, 18, 16);
 		}
 		
-		int j1 = diFurnace.getDiFurnaceProgressScaled(24);
-		drawTexturedModalRect(guiLeft + 79, guiTop + 34, 176, 16, j1 + 1, 17);
+		int j1 = this.diFurnace.getDiFurnaceProgressScaled(24);
+		drawTexturedModalRect(this.guiLeft + 79, this.guiTop + 34, 176, 16, j1 + 1, 17);
 	}
 }

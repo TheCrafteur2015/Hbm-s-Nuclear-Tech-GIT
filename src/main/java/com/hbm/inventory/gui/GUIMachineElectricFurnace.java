@@ -1,10 +1,5 @@
 package com.hbm.inventory.gui;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
 import com.hbm.blocks.ModBlocks;
@@ -13,6 +8,11 @@ import com.hbm.lib.RefStrings;
 import com.hbm.tileentity.machine.TileEntityMachineElectricFurnace;
 import com.hbm.util.I18nUtil;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.ResourceLocation;
+
 public class GUIMachineElectricFurnace extends GuiInfoContainer {
 	
 	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/GUIElectricFurnace.png");
@@ -20,7 +20,7 @@ public class GUIMachineElectricFurnace extends GuiInfoContainer {
 
 	public GUIMachineElectricFurnace(InventoryPlayer invPlayer, TileEntityMachineElectricFurnace tedf) {
 		super(new ContainerElectricFurnace(invPlayer, tedf));
-		diFurnace = tedf;
+		this.diFurnace = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 166;
@@ -30,13 +30,13 @@ public class GUIMachineElectricFurnace extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 20, guiTop + 69 - 52, 16, 52, diFurnace.power, diFurnace.maxPower);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 20, this.guiTop + 69 - 52, 16, 52, this.diFurnace.power, TileEntityMachineElectricFurnace.maxPower);
 		
 		String[] upgradeText = new String[3];
 		upgradeText[0] = I18nUtil.resolveKey("desc.gui.upgrade");
 		upgradeText[1] = I18nUtil.resolveKey("desc.gui.upgrade.speed");
 		upgradeText[2] = I18nUtil.resolveKey("desc.gui.upgrade.power");
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 151, guiTop + 19, 8, 8, mouseX, mouseY, upgradeText);
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 151, this.guiTop + 19, 8, 8, mouseX, mouseY, upgradeText);
 	}
 	
 	@Override
@@ -50,30 +50,30 @@ public class GUIMachineElectricFurnace extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIMachineElectricFurnace.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
 		//failsafe TE clone
 		//if initial TE invalidates, new TE is fetched
 		//if initial ZE is still present, it'll be used instead
 		//works so that container packets can still be used
 		//efficiency!
-		if(diFurnace.isInvalid() && diFurnace.getWorldObj().getTileEntity(diFurnace.xCoord, diFurnace.yCoord, diFurnace.zCoord) instanceof TileEntityMachineElectricFurnace)
-			diFurnace = (TileEntityMachineElectricFurnace) diFurnace.getWorldObj().getTileEntity(diFurnace.xCoord, diFurnace.yCoord, diFurnace.zCoord);
+		if(this.diFurnace.isInvalid() && this.diFurnace.getWorldObj().getTileEntity(this.diFurnace.xCoord, this.diFurnace.yCoord, this.diFurnace.zCoord) instanceof TileEntityMachineElectricFurnace)
+			this.diFurnace = (TileEntityMachineElectricFurnace) this.diFurnace.getWorldObj().getTileEntity(this.diFurnace.xCoord, this.diFurnace.yCoord, this.diFurnace.zCoord);
 		
-		if(diFurnace.hasPower()) {
-			int i = (int)diFurnace.getPowerScaled(52);
-			drawTexturedModalRect(guiLeft + 20, guiTop + 69 - i, 200, 52 - i, 16, i);
+		if(this.diFurnace.hasPower()) {
+			int i = (int)this.diFurnace.getPowerScaled(52);
+			drawTexturedModalRect(this.guiLeft + 20, this.guiTop + 69 - i, 200, 52 - i, 16, i);
 		}
 		
-		if(diFurnace.getWorldObj().getBlock(diFurnace.xCoord, diFurnace.yCoord, diFurnace.zCoord) == ModBlocks.machine_electric_furnace_on) {
-			drawTexturedModalRect(guiLeft + 56, guiTop + 35, 176, 0, 16, 16);
+		if(this.diFurnace.getWorldObj().getBlock(this.diFurnace.xCoord, this.diFurnace.yCoord, this.diFurnace.zCoord) == ModBlocks.machine_electric_furnace_on) {
+			drawTexturedModalRect(this.guiLeft + 56, this.guiTop + 35, 176, 0, 16, 16);
 		}
 		
-		int j1 = diFurnace.getProgressScaled(24);
-		drawTexturedModalRect(guiLeft + 79, guiTop + 34, 176, 17, j1 + 1, 17);
+		int j1 = this.diFurnace.getProgressScaled(24);
+		drawTexturedModalRect(this.guiLeft + 79, this.guiTop + 34, 176, 17, j1 + 1, 17);
 		
-		this.drawInfoPanel(guiLeft + 151, guiTop + 19, 8, 8, 8);
+		drawInfoPanel(this.guiLeft + 151, this.guiTop + 19, 8, 8, 8);
 	}
 
 }

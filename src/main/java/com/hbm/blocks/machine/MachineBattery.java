@@ -86,7 +86,7 @@ public class MachineBattery extends BlockContainer implements ILookOverlay, IPer
 	public IIcon getIcon(int side, int metadata) {
 
 		if(side == 0 || side == 1)
-			return iconTop;
+			return this.iconTop;
 
 		return metadata == 0 && side == 3 ? this.iconFront : (side == metadata ? this.iconFront : this.blockIcon);
 	}
@@ -99,7 +99,7 @@ public class MachineBattery extends BlockContainer implements ILookOverlay, IPer
 	@Override
 	public void onBlockAdded(World world, int x, int y, int z) {
 		super.onBlockAdded(world, x, y, z);
-		this.setDefaultDirection(world, x, y, z);
+		setDefaultDirection(world, x, y, z);
 	}
 
 	private void setDefaultDirection(World world, int x, int y, int z) {
@@ -174,7 +174,7 @@ public class MachineBattery extends BlockContainer implements ILookOverlay, IPer
 
 	@Override
 	public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_) {
-		if(!keepInventory) {
+		if(!MachineBattery.keepInventory) {
 			TileEntity tile = p_149749_1_.getTileEntity(p_149749_2_, p_149749_3_, p_149749_4_);
 
 			if(tile instanceof TileEntityMachineBattery) {
@@ -228,7 +228,7 @@ public class MachineBattery extends BlockContainer implements ILookOverlay, IPer
 		
 		TileEntityMachineBattery battery = (TileEntityMachineBattery) te;
 		
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		text.add(BobMathUtil.getShortNumber(battery.getPower()) + " / " + BobMathUtil.getShortNumber(battery.getMaxPower()) + "HE");
 		
 		double percent = (double) battery.getPower() / (double) battery.getMaxPower();
@@ -266,18 +266,19 @@ public class MachineBattery extends BlockContainer implements ILookOverlay, IPer
 	public void onBlockHarvested(World world, int x, int y, int z, int meta, EntityPlayer player) {
 		
 		if(!player.capabilities.isCreativeMode) {
-			harvesters.set(player);
+			this.harvesters.set(player);
 			this.dropBlockAsItem(world, x, y, z, meta, 0);
-			harvesters.set(null);
+			this.harvesters.set(null);
 		}
 	}
 	
 	@Override
 	public void harvestBlock(World world, EntityPlayer player, int x, int y, int z, int meta) {
-		player.addStat(StatList.mineBlockStatArray[getIdFromBlock(this)], 1);
+		player.addStat(StatList.mineBlockStatArray[Block.getIdFromBlock(this)], 1);
 		player.addExhaustion(0.025F);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, NBTTagCompound persistentTag, EntityPlayer player, List list, boolean ext) {
 		list.add(EnumChatFormatting.YELLOW + "" + BobMathUtil.getShortNumber(persistentTag.getLong("power")) + "/" + BobMathUtil.getShortNumber(this.maxPower) + "HE");

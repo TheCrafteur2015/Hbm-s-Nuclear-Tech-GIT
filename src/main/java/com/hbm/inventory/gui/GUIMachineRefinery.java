@@ -23,7 +23,7 @@ public class GUIMachineRefinery extends GuiInfoContainer {
 
 	public GUIMachineRefinery(InventoryPlayer invPlayer, TileEntityMachineRefinery tedf) {
 		super(new ContainerMachineRefinery(invPlayer, tedf));
-		refinery = tedf;
+		this.refinery = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 222;
@@ -33,23 +33,23 @@ public class GUIMachineRefinery extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		refinery.tanks[0].renderTankInfo(this, mouseX, mouseY, guiLeft + 26, guiTop + 70 - 52, 34, 52);
-		refinery.tanks[1].renderTankInfo(this, mouseX, mouseY, guiLeft + 80, guiTop + 70 - 52, 16, 52);
-		refinery.tanks[2].renderTankInfo(this, mouseX, mouseY, guiLeft + 98, guiTop + 70 - 52, 16, 52);
-		refinery.tanks[3].renderTankInfo(this, mouseX, mouseY, guiLeft + 116, guiTop + 70 - 52, 16, 52);
-		refinery.tanks[4].renderTankInfo(this, mouseX, mouseY, guiLeft + 134, guiTop + 70 - 52, 16, 52);
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 8, guiTop + 70 - 52, 16, 52, refinery.power, refinery.maxPower);
+		this.refinery.tanks[0].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 26, this.guiTop + 70 - 52, 34, 52);
+		this.refinery.tanks[1].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 80, this.guiTop + 70 - 52, 16, 52);
+		this.refinery.tanks[2].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 98, this.guiTop + 70 - 52, 16, 52);
+		this.refinery.tanks[3].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 116, this.guiTop + 70 - 52, 16, 52);
+		this.refinery.tanks[4].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 134, this.guiTop + 70 - 52, 16, 52);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 8, this.guiTop + 70 - 52, 16, 52, this.refinery.power, TileEntityMachineRefinery.maxPower);
 	}
 
 	@Override
 	protected void mouseClicked(int x, int y, int i) {
 		super.mouseClicked(x, y, i);
 		
-		if(guiLeft + 64 <= x && guiLeft + 76 > x && guiTop + 20 < y && guiTop + 46 >= y) {
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+		if(this.guiLeft + 64 <= x && this.guiLeft + 76 > x && this.guiTop + 20 < y && this.guiTop + 46 >= y) {
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 			NBTTagCompound data = new NBTTagCompound();
 			data.setBoolean("toggle", true); //we only need to send one bit, so boolean it is
-			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, refinery.xCoord, refinery.yCoord, refinery.zCoord));
+			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, this.refinery.xCoord, this.refinery.yCoord, this.refinery.zCoord));
 		}
 	}
 	
@@ -64,19 +64,19 @@ public class GUIMachineRefinery extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIMachineRefinery.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		if(refinery.tanks[0].getTankType() == Fluids.HOTCRACKOIL)
-			drawTexturedModalRect(guiLeft + 64, guiTop + 20, 192, 0, 12, 26);
+		if(this.refinery.tanks[0].getTankType() == Fluids.HOTCRACKOIL)
+			drawTexturedModalRect(this.guiLeft + 64, this.guiTop + 20, 192, 0, 12, 26);
 
-		int j = (int)refinery.getPowerScaled(52);
-		drawTexturedModalRect(guiLeft + 8, guiTop + 70 - j, 176, 52 - j, 16, j);
+		int j = (int)this.refinery.getPowerScaled(52);
+		drawTexturedModalRect(this.guiLeft + 8, this.guiTop + 70 - j, 176, 52 - j, 16, j);
 		
-		refinery.tanks[0].renderTank(guiLeft + 26, guiTop + 70, this.zLevel, 34, 52);
-		refinery.tanks[1].renderTank(guiLeft + 80, guiTop + 70, this.zLevel, 16, 52);
-		refinery.tanks[2].renderTank(guiLeft + 98, guiTop + 70, this.zLevel, 16, 52);
-		refinery.tanks[3].renderTank(guiLeft + 116, guiTop + 70, this.zLevel, 16, 52);
-		refinery.tanks[4].renderTank(guiLeft + 134, guiTop + 70, this.zLevel, 16, 52);
+		this.refinery.tanks[0].renderTank(this.guiLeft + 26, this.guiTop + 70, this.zLevel, 34, 52);
+		this.refinery.tanks[1].renderTank(this.guiLeft + 80, this.guiTop + 70, this.zLevel, 16, 52);
+		this.refinery.tanks[2].renderTank(this.guiLeft + 98, this.guiTop + 70, this.zLevel, 16, 52);
+		this.refinery.tanks[3].renderTank(this.guiLeft + 116, this.guiTop + 70, this.zLevel, 16, 52);
+		this.refinery.tanks[4].renderTank(this.guiLeft + 134, this.guiTop + 70, this.zLevel, 16, 52);
 	}
 }

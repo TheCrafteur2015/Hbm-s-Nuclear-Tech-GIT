@@ -80,7 +80,7 @@ public class MachineCMBFactory extends BlockContainer {
 	@Override
 	public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_)
     {
-        if (!keepInventory)
+        if (!MachineCMBFactory.keepInventory)
         {
         	TileEntityMachineCMBFactory tileentityfurnace = (TileEntityMachineCMBFactory)p_149749_1_.getTileEntity(p_149749_2_, p_149749_3_, p_149749_4_);
 

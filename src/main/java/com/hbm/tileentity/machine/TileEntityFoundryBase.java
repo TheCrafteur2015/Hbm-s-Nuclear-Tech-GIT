@@ -1,8 +1,8 @@
 package com.hbm.tileentity.machine;
 
 import com.hbm.inventory.material.Mats;
-import com.hbm.inventory.material.NTMMaterial;
 import com.hbm.inventory.material.Mats.MaterialStack;
+import com.hbm.inventory.material.NTMMaterial;
 
 import api.hbm.block.ICrucibleAcceptor;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,17 +29,17 @@ public abstract class TileEntityFoundryBase extends TileEntity implements ICruci
 	@Override
 	public void updateEntity() {
 		
-		if(worldObj.isRemote) {
+		if(this.worldObj.isRemote) {
 			
 			if(shouldClientReRender() && this.lastType != this.type || this.lastAmount != this.amount) {
-				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
 				this.lastType = this.type;
 				this.lastAmount = this.amount;
 			}
 		} else {
 			
 			if(this.lastType != this.type || this.lastAmount != this.amount) {
-				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
 				this.lastType = this.type;
 				this.lastAmount = this.amount;
 			}
@@ -54,13 +54,13 @@ public abstract class TileEntityFoundryBase extends TileEntity implements ICruci
 	@Override
 	public Packet getDescriptionPacket() {
 		NBTTagCompound nbt = new NBTTagCompound();
-		this.writeToNBT(nbt);
+		writeToNBT(nbt);
 		return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, nbt);
 	}
 	
 	@Override
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-		this.readFromNBT(pkt.func_148857_g());
+		readFromNBT(pkt.func_148857_g());
 	}
 
 	@Override
@@ -91,8 +91,8 @@ public abstract class TileEntityFoundryBase extends TileEntity implements ICruci
 	 * - amount being at max<br>
 	 */
 	public boolean standardCheck(World world, int x, int y, int z, ForgeDirection side, MaterialStack stack) {
-		if(this.type != null && this.type != stack.material && this.amount > 0) return false; //reject if there's already a different material
-		if(this.amount >= this.getCapacity()) return false; //reject if the buffer is already full
+		 //reject if there's already a different material
+		if((this.type != null && this.type != stack.material && this.amount > 0) || (this.amount >= getCapacity())) return false; //reject if the buffer is already full
 		return true;
 	}
 	
@@ -105,13 +105,13 @@ public abstract class TileEntityFoundryBase extends TileEntity implements ICruci
 	public MaterialStack standardAdd(World world, int x, int y, int z, ForgeDirection side, MaterialStack stack) {
 		this.type = stack.material;
 		
-		if(stack.amount + this.amount <= this.getCapacity()) {
+		if(stack.amount + this.amount <= getCapacity()) {
 			this.amount += stack.amount;
 			return null;
 		}
 		
-		int required = this.getCapacity() - this.amount;
-		this.amount = this.getCapacity();
+		int required = getCapacity() - this.amount;
+		this.amount = getCapacity();
 		
 		stack.amount -= required;
 		
@@ -121,7 +121,7 @@ public abstract class TileEntityFoundryBase extends TileEntity implements ICruci
 	/** Standard check with no additional limitations added */
 	@Override
 	public boolean canAcceptPartialFlow(World world, int x, int y, int z, ForgeDirection side, MaterialStack stack) {
-		return this.standardCheck(world, x, y, z, side, stack);
+		return standardCheck(world, x, y, z, side, stack);
 	}
 	
 	/** Standard flow, no special handling required */
@@ -134,7 +134,7 @@ public abstract class TileEntityFoundryBase extends TileEntity implements ICruci
 	@Override
 	public boolean canAcceptPartialPour(World world, int x, int y, int z, double dX, double dY, double dZ, ForgeDirection side, MaterialStack stack) {
 		if(side != ForgeDirection.UP) return false;
-		return this.standardCheck(world, x, y, z, side, stack);
+		return standardCheck(world, x, y, z, side, stack);
 	}
 
 	/** Standard flow, no special handling required */

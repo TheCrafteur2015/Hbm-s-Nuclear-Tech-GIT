@@ -32,24 +32,24 @@ public class EntityBombletSelena extends EntityThrowable {
 		this.posY += this.motionY;
 		this.posZ += this.motionZ;
 
-        Vec3 vector = Vec3.createVectorHelper(motionX, 0, motionZ);
+        Vec3 vector = Vec3.createVectorHelper(this.motionX, 0, this.motionZ);
         vector = vector.normalize();
-        vector.xCoord *= accelXZ;
-        vector.zCoord *= accelXZ;
-		this.motionY -= decelY;
+        vector.xCoord *= this.accelXZ;
+        vector.zCoord *= this.accelXZ;
+		this.motionY -= this.decelY;
 		this.motionX -= vector.xCoord;
 		this.motionZ -= vector.zCoord;
         
-        this.rotation();
+        rotation();
         
         if(this.worldObj.getBlock((int)this.posX, (int)this.posY, (int)this.posZ) != Blocks.air)
         {
     		if(!this.worldObj.isRemote)
     		{
-    			ExplosionLarge.explodeFire(worldObj, this.posX + 0.5F, this.posY + 0.5F, this.posZ + 0.5F, 20.0F, true, true, true);
+    			ExplosionLarge.explodeFire(this.worldObj, this.posX + 0.5F, this.posY + 0.5F, this.posZ + 0.5F, 20.0F, true, true, true);
     			ExplosionChaos.flameDeath(this.worldObj, (int)((float)this.posX + 0.5F), (int)((float)this.posY + 0.5F), (int)((float)this.posZ + 0.5F), 25);
     		}
-    		this.setDead();
+    		setDead();
         }
 
 		//if(!this.worldObj.isRemote)

@@ -36,21 +36,21 @@ public class WorldInAJar implements IBlockAccess {
 	
 	public void nuke() {
 		
-		this.blocks = new Block[sizeX][sizeY][sizeZ];
-		this.meta = new short[sizeX][sizeY][sizeZ];
-		this.tiles = new TileEntity[sizeX][sizeY][sizeZ];
+		this.blocks = new Block[this.sizeX][this.sizeY][this.sizeZ];
+		this.meta = new short[this.sizeX][this.sizeY][this.sizeZ];
+		this.tiles = new TileEntity[this.sizeX][this.sizeY][this.sizeZ];
 	}
 
 	@Override
 	public Block getBlock(int x, int y, int z) {
-		if(x < 0 || x >= sizeX || y < 0 || y >= sizeY || z < 0 || z >= sizeZ)
+		if(x < 0 || x >= this.sizeX || y < 0 || y >= this.sizeY || z < 0 || z >= this.sizeZ)
 			return Blocks.air;
 		
 		return this.blocks[x][y][z] != null ? this.blocks[x][y][z] : Blocks.air;
 	}
 	
 	public void setBlock(int x, int y, int z, Block b, int meta) {
-		if(x < 0 || x >= sizeX || y < 0 || y >= sizeY || z < 0 || z >= sizeZ)
+		if(x < 0 || x >= this.sizeX || y < 0 || y >= this.sizeY || z < 0 || z >= this.sizeZ)
 			return;
 
 		this.blocks[x][y][z] = b;
@@ -59,7 +59,7 @@ public class WorldInAJar implements IBlockAccess {
 
 	@Override
 	public int getBlockMetadata(int x, int y, int z) {
-		if(x < 0 || x >= sizeX || y < 0 || y >= sizeY || z < 0 || z >= sizeZ)
+		if(x < 0 || x >= this.sizeX || y < 0 || y >= this.sizeY || z < 0 || z >= this.sizeZ)
 			return 0;
 		
 		return this.meta[x][y][z];
@@ -69,14 +69,14 @@ public class WorldInAJar implements IBlockAccess {
 	//might still come in handy for manipulating things using dummy tiles, like cable connections
 	@Override
 	public TileEntity getTileEntity(int x, int y, int z) {
-		if(x < 0 || x >= sizeX || y < 0 || y >= sizeY || z < 0 || z >= sizeZ)
+		if(x < 0 || x >= this.sizeX || y < 0 || y >= this.sizeY || z < 0 || z >= this.sizeZ)
 			return null;
 		
 		return this.tiles[x][y][z];
 	}
 	
 	public void setTileEntity(int x, int y, int z, TileEntity tile) {
-		if(x < 0 || x >= sizeX || y < 0 || y >= sizeY || z < 0 || z >= sizeZ)
+		if(x < 0 || x >= this.sizeX || y < 0 || y >= this.sizeY || z < 0 || z >= this.sizeZ)
 			return;
 		
 		this.tiles[x][y][z] = tile;
@@ -98,7 +98,7 @@ public class WorldInAJar implements IBlockAccess {
 
 	@Override
 	public boolean isAirBlock(int x, int y, int z) {
-		return this.getBlock(x, y, z).isAir(this, x, y, z);
+		return getBlock(x, y, z).isAir(this, x, y, z);
 	}
 
 	//biomes don't matter to us, if the situation requires it we could implement a primitive biome mask

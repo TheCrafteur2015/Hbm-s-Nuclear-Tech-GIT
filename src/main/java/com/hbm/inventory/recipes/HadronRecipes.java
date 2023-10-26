@@ -21,7 +21,7 @@ public class HadronRecipes extends SerializableRecipe {
 	 * Since we're dealing with like 10 or so recipes, using a HashMap (or to combine two keys, a HashMap *in* a HashMap)
 	 * would be less performant than those few steps through a good old Array list, and it's much easier to implement too.
 	 */
-	private static final List<HadronRecipe> recipes = new ArrayList();
+	private static final List<HadronRecipe> recipes = new ArrayList<>();
 	
 	/*
 	 * We CAN actually implement recipes with the same input items but different momentum requirements.
@@ -36,7 +36,7 @@ public class HadronRecipes extends SerializableRecipe {
 	@Override
 	public void registerDefaults() {
 
-		recipes.add(new HadronRecipe(
+		HadronRecipes.recipes.add(new HadronRecipe(
 				new ItemStack(ModItems.particle_hydrogen),
 				new ItemStack(ModItems.particle_copper),
 				900,
@@ -44,7 +44,7 @@ public class HadronRecipes extends SerializableRecipe {
 				new ItemStack(ModItems.particle_aelectron),
 				true
 				));
-		recipes.add(new HadronRecipe(
+		HadronRecipes.recipes.add(new HadronRecipe(
 				new ItemStack(ModItems.particle_amat),
 				new ItemStack(ModItems.particle_amat),
 				900,
@@ -52,7 +52,7 @@ public class HadronRecipes extends SerializableRecipe {
 				new ItemStack(ModItems.particle_empty),
 				false
 				));
-		recipes.add(new HadronRecipe(
+		HadronRecipes.recipes.add(new HadronRecipe(
 				new ItemStack(ModItems.particle_aschrab),
 				new ItemStack(ModItems.particle_aschrab),
 				100000,
@@ -60,7 +60,7 @@ public class HadronRecipes extends SerializableRecipe {
 				new ItemStack(ModItems.particle_empty),
 				false
 				));
-		recipes.add(new HadronRecipe(
+		HadronRecipes.recipes.add(new HadronRecipe(
 				new ItemStack(ModItems.particle_hydrogen),
 				new ItemStack(ModItems.particle_amat),
 				2000,
@@ -68,7 +68,7 @@ public class HadronRecipes extends SerializableRecipe {
 				new ItemStack(ModItems.particle_empty),
 				true
 				));
-		recipes.add(new HadronRecipe(
+		HadronRecipes.recipes.add(new HadronRecipe(
 				new ItemStack(ModItems.particle_hydrogen),
 				new ItemStack(ModItems.particle_lead),
 				5000,
@@ -76,7 +76,7 @@ public class HadronRecipes extends SerializableRecipe {
 				new ItemStack(ModItems.particle_empty),
 				false
 				));
-		recipes.add(new HadronRecipe(
+		HadronRecipes.recipes.add(new HadronRecipe(
 				new ItemStack(ModItems.particle_muon),
 				new ItemStack(ModItems.particle_higgs),
 				2000,
@@ -84,7 +84,7 @@ public class HadronRecipes extends SerializableRecipe {
 				new ItemStack(ModItems.particle_empty),
 				true
 				));
-		recipes.add(new HadronRecipe(
+		HadronRecipes.recipes.add(new HadronRecipe(
 				new ItemStack(ModItems.particle_muon),
 				new ItemStack(ModItems.particle_dark),
 				100000,
@@ -92,7 +92,7 @@ public class HadronRecipes extends SerializableRecipe {
 				new ItemStack(ModItems.particle_empty),
 				false
 				));
-		recipes.add(new HadronRecipe(
+		HadronRecipes.recipes.add(new HadronRecipe(
 				new ItemStack(ModItems.particle_strange),
 				new ItemStack(ModItems.powder_magic),
 				500000,
@@ -100,7 +100,7 @@ public class HadronRecipes extends SerializableRecipe {
 				new ItemStack(ModItems.dust),
 				false
 				));
-		recipes.add(new HadronRecipe(
+		HadronRecipes.recipes.add(new HadronRecipe(
 				new ItemStack(ModItems.particle_sparkticle),
 				new ItemStack(ModItems.particle_higgs),
 				1000000,
@@ -108,7 +108,7 @@ public class HadronRecipes extends SerializableRecipe {
 				new ItemStack(ModItems.particle_empty),
 				false
 				));
-		recipes.add(new HadronRecipe(
+		HadronRecipes.recipes.add(new HadronRecipe(
 				new ItemStack(Items.chicken),
 				new ItemStack(Items.chicken),
 				100,
@@ -130,15 +130,15 @@ public class HadronRecipes extends SerializableRecipe {
 	 */
 	public static ItemStack[] getOutput(ItemStack in1, ItemStack in2, int momentum, boolean analysisOnly) {
 		
-		returnCode = EnumHadronState.NORESULT_WRONG_INGREDIENT;
+		HadronRecipes.returnCode = EnumHadronState.NORESULT_WRONG_INGREDIENT;
 		
-		for(HadronRecipe r : recipes) {
+		for(HadronRecipe r : HadronRecipes.recipes) {
 			
 			if((r.in1.isApplicable(in1) && r.in2.isApplicable(in2)) ||
 					(r.in1.isApplicable(in2) && r.in2.isApplicable(in1))) {
 
-				if(analysisOnly && !r.analysisOnly)	returnCode = EnumHadronState.NORESULT_WRONG_MODE;
-				if(momentum < r.momentum)			returnCode = EnumHadronState.NORESULT_TOO_SLOW;
+				if(analysisOnly && !r.analysisOnly)	HadronRecipes.returnCode = EnumHadronState.NORESULT_WRONG_MODE;
+				if(momentum < r.momentum)			HadronRecipes.returnCode = EnumHadronState.NORESULT_TOO_SLOW;
 				
 				if(momentum >= r.momentum && analysisOnly == r.analysisOnly)
 					return new ItemStack[] {r.out1, r.out2};
@@ -148,7 +148,7 @@ public class HadronRecipes extends SerializableRecipe {
 	}
 	
 	public static List<HadronRecipe> getRecipes() {
-		return recipes;
+		return HadronRecipes.recipes;
 	}
 	
 	public static class HadronRecipe {
@@ -179,7 +179,7 @@ public class HadronRecipes extends SerializableRecipe {
 
 	@Override
 	public Object getRecipeObject() {
-		return this.recipes;
+		return HadronRecipes.recipes;
 	}
 
 	@Override
@@ -187,10 +187,10 @@ public class HadronRecipes extends SerializableRecipe {
 		JsonObject obj = (JsonObject) recipe;
 		int momentum = obj.get("momentum").getAsInt();
 		boolean lineMode = obj.get("lineMode").getAsBoolean();
-		ItemStack[] in = this.readItemStackArray(obj.get("inputs").getAsJsonArray());
-		ItemStack[] out = this.readItemStackArray(obj.get("outputs").getAsJsonArray());
+		ItemStack[] in = readItemStackArray(obj.get("inputs").getAsJsonArray());
+		ItemStack[] out = readItemStackArray(obj.get("outputs").getAsJsonArray());
 		
-		this.recipes.add(new HadronRecipe(
+		HadronRecipes.recipes.add(new HadronRecipe(
 				in[0],
 				in[1],
 				momentum,
@@ -208,13 +208,13 @@ public class HadronRecipes extends SerializableRecipe {
 		writer.name("lineMode").value(rec.analysisOnly);
 		
 		writer.name("inputs").beginArray();
-		this.writeItemStack(rec.in1.toStack(), writer);
-		this.writeItemStack(rec.in2.toStack(), writer);
+		writeItemStack(rec.in1.toStack(), writer);
+		writeItemStack(rec.in2.toStack(), writer);
 		writer.endArray();
 		
 		writer.name("outputs").beginArray();
-		this.writeItemStack(rec.out1, writer);
-		this.writeItemStack(rec.out2, writer);
+		writeItemStack(rec.out1, writer);
+		writeItemStack(rec.out2, writer);
 		writer.endArray();
 	}
 	
@@ -225,6 +225,6 @@ public class HadronRecipes extends SerializableRecipe {
 
 	@Override
 	public void deleteRecipes() {
-		this.recipes.clear();
+		HadronRecipes.recipes.clear();
 	}
 }

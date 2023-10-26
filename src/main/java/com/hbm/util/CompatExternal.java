@@ -113,7 +113,7 @@ public class CompatExternal {
 	 * [4]: INT - the capacity of this tank in millibuckets
 	 */
 	public static ArrayList<Object[]> getFluidInfoFromTile(TileEntity tile) {
-		ArrayList<Object[]> list = new ArrayList();
+		ArrayList<Object[]> list = new ArrayList<>();
 		
 		if(!(tile instanceof IFluidUser)) {
 			return list;
@@ -135,37 +135,37 @@ public class CompatExternal {
 		return list;
 	}
 
-	public static Set<Class> turretTargetPlayer = new HashSet();
-	public static Set<Class> turretTargetFriendly = new HashSet();
-	public static Set<Class> turretTargetHostile = new HashSet();
-	public static Set<Class> turretTargetMachine = new HashSet();
+	public static Set<Class<?>> turretTargetPlayer = new HashSet<>();
+	public static Set<Class<?>> turretTargetFriendly = new HashSet<>();
+	public static Set<Class<?>> turretTargetHostile = new HashSet<>();
+	public static Set<Class<?>> turretTargetMachine = new HashSet<>();
 	
 	/**
 	 * Registers a class for turret targeting
 	 * @param clazz is the class that should be targeted.
 	 * @param type determines what setting the turret needs to have enabled to target this class. 0 is player, 1 is friendly, 2 is hostile and 3 is machine.
 	 */
-	public static void registerTurretTargetSimple(Class clazz, int type) {
+	public static void registerTurretTargetSimple(Class<?> clazz, int type) {
 		
 		switch(type) {
-		case 0: turretTargetPlayer.add(clazz); break;
-		case 1: turretTargetFriendly.add(clazz); break;
-		case 2: turretTargetHostile.add(clazz); break;
-		case 3: turretTargetMachine.add(clazz); break;
+		case 0: CompatExternal.turretTargetPlayer.add(clazz); break;
+		case 1: CompatExternal.turretTargetFriendly.add(clazz); break;
+		case 2: CompatExternal.turretTargetHostile.add(clazz); break;
+		case 3: CompatExternal.turretTargetMachine.add(clazz); break;
 		}
 	}
 	
-	public static Set<Class> turretTargetBlacklist = new HashSet();
+	public static Set<Class<?>> turretTargetBlacklist = new HashSet<>();
 	
 	/**
 	 * Registers a class to be fully ignored by turrets
 	 * @param clazz is the class that should be ignored.
 	 */
-	public static void registerTurretTargetBlacklist(Class clazz) {
-		turretTargetBlacklist.add(clazz);
+	public static void registerTurretTargetBlacklist(Class<?> clazz) {
+		CompatExternal.turretTargetBlacklist.add(clazz);
 	}
 	
-	public static HashMap<Class, BiFunction<Entity, Object, Integer>> turretTargetCondition = new HashMap();
+	public static HashMap<Class<?>, BiFunction<Entity, Object, Integer>> turretTargetCondition = new HashMap<>();
 	
 	/**
 	 * Registers a BiFunction lambda for more complex targeting compatibility
@@ -174,8 +174,8 @@ public class CompatExternal {
 	 * The params for this lambda are the entity and the turret in question. The type for the turret is omitted on purpose as to not require any reference of the tile entity
 	 * class on the side of whoever is adding compat, allowing the compat class to be used entirely with reflection.
 	 */
-	public static void registerTurretTargetingCondition(Class clazz, BiFunction<Entity, Object, Integer> bi) {
-		turretTargetBlacklist.add(clazz);
+	public static void registerTurretTargetingCondition(Class<?> clazz, BiFunction<Entity, Object, Integer> bi) {
+		CompatExternal.turretTargetBlacklist.add(clazz);
 	}
 	
 	public static void compatExamples() {

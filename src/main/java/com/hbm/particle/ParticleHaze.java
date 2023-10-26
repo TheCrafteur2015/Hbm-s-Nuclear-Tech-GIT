@@ -26,8 +26,8 @@ public class ParticleHaze extends EntityFX {
 
 	public ParticleHaze(TextureManager p_i1213_1_, World p_i1218_1_, double p_i1218_2_, double p_i1218_4_, double p_i1218_6_) {
 		super(p_i1218_1_, p_i1218_2_, p_i1218_4_, p_i1218_6_);
-		theRenderEngine = p_i1213_1_;
-		maxAge = 600 + rand.nextInt(100);
+		this.theRenderEngine = p_i1213_1_;
+		this.maxAge = 600 + this.rand.nextInt(100);
 
 		this.particleRed = this.particleGreen = this.particleBlue = 0;
 		this.particleScale = 10F;
@@ -35,8 +35,8 @@ public class ParticleHaze extends EntityFX {
 
 	public ParticleHaze(TextureManager p_i1213_1_, World p_i1218_1_, double p_i1218_2_, double p_i1218_4_, double p_i1218_6_, float red, float green, float blue, float scale) {
 		super(p_i1218_1_, p_i1218_2_, p_i1218_4_, p_i1218_6_);
-		theRenderEngine = p_i1213_1_;
-		maxAge = 100 + rand.nextInt(40);
+		this.theRenderEngine = p_i1213_1_;
+		this.maxAge = 100 + this.rand.nextInt(40);
 
 		this.particleRed = red;
 		this.particleGreen = green;
@@ -45,6 +45,7 @@ public class ParticleHaze extends EntityFX {
 		this.particleScale = scale;
 	}
 
+	@Override
 	public void onUpdate() {
 		this.prevPosX = this.posX;
 		this.prevPosY = this.posY;
@@ -52,8 +53,8 @@ public class ParticleHaze extends EntityFX {
 
 		this.particleAge++;
 
-		if(this.particleAge >= maxAge) {
-			this.setDead();
+		if(this.particleAge >= this.maxAge) {
+			setDead();
 		}
 
 		this.motionX *= 0.9599999785423279D;
@@ -65,23 +66,25 @@ public class ParticleHaze extends EntityFX {
 			this.motionZ *= 0.699999988079071D;
 		}
 
-		int x = (int)Math.floor(posX) + rand.nextInt(15) - 7;
-		int z = (int)Math.floor(posZ) + rand.nextInt(15) - 7;
-		int y = worldObj.getHeightValue(x, z);
-		worldObj.spawnParticle("lava", x + rand.nextDouble(), y + 0.1, z + rand.nextDouble(), 0.0, 0.0, 0.0);
+		int x = (int)Math.floor(this.posX) + this.rand.nextInt(15) - 7;
+		int z = (int)Math.floor(this.posZ) + this.rand.nextInt(15) - 7;
+		int y = this.worldObj.getHeightValue(x, z);
+		this.worldObj.spawnParticle("lava", x + this.rand.nextDouble(), y + 0.1, z + this.rand.nextDouble(), 0.0, 0.0, 0.0);
 	}
 
+	@Override
 	public int getFXLayer() {
 		return 3;
 	}
 
+	@Override
 	public void renderParticle(Tessellator tess, float p_70539_2_, float p_70539_3_, float p_70539_4_, float p_70539_5_, float p_70539_6_, float p_70539_7_) {
 
-		this.theRenderEngine.bindTexture(texture);
+		this.theRenderEngine.bindTexture(ParticleHaze.texture);
 
 		float alpha = 0;
 
-		alpha = (float) Math.sin(particleAge * Math.PI / (400F)) * 0.25F;
+		alpha = (float) Math.sin(this.particleAge * Math.PI / (400F)) * 0.25F;
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, alpha * 0.1F);
 		GL11.glDisable(GL11.GL_LIGHTING);
@@ -99,13 +102,13 @@ public class ParticleHaze extends EntityFX {
 			double dX = rand.nextGaussian() * 2.5D;
 			double dY = rand.nextGaussian() * 0.15D;
 			double dZ = rand.nextGaussian() * 2.5D;
-			double size = (rand.nextDouble() * 0.25 + 0.75) * particleScale;
+			double size = (rand.nextDouble() * 0.25 + 0.75) * this.particleScale;
 
 			GL11.glTranslatef((float) dX, (float) dY, (float) dZ);
 
-			float pX = (float) ((this.prevPosX + (this.posX - this.prevPosX) * (double) p_70539_2_ - interpPosX) + rand.nextGaussian() * 0.5);
-			float pY = (float) ((this.prevPosY + (this.posY - this.prevPosY) * (double) p_70539_2_ - interpPosY) + rand.nextGaussian() * 0.5);
-			float pZ = (float) ((this.prevPosZ + (this.posZ - this.prevPosZ) * (double) p_70539_2_ - interpPosZ) + rand.nextGaussian() * 0.5);
+			float pX = (float) ((this.prevPosX + (this.posX - this.prevPosX) * (double) p_70539_2_ - EntityFX.interpPosX) + rand.nextGaussian() * 0.5);
+			float pY = (float) ((this.prevPosY + (this.posY - this.prevPosY) * (double) p_70539_2_ - EntityFX.interpPosY) + rand.nextGaussian() * 0.5);
+			float pZ = (float) ((this.prevPosZ + (this.posZ - this.prevPosZ) * (double) p_70539_2_ - EntityFX.interpPosZ) + rand.nextGaussian() * 0.5);
 
 			tess.startDrawingQuads();
 			tess.setNormal(0.0F, 1.0F, 0.0F);

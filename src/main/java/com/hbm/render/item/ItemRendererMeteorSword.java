@@ -66,7 +66,7 @@ public class ItemRendererMeteorSword implements IItemRenderer {
             
             float in = 0.36F;
             
-            GL11.glColor4f(r * in, g * in, b * in, 1.0F);
+            GL11.glColor4f(this.r * in, this.g * in, this.b * in, 1.0F);
             
             int p_77018_2_ = 0;
             int p_77018_4_ = 16;

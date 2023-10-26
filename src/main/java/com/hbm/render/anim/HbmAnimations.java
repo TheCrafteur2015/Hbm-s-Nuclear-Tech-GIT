@@ -53,11 +53,11 @@ public class HbmAnimations {
 			slot = Math.abs(slot) % 9;
 		}
 		
-		if(hotbar[slot] == null)
+		if(HbmAnimations.hotbar[slot] == null)
 			return null;
 		
-		if(hotbar[slot].key.equals(stack.getItem().getUnlocalizedName())) {
-			return hotbar[slot];
+		if(HbmAnimations.hotbar[slot].key.equals(stack.getItem().getUnlocalizedName())) {
+			return HbmAnimations.hotbar[slot];
 		}
 		
 		return null;

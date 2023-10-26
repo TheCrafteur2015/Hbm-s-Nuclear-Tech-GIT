@@ -1,6 +1,7 @@
 package com.hbm.blocks.machine;
 
 import com.hbm.lib.RefStrings;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;

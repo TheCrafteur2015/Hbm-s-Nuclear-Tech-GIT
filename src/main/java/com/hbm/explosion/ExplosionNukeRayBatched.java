@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 public class ExplosionNukeRayBatched {
 
 	public HashMap<ChunkCoordIntPair, List<FloatTriplet>> perChunk = new HashMap(); //for future: optimize blockmap further by using sub-chunks instead of chunks
-	public List<ChunkCoordIntPair> orderedChunks = new ArrayList();
+	public List<ChunkCoordIntPair> orderedChunks = new ArrayList<>();
 	private CoordComparator comparator = new CoordComparator();
 	int posX;
 	int posY;
@@ -83,10 +83,10 @@ public class ExplosionNukeRayBatched {
 
 		while (this.gspNumMax >= this.gspNum){
 			// Get Cartesian coordinates for spherical coordinates
-			Vec3 vec = this.getSpherical2cartesian();
+			Vec3 vec = getSpherical2cartesian();
 
-			int length = (int)Math.ceil(strength);
-			float res = strength;
+			int length = (int)Math.ceil(this.strength);
+			float res = this.strength;
 
 			FloatTriplet lastPos = null;
 			HashSet<ChunkCoordIntPair> chunkCoords = new HashSet();
@@ -96,9 +96,9 @@ public class ExplosionNukeRayBatched {
 				if(i > this.length)
 					break;
 
-				float x0 = (float) (posX + (vec.xCoord * i));
-				float y0 = (float) (posY + (vec.yCoord * i));
-				float z0 = (float) (posZ + (vec.zCoord * i));
+				float x0 = (float) (this.posX + (vec.xCoord * i));
+				float y0 = (float) (this.posY + (vec.yCoord * i));
+				float z0 = (float) (this.posZ + (vec.zCoord * i));
 
 				int iX = (int) Math.floor(x0);
 				int iY = (int) Math.floor(y0);
@@ -107,10 +107,10 @@ public class ExplosionNukeRayBatched {
 				double fac = 100 - ((double) i) / ((double) length) * 100;
 				fac *= 0.07D;
 				
-				Block block = world.getBlock(iX, iY, iZ);
+				Block block = this.world.getBlock(iX, iY, iZ);
 
 				if(!block.getMaterial().isLiquid())
-					res -= Math.pow(masqueradeResistance(block), 7.5D - fac);
+					res -= Math.pow(ExplosionNukeRayBatched.masqueradeResistance(block), 7.5D - fac);
 				//else
 				//	res -= Math.pow(Blocks.air.getExplosionResistance(null), 7.5D - fac); // air is 0, might want to raise that is necessary
 
@@ -136,18 +136,18 @@ public class ExplosionNukeRayBatched {
 			}
 			
 			for(ChunkCoordIntPair pos : chunkCoords) {
-				List<FloatTriplet> triplets = perChunk.get(pos);
+				List<FloatTriplet> triplets = this.perChunk.get(pos);
 				
 				if(triplets == null) {
-					triplets = new ArrayList();
-					perChunk.put(pos, triplets); //we re-use the same pos instead of using individualized per-chunk ones to save on RAM
+					triplets = new ArrayList<>();
+					this.perChunk.put(pos, triplets); //we re-use the same pos instead of using individualized per-chunk ones to save on RAM
 				}
 				
 				triplets.add(lastPos);
 			}
 			
 			// Raise one generalized spiral points
-			this.generateGspUp();
+			generateGspUp();
 
 			amountProcessed++;
 			if(amountProcessed >= count) {
@@ -155,10 +155,10 @@ public class ExplosionNukeRayBatched {
 			}
 		}
 		
-		orderedChunks.addAll(perChunk.keySet());
-		orderedChunks.sort(comparator);
+		this.orderedChunks.addAll(this.perChunk.keySet());
+		this.orderedChunks.sort(this.comparator);
 		
-		isAusf3Complete = true;
+		this.isAusf3Complete = true;
 	}
 	
 	public static float masqueradeResistance(Block block) {
@@ -188,16 +188,16 @@ public class ExplosionNukeRayBatched {
 		
 		if(this.perChunk.isEmpty()) return;
 		
-		ChunkCoordIntPair coord = orderedChunks.get(0);
-		List<FloatTriplet> list = perChunk.get(coord);
+		ChunkCoordIntPair coord = this.orderedChunks.get(0);
+		List<FloatTriplet> list = this.perChunk.get(coord);
 		HashSet<BlockPos> toRem = new HashSet();
-		//List<BlockPos> toRem = new ArrayList();
+		//List<BlockPos> toRem = new ArrayList<>();
 		int chunkX = coord.chunkXPos;
 		int chunkZ = coord.chunkZPos;
 		
 		int enter = (int) (Math.min(
-				Math.abs(posX - (chunkX << 4)),
-				Math.abs(posZ - (chunkZ << 4)))) - 16; //jump ahead to cut back on NOPs
+				Math.abs(this.posX - (chunkX << 4)),
+				Math.abs(this.posZ - (chunkZ << 4)))) - 16; //jump ahead to cut back on NOPs
 		
 		enter = Math.max(enter, 0);
 		
@@ -212,9 +212,9 @@ public class ExplosionNukeRayBatched {
 			
 			boolean inChunk = false;
 			for(int i = enter; i < vec.lengthVector(); i++) {
-				int x0 = (int) Math.floor(posX + pX * i);
-				int y0 = (int) Math.floor(posY + pY * i);
-				int z0 = (int) Math.floor(posZ + pZ * i);
+				int x0 = (int) Math.floor(this.posX + pX * i);
+				int y0 = (int) Math.floor(this.posY + pY * i);
+				int z0 = (int) Math.floor(this.posZ + pZ * i);
 				
 				if(x0 >> 4 != chunkX || z0 >> 4 != chunkZ) {
 					if(inChunk) {
@@ -226,18 +226,18 @@ public class ExplosionNukeRayBatched {
 				
 				inChunk = true;
 
-				if(!world.isAirBlock(x0, y0, z0)) {
+				if(!this.world.isAirBlock(x0, y0, z0)) {
 					toRem.add(new BlockPos(x0, y0, z0));
 				}
 			}
 		}
 		
 		for(BlockPos pos : toRem) {
-			world.setBlock(pos.getX(), pos.getY(), pos.getZ(), Blocks.air);
+			this.world.setBlock(pos.getX(), pos.getY(), pos.getZ(), Blocks.air);
 		}
 		
-		perChunk.remove(coord);
-		orderedChunks.remove(0);
+		this.perChunk.remove(coord);
+		this.orderedChunks.remove(0);
 	}
 	
 	public class FloatTriplet {
@@ -246,9 +246,9 @@ public class ExplosionNukeRayBatched {
 		public float zCoord;
 		
 		public FloatTriplet(float x, float y, float z) {
-			xCoord = x;
-			yCoord = y;
-			zCoord = z;
+			this.xCoord = x;
+			this.yCoord = y;
+			this.zCoord = z;
 		}
 	}
 }

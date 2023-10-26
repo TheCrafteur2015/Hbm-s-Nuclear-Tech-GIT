@@ -35,10 +35,10 @@ public class HbmModelObject implements IModelCustom {
     private static Matcher face_V_VT_VN_Matcher, face_V_VT_Matcher, face_V_VN_Matcher, face_V_Matcher;
     private static Matcher groupObjectMatcher;
 
-    public ArrayList<Vertex> vertices = new ArrayList<Vertex>();
-    public ArrayList<Vertex> vertexNormals = new ArrayList<Vertex>();
-    public ArrayList<TextureCoordinate> textureCoordinates = new ArrayList<TextureCoordinate>();
-    public ArrayList<HbmGroupObject> groupObjects = new ArrayList<HbmGroupObject>();
+    public ArrayList<Vertex> vertices = new ArrayList<>();
+    public ArrayList<Vertex> vertexNormals = new ArrayList<>();
+    public ArrayList<TextureCoordinate> textureCoordinates = new ArrayList<>();
+    public ArrayList<HbmGroupObject> groupObjects = new ArrayList<>();
     private HbmGroupObject currentGroupObject;
     private String fileName;
 
@@ -88,7 +88,7 @@ public class HbmModelObject implements IModelCustom {
                     Vertex vertex = parseVertex(currentLine, lineCount);
                     if (vertex != null)
                     {
-                        vertices.add(vertex);
+                        this.vertices.add(vertex);
                     }
                 }
                 else if (currentLine.startsWith("vn "))
@@ -96,7 +96,7 @@ public class HbmModelObject implements IModelCustom {
                     Vertex vertex = parseVertexNormal(currentLine, lineCount);
                     if (vertex != null)
                     {
-                        vertexNormals.add(vertex);
+                        this.vertexNormals.add(vertex);
                     }
                 }
                 else if (currentLine.startsWith("vt "))
@@ -104,22 +104,22 @@ public class HbmModelObject implements IModelCustom {
                     TextureCoordinate textureCoordinate = parseTextureCoordinate(currentLine, lineCount);
                     if (textureCoordinate != null)
                     {
-                        textureCoordinates.add(textureCoordinate);
+                        this.textureCoordinates.add(textureCoordinate);
                     }
                 }
                 else if (currentLine.startsWith("f "))
                 {
 
-                    if (currentGroupObject == null)
+                    if (this.currentGroupObject == null)
                     {
-                        currentGroupObject = new HbmGroupObject("Default");
+                        this.currentGroupObject = new HbmGroupObject("Default");
                     }
 
                     HbmFace face = parseFace(currentLine, lineCount);
 
                     if (face != null)
                     {
-                        currentGroupObject.faces.add(face);
+                        this.currentGroupObject.faces.add(face);
                     }
                 }
                 else if (currentLine.startsWith("g ") | currentLine.startsWith("o "))
@@ -128,17 +128,17 @@ public class HbmModelObject implements IModelCustom {
 
                     if (group != null)
                     {
-                        if (currentGroupObject != null)
+                        if (this.currentGroupObject != null)
                         {
-                            groupObjects.add(currentGroupObject);
+                            this.groupObjects.add(this.currentGroupObject);
                         }
                     }
 
-                    currentGroupObject = group;
+                    this.currentGroupObject = group;
                 }
             }
 
-            groupObjects.add(currentGroupObject);
+            this.groupObjects.add(this.currentGroupObject);
         }
         catch (IOException e)
         {
@@ -172,9 +172,9 @@ public class HbmModelObject implements IModelCustom {
     {
         Tessellator tessellator = Tessellator.instance;
 
-        if (currentGroupObject != null)
+        if (this.currentGroupObject != null)
         {
-            tessellator.startDrawing(currentGroupObject.glDrawingMode);
+            tessellator.startDrawing(this.currentGroupObject.glDrawingMode);
         }
         else
         {
@@ -188,7 +188,7 @@ public class HbmModelObject implements IModelCustom {
     @SideOnly(Side.CLIENT)
     public void tessellateAll(Tessellator tessellator)
     {
-        for (HbmGroupObject groupObject : groupObjects)
+        for (HbmGroupObject groupObject : this.groupObjects)
         {
             groupObject.render(tessellator);
         }
@@ -198,7 +198,7 @@ public class HbmModelObject implements IModelCustom {
     @SideOnly(Side.CLIENT)
     public void renderOnly(String... groupNames)
     {
-        for (HbmGroupObject groupObject : groupObjects)
+        for (HbmGroupObject groupObject : this.groupObjects)
         {
             for (String groupName : groupNames)
             {
@@ -212,7 +212,7 @@ public class HbmModelObject implements IModelCustom {
 
     @SideOnly(Side.CLIENT)
     public void tessellateOnly(Tessellator tessellator, String... groupNames) {
-        for (HbmGroupObject groupObject : groupObjects)
+        for (HbmGroupObject groupObject : this.groupObjects)
         {
             for (String groupName : groupNames)
             {
@@ -228,7 +228,7 @@ public class HbmModelObject implements IModelCustom {
     @SideOnly(Side.CLIENT)
     public void renderPart(String partName)
     {
-        for (HbmGroupObject groupObject : groupObjects)
+        for (HbmGroupObject groupObject : this.groupObjects)
         {
             if (partName.equalsIgnoreCase(groupObject.name))
             {
@@ -239,7 +239,7 @@ public class HbmModelObject implements IModelCustom {
 
     @SideOnly(Side.CLIENT)
     public void tessellatePart(Tessellator tessellator, String partName) {
-        for (HbmGroupObject groupObject : groupObjects)
+        for (HbmGroupObject groupObject : this.groupObjects)
         {
             if (partName.equalsIgnoreCase(groupObject.name))
             {
@@ -252,7 +252,7 @@ public class HbmModelObject implements IModelCustom {
     @SideOnly(Side.CLIENT)
     public void renderAllExcept(String... excludedGroupNames)
     {
-        for (HbmGroupObject groupObject : groupObjects)
+        for (HbmGroupObject groupObject : this.groupObjects)
         {
             boolean skipPart=false;
             for (String excludedGroupName : excludedGroupNames)
@@ -273,7 +273,7 @@ public class HbmModelObject implements IModelCustom {
     public void tessellateAllExcept(Tessellator tessellator, String... excludedGroupNames)
     {
         boolean exclude;
-        for (HbmGroupObject groupObject : groupObjects)
+        for (HbmGroupObject groupObject : this.groupObjects)
         {
             exclude=false;
             for (String excludedGroupName : excludedGroupNames)
@@ -294,7 +294,7 @@ public class HbmModelObject implements IModelCustom {
     {
         Vertex vertex = null;
 
-        if (isValidVertexLine(line))
+        if (HbmModelObject.isValidVertexLine(line))
         {
             line = line.substring(line.indexOf(" ") + 1);
             String[] tokens = line.split(" ");
@@ -317,7 +317,7 @@ public class HbmModelObject implements IModelCustom {
         }
         else
         {
-            throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName + "' - Incorrect format");
+            throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + this.fileName + "' - Incorrect format");
         }
 
         return vertex;
@@ -327,7 +327,7 @@ public class HbmModelObject implements IModelCustom {
     {
         Vertex vertexNormal = null;
 
-        if (isValidVertexNormalLine(line))
+        if (HbmModelObject.isValidVertexNormalLine(line))
         {
             line = line.substring(line.indexOf(" ") + 1);
             String[] tokens = line.split(" ");
@@ -344,7 +344,7 @@ public class HbmModelObject implements IModelCustom {
         }
         else
         {
-            throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName + "' - Incorrect format");
+            throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + this.fileName + "' - Incorrect format");
         }
 
         return vertexNormal;
@@ -354,7 +354,7 @@ public class HbmModelObject implements IModelCustom {
     {
         TextureCoordinate textureCoordinate = null;
 
-        if (isValidTextureCoordinateLine(line))
+        if (HbmModelObject.isValidTextureCoordinateLine(line))
         {
             line = line.substring(line.indexOf(" ") + 1);
             String[] tokens = line.split(" ");
@@ -373,7 +373,7 @@ public class HbmModelObject implements IModelCustom {
         }
         else
         {
-            throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName + "' - Incorrect format");
+            throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + this.fileName + "' - Incorrect format");
         }
 
         return textureCoordinate;
@@ -383,7 +383,7 @@ public class HbmModelObject implements IModelCustom {
     {
     	HbmFace face = null;
 
-        if (isValidFaceLine(line))
+        if (HbmModelObject.isValidFaceLine(line))
         {
             face = new HbmFace();
 
@@ -393,29 +393,29 @@ public class HbmModelObject implements IModelCustom {
 
             if (tokens.length == 3)
             {
-                if (currentGroupObject.glDrawingMode == -1)
+                if (this.currentGroupObject.glDrawingMode == -1)
                 {
-                    currentGroupObject.glDrawingMode = GL11.GL_TRIANGLES;
+                    this.currentGroupObject.glDrawingMode = GL11.GL_TRIANGLES;
                 }
-                else if (currentGroupObject.glDrawingMode != GL11.GL_TRIANGLES)
+                else if (this.currentGroupObject.glDrawingMode != GL11.GL_TRIANGLES)
                 {
-                    throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName + "' - Invalid number of points for face (expected 4, found " + tokens.length + ")");
+                    throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + this.fileName + "' - Invalid number of points for face (expected 4, found " + tokens.length + ")");
                 }
             }
             else if (tokens.length == 4)
             {
-                if (currentGroupObject.glDrawingMode == -1)
+                if (this.currentGroupObject.glDrawingMode == -1)
                 {
-                    currentGroupObject.glDrawingMode = GL11.GL_QUADS;
+                    this.currentGroupObject.glDrawingMode = GL11.GL_QUADS;
                 }
-                else if (currentGroupObject.glDrawingMode != GL11.GL_QUADS)
+                else if (this.currentGroupObject.glDrawingMode != GL11.GL_QUADS)
                 {
-                    throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName + "' - Invalid number of points for face (expected 3, found " + tokens.length + ")");
+                    throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + this.fileName + "' - Invalid number of points for face (expected 3, found " + tokens.length + ")");
                 }
             }
 
             // f v1/vt1/vn1 v2/vt2/vn2 v3/vt3/vn3 ...
-            if (isValidFace_V_VT_VN_Line(line))
+            if (HbmModelObject.isValidFace_V_VT_VN_Line(line))
             {
                 face.vertices = new Vertex[tokens.length];
                 face.textureCoordinates = new TextureCoordinate[tokens.length];
@@ -425,15 +425,15 @@ public class HbmModelObject implements IModelCustom {
                 {
                     subTokens = tokens[i].split("/");
 
-                    face.vertices[i] = vertices.get(Integer.parseInt(subTokens[0]) - 1);
-                    face.textureCoordinates[i] = textureCoordinates.get(Integer.parseInt(subTokens[1]) - 1);
-                    face.vertexNormals[i] = vertexNormals.get(Integer.parseInt(subTokens[2]) - 1);
+                    face.vertices[i] = this.vertices.get(Integer.parseInt(subTokens[0]) - 1);
+                    face.textureCoordinates[i] = this.textureCoordinates.get(Integer.parseInt(subTokens[1]) - 1);
+                    face.vertexNormals[i] = this.vertexNormals.get(Integer.parseInt(subTokens[2]) - 1);
                 }
 
                 face.faceNormal = face.calculateFaceNormal();
             }
             // f v1/vt1 v2/vt2 v3/vt3 ...
-            else if (isValidFace_V_VT_Line(line))
+            else if (HbmModelObject.isValidFace_V_VT_Line(line))
             {
                 face.vertices = new Vertex[tokens.length];
                 face.textureCoordinates = new TextureCoordinate[tokens.length];
@@ -442,14 +442,14 @@ public class HbmModelObject implements IModelCustom {
                 {
                     subTokens = tokens[i].split("/");
 
-                    face.vertices[i] = vertices.get(Integer.parseInt(subTokens[0]) - 1);
-                    face.textureCoordinates[i] = textureCoordinates.get(Integer.parseInt(subTokens[1]) - 1);
+                    face.vertices[i] = this.vertices.get(Integer.parseInt(subTokens[0]) - 1);
+                    face.textureCoordinates[i] = this.textureCoordinates.get(Integer.parseInt(subTokens[1]) - 1);
                 }
 
                 face.faceNormal = face.calculateFaceNormal();
             }
             // f v1//vn1 v2//vn2 v3//vn3 ...
-            else if (isValidFace_V_VN_Line(line))
+            else if (HbmModelObject.isValidFace_V_VN_Line(line))
             {
                 face.vertices = new Vertex[tokens.length];
                 face.vertexNormals = new Vertex[tokens.length];
@@ -458,32 +458,32 @@ public class HbmModelObject implements IModelCustom {
                 {
                     subTokens = tokens[i].split("//");
 
-                    face.vertices[i] = vertices.get(Integer.parseInt(subTokens[0]) - 1);
-                    face.vertexNormals[i] = vertexNormals.get(Integer.parseInt(subTokens[1]) - 1);
+                    face.vertices[i] = this.vertices.get(Integer.parseInt(subTokens[0]) - 1);
+                    face.vertexNormals[i] = this.vertexNormals.get(Integer.parseInt(subTokens[1]) - 1);
                 }
 
                 face.faceNormal = face.calculateFaceNormal();
             }
             // f v1 v2 v3 ...
-            else if (isValidFace_V_Line(line))
+            else if (HbmModelObject.isValidFace_V_Line(line))
             {
                 face.vertices = new Vertex[tokens.length];
 
                 for (int i = 0; i < tokens.length; ++i)
                 {
-                    face.vertices[i] = vertices.get(Integer.parseInt(tokens[i]) - 1);
+                    face.vertices[i] = this.vertices.get(Integer.parseInt(tokens[i]) - 1);
                 }
 
                 face.faceNormal = face.calculateFaceNormal();
             }
             else
             {
-                throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName + "' - Incorrect format");
+                throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + this.fileName + "' - Incorrect format");
             }
         }
         else
         {
-            throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName + "' - Incorrect format");
+            throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + this.fileName + "' - Incorrect format");
         }
 
         return face;
@@ -493,7 +493,7 @@ public class HbmModelObject implements IModelCustom {
     {
     	HbmGroupObject group = null;
 
-        if (isValidGroupObjectLine(line))
+        if (HbmModelObject.isValidGroupObjectLine(line))
         {
             String trimmedLine = line.substring(line.indexOf(" ") + 1);
 
@@ -504,7 +504,7 @@ public class HbmModelObject implements IModelCustom {
         }
         else
         {
-            throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + fileName + "' - Incorrect format");
+            throw new ModelFormatException("Error parsing entry ('" + line + "'" + ", line " + lineCount + ") in file '" + this.fileName + "' - Incorrect format");
         }
 
         return group;
@@ -517,13 +517,13 @@ public class HbmModelObject implements IModelCustom {
      */
     private static boolean isValidVertexLine(String line)
     {
-        if (vertexMatcher != null)
+        if (HbmModelObject.vertexMatcher != null)
         {
-            vertexMatcher.reset();
+            HbmModelObject.vertexMatcher.reset();
         }
 
-        vertexMatcher = vertexPattern.matcher(line);
-        return vertexMatcher.matches();
+        HbmModelObject.vertexMatcher = HbmModelObject.vertexPattern.matcher(line);
+        return HbmModelObject.vertexMatcher.matches();
     }
 
     /***
@@ -533,13 +533,13 @@ public class HbmModelObject implements IModelCustom {
      */
     private static boolean isValidVertexNormalLine(String line)
     {
-        if (vertexNormalMatcher != null)
+        if (HbmModelObject.vertexNormalMatcher != null)
         {
-            vertexNormalMatcher.reset();
+            HbmModelObject.vertexNormalMatcher.reset();
         }
 
-        vertexNormalMatcher = vertexNormalPattern.matcher(line);
-        return vertexNormalMatcher.matches();
+        HbmModelObject.vertexNormalMatcher = HbmModelObject.vertexNormalPattern.matcher(line);
+        return HbmModelObject.vertexNormalMatcher.matches();
     }
 
     /***
@@ -549,13 +549,13 @@ public class HbmModelObject implements IModelCustom {
      */
     private static boolean isValidTextureCoordinateLine(String line)
     {
-        if (textureCoordinateMatcher != null)
+        if (HbmModelObject.textureCoordinateMatcher != null)
         {
-            textureCoordinateMatcher.reset();
+            HbmModelObject.textureCoordinateMatcher.reset();
         }
 
-        textureCoordinateMatcher = textureCoordinatePattern.matcher(line);
-        return textureCoordinateMatcher.matches();
+        HbmModelObject.textureCoordinateMatcher = HbmModelObject.textureCoordinatePattern.matcher(line);
+        return HbmModelObject.textureCoordinateMatcher.matches();
     }
 
     /***
@@ -565,13 +565,13 @@ public class HbmModelObject implements IModelCustom {
      */
     private static boolean isValidFace_V_VT_VN_Line(String line)
     {
-        if (face_V_VT_VN_Matcher != null)
+        if (HbmModelObject.face_V_VT_VN_Matcher != null)
         {
-            face_V_VT_VN_Matcher.reset();
+            HbmModelObject.face_V_VT_VN_Matcher.reset();
         }
 
-        face_V_VT_VN_Matcher = face_V_VT_VN_Pattern.matcher(line);
-        return face_V_VT_VN_Matcher.matches();
+        HbmModelObject.face_V_VT_VN_Matcher = HbmModelObject.face_V_VT_VN_Pattern.matcher(line);
+        return HbmModelObject.face_V_VT_VN_Matcher.matches();
     }
 
     /***
@@ -581,13 +581,13 @@ public class HbmModelObject implements IModelCustom {
      */
     private static boolean isValidFace_V_VT_Line(String line)
     {
-        if (face_V_VT_Matcher != null)
+        if (HbmModelObject.face_V_VT_Matcher != null)
         {
-            face_V_VT_Matcher.reset();
+            HbmModelObject.face_V_VT_Matcher.reset();
         }
 
-        face_V_VT_Matcher = face_V_VT_Pattern.matcher(line);
-        return face_V_VT_Matcher.matches();
+        HbmModelObject.face_V_VT_Matcher = HbmModelObject.face_V_VT_Pattern.matcher(line);
+        return HbmModelObject.face_V_VT_Matcher.matches();
     }
 
     /***
@@ -597,13 +597,13 @@ public class HbmModelObject implements IModelCustom {
      */
     private static boolean isValidFace_V_VN_Line(String line)
     {
-        if (face_V_VN_Matcher != null)
+        if (HbmModelObject.face_V_VN_Matcher != null)
         {
-            face_V_VN_Matcher.reset();
+            HbmModelObject.face_V_VN_Matcher.reset();
         }
 
-        face_V_VN_Matcher = face_V_VN_Pattern.matcher(line);
-        return face_V_VN_Matcher.matches();
+        HbmModelObject.face_V_VN_Matcher = HbmModelObject.face_V_VN_Pattern.matcher(line);
+        return HbmModelObject.face_V_VN_Matcher.matches();
     }
 
     /***
@@ -613,13 +613,13 @@ public class HbmModelObject implements IModelCustom {
      */
     private static boolean isValidFace_V_Line(String line)
     {
-        if (face_V_Matcher != null)
+        if (HbmModelObject.face_V_Matcher != null)
         {
-            face_V_Matcher.reset();
+            HbmModelObject.face_V_Matcher.reset();
         }
 
-        face_V_Matcher = face_V_Pattern.matcher(line);
-        return face_V_Matcher.matches();
+        HbmModelObject.face_V_Matcher = HbmModelObject.face_V_Pattern.matcher(line);
+        return HbmModelObject.face_V_Matcher.matches();
     }
 
     /***
@@ -629,7 +629,7 @@ public class HbmModelObject implements IModelCustom {
      */
     private static boolean isValidFaceLine(String line)
     {
-        return isValidFace_V_VT_VN_Line(line) || isValidFace_V_VT_Line(line) || isValidFace_V_VN_Line(line) || isValidFace_V_Line(line);
+        return HbmModelObject.isValidFace_V_VT_VN_Line(line) || HbmModelObject.isValidFace_V_VT_Line(line) || HbmModelObject.isValidFace_V_VN_Line(line) || HbmModelObject.isValidFace_V_Line(line);
     }
 
     /***
@@ -639,13 +639,13 @@ public class HbmModelObject implements IModelCustom {
      */
     private static boolean isValidGroupObjectLine(String line)
     {
-        if (groupObjectMatcher != null)
+        if (HbmModelObject.groupObjectMatcher != null)
         {
-            groupObjectMatcher.reset();
+            HbmModelObject.groupObjectMatcher.reset();
         }
 
-        groupObjectMatcher = groupObjectPattern.matcher(line);
-        return groupObjectMatcher.matches();
+        HbmModelObject.groupObjectMatcher = HbmModelObject.groupObjectPattern.matcher(line);
+        return HbmModelObject.groupObjectMatcher.matches();
     }
 
     @Override

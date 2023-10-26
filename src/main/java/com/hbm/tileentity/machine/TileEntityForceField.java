@@ -56,25 +56,25 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ISided
 	private String customName;
 	
 	public TileEntityForceField() {
-		slots = new ItemStack[3];
+		this.slots = new ItemStack[3];
 	}
 
 	@Override
 	public int getSizeInventory() {
-		return slots.length;
+		return this.slots.length;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		return slots[i];
+		return this.slots[i];
 	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			ItemStack itemStack = slots[i];
-			slots[i] = null;
+			ItemStack itemStack = this.slots[i];
+			this.slots[i] = null;
 			return itemStack;
 		} else {
 		return null;
@@ -83,7 +83,7 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ISided
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemStack) {
-		slots[i] = itemStack;
+		this.slots[i] = itemStack;
 		if(itemStack != null && itemStack.stackSize > getInventoryStackLimit())
 		{
 			itemStack.stackSize = getInventoryStackLimit();
@@ -92,7 +92,7 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ISided
 
 	@Override
 	public String getInventoryName() {
-		return this.hasCustomInventoryName() ? this.customName : "container.forceField";
+		return hasCustomInventoryName() ? this.customName : "container.forceField";
 	}
 
 	@Override
@@ -111,11 +111,11 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ISided
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		if(worldObj.getTileEntity(xCoord, yCoord, zCoord) != this)
+		if(this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this)
 		{
 			return false;
 		}else{
-			return player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <=64;
+			return player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <=64;
 		}
 	}
 	
@@ -139,18 +139,18 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ISided
 	
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			if(slots[i].stackSize <= j)
+			if(this.slots[i].stackSize <= j)
 			{
-				ItemStack itemStack = slots[i];
-				slots[i] = null;
+				ItemStack itemStack = this.slots[i];
+				this.slots[i] = null;
 				return itemStack;
 			}
-			ItemStack itemStack1 = slots[i].splitStack(j);
-			if (slots[i].stackSize == 0)
+			ItemStack itemStack1 = this.slots[i].splitStack(j);
+			if (this.slots[i].stackSize == 0)
 			{
-				slots[i] = null;
+				this.slots[i] = null;
 			}
 			
 			return itemStack1;
@@ -172,15 +172,15 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ISided
 		this.radius = nbt.getFloat("radius");
 		this.isOn = nbt.getBoolean("isOn");
 		
-		slots = new ItemStack[getSizeInventory()];
+		this.slots = new ItemStack[getSizeInventory()];
 		
 		for(int i = 0; i < list.tagCount(); i++)
 		{
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("slot");
-			if(b0 >= 0 && b0 < slots.length)
+			if(b0 >= 0 && b0 < this.slots.length)
 			{
-				slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
+				this.slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
 			}
 		}
 	}
@@ -188,23 +188,23 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ISided
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setLong("powerTime", power);
-		nbt.setInteger("health", health);
-		nbt.setInteger("maxHealth", maxHealth);
-		nbt.setInteger("cooldown", cooldown);
-		nbt.setInteger("blink", blink);
-		nbt.setFloat("radius", radius);
-		nbt.setBoolean("isOn", isOn);
+		nbt.setLong("powerTime", this.power);
+		nbt.setInteger("health", this.health);
+		nbt.setInteger("maxHealth", this.maxHealth);
+		nbt.setInteger("cooldown", this.cooldown);
+		nbt.setInteger("blink", this.blink);
+		nbt.setFloat("radius", this.radius);
+		nbt.setBoolean("isOn", this.isOn);
 		
 		NBTTagList list = new NBTTagList();
 		
-		for(int i = 0; i < slots.length; i++)
+		for(int i = 0; i < this.slots.length; i++)
 		{
-			if(slots[i] != null)
+			if(this.slots[i] != null)
 			{
 				NBTTagCompound nbt1 = new NBTTagCompound();
 				nbt1.setByte("slot", (byte)i);
-				slots[i].writeToNBT(nbt1);
+				this.slots[i].writeToNBT(nbt1);
 				list.appendTag(nbt1);
 			}
 		}
@@ -214,12 +214,12 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ISided
 	@Override
 	public int[] getAccessibleSlotsFromSide(int p_94128_1_)
     {
-        return p_94128_1_ == 0 ? slots_bottom : (p_94128_1_ == 1 ? slots_top : slots_side);
+        return p_94128_1_ == 0 ? TileEntityForceField.slots_bottom : (p_94128_1_ == 1 ? TileEntityForceField.slots_top : TileEntityForceField.slots_side);
     }
 
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemStack, int j) {
-		return this.isItemValidForSlot(i, itemStack);
+		return isItemValidForSlot(i, itemStack);
 	}
 
 	@Override
@@ -228,75 +228,75 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ISided
 	}
 	
 	public int getHealthScaled(int i) {
-		return (health * i) / maxHealth;
+		return (this.health * i) / this.maxHealth;
 	}
 	
 	public long getPowerScaled(long i) {
-		return (power * i) / maxPower;
+		return (this.power * i) / TileEntityForceField.maxPower;
 	}
 	
 	@Override
 	public void updateEntity() {
 
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			updateConnections();
 			
 			int rStack = 0;
 			int hStack = 0;
-			radius = 16;
-			maxHealth = 100;
+			this.radius = 16;
+			this.maxHealth = 100;
 			
-			if(slots[1] != null && slots[1].getItem() == ModItems.upgrade_radius) {
-				rStack = slots[1].stackSize;
-				radius += rStack * 16;
+			if(this.slots[1] != null && this.slots[1].getItem() == ModItems.upgrade_radius) {
+				rStack = this.slots[1].stackSize;
+				this.radius += rStack * 16;
 			}
 			
-			if(slots[2] != null && slots[2].getItem() == ModItems.upgrade_health) {
-				hStack = slots[2].stackSize;
-				maxHealth += hStack * 50;
+			if(this.slots[2] != null && this.slots[2].getItem() == ModItems.upgrade_health) {
+				hStack = this.slots[2].stackSize;
+				this.maxHealth += hStack * 50;
 			}
 			
 			this.powerCons = this.baseCon + rStack * this.radCon + hStack * this.shCon;
 			
-			power = Library.chargeTEFromItems(slots, 0, power, maxPower);
+			this.power = Library.chargeTEFromItems(this.slots, 0, this.power, TileEntityForceField.maxPower);
 			
-			if(blink > 0) {
-				blink--;
-				color = 0xFF0000;
+			if(this.blink > 0) {
+				this.blink--;
+				this.color = 0xFF0000;
 			} else {
-				color = 0x00FF00;
+				this.color = 0x00FF00;
 			}
 		}
 		
-		if(cooldown > 0) {
-			cooldown--;
+		if(this.cooldown > 0) {
+			this.cooldown--;
 		} else {
-			if(health < maxHealth)
-				health += maxHealth / 100;
+			if(this.health < this.maxHealth)
+				this.health += this.maxHealth / 100;
 			
-			if(health > maxHealth)
-				health = maxHealth;
+			if(this.health > this.maxHealth)
+				this.health = this.maxHealth;
 		}
 		
-		if(isOn && cooldown == 0 && health > 0 && power >= powerCons) {
-			doField(radius);
+		if(this.isOn && this.cooldown == 0 && this.health > 0 && this.power >= this.powerCons) {
+			doField(this.radius);
 			
-			if(!worldObj.isRemote) {
-				power -= powerCons;
+			if(!this.worldObj.isRemote) {
+				this.power -= this.powerCons;
 			}
 		} else {
 			this.outside.clear();
 			this.inside.clear();
 		}
 
-		if(!worldObj.isRemote) {
-			if(power < powerCons)
-				power = 0;
+		if(!this.worldObj.isRemote) {
+			if(this.power < this.powerCons)
+				this.power = 0;
 		}
 		
-		if(!worldObj.isRemote) {
-			PacketDispatcher.wrapper.sendToAllAround(new TEFFPacket(xCoord, yCoord, zCoord, radius, health, maxHealth, (int) power, isOn, color, cooldown), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 500));
+		if(!this.worldObj.isRemote) {
+			PacketDispatcher.wrapper.sendToAllAround(new TEFFPacket(this.xCoord, this.yCoord, this.zCoord, this.radius, this.health, this.maxHealth, (int) this.power, this.isOn, this.color, this.cooldown), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 500));
 		}
 	}
 	
@@ -308,45 +308,46 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ISided
 	}
 	
 	private void damage(int ouch) {
-		health -= ouch;
+		this.health -= ouch;
 		
 		if(ouch >= (this.maxHealth / 250))
-		blink = 5;
+		this.blink = 5;
 		
-		if(health <= 0) {
-			health = 0;
-			cooldown = (int) (100 + radius);
+		if(this.health <= 0) {
+			this.health = 0;
+			this.cooldown = (int) (100 + this.radius);
 		}
 	}
 
-	List<Entity> outside = new ArrayList();
-	List<Entity> inside = new ArrayList();
+	List<Entity> outside = new ArrayList<>();
+	List<Entity> inside = new ArrayList<>();
 	
+	@SuppressWarnings("unchecked")
 	private void doField(float rad) {
 
-		List<Entity> oLegacy = new ArrayList(outside);
-		List<Entity> iLegacy = new ArrayList(inside);
+		List<Entity> oLegacy = new ArrayList<>(this.outside);
+		List<Entity> iLegacy = new ArrayList<>(this.inside);
 
-		outside.clear();
-		inside.clear();
+		this.outside.clear();
+		this.inside.clear();
 		
-		List<Object> list = worldObj.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBox(xCoord + 0.5 - (rad + 25), yCoord + 0.5 - (rad + 25), zCoord + 0.5 - (rad + 25), xCoord + 0.5 + (rad + 25), yCoord + 0.5 + (rad + 25), zCoord + 0.5 + (rad + 25)));
+		List<Object> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBox(this.xCoord + 0.5 - (rad + 25), this.yCoord + 0.5 - (rad + 25), this.zCoord + 0.5 - (rad + 25), this.xCoord + 0.5 + (rad + 25), this.yCoord + 0.5 + (rad + 25), this.zCoord + 0.5 + (rad + 25)));
 		
 		for(Object o : list) {
 			
 			if(o instanceof Entity && !(o instanceof EntityPlayer)) {
 				Entity entity = (Entity)o;
 				
-				double dist = Math.sqrt(Math.pow(xCoord + 0.5 - entity.posX, 2) + Math.pow(yCoord + 0.5 - entity.posY, 2) + Math.pow(zCoord + 0.5 - entity.posZ, 2));
+				double dist = Math.sqrt(Math.pow(this.xCoord + 0.5 - entity.posX, 2) + Math.pow(this.yCoord + 0.5 - entity.posY, 2) + Math.pow(this.zCoord + 0.5 - entity.posZ, 2));
 				
 				boolean out = dist > rad;
 				
 				//if the entity has not been registered yet
 				if(!oLegacy.contains(entity) && !iLegacy.contains(entity)) {
 					if(out) {
-						outside.add(entity);
+						this.outside.add(entity);
 					} else {
-						inside.add(entity);
+						this.inside.add(entity);
 					}
 					
 				//if the entity has been detected before
@@ -354,14 +355,14 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ISided
 					
 					//if the entity has crossed inwards
 					if(oLegacy.contains(entity) && !out) {
-						Vec3 vec = Vec3.createVectorHelper(xCoord + 0.5 - entity.posX, yCoord + 0.5 - entity.posY, zCoord + 0.5 - entity.posZ);
+						Vec3 vec = Vec3.createVectorHelper(this.xCoord + 0.5 - entity.posX, this.yCoord + 0.5 - entity.posY, this.zCoord + 0.5 - entity.posZ);
 						vec = vec.normalize();
 						
 						double mx = -vec.xCoord * (rad + 1);
 						double my = -vec.yCoord * (rad + 1);
 						double mz = -vec.zCoord * (rad + 1);
 						
-						entity.setLocationAndAngles(xCoord + 0.5 + mx, yCoord + 0.5 + my, zCoord + 0.5 + mz, 0, 0);
+						entity.setLocationAndAngles(this.xCoord + 0.5 + mx, this.yCoord + 0.5 + my, this.zCoord + 0.5 + mz, 0, 0);
 						
 						double mo = Math.sqrt(Math.pow(entity.motionX, 2) + Math.pow(entity.motionY, 2) + Math.pow(entity.motionZ, 2));
 
@@ -373,25 +374,25 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ISided
 						entity.posY -= entity.motionY;
 						entity.posZ -= entity.motionZ;
 
-			    		worldObj.playSoundAtEntity(entity, "hbm:weapon.sparkShoot", 2.5F, 1.0F);
-						outside.add(entity);
+			    		this.worldObj.playSoundAtEntity(entity, "hbm:weapon.sparkShoot", 2.5F, 1.0F);
+						this.outside.add(entity);
 						
-						if(!worldObj.isRemote) {
-							this.damage(this.impact(entity));
+						if(!this.worldObj.isRemote) {
+							damage(impact(entity));
 						}
 						
 					} else
 					
 					//if the entity has crossed outwards
 					if(iLegacy.contains(entity) && out) {
-						Vec3 vec = Vec3.createVectorHelper(xCoord + 0.5 - entity.posX, yCoord + 0.5 - entity.posY, zCoord + 0.5 - entity.posZ);
+						Vec3 vec = Vec3.createVectorHelper(this.xCoord + 0.5 - entity.posX, this.yCoord + 0.5 - entity.posY, this.zCoord + 0.5 - entity.posZ);
 						vec = vec.normalize();
 						
 						double mx = -vec.xCoord * (rad - 1);
 						double my = -vec.yCoord * (rad - 1);
 						double mz = -vec.zCoord * (rad - 1);
 
-						entity.setLocationAndAngles(xCoord + 0.5 + mx, yCoord + 0.5 + my, zCoord + 0.5 + mz, 0, 0);
+						entity.setLocationAndAngles(this.xCoord + 0.5 + mx, this.yCoord + 0.5 + my, this.zCoord + 0.5 + mz, 0, 0);
 						
 						double mo = Math.sqrt(Math.pow(entity.motionX, 2) + Math.pow(entity.motionY, 2) + Math.pow(entity.motionZ, 2));
 
@@ -403,19 +404,19 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ISided
 						entity.posY -= entity.motionY;
 						entity.posZ -= entity.motionZ;
 
-			    		worldObj.playSoundAtEntity(entity, "hbm:weapon.sparkShoot", 2.5F, 1.0F);
-						inside.add(entity);
+			    		this.worldObj.playSoundAtEntity(entity, "hbm:weapon.sparkShoot", 2.5F, 1.0F);
+						this.inside.add(entity);
 						
-						if(!worldObj.isRemote) {
-							this.damage(this.impact(entity));
+						if(!this.worldObj.isRemote) {
+							damage(impact(entity));
 						}
 						
 					} else {
 						
 						if(out) {
-							outside.add(entity);
+							this.outside.add(entity);
 						} else {
-							inside.add(entity);
+							this.inside.add(entity);
 						}
 					}
 				}
@@ -443,18 +444,18 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ISided
 
 	@Override
 	public void setPower(long i) {
-		power = i;
+		this.power = i;
 	}
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 		
 	}
 
 	@Override
 	public long getMaxPower() {
-		return maxPower;
+		return TileEntityForceField.maxPower;
 	}
 
 	@Override
@@ -463,11 +464,11 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ISided
 	}
 	
 	private void updateConnections() {
-		this.trySubscribe(worldObj, xCoord + 1, yCoord, zCoord, Library.POS_X);
-		this.trySubscribe(worldObj, xCoord - 1, yCoord, zCoord, Library.NEG_X);
-		this.trySubscribe(worldObj, xCoord, yCoord, zCoord + 1, Library.POS_Z);
-		this.trySubscribe(worldObj, xCoord, yCoord, zCoord - 1, Library.NEG_Z);
-		this.trySubscribe(worldObj, xCoord, yCoord - 1, zCoord, Library.NEG_Y);
+		trySubscribe(this.worldObj, this.xCoord + 1, this.yCoord, this.zCoord, Library.POS_X);
+		trySubscribe(this.worldObj, this.xCoord - 1, this.yCoord, this.zCoord, Library.NEG_X);
+		trySubscribe(this.worldObj, this.xCoord, this.yCoord, this.zCoord + 1, Library.POS_Z);
+		trySubscribe(this.worldObj, this.xCoord, this.yCoord, this.zCoord - 1, Library.NEG_Z);
+		trySubscribe(this.worldObj, this.xCoord, this.yCoord - 1, this.zCoord, Library.NEG_Y);
 	}
 
 	@Override

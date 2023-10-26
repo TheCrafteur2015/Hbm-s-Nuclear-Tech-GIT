@@ -19,18 +19,18 @@ public class ContainerLeadBox extends Container {
 		
 		for(int i = 0; i < 4; i++) {
 			for(int j = 0; j < 5; j++) {
-				this.addSlotToContainer(new Slot(box, j + i * 5, 43 + j * 18, 18 + i * 18));
+				addSlotToContainer(new Slot(box, j + i * 5, 43 + j * 18, 18 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 104 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 104 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 162));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 162));
 		}
 	}
 
@@ -43,11 +43,11 @@ public class ContainerLeadBox extends Container {
 			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 
-			if(par2 <= box.getSizeInventory() - 1) {
-				if(!InventoryUtil.mergeItemStack(this.inventorySlots, var5, box.getSizeInventory(), this.inventorySlots.size(), true)) {
+			if(par2 <= this.box.getSizeInventory() - 1) {
+				if(!InventoryUtil.mergeItemStack(this.inventorySlots, var5, this.box.getSizeInventory(), this.inventorySlots.size(), true)) {
 					return null;
 				}
-			} else if(!InventoryUtil.mergeItemStack(this.inventorySlots, var5, 0, box.getSizeInventory(), false)) {
+			} else if(!InventoryUtil.mergeItemStack(this.inventorySlots, var5, 0, this.box.getSizeInventory(), false)) {
 				return null;
 			}
 
@@ -66,14 +66,13 @@ public class ContainerLeadBox extends Container {
 	@Override
 	public ItemStack slotClick(int index, int button, int mode, EntityPlayer player) {
 		// prevents the player from moving around the currently open box
-		if(mode == 2 && button == player.inventory.currentItem) return null;
-		if(index == player.inventory.currentItem + 47) return null;
+		if((mode == 2 && button == player.inventory.currentItem) || (index == player.inventory.currentItem + 47)) return null;
 		return super.slotClick(index, button, mode, player);
 	}
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return box.isUseableByPlayer(player);
+		return this.box.isUseableByPlayer(player);
 	}
 	
 	@Override

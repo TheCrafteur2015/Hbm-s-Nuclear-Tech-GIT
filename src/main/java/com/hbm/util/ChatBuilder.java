@@ -54,16 +54,16 @@ public class ChatBuilder {
 	/** Will recursively go over all IChatComponents added to the root and then set the style */
 	public ChatBuilder colorAll(EnumChatFormatting format) {
 		
-		List list = new ArrayList();
-		list.add(text);
+		List<IChatComponent> list = new ArrayList<>();
+		list.add(this.text);
 		
-		ListIterator it = list.listIterator();
+		ListIterator<IChatComponent> it = list.listIterator();
 		
 		while(it.hasNext()) {
-			Object o = it.next();
-			IChatComponent component = (IChatComponent) o;
+			IChatComponent component = it.next();
 			component.getChatStyle().setColor(format);
-			for(Object s : component.getSiblings()) it.add(s);
+			for(Object s : component.getSiblings())
+				it.add((IChatComponent) s);
 		}
 		
 		return this;

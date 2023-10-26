@@ -29,10 +29,10 @@ public class ItemLens extends Item {
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		
-		long damage = getLensDamage(stack);
-		int percent = (int) ((maxDamage - damage) * 100 / maxDamage);
+		long damage = ItemLens.getLensDamage(stack);
+		int percent = (int) ((this.maxDamage - damage) * 100 / this.maxDamage);
 		
-		list.add("Durability: " + (maxDamage - damage) + "/" + maxDamage + " (" + percent + "%)");
+		list.add("Durability: " + (this.maxDamage - damage) + "/" + this.maxDamage + " (" + percent + "%)");
 	}
 	
 	public static void setLensDamage(ItemStack stack, long damage) {
@@ -44,12 +44,14 @@ public class ItemLens extends Item {
 		stack.stackTagCompound.setLong("damage", damage);
 	}
 	
-    public double getDurabilityForDisplay(ItemStack stack)
+    @Override
+	public double getDurabilityForDisplay(ItemStack stack)
     {
-        return (double)getLensDamage(stack) / (double)maxDamage;
+        return (double)ItemLens.getLensDamage(stack) / (double)this.maxDamage;
     }
     
-    public boolean showDurabilityBar(ItemStack stack)
+    @Override
+	public boolean showDurabilityBar(ItemStack stack)
     {
         return getDurabilityForDisplay(stack) != 0;
     }

@@ -52,10 +52,7 @@ public class GunNPCFactory {
 		
 		bullet.bntUpdate = (bulletnt) -> {
 				
-			if(bulletnt.worldObj.isRemote)
-				return;
-
-			if(bulletnt.ticksExisted % 10 != 5)
+			if(bulletnt.worldObj.isRemote || (bulletnt.ticksExisted % 10 != 5))
 				return;
 
 			List<EntityPlayer> players = bulletnt.worldObj.getEntitiesWithinAABB(EntityPlayer.class, bulletnt.boundingBox.expand(50, 50, 50));
@@ -270,12 +267,12 @@ public class GunNPCFactory {
 			
 			private void chooseTarget(EntityBulletBaseNT bullet) {
 				
-				List<EntityLivingBase> entities = bullet.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, bullet.boundingBox.expand(range, range, range));
+				List<EntityLivingBase> entities = bullet.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, bullet.boundingBox.expand(this.range, this.range, this.range));
 				
 				Vec3 mot = Vec3.createVectorHelper(bullet.motionX, bullet.motionY, bullet.motionZ);
 				
 				EntityLivingBase target = null;
-				double targetAngle = angle;
+				double targetAngle = this.angle;
 				
 				for(EntityLivingBase e : entities) {
 					
@@ -289,7 +286,7 @@ public class GunNPCFactory {
 					
 					double dist = e.getDistanceSqToEntity(bullet);
 					
-					if(dist < range * range) {
+					if(dist < this.range * this.range) {
 						
 						double deltaAngle = BobMathUtil.getCrossAngle(mot, delta);
 					

@@ -19,7 +19,7 @@ public class EntityAIMaskmanLasergun extends EntityAIBase {
 	public EntityAIMaskmanLasergun(EntityCreature owner, boolean checkSight, boolean nearbyOnly) {
 		this.owner = owner;
 		
-		attack = EnumLaserAttack.values()[owner.getRNG().nextInt(3)];
+		this.attack = EnumLaserAttack.values()[owner.getRNG().nextInt(3)];
 	}
 
 	@Override
@@ -32,49 +32,49 @@ public class EntityAIMaskmanLasergun extends EntityAIBase {
             
         } else {
             this.target = entity;
-            double dist = Vec3.createVectorHelper(target.posX - owner.posX, target.posY - owner.posY, target.posZ - owner.posZ).lengthVector();
+            double dist = Vec3.createVectorHelper(this.target.posX - this.owner.posX, this.target.posY - this.owner.posY, this.target.posZ - this.owner.posZ).lengthVector();
             return dist > 10;
         }
 	}
 	
 	@Override
     public boolean continueExecuting() {
-        return this.shouldExecute() || !this.owner.getNavigator().noPath();
+        return shouldExecute() || !this.owner.getNavigator().noPath();
     }
 
 	@Override
     public void updateTask() {
     	
-		timer--;
+		this.timer--;
 		
-		if(timer <= 0) {
-			timer = attack.delay;
+		if(this.timer <= 0) {
+			this.timer = this.attack.delay;
 
-			switch(attack) {
+			switch(this.attack) {
 			case ORB:
-				EntityBulletBaseNT orb = new EntityBulletBaseNT(owner.worldObj, BulletConfigSyncingUtil.MASKMAN_ORB, owner, target, 2.0F, 0);
+				EntityBulletBaseNT orb = new EntityBulletBaseNT(this.owner.worldObj, BulletConfigSyncingUtil.MASKMAN_ORB, this.owner, this.target, 2.0F, 0);
 				orb.motionY += 0.5D;
 				
-				owner.worldObj.spawnEntityInWorld(orb);
-				owner.playSound("hbm:weapon.teslaShoot", 1.0F, 1.0F);
+				this.owner.worldObj.spawnEntityInWorld(orb);
+				this.owner.playSound("hbm:weapon.teslaShoot", 1.0F, 1.0F);
 				break;
 				
 			case MISSILE:
-				EntityBulletBaseNT missile = new EntityBulletBaseNT(owner.worldObj, BulletConfigSyncingUtil.MASKMAN_ROCKET, owner, target, 1.0F, 0);
-				Vec3 vec = Vec3.createVectorHelper(target.posX - owner.posX, 0, target.posZ - owner.posZ);
+				EntityBulletBaseNT missile = new EntityBulletBaseNT(this.owner.worldObj, BulletConfigSyncingUtil.MASKMAN_ROCKET, this.owner, this.target, 1.0F, 0);
+				Vec3 vec = Vec3.createVectorHelper(this.target.posX - this.owner.posX, 0, this.target.posZ - this.owner.posZ);
 				missile.motionX = vec.xCoord * 0.05D;
-				missile.motionY = 0.5D + owner.getRNG().nextDouble() * 0.5D;
+				missile.motionY = 0.5D + this.owner.getRNG().nextDouble() * 0.5D;
 				missile.motionZ = vec.zCoord * 0.05D;
 				
-				owner.worldObj.spawnEntityInWorld(missile);
-				owner.playSound("hbm:weapon.hkShoot", 1.0F, 1.0F);
+				this.owner.worldObj.spawnEntityInWorld(missile);
+				this.owner.playSound("hbm:weapon.hkShoot", 1.0F, 1.0F);
 				break;
 				
 			case SPLASH:
 				
 				for(int i = 0; i < 5; i++) {
-					EntityBulletBaseNT tracer = new EntityBulletBaseNT(owner.worldObj, BulletConfigSyncingUtil.MASKMAN_TRACER, owner, target, 1.0F, 0.05F);
-					owner.worldObj.spawnEntityInWorld(tracer);
+					EntityBulletBaseNT tracer = new EntityBulletBaseNT(this.owner.worldObj, BulletConfigSyncingUtil.MASKMAN_TRACER, this.owner, this.target, 1.0F, 0.05F);
+					this.owner.worldObj.spawnEntityInWorld(tracer);
 				}
 				break;
 				
@@ -82,14 +82,14 @@ public class EntityAIMaskmanLasergun extends EntityAIBase {
 				break;
 			}
 			
-			attackCount++;
+			this.attackCount++;
 			
-			if(attackCount >= attack.amount) {
+			if(this.attackCount >= this.attack.amount) {
 
-				attackCount = 0;
+				this.attackCount = 0;
 				
-				int newAtk = attack.ordinal() + owner.getRNG().nextInt(EnumLaserAttack.values().length - 1);
-				attack = EnumLaserAttack.values()[newAtk % EnumLaserAttack.values().length];
+				int newAtk = this.attack.ordinal() + this.owner.getRNG().nextInt(EnumLaserAttack.values().length - 1);
+				this.attack = EnumLaserAttack.values()[newAtk % EnumLaserAttack.values().length];
 			}
 		}
 		

@@ -45,22 +45,22 @@ public class TileEntityReactorControl extends TileEntityMachineBase implements I
 		super.readFromNBT(nbt);
 		NBTTagList list = nbt.getTagList("items", 10);
 
-		isLinked = nbt.getBoolean("isLinked");
-		levelLower = nbt.getDouble("levelLower");
-		levelUpper = nbt.getDouble("levelUpper");
-		heatLower = nbt.getDouble("heatLower");
-		heatUpper = nbt.getDouble("heatUpper");
-		function = RodFunction.values()[nbt.getInteger("function")];
+		this.isLinked = nbt.getBoolean("isLinked");
+		this.levelLower = nbt.getDouble("levelLower");
+		this.levelUpper = nbt.getDouble("levelUpper");
+		this.heatLower = nbt.getDouble("heatLower");
+		this.heatUpper = nbt.getDouble("heatUpper");
+		this.function = RodFunction.values()[nbt.getInteger("function")];
 		
-		slots = new ItemStack[getSizeInventory()];
+		this.slots = new ItemStack[getSizeInventory()];
 		
 		for(int i = 0; i < list.tagCount(); i++)
 		{
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("slot");
-			if(b0 >= 0 && b0 < slots.length)
+			if(b0 >= 0 && b0 < this.slots.length)
 			{
-				slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
+				this.slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
 			}
 		}
 	}
@@ -70,21 +70,21 @@ public class TileEntityReactorControl extends TileEntityMachineBase implements I
 		super.writeToNBT(nbt);
 		NBTTagList list = new NBTTagList();
 		
-		nbt.setBoolean("isLinked", isLinked);
-		nbt.setDouble("levelLower", levelLower);
-		nbt.setDouble("levelUpper", levelUpper);
-		nbt.setDouble("heatLower", heatLower);
-		nbt.setDouble("heatUpper", heatUpper);
-		nbt.setInteger("function", function.ordinal());
+		nbt.setBoolean("isLinked", this.isLinked);
+		nbt.setDouble("levelLower", this.levelLower);
+		nbt.setDouble("levelUpper", this.levelUpper);
+		nbt.setDouble("heatLower", this.heatLower);
+		nbt.setDouble("heatUpper", this.heatUpper);
+		nbt.setInteger("function", this.function.ordinal());
 
 		
-		for(int i = 0; i < slots.length; i++)
+		for(int i = 0; i < this.slots.length; i++)
 		{
-			if(slots[i] != null)
+			if(this.slots[i] != null)
 			{
 				NBTTagCompound nbt1 = new NBTTagCompound();
 				nbt1.setByte("slot", (byte)i);
-				slots[i].writeToNBT(nbt1);
+				this.slots[i].writeToNBT(nbt1);
 				list.appendTag(nbt1);
 			}
 		}
@@ -108,11 +108,11 @@ public class TileEntityReactorControl extends TileEntityMachineBase implements I
 	@Override
 	public void updateEntity() {
 
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 
-			isLinked = establishLink();
+			this.isLinked = establishLink();
 			
-			if(isLinked) { 
+			if(this.isLinked) { 
 				
 				double fauxLevel = 0;
 
@@ -132,58 +132,59 @@ public class TileEntityReactorControl extends TileEntityMachineBase implements I
 				double level = MathHelper.clamp_double((fauxLevel * 0.01D), 0D, 1D);
 				
 				if(level != this.level) {
-					reactor.setTarget(level);
+					this.reactor.setTarget(level);
 				}
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setInteger("heat", heat);
-			data.setDouble("level", level);
-			data.setInteger("flux", flux);
-			data.setBoolean("isLinked", isLinked);
-			data.setDouble("levelLower", levelLower);
-			data.setDouble("levelUpper", levelUpper);
-			data.setDouble("heatLower", heatLower);
-			data.setDouble("heatUpper", heatUpper);
-			data.setInteger("function", function.ordinal());
-			this.networkPack(data, 150);
+			data.setInteger("heat", this.heat);
+			data.setDouble("level", this.level);
+			data.setInteger("flux", this.flux);
+			data.setBoolean("isLinked", this.isLinked);
+			data.setDouble("levelLower", this.levelLower);
+			data.setDouble("levelUpper", this.levelUpper);
+			data.setDouble("heatLower", this.heatLower);
+			data.setDouble("heatUpper", this.heatUpper);
+			data.setInteger("function", this.function.ordinal());
+			networkPack(data, 150);
 		}
 	}
 	
+	@Override
 	public void networkUnpack(NBTTagCompound data) {
 		this.heat = data.getInteger("heat");
 		this.level = data.getDouble("level");
 		this.flux = data.getInteger("flux");
-		isLinked = data.getBoolean("isLinked");
-		levelLower = data.getDouble("levelLower");
-		levelUpper = data.getDouble("levelUpper");
-		heatLower = data.getDouble("heatLower");
-		heatUpper = data.getDouble("heatUpper");
-		function = RodFunction.values()[data.getInteger("function")];
+		this.isLinked = data.getBoolean("isLinked");
+		this.levelLower = data.getDouble("levelLower");
+		this.levelUpper = data.getDouble("levelUpper");
+		this.heatLower = data.getDouble("heatLower");
+		this.heatUpper = data.getDouble("heatUpper");
+		this.function = RodFunction.values()[data.getInteger("function")];
 	}
 	
 	private boolean establishLink() {
-		if(slots[0] != null && slots[0].getItem() == ModItems.reactor_sensor && slots[0].stackTagCompound != null) {
-			int xCoord = slots[0].stackTagCompound.getInteger("x");
-    		int yCoord = slots[0].stackTagCompound.getInteger("y");
-    		int zCoord = slots[0].stackTagCompound.getInteger("z");
+		if(this.slots[0] != null && this.slots[0].getItem() == ModItems.reactor_sensor && this.slots[0].stackTagCompound != null) {
+			int xCoord = this.slots[0].stackTagCompound.getInteger("x");
+    		int yCoord = this.slots[0].stackTagCompound.getInteger("y");
+    		int zCoord = this.slots[0].stackTagCompound.getInteger("z");
     		
-    		Block b = worldObj.getBlock(xCoord, yCoord, zCoord);
+    		Block b = this.worldObj.getBlock(xCoord, yCoord, zCoord);
     		
     		if(b == ModBlocks.reactor_research) {
     			
-    			int[] pos = ((ReactorResearch) ModBlocks.reactor_research).findCore(worldObj, xCoord, yCoord, zCoord);
+    			int[] pos = ((ReactorResearch) ModBlocks.reactor_research).findCore(this.worldObj, xCoord, yCoord, zCoord);
     			
     			if(pos != null) {
 
-					TileEntity tile = worldObj.getTileEntity(pos[0], pos[1], pos[2]);
+					TileEntity tile = this.worldObj.getTileEntity(pos[0], pos[1], pos[2]);
 
 					if(tile instanceof TileEntityReactorResearch) {
-						reactor = (TileEntityReactorResearch) tile;
+						this.reactor = (TileEntityReactorResearch) tile;
 						
-						this.flux = reactor.totalFlux;
-						this.level = reactor.level;
-						this.heat = reactor.heat;
+						this.flux = this.reactor.totalFlux;
+						this.level = this.reactor.level;
+						this.heat = this.reactor.heat;
 						
 						return true;
 					}
@@ -236,12 +237,12 @@ public class TileEntityReactorControl extends TileEntityMachineBase implements I
 			this.heatUpper = data.getDouble("heatUpper");
 		}
 		
-		this.markDirty();
+		markDirty();
 	}
 	
 	@Override
 	public boolean hasPermission(EntityPlayer player) {
-		return Vec3.createVectorHelper(xCoord - player.posX, yCoord - player.posY, zCoord - player.posZ).lengthVector() < 20;
+		return Vec3.createVectorHelper(this.xCoord - player.posX, this.yCoord - player.posY, this.zCoord - player.posZ).lengthVector() < 20;
 	}
 	
 	public enum RodFunction {
@@ -259,7 +260,7 @@ public class TileEntityReactorControl extends TileEntityMachineBase implements I
 	@Callback
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] isLinked(Context context, Arguments args) {
-		return new Object[] {isLinked};
+		return new Object[] {this.isLinked};
 	}
 
 	@Callback
@@ -297,18 +298,18 @@ public class TileEntityReactorControl extends TileEntityMachineBase implements I
 		} else if (newMinlevel > 1.0) {
 			newMinlevel = 1.0;
 		}
-		function = RodFunction.values()[newFunction];
-		heatUpper = newMaxheat;
-		heatLower = newMinheat;
-		levelUpper = newMaxlevel;
-		levelLower = newMinlevel;
+		this.function = RodFunction.values()[newFunction];
+		this.heatUpper = newMaxheat;
+		this.heatLower = newMinheat;
+		this.levelUpper = newMaxlevel;
+		this.levelLower = newMinlevel;
 		return new Object[] {};
 	}
 
 	@Callback
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getParams(Context context, Arguments args) {
-		return new Object[] {function.ordinal(), heatUpper, heatLower, levelUpper, levelLower};
+		return new Object[] {this.function.ordinal(), this.heatUpper, this.heatLower, this.levelUpper, this.levelLower};
 	}
 
 	@Override

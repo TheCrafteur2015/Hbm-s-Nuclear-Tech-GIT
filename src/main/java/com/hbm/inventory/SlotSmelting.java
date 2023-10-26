@@ -21,29 +21,34 @@ public class SlotSmelting extends Slot {
 		this.thePlayer = player;
 	}
 	
+	@Override
 	public boolean isItemValid(ItemStack stack) {
 		return false;
 	}
 	
+	@Override
 	public ItemStack decrStackSize(int amount) {
 		
-		if(this.getHasStack()) {
-			this.itemCountBuffer += Math.min(amount, this.getStack().stackSize);
+		if(getHasStack()) {
+			this.itemCountBuffer += Math.min(amount, getStack().stackSize);
 		}
 		
 		return super.decrStackSize(amount);
 	}
 
+	@Override
 	public void onPickupFromSlot(EntityPlayer player, ItemStack stack) {
 		this.onCrafting(stack);
 		super.onPickupFromSlot(player, stack);
 	}
 	
+	@Override
 	protected void onCrafting(ItemStack stack, int amount) {
 		this.itemCountBuffer += amount;
 		this.onCrafting(stack);
 	}
 	
+	@Override
 	protected void onCrafting(ItemStack stack) {
 		
 		stack.onCrafting(this.thePlayer.worldObj, this.thePlayer, this.itemCountBuffer);
@@ -76,7 +81,7 @@ public class SlotSmelting extends Slot {
 
 		this.itemCountBuffer = 0;
 
-		FMLCommonHandler.instance().firePlayerSmeltedEvent(thePlayer, stack);
+		FMLCommonHandler.instance().firePlayerSmeltedEvent(this.thePlayer, stack);
 
 		if(stack.getItem() == Items.iron_ingot) {
 			this.thePlayer.addStat(AchievementList.acquireIron, 1);

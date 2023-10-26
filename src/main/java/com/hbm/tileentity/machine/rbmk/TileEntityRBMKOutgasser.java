@@ -1,6 +1,5 @@
 package com.hbm.tileentity.machine.rbmk;
 
-import api.hbm.fluid.IFluidStandardSender;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.entity.projectile.EntityRBMKDebris.DebrisType;
 import com.hbm.inventory.FluidStack;
@@ -13,6 +12,8 @@ import com.hbm.lib.Library;
 import com.hbm.tileentity.machine.rbmk.TileEntityRBMKConsole.ColumnType;
 import com.hbm.util.Tuple.Pair;
 import com.hbm.util.fauxpointtwelve.DirPos;
+
+import api.hbm.fluid.IFluidStandardSender;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -36,7 +37,7 @@ public class TileEntityRBMKOutgasser extends TileEntityRBMKSlottedBase implement
 
 	public TileEntityRBMKOutgasser() {
 		super(2);
-		gas = new FluidTank(Fluids.TRITIUM, 64000);
+		this.gas = new FluidTank(Fluids.TRITIUM, 64000);
 	}
 
 	@Override
@@ -47,14 +48,14 @@ public class TileEntityRBMKOutgasser extends TileEntityRBMKSlottedBase implement
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			if(!canProcess()) {
 				this.progress = 0;
 			}
 			
 			for(DirPos pos : getOutputPos()) {
-				if(this.gas.getFill() > 0) this.sendFluid(gas, worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+				if(this.gas.getFill() > 0) this.sendFluid(this.gas, this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 			}
 		}
 		
@@ -63,18 +64,18 @@ public class TileEntityRBMKOutgasser extends TileEntityRBMKSlottedBase implement
 	
 	protected DirPos[] getOutputPos() {
 		
-		if(worldObj.getBlock(xCoord, yCoord - 1, zCoord) == ModBlocks.rbmk_loader) {
+		if(this.worldObj.getBlock(this.xCoord, this.yCoord - 1, this.zCoord) == ModBlocks.rbmk_loader) {
 			return new DirPos[] {
-					new DirPos(this.xCoord, this.yCoord + RBMKDials.getColumnHeight(worldObj) + 1, this.zCoord, Library.POS_Y),
+					new DirPos(this.xCoord, this.yCoord + RBMKDials.getColumnHeight(this.worldObj) + 1, this.zCoord, Library.POS_Y),
 					new DirPos(this.xCoord + 1, this.yCoord - 1, this.zCoord, Library.POS_X),
 					new DirPos(this.xCoord - 1, this.yCoord - 1, this.zCoord, Library.NEG_X),
 					new DirPos(this.xCoord, this.yCoord - 1, this.zCoord + 1, Library.POS_Z),
 					new DirPos(this.xCoord, this.yCoord - 1, this.zCoord - 1, Library.NEG_Z),
 					new DirPos(this.xCoord, this.yCoord - 2, this.zCoord, Library.NEG_Y)
 			};
-		} else if(worldObj.getBlock(xCoord, yCoord - 2, zCoord) == ModBlocks.rbmk_loader) {
+		} else if(this.worldObj.getBlock(this.xCoord, this.yCoord - 2, this.zCoord) == ModBlocks.rbmk_loader) {
 			return new DirPos[] {
-					new DirPos(this.xCoord, this.yCoord + RBMKDials.getColumnHeight(worldObj) + 1, this.zCoord, Library.POS_Y),
+					new DirPos(this.xCoord, this.yCoord + RBMKDials.getColumnHeight(this.worldObj) + 1, this.zCoord, Library.POS_Y),
 					new DirPos(this.xCoord + 1, this.yCoord - 2, this.zCoord, Library.POS_X),
 					new DirPos(this.xCoord - 1, this.yCoord - 2, this.zCoord, Library.NEG_X),
 					new DirPos(this.xCoord, this.yCoord - 2, this.zCoord + 1, Library.POS_Z),
@@ -83,7 +84,7 @@ public class TileEntityRBMKOutgasser extends TileEntityRBMKSlottedBase implement
 			};
 		} else {
 			return new DirPos[] {
-					new DirPos(this.xCoord, this.yCoord + RBMKDials.getColumnHeight(worldObj) + 1, this.zCoord, Library.POS_Y)
+					new DirPos(this.xCoord, this.yCoord + RBMKDials.getColumnHeight(this.worldObj) + 1, this.zCoord, Library.POS_Y)
 			};
 		}
 	}
@@ -96,21 +97,21 @@ public class TileEntityRBMKOutgasser extends TileEntityRBMKSlottedBase implement
 			if(type == NType.FAST)
 				flux *= 0.2D;
 			
-			progress += flux * RBMKDials.getOutgasserMod(worldObj);
+			this.progress += flux * RBMKDials.getOutgasserMod(this.worldObj);
 			
-			if(progress > duration) {
+			if(this.progress > TileEntityRBMKOutgasser.duration) {
 				process();
-				this.markDirty();
+				markDirty();
 			}
 		}
 	}
 	
 	public boolean canProcess() {
 		
-		if(slots[0] == null)
+		if(this.slots[0] == null)
 			return false;
 		
-		Pair<ItemStack, FluidStack> output = OutgasserRecipes.getOutput(slots[0]);
+		Pair<ItemStack, FluidStack> output = OutgasserRecipes.getOutput(this.slots[0]);
 		
 		if(output == null)
 			return false;
@@ -118,36 +119,36 @@ public class TileEntityRBMKOutgasser extends TileEntityRBMKSlottedBase implement
 		FluidStack fluid = output.getValue();
 
 		if(fluid != null) {
-			if(gas.getTankType() != fluid.type && gas.getFill() > 0) return false;
-			gas.setTankType(fluid.type);
-			if(gas.getFill() + fluid.fill > gas.getMaxFill()) return false;
+			if(this.gas.getTankType() != fluid.type && this.gas.getFill() > 0) return false;
+			this.gas.setTankType(fluid.type);
+			if(this.gas.getFill() + fluid.fill > this.gas.getMaxFill()) return false;
 		}
 		
 		ItemStack out = output.getKey();
 		
-		if(slots[1] == null || out == null)
+		if(this.slots[1] == null || out == null)
 			return true;
 		
-		return slots[1].getItem() == out.getItem() && slots[1].getItemDamage() == out.getItemDamage() && slots[1].stackSize + out.stackSize <= slots[1].getMaxStackSize();
+		return this.slots[1].getItem() == out.getItem() && this.slots[1].getItemDamage() == out.getItemDamage() && this.slots[1].stackSize + out.stackSize <= this.slots[1].getMaxStackSize();
 	}
 	
 	private void process() {
 		
-		Pair<ItemStack, FluidStack> output = OutgasserRecipes.getOutput(slots[0]);
-		this.decrStackSize(0, 1);
+		Pair<ItemStack, FluidStack> output = OutgasserRecipes.getOutput(this.slots[0]);
+		decrStackSize(0, 1);
 		this.progress = 0;
 		
 		if(output.getValue() != null) {
-			gas.setFill(gas.getFill() + output.getValue().fill);
+			this.gas.setFill(this.gas.getFill() + output.getValue().fill);
 		}
 		
 		ItemStack out = output.getKey();
 		
 		if(out != null) {
-			if(slots[1] == null) {
-				slots[1] = out.copy();
+			if(this.slots[1] == null) {
+				this.slots[1] = out.copy();
 			} else {
-				slots[1].stackSize += out.stackSize;
+				this.slots[1].stackSize += out.stackSize;
 			}
 		}
 	}
@@ -155,7 +156,7 @@ public class TileEntityRBMKOutgasser extends TileEntityRBMKSlottedBase implement
 	@Override
 	public void onMelt(int reduce) {
 		
-		int count = 4 + worldObj.rand.nextInt(2);
+		int count = 4 + this.worldObj.rand.nextInt(2);
 		
 		for(int i = 0; i < count; i++) {
 			spawnDebris(DebrisType.BLANK);
@@ -212,12 +213,12 @@ public class TileEntityRBMKOutgasser extends TileEntityRBMKSlottedBase implement
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return new FluidTank[] {gas};
+		return new FluidTank[] {this.gas};
 	}
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return new FluidTank[] {gas};
+		return new FluidTank[] {this.gas};
 	}
 
 	//do some opencomputers stuff
@@ -229,37 +230,37 @@ public class TileEntityRBMKOutgasser extends TileEntityRBMKSlottedBase implement
 	@Callback(direct = true, limit = 8)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getGas(Context context, Arguments args) {
-		return new Object[] {gas.getFill()};
+		return new Object[] {this.gas.getFill()};
 	}
 
 	@Callback(direct = true, limit = 8)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getGasMax(Context context, Arguments args) {
-		return new Object[] {gas.getMaxFill()};
+		return new Object[] {this.gas.getMaxFill()};
 	}
 	
 		@Callback(direct = true, limit = 8)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getGasType(Context context, Arguments args) {
-		return new Object[] {gas.getTankType().getID()};
+		return new Object[] {this.gas.getTankType().getID()};
 	}
 
 	@Callback(direct = true, limit = 8)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getProgress(Context context, Arguments args) {
-		return new Object[] {progress};
+		return new Object[] {this.progress};
 	}
 
 	@Callback(direct = true, limit = 8)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getCoordinates(Context context, Arguments args) {
-		return new Object[] {xCoord, yCoord, zCoord};
+		return new Object[] {this.xCoord, this.yCoord, this.zCoord};
 	}
 
 	@Callback(direct = true, limit = 8)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getInfo(Context context, Arguments args) {
-		return new Object[] {gas.getFill(), gas.getMaxFill(), progress, gas.getTankType().getID(), xCoord, yCoord, zCoord};
+		return new Object[] {this.gas.getFill(), this.gas.getMaxFill(), this.progress, this.gas.getTankType().getID(), this.xCoord, this.yCoord, this.zCoord};
 	}
 
 	@Override

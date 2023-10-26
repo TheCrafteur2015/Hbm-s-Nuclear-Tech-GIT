@@ -41,7 +41,7 @@ public class GunEuthanasia extends Item {
 	public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {
 		new ArrowNockEvent(p_77659_3_, p_77659_1_);
 		{
-			p_77659_3_.setItemInUse(p_77659_1_, this.getMaxItemUseDuration(p_77659_1_));
+			p_77659_3_.setItemInUse(p_77659_1_, getMaxItemUseDuration(p_77659_1_));
 		}
 
 		return p_77659_1_;
@@ -57,14 +57,14 @@ public class GunEuthanasia extends Item {
 		if ((player.capabilities.isCreativeMode || player.inventory.hasItem(ModItems.gun_euthanasia_ammo))
 				&& count % 8 == 0) {
 			
-			int deadly = rand.nextInt(5);
+			int deadly = this.rand.nextInt(5);
 			
 			EntityBullet entityarrow = new EntityBullet(world, player, 3.0F, 2, 8, deadly == 0, false);
-			entityarrow.setDamage(1 + rand.nextInt(3));
+			entityarrow.setDamage(1 + this.rand.nextInt(3));
 			entityarrow.antidote = true;
 
 			//world.playSoundAtEntity(player, "random.explode", 1.0F, 1.5F + (rand.nextFloat() / 4));
-			world.playSoundAtEntity(player, "hbm:weapon.rifleShoot", 1.0F, 0.8F + (rand.nextFloat() * 0.4F));
+			world.playSoundAtEntity(player, "hbm:weapon.rifleShoot", 1.0F, 0.8F + (this.rand.nextFloat() * 0.4F));
 
 			if (flag) {
 				entityarrow.canBePickedUp = 2;
@@ -83,6 +83,7 @@ public class GunEuthanasia extends Item {
 		return 0;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
@@ -95,11 +96,12 @@ public class GunEuthanasia extends Item {
 		list.add("[LEGENDARY WEAPON]");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Multimap getItemAttributeModifiers() {
 		Multimap multimap = super.getItemAttributeModifiers();
 		multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
-				new AttributeModifier(field_111210_e, "Weapon modifier", 3, 0));
+				new AttributeModifier(Item.field_111210_e, "Weapon modifier", 3, 0));
 		return multimap;
 	}
 }

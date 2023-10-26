@@ -29,18 +29,18 @@ public class AuxParticlePacket implements IMessage {
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		x = buf.readDouble();
-		y = buf.readDouble();
-		z = buf.readDouble();
-		type = buf.readInt();
+		this.x = buf.readDouble();
+		this.y = buf.readDouble();
+		this.z = buf.readDouble();
+		this.type = buf.readInt();
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeDouble(x);
-		buf.writeDouble(y);
-		buf.writeDouble(z);
-		buf.writeInt(type);
+		buf.writeDouble(this.x);
+		buf.writeDouble(this.y);
+		buf.writeDouble(this.z);
+		buf.writeInt(this.type);
 	}
 
 	public static class Handler implements IMessageHandler<AuxParticlePacket, IMessage> {

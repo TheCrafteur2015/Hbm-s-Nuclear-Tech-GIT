@@ -6,6 +6,6 @@ public class ItemBlades extends Item {
 	
 	public ItemBlades(int dura)
 	{
-		this.setMaxDamage(dura);
+		setMaxDamage(dura);
 	}
 }

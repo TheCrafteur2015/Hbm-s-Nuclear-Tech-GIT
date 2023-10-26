@@ -119,6 +119,7 @@ public class ArmorModel extends ItemArmor {
 		return "hbm:textures/models/capes/CapeUnknown.png";
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void renderHelmetOverlay(ItemStack stack, EntityPlayer player, ScaledResolution resolution, float partialTicks, boolean hasScreen, int mouseX, int mouseY) {
 
@@ -133,25 +134,25 @@ public class ArmorModel extends ItemArmor {
 		GL11.glDisable(GL11.GL_ALPHA_TEST);
 		switch((int) ((double) stack.getItemDamage() / (double) stack.getMaxDamage() * 6D)) {
 		case 0:
-			Minecraft.getMinecraft().getTextureManager().bindTexture(goggleBlur0);
+			Minecraft.getMinecraft().getTextureManager().bindTexture(this.goggleBlur0);
 			break;
 		case 1:
-			Minecraft.getMinecraft().getTextureManager().bindTexture(goggleBlur1);
+			Minecraft.getMinecraft().getTextureManager().bindTexture(this.goggleBlur1);
 			break;
 		case 2:
-			Minecraft.getMinecraft().getTextureManager().bindTexture(goggleBlur2);
+			Minecraft.getMinecraft().getTextureManager().bindTexture(this.goggleBlur2);
 			break;
 		case 3:
-			Minecraft.getMinecraft().getTextureManager().bindTexture(goggleBlur3);
+			Minecraft.getMinecraft().getTextureManager().bindTexture(this.goggleBlur3);
 			break;
 		case 4:
-			Minecraft.getMinecraft().getTextureManager().bindTexture(goggleBlur4);
+			Minecraft.getMinecraft().getTextureManager().bindTexture(this.goggleBlur4);
 			break;
 		case 5:
-			Minecraft.getMinecraft().getTextureManager().bindTexture(goggleBlur5);
+			Minecraft.getMinecraft().getTextureManager().bindTexture(this.goggleBlur5);
 			break;
 		default:
-			Minecraft.getMinecraft().getTextureManager().bindTexture(goggleBlur5);
+			Minecraft.getMinecraft().getTextureManager().bindTexture(this.goggleBlur5);
 			break;
 		}
 

@@ -64,18 +64,21 @@ public class MachineRadar extends BlockContainer {
 		}
 	}
 	
-    public boolean canProvidePower()
+    @Override
+	public boolean canProvidePower()
     {
         return true;
     }
 
-    public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int m)
+    @Override
+	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int m)
     {
 		TileEntityMachineRadar entity = (TileEntityMachineRadar) world.getTileEntity(x, y, z);
         return entity.getRedPower();
     }
 
-    public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int m)
+    @Override
+	public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int m)
     {
         return isProvidingWeakPower(world, x, y, z, m);
     }

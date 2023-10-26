@@ -27,11 +27,11 @@ public class RenderSmallNukeMK3 extends Render {
     
     //can't you just instantiate the AMLs as a whole like a normal person smh
     public RenderSmallNukeMK3() {
-    	blastModel = AdvancedModelLoader.loadModel(objTesterModelRL);
-    	ringModel = AdvancedModelLoader.loadModel(ringModelRL);
-    	ringBigModel = AdvancedModelLoader.loadModel(ringBigModelRL);
-    	scale = 0;
-    	ring = 0;
+    	this.blastModel = AdvancedModelLoader.loadModel(RenderSmallNukeMK3.objTesterModelRL);
+    	this.ringModel = AdvancedModelLoader.loadModel(RenderSmallNukeMK3.ringModelRL);
+    	this.ringBigModel = AdvancedModelLoader.loadModel(RenderSmallNukeMK3.ringBigModelRL);
+    	this.scale = 0;
+    	this.ring = 0;
     }
 
 	@Override
@@ -102,11 +102,11 @@ public class RenderSmallNukeMK3 extends Render {
 			GL11.glColor4f(0.4F, 0.4F, 0.4F, 1F);
 	
 	        GL11.glScalef(0.6F, 1F / shockScale * 5, 0.6F);
-			ringModel.renderAll();
+			this.ringModel.renderAll();
 	        GL11.glScalef(1.1F, 1F, 1.1F);
-			ringModel.renderAll();
+			this.ringModel.renderAll();
 	        GL11.glScalef(1.1F, 1F, 1.1F);
-			ringModel.renderAll();
+			this.ringModel.renderAll();
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
 			GL11.glPopMatrix();
         }
@@ -143,7 +143,7 @@ public class RenderSmallNukeMK3 extends Render {
 	        GL11.glTranslatef(0, -50, 0);
 	        GL11.glScalef(6, 6, 6);
 	        GL11.glDisable(GL11.GL_CULL_FACE);
-            blastModel.renderAll();
+            this.blastModel.renderAll();
             GL11.glEnable(GL11.GL_CULL_FACE);
     		GL11.glPopMatrix();
     		
@@ -156,9 +156,9 @@ public class RenderSmallNukeMK3 extends Render {
 	        float f1 = 1 + ((float)Math.sin(((double)age) / 10) * 0.15F);
 	        GL11.glScalef(f, 1, f);
 	        GL11.glTranslatef(0, 3.5F + f1 * 0.25F, 0);
-			ringModel.renderAll();
+			this.ringModel.renderAll();
 	        GL11.glTranslatef(0, - f1 * 0.25F * 2, 0);
-			ringModel.renderAll();
+			this.ringModel.renderAll();
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
     		GL11.glPopMatrix();
         }
@@ -187,10 +187,10 @@ public class RenderSmallNukeMK3 extends Render {
 			float f0 = (float)Math.min((age - 50) * 0.25, 20) * 5F;
 	        GL11.glScalef(f0, 15, f0);
 	        GL11.glTranslatef(0, 3.5F, 0);
-			ringBigModel.renderAll();
+			this.ringBigModel.renderAll();
 	        GL11.glTranslatef(0, 1F, 0);
 	        GL11.glScalef(0.65F, 1, 0.65F);
-			ringModel.renderAll();
+			this.ringModel.renderAll();
 	        //GL11.glTranslatef(0, -2F, 0);
 			//ringModel.renderAll();
 			GL11.glEnable(GL11.GL_TEXTURE_2D);

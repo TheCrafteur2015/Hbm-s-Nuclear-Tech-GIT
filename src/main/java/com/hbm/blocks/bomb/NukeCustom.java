@@ -54,7 +54,7 @@ public class NukeCustom extends BlockContainer implements IBomb {
 	@Override
 	public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_) {
 		
-		if (!keepInventory) {
+		if (!NukeCustom.keepInventory) {
 			TileEntityNukeCustom tileentityfurnace = (TileEntityNukeCustom) p_149749_1_.getTileEntity(p_149749_2_,
 					p_149749_3_, p_149749_4_);
 
@@ -124,7 +124,7 @@ public class NukeCustom extends BlockContainer implements IBomb {
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block p_149695_5_) {
 		
 		if(world.isBlockIndirectlyGettingPowered(x, y, z)) {
-			this.explode(world, x, y, z);
+			explode(world, x, y, z);
 		}
 	}
 
@@ -148,7 +148,7 @@ public class NukeCustom extends BlockContainer implements IBomb {
 		} else if(schrab > 0) {
 			
 			schrab += amat / 2 + hydro / 4 + nuke / 8 + tnt / 16;
-			schrab = Math.min(schrab, maxSchrab);
+			schrab = Math.min(schrab, NukeCustom.maxSchrab);
 			
 			EntityNukeExplosionMK3 ex = EntityNukeExplosionMK3.statFacFleija(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, (int) schrab);
 			if(!ex.isDead) {
@@ -163,7 +163,7 @@ public class NukeCustom extends BlockContainer implements IBomb {
 		} else if(amat > 0) {
 
 			amat += hydro / 2 + nuke / 4 + tnt / 8;
-			amat = Math.min(amat, maxAmat);
+			amat = Math.min(amat, NukeCustom.maxAmat);
 
 			EntityBalefire bf = new EntityBalefire(worldObj);
     		bf.setPosition(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
@@ -175,7 +175,7 @@ public class NukeCustom extends BlockContainer implements IBomb {
 		} else if(hydro > 0) {
 
 			hydro += nuke / 2 + tnt / 4;
-			hydro = Math.min(hydro, maxHydro);
+			hydro = Math.min(hydro, NukeCustom.maxHydro);
 			dirty *= 0.25F;
 
 			worldObj.spawnEntityInWorld(EntityNukeExplosionMK5.statFac(worldObj, (int)hydro, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5).moreFallout((int)dirty));
@@ -185,7 +185,7 @@ public class NukeCustom extends BlockContainer implements IBomb {
 		} else if(nuke > 0) {
 			
 			nuke += tnt / 2;
-			nuke = Math.min(nuke, maxNuke);
+			nuke = Math.min(nuke, NukeCustom.maxNuke);
 
 			worldObj.spawnEntityInWorld(EntityNukeExplosionMK5.statFac(worldObj, (int)nuke, xCoord + 0.5, yCoord + 5, zCoord + 0.5).moreFallout((int)dirty));
 			EntityNukeTorex.statFac(worldObj, xCoord + 0.5, yCoord + 5, zCoord + 0.5, nuke);
@@ -193,7 +193,7 @@ public class NukeCustom extends BlockContainer implements IBomb {
 		/// NON-NUCLEAR ///
 		} else if(tnt >= 75) {
 
-			tnt = Math.min(tnt, maxTnt);
+			tnt = Math.min(tnt, NukeCustom.maxTnt);
 
 			worldObj.spawnEntityInWorld(EntityNukeExplosionMK5.statFacNoRad(worldObj, (int)tnt, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5));
 			EntityNukeTorex.statFac(worldObj, xCoord + 0.5, yCoord + 5, zCoord + 0.5, tnt);

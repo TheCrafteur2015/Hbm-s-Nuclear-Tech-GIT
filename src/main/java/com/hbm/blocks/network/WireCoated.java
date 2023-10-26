@@ -34,14 +34,15 @@ public class WireCoated extends BlockContainer implements IBlockCT {
 	@SideOnly(Side.CLIENT)
 	public CTStitchReceiver rec;
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister reg) {
-		this.blockIcon = reg.registerIcon(this.getTextureName());
-		this.rec = IBlockCT.primeReceiver(reg, this.getTextureName(), this.blockIcon);
+		this.blockIcon = reg.registerIcon(getTextureName());
+		this.rec = IBlockCT.primeReceiver(reg, getTextureName(), this.blockIcon);
 	}
 
 	@Override
 	public IIcon[] getFragments(IBlockAccess world, int x, int y, int z) {
-		return rec.fragCache;
+		return this.rec.fragCache;
 	}
 }

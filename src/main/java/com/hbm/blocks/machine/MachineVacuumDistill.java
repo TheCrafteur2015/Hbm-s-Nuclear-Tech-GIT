@@ -32,10 +32,10 @@ public class MachineVacuumDistill extends BlockDummyable {
 	protected void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		super.fillSpace(world, x, y, z, dir, o);
 
-		this.makeExtra(world, x - dir.offsetX + 1, y, z - dir.offsetZ + 1);
-		this.makeExtra(world, x - dir.offsetX + 1, y, z - dir.offsetZ - 1);
-		this.makeExtra(world, x - dir.offsetX - 1, y, z - dir.offsetZ + 1);
-		this.makeExtra(world, x - dir.offsetX - 1, y, z - dir.offsetZ - 1);
+		makeExtra(world, x - dir.offsetX + 1, y, z - dir.offsetZ + 1);
+		makeExtra(world, x - dir.offsetX + 1, y, z - dir.offsetZ - 1);
+		makeExtra(world, x - dir.offsetX - 1, y, z - dir.offsetZ + 1);
+		makeExtra(world, x - dir.offsetX - 1, y, z - dir.offsetZ - 1);
 	}
 
 	@Override

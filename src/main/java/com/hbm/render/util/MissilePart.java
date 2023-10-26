@@ -1,6 +1,7 @@
 package com.hbm.render.util;
 
 import java.util.HashMap;
+
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.ItemMissile.PartType;
 import com.hbm.main.ResourceManager;
@@ -11,7 +12,7 @@ import net.minecraftforge.client.model.IModelCustom;
 
 public class MissilePart {
 	
-	public static HashMap<Integer, MissilePart> parts = new HashMap<Integer, MissilePart>();
+	public static HashMap<Integer, MissilePart> parts = new HashMap<>();
 
 	public Item part;
 	public PartType type;
@@ -31,7 +32,7 @@ public class MissilePart {
 	
 	public static void registerAllParts() {
 		
-		parts.clear();
+		MissilePart.parts.clear();
 
 		MissilePart.registerPart(ModItems.mp_thruster_10_kerosene, PartType.THRUSTER, 1, 1, ResourceManager.mp_t_10_kerosene, ResourceManager.mp_t_10_kerosene_tex);
 		MissilePart.registerPart(ModItems.mp_thruster_10_kerosene_tec, PartType.THRUSTER, 1.25, 1.25, ResourceManager.mp_t_10_kerosene_tec, ResourceManager.universal);
@@ -179,7 +180,7 @@ public class MissilePart {
 	public static void registerPart(Item item, PartType type, double height, double guiheight, IModelCustom model, ResourceLocation texture) {
 		
 		MissilePart part = new MissilePart(item, type, height, guiheight, model, texture);
-		parts.put(item.hashCode(), part);
+		MissilePart.parts.put(item.hashCode(), part);
 	}
 	
 	public static MissilePart getPart(Item item) {
@@ -187,7 +188,7 @@ public class MissilePart {
 		if(item == null)
 			return null;
 		
-		return parts.get(item.hashCode());
+		return MissilePart.parts.get(item.hashCode());
 	}
 
 }

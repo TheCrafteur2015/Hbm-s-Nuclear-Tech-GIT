@@ -22,30 +22,30 @@ public class ModelPylon extends ModelBase
 
 	public ModelPylon()
 	{
-	    textureWidth = 64;
-	    textureHeight = 128;
-		pylonModel = new ModelRenderer[4];
-		pylonModel[0] = new ModelRenderer(this, 0, 96); // Box 0
-		pylonModel[1] = new ModelRenderer(this, 1, 1); // Box 1
-		pylonModel[2] = new ModelRenderer(this, 24, 1); // Box 2
-		pylonModel[3] = new ModelRenderer(this, 25, 17); // Box 3
+	    this.textureWidth = 64;
+	    this.textureHeight = 128;
+		this.pylonModel = new ModelRenderer[4];
+		this.pylonModel[0] = new ModelRenderer(this, 0, 96); // Box 0
+		this.pylonModel[1] = new ModelRenderer(this, 1, 1); // Box 1
+		this.pylonModel[2] = new ModelRenderer(this, 24, 1); // Box 2
+		this.pylonModel[3] = new ModelRenderer(this, 25, 17); // Box 3
 
-		pylonModel[0].addBox(0F, 0F, 0F, 16, 16, 16, 0F); // Box 0
-		pylonModel[0].setRotationPoint(-8F, -6F, -8F);
+		this.pylonModel[0].addBox(0F, 0F, 0F, 16, 16, 16, 0F); // Box 0
+		this.pylonModel[0].setRotationPoint(-8F, -6F, -8F);
 
-		pylonModel[1].addBox(0F, 0F, 0F, 4, 73, 4, 0F); // Box 1
-		pylonModel[1].setRotationPoint(-2F, -79F, -2F);
+		this.pylonModel[1].addBox(0F, 0F, 0F, 4, 73, 4, 0F); // Box 1
+		this.pylonModel[1].setRotationPoint(-2F, -79F, -2F);
 
-		pylonModel[2].addBox(0F, 0F, 0F, 6, 4, 6, 0F); // Box 2
-		pylonModel[2].setRotationPoint(-3F, -74F, -3F);
+		this.pylonModel[2].addBox(0F, 0F, 0F, 6, 4, 6, 0F); // Box 2
+		this.pylonModel[2].setRotationPoint(-3F, -74F, -3F);
 
-		pylonModel[3].addBox(0F, 0F, 0F, 6, 2, 6, 0F); // Box 3
-		pylonModel[3].setRotationPoint(-3F, -78F, -3F);
+		this.pylonModel[3].addBox(0F, 0F, 0F, 6, 2, 6, 0F); // Box 3
+		this.pylonModel[3].setRotationPoint(-3F, -78F, -3F);
 
 
-		for(int i = 0; i < pylonModel.length; i++) {
-			pylonModel[i].setTextureSize(textureX, textureY);
-			pylonModel[i].mirror = true;
+		for(int i = 0; i < this.pylonModel.length; i++) {
+			this.pylonModel[i].setTextureSize(this.textureX, this.textureY);
+			this.pylonModel[i].mirror = true;
 		}
 	}
 
@@ -54,7 +54,7 @@ public class ModelPylon extends ModelBase
 	{
 		for(int i = 0; i < 4; i++)
 		{
-			pylonModel[i].render(f5);
+			this.pylonModel[i].render(f5);
 		}
 	}
 
@@ -62,7 +62,7 @@ public class ModelPylon extends ModelBase
 	{
 		for(int i = 0; i < 4; i++)
 		{
-			pylonModel[i].render(f5);
+			this.pylonModel[i].render(f5);
 		}
 	}
 

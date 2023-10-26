@@ -26,15 +26,17 @@ public class BlockPlasticExplosive extends Block implements IBomb {
 		super(mat);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister p_149651_1_) {
-		this.blockIcon = p_149651_1_.registerIcon(this.getTextureName());
-		this.topIcon = p_149651_1_.registerIcon(this.getTextureName() + "_front");
+		this.blockIcon = p_149651_1_.registerIcon(getTextureName());
+		this.topIcon = p_149651_1_.registerIcon(getTextureName() + "_front");
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
-		int k = getPistonOrientation(meta);
+		int k = BlockPlasticExplosive.getPistonOrientation(meta);
 		return ForgeDirection.getOrientation(k).getOpposite().ordinal() == side ? this.topIcon : this.blockIcon;
 	}
 
@@ -44,7 +46,7 @@ public class BlockPlasticExplosive extends Block implements IBomb {
 
 	@Override
 	public void onBlockPlacedBy(World p_149689_1_, int p_149689_2_, int p_149689_3_, int p_149689_4_, EntityLivingBase p_149689_5_, ItemStack p_149689_6_) {
-		int l = determineOrientation(p_149689_1_, p_149689_2_, p_149689_3_, p_149689_4_, p_149689_5_);
+		int l = BlockPlasticExplosive.determineOrientation(p_149689_1_, p_149689_2_, p_149689_3_, p_149689_4_, p_149689_5_);
 		p_149689_1_.setBlockMetadataWithNotify(p_149689_2_, p_149689_3_, p_149689_4_, l, 2);
 	}
 
@@ -69,13 +71,13 @@ public class BlockPlasticExplosive extends Block implements IBomb {
 
 	@Override
 	public void onBlockDestroyedByExplosion(World world, int x, int y, int z, Explosion explosion) {
-		this.explode(world, x, y, z);
+		explode(world, x, y, z);
 	}
 
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block p_149695_5_) {
 		if(world.isBlockIndirectlyGettingPowered(x, y, z)) {
-			this.explode(world, x, y, z);
+			explode(world, x, y, z);
 		}
 	}
 

@@ -16,11 +16,11 @@ public class EntityNukeCloudSmall extends Entity {
 	public int age;
 	
 	public static int cloudletLife = 50;
-	public ArrayList<Cloudlet> cloudlets = new ArrayList();
+	public ArrayList<Cloudlet> cloudlets = new ArrayList<>();
 
 	public EntityNukeCloudSmall(World p_i1582_1_) {
 		super(p_i1582_1_);
-		this.setSize(20, 40);
+		setSize(20, 40);
 		this.ignoreFrustumCheck = true;
 		this.isImmuneToFire = true;
 		this.age = 0;
@@ -29,7 +29,7 @@ public class EntityNukeCloudSmall extends Entity {
 
 	public EntityNukeCloudSmall(World p_i1582_1_, int maxAge, float scale) {
 		super(p_i1582_1_);
-		this.setSize(20, 40);
+		setSize(20, 40);
 		this.isImmuneToFire = true;
 		this.maxAge = maxAge;
 		this.noClip = true;
@@ -46,18 +46,18 @@ public class EntityNukeCloudSmall extends Entity {
         if(this.age >= this.maxAge)
         {
     		this.age = 0;
-        	this.setDead();
+        	setDead();
         }
         
-        int cloudCount = age * 3;
+        int cloudCount = this.age * 3;
         
-        Vec3 vec = Vec3.createVectorHelper(age * 2, 0, 0);
+        Vec3 vec = Vec3.createVectorHelper(this.age * 2, 0, 0);
         
         int toRem = 0;
         
         for(int i = 0; i < this.cloudlets.size(); i++) {
         	
-        	if(age > cloudlets.get(i).age + cloudletLife)
+        	if(this.age > this.cloudlets.get(i).age + EntityNukeCloudSmall.cloudletLife)
         		toRem = i;
         	else
         		break;
@@ -66,38 +66,38 @@ public class EntityNukeCloudSmall extends Entity {
         for(int i = 0; i < toRem; i++)
         	this.cloudlets.remove(0);
         
-        if(age < 200) {
+        if(this.age < 200) {
 	        for(int i = 0; i < cloudCount; i++) {
-	        	vec.rotateAroundY((float)(Math.PI * 2 * worldObj.rand.nextDouble()));
+	        	vec.rotateAroundY((float)(Math.PI * 2 * this.worldObj.rand.nextDouble()));
 	        	
-	        	this.cloudlets.add(new Cloudlet(vec.xCoord, worldObj.getHeightValue((int) (vec.xCoord + posX), (int) (vec.zCoord + posZ)), vec.zCoord, age));
+	        	this.cloudlets.add(new Cloudlet(vec.xCoord, this.worldObj.getHeightValue((int) (vec.xCoord + this.posX), (int) (vec.zCoord + this.posZ)), vec.zCoord, this.age));
 	        }
         }
 
-        this.dataWatcher.updateObject(16, (short)maxAge);
-        this.dataWatcher.updateObject(17, (short)age);
+        this.dataWatcher.updateObject(16, (short)this.maxAge);
+        this.dataWatcher.updateObject(17, (short)this.age);
     }
 
 	@Override
 	protected void entityInit() {
-		this.dataWatcher.addObject(16, (short)maxAge);
-		this.dataWatcher.addObject(17, (short)age);
+		this.dataWatcher.addObject(16, (short)this.maxAge);
+		this.dataWatcher.addObject(17, (short)this.age);
 		this.dataWatcher.addObject(18, 1.0F);
         this.dataWatcher.addObject(19, Byte.valueOf((byte)0));
 	}
 
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound p_70037_1_) {
-		maxAge = p_70037_1_.getShort("maxAge");
-		age = p_70037_1_.getShort("age");
+		this.maxAge = p_70037_1_.getShort("maxAge");
+		this.age = p_70037_1_.getShort("age");
 		this.dataWatcher.updateObject(18, p_70037_1_.getFloat("scale"));
 		this.dataWatcher.updateObject(19, p_70037_1_.getByte("type"));
 	}
 
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound p_70014_1_) {
-		p_70014_1_.setShort("maxAge", (short)maxAge);
-		p_70014_1_.setShort("age", (short)age);
+		p_70014_1_.setShort("maxAge", (short)this.maxAge);
+		p_70014_1_.setShort("age", (short)this.age);
 		p_70014_1_.setFloat("scale", this.dataWatcher.getWatchableObjectFloat(18));
 		p_70014_1_.setByte("type", this.dataWatcher.getWatchableObjectByte(19));
 		

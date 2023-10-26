@@ -27,8 +27,8 @@ public abstract class BlockGasBase extends Block {
 
 	public BlockGasBase(float r, float g, float b) {
 		super(ModBlocks.materialGas);
-		this.setHardness(0.0F);
-		this.setResistance(0.0F);
+		setHardness(0.0F);
+		setResistance(0.0F);
 		this.lightOpacity = 0;
 		this.red = r;
 		this.green = g;
@@ -147,9 +147,9 @@ public abstract class BlockGasBase extends Block {
 			data.setDouble("posX", x + 0.5);
 			data.setDouble("posY", y + 0.5);
 			data.setDouble("posZ", z + 0.5);
-			data.setFloat("r", red);
-			data.setFloat("g", green);
-			data.setFloat("b", blue);
+			data.setFloat("r", this.red);
+			data.setFloat("g", this.green);
+			data.setFloat("b", this.blue);
 			MainRegistry.proxy.effectNT(data);
 		}
 	}

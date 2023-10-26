@@ -44,9 +44,9 @@ public class EntityModFX extends Entity
     {
         super(p_i1218_1_);
         this.particleAlpha = 1.0F;
-        this.setSize(0.2F, 0.2F);
+        setSize(0.2F, 0.2F);
         this.yOffset = this.height / 2.0F;
-        this.setPosition(p_i1218_2_, p_i1218_4_, p_i1218_6_);
+        setPosition(p_i1218_2_, p_i1218_4_, p_i1218_6_);
         this.lastTickPosX = p_i1218_2_;
         this.lastTickPosY = p_i1218_4_;
         this.lastTickPosZ = p_i1218_6_;
@@ -82,7 +82,7 @@ public class EntityModFX extends Entity
 
     public EntityModFX multipleParticleScaleBy(float p_70541_1_)
     {
-        this.setSize(0.2F * p_70541_1_, 0.2F * p_70541_1_);
+        setSize(0.2F * p_70541_1_, 0.2F * p_70541_1_);
         this.particleScale *= p_70541_1_;
         return this;
     }
@@ -146,7 +146,7 @@ public class EntityModFX extends Entity
         //}
 
         this.motionY -= 0.04D * this.particleGravity;
-        this.moveEntity(this.motionX, this.motionY, this.motionZ);
+        moveEntity(this.motionX, this.motionY, this.motionZ);
         this.motionX *= 0.9800000190734863D;
         this.motionY *= 0.9800000190734863D;
         this.motionZ *= 0.9800000190734863D;
@@ -174,9 +174,9 @@ public class EntityModFX extends Entity
             f9 = this.particleIcon.getMaxV();
         }
 
-        float f11 = (float)(this.prevPosX + (this.posX - this.prevPosX) * p_70539_2_ - interpPosX);
-        float f12 = (float)(this.prevPosY + (this.posY - this.prevPosY) * p_70539_2_ - interpPosY);
-        float f13 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * p_70539_2_ - interpPosZ);
+        float f11 = (float)(this.prevPosX + (this.posX - this.prevPosX) * p_70539_2_ - EntityModFX.interpPosX);
+        float f12 = (float)(this.prevPosY + (this.posY - this.prevPosY) * p_70539_2_ - EntityModFX.interpPosY);
+        float f13 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * p_70539_2_ - EntityModFX.interpPosZ);
         p_70539_1_.setColorRGBA_F(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha);
         p_70539_1_.addVertexWithUV(f11 - p_70539_3_ * f10 - p_70539_6_ * f10, f12 - p_70539_4_ * f10, f13 - p_70539_5_ * f10 - p_70539_7_ * f10, f7, f9);
         p_70539_1_.addVertexWithUV(f11 - p_70539_3_ * f10 + p_70539_6_ * f10, f12 + p_70539_4_ * f10, f13 - p_70539_5_ * f10 + p_70539_7_ * f10, f7, f8);
@@ -207,13 +207,13 @@ public class EntityModFX extends Entity
 
     public void setParticleIcon(IIcon p_110125_1_)
     {
-        if (this.getFXLayer() == 1)
+        if (getFXLayer() == 1)
         {
             this.particleIcon = p_110125_1_;
         }
         else
         {
-            if (this.getFXLayer() != 2)
+            if (getFXLayer() != 2)
             {
                 throw new RuntimeException("Invalid call to Particle.setTex, use coordinate methods");
             }
@@ -227,7 +227,7 @@ public class EntityModFX extends Entity
      */
     public void setParticleTextureIndex(int p_70536_1_)
     {
-        if (this.getFXLayer() != 0)
+        if (getFXLayer() != 0)
         {
             throw new RuntimeException("Invalid call to Particle.setMiscTex");
         }

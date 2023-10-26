@@ -35,7 +35,7 @@ public class TestCraftingHandler implements IRecipe {
 			}
 		}
 		
-		return inGrid != null && inGrid.getItem() == input.getItem() && inGrid.getItemDamage() == input.getItemDamage();
+		return inGrid != null && inGrid.getItem() == this.input.getItem() && inGrid.getItemDamage() == this.input.getItemDamage();
 	}
 
 	@Override
@@ -45,12 +45,12 @@ public class TestCraftingHandler implements IRecipe {
 
 	@Override
 	public ItemStack getCraftingResult(InventoryCrafting inventory) {
-		return output.copy();
+		return this.output.copy();
 	}
 
 	@Override
 	public ItemStack getRecipeOutput() {
-		return output;
+		return this.output;
 	}
 
 }

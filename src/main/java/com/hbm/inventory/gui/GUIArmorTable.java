@@ -27,8 +27,8 @@ public class GUIArmorTable extends GuiInfoContainer {
 		this.xSize = 176 + 22;
 		this.ySize = 222;
 
-		guiLeft = (this.width - this.xSize) / 2;
-		guiTop = (this.height - this.ySize) / 2;
+		this.guiLeft = (this.width - this.xSize) / 2;
+		this.guiTop = (this.height - this.ySize) / 2;
 	}
 	
 	@Override
@@ -52,14 +52,15 @@ public class GUIArmorTable extends GuiInfoContainer {
 			for(int i = 0; i < 9; ++i) {
 				Slot slot = (Slot) this.inventorySlots.inventorySlots.get(i);
 				
-				if(this.isMouseOverSlot(slot, x, y) && !slot.getHasStack()) {
+				if(isMouseOverSlot(slot, x, y) && !slot.getHasStack()) {
 					
-					this.drawCreativeTabHoveringText((i < 8 ? EnumChatFormatting.LIGHT_PURPLE : EnumChatFormatting.YELLOW) + I18nUtil.resolveKey(unloc[i]), x, y);
+					drawCreativeTabHoveringText((i < 8 ? EnumChatFormatting.LIGHT_PURPLE : EnumChatFormatting.YELLOW) + I18nUtil.resolveKey(unloc[i]), x, y);
 				}
 			}
 		}
 	}
 
+	@Override
 	protected void drawGuiContainerForegroundLayer(int mX, int mY) {
 
 		String name = I18n.format("container.armorTable");
@@ -67,26 +68,27 @@ public class GUIArmorTable extends GuiInfoContainer {
 		this.fontRendererObj.drawString(I18n.format("container.inventory"), 8 + 22, this.ySize - 96 + 2, 4210752);
 	}
 
+	@Override
 	protected void drawGuiContainerBackgroundLayer(float inter, int mX, int mY) {
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.getTextureManager().bindTexture(texture);
+		this.mc.getTextureManager().bindTexture(GUIArmorTable.texture);
 
-		this.drawTexturedModalRect(guiLeft + 22, guiTop, 0, 0, this.xSize - 22, this.ySize);
-		this.drawTexturedModalRect(guiLeft, guiTop + 31, 176, 96, 22, 100);
+		drawTexturedModalRect(this.guiLeft + 22, this.guiTop, 0, 0, this.xSize - 22, this.ySize);
+		drawTexturedModalRect(this.guiLeft, this.guiTop + 31, 176, 96, 22, 100);
 
 		ItemStack armor = this.inventorySlots.getSlot(8).getStack();
 
 		if(armor != null) {
 
 			if(armor.getItem() instanceof ItemArmor)
-				this.drawTexturedModalRect(guiLeft + 41 + 22, guiTop + 60, 176, 74, 22, 22);
+				drawTexturedModalRect(this.guiLeft + 41 + 22, this.guiTop + 60, 176, 74, 22, 22);
 			else
-				this.drawTexturedModalRect(guiLeft + 41 + 22, guiTop + 60, 176, 52, 22, 22);
+				drawTexturedModalRect(this.guiLeft + 41 + 22, this.guiTop + 60, 176, 52, 22, 22);
 		} else {
 			
 			if(System.currentTimeMillis() % 1000 < 500)
-				this.drawTexturedModalRect(guiLeft + 41 + 22, guiTop + 60, 176, 52, 22, 22);
+				drawTexturedModalRect(this.guiLeft + 41 + 22, this.guiTop + 60, 176, 52, 22, 22);
 		}
 		
 		for(int i = 0; i < 8; i++) {
@@ -104,9 +106,9 @@ public class GUIArmorTable extends GuiInfoContainer {
 			return;
 
 		if(ArmorModHandler.isApplicable(armor, mod)) {
-			this.drawTexturedModalRect(guiLeft + x, guiTop + y, 176, 34, 18, 18);
+			drawTexturedModalRect(this.guiLeft + x, this.guiTop + y, 176, 34, 18, 18);
 		} else {
-			this.drawTexturedModalRect(guiLeft + x, guiTop + y, 176, 16, 18, 18);
+			drawTexturedModalRect(this.guiLeft + x, this.guiTop + y, 176, 16, 18, 18);
 		}
 	}
 }

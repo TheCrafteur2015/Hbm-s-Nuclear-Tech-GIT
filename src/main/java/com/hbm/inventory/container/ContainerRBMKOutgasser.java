@@ -14,19 +14,19 @@ public class ContainerRBMKOutgasser extends Container {
 	private TileEntityRBMKOutgasser rbmk;
 
 	public ContainerRBMKOutgasser(InventoryPlayer invPlayer, TileEntityRBMKOutgasser tedf) {
-		rbmk = tedf;
+		this.rbmk = tedf;
 
-		this.addSlotToContainer(new Slot(tedf, 0, 48, 45));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 1, 112, 69));
+		addSlotToContainer(new Slot(tedf, 0, 48, 45));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 1, 112, 69));
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 20));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 20));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 20));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 20));
 		}
 	}
 
@@ -40,10 +40,10 @@ public class ContainerRBMKOutgasser extends Container {
 			var3 = var5.copy();
 
 			if(par2 == 0) {
-				if(!this.mergeItemStack(var5, rbmk.getSizeInventory(), this.inventorySlots.size(), true)) {
+				if(!mergeItemStack(var5, this.rbmk.getSizeInventory(), this.inventorySlots.size(), true)) {
 					return null;
 				}
-			} else if(!this.mergeItemStack(var5, 0, 1, false)) {
+			} else if(!mergeItemStack(var5, 0, 1, false)) {
 				return null;
 			}
 

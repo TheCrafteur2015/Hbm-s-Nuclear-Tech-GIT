@@ -14,21 +14,21 @@ public class ContainerFEL extends Container {
 
 	public ContainerFEL(InventoryPlayer invPlayer, TileEntityFEL tedf) {
 
-		fel = tedf;
+		this.fel = tedf;
 
 		//battery
-		this.addSlotToContainer(new Slot(tedf, 0, 182, 144));
+		addSlotToContainer(new Slot(tedf, 0, 182, 144));
 		//laser crystal
-		this.addSlotToContainer(new Slot(tedf, 1, 141, 23));
+		addSlotToContainer(new Slot(tedf, 1, 141, 23));
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 83 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 83 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 141));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 141));
 		}
 	}
 
@@ -42,11 +42,11 @@ public class ContainerFEL extends Container {
 			var3 = var5.copy();
 
 			if(par2 == 0) {
-				if(!this.mergeItemStack(var5, 1, this.inventorySlots.size(), false)) {
+				if(!mergeItemStack(var5, 1, this.inventorySlots.size(), false)) {
 					return null;
 				}
 			} else {
-				if(!this.mergeItemStack(var5, 0, 1, false))
+				if(!mergeItemStack(var5, 0, 1, false))
 					return null;
 			}
 
@@ -62,6 +62,6 @@ public class ContainerFEL extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return fel.isUseableByPlayer(player);
+		return this.fel.isUseableByPlayer(player);
 	}
 }

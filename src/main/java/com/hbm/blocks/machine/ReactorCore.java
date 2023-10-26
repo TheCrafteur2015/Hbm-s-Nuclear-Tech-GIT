@@ -3,6 +3,7 @@ package com.hbm.blocks.machine;
 import java.util.Random;
 
 import com.hbm.tileentity.machine.TileEntityMachineReactorLarge;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -29,7 +30,7 @@ public class ReactorCore extends BlockContainer {
 	@Override
 	public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_)
     {
-        if (!keepInventory)
+        if (!this.keepInventory)
         {
         	TileEntityMachineReactorLarge tileentityfurnace = (TileEntityMachineReactorLarge)p_149749_1_.getTileEntity(p_149749_2_, p_149749_3_, p_149749_4_);
 

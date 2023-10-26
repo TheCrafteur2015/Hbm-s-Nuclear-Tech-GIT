@@ -33,7 +33,7 @@ public class BlockDirt extends Block {
 
 	public BlockDirt(Material mat, boolean tick) {
 		super(mat);
-		this.setTickRandomly(tick);
+		setTickRandomly(tick);
 	}
 
 	@Override

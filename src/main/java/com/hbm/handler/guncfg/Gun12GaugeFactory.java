@@ -80,7 +80,7 @@ public class Gun12GaugeFactory {
 					)
 				);
 		
-		config.ejector = EJECTOR_SPAS;
+		config.ejector = Gun12GaugeFactory.EJECTOR_SPAS;
 		return config;
 	}
 	
@@ -125,7 +125,7 @@ public class Gun12GaugeFactory {
 					)
 				);
 		
-		config.ejector = EJECTOR_SPAS;
+		config.ejector = Gun12GaugeFactory.EJECTOR_SPAS;
 		
 		return config;
 	}
@@ -146,7 +146,7 @@ public class Gun12GaugeFactory {
 		
 		config.config = HbmCollection.g12hs;
 		
-		config.ejector = EJECTOR_SPAS_ALT;
+		config.ejector = Gun12GaugeFactory.EJECTOR_SPAS_ALT;
 
 		return config;
 	}
@@ -174,7 +174,7 @@ public class Gun12GaugeFactory {
 
 		config.config = HbmCollection.g12hs;
 		
-		config.ejector = EJECTOR_UBOINIK;
+		config.ejector = Gun12GaugeFactory.EJECTOR_UBOINIK;
 		
 		return config;
 	}
@@ -227,14 +227,14 @@ public class Gun12GaugeFactory {
 		
 		config.config = HbmCollection.g12hs;
 		
-		config.ejector = EJECTOR_SSG;
+		config.ejector = Gun12GaugeFactory.EJECTOR_SSG;
 		
 		return config;
 	}
 
 	public static GunConfiguration getBenelliConfig() {
 		
-		GunConfiguration config = getUboinikConfig();
+		GunConfiguration config = Gun12GaugeFactory.getUboinikConfig();
 
 		config.gunMode = 0;
 		config.firingMode = 1;
@@ -280,19 +280,19 @@ public class Gun12GaugeFactory {
 		config.comment.add("Eat your heart out SPAS-12");
 		config.config = HbmCollection.g12;
 
-		config.ejector = EJECTOR_BENELLI;
+		config.ejector = Gun12GaugeFactory.EJECTOR_BENELLI;
 
 		return config;
 	}
 
 	public static GunConfiguration getBenelliModConfig() {
 		
-		GunConfiguration config = getBenelliConfig();
+		GunConfiguration config = Gun12GaugeFactory.getBenelliConfig();
 
 		config.reloadType = 1;
 		config.ammoCap = 24;
 		config.reloadDuration = 20;
-		config.reloadSound = config.RSOUND_MAG;
+		config.reloadSound = GunConfiguration.RSOUND_MAG;
 		config.reloadSoundEnd = true;
 		config.name += "Drum";
 		return config;
@@ -306,14 +306,14 @@ public class Gun12GaugeFactory {
 		bullet.dmgMin = 5;
 		bullet.dmgMax = 7;
 		
-		bullet.spentCasing = CASING12GAUGE.clone().register("12GaStock").setColor(0x2847FF, SpentCasing.COLOR_CASE_12GA);
+		bullet.spentCasing = Gun12GaugeFactory.CASING12GAUGE.clone().register("12GaStock").setColor(0x2847FF, SpentCasing.COLOR_CASE_12GA);
 		
 		return bullet;
 	}
 	
 	public static BulletConfiguration get12GaugeFireConfig() {
 		
-		BulletConfiguration bullet = get12GaugeConfig();
+		BulletConfiguration bullet = Gun12GaugeFactory.get12GaugeConfig();
 
 		bullet.ammo = new ComparableStack(ModItems.ammo_12gauge.stackFromEnum(Ammo12Gauge.INCENDIARY));
 		bullet.wear = 15;
@@ -321,14 +321,14 @@ public class Gun12GaugeFactory {
 		bullet.dmgMax = 7;
 		bullet.incendiary = 5;
 		
-		bullet.spentCasing = CASING12GAUGE.clone().register("12GaInc").setColor(0xFF6329, SpentCasing.COLOR_CASE_12GA).setupSmoke(1F, 0.5D, 60, 40);
+		bullet.spentCasing = Gun12GaugeFactory.CASING12GAUGE.clone().register("12GaInc").setColor(0xFF6329, SpentCasing.COLOR_CASE_12GA).setupSmoke(1F, 0.5D, 60, 40);
 		
 		return bullet;
 	}
 	
 	public static BulletConfiguration get12GaugeShrapnelConfig() {
 		
-		BulletConfiguration bullet = get12GaugeConfig();
+		BulletConfiguration bullet = Gun12GaugeFactory.get12GaugeConfig();
 
 		bullet.ammo = new ComparableStack(ModItems.ammo_12gauge.stackFromEnum(Ammo12Gauge.SHRAPNEL));
 		bullet.wear = 15;
@@ -338,7 +338,7 @@ public class Gun12GaugeFactory {
 		bullet.HBRC = 80;
 		bullet.LBRC = 95;
 		
-		bullet.spentCasing = CASING12GAUGE.clone().register("12GaShrap").setColor(0xF0E800, SpentCasing.COLOR_CASE_12GA);
+		bullet.spentCasing = Gun12GaugeFactory.CASING12GAUGE.clone().register("12GaShrap").setColor(0xF0E800, SpentCasing.COLOR_CASE_12GA);
 		
 		return bullet;
 	}
@@ -354,7 +354,7 @@ public class Gun12GaugeFactory {
 		bullet.doesPenetrate = true;
 		bullet.leadChance = 50;
 		
-		bullet.spentCasing = CASING12GAUGE.clone().register("12GaDU").setColor(0x62A362, SpentCasing.COLOR_CASE_12GA);
+		bullet.spentCasing = Gun12GaugeFactory.CASING12GAUGE.clone().register("12GaDU").setColor(0x62A362, SpentCasing.COLOR_CASE_12GA);
 		
 		return bullet;
 	}
@@ -376,7 +376,7 @@ public class Gun12GaugeFactory {
 			
 		};
 		
-		bullet.spentCasing = CASING12GAUGE.clone().register("12GaAM").setColor(0x416645, SpentCasing.COLOR_CASE_12GA);
+		bullet.spentCasing = Gun12GaugeFactory.CASING12GAUGE.clone().register("12GaAM").setColor(0x416645, SpentCasing.COLOR_CASE_12GA);
 		
 		return bullet;
 	}
@@ -387,7 +387,7 @@ public class Gun12GaugeFactory {
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_12gauge.stackFromEnum(Ammo12Gauge.SLEEK));
 		
-		bullet.spentCasing = CASING12GAUGE.clone().register("12GaIF").setColor(0x2A2A2A, SpentCasing.COLOR_CASE_12GA);
+		bullet.spentCasing = Gun12GaugeFactory.CASING12GAUGE.clone().register("12GaIF").setColor(0x2A2A2A, SpentCasing.COLOR_CASE_12GA);
 		
 		return bullet;
 	}
@@ -404,7 +404,7 @@ public class Gun12GaugeFactory {
 		bullet.dmgMax = 30F;
 		bullet.maxAge = 0;
 		
-		bullet.spentCasing = CASING12GAUGE.clone().register("12GaPerc").setColor(0x9E1616, SpentCasing.COLOR_CASE_12GA).setupSmoke(1F, 0.5D, 60, 40);
+		bullet.spentCasing = Gun12GaugeFactory.CASING12GAUGE.clone().register("12GaPerc").setColor(0x9E1616, SpentCasing.COLOR_CASE_12GA).setupSmoke(1F, 0.5D, 60, 40);
 
 		bullet.bntUpdate = (bulletnt) -> {
 			

@@ -92,12 +92,12 @@ public class ItemRenderWeaponFFColt implements IItemRenderer {
 		default: break;
 		}
 		
-		Minecraft.getMinecraft().renderEngine.bindTexture(main);
+		Minecraft.getMinecraft().renderEngine.bindTexture(this.main);
 		ResourceManager.ff_python.renderPart("Body");
 		ResourceManager.ff_python.renderPart("Cylinder");
-		Minecraft.getMinecraft().renderEngine.bindTexture(grip);
+		Minecraft.getMinecraft().renderEngine.bindTexture(this.grip);
 		ResourceManager.ff_python.renderPart("Grip");
-		Minecraft.getMinecraft().renderEngine.bindTexture(hammer);
+		Minecraft.getMinecraft().renderEngine.bindTexture(this.hammer);
 		ResourceManager.ff_python.renderPart("Hammer");
 		
 		GL11.glPopMatrix();

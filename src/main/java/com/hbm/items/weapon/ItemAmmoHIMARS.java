@@ -52,26 +52,28 @@ public class ItemAmmoHIMARS extends Item {
 	public static final int SMALL_LAVA = 7;
 	
 	public ItemAmmoHIMARS() {
-		this.setHasSubtypes(true);
-		this.setCreativeTab(MainRegistry.weaponTab);
-		this.setTextureName(RefStrings.MODID + ":ammo_rocket");
-		this.setMaxStackSize(1);
+		setHasSubtypes(true);
+		setCreativeTab(MainRegistry.weaponTab);
+		setTextureName(RefStrings.MODID + ":ammo_rocket");
+		setMaxStackSize(1);
 		init();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tab, List list) {
-		list.add(new ItemStack(item, 1, SMALL));
-		list.add(new ItemStack(item, 1, SMALL_HE));
-		list.add(new ItemStack(item, 1, SMALL_WP));
-		list.add(new ItemStack(item, 1, SMALL_TB));
-		list.add(new ItemStack(item, 1, SMALL_LAVA));
-		list.add(new ItemStack(item, 1, SMALL_MINI_NUKE));
-		list.add(new ItemStack(item, 1, LARGE));
-		list.add(new ItemStack(item, 1, LARGE_TB));
+		list.add(new ItemStack(item, 1, ItemAmmoHIMARS.SMALL));
+		list.add(new ItemStack(item, 1, ItemAmmoHIMARS.SMALL_HE));
+		list.add(new ItemStack(item, 1, ItemAmmoHIMARS.SMALL_WP));
+		list.add(new ItemStack(item, 1, ItemAmmoHIMARS.SMALL_TB));
+		list.add(new ItemStack(item, 1, ItemAmmoHIMARS.SMALL_LAVA));
+		list.add(new ItemStack(item, 1, ItemAmmoHIMARS.SMALL_MINI_NUKE));
+		list.add(new ItemStack(item, 1, ItemAmmoHIMARS.LARGE));
+		list.add(new ItemStack(item, 1, ItemAmmoHIMARS.LARGE_TB));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 
@@ -126,7 +128,7 @@ public class ItemAmmoHIMARS extends Item {
 	
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
-		return "item.ammo_himars_" + itemTypes[Math.abs(stack.getItemDamage()) % itemTypes.length].name;
+		return "item.ammo_himars_" + ItemAmmoHIMARS.itemTypes[Math.abs(stack.getItemDamage()) % ItemAmmoHIMARS.itemTypes.length].name;
 	}
 	
 	public abstract class HIMARSRocket {
@@ -171,12 +173,17 @@ public class ItemAmmoHIMARS extends Item {
 	
 	private void init() {
 		/* STANDARD ROCKETS */
-		this.itemTypes[SMALL] = new HIMARSRocket("standard", "himars_standard",					0) { public void onImpact(EntityArtilleryRocket rocket, MovingObjectPosition mop) { standardExplosion(rocket, mop, 20F, 3F, false, ModBlocks.block_slag, 1); }};
-		this.itemTypes[SMALL_HE] = new HIMARSRocket("standard_he", "himars_standard_he",		0) { public void onImpact(EntityArtilleryRocket rocket, MovingObjectPosition mop) { standardExplosion(rocket, mop, 20F, 3F, true, ModBlocks.block_slag, 1); }};
-		this.itemTypes[SMALL_LAVA] = new HIMARSRocket("standard_lava", "himars_standard_lava",	0) { public void onImpact(EntityArtilleryRocket rocket, MovingObjectPosition mop) { standardExplosion(rocket, mop, 20F, 3F, true, ModBlocks.volcanic_lava_block, 0); }};
-		this.itemTypes[LARGE] = new HIMARSRocket("single", "himars_single",						1) { public void onImpact(EntityArtilleryRocket rocket, MovingObjectPosition mop) { standardExplosion(rocket, mop, 50F, 5F, true, ModBlocks.block_slag, 1); }};
+		ItemAmmoHIMARS.itemTypes[ItemAmmoHIMARS.SMALL] = new HIMARSRocket("standard", "himars_standard",					0) { @Override
+		public void onImpact(EntityArtilleryRocket rocket, MovingObjectPosition mop) { ItemAmmoHIMARS.standardExplosion(rocket, mop, 20F, 3F, false, ModBlocks.block_slag, 1); }};
+		ItemAmmoHIMARS.itemTypes[ItemAmmoHIMARS.SMALL_HE] = new HIMARSRocket("standard_he", "himars_standard_he",		0) { @Override
+		public void onImpact(EntityArtilleryRocket rocket, MovingObjectPosition mop) { ItemAmmoHIMARS.standardExplosion(rocket, mop, 20F, 3F, true, ModBlocks.block_slag, 1); }};
+		ItemAmmoHIMARS.itemTypes[ItemAmmoHIMARS.SMALL_LAVA] = new HIMARSRocket("standard_lava", "himars_standard_lava",	0) { @Override
+		public void onImpact(EntityArtilleryRocket rocket, MovingObjectPosition mop) { ItemAmmoHIMARS.standardExplosion(rocket, mop, 20F, 3F, true, ModBlocks.volcanic_lava_block, 0); }};
+		ItemAmmoHIMARS.itemTypes[ItemAmmoHIMARS.LARGE] = new HIMARSRocket("single", "himars_single",						1) { @Override
+		public void onImpact(EntityArtilleryRocket rocket, MovingObjectPosition mop) { ItemAmmoHIMARS.standardExplosion(rocket, mop, 50F, 5F, true, ModBlocks.block_slag, 1); }};
 
-		this.itemTypes[SMALL_MINI_NUKE] = new HIMARSRocket("standard_mini_nuke", "himars_standard_mini_nuke", 0) {
+		ItemAmmoHIMARS.itemTypes[ItemAmmoHIMARS.SMALL_MINI_NUKE] = new HIMARSRocket("standard_mini_nuke", "himars_standard_mini_nuke", 0) {
+			@Override
 			public void onImpact(EntityArtilleryRocket rocket, MovingObjectPosition mop) {
 				rocket.killAndClear();
 				Vec3 vec = Vec3.createVectorHelper(rocket.motionX, rocket.motionY, rocket.motionZ).normalize();
@@ -184,9 +191,11 @@ public class ItemAmmoHIMARS extends Item {
 			}
 		};
 		
-		this.itemTypes[SMALL_WP] = new HIMARSRocket("standard_wp", "himars_standard_wp", 0) {
+		ItemAmmoHIMARS.itemTypes[ItemAmmoHIMARS.SMALL_WP] = new HIMARSRocket("standard_wp", "himars_standard_wp", 0) {
+			@SuppressWarnings("unchecked")
+			@Override
 			public void onImpact(EntityArtilleryRocket rocket, MovingObjectPosition mop) {
-				standardExplosion(rocket, mop, 20F, 3F, false, ModBlocks.block_slag, 1);
+				ItemAmmoHIMARS.standardExplosion(rocket, mop, 20F, 3F, false, ModBlocks.block_slag, 1);
 				ExplosionLarge.spawnShrapnels(rocket.worldObj, (int) mop.hitVec.xCoord, (int) mop.hitVec.yCoord, (int) mop.hitVec.zCoord, 30);
 				ExplosionChaos.burn(rocket.worldObj, (int) mop.hitVec.xCoord, (int) mop.hitVec.yCoord, (int) mop.hitVec.zCoord, 20);
 				int radius = 30;
@@ -204,21 +213,23 @@ public class ItemAmmoHIMARS extends Item {
 					haze.setString("type", "haze");
 					PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(haze, mop.hitVec.xCoord + rocket.worldObj.rand.nextGaussian() * 15, mop.hitVec.yCoord, mop.hitVec.zCoord + rocket.worldObj.rand.nextGaussian() * 15), new TargetPoint(rocket.dimension, rocket.posX, rocket.posY, rocket.posZ, 150));
 				}
-				standardMush(rocket, mop, 15);
+				ItemAmmoHIMARS.standardMush(rocket, mop, 15);
 			}};
 			
-		this.itemTypes[SMALL_TB] = new HIMARSRocket("standard_tb", "himars_standard_tb", 0) {
+		ItemAmmoHIMARS.itemTypes[ItemAmmoHIMARS.SMALL_TB] = new HIMARSRocket("standard_tb", "himars_standard_tb", 0) {
+			@Override
 			public void onImpact(EntityArtilleryRocket rocket, MovingObjectPosition mop) {
-				standardExplosion(rocket, mop, 20F, 10F, true, ModBlocks.block_slag, 1);
+				ItemAmmoHIMARS.standardExplosion(rocket, mop, 20F, 10F, true, ModBlocks.block_slag, 1);
 				ExplosionLarge.spawnShrapnels(rocket.worldObj, (int) mop.hitVec.xCoord, (int) mop.hitVec.yCoord, (int) mop.hitVec.zCoord, 30);
-				standardMush(rocket, mop, 20);
+				ItemAmmoHIMARS.standardMush(rocket, mop, 20);
 			}};
 			
-		this.itemTypes[LARGE_TB] = new HIMARSRocket("single_tb", "himars_single_tb", 1) {
+		ItemAmmoHIMARS.itemTypes[ItemAmmoHIMARS.LARGE_TB] = new HIMARSRocket("single_tb", "himars_single_tb", 1) {
+			@Override
 			public void onImpact(EntityArtilleryRocket rocket, MovingObjectPosition mop) {
-				standardExplosion(rocket, mop, 50F, 12F, true, ModBlocks.slag, 1);
+				ItemAmmoHIMARS.standardExplosion(rocket, mop, 50F, 12F, true, ModBlocks.slag, 1);
 				ExplosionLarge.spawnShrapnels(rocket.worldObj, (int) mop.hitVec.xCoord, (int) mop.hitVec.yCoord, (int) mop.hitVec.zCoord, 30);
-				standardMush(rocket, mop, 35);
+				ItemAmmoHIMARS.standardMush(rocket, mop, 35);
 			}};
 		}
 }

@@ -45,7 +45,7 @@ public class ItemModBucket extends ItemBucket {
 						world.func_147480_a(x, y, z, true);
 					}
 
-					world.setBlock(x, y, z, this.containedFluid, overrideFluidMeta, 3);
+					world.setBlock(x, y, z, this.containedFluid, this.overrideFluidMeta, 3);
 				}
 
 				return true;

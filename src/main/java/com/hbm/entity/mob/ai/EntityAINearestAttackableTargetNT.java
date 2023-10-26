@@ -12,14 +12,14 @@ import net.minecraft.entity.ai.EntityAITarget;
 
 public class EntityAINearestAttackableTargetNT extends EntityAITarget {
 
-	private final Class targetClass;
+	private final Class<?> targetClass;
 	private final int targetChance;
 	private final Sorter theNearestAttackableTargetSorter;
 	private final IEntitySelector targetEntitySelector;
 	private EntityLivingBase targetEntity;
 	private final double searchRange;
 
-	public EntityAINearestAttackableTargetNT(EntityCreature owner, Class targetClass, int targetChance, boolean shouldCheckSight, boolean nearbyOnly, final IEntitySelector selector, double range) {
+	public EntityAINearestAttackableTargetNT(EntityCreature owner, Class<?> targetClass, int targetChance, boolean shouldCheckSight, boolean nearbyOnly, final IEntitySelector selector, double range) {
 		super(owner, shouldCheckSight, nearbyOnly);
 		this.targetClass = targetClass;
 		this.targetChance = targetChance;
@@ -41,6 +41,7 @@ public class EntityAINearestAttackableTargetNT extends EntityAITarget {
 		return this.searchRange;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean shouldExecute() {
 
@@ -48,7 +49,7 @@ public class EntityAINearestAttackableTargetNT extends EntityAITarget {
 			return false;
 		}
 		double range = getTargetDistance();
-		List targets = this.taskOwner.worldObj.selectEntitiesWithinAABB(this.targetClass, this.taskOwner.boundingBox.expand(range, range, range), this.targetEntitySelector);
+		List<Entity> targets = this.taskOwner.worldObj.selectEntitiesWithinAABB(this.targetClass, this.taskOwner.boundingBox.expand(range, range, range), this.targetEntitySelector);
 		Collections.sort(targets, this.theNearestAttackableTargetSorter);
 		
 		if(targets.isEmpty()) {
@@ -60,6 +61,6 @@ public class EntityAINearestAttackableTargetNT extends EntityAITarget {
 
 	@Override
 	public void resetTask() {
-		this.taskOwner.setAttackTarget(targetEntity);
+		this.taskOwner.setAttackTarget(this.targetEntity);
 	}
 }

@@ -66,20 +66,20 @@ public class PinkCloudBroadcaster extends BlockContainer {
 		int te = p_149719_1_.getBlockMetadata(p_149719_2_, p_149719_3_, p_149719_4_);
         float f = 0.0625F;
         
-        this.setBlockBounds(0.0F, 0.0F, 2*f, 1.0F, 1.0F, 14*f);
+        setBlockBounds(0.0F, 0.0F, 2*f, 1.0F, 1.0F, 14*f);
         switch(te)
 		{
 		case 4:
-	        this.setBlockBounds(4*f, 0.0F, 1*f, 12*f, 10*f, 15*f);
+	        setBlockBounds(4*f, 0.0F, 1*f, 12*f, 10*f, 15*f);
             break;
 		case 2:
-	        this.setBlockBounds(1*f, 0.0F, 4*f, 15*f, 10*f, 12*f);
+	        setBlockBounds(1*f, 0.0F, 4*f, 15*f, 10*f, 12*f);
             break;
 		case 5:
-	        this.setBlockBounds(4*f, 0.0F, 1*f, 12*f, 10*f, 15*f);
+	        setBlockBounds(4*f, 0.0F, 1*f, 12*f, 10*f, 15*f);
             break;
 		case 3:
-	        this.setBlockBounds(1*f, 0.0F, 4*f, 15*f, 10*f, 12*f);
+	        setBlockBounds(1*f, 0.0F, 4*f, 15*f, 10*f, 12*f);
             break;
 		}
     }
@@ -90,20 +90,20 @@ public class PinkCloudBroadcaster extends BlockContainer {
 		int te = world.getBlockMetadata(x, y, z);
         float f = 0.0625F;
         
-        this.setBlockBounds(0.0F, 0.0F, 2*f, 1.0F, 1.0F, 14*f);
+        setBlockBounds(0.0F, 0.0F, 2*f, 1.0F, 1.0F, 14*f);
         switch(te)
 		{
 		case 4:
-	        this.setBlockBounds(4*f, 0.0F, 1*f, 12*f, 10*f, 15*f);
+	        setBlockBounds(4*f, 0.0F, 1*f, 12*f, 10*f, 15*f);
             break;
 		case 2:
-	        this.setBlockBounds(1*f, 0.0F, 4*f, 15*f, 10*f, 12*f);
+	        setBlockBounds(1*f, 0.0F, 4*f, 15*f, 10*f, 12*f);
             break;
 		case 5:
-	        this.setBlockBounds(4*f, 0.0F, 1*f, 12*f, 10*f, 15*f);
+	        setBlockBounds(4*f, 0.0F, 1*f, 12*f, 10*f, 15*f);
             break;
 		case 3:
-	        this.setBlockBounds(1*f, 0.0F, 4*f, 15*f, 10*f, 12*f);
+	        setBlockBounds(1*f, 0.0F, 4*f, 15*f, 10*f, 12*f);
             break;
 		}
         

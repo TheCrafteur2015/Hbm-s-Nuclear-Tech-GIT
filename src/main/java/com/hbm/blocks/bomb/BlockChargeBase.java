@@ -95,12 +95,12 @@ public abstract class BlockChargeBase extends BlockContainerBase implements IBom
 		float f = 0.0625F;
 		
 		switch(world.getBlockMetadata(x, y, z)) {
-		case 0: this.setBlockBounds(0.0F, 10 * f, 0.0F, 1.0F, 1.0F, 1.0F); break;
-		case 1: this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 6 * f, 1.0F); break;
-		case 2: this.setBlockBounds(0.0F, 0.0F, 10 * f, 1.0F, 1.0F, 1.0F); break;
-		case 3: this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 6 * f); break;
-		case 4: this.setBlockBounds(10 * f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F); break;
-		case 5: this.setBlockBounds(0.0F, 0.0F, 0.0F, 6 * f, 1.0F, 1.0F); break;
+		case 0: setBlockBounds(0.0F, 10 * f, 0.0F, 1.0F, 1.0F, 1.0F); break;
+		case 1: setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 6 * f, 1.0F); break;
+		case 2: setBlockBounds(0.0F, 0.0F, 10 * f, 1.0F, 1.0F, 1.0F); break;
+		case 3: setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 6 * f); break;
+		case 4: setBlockBounds(10 * f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F); break;
+		case 5: setBlockBounds(0.0F, 0.0F, 0.0F, 6 * f, 1.0F, 1.0F); break;
 		}
 	}
 	
@@ -117,9 +117,9 @@ public abstract class BlockChargeBase extends BlockContainerBase implements IBom
 			world.playSoundEffect(x, y, z, "hbm:weapon.fstbmbStart", 1.0F, 1.0F);
 			charge.markDirty();
 		} else {
-			safe = true;
-			this.dismantle(world, x, y, z);
-			safe = false;
+			BlockChargeBase.safe = true;
+			dismantle(world, x, y, z);
+			BlockChargeBase.safe = false;
 		}
 		
 		return true;
@@ -129,17 +129,17 @@ public abstract class BlockChargeBase extends BlockContainerBase implements IBom
 	public void breakBlock(World world, int x, int y, int z, Block block, int i) {
 		super.breakBlock(world, x, y, z, block, i);
 		
-		if(!safe)
+		if(!BlockChargeBase.safe)
 			explode(world, x, y, z);
 	}
 	
 	@Override
 	public void onBlockDestroyedByExplosion(World world, int x, int y, int z, Explosion p_149723_5_) {
-		this.explode(world, x, y, z);
+		explode(world, x, y, z);
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean ext) {
 		list.add(EnumChatFormatting.YELLOW + "Right-click to change timer.");
 		list.add(EnumChatFormatting.YELLOW + "Sneak-click to arm.");
 		list.add(EnumChatFormatting.RED + "Can only be disarmed and removed with defuser.");

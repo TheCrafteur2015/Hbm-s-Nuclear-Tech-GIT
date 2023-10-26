@@ -7,6 +7,7 @@ import com.google.common.collect.Multimap;
 import com.hbm.entity.projectile.EntityFire;
 import com.hbm.entity.projectile.EntityPlasmaBeam;
 import com.hbm.items.ModItems;
+
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -40,7 +41,7 @@ public class GunImmolator extends Item {
 	public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {
 		new ArrowNockEvent(p_77659_3_, p_77659_1_);
 		{
-			p_77659_3_.setItemInUse(p_77659_1_, this.getMaxItemUseDuration(p_77659_1_));
+			p_77659_3_.setItemInUse(p_77659_1_, getMaxItemUseDuration(p_77659_1_));
 		}
 
 		return p_77659_1_;
@@ -55,7 +56,7 @@ public class GunImmolator extends Item {
 					|| EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, stack) > 0;
 			if ((player.capabilities.isCreativeMode || player.inventory.hasItem(ModItems.gun_immolator_ammo))) {
 				EntityFire entityarrow = new EntityFire(world, player, 3.0F);
-				entityarrow.setDamage(6 + rand.nextInt(5));
+				entityarrow.setDamage(6 + this.rand.nextInt(5));
 
 				if (flag) {
 					entityarrow.canBePickedUp = 2;
@@ -64,7 +65,7 @@ public class GunImmolator extends Item {
 						player.inventory.consumeInventoryItem(ModItems.gun_immolator_ammo);
 				}
 
-				if(count == this.getMaxItemUseDuration(stack))
+				if(count == getMaxItemUseDuration(stack))
 					world.playSoundAtEntity(player, "hbm:weapon.flamethrowerIgnite", 1.0F, 1F);
 				if(count % 5 == 0)
 					world.playSoundAtEntity(player, "hbm:weapon.flamethrowerShoot", 1.0F, 1F);
@@ -87,7 +88,7 @@ public class GunImmolator extends Item {
 						player.inventory.consumeInventoryItem(ModItems.gun_immolator_ammo);
 				}
 
-				if(count == this.getMaxItemUseDuration(stack))
+				if(count == getMaxItemUseDuration(stack))
 					world.playSoundAtEntity(player, "hbm:weapon.immolatorIgnite", 1.0F, 1F);
 				if(count % 10 == 0)
 					world.playSoundAtEntity(player, "hbm:weapon.immolatorShoot", 1.0F, 1F);
@@ -103,6 +104,7 @@ public class GunImmolator extends Item {
 		return 0;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
@@ -116,11 +118,12 @@ public class GunImmolator extends Item {
 		list.add("Secondary Damage: 25 - 45");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Multimap getItemAttributeModifiers() {
 		Multimap multimap = super.getItemAttributeModifiers();
 		multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
-				new AttributeModifier(field_111210_e, "Weapon modifier", 4, 0));
+				new AttributeModifier(Item.field_111210_e, "Weapon modifier", 4, 0));
 		return multimap;
 	}
 }

@@ -24,8 +24,8 @@ public class ItemModPads extends ItemArmorMod {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
-		if(damageMod != 1F)
-			list.add(EnumChatFormatting.RED + "-" + Math.round((1F - damageMod) * 100) + "% fall damage");
+		if(this.damageMod != 1F)
+			list.add(EnumChatFormatting.RED + "-" + Math.round((1F - this.damageMod) * 100) + "% fall damage");
 		
 		if(this == ModItems.pads_static)
 			list.add(EnumChatFormatting.DARK_PURPLE + "Passively charges electric armor when walking");
@@ -38,16 +38,16 @@ public class ItemModPads extends ItemArmorMod {
 	public void addDesc(List list, ItemStack stack, ItemStack armor) {
 		
 		if(this == ModItems.pads_static)
-			list.add(EnumChatFormatting.DARK_PURPLE + "  " + stack.getDisplayName() + " (-" + Math.round((1F - damageMod) * 100) + "% fall dmg / passive charge)");
+			list.add(EnumChatFormatting.DARK_PURPLE + "  " + stack.getDisplayName() + " (-" + Math.round((1F - this.damageMod) * 100) + "% fall dmg / passive charge)");
 		else
-			list.add(EnumChatFormatting.DARK_PURPLE + "  " + stack.getDisplayName() + " (-" + Math.round((1F - damageMod) * 100) + "% fall dmg)");
+			list.add(EnumChatFormatting.DARK_PURPLE + "  " + stack.getDisplayName() + " (-" + Math.round((1F - this.damageMod) * 100) + "% fall dmg)");
 	}
 
 	@Override
 	public void modDamage(LivingHurtEvent event, ItemStack armor) {
 		
 		if(event.source == DamageSource.fall)
-			event.ammount *= damageMod;
+			event.ammount *= this.damageMod;
 	}
 	
 	@Override

@@ -103,7 +103,7 @@ public class FluidDuctBase extends BlockContainer implements IBlockFluidDuct, IA
 				if(net instanceof PipeNet) {
 					PipeNet pipeNet = (PipeNet) net;
 					
-					List<String> debug = new ArrayList();
+					List<String> debug = new ArrayList<>();
 					debug.add("=== DEBUG START ===");
 					debug.addAll(pipeNet.debug);
 					debug.add("=== DEBUG END ===");

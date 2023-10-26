@@ -24,19 +24,20 @@ public class BlockRotatablePillar extends BlockRotatedPillar implements ITooltip
 
 	public BlockRotatablePillar(Material mat, String top) {
 		super(mat);
-		textureTop = top;
+		this.textureTop = top;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister reg) {
 
-		this.field_150164_N = reg.registerIcon(textureTop);
-		this.iconSide = reg.registerIcon(this.getTextureName());
+		this.field_150164_N = reg.registerIcon(this.textureTop);
+		this.iconSide = reg.registerIcon(getTextureName());
 	}
 
 	@Override
 	protected IIcon getSideIcon(int p_150163_1_) {
-		return iconSide;
+		return this.iconSide;
 	}
 
 	@Override

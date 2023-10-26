@@ -3,6 +3,7 @@ package com.hbm.entity.mob;
 import java.util.List;
 
 import com.hbm.entity.mob.ai.EntityAINearestAttackableTargetNT;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
@@ -48,9 +49,9 @@ public abstract class EntityBurrowingSwingingBase extends EntityBurrowingBase {
 		
 		super.onUpdate();
 
-		double dx = motionX;
-		double dy = motionY;
-		double dz = motionZ;
+		double dx = this.motionX;
+		double dy = this.motionY;
+		double dz = this.motionZ;
 		float f3 = MathHelper.sqrt_double(dx * dx + dz * dz);
 		this.rotationYaw = (float) (Math.atan2(dx, dz) * 180.0D / Math.PI);
 		this.rotationPitch = (float) (Math.atan2(dy, f3) * 180.0D / Math.PI);
@@ -58,7 +59,7 @@ public abstract class EntityBurrowingSwingingBase extends EntityBurrowingBase {
 		boolean inGround = isEntityInsideOpaqueBlock();
 		
 		if(this.lastInGround != inGround) {
-			worldObj.playSoundAtEntity(this, "hbm:block.debris", 1.0F, 1.0F);
+			this.worldObj.playSoundAtEntity(this, "hbm:block.debris", 1.0F, 1.0F);
 			
 			double mod = 0.25D;
 			
@@ -67,7 +68,7 @@ public abstract class EntityBurrowingSwingingBase extends EntityBurrowingBase {
 			
 			for(int i = 0; i < 10; i++) {
 				double dev = 0.05D;
-				worldObj.spawnParticle("cloud", posX, posY, posZ, motionX * mod + rand.nextGaussian() * dev, motionY * mod + rand.nextGaussian() * dev, motionZ * mod + rand.nextGaussian() * dev);
+				this.worldObj.spawnParticle("cloud", this.posX, this.posY, this.posZ, this.motionX * mod + this.rand.nextGaussian() * dev, this.motionY * mod + this.rand.nextGaussian() * dev, this.motionZ * mod + this.rand.nextGaussian() * dev);
 			}
 		}
 		
@@ -77,7 +78,7 @@ public abstract class EntityBurrowingSwingingBase extends EntityBurrowingBase {
 	@Override
 	protected void updateAITasks() {
 
-		this.updateEntityActionState();
+		updateEntityActionState();
 		super.updateAITasks();
 
 		updateSwingingMovement();
@@ -141,11 +142,11 @@ public abstract class EntityBurrowingSwingingBase extends EntityBurrowingBase {
 		
 		if(this.courseChangeCooldown-- <= 0) {
 			
-			this.courseChangeCooldown += this.getRNG().nextInt(5) + 5;
+			this.courseChangeCooldown += getRNG().nextInt(5) + 5;
 			
-			double speed = this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getBaseValue();
+			double speed = getEntityAttribute(SharedMonsterAttributes.movementSpeed).getBaseValue();
 			
-			if(!this.canSupportMovement()) {
+			if(!canSupportMovement()) {
 				speed /= 4D;
 			}
 			
@@ -154,23 +155,23 @@ public abstract class EntityBurrowingSwingingBase extends EntityBurrowingBase {
 			this.motionZ += deltaZ / delta * speed;
 		}
 		
-		if(!this.canSupportMovement() && !this.wasNearGround) {
-			this.motionY -= this.getGravity();
+		if(!canSupportMovement() && !this.wasNearGround) {
+			this.motionY -= getGravity();
 		}
 		
 		this.aggroCooldown--;
 		
-		if(this.getAttackTarget() != null) {
+		if(getAttackTarget() != null) {
 			
 			if(this.aggroCooldown <= 0) {
-				this.targetedEntity = this.getAttackTarget();
+				this.targetedEntity = getAttackTarget();
 				this.aggroCooldown = getAggroCooldown();
 			}
 			
 		} else if(this.targetedEntity == null) {
-			this.waypointX = this.spawnPoint.posX - 50 + this.getRNG().nextInt(100);
-			this.waypointY = this.spawnPoint.posY - 30 + this.getRNG().nextInt(60);
-			this.waypointZ = this.spawnPoint.posZ - 50 + this.getRNG().nextInt(100);
+			this.waypointX = this.spawnPoint.posX - 50 + getRNG().nextInt(100);
+			this.waypointY = this.spawnPoint.posY - 30 + getRNG().nextInt(60);
+			this.waypointZ = this.spawnPoint.posZ - 50 + getRNG().nextInt(100);
 		}
 		
 		this.rotationYaw = -(float) -(Math.atan2(this.motionX, this.motionZ) * 180.0F / Math.PI);
@@ -179,15 +180,15 @@ public abstract class EntityBurrowingSwingingBase extends EntityBurrowingBase {
 		double range = 100;
 		if(this.targetedEntity != null && this.targetedEntity.getDistanceSqToEntity(this) < range * range) {
 			
-			if(this.canSupportMovement() || this.wasNearGround) {
+			if(canSupportMovement() || this.wasNearGround) {
 				
 				this.waypointX = this.targetedEntity.posX;
 				this.waypointY = this.targetedEntity.posY + this.targetedEntity.height * 0.5;
 				this.waypointZ = this.targetedEntity.posZ;
 				
-				int surface = worldObj.getHeightValue(MathHelper.floor_double(this.waypointX), MathHelper.floor_double(this.waypointZ));
+				int surface = this.worldObj.getHeightValue(MathHelper.floor_double(this.waypointX), MathHelper.floor_double(this.waypointZ));
 				
-				if(this.getRNG().nextInt(80) == 0 && this.posY > surface && !this.canSupportMovement()) {
+				if(getRNG().nextInt(80) == 0 && this.posY > surface && !canSupportMovement()) {
 					this.wasNearGround = false;
 				}
 				
@@ -202,9 +203,9 @@ public abstract class EntityBurrowingSwingingBase extends EntityBurrowingBase {
 				}
 			}
 		} else {
-			this.waypointX = this.spawnPoint.posX - 20 + this.getRNG().nextInt(40);
-			this.waypointY = this.spawnPoint.posY - 5 + this.getRNG().nextInt(100);
-			this.waypointZ = this.spawnPoint.posZ - 20 + this.getRNG().nextInt(40);
+			this.waypointX = this.spawnPoint.posX - 20 + getRNG().nextInt(40);
+			this.waypointY = this.spawnPoint.posY - 5 + getRNG().nextInt(100);
+			this.waypointZ = this.spawnPoint.posZ - 20 + getRNG().nextInt(40);
 		}
 	}
 
@@ -233,6 +234,7 @@ public abstract class EntityBurrowingSwingingBase extends EntityBurrowingBase {
 		this.spawnPoint.set(nbt.getInteger("spawnX"), nbt.getInteger("spawnY"), nbt.getInteger("spawnZ"));
 	}
 
+	@Override
 	public IEntityLivingData onSpawnWithEgg(IEntityLivingData data) {
 
 		int x = MathHelper.floor_double(this.posX);

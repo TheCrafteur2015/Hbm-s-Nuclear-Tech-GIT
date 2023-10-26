@@ -28,9 +28,9 @@ public class EntityGrenadeIFConcussion extends EntityGrenadeBouncyBase {
     	
         if (!this.worldObj.isRemote)
         {
-            this.setDead();
+            setDead();
     		
-    		worldObj.newExplosion(this, posX, posY, posZ, 15, false, false);
+    		this.worldObj.newExplosion(this, this.posX, this.posY, this.posZ, 15, false, false);
         }
     }
 

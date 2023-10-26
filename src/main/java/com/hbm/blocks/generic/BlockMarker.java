@@ -86,20 +86,20 @@ public class BlockMarker extends BlockContainer {
 		super.updateTick(p_149674_1_, p_149674_2_, p_149674_3_, p_149674_4_, p_149674_5_);
 
 		if(p_149674_1_.getBlockMetadata(p_149674_2_, p_149674_3_, p_149674_4_) == 0) {
-			this.onBlockAdded(p_149674_1_, p_149674_2_, p_149674_3_, p_149674_4_);
+			onBlockAdded(p_149674_1_, p_149674_2_, p_149674_3_, p_149674_4_);
 		}
 	}
 
 	@Override
 	public void onNeighborBlockChange(World p_149695_1_, int p_149695_2_, int p_149695_3_, int p_149695_4_, Block p_149695_5_) {
-		this.func_150108_b(p_149695_1_, p_149695_2_, p_149695_3_, p_149695_4_, p_149695_5_);
+		func_150108_b(p_149695_1_, p_149695_2_, p_149695_3_, p_149695_4_, p_149695_5_);
 	}
 
 	protected boolean func_150108_b(World p_150108_1_, int p_150108_2_, int p_150108_3_, int p_150108_4_, Block p_150108_5_) {
-		if(this.func_150109_e(p_150108_1_, p_150108_2_, p_150108_3_, p_150108_4_)) {
+		if(func_150109_e(p_150108_1_, p_150108_2_, p_150108_3_, p_150108_4_)) {
 			boolean flag = false;
 
-			if(!this.func_150107_m(p_150108_1_, p_150108_2_, p_150108_3_ - 1, p_150108_4_)) {
+			if(!func_150107_m(p_150108_1_, p_150108_2_, p_150108_3_ - 1, p_150108_4_)) {
 				flag = true;
 			}
 
@@ -116,7 +116,7 @@ public class BlockMarker extends BlockContainer {
 	}
 
 	protected boolean func_150109_e(World p_150109_1_, int p_150109_2_, int p_150109_3_, int p_150109_4_) {
-		if(!this.canPlaceBlockAt(p_150109_1_, p_150109_2_, p_150109_3_, p_150109_4_)) {
+		if(!canPlaceBlockAt(p_150109_1_, p_150109_2_, p_150109_3_, p_150109_4_)) {
 			if(p_150109_1_.getBlock(p_150109_2_, p_150109_3_, p_150109_4_) == this) {
 				this.dropBlockAsItem(p_150109_1_, p_150109_2_, p_150109_3_, p_150109_4_, p_150109_1_.getBlockMetadata(p_150109_2_, p_150109_3_, p_150109_4_), 0);
 				p_150109_1_.setBlockToAir(p_150109_2_, p_150109_3_, p_150109_4_);
@@ -132,7 +132,7 @@ public class BlockMarker extends BlockContainer {
 	public MovingObjectPosition collisionRayTrace(World p_149731_1_, int p_149731_2_, int p_149731_3_, int p_149731_4_, Vec3 p_149731_5_, Vec3 p_149731_6_) {
 		float f = 0.15F;
 		f = 0.1F;
-		this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 0.6F, 0.5F + f);
+		setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 0.6F, 0.5F + f);
 
 		return super.collisionRayTrace(p_149731_1_, p_149731_2_, p_149731_3_, p_149731_4_, p_149731_5_, p_149731_6_);
 	}

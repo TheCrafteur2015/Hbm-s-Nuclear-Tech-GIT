@@ -34,10 +34,11 @@ public class BlockFluidDuctSolid extends BlockContainer implements IBlockMultiPa
 	@SideOnly(Side.CLIENT)
 	private IIcon overlay;
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister p_149651_1_) {
-		this.blockIcon = p_149651_1_.registerIcon(this.getTextureName());
-		this.overlay = p_149651_1_.registerIcon(this.getTextureName() + "_overlay");
+		this.blockIcon = p_149651_1_.registerIcon(getTextureName());
+		this.overlay = p_149651_1_.registerIcon(getTextureName() + "_overlay");
 	}
 
 	@Override
@@ -45,6 +46,7 @@ public class BlockFluidDuctSolid extends BlockContainer implements IBlockMultiPa
 		return 2;
 	}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
 		return RenderBlockMultipass.currentPass == 0 ? this.blockIcon : this.overlay;
@@ -81,7 +83,7 @@ public class BlockFluidDuctSolid extends BlockContainer implements IBlockMultiPa
 		
 		TileEntityFluidDuctSimple duct = (TileEntityFluidDuctSimple) te;
 		
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		text.add("&[" + duct.getType().getColor() + "&]" + duct.getType().getLocalizedName());
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}

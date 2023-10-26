@@ -38,9 +38,8 @@ public class TileEntityDecoBlockAltF extends TileEntity {
         List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBox(i, k, l, j, i2, j2));
         Vec3.createVectorHelper(this.xCoord, this.yCoord, this.zCoord);
 
-        for (int i1 = 0; i1 < list.size(); ++i1)
-        {
-            Entity entity = (Entity)list.get(i1);
+        for (Object element : list) {
+            Entity entity = (Entity)element;
             double d4 = entity.getDistance(this.xCoord, this.yCoord, this.zCoord) / 4;
 
             if (d4 <= 1.0D)

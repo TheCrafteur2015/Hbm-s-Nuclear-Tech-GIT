@@ -39,7 +39,7 @@ public class IMCBlastFurnace extends IMCHandler {
 			
 		case "orelist":
 			final NBTTagList list = data.getTagList("input1", 8);
-			final ArrayList<String> ores = new ArrayList<String>(list.tagCount());
+			final ArrayList<String> ores = new ArrayList<>(list.tagCount());
 			for(int i = 0; i < list.tagCount(); i++)
 				ores.add(list.getStringTagAt(i));
 			input1 = ores;
@@ -61,7 +61,7 @@ public class IMCBlastFurnace extends IMCHandler {
 			
 		case "orelist":
 			final NBTTagList list = data.getTagList("input2", 9);
-			final ArrayList<String> ores = new ArrayList<String>(list.tagCount());
+			final ArrayList<String> ores = new ArrayList<>(list.tagCount());
 			for(int i = 0; i < list.tagCount(); i++)
 				ores.add(list.getStringTagAt(i));
 			input2 = ores;
@@ -76,6 +76,6 @@ public class IMCBlastFurnace extends IMCHandler {
 			return;
 		}
 		
-		buffer.add(new Triplet<Object, Object, ItemStack>(input1, input2, output));
+		IMCBlastFurnace.buffer.add(new Triplet<>(input1, input2, output));
 	}
 }

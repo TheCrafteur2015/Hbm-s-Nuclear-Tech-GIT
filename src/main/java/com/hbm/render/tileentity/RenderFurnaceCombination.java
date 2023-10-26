@@ -35,7 +35,7 @@ public class RenderFurnaceCombination extends TileEntitySpecialRenderer implemen
 		
 		if(furnace.wasOn) {
 
-			bindTexture(texture);
+			bindTexture(RenderFurnaceCombination.texture);
 
 			GL11.glPushMatrix();
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -95,10 +95,12 @@ public class RenderFurnaceCombination extends TileEntitySpecialRenderer implemen
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase( ) {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(0, -1.5, 0);
 				GL11.glScaled(3.25, 3.25, 3.25);
 			}
+			@Override
 			public void renderCommon() {
 				bindTexture(ResourceManager.combination_oven_tex);
 				ResourceManager.combination_oven.renderAll();

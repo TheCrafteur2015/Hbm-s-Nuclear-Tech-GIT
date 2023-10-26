@@ -33,79 +33,79 @@ public class SiegeOrchestrator {
 	public static void update(World world) {
 		
 		//abort loop if sieges are disabled
-		if(world.isRemote || !siegeEnabled(world))
+		if(world.isRemote || !SiegeOrchestrator.siegeEnabled(world))
 			return;
 
-		int waveTime = getWaveDuration(world);
-		int pauseTime = getPauseDuration(world);
+		int waveTime = SiegeOrchestrator.getWaveDuration(world);
+		int pauseTime = SiegeOrchestrator.getPauseDuration(world);
 		int interval = waveTime + pauseTime;
 		//whether we're in a wave or pause, pauses apply first in an interval
 		boolean wave = (int)(world.getTotalWorldTime() % interval) >= pauseTime;
 		
 		//send a server-wide message when the wave starts and ends
-		if(!lastWave && wave) {
+		if(!SiegeOrchestrator.lastWave && wave) {
 			MinecraftServer.getServer().getConfigurationManager().sendChatMsg(ChatBuilder.start("[SIEGE MODE] A new wave is starting!").color(EnumChatFormatting.RED).flush());
-		} else if(lastWave && !wave) {
+		} else if(SiegeOrchestrator.lastWave && !wave) {
 			MinecraftServer.getServer().getConfigurationManager().sendChatMsg(ChatBuilder.start("[SIEGE MODE] The wave has ended!").color(EnumChatFormatting.RED).flush());
 		}
 		
-		lastWave = wave;
+		SiegeOrchestrator.lastWave = wave;
 		
 		//if we're on pause, do nothing
 		if(!wave)
 			return;
 		
-		int spawnDelay = getSpawnDelay(world);
-		boolean threshold = spawnThresholdEnabled(world);
-		int thresholdSize = getSpawnThreshold(world);
+		int spawnDelay = SiegeOrchestrator.getSpawnDelay(world);
+		boolean threshold = SiegeOrchestrator.spawnThresholdEnabled(world);
+		int thresholdSize = SiegeOrchestrator.getSpawnThreshold(world);
 		
 		//if threshold is enabled, don't go into the spawn loop if the entity count exceeds the threshold
-		if(!(threshold && siegeMobCount > thresholdSize)) {
+		if(!(threshold && SiegeOrchestrator.siegeMobCount > thresholdSize)) {
 			for(Object o : world.playerEntities) {
 				EntityPlayer player = (EntityPlayer) o;
 				
 				if((world.getTotalWorldTime() + player.getEntityId()) % spawnDelay == 0) {
-					perPlayerSpawn(player);
+					SiegeOrchestrator.perPlayerSpawn(player);
 				}
 			}
 		}
 		
-		int countCap = getTierDelay(world);
-		int prevLevel = level;
-		levelCounter++;
+		int countCap = SiegeOrchestrator.getTierDelay(world);
+		int prevLevel = SiegeOrchestrator.level;
+		SiegeOrchestrator.levelCounter++;
 		
 		//if the counter has reached the cap, tick up the tier and reset the counter
-		while(levelCounter >= countCap) {
-			levelCounter -= countCap;
-			level++;
+		while(SiegeOrchestrator.levelCounter >= countCap) {
+			SiegeOrchestrator.levelCounter -= countCap;
+			SiegeOrchestrator.level++;
 		}
 		
 		//if the counter is below 0, bring up the counter and deduct a tier
-		while(levelCounter < 0) {
-			levelCounter += countCap;
-			level--;
+		while(SiegeOrchestrator.levelCounter < 0) {
+			SiegeOrchestrator.levelCounter += countCap;
+			SiegeOrchestrator.level--;
 		}
 		
 		//if the tier has changed, send a broadcast
-		if(prevLevel != level) {
-			MinecraftServer.getServer().getConfigurationManager().sendChatMsg(ChatBuilder.start("[SIEGE MODE] The siege tier is now " + (level + 1) + "!").color(EnumChatFormatting.RED).flush());
+		if(prevLevel != SiegeOrchestrator.level) {
+			MinecraftServer.getServer().getConfigurationManager().sendChatMsg(ChatBuilder.start("[SIEGE MODE] The siege tier is now " + (SiegeOrchestrator.level + 1) + "!").color(EnumChatFormatting.RED).flush());
 		}
 		
 		//every 10s we recount the loaded siege mobs
 		if(world.getTotalWorldTime() % 200 == 0) {
-			refreshMobCount(world);
+			SiegeOrchestrator.refreshMobCount(world);
 		}
 	}
 	
 	public static void perPlayerSpawn(EntityPlayer player) {
 		
-		Vec3 vec = Vec3.createVectorHelper(getSpawnDist(player.worldObj), 0, 0);
+		Vec3 vec = Vec3.createVectorHelper(SiegeOrchestrator.getSpawnDist(player.worldObj), 0, 0);
 		vec.rotateAroundY((float)(player.getRNG().nextFloat() * Math.PI));
 		
 		double x = player.posX + vec.xCoord;
 		double z = player.posZ + vec.zCoord;
 		
-		if(enableMissileSpawn(player.worldObj)) {
+		if(SiegeOrchestrator.enableMissileSpawn(player.worldObj)) {
 			EntitySiegeDropship ship = new EntitySiegeDropship(player.worldObj, x, 300, z);
 			player.worldObj.spawnEntityInWorld(ship);
 		}
@@ -114,8 +114,8 @@ public class SiegeOrchestrator {
 	public static void playerDeathHook(EntityPlayer player, DamageSource source) {
 		
 		if(!player.worldObj.isRemote) {
-			if(isSiegeMob(source.getEntity())) {
-				levelCounter -= getTierSubDeath(player.worldObj);
+			if(SiegeOrchestrator.isSiegeMob(source.getEntity())) {
+				SiegeOrchestrator.levelCounter -= SiegeOrchestrator.getTierSubDeath(player.worldObj);
 			}
 		}
 	}
@@ -123,8 +123,8 @@ public class SiegeOrchestrator {
 	public static void mobDeathHook(EntityLivingBase entity, DamageSource source) {
 		
 		if(!entity.worldObj.isRemote) {
-			if(isSiegeMob(entity)) {
-				levelCounter += getTierAddKill(entity.worldObj);
+			if(SiegeOrchestrator.isSiegeMob(entity)) {
+				SiegeOrchestrator.levelCounter += SiegeOrchestrator.getTierAddKill(entity.worldObj);
 			}
 		}
 	}
@@ -134,7 +134,7 @@ public class SiegeOrchestrator {
 		if(world.isRemote)
 			return;
 		
-		SiegeTier tier = SiegeTier.tiers[level];
+		SiegeTier tier = SiegeTier.tiers[SiegeOrchestrator.level];
 		if(tier == null)
 			tier = SiegeTier.DNT;
 		
@@ -167,23 +167,21 @@ public class SiegeOrchestrator {
 	
 	private static void refreshMobCount(World world) {
 		
-		siegeMobCount = 0;
+		SiegeOrchestrator.siegeMobCount = 0;
 		
 		for(Object o : world.loadedEntityList) {
 			Entity entity = (Entity) o;
 			
-			if(isSiegeMob(entity)) {
-				siegeMobCount++;
+			if(SiegeOrchestrator.isSiegeMob(entity)) {
+				SiegeOrchestrator.siegeMobCount++;
 			}
 		}
 	}
 	
 	public static boolean isSiegeMob(Entity entity) {
 
-		if(entity instanceof EntitySiegeZombie) return true;
-		if(entity instanceof EntitySiegeSkeleton) return true;
-		if(entity instanceof EntitySiegeUFO) return true;
-		if(entity instanceof EntitySiegeTunneler) return true;
+		if((entity instanceof EntitySiegeZombie) || (entity instanceof EntitySiegeSkeleton) || (entity instanceof EntitySiegeUFO)
+				|| (entity instanceof EntitySiegeTunneler)) return true;
 		if(entity instanceof EntitySiegeCraft) return true;
 		
 		return false;
@@ -211,83 +209,83 @@ public class SiegeOrchestrator {
 
 		GameRules rules = world.getGameRules();
 		
-		if(!rules.getGameRuleBooleanValue(KEY_SAVE_RULES)) {
-			rules.setOrCreateGameRule(KEY_SAVE_RULES, "true");
-			rules.setOrCreateGameRule(KEY_ENABLE_SIEGES, "false");
-			rules.setOrCreateGameRule(KEY_WAVE_DURATION, "" + (20 * 60 * 20));
-			rules.setOrCreateGameRule(KEY_PAUSE_DURATION, "" + (10 * 60 * 20));
-			rules.setOrCreateGameRule(KEY_ENABLE_DROPS, "true");
-			rules.setOrCreateGameRule(KEY_ENABLE_SPAWNS, "false");
-			rules.setOrCreateGameRule(KEY_ENABLE_BASES, "true");
-			rules.setOrCreateGameRule(KEY_ENABLE_MISSILES, "true");
-			rules.setOrCreateGameRule(KEY_SPAWN_DIST, "64");
-			rules.setOrCreateGameRule(KEY_SPAWN_DELAY, "" + (10 * 20));
-			rules.setOrCreateGameRule(KEY_TIER_DELAY, "" + (15 * 60 * 20));
-			rules.setOrCreateGameRule(KEY_TIER_ADD_KILL, "" + (1 * 20));
-			rules.setOrCreateGameRule(KEY_TIER_SUB_DEATH, "" + (15 * 20));
-			rules.setOrCreateGameRule(KEY_SPAWN_THRESHOLD, "true");
-			rules.setOrCreateGameRule(KEY_SPAWN_THRESHOLD_COUNT, "50");
-			rules.setOrCreateGameRule(KEY_EXPANSION_THRESHOLD_COUNT, "20");
+		if(!rules.getGameRuleBooleanValue(SiegeOrchestrator.KEY_SAVE_RULES)) {
+			rules.setOrCreateGameRule(SiegeOrchestrator.KEY_SAVE_RULES, "true");
+			rules.setOrCreateGameRule(SiegeOrchestrator.KEY_ENABLE_SIEGES, "false");
+			rules.setOrCreateGameRule(SiegeOrchestrator.KEY_WAVE_DURATION, "" + (20 * 60 * 20));
+			rules.setOrCreateGameRule(SiegeOrchestrator.KEY_PAUSE_DURATION, "" + (10 * 60 * 20));
+			rules.setOrCreateGameRule(SiegeOrchestrator.KEY_ENABLE_DROPS, "true");
+			rules.setOrCreateGameRule(SiegeOrchestrator.KEY_ENABLE_SPAWNS, "false");
+			rules.setOrCreateGameRule(SiegeOrchestrator.KEY_ENABLE_BASES, "true");
+			rules.setOrCreateGameRule(SiegeOrchestrator.KEY_ENABLE_MISSILES, "true");
+			rules.setOrCreateGameRule(SiegeOrchestrator.KEY_SPAWN_DIST, "64");
+			rules.setOrCreateGameRule(SiegeOrchestrator.KEY_SPAWN_DELAY, "" + (10 * 20));
+			rules.setOrCreateGameRule(SiegeOrchestrator.KEY_TIER_DELAY, "" + (15 * 60 * 20));
+			rules.setOrCreateGameRule(SiegeOrchestrator.KEY_TIER_ADD_KILL, "" + (1 * 20));
+			rules.setOrCreateGameRule(SiegeOrchestrator.KEY_TIER_SUB_DEATH, "" + (15 * 20));
+			rules.setOrCreateGameRule(SiegeOrchestrator.KEY_SPAWN_THRESHOLD, "true");
+			rules.setOrCreateGameRule(SiegeOrchestrator.KEY_SPAWN_THRESHOLD_COUNT, "50");
+			rules.setOrCreateGameRule(SiegeOrchestrator.KEY_EXPANSION_THRESHOLD_COUNT, "20");
 		}
 	}
 	
 	public static boolean siegeEnabled(World world) {
-		return world.getGameRules().getGameRuleBooleanValue(KEY_ENABLE_SIEGES);
+		return world.getGameRules().getGameRuleBooleanValue(SiegeOrchestrator.KEY_ENABLE_SIEGES);
 	}
 	
 	public static int getWaveDuration(World world) {
-		return GameRuleHelper.getIntegerMinimum(world, KEY_WAVE_DURATION, 20 * 60 * 10, 1);
+		return GameRuleHelper.getIntegerMinimum(world, SiegeOrchestrator.KEY_WAVE_DURATION, 20 * 60 * 10, 1);
 	}
 	
 	public static int getPauseDuration(World world) {
-		return GameRuleHelper.getIntegerMinimum(world, KEY_PAUSE_DURATION, 10 * 60 * 10, 0);
+		return GameRuleHelper.getIntegerMinimum(world, SiegeOrchestrator.KEY_PAUSE_DURATION, 10 * 60 * 10, 0);
 	}
 	
 	public static double getSpawnDist(World world) {
-		return GameRuleHelper.getDoubleMinimum(world, KEY_SPAWN_DIST, 64, 0);
+		return GameRuleHelper.getDoubleMinimum(world, SiegeOrchestrator.KEY_SPAWN_DIST, 64, 0);
 	}
 	
 	public static int getSpawnDelay(World world) {
-		return GameRuleHelper.getIntegerMinimum(world, KEY_SPAWN_DELAY, 10 * 20, 1);
+		return GameRuleHelper.getIntegerMinimum(world, SiegeOrchestrator.KEY_SPAWN_DELAY, 10 * 20, 1);
 	}
 	
 	public static int getTierDelay(World world) {
-		return GameRuleHelper.getIntegerMinimum(world, KEY_TIER_DELAY, 15 * 60 * 20, 1);
+		return GameRuleHelper.getIntegerMinimum(world, SiegeOrchestrator.KEY_TIER_DELAY, 15 * 60 * 20, 1);
 	}
 	
 	public static int getTierAddKill(World world) {
-		return GameRuleHelper.getIntegerMinimum(world, KEY_TIER_ADD_KILL, 1 * 20, 0);
+		return GameRuleHelper.getIntegerMinimum(world, SiegeOrchestrator.KEY_TIER_ADD_KILL, 1 * 20, 0);
 	}
 	
 	public static int getTierAddDrop(World world) {
-		return GameRuleHelper.getIntegerMinimum(world, KEY_TIER_ADD_DROP, 5 * 20, 0);
+		return GameRuleHelper.getIntegerMinimum(world, SiegeOrchestrator.KEY_TIER_ADD_DROP, 5 * 20, 0);
 	}
 	
 	public static int getTierSubDeath(World world) {
-		return GameRuleHelper.getIntegerMinimum(world, KEY_TIER_SUB_DEATH, 15 * 20, 0);
+		return GameRuleHelper.getIntegerMinimum(world, SiegeOrchestrator.KEY_TIER_SUB_DEATH, 15 * 20, 0);
 	}
 	
 	public static boolean spawnThresholdEnabled(World world) {
-		return world.getGameRules().getGameRuleBooleanValue(KEY_SPAWN_THRESHOLD);
+		return world.getGameRules().getGameRuleBooleanValue(SiegeOrchestrator.KEY_SPAWN_THRESHOLD);
 	}
 	
 	public static int getSpawnThreshold(World world) {
-		return GameRuleHelper.getIntegerMinimum(world, KEY_SPAWN_THRESHOLD_COUNT, 50, 1);
+		return GameRuleHelper.getIntegerMinimum(world, SiegeOrchestrator.KEY_SPAWN_THRESHOLD_COUNT, 50, 1);
 	}
 	
 	public static int getExpansionThreshold(World world) {
-		return GameRuleHelper.getIntegerMinimum(world, KEY_EXPANSION_THRESHOLD_COUNT, 20, 1);
+		return GameRuleHelper.getIntegerMinimum(world, SiegeOrchestrator.KEY_EXPANSION_THRESHOLD_COUNT, 20, 1);
 	}
 	
 	public static boolean enableBaseSpawning(World world) {
-		return world.getGameRules().getGameRuleBooleanValue(KEY_ENABLE_BASES);
+		return world.getGameRules().getGameRuleBooleanValue(SiegeOrchestrator.KEY_ENABLE_BASES);
 	}
 	
 	public static boolean enableMobSpawning(World world) {
-		return world.getGameRules().getGameRuleBooleanValue(KEY_ENABLE_SPAWNS);
+		return world.getGameRules().getGameRuleBooleanValue(SiegeOrchestrator.KEY_ENABLE_SPAWNS);
 	}
 	
 	public static boolean enableMissileSpawn(World world) {
-		return world.getGameRules().getGameRuleBooleanValue(KEY_ENABLE_MISSILES);
+		return world.getGameRules().getGameRuleBooleanValue(SiegeOrchestrator.KEY_ENABLE_MISSILES);
 	}
 }

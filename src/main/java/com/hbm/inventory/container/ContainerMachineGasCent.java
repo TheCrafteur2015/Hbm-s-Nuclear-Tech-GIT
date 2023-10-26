@@ -16,30 +16,30 @@ public class ContainerMachineGasCent extends Container {
 	
 	public ContainerMachineGasCent(InventoryPlayer invPlayer, TileEntityMachineGasCent tedf) {
 		
-		gasCent = tedf;
+		this.gasCent = tedf;
 
 		//Output
 		for(int i = 0; i < 2; i++) {
 			for(int j = 0; j < 2; j++) {
-				this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, j + i * 2, 71 + j * 18, 53 + i * 18));
+				addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, j + i * 2, 71 + j * 18, 53 + i * 18));
 			}
 		}
 		
 		//Battery
-		this.addSlotToContainer(new Slot(tedf, 4, 182, 71));
+		addSlotToContainer(new Slot(tedf, 4, 182, 71));
 		//Fluid ID IO
-		this.addSlotToContainer(new Slot(tedf, 5, 91, 15));
+		addSlotToContainer(new Slot(tedf, 5, 91, 15));
 		//upgrade
-		this.addSlotToContainer(new Slot(tedf, 6, 69, 15));
+		addSlotToContainer(new Slot(tedf, 6, 69, 15));
 		
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 122 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 122 + i * 18));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 180));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 180));
 		}
 	}
 	
@@ -59,10 +59,10 @@ public class ContainerMachineGasCent extends Container {
 			returnStack = stack.copy();
 			
             if(index <= 6) {
-				if (!this.mergeItemStack(stack, 7, this.inventorySlots.size(), true)) {
+				if (!mergeItemStack(stack, 7, this.inventorySlots.size(), true)) {
 					return null;
 				}
-			} else if(!this.mergeItemStack(stack, 4, 7, false)) {
+			} else if(!mergeItemStack(stack, 4, 7, false)) {
 				return null;
 			}
 			
@@ -78,6 +78,6 @@ public class ContainerMachineGasCent extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return gasCent.isUseableByPlayer(player);
+		return this.gasCent.isUseableByPlayer(player);
 	}
 }

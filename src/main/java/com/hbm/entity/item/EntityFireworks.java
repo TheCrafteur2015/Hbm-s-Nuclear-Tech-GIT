@@ -19,7 +19,7 @@ public class EntityFireworks extends Entity {
 
 	public EntityFireworks(World world, double x, double y, double z, int color, int character) {
 		super(world);
-		this.setPositionAndRotation(x, y, z, 0.0F, 0.0F);
+		setPositionAndRotation(x, y, z, 0.0F, 0.0F);
 		this.color = color;
 		this.character = character;
 	}
@@ -30,24 +30,24 @@ public class EntityFireworks extends Entity {
 	@Override
 	public void onUpdate() {
 		
-		this.moveEntity(0.0, 3.0D, 0.0);
-		this.worldObj.spawnParticle("flame", posX, posY, posZ, 0.0, -0.3, 0.0);
-		this.worldObj.spawnParticle("smoke", posX, posY, posZ, 0.0, -0.2, 0.0);
+		moveEntity(0.0, 3.0D, 0.0);
+		this.worldObj.spawnParticle("flame", this.posX, this.posY, this.posZ, 0.0, -0.3, 0.0);
+		this.worldObj.spawnParticle("smoke", this.posX, this.posY, this.posZ, 0.0, -0.2, 0.0);
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			ticksExisted++;
+			this.ticksExisted++;
 			
 			if(this.ticksExisted > 30) {
 				
-				this.worldObj.playSoundEffect(posX, posY, posZ, "fireworks.blast", 20, 1F + this.rand.nextFloat() * 0.2F);
+				this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "fireworks.blast", 20, 1F + this.rand.nextFloat() * 0.2F);
 				
-				this.setDead();
+				setDead();
 				NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "fireworks");
-				data.setInteger("color", color);
-				data.setInteger("char", character);
-				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, posX, posY, posZ), new TargetPoint(this.worldObj.provider.dimensionId, posX, posY, posZ, 300));
+				data.setInteger("color", this.color);
+				data.setInteger("char", this.character);
+				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, this.posX, this.posY, this.posZ), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 300));
 			}
 		}
 	}
@@ -61,9 +61,9 @@ public class EntityFireworks extends Entity {
 
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound nbt) {
-		nbt.setInteger("char", character);
-		nbt.setInteger("color", color);
-		nbt.setInteger("ticksExisted", ticksExisted);
+		nbt.setInteger("char", this.character);
+		nbt.setInteger("color", this.color);
+		nbt.setInteger("ticksExisted", this.ticksExisted);
 	}
 
 }

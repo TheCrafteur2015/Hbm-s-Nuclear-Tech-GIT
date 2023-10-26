@@ -21,15 +21,15 @@ import net.minecraft.world.World;
 
 public class TileEntityTurretTauon extends TileEntityTurretBaseNT {
 
-	static List<Integer> configs = new ArrayList();
+	static List<Integer> configs = new ArrayList<>();
 	
 	static {
-		configs.add(BulletConfigSyncingUtil.SPECIAL_GAUSS);
+		TileEntityTurretTauon.configs.add(BulletConfigSyncingUtil.SPECIAL_GAUSS);
 	}
 	
 	@Override
 	protected List<Integer> getAmmoList() {
-		return configs;
+		return TileEntityTurretTauon.configs;
 	}
 
 	@Override
@@ -91,16 +91,16 @@ public class TileEntityTurretTauon extends TileEntityTurretBaseNT {
 	@Override
 	public void updateEntity() {
 		
-		if(worldObj.isRemote) {
+		if(this.worldObj.isRemote) {
 			
 			if(this.tPos != null) {
-				Vec3 pos = this.getTurretPos();
-				double length = Vec3.createVectorHelper(tPos.xCoord - pos.xCoord, tPos.yCoord - pos.yCoord, tPos.zCoord - pos.zCoord).lengthVector();
+				Vec3 pos = getTurretPos();
+				double length = Vec3.createVectorHelper(this.tPos.xCoord - pos.xCoord, this.tPos.yCoord - pos.yCoord, this.tPos.zCoord - pos.zCoord).lengthVector();
 				this.lastDist = length;
 			}
 			
-			if(beam > 0)
-				beam--;
+			if(this.beam > 0)
+				this.beam--;
 			
 			this.lastSpin = this.spin;
 			
@@ -120,30 +120,30 @@ public class TileEntityTurretTauon extends TileEntityTurretBaseNT {
 	@Override
 	public void updateFiringTick() {
 		
-		timer++;
+		this.timer++;
 		
-		if(timer % 5 == 0) {
+		if(this.timer % 5 == 0) {
 			
-			BulletConfiguration conf = this.getFirstConfigLoaded();
+			BulletConfiguration conf = getFirstConfigLoaded();
 			
 			if(conf != null && this.target != null) {
-				this.target.attackEntityFrom(ModDamageSource.electricity, 30F + worldObj.rand.nextInt(11));
-				this.conusmeAmmo(conf.ammo);
-				this.worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:weapon.tauShoot", 4.0F, 0.9F + worldObj.rand.nextFloat() * 0.3F);
+				this.target.attackEntityFrom(ModDamageSource.electricity, 30F + this.worldObj.rand.nextInt(11));
+				conusmeAmmo(conf.ammo);
+				this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:weapon.tauShoot", 4.0F, 0.9F + this.worldObj.rand.nextFloat() * 0.3F);
 				
 				NBTTagCompound data = new NBTTagCompound();
 				data.setBoolean("shot", true);
-				this.networkPack(data, 250);
+				networkPack(data, 250);
 				
-				Vec3 pos = this.getTurretPos();
-				Vec3 vec = Vec3.createVectorHelper(this.getBarrelLength(), 0, 0);
+				Vec3 pos = getTurretPos();
+				Vec3 vec = Vec3.createVectorHelper(getBarrelLength(), 0, 0);
 				vec.rotateAroundZ((float) -this.rotationPitch);
 				vec.rotateAroundY((float) -(this.rotationYaw + Math.PI * 0.5));
 				
 				NBTTagCompound dPart = new NBTTagCompound();
 				dPart.setString("type", "tau");
 				dPart.setByte("count", (byte)5);
-				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(dPart, pos.xCoord + vec.xCoord, pos.yCoord + vec.yCoord, pos.zCoord + vec.zCoord), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 50));
+				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(dPart, pos.xCoord + vec.xCoord, pos.yCoord + vec.yCoord, pos.zCoord + vec.zCoord), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 50));
 			}
 		}
 	}
@@ -152,7 +152,7 @@ public class TileEntityTurretTauon extends TileEntityTurretBaseNT {
 	public void networkUnpack(NBTTagCompound nbt) {
 		
 		if(nbt.hasKey("shot"))
-			beam = 3;
+			this.beam = 3;
 		else
 			super.networkUnpack(nbt);
 	}

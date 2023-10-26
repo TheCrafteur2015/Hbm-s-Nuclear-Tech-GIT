@@ -20,7 +20,7 @@ public class RenderDrone extends Render {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y + 0.25, z);
 		
-		this.bindTexture(getEntityTexture(entity));
+		bindTexture(getEntityTexture(entity));
 		
 		Random rand = new Random(entity.getEntityId());
 		GL11.glRotated(rand.nextDouble() * 360D, 0, 1, 0);

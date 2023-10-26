@@ -37,7 +37,7 @@ public class SchistStratum {
 		for(int x = cX + 8; x < cX + 24; x++) {
 			for(int z = cZ + 8; z < cZ + 24; z++) {
 				
-				double n = noise.func_151601_a(x * scale, z * scale);
+				double n = this.noise.func_151601_a(x * scale, z * scale);
 				
 				if(n > threshold) {
 					int range = (int)((n - threshold) * 3);

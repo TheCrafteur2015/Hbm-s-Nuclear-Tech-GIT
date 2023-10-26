@@ -21,15 +21,15 @@ public class TileEntityPipeExhaust extends TileEntity implements IFluidConductor
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote && canUpdate()) {
+		if(!this.worldObj.isRemote && canUpdate()) {
 			
-			for(int i = 0; i < 3; i++) nets[i] = null;
+			for(int i = 0; i < 3; i++) this.nets[i] = null;
 
 			for(FluidType type : getSmokes()) {
-				this.connect(type);
+				connect(type);
 				
-				if(this.getPipeNet(type) == null) {
-					this.setPipeNet(type, new PipeNet(type).joinLink(this));
+				if(getPipeNet(type) == null) {
+					setPipeNet(type, new PipeNet(type).joinLink(this));
 				}
 			}
 		}
@@ -39,7 +39,7 @@ public class TileEntityPipeExhaust extends TileEntity implements IFluidConductor
 		
 		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 			
-			TileEntity te = Compat.getTileStandard(worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
+			TileEntity te = Compat.getTileStandard(this.worldObj, this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
 			
 			if(te instanceof IFluidConductor) {
 				
@@ -48,12 +48,12 @@ public class TileEntityPipeExhaust extends TileEntity implements IFluidConductor
 				if(!conductor.canConnect(type, dir.getOpposite()))
 					continue;
 				
-				if(this.getPipeNet(type) == null && conductor.getPipeNet(type) != null) {
+				if(getPipeNet(type) == null && conductor.getPipeNet(type) != null) {
 					conductor.getPipeNet(type).joinLink(this);
 				}
 				
-				if(this.getPipeNet(type) != null && conductor.getPipeNet(type) != null && this.getPipeNet(type) != conductor.getPipeNet(type)) {
-					conductor.getPipeNet(type).joinNetworks(this.getPipeNet(type));
+				if(getPipeNet(type) != null && conductor.getPipeNet(type) != null && getPipeNet(type) != conductor.getPipeNet(type)) {
+					conductor.getPipeNet(type).joinNetworks(getPipeNet(type));
 				}
 			}
 		}
@@ -63,11 +63,11 @@ public class TileEntityPipeExhaust extends TileEntity implements IFluidConductor
 	public void invalidate() {
 		super.invalidate();
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			for(int i = 0; i < 3; i++) {
-				if(nets[i] != null) {
-					nets[i].destroy();
+				if(this.nets[i] != null) {
+					this.nets[i].destroy();
 				}
 			}
 		}
@@ -75,9 +75,9 @@ public class TileEntityPipeExhaust extends TileEntity implements IFluidConductor
 	@Override
 	public boolean canUpdate() {
 		
-		if(this.isInvalid()) return false;
+		if(isInvalid()) return false;
 		
-		for(IPipeNet net : nets) {
+		for(IPipeNet net : this.nets) {
 			if(net == null || !net.isValid()) {
 				return true;
 			}
@@ -99,17 +99,17 @@ public class TileEntityPipeExhaust extends TileEntity implements IFluidConductor
 	@Override
 	public IPipeNet getPipeNet(FluidType type) {
 
-		if(type == Fluids.SMOKE) return nets[0];
-		if(type == Fluids.SMOKE_LEADED) return nets[1];
-		if(type == Fluids.SMOKE_POISON) return nets[2];
+		if(type == Fluids.SMOKE) return this.nets[0];
+		if(type == Fluids.SMOKE_LEADED) return this.nets[1];
+		if(type == Fluids.SMOKE_POISON) return this.nets[2];
 		return null;
 	}
 
 	@Override
 	public void setPipeNet(FluidType type, IPipeNet network) {
 
-		if(type == Fluids.SMOKE) nets[0] = network;
-		if(type == Fluids.SMOKE_LEADED) nets[1] = network;
-		if(type == Fluids.SMOKE_POISON) nets[2] = network;
+		if(type == Fluids.SMOKE) this.nets[0] = network;
+		if(type == Fluids.SMOKE_LEADED) this.nets[1] = network;
+		if(type == Fluids.SMOKE_POISON) this.nets[2] = network;
 	}
 }

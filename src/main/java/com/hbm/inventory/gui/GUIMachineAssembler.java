@@ -20,7 +20,7 @@ public class GUIMachineAssembler extends GuiInfoContainer {
 	
 	public GUIMachineAssembler(InventoryPlayer invPlayer, TileEntityMachineAssembler tedf) {
 		super(new ContainerMachineAssembler(invPlayer, tedf));
-		assembler = tedf;
+		this.assembler = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 222;
@@ -30,23 +30,23 @@ public class GUIMachineAssembler extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 116, guiTop + 70 - 52, 16, 52, assembler.power, assembler.getMaxPower());
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 116, this.guiTop + 70 - 52, 16, 52, this.assembler.power, this.assembler.getMaxPower());
 		
-		if(assembler.getStackInSlot(4) == null || assembler.getStackInSlot(4).getItem()!= ModItems.assembly_template) {
+		if(this.assembler.getStackInSlot(4) == null || this.assembler.getStackInSlot(4).getItem()!= ModItems.assembly_template) {
 
 			String[] warnText = I18nUtil.resolveKeyArray("desc.gui.assembler.warning");
-			this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36, 16, 16, guiLeft - 8, guiTop + 36 + 16, warnText);
+			this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft - 16, this.guiTop + 36, 16, 16, this.guiLeft - 8, this.guiTop + 36 + 16, warnText);
 		}
 		
 		String[] templateText = I18nUtil.resolveKeyArray("desc.gui.template");
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 16, 16, 16, guiLeft - 8, guiTop + 16 + 16, templateText);
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft - 16, this.guiTop + 16, 16, 16, this.guiLeft - 8, this.guiTop + 16 + 16, templateText);
 		
 		String[] upgradeText = new String[3];
 		upgradeText[0] = I18nUtil.resolveKey("desc.gui.upgrade");
 		upgradeText[1] = I18nUtil.resolveKey("desc.gui.upgrade.speed");
 		upgradeText[2] = I18nUtil.resolveKey("desc.gui.upgrade.power");
 		
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 141, guiTop + 40, 8, 8, guiLeft + 225, guiTop + 40 + 16 + 8, upgradeText);
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 141, this.guiTop + 40, 8, 8, this.guiLeft + 225, this.guiTop + 40 + 16 + 8, upgradeText);
 	}
 
 	@Override
@@ -60,22 +60,22 @@ public class GUIMachineAssembler extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIMachineAssembler.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		int i = (int) (assembler.power * 52 / assembler.getMaxPower());
-		drawTexturedModalRect(guiLeft + 116, guiTop + 70 - i, 176, 52 - i, 16, i);
+		int i = (int) (this.assembler.power * 52 / this.assembler.getMaxPower());
+		drawTexturedModalRect(this.guiLeft + 116, this.guiTop + 70 - i, 176, 52 - i, 16, i);
 
-		if(assembler.isProgressing) {
-			int j = assembler.progress[0] * 83 / assembler.maxProgress[0];
-			drawTexturedModalRect(guiLeft + 45, guiTop + 82, 2, 222, j, 32);
+		if(this.assembler.isProgressing) {
+			int j = this.assembler.progress[0] * 83 / this.assembler.maxProgress[0];
+			drawTexturedModalRect(this.guiLeft + 45, this.guiTop + 82, 2, 222, j, 32);
 		}
 		
-		if(assembler.getStackInSlot(4) == null || assembler.getStackInSlot(4).getItem()!= ModItems.assembly_template) {
-			this.drawInfoPanel(guiLeft - 16, guiTop + 36, 16, 16, 6);
+		if(this.assembler.getStackInSlot(4) == null || this.assembler.getStackInSlot(4).getItem()!= ModItems.assembly_template) {
+			drawInfoPanel(this.guiLeft - 16, this.guiTop + 36, 16, 16, 6);
 		}
 		
-		this.drawInfoPanel(guiLeft - 16, guiTop + 16, 16, 16, 11);
-		this.drawInfoPanel(guiLeft + 141, guiTop + 40, 8, 8, 8);
+		drawInfoPanel(this.guiLeft - 16, this.guiTop + 16, 16, 16, 11);
+		drawInfoPanel(this.guiLeft + 141, this.guiTop + 40, 8, 8, 8);
 	}
 }

@@ -136,23 +136,23 @@ public class BlockCablePaintable extends BlockContainer implements IToolable, IB
 		public void updateEntity() {
 			super.updateEntity();
 
-			if(worldObj.isRemote && (lastBlock != block || lastMeta != meta)) {
-				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-				lastBlock = block;
-				lastMeta = meta;
+			if(this.worldObj.isRemote && (this.lastBlock != this.block || this.lastMeta != this.meta)) {
+				this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+				this.lastBlock = this.block;
+				this.lastMeta = this.meta;
 			}
 		}
 
 		@Override
 		public Packet getDescriptionPacket() {
 			NBTTagCompound nbt = new NBTTagCompound();
-			this.writeToNBT(nbt);
+			writeToNBT(nbt);
 			return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, nbt);
 		}
 		
 		@Override
 		public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-			this.readFromNBT(pkt.func_148857_g());
+			readFromNBT(pkt.func_148857_g());
 		}
 
 		@Override
@@ -166,8 +166,8 @@ public class BlockCablePaintable extends BlockContainer implements IToolable, IB
 		@Override
 		public void writeToNBT(NBTTagCompound nbt) {
 			super.writeToNBT(nbt);
-			if(block != null) nbt.setInteger("block", Block.getIdFromBlock(block));
-			nbt.setInteger("meta", meta);
+			if(this.block != null) nbt.setInteger("block", Block.getIdFromBlock(this.block));
+			nbt.setInteger("meta", this.meta);
 		}
 	}
 }

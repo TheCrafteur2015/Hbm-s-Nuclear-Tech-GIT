@@ -1,6 +1,7 @@
 package com.hbm.entity.projectile;
 
 import com.hbm.entity.particle.EntityOilSpillFX;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.MovingObjectPosition;
@@ -30,11 +31,11 @@ public class EntityOilSpill extends EntityThrowable {
     @Override
     public void onUpdate() {
     	super.onUpdate();
-    	if(!worldObj.isRemote) {
-    		worldObj.spawnEntityInWorld(new EntityOilSpillFX(worldObj, this.posX, this.posY, this.posZ, 0.0, 0.0, 0.0));
-    		if(this.isBurning()) {
-    			this.setDead();
-    			worldObj.createExplosion(null, posX, posY, posZ, 1.5F, true);
+    	if(!this.worldObj.isRemote) {
+    		this.worldObj.spawnEntityInWorld(new EntityOilSpillFX(this.worldObj, this.posX, this.posY, this.posZ, 0.0, 0.0, 0.0));
+    		if(isBurning()) {
+    			setDead();
+    			this.worldObj.createExplosion(null, this.posX, this.posY, this.posZ, 1.5F, true);
     		}
     	}
     }
@@ -43,7 +44,7 @@ public class EntityOilSpill extends EntityThrowable {
 	protected void onImpact(MovingObjectPosition p_70184_1_)
     {
         if(this.ticksExisted > 5) {
-        	this.setDead();
+        	setDead();
         }
     }
 }

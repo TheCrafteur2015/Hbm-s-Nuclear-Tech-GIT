@@ -2,8 +2,8 @@ package com.hbm.util;
 
 import java.util.HashSet;
 
-import com.hbm.entity.mob.EntityDuck;
 import com.hbm.entity.mob.EntityCreeperNuclear;
+import com.hbm.entity.mob.EntityDuck;
 import com.hbm.entity.mob.EntityQuackos;
 import com.hbm.extprop.HbmLivingProps;
 import com.hbm.handler.HazmatRegistry;
@@ -46,10 +46,7 @@ public class ContaminationUtil {
 	
 	public static float getRads(Entity e) {
 
-		if(!(e instanceof EntityLivingBase))
-			return 0.0F;
-
-		if(isRadImmune(e))
+		if(!(e instanceof EntityLivingBase) || ContaminationUtil.isRadImmune(e))
 			return 0.0F;
 		
 		EntityLivingBase entity = (EntityLivingBase)e;
@@ -57,26 +54,26 @@ public class ContaminationUtil {
 		return HbmLivingProps.getRadiation(entity);
 	}
 	
-	public static HashSet<Class> immuneEntities = new HashSet();
+	public static HashSet<Class<?>> immuneEntities = new HashSet<>();
 	
 	public static boolean isRadImmune(Entity e) {
 
 		if(e instanceof EntityLivingBase && ((EntityLivingBase)e).isPotionActive(HbmPotion.mutation))
 			return true;
 		
-		if(immuneEntities.isEmpty()) {
-			immuneEntities.add(EntityCreeperNuclear.class);
-			immuneEntities.add(EntityMooshroom.class);
-			immuneEntities.add(EntityZombie.class);
-			immuneEntities.add(EntitySkeleton.class);
-			immuneEntities.add(EntityQuackos.class);
-			immuneEntities.add(EntityOcelot.class);
-			immuneEntities.add(IRadiationImmune.class);
+		if(ContaminationUtil.immuneEntities.isEmpty()) {
+			ContaminationUtil.immuneEntities.add(EntityCreeperNuclear.class);
+			ContaminationUtil.immuneEntities.add(EntityMooshroom.class);
+			ContaminationUtil.immuneEntities.add(EntityZombie.class);
+			ContaminationUtil.immuneEntities.add(EntitySkeleton.class);
+			ContaminationUtil.immuneEntities.add(EntityQuackos.class);
+			ContaminationUtil.immuneEntities.add(EntityOcelot.class);
+			ContaminationUtil.immuneEntities.add(IRadiationImmune.class);
 		}
 		
-		Class entityClass = e.getClass();
+		Class<?> entityClass = e.getClass();
 		
-		for(Class clazz : immuneEntities) {
+		for(Class<?> clazz : ContaminationUtil.immuneEntities) {
 			if(clazz.isAssignableFrom(entityClass)) return true;
 		}
 		
@@ -88,10 +85,7 @@ public class ContaminationUtil {
 	/// ASBESTOS ///
 	public static void applyAsbestos(Entity e, int i) {
 
-		if(!(e instanceof EntityLivingBase))
-			return;
-		
-		if(e instanceof EntityPlayer && ((EntityPlayer)e).capabilities.isCreativeMode)
+		if(!(e instanceof EntityLivingBase) || (e instanceof EntityPlayer && ((EntityPlayer)e).capabilities.isCreativeMode))
 			return;
 		
 		if(e instanceof EntityPlayer && e.ticksExisted < 200)
@@ -108,10 +102,7 @@ public class ContaminationUtil {
 	/// DIGAMMA ///
 	public static void applyDigammaData(Entity e, float f) {
 
-		if(!(e instanceof EntityLivingBase))
-			return;
-		
-		if(e instanceof EntityDuck || e instanceof EntityOcelot)
+		if(!(e instanceof EntityLivingBase) || e instanceof EntityDuck || e instanceof EntityOcelot)
 			return;
 		
 		if(e instanceof EntityPlayer && ((EntityPlayer)e).capabilities.isCreativeMode)
@@ -131,13 +122,7 @@ public class ContaminationUtil {
 	
 	public static void applyDigammaDirect(Entity e, float f) {
 
-		if(!(e instanceof EntityLivingBase))
-			return;
-
-		if(e instanceof IRadiationImmune)
-			return;
-		
-		if(e instanceof EntityPlayer && ((EntityPlayer)e).capabilities.isCreativeMode)
+		if(!(e instanceof EntityLivingBase) || (e instanceof IRadiationImmune) || (e instanceof EntityPlayer && ((EntityPlayer)e).capabilities.isCreativeMode))
 			return;
 		
 		EntityLivingBase entity = (EntityLivingBase)e;
@@ -165,8 +150,8 @@ public class ContaminationUtil {
 		double res = ((int)(10000D - ContaminationUtil.calculateRadiationMod(player) * 10000D)) / 100D;
 		double resKoeff = ((int)(HazmatRegistry.getResistance(player) * 100D)) / 100D;
 
-		String chunkPrefix = getPreffixFromRad(rads);
-		String envPrefix = getPreffixFromRad(env);
+		String chunkPrefix = ContaminationUtil.getPreffixFromRad(rads);
+		String envPrefix = ContaminationUtil.getPreffixFromRad(env);
 		String radPrefix = "";
 		String resPrefix = "" + EnumChatFormatting.WHITE;
 		
@@ -205,7 +190,7 @@ public class ContaminationUtil {
 			limit = true;
 		}
 		
-		String envPrefix = getPreffixFromRad(env);
+		String envPrefix = ContaminationUtil.getPreffixFromRad(env);
 		
 		player.addChatMessage(new ChatComponentText("===== ☢ ").appendSibling(new ChatComponentTranslation("geiger.title.dosimeter")).appendSibling(new ChatComponentText(" ☢ =====")).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));
 		player.addChatMessage(new ChatComponentTranslation("geiger.envRad").appendSibling(new ChatComponentText(" " + envPrefix + (limit ? ">" : "") + env + " RAD/s")).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
@@ -278,7 +263,7 @@ public class ContaminationUtil {
 			case FARADAY:			if(ArmorUtil.checkForFaraday(player))	return false; break;
 			case HAZMAT:			if(ArmorUtil.checkForHazmat(player))	return false; break;
 			case HAZMAT2:			if(ArmorUtil.checkForHaz2(player))		return false; break;
-			case DIGAMMA:			if(ArmorUtil.checkForDigamma(player))	return false; if(ArmorUtil.checkForDigamma2(player))	return false; break;
+			case DIGAMMA:			if(ArmorUtil.checkForDigamma(player) || ArmorUtil.checkForDigamma2(player))	return false; break;
 			case DIGAMMA2:			if(ArmorUtil.checkForDigamma2(player))	return false; break;
 			}
 			
@@ -289,11 +274,11 @@ public class ContaminationUtil {
 				return false;
 		}
 		
-		if(hazard == HazardType.RADIATION && isRadImmune(entity))
+		if(hazard == HazardType.RADIATION && ContaminationUtil.isRadImmune(entity))
 			return false;
 		
 		switch(hazard) {
-		case RADIATION: HbmLivingProps.incrementRadiation(entity, amount * (cont == ContaminationType.RAD_BYPASS ? 1 : calculateRadiationMod(entity))); break;
+		case RADIATION: HbmLivingProps.incrementRadiation(entity, amount * (cont == ContaminationType.RAD_BYPASS ? 1 : ContaminationUtil.calculateRadiationMod(entity))); break;
 		case DIGAMMA: HbmLivingProps.incrementDigamma(entity, amount); break;
 		}
 		

@@ -22,7 +22,7 @@ public class ItemLemon extends ItemFood {
 		super(p_i45339_1_, p_i45339_2_, p_i45339_3_);
 		
 		if(this == ModItems.med_ipecac || this == ModItems.med_ptsd) {
-			this.setAlwaysEdible();
+			setAlwaysEdible();
 		}
 	}
 	
@@ -125,7 +125,8 @@ public class ItemLemon extends ItemFood {
 		}
     }
 
-    public ItemStack onEaten(ItemStack stack, World worldObj, EntityPlayer player)
+    @Override
+	public ItemStack onEaten(ItemStack stack, World worldObj, EntityPlayer player)
     {
         ItemStack sta = super.onEaten(stack, worldObj, player);
         

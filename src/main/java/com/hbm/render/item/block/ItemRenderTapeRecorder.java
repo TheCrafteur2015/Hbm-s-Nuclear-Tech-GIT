@@ -16,7 +16,7 @@ public class ItemRenderTapeRecorder implements IItemRenderer {
 	protected ModelTapeRecorder swordModel;
 	
 	public ItemRenderTapeRecorder() {
-		swordModel = new ModelTapeRecorder();
+		this.swordModel = new ModelTapeRecorder();
 	}
 	
 	@Override
@@ -44,7 +44,7 @@ public class ItemRenderTapeRecorder implements IItemRenderer {
 			GL11.glScalef(0.5F, 0.5F, 0.5F);
 			GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
 			GL11.glTranslatef(0.0F, -1.0F, 0.0F);
-			swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+			this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 		GL11.glPopMatrix();
 		break;
 		case EQUIPPED:
@@ -54,7 +54,7 @@ public class ItemRenderTapeRecorder implements IItemRenderer {
 				GL11.glTranslatef(0.8F, 1.7F, 0.2F);
 				GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
 				GL11.glRotatef(90.0F, 0.0F, -1.0F, 0.0F);
-				swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			GL11.glPopMatrix();
 			break;
 		case EQUIPPED_FIRST_PERSON:
@@ -63,7 +63,7 @@ public class ItemRenderTapeRecorder implements IItemRenderer {
 				GL11.glRotatef(-135.0F, 0.0F, 0.0F, 1.0F);
 				GL11.glTranslatef(-0.6F, -0.6F, -0.1F);
 				GL11.glScalef(0.5F, 0.5F, 0.5F);
-			swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+			this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 		GL11.glPopMatrix();
 			break;
 		default: break;

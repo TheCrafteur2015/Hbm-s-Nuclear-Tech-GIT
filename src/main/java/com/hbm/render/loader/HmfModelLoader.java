@@ -18,7 +18,7 @@ public class HmfModelLoader implements IModelCustomLoader {
     @Override
     public String[] getSuffixes()
     {
-        return types;
+        return HmfModelLoader.types;
     }
 
     @Override

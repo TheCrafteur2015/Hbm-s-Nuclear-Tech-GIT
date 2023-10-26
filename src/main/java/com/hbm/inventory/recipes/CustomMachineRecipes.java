@@ -28,7 +28,7 @@ public class CustomMachineRecipes extends SerializableRecipe {
 	@Override
 	public void registerDefaults() {
 		
-		recipes.put("paperPress", new ArrayList() {{
+		CustomMachineRecipes.recipes.put("paperPress", new ArrayList() {{
 			CustomMachineRecipe recipe = new CustomMachineRecipe();
 			recipe.inputFluids = new FluidStack[] {new FluidStack(Fluids.WATER, 250)};
 			recipe.inputItems = new AStack[] {new ComparableStack(ModItems.powder_sawdust)};
@@ -47,12 +47,12 @@ public class CustomMachineRecipes extends SerializableRecipe {
 
 	@Override
 	public Object getRecipeObject() {
-		return recipes;
+		return CustomMachineRecipes.recipes;
 	}
 
 	@Override
 	public void deleteRecipes() {
-		recipes.clear();
+		CustomMachineRecipes.recipes.clear();
 	}
 
 	@Override
@@ -60,22 +60,22 @@ public class CustomMachineRecipes extends SerializableRecipe {
 		JsonObject obj = recipe.getAsJsonObject();
 		
 		String name = obj.get("recipeKey").getAsString();
-		List<CustomMachineRecipe> list = new ArrayList();
+		List<CustomMachineRecipe> list = new ArrayList<>();
 		JsonArray array = obj.get("recipes").getAsJsonArray();
 		
 		for(int i = 0; i < array.size(); i++) {
 			JsonObject rec = array.get(i).getAsJsonObject();
 			CustomMachineRecipe recipeInstance = new CustomMachineRecipe();
-			recipeInstance.inputFluids = this.readFluidArray(rec.get("inputFluids").getAsJsonArray());
-			recipeInstance.inputItems = this.readAStackArray(rec.get("inputItems").getAsJsonArray());
-			recipeInstance.outputFluids = this.readFluidArray(rec.get("outputFluids").getAsJsonArray());
-			recipeInstance.outputItems = this.readItemStackArrayChance(rec.get("outputItems").getAsJsonArray());
+			recipeInstance.inputFluids = readFluidArray(rec.get("inputFluids").getAsJsonArray());
+			recipeInstance.inputItems = readAStackArray(rec.get("inputItems").getAsJsonArray());
+			recipeInstance.outputFluids = readFluidArray(rec.get("outputFluids").getAsJsonArray());
+			recipeInstance.outputItems = readItemStackArrayChance(rec.get("outputItems").getAsJsonArray());
 			recipeInstance.duration = rec.get("duration").getAsInt();
 			recipeInstance.consumptionPerTick = rec.get("consumptionPerTick").getAsInt();
 			list.add(recipeInstance);
 		}
 		
-		recipes.put(name, list);
+		CustomMachineRecipes.recipes.put(name, list);
 	}
 
 	@Override
@@ -89,19 +89,19 @@ public class CustomMachineRecipes extends SerializableRecipe {
 			writer.beginObject();
 			
 			writer.name("inputFluids").beginArray();
-			for(FluidStack stack : recipeInstance.inputFluids) this.writeFluidStack(stack, writer);
+			for(FluidStack stack : recipeInstance.inputFluids) writeFluidStack(stack, writer);
 			writer.endArray();
 			
 			writer.name("inputItems").beginArray();
-			for(AStack stack : recipeInstance.inputItems) this.writeAStack(stack, writer);
+			for(AStack stack : recipeInstance.inputItems) writeAStack(stack, writer);
 			writer.endArray();
 			
 			writer.name("outputFluids").beginArray();
-			for(FluidStack stack : recipeInstance.outputFluids) this.writeFluidStack(stack, writer);
+			for(FluidStack stack : recipeInstance.outputFluids) writeFluidStack(stack, writer);
 			writer.endArray();
 			
 			writer.name("outputItems").beginArray();
-			for(Pair stack : recipeInstance.outputItems) this.writeItemStackChance(stack, writer);
+			for(Pair stack : recipeInstance.outputItems) writeItemStackChance(stack, writer);
 			writer.endArray();
 
 			writer.name("duration").value(recipeInstance.duration);

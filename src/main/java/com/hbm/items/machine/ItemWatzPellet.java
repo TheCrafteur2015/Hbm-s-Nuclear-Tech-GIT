@@ -10,7 +10,10 @@ import com.hbm.render.icon.RGBMutatorInterpolatedComponentRemap;
 import com.hbm.render.icon.TextureAtlasSpriteMutatable;
 import com.hbm.util.EnumUtil;
 import com.hbm.util.function.Function;
-import com.hbm.util.function.Function.*;
+import com.hbm.util.function.Function.FunctionLinear;
+import com.hbm.util.function.Function.FunctionQuadratic;
+import com.hbm.util.function.Function.FunctionSqrt;
+import com.hbm.util.function.Function.FunctionSqrtFalling;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -30,8 +33,8 @@ public class ItemWatzPellet extends ItemEnumMulti {
 
 	public ItemWatzPellet() {
 		super(EnumWatzType.class, true, true);
-		this.setMaxStackSize(16);
-		this.setCreativeTab(MainRegistry.controlTab);
+		setMaxStackSize(16);
+		setCreativeTab(MainRegistry.controlTab);
 	}
 
 	public static enum EnumWatzType {
@@ -71,10 +74,11 @@ public class ItemWatzPellet extends ItemEnumMulti {
 		}
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister reg) {
 		
-		Enum[] enums = theEnum.getEnumConstants();
+		Enum[] enums = this.theEnum.getEnumConstants();
 		this.icons = new IIcon[enums.length];
 		
 		if(reg instanceof TextureMap) {
@@ -82,16 +86,16 @@ public class ItemWatzPellet extends ItemEnumMulti {
 			
 			for(int i = 0; i < EnumWatzType.values().length; i++) {
 				EnumWatzType type = EnumWatzType.values()[i];
-				String placeholderName = this.getIconString() + "-" + (type.name() + this.getUnlocalizedName());
-				int light = this == ModItems.watz_pellet_depleted ? desaturate(type.colorLight) : type.colorLight;
-				int dark = this == ModItems.watz_pellet_depleted ? desaturate(type.colorDark) : type.colorDark;
+				String placeholderName = getIconString() + "-" + (type.name() + this.getUnlocalizedName());
+				int light = this == ModItems.watz_pellet_depleted ? ItemWatzPellet.desaturate(type.colorLight) : type.colorLight;
+				int dark = this == ModItems.watz_pellet_depleted ? ItemWatzPellet.desaturate(type.colorDark) : type.colorDark;
 				TextureAtlasSpriteMutatable mutableIcon = new TextureAtlasSpriteMutatable(placeholderName, new RGBMutatorInterpolatedComponentRemap(0xD2D2D2, 0x333333, light, dark));
 				map.setTextureEntry(placeholderName, mutableIcon);
-				icons[i] = mutableIcon;
+				this.icons[i] = mutableIcon;
 			}
 		}
 		
-		this.itemIcon = reg.registerIcon(this.getIconString());
+		this.itemIcon = reg.registerIcon(getIconString());
 	}
 	
 	public static int desaturate(int color) {
@@ -153,41 +157,41 @@ public class ItemWatzPellet extends ItemEnumMulti {
 
 	@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
-		return 1D - getEnrichment(stack);
+		return 1D - ItemWatzPellet.getEnrichment(stack);
 	}
 	
 	public static double getEnrichment(ItemStack stack) {
 		EnumWatzType num = EnumUtil.grabEnumSafely(EnumWatzType.class, stack.getItemDamage());
-		return getYield(stack) / num.yield;
+		return ItemWatzPellet.getYield(stack) / num.yield;
 	}
 	
 	public static double getYield(ItemStack stack) {
-		return getDouble(stack, "yield");
+		return ItemWatzPellet.getDouble(stack, "yield");
 	}
 	
 	public static void setYield(ItemStack stack, double yield) {
-		setDouble(stack, "yield", yield);
+		ItemWatzPellet.setDouble(stack, "yield", yield);
 	}
 	
 	public static void setDouble(ItemStack stack, String key, double yield) {
-		if(!stack.hasTagCompound()) setNBTDefaults(stack);
+		if(!stack.hasTagCompound()) ItemWatzPellet.setNBTDefaults(stack);
 		stack.stackTagCompound.setDouble(key, yield);
 	}
 	
 	public static double getDouble(ItemStack stack, String key) {
-		if(!stack.hasTagCompound()) setNBTDefaults(stack);
+		if(!stack.hasTagCompound()) ItemWatzPellet.setNBTDefaults(stack);
 		return stack.stackTagCompound.getDouble(key);
 	}
 	
 	private static void setNBTDefaults(ItemStack stack) {
 		EnumWatzType num = EnumUtil.grabEnumSafely(EnumWatzType.class, stack.getItemDamage());
 		stack.stackTagCompound = new NBTTagCompound();
-		setYield(stack, num.yield);
+		ItemWatzPellet.setYield(stack, num.yield);
 	}
 	
 	@Override
 	public void onCreated(ItemStack stack, World world, EntityPlayer player) {
 		if(this != ModItems.watz_pellet) return;
-		setNBTDefaults(stack); //minimize the window where NBT screwups can happen
+		ItemWatzPellet.setNBTDefaults(stack); //minimize the window where NBT screwups can happen
 	}
 }

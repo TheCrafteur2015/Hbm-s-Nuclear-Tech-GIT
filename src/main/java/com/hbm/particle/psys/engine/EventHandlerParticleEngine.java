@@ -1,6 +1,7 @@
 package com.hbm.particle.psys.engine;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -14,11 +15,12 @@ public class EventHandlerParticleEngine {
 	@SubscribeEvent
 	public void worldTick(WorldTickEvent event) {
 		
-		if(event.phase == event.phase.START) {
+		if(event.phase == Phase.START) {
 			
 		}
 	}
 
+	@SuppressWarnings("unused")
 	@SubscribeEvent
 	public void onRenderWorldLast(RenderWorldLastEvent event) {
 		float interp = event.partialTicks;

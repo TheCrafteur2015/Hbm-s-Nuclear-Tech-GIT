@@ -42,7 +42,7 @@ public class RenderRBMKControlRod extends TileEntitySpecialRenderer {
 		if(control.getBlockType() instanceof RBMKBase) {
 			bindTexture(((RBMKBase)control.getBlockType()).coverTexture);
 		} else {
-			bindTexture(texture);
+			bindTexture(this.texture);
 		}
 		
 		double level = control.lastLevel + (control.level - control.lastLevel) * i;

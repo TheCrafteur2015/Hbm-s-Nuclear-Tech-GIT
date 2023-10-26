@@ -12,21 +12,21 @@ public class TileEntityMachineDetector extends TileEntityLoadedBase implements I
 	@Override
     public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			this.updateConnections();
+			updateConnections();
 			
-			int meta = this.getBlockMetadata();
+			int meta = getBlockMetadata();
 			int state = 0;
 			
-			if(power > 0) {
+			if(this.power > 0) {
 				state = 1;
-				power--;
+				this.power--;
 			}
 			
 			if(meta != state) {
-				worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, state, 3);
-				this.markDirty();
+				this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, state, 3);
+				markDirty();
 			}
 		}
 	}
@@ -34,17 +34,17 @@ public class TileEntityMachineDetector extends TileEntityLoadedBase implements I
 	private void updateConnections() {
 		
 		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-			this.trySubscribe(worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, dir);
+			trySubscribe(this.worldObj, this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ, dir);
 	}
 
 	@Override
 	public void setPower(long i) {
-		power = i;
+		this.power = i;
 	}
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 
 	@Override

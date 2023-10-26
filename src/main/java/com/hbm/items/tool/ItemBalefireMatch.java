@@ -12,11 +12,12 @@ public class ItemBalefireMatch extends Item {
 
     public ItemBalefireMatch() {
         this.maxStackSize = 1;
-        this.setMaxDamage(256);
-        this.setCreativeTab(CreativeTabs.tabTools);
+        setMaxDamage(256);
+        setCreativeTab(CreativeTabs.tabTools);
     }
     
-    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float fx, float fy, float fz) {
+    @Override
+	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float fx, float fy, float fz) {
     	
         if (side == 0)
             --y;
@@ -41,7 +42,7 @@ public class ItemBalefireMatch extends Item {
         } else {
         	
             if (world.isAirBlock(x, y, z)) {
-                world.playSoundEffect((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "fire.ignite", 1.0F, itemRand.nextFloat() * 0.4F + 0.8F);
+                world.playSoundEffect((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "fire.ignite", 1.0F, Item.itemRand.nextFloat() * 0.4F + 0.8F);
                 world.setBlock(x, y, z, ModBlocks.balefire);
             }
 

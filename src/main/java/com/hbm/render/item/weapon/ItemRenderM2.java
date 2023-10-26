@@ -21,10 +21,10 @@ public class ItemRenderM2 extends ItemRenderBase {
 			case ENTITY:
 				GL11.glTranslated(0, -0.25, 0);
 				GL11.glRotatef(90, 0, 1, 0);
-				GL11.glScalef(scale4, scale4, scale4); 
+				GL11.glScalef(ItemRenderM2.scale4, ItemRenderM2.scale4, ItemRenderM2.scale4); 
 				break;
 			case EQUIPPED:
-				GL11.glScalef(scale1, scale1, -scale1);
+				GL11.glScalef(ItemRenderM2.scale1, ItemRenderM2.scale1, -ItemRenderM2.scale1);
 				GL11.glRotatef(-90, 0, 1, 0);
 				GL11.glTranslatef(-0.4f, 0.5f, -5);
 				GL11.glRotatef(30, 1, 0, 0);
@@ -53,7 +53,7 @@ public class ItemRenderM2 extends ItemRenderBase {
 				
 				break;
 			case INVENTORY:
-				GL11.glScalef(scale2, scale2, scale2);
+				GL11.glScalef(ItemRenderM2.scale2, ItemRenderM2.scale2, ItemRenderM2.scale2);
 				GL11.glTranslated(2.75, 5, 0);
 				GL11.glRotatef(90, 0, 1, 0);
 				GL11.glRotatef(-45, 1, 0, 0);

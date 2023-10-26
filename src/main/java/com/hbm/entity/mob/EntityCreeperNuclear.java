@@ -5,8 +5,8 @@ import java.util.List;
 import com.hbm.entity.logic.EntityNukeExplosionMK5;
 import com.hbm.explosion.ExplosionNukeGeneric;
 import com.hbm.explosion.ExplosionNukeSmall;
-import com.hbm.items.ModItems;
 import com.hbm.items.ItemAmmoEnums.AmmoFatman;
+import com.hbm.items.ModItems;
 import com.hbm.lib.ModDamageSource;
 import com.hbm.main.MainRegistry;
 import com.hbm.packet.AuxParticlePacketNT;
@@ -39,8 +39,8 @@ public class EntityCreeperNuclear extends EntityCreeper {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(50.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.3D);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(50.0D);
+		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.3D);
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class EntityCreeperNuclear extends EntityCreeper {
 		if(this.isDead) return false;
 
 		if(source == ModDamageSource.radiation || source == ModDamageSource.mudPoisoning) {
-			if(this.isEntityAlive()) this.heal(amount);
+			if(isEntityAlive()) heal(amount);
 			return false;
 		}
 
@@ -67,22 +67,22 @@ public class EntityCreeperNuclear extends EntityCreeper {
 
 		super.dropFewItems(p_70628_1_, p_70628_2_);
 
-		if(rand.nextInt(3) == 0)
-			this.dropItem(ModItems.coin_creeper, 1);
+		if(this.rand.nextInt(3) == 0)
+			dropItem(ModItems.coin_creeper, 1);
 	}
 
 	@Override
 	public void onDeath(DamageSource p_70645_1_) {
 		super.onDeath(p_70645_1_);
 
-		List<EntityPlayer> players = worldObj.getEntitiesWithinAABB(EntityPlayer.class, this.boundingBox.expand(50, 50, 50));
+		List<EntityPlayer> players = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, this.boundingBox.expand(50, 50, 50));
 
 		for(EntityPlayer player : players) {
 			player.triggerAchievement(MainRegistry.bossCreeper);
 		}
 
 		if(p_70645_1_.getEntity() instanceof EntitySkeleton || (p_70645_1_.isProjectile() && p_70645_1_.getEntity() instanceof EntityArrow && ((EntityArrow) (p_70645_1_.getEntity())).shootingEntity == null)) {
-			this.entityDropItem(ModItems.ammo_nuke.stackFromEnum(AmmoFatman.STOCK), 1);
+			entityDropItem(ModItems.ammo_nuke.stackFromEnum(AmmoFatman.STOCK), 1);
 		}
 	}
 
@@ -99,8 +99,8 @@ public class EntityCreeperNuclear extends EntityCreeper {
 		
 		super.onUpdate();
 		
-		if(this.isEntityAlive() && this.getHealth() < this.getMaxHealth() && this.ticksExisted % 10 == 0) {
-			this.heal(1.0F);
+		if(isEntityAlive() && getHealth() < getMaxHealth() && this.ticksExisted % 10 == 0) {
+			heal(1.0F);
 		}
 	}
 
@@ -108,28 +108,28 @@ public class EntityCreeperNuclear extends EntityCreeper {
 	public void func_146077_cc() {
 		if(!this.worldObj.isRemote) {
 
-			this.setDead();
+			setDead();
 			
 			boolean flag = this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing");
 
-			if(this.getPowered()) {
+			if(getPowered()) {
 
 				NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "muke");
-				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, posX, posY + 0.5, posZ), new TargetPoint(dimension, posX, posY, posZ, 250));
-				worldObj.playSoundEffect(posX, posY + 0.5, posZ, "hbm:weapon.mukeExplosion", 15.0F, 1.0F);
+				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, this.posX, this.posY + 0.5, this.posZ), new TargetPoint(this.dimension, this.posX, this.posY, this.posZ, 250));
+				this.worldObj.playSoundEffect(this.posX, this.posY + 0.5, this.posZ, "hbm:weapon.mukeExplosion", 15.0F, 1.0F);
 
 				if(flag) {
-					worldObj.spawnEntityInWorld(EntityNukeExplosionMK5.statFac(worldObj, 50, posX, posY, posZ).mute());
+					this.worldObj.spawnEntityInWorld(EntityNukeExplosionMK5.statFac(this.worldObj, 50, this.posX, this.posY, this.posZ).mute());
 				} else {
-					ExplosionNukeGeneric.dealDamage(worldObj, posX, posY + 0.5, posZ, 100);
+					ExplosionNukeGeneric.dealDamage(this.worldObj, this.posX, this.posY + 0.5, this.posZ, 100);
 				}
 			} else {
 
 				if(flag) {
-					ExplosionNukeSmall.explode(worldObj, posX, posY + 0.5, posZ, ExplosionNukeSmall.PARAMS_MEDIUM);
+					ExplosionNukeSmall.explode(this.worldObj, this.posX, this.posY + 0.5, this.posZ, ExplosionNukeSmall.PARAMS_MEDIUM);
 				} else {
-					ExplosionNukeSmall.explode(worldObj, posX, posY + 0.5, posZ, ExplosionNukeSmall.PARAMS_SAFE);
+					ExplosionNukeSmall.explode(this.worldObj, this.posX, this.posY + 0.5, this.posZ, ExplosionNukeSmall.PARAMS_SAFE);
 				}
 			}
 		}

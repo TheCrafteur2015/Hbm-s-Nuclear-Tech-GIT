@@ -34,8 +34,8 @@ public class RenderBullet extends Render {
 	private ModelBaleflare bf;
 
 	public RenderBullet() {
-		bullet = new ModelBullet();
-		bf = new ModelBaleflare();
+		this.bullet = new ModelBullet();
+		this.bf = new ModelBaleflare();
 	}
 
 	@Override
@@ -86,10 +86,10 @@ public class RenderBullet extends Render {
 
 		if (type == 2) {
 			bindTexture(new ResourceLocation(RefStrings.MODID + ":textures/models/emplacer.png"));
-			bullet.renderAll(0.0625F);
+			this.bullet.renderAll(0.0625F);
 		} else if (type == 1) {
 			bindTexture(new ResourceLocation(RefStrings.MODID + ":textures/models/tau.png"));
-			bullet.renderAll(0.0625F);
+			this.bullet.renderAll(0.0625F);
 		} else if (type == 0) {
 			
 			GL11.glScaled(0.5, 0.5, 0.5);
@@ -223,7 +223,7 @@ public class RenderBullet extends Render {
 			break;
 		case 2:
 			bindTexture(new ResourceLocation(RefStrings.MODID + ":textures/models/BaleFlare.png"));
-			bf.renderAll(0.0625F); break;
+			this.bf.renderAll(0.0625F); break;
 		case 3:
 			GL11.glRotated(90, 0, 0, 1);
 			GL11.glRotated(90, 0, 1, 0);

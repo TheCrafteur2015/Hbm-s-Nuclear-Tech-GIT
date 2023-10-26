@@ -31,21 +31,21 @@ public class ArmorHEV extends ArmorFSBPowered {
 	@SideOnly(Side.CLIENT)
 	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot) {
 
-		if(models == null) {
-			models = new ModelArmorHEV[4];
+		if(this.models == null) {
+			this.models = new ModelArmorHEV[4];
 
 			for(int i = 0; i < 4; i++)
-				models[i] = new ModelArmorHEV(i);
+				this.models[i] = new ModelArmorHEV(i);
 		}
 
-		return models[armorSlot];
+		return this.models[armorSlot];
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void handleOverlay(RenderGameOverlayEvent.Pre event, EntityPlayer player) {
 
-		if(this.hasFSBArmorIgnoreCharge(player)) {
+		if(hasFSBArmorIgnoreCharge(player)) {
 
 			if(event.type == ElementType.ARMOR) {
 				event.setCanceled(true);
@@ -70,12 +70,12 @@ public class ArmorHEV extends ArmorFSBPowered {
 
 		float radiation = 0;
 
-		radiation = lastResult - prevResult;
+		radiation = ArmorHEV.lastResult - ArmorHEV.prevResult;
 
-		if(System.currentTimeMillis() >= lastSurvey + 1000) {
-			lastSurvey = System.currentTimeMillis();
-			prevResult = lastResult;
-			lastResult = in;
+		if(System.currentTimeMillis() >= ArmorHEV.lastSurvey + 1000) {
+			ArmorHEV.lastSurvey = System.currentTimeMillis();
+			ArmorHEV.prevResult = ArmorHEV.lastResult;
+			ArmorHEV.lastResult = in;
 		}
 
 		GL11.glPushMatrix();

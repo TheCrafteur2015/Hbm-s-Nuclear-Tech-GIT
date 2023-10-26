@@ -24,54 +24,54 @@ public class CT {
 	public static final int h = 12;	//horizontal
 	public static final int v = 16;	//vertical
 	
-	public static final int ftl = f | t | l;
-	public static final int ftr = f | t | r;
-	public static final int fbl = f | b | l;
-	public static final int fbr = f | b | r;
-	public static final int ctl = c | t | l;
-	public static final int ctr = c | t | r;
-	public static final int cbl = c | b | l;
-	public static final int cbr = c | b | r;
-	public static final int jtl = j | t | l;
-	public static final int jtr = j | t | r;
-	public static final int jbl = j | b | l;
-	public static final int jbr = j | b | r;
-	public static final int htl = h | t | l;
-	public static final int htr = h | t | r;
-	public static final int hbl = h | b | l;
-	public static final int hbr = h | b | r;
-	public static final int vtl = v | t | l;
-	public static final int vtr = v | t | r;
-	public static final int vbl = v | b | l;
-	public static final int vbr = v | b | r;
+	public static final int ftl = CT.f | CT.t | CT.l;
+	public static final int ftr = CT.f | CT.t | CT.r;
+	public static final int fbl = CT.f | CT.b | CT.l;
+	public static final int fbr = CT.f | CT.b | CT.r;
+	public static final int ctl = CT.c | CT.t | CT.l;
+	public static final int ctr = CT.c | CT.t | CT.r;
+	public static final int cbl = CT.c | CT.b | CT.l;
+	public static final int cbr = CT.c | CT.b | CT.r;
+	public static final int jtl = CT.j | CT.t | CT.l;
+	public static final int jtr = CT.j | CT.t | CT.r;
+	public static final int jbl = CT.j | CT.b | CT.l;
+	public static final int jbr = CT.j | CT.b | CT.r;
+	public static final int htl = CT.h | CT.t | CT.l;
+	public static final int htr = CT.h | CT.t | CT.r;
+	public static final int hbl = CT.h | CT.b | CT.l;
+	public static final int hbr = CT.h | CT.b | CT.r;
+	public static final int vtl = CT.v | CT.t | CT.l;
+	public static final int vtr = CT.v | CT.t | CT.r;
+	public static final int vbl = CT.v | CT.b | CT.l;
+	public static final int vbr = CT.v | CT.b | CT.r;
 
 	public static boolean isL(int i) {
-		return (i & l) != 0;
+		return (i & CT.l) != 0;
 	}
 	public static boolean isR(int i) {
-		return (i & r) != 0;
+		return (i & CT.r) != 0;
 	}
 	public static boolean isT(int i) {
-		return (i & t) != 0;
+		return (i & CT.t) != 0;
 	}
 	public static boolean isB(int i) {
-		return (i & b) != 0;
+		return (i & CT.b) != 0;
 	}
 	
 	public static boolean isF(int i) {
-		return i >= f && i < f + 4;
+		return i >= CT.f && i < CT.f + 4;
 	}
 	public static boolean isC(int i) {
-		return i >= c && i < c + 4;
+		return i >= CT.c && i < CT.c + 4;
 	}
 	public static boolean isJ(int i) {
-		return i >= j && i < j + 4;
+		return i >= CT.j && i < CT.j + 4;
 	}
 	public static boolean isH(int i) {
-		return i >= h && i < h + 4;
+		return i >= CT.h && i < CT.h + 4;
 	}
 	public static boolean isV(int i) {
-		return i >= v && i < v + 4;
+		return i >= CT.v && i < CT.v + 4;
 	}
 	
 	public static int renderID = RenderingRegistry.getNextAvailableRenderId();

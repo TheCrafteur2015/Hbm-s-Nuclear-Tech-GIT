@@ -17,7 +17,7 @@ public class HazardEntry {
 	/*
 	 * Modifiers are evaluated in the order they're being applied to the entry.
 	 */
-	List<HazardModifier> mods = new ArrayList();
+	List<HazardModifier> mods = new ArrayList<>();
 	
 	public HazardEntry(HazardTypeBase type) {
 		this(type, 1F);
@@ -34,19 +34,20 @@ public class HazardEntry {
 	}
 	
 	public void applyHazard(ItemStack stack, EntityLivingBase entity) {
-		type.onUpdate(entity, HazardModifier.evalAllModifiers(stack, entity, baseLevel, mods), stack);
+		this.type.onUpdate(entity, HazardModifier.evalAllModifiers(stack, entity, this.baseLevel, this.mods), stack);
 	}
 	
 	public HazardTypeBase getType() {
 		return this.type;
 	}
 	
+	@Override
 	public HazardEntry clone() {
 		return clone(1F);
 	}
 	
 	public HazardEntry clone(float mult) {
-		HazardEntry clone = new HazardEntry(type, baseLevel * mult);
+		HazardEntry clone = new HazardEntry(this.type, this.baseLevel * mult);
 		clone.mods = this.mods;
 		return clone;
 	}

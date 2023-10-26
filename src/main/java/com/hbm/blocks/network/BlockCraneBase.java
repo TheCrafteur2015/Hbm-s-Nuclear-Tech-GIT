@@ -1,12 +1,16 @@
 package com.hbm.blocks.network;
 
-import api.hbm.block.IToolable;
+import java.util.List;
+import java.util.Random;
+
 import com.hbm.blocks.IBlockSideRotation;
 import com.hbm.blocks.ITooltipProvider;
 import com.hbm.items.tool.ItemTooling;
 import com.hbm.lib.RefStrings;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.network.TileEntityCraneBase;
+
+import api.hbm.block.IToolable;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -27,9 +31,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.util.List;
-import java.util.Random;
 
 public abstract class BlockCraneBase extends BlockContainer implements IBlockSideRotation, IToolable, ITooltipProvider {
 
@@ -165,7 +166,7 @@ public abstract class BlockCraneBase extends BlockContainer implements IBlockSid
 					if (leftHandRotation == ForgeDirection.DOWN) {
 						return this.iconDirectionalTurnRight;
 					}
-				} else return iconDirectional;
+				} else return this.iconDirectional;
 			}
 
 			return this.blockIcon;
@@ -309,6 +310,6 @@ public abstract class BlockCraneBase extends BlockContainer implements IBlockSid
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		this.addStandardInfo(stack, player, list, ext);
+		addStandardInfo(stack, player, list, ext);
 	}
 }

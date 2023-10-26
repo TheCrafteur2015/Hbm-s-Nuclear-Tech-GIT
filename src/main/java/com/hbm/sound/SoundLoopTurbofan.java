@@ -10,22 +10,22 @@ import net.minecraft.util.ResourceLocation;
 
 public class SoundLoopTurbofan extends SoundLoopMachine {
 	
-	public static List<SoundLoopTurbofan> list = new ArrayList<SoundLoopTurbofan>();
+	public static List<SoundLoopTurbofan> list = new ArrayList<>();
 
 	public SoundLoopTurbofan(ResourceLocation path, TileEntity te) {
 		super(path, te);
-		list.add(this);
+		SoundLoopTurbofan.list.add(this);
 	}
 
 	@Override
 	public void update() {
 		super.update();
 		
-		if(te instanceof TileEntityMachineTurbofan) {
-			TileEntityMachineTurbofan drill = (TileEntityMachineTurbofan)te;
+		if(this.te instanceof TileEntityMachineTurbofan) {
+			TileEntityMachineTurbofan drill = (TileEntityMachineTurbofan)this.te;
 			
 			if(this.volume != 10)
-				volume = 10;
+				this.volume = 10;
 			
 			if(!drill.wasOn)
 				this.donePlaying = true;
@@ -33,7 +33,7 @@ public class SoundLoopTurbofan extends SoundLoopMachine {
 	}
 	
 	public TileEntity getTE() {
-		return te;
+		return this.te;
 	}
 
 }

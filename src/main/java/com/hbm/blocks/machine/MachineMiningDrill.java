@@ -63,7 +63,7 @@ public class MachineMiningDrill extends BlockContainer implements IMultiblock {
 				MultiblockHandler.fillUp(world, x, y, z, MultiblockHandler.drillDimension, ModBlocks.dummy_block_drill);
 				
 				//
-				DummyBlockDrill.safeBreak = true;
+				DummyOldBase.safeBreak = true;
 				world.setBlock(x + 1, y, z, ModBlocks.dummy_port_drill);
 				TileEntity te = world.getTileEntity(x + 1, y, z);
 				if(te instanceof TileEntityDummy) {
@@ -80,7 +80,7 @@ public class MachineMiningDrill extends BlockContainer implements IMultiblock {
 					dummy.targetY = y;
 					dummy.targetZ = z;
 				}
-				DummyBlockDrill.safeBreak = false;
+				DummyOldBase.safeBreak = false;
 				//
 				
 			} else
@@ -92,7 +92,7 @@ public class MachineMiningDrill extends BlockContainer implements IMultiblock {
 				MultiblockHandler.fillUp(world, x, y, z, MultiblockHandler.drillDimension, ModBlocks.dummy_block_drill);
 				
 				//
-				DummyBlockDrill.safeBreak = true;
+				DummyOldBase.safeBreak = true;
 				world.setBlock(x, y, z + 1, ModBlocks.dummy_port_drill);
 				TileEntity te = world.getTileEntity(x, y, z + 1);
 				if(te instanceof TileEntityDummy) {
@@ -109,7 +109,7 @@ public class MachineMiningDrill extends BlockContainer implements IMultiblock {
 					dummy.targetY = y;
 					dummy.targetZ = z;
 				}
-				DummyBlockDrill.safeBreak = false;
+				DummyOldBase.safeBreak = false;
 				//
 				
 			} else
@@ -121,7 +121,7 @@ public class MachineMiningDrill extends BlockContainer implements IMultiblock {
 				MultiblockHandler.fillUp(world, x, y, z, MultiblockHandler.drillDimension, ModBlocks.dummy_block_drill);
 				
 				//
-				DummyBlockDrill.safeBreak = true;
+				DummyOldBase.safeBreak = true;
 				world.setBlock(x + 1, y, z, ModBlocks.dummy_port_drill);
 				TileEntity te = world.getTileEntity(x + 1, y, z);
 				if(te instanceof TileEntityDummy) {
@@ -138,7 +138,7 @@ public class MachineMiningDrill extends BlockContainer implements IMultiblock {
 					dummy.targetY = y;
 					dummy.targetZ = z;
 				}
-				DummyBlockDrill.safeBreak = false;
+				DummyOldBase.safeBreak = false;
 				//
 				
 			} else
@@ -150,7 +150,7 @@ public class MachineMiningDrill extends BlockContainer implements IMultiblock {
 				MultiblockHandler.fillUp(world, x, y, z, MultiblockHandler.drillDimension, ModBlocks.dummy_block_drill);
 				
 				//
-				DummyBlockDrill.safeBreak = true;
+				DummyOldBase.safeBreak = true;
 				world.setBlock(x, y, z + 1, ModBlocks.dummy_port_drill);
 				TileEntity te = world.getTileEntity(x, y, z + 1);
 				if(te instanceof TileEntityDummy) {
@@ -167,7 +167,7 @@ public class MachineMiningDrill extends BlockContainer implements IMultiblock {
 					dummy.targetY = y;
 					dummy.targetZ = z;
 				}
-				DummyBlockDrill.safeBreak = false;
+				DummyOldBase.safeBreak = false;
 				//
 				
 			} else
@@ -181,7 +181,7 @@ public class MachineMiningDrill extends BlockContainer implements IMultiblock {
 	@Override
 	public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_)
     {
-        if (!keepInventory)
+        if (!MachineMiningDrill.keepInventory)
         {
         	ISidedInventory tileentityfurnace = (ISidedInventory)p_149749_1_.getTileEntity(p_149749_2_, p_149749_3_, p_149749_4_);
 

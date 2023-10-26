@@ -21,7 +21,7 @@ public abstract class TileEntityMachineBase extends TileEntityLoadedBase impleme
 	private String customName;
 	
 	public TileEntityMachineBase(int scount) {
-		slots = new ItemStack[scount];
+		this.slots = new ItemStack[scount];
 	}
 	
 	/** The "chunks is modified, pls don't forget to save me" effect of markDirty, minus the block updates */
@@ -31,20 +31,20 @@ public abstract class TileEntityMachineBase extends TileEntityLoadedBase impleme
 
 	@Override
 	public int getSizeInventory() {
-		return slots.length;
+		return this.slots.length;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		return slots[i];
+		return this.slots[i];
 	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			ItemStack itemStack = slots[i];
-			slots[i] = null;
+			ItemStack itemStack = this.slots[i];
+			this.slots[i] = null;
 			return itemStack;
 		} else {
 		return null;
@@ -53,7 +53,7 @@ public abstract class TileEntityMachineBase extends TileEntityLoadedBase impleme
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemStack) {
-		slots[i] = itemStack;
+		this.slots[i] = itemStack;
 		if(itemStack != null && itemStack.stackSize > getInventoryStackLimit())
 		{
 			itemStack.stackSize = getInventoryStackLimit();
@@ -62,7 +62,7 @@ public abstract class TileEntityMachineBase extends TileEntityLoadedBase impleme
 
 	@Override
 	public String getInventoryName() {
-		return this.hasCustomInventoryName() ? this.customName : getName();
+		return hasCustomInventoryName() ? this.customName : getName();
 	}
 	
 	public abstract String getName();
@@ -83,10 +83,10 @@ public abstract class TileEntityMachineBase extends TileEntityLoadedBase impleme
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		if(worldObj.getTileEntity(xCoord, yCoord, zCoord) != this) {
+		if(this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this) {
 			return false;
 		} else {
-			return player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 128;
+			return player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 128;
 		}
 	}
 	
@@ -102,17 +102,17 @@ public abstract class TileEntityMachineBase extends TileEntityLoadedBase impleme
 	
 	@Override
 	public ItemStack decrStackSize(int slot, int amount) {
-		if(slots[slot] != null) {
+		if(this.slots[slot] != null) {
 			
-			if(slots[slot].stackSize <= amount) {
-				ItemStack itemStack = slots[slot];
-				slots[slot] = null;
+			if(this.slots[slot].stackSize <= amount) {
+				ItemStack itemStack = this.slots[slot];
+				this.slots[slot] = null;
 				return itemStack;
 			}
 			
-			ItemStack itemStack1 = slots[slot].splitStack(amount);
-			if(slots[slot].stackSize == 0) {
-				slots[slot] = null;
+			ItemStack itemStack1 = this.slots[slot].splitStack(amount);
+			if(this.slots[slot].stackSize == 0) {
+				this.slots[slot] = null;
 			}
 			
 			return itemStack1;
@@ -123,7 +123,7 @@ public abstract class TileEntityMachineBase extends TileEntityLoadedBase impleme
 
 	@Override
 	public boolean canInsertItem(int slot, ItemStack itemStack, int side) {
-		return this.isItemValidForSlot(slot, itemStack);
+		return isItemValidForSlot(slot, itemStack);
 	}
 
 	@Override
@@ -150,8 +150,8 @@ public abstract class TileEntityMachineBase extends TileEntityLoadedBase impleme
 	@Deprecated
 	public void updateGauge(int val, int id, int range) {
 
-		if(!worldObj.isRemote)
-			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(xCoord, yCoord, zCoord, val, id), new TargetPoint(this.worldObj.provider.dimensionId, xCoord, yCoord, zCoord, range));
+		if(!this.worldObj.isRemote)
+			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(this.xCoord, this.yCoord, this.zCoord, val, id), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, range));
 	}
 
 	@Deprecated
@@ -159,10 +159,11 @@ public abstract class TileEntityMachineBase extends TileEntityLoadedBase impleme
 	
 	public void networkPack(NBTTagCompound nbt, int range) {
 
-		if(!worldObj.isRemote)
-			PacketDispatcher.wrapper.sendToAllAround(new NBTPacket(nbt, xCoord, yCoord, zCoord), new TargetPoint(this.worldObj.provider.dimensionId, xCoord, yCoord, zCoord, range));
+		if(!this.worldObj.isRemote)
+			PacketDispatcher.wrapper.sendToAllAround(new NBTPacket(nbt, this.xCoord, this.yCoord, this.zCoord), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, range));
 	}
 	
+	@Override
 	public void networkUnpack(NBTTagCompound nbt) { }
 	
 	@Deprecated
@@ -177,9 +178,9 @@ public abstract class TileEntityMachineBase extends TileEntityLoadedBase impleme
 		{
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("slot");
-			if(b0 >= 0 && b0 < slots.length)
+			if(b0 >= 0 && b0 < this.slots.length)
 			{
-				slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
+				this.slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
 			}
 		}
 	}
@@ -189,13 +190,13 @@ public abstract class TileEntityMachineBase extends TileEntityLoadedBase impleme
 		super.writeToNBT(nbt);
 		NBTTagList list = new NBTTagList();
 		
-		for(int i = 0; i < slots.length; i++)
+		for(int i = 0; i < this.slots.length; i++)
 		{
-			if(slots[i] != null)
+			if(this.slots[i] != null)
 			{
 				NBTTagCompound nbt1 = new NBTTagCompound();
 				nbt1.setByte("slot", (byte)i);
-				slots[i].writeToNBT(nbt1);
+				this.slots[i].writeToNBT(nbt1);
 				list.appendTag(nbt1);
 			}
 		}
@@ -207,7 +208,7 @@ public abstract class TileEntityMachineBase extends TileEntityLoadedBase impleme
 		int count = 0;
 		
 		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-			if(worldObj.getBlock(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ) == ModBlocks.muffler)
+			if(this.worldObj.getBlock(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ) == ModBlocks.muffler)
 				count++;
 		
 		return count;

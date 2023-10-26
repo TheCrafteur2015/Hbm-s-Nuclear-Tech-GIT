@@ -23,7 +23,7 @@ import net.minecraft.world.World;
 public class EntityRequestDrone extends EntityDroneBase {
 	
 	public ItemStack heldItem;
-	public List program = new ArrayList();
+	public List program = new ArrayList<>();
 	int nextActionTimer = 0;
 	
 	public static enum DroneProgram {
@@ -38,30 +38,30 @@ public class EntityRequestDrone extends EntityDroneBase {
 	public void onUpdate() {
 		super.onUpdate();
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			if(Vec3.createVectorHelper(motionX, motionY, motionZ).lengthVector() < 0.01) {
+			if(Vec3.createVectorHelper(this.motionX, this.motionY, this.motionZ).lengthVector() < 0.01) {
 				
-				if(nextActionTimer > 0) {
-					nextActionTimer--;
+				if(this.nextActionTimer > 0) {
+					this.nextActionTimer--;
 				} else {
 					
-					if(program.isEmpty()) {
-						this.setDead(); //self-destruct if no further operations are pending
-						this.entityDropItem(new ItemStack(ModItems.drone, 1, EnumDroneType.REQUEST.ordinal()), 1F);
+					if(this.program.isEmpty()) {
+						setDead(); //self-destruct if no further operations are pending
+						entityDropItem(new ItemStack(ModItems.drone, 1, EnumDroneType.REQUEST.ordinal()), 1F);
 						return;
 					}
 					
-					Object next = program.get(0);
-					program.remove(0);
+					Object next = this.program.get(0);
+					this.program.remove(0);
 					
 					if(next instanceof BlockPos) {
 						BlockPos pos = (BlockPos) next;
-						this.setTarget(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-					} else if(next instanceof AStack && heldItem == null) {
+						setTarget(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+					} else if(next instanceof AStack && this.heldItem == null) {
 						
 						AStack aStack = (AStack) next;
-						TileEntity tile = worldObj.getTileEntity((int) Math.floor(posX), (int) Math.floor(posY - 1), (int) Math.floor(posZ));
+						TileEntity tile = this.worldObj.getTileEntity((int) Math.floor(this.posX), (int) Math.floor(this.posY - 1), (int) Math.floor(this.posZ));
 						
 						if(tile instanceof TileEntityDroneProvider) {
 							TileEntityDroneProvider provider = (TileEntityDroneProvider) tile;
@@ -71,25 +71,25 @@ public class EntityRequestDrone extends EntityDroneBase {
 								
 								if(stack != null && aStack.matchesRecipe(stack, true)) {
 									this.heldItem = stack.copy();
-									this.setAppearance(1);
-									worldObj.playSoundEffect(posX, posY, posZ, "hbm:item.unpack", 0.5F, 0.75F);
+									setAppearance(1);
+									this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "hbm:item.unpack", 0.5F, 0.75F);
 									provider.slots[i] = null;
 									provider.markDirty();
 									break;
 								}
 							}
 						}
-						nextActionTimer = 5;
+						this.nextActionTimer = 5;
 					} else if(next == DroneProgram.UNLOAD && this.heldItem != null) {
 	
-						TileEntity tile = worldObj.getTileEntity((int) Math.floor(posX), (int) Math.floor(posY - 1), (int) Math.floor(posZ));
+						TileEntity tile = this.worldObj.getTileEntity((int) Math.floor(this.posX), (int) Math.floor(this.posY - 1), (int) Math.floor(this.posZ));
 						if(tile instanceof TileEntityDroneRequester) {
 							TileEntityDroneRequester requester = (TileEntityDroneRequester) tile;
 							
 							for(int i = 9; i < 18; i++) {
 								ItemStack stack = requester.slots[i];
-								if(stack != null && stack.getItem() == heldItem.getItem() && stack.getItemDamage() == heldItem.getItemDamage()) {
-									int toTransfer = Math.min(stack.getMaxStackSize() - stack.stackSize, heldItem.stackSize);
+								if(stack != null && stack.getItem() == this.heldItem.getItem() && stack.getItemDamage() == this.heldItem.getItemDamage()) {
+									int toTransfer = Math.min(stack.getMaxStackSize() - stack.stackSize, this.heldItem.stackSize);
 									requester.slots[i].stackSize += toTransfer;
 									this.heldItem.stackSize -= toTransfer;
 								}
@@ -106,22 +106,22 @@ public class EntityRequestDrone extends EntityDroneBase {
 							}
 							
 							if(this.heldItem == null) {
-								this.setAppearance(0);
-								worldObj.playSoundEffect(posX, posY, posZ, "hbm:item.unpack", 0.5F, 0.75F);
+								setAppearance(0);
+								this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "hbm:item.unpack", 0.5F, 0.75F);
 							}
 							
 							requester.markDirty();
 						}
-						nextActionTimer = 5;
+						this.nextActionTimer = 5;
 					} else if(next == DroneProgram.DOCK) {
 	
-						TileEntity tile = worldObj.getTileEntity((int) Math.floor(posX), (int) Math.floor(posY - 1), (int) Math.floor(posZ));
+						TileEntity tile = this.worldObj.getTileEntity((int) Math.floor(this.posX), (int) Math.floor(this.posY - 1), (int) Math.floor(this.posZ));
 						if(tile instanceof TileEntityDroneDock) {
 							TileEntityDroneDock dock = (TileEntityDroneDock) tile;
 							
 							for(int i = 0; i < dock.slots.length; i++) {
 								if(dock.slots[i] == null) {
-									this.setDead();
+									setDead();
 									dock.slots[i] = new ItemStack(ModItems.drone, 1, EnumDroneType.REQUEST.ordinal());
 									this.worldObj.playSoundEffect(dock.xCoord + 0.5, dock.yCoord + 0.5, dock.zCoord + 0.5, "hbm:block.storageClose", 2.0F, 1.0F);
 									break;
@@ -130,8 +130,8 @@ public class EntityRequestDrone extends EntityDroneBase {
 						}
 						
 						if(!this.isDead) {
-							this.setDead();
-							this.entityDropItem(new ItemStack(ModItems.drone, 1, EnumDroneType.REQUEST.ordinal()), 1F);
+							setDead();
+							entityDropItem(new ItemStack(ModItems.drone, 1, EnumDroneType.REQUEST.ordinal()), 1F);
 						}
 					}
 				}
@@ -144,6 +144,7 @@ public class EntityRequestDrone extends EntityDroneBase {
 		return 0.5D;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound nbt) {
 		super.readEntityFromNBT(nbt);
@@ -153,7 +154,7 @@ public class EntityRequestDrone extends EntityDroneBase {
 			this.heldItem = ItemStack.loadItemStackFromNBT(stack);
 		}
 		
-		nextActionTimer = 5;
+		this.nextActionTimer = 5;
 
 		this.dataWatcher.updateObject(10, nbt.getByte("app"));
 		
@@ -184,7 +185,7 @@ public class EntityRequestDrone extends EntityDroneBase {
 	protected void writeEntityToNBT(NBTTagCompound nbt) {
 		super.writeEntityToNBT(nbt);
 		
-		if(heldItem != null) {
+		if(this.heldItem != null) {
 			NBTTagCompound stack = new NBTTagCompound();
 			this.heldItem.writeToNBT(stack);
 			nbt.setTag("held", stack);

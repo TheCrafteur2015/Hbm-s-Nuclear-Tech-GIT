@@ -46,7 +46,7 @@ public class MachineRadGen extends BlockDummyable {
 			return true;
 		} else if(!player.isSneaking()) {
 			
-			int[] pos = this.findCore(world, x, y, z);
+			int[] pos = findCore(world, x, y, z);
 			
 			if(pos == null)
 				return false;
@@ -58,12 +58,13 @@ public class MachineRadGen extends BlockDummyable {
 		}
 	}
 	
+	@Override
 	protected void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		super.fillSpace(world, x, y, z, dir, o);
 		
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
-		this.makeExtra(world, x + dir.offsetX * -5, y, z + dir.offsetZ * -5);
-		this.makeExtra(world, x + dir.offsetX * o + rot.offsetX, y, z + dir.offsetZ * o + rot.offsetZ);
-		this.makeExtra(world, x + dir.offsetX * o - rot.offsetX, y, z + dir.offsetZ * o - rot.offsetZ);
+		makeExtra(world, x + dir.offsetX * -5, y, z + dir.offsetZ * -5);
+		makeExtra(world, x + dir.offsetX * o + rot.offsetX, y, z + dir.offsetZ * o + rot.offsetZ);
+		makeExtra(world, x + dir.offsetX * o - rot.offsetX, y, z + dir.offsetZ * o - rot.offsetZ);
 	}
 }

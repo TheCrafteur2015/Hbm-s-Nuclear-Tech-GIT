@@ -20,10 +20,10 @@ import net.minecraft.item.ItemStack;
 
 public class SmithingRecipeHandler extends TemplateRecipeHandler {
 
-	public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<RecipeTransferRect>();
-	public LinkedList<RecipeTransferRect> transferRectsGui = new LinkedList<RecipeTransferRect>();
-	public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<Class<? extends GuiContainer>>();
-	public LinkedList<Class<? extends GuiContainer>> guiGui = new LinkedList<Class<? extends GuiContainer>>();
+	public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<>();
+	public LinkedList<RecipeTransferRect> transferRectsGui = new LinkedList<>();
+	public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<>();
+	public LinkedList<Class<? extends GuiContainer>> guiGui = new LinkedList<>();
 
 	public class RecipeSet extends TemplateRecipeHandler.CachedRecipe {
 
@@ -35,18 +35,18 @@ public class SmithingRecipeHandler extends TemplateRecipeHandler {
 		public RecipeSet(AnvilSmithingRecipe recipe) {
 			this.input1 = new PositionedStack(recipe.getLeft(), 39, 24);
 			this.input2 = new PositionedStack(recipe.getRight(), 75, 24);
-			this.output = new PositionedStack(recipe.getOutput(input1.item, input2.item), 111, 24);
+			this.output = new PositionedStack(recipe.getOutput(this.input1.item, this.input2.item), 111, 24);
 			this.tier = recipe.tier;
 		}
 
 		@Override
 		public List<PositionedStack> getIngredients() {
-			return getCycledIngredients(cycleticks / 48, Arrays.asList(input1, input2));
+			return getCycledIngredients(SmithingRecipeHandler.this.cycleticks / 48, Arrays.asList(this.input1, this.input2));
 		}
 
 		@Override
 		public PositionedStack getResult() {
-			return output;
+			return this.output;
 		}
 	}
 
@@ -117,16 +117,16 @@ public class SmithingRecipeHandler extends TemplateRecipeHandler {
 
 	@Override
 	public void loadTransferRects() {
-		transferRectsGui = new LinkedList<RecipeTransferRect>();
-		guiGui = new LinkedList<Class<? extends GuiContainer>>();
+		this.transferRectsGui = new LinkedList<>();
+		this.guiGui = new LinkedList<>();
 
-		transferRects.add(new RecipeTransferRect(new Rectangle(56, 24, 18, 18), "ntmSmithing"));
-		transferRects.add(new RecipeTransferRect(new Rectangle(92, 24, 18, 18), "ntmSmithing"));
-		transferRectsGui.add(new RecipeTransferRect(new Rectangle(56 + 9, 24 - 9, 18, 18), "ntmSmithing"));
-		transferRectsGui.add(new RecipeTransferRect(new Rectangle(56 + 9 - 18 * 2, 24 - 9, 18, 18), "ntmSmithing"));
-		guiGui.add(GUIAnvil.class);
-		RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), transferRects);
-		RecipeTransferRectHandler.registerRectsToGuis(guiGui, transferRectsGui);
+		this.transferRects.add(new RecipeTransferRect(new Rectangle(56, 24, 18, 18), "ntmSmithing"));
+		this.transferRects.add(new RecipeTransferRect(new Rectangle(92, 24, 18, 18), "ntmSmithing"));
+		this.transferRectsGui.add(new RecipeTransferRect(new Rectangle(56 + 9, 24 - 9, 18, 18), "ntmSmithing"));
+		this.transferRectsGui.add(new RecipeTransferRect(new Rectangle(56 + 9 - 18 * 2, 24 - 9, 18, 18), "ntmSmithing"));
+		this.guiGui.add(GUIAnvil.class);
+		RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), this.transferRects);
+		RecipeTransferRectHandler.registerRectsToGuis(this.guiGui, this.transferRectsGui);
 	}
 
 	@Override

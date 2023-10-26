@@ -35,7 +35,7 @@ public class MachineCondenser extends BlockContainer implements ILookOverlay {
 		
 		TileEntityCondenser condenser = (TileEntityCondenser) te;
 		
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 
 		for(int i = 0; i < condenser.tanks.length; i++)
 			text.add((i < 1 ? (EnumChatFormatting.GREEN + "-> ") : (EnumChatFormatting.RED + "<- ")) + EnumChatFormatting.RESET +condenser.tanks[i].getTankType().getLocalizedName() + ": " + condenser.tanks[i].getFill() + "/" + condenser.tanks[i].getMaxFill() + "mB");

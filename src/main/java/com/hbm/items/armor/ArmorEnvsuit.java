@@ -32,14 +32,14 @@ public class ArmorEnvsuit extends ArmorFSBPowered {
 	@SideOnly(Side.CLIENT)
 	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot) {
 
-		if(models == null) {
-			models = new ModelArmorEnvsuit[4];
+		if(this.models == null) {
+			this.models = new ModelArmorEnvsuit[4];
 
 			for(int i = 0; i < 4; i++)
-				models[i] = new ModelArmorEnvsuit(i);
+				this.models[i] = new ModelArmorEnvsuit(i);
 		}
 
-		return models[armorSlot];
+		return this.models[armorSlot];
 	}
 	
 	private static final UUID speed = UUID.fromString("6ab858ba-d712-485c-bae9-e5e765fc555a");
@@ -54,10 +54,10 @@ public class ArmorEnvsuit extends ArmorFSBPowered {
 
 		/// SPEED ///
 		Multimap multimap = super.getAttributeModifiers(stack);
-		multimap.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new AttributeModifier(speed, "SQUIRREL SPEED", 0.1, 0));
+		multimap.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new AttributeModifier(ArmorEnvsuit.speed, "SQUIRREL SPEED", 0.1, 0));
 		player.getAttributeMap().removeAttributeModifiers(multimap);
 		
-		if(this.hasFSBArmor(player)) {
+		if(hasFSBArmor(player)) {
 			
 			if(player.isSprinting()) player.getAttributeMap().applyAttributeModifiers(multimap);
 			

@@ -27,6 +27,7 @@ public class BlockGasClorine extends BlockGasBase {
 		return 0;
 	}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public int getRenderBlockPass() {
 		return 1;
@@ -80,6 +81,6 @@ public class BlockGasClorine extends BlockGasBase {
 
 	@Override
 	public ForgeDirection getSecondDirection(World world, int x, int y, int z) {
-		return this.randomHorizontal(world);
+		return randomHorizontal(world);
 	}
 }

@@ -4,6 +4,7 @@ import com.hbm.blocks.network.CraneInserter;
 import com.hbm.inventory.container.ContainerCraneInserter;
 import com.hbm.inventory.gui.GUICraneInserter;
 import com.hbm.tileentity.IGUIProvider;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.GuiScreen;
@@ -32,10 +33,10 @@ public class TileEntityCraneInserter extends TileEntityCraneBase implements IGUI
 	@Override
 	public void updateEntity() {
 		super.updateEntity();
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 
 			ForgeDirection outputSide = getOutputSide();
-			TileEntity te = worldObj.getTileEntity(xCoord + outputSide.offsetX, yCoord + outputSide.offsetY, zCoord + outputSide.offsetZ);
+			TileEntity te = this.worldObj.getTileEntity(this.xCoord + outputSide.offsetX, this.yCoord + outputSide.offsetY, this.zCoord + outputSide.offsetZ);
 			
 			int[] access = null;
 			
@@ -46,16 +47,16 @@ public class TileEntityCraneInserter extends TileEntityCraneBase implements IGUI
 			}
 			
 			if(te instanceof IInventory) {
-				for(int i = 0; i < slots.length; i++) {
+				for(int i = 0; i < this.slots.length; i++) {
 					
-					ItemStack stack = slots[i];
+					ItemStack stack = this.slots[i];
 					
 					if(stack != null) {
 						ItemStack ret = CraneInserter.addToInventory((IInventory) te, access, stack.copy(), outputSide.getOpposite().ordinal());
 						
 						if(ret == null || ret.stackSize != stack.stackSize) {
-							slots[i] = ret;
-							this.markDirty();
+							this.slots[i] = ret;
+							markDirty();
 							return;
 						}
 					}
@@ -63,9 +64,9 @@ public class TileEntityCraneInserter extends TileEntityCraneBase implements IGUI
 				
 				//if the previous operation fails, repeat but use single items instead of the whole stack instead
 				//this should fix cases where the inserter can't insert into something that has a stack size limitation
-				for(int i = 0; i < slots.length; i++) {
+				for(int i = 0; i < this.slots.length; i++) {
 					
-					ItemStack stack = slots[i];
+					ItemStack stack = this.slots[i];
 					
 					if(stack != null) {
 						stack = stack.copy();
@@ -73,8 +74,8 @@ public class TileEntityCraneInserter extends TileEntityCraneBase implements IGUI
 						ItemStack ret = CraneInserter.addToInventory((IInventory) te, access, stack.copy(), outputSide.getOpposite().ordinal());
 						
 						if(ret == null || ret.stackSize != stack.stackSize) {
-							this.decrStackSize(i, 1);
-							this.markDirty();
+							decrStackSize(i, 1);
+							markDirty();
 							return;
 						}
 					}
@@ -85,7 +86,7 @@ public class TileEntityCraneInserter extends TileEntityCraneBase implements IGUI
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
-		return access;
+		return TileEntityCraneInserter.access;
 	}
 
 	@Override

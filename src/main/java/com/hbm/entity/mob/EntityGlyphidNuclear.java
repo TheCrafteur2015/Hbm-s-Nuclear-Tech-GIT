@@ -24,7 +24,7 @@ public class EntityGlyphidNuclear extends EntityGlyphid {
 
 	public EntityGlyphidNuclear(World world) {
 		super(world);
-		this.setSize(2.5F, 1.75F);
+		setSize(2.5F, 1.75F);
 		this.isImmuneToFire = true;
 	}
 	
@@ -41,9 +41,9 @@ public class EntityGlyphidNuclear extends EntityGlyphid {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20D);
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.8D);
-		this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(50D);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20D);
+		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.8D);
+		getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(50D);
 	}
 
 	@Override
@@ -79,29 +79,29 @@ public class EntityGlyphidNuclear extends EntityGlyphid {
 
 		if(this.deathTicks == 100) {
 			
-			if(!worldObj.isRemote) {
-				ExplosionVNT vnt = new ExplosionVNT(worldObj, posX, posY, posZ, 25, this);
+			if(!this.worldObj.isRemote) {
+				ExplosionVNT vnt = new ExplosionVNT(this.worldObj, this.posX, this.posY, this.posZ, 25, this);
 				vnt.setBlockAllocator(new BlockAllocatorStandard(24));
 				vnt.setBlockProcessor(new BlockProcessorStandard().withBlockEffect(new BlockMutatorDebris(ModBlocks.volcanic_lava_block, 0)).setNoDrop());
 				vnt.setEntityProcessor(new EntityProcessorStandard().withRangeMod(1.5F));
 				vnt.setPlayerProcessor(new PlayerProcessorStandard());
 				vnt.explode();
 				
-				worldObj.playSoundEffect(posX, posY, posZ, "hbm:weapon.mukeExplosion", 15.0F, 1.0F);
+				this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "hbm:weapon.mukeExplosion", 15.0F, 1.0F);
 	
 				NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "muke");
 				// if the FX type is "muke", apply random BF effect
-				if(MainRegistry.polaroidID == 11 || rand.nextInt(100) == 0) {
+				if(MainRegistry.polaroidID == 11 || this.rand.nextInt(100) == 0) {
 					data.setBoolean("balefire", true);
 				}
-				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, posX, posY + 0.5, posZ), new TargetPoint(dimension, posX, posY, posZ, 250));
+				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, this.posX, this.posY + 0.5, this.posZ), new TargetPoint(this.dimension, this.posX, this.posY, this.posZ, 250));
 			}
 			
-			this.setDead();
+			setDead();
 		} else {
-			if(!worldObj.isRemote && this.deathTicks % 10 == 0) {
-				worldObj.playSoundEffect(posX, posY, posZ, "hbm:weapon.fstbmbPing", 5.0F, 1.0F);
+			if(!this.worldObj.isRemote && this.deathTicks % 10 == 0) {
+				this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "hbm:weapon.fstbmbPing", 5.0F, 1.0F);
 			}
 		}
 	}

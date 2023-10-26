@@ -44,7 +44,7 @@ public class GunLacunae extends Item implements IHoldableWeapon {
 	public ItemStack onItemRightClick(ItemStack p_77659_1_, World world, EntityPlayer player) {
 		new ArrowNockEvent(player, p_77659_1_);
 		{
-			player.setItemInUse(p_77659_1_, this.getMaxItemUseDuration(p_77659_1_));
+			player.setItemInUse(p_77659_1_, getMaxItemUseDuration(p_77659_1_));
 		}
 		
 		world.playSoundAtEntity(player, "hbm:weapon.lacunaeSpinup", 1.0F, 1.0F);
@@ -60,7 +60,7 @@ public class GunLacunae extends Item implements IHoldableWeapon {
 		boolean flag = player.capabilities.isCreativeMode
 				|| EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, stack) > 0;
 
-				if ((player.capabilities.isCreativeMode || player.inventory.hasItem(ModItems.ammo_5mm)) && count % 1 == 0 && this.getMaxItemUseDuration(stack) - count > 15) {
+				if ((player.capabilities.isCreativeMode || player.inventory.hasItem(ModItems.ammo_5mm)) && count % 1 == 0 && getMaxItemUseDuration(stack) - count > 15) {
 					
 					world.playSoundAtEntity(player, "hbm:weapon.lacunaeShoot", 1.0F, 1.0F);
 							
@@ -83,7 +83,7 @@ public class GunLacunae extends Item implements IHoldableWeapon {
 	
 	@Override
 	public void onPlayerStoppedUsing(ItemStack p_77615_1_, World world, EntityPlayer player, int p_77615_4_) {
-		int j = this.getMaxItemUseDuration(p_77615_1_) - p_77615_4_;
+		int j = getMaxItemUseDuration(p_77615_1_) - p_77615_4_;
 		
 		if(j > 10)
 			world.playSoundAtEntity(player, "hbm:weapon.lacunaeSpindown", 1.0F, 1.0F);
@@ -94,6 +94,7 @@ public class GunLacunae extends Item implements IHoldableWeapon {
 		return 0;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
@@ -114,7 +115,8 @@ public class GunLacunae extends Item implements IHoldableWeapon {
 		list.add("Damage: 5");
 	}
 
-    public String getItemStackDisplayName(ItemStack stack)
+    @Override
+	public String getItemStackDisplayName(ItemStack stack)
     {
 
 		if(this == ModItems.gun_lacunae && MainRegistry.polaroidID == 11)
@@ -123,21 +125,22 @@ public class GunLacunae extends Item implements IHoldableWeapon {
 		return super.getItemStackDisplayName(stack);
     }
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Multimap getItemAttributeModifiers() {
 		Multimap multimap = super.getItemAttributeModifiers();
 		multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
-				new AttributeModifier(field_111210_e, "Weapon modifier", 6, 0));
+				new AttributeModifier(Item.field_111210_e, "Weapon modifier", 6, 0));
 
 		if(this == ModItems.gun_minigun)
 			multimap.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(),
-					new AttributeModifier(field_111210_e, "Weapon modifier", -0.3, 1));
+					new AttributeModifier(Item.field_111210_e, "Weapon modifier", -0.3, 1));
 		if(this == ModItems.gun_avenger)
 			multimap.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(),
-					new AttributeModifier(field_111210_e, "Weapon modifier", -0.4, 1));
+					new AttributeModifier(Item.field_111210_e, "Weapon modifier", -0.4, 1));
 		if(this == ModItems.gun_lacunae)
 			multimap.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(),
-					new AttributeModifier(field_111210_e, "Weapon modifier", -0.2, 1));
+					new AttributeModifier(Item.field_111210_e, "Weapon modifier", -0.2, 1));
 		
 		return multimap;
 	}

@@ -13,6 +13,7 @@ import com.hbm.render.model.ModelMan;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -27,10 +28,11 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogColors;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogDensity;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 
@@ -50,12 +52,12 @@ public class ModEventHandlerRenderer {
 		for(int j = 0; j < 7; j++) {
 
 			if(isManly) {
-				partsHidden[j] = true;
+				ModEventHandlerRenderer.partsHidden[j] = true;
 				EnumPlayerPart type = EnumPlayerPart.values()[j];
-				ModelRenderer box = getBoxFromType(renderer, type);
+				ModelRenderer box = ModEventHandlerRenderer.getBoxFromType(renderer, type);
 				box.isHidden = true;
 			} else {
-				partsHidden[j] = false;
+				ModEventHandlerRenderer.partsHidden[j] = false;
 			}
 		}
 
@@ -71,9 +73,9 @@ public class ModEventHandlerRenderer {
 
 				for(int j = 0; j < 7; j++) {
 					EnumPlayerPart type = EnumPlayerPart.values()[j];
-					ModelRenderer box = getBoxFromType(renderer, type);
+					ModelRenderer box = ModEventHandlerRenderer.getBoxFromType(renderer, type);
 					if(disable.disablesPart(player, stack, type) && !box.isHidden) {
-						partsHidden[j] = true;
+						ModEventHandlerRenderer.partsHidden[j] = true;
 						box.isHidden = true;
 					}
 				}
@@ -90,8 +92,8 @@ public class ModEventHandlerRenderer {
 		boolean isManly = PermaSyncHandler.boykissers.contains(player.getEntityId());
 
 		if(isManly) {
-			if(manlyModel == null)
-				manlyModel = new ModelMan();
+			if(ModEventHandlerRenderer.manlyModel == null)
+				ModEventHandlerRenderer.manlyModel = new ModelMan();
 			float interp = event.partialRenderTick;
 			float yawHead = player.prevRotationYawHead + (player.rotationYawHead - player.prevRotationYawHead) * interp;
 			float yawOffset = player.prevRenderYawOffset + (player.renderYawOffset - player.prevRenderYawOffset) * interp;
@@ -103,7 +105,7 @@ public class ModEventHandlerRenderer {
 			if(f6 > 1.0F) {
 				f6 = 1.0F;
 			}
-			manlyModel.render(event.entityPlayer, f7, f6, yawWrapped, yaw, pitch, 0.0625F, renderer);
+			ModEventHandlerRenderer.manlyModel.render(event.entityPlayer, f7, f6, yawWrapped, yaw, pitch, 0.0625F, renderer);
 		}
 	}
 
@@ -114,8 +116,8 @@ public class ModEventHandlerRenderer {
 
 		for(int j = 0; j < 7; j++) {
 			EnumPlayerPart type = EnumPlayerPart.values()[j];
-			if(partsHidden[j]) {
-				getBoxFromType(renderer, type).isHidden = false;
+			if(ModEventHandlerRenderer.partsHidden[j]) {
+				ModEventHandlerRenderer.getBoxFromType(renderer, type).isHidden = false;
 			}
 		}
 	}
@@ -131,8 +133,8 @@ public class ModEventHandlerRenderer {
 		if(!isManly)
 			return;
 
-		if(manlyModel == null)
-			manlyModel = new ModelMan();
+		if(ModEventHandlerRenderer.manlyModel == null)
+			ModEventHandlerRenderer.manlyModel = new ModelMan();
 		
 		event.renderItem = false;
 
@@ -144,7 +146,7 @@ public class ModEventHandlerRenderer {
 			return;
 		
 		GL11.glPushMatrix();
-		manlyModel.rightArm.postRender(0.0625F);
+		ModEventHandlerRenderer.manlyModel.rightArm.postRender(0.0625F);
 		GL11.glTranslatef(-0.0625F, 0.4375F, 0.0625F);
 
 		if(player.fishEntity != null) {
@@ -209,17 +211,17 @@ public class ModEventHandlerRenderer {
 		if(held.getItem().requiresMultipleRenderPasses()) {
 			for(k = 0; k < held.getItem().getRenderPasses(held.getItemDamage()); ++k) {
 				int i = held.getItem().getColorFromItemStack(held, k);
-				f12 = (float) (i >> 16 & 255) / 255.0F;
-				f3 = (float) (i >> 8 & 255) / 255.0F;
-				float f4 = (float) (i & 255) / 255.0F;
+				f12 = (i >> 16 & 255) / 255.0F;
+				f3 = (i >> 8 & 255) / 255.0F;
+				float f4 = (i & 255) / 255.0F;
 				GL11.glColor4f(f12, f3, f4, 1.0F);
 				RenderManager.instance.itemRenderer.renderItem(player, held, k);
 			}
 		} else {
 			k = held.getItem().getColorFromItemStack(held, 0);
-			float f11 = (float) (k >> 16 & 255) / 255.0F;
-			f12 = (float) (k >> 8 & 255) / 255.0F;
-			f3 = (float) (k & 255) / 255.0F;
+			float f11 = (k >> 16 & 255) / 255.0F;
+			f12 = (k >> 8 & 255) / 255.0F;
+			f3 = (k & 255) / 255.0F;
 			GL11.glColor4f(f11, f12, f3, 1.0F);
 			RenderManager.instance.itemRenderer.renderItem(player, held, 0);
 		}
@@ -245,7 +247,7 @@ public class ModEventHandlerRenderer {
 	public void onDrawHighlight(DrawBlockHighlightEvent event) {
 		MovingObjectPosition mop = event.target;
 		
-		if(mop != null && mop.typeOfHit == mop.typeOfHit.BLOCK) {
+		if(mop != null && mop.typeOfHit == MovingObjectType.BLOCK) {
 			Block b = event.player.worldObj.getBlock(mop.blockX, mop.blockY, mop.blockZ);
 			if(b instanceof ICustomBlockHighlight) {
 				ICustomBlockHighlight cus = (ICustomBlockHighlight) b;
@@ -333,27 +335,27 @@ public class ModEventHandlerRenderer {
 	@SubscribeEvent
 	public void worldTick(WorldTickEvent event) {
 		
-		if(event.phase == event.phase.START && RadiationConfig.enableSootFog) {
+		if(event.phase == Phase.START && RadiationConfig.enableSootFog) {
 
 			float step = 0.05F;
 			float soot = PermaSyncHandler.pollution[PollutionType.SOOT.ordinal()];
 			
-			if(Math.abs(renderSoot - soot) < step) {
-				renderSoot = soot;
-			} else if(renderSoot < soot) {
-				renderSoot += step;
-			} else if(renderSoot > soot) {
-				renderSoot -= step;
+			if(Math.abs(this.renderSoot - soot) < step) {
+				this.renderSoot = soot;
+			} else if(this.renderSoot < soot) {
+				this.renderSoot += step;
+			} else if(this.renderSoot > soot) {
+				this.renderSoot -= step;
 			}
 		}
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOW)
 	public void thickenFog(FogDensity event) {
-		float soot = (float) (renderSoot - RadiationConfig.sootFogThreshold);
+		float soot = (float) (this.renderSoot - RadiationConfig.sootFogThreshold);
 		if(soot > 0 && RadiationConfig.enableSootFog) {
 			
-			float farPlaneDistance = (float) (Minecraft.getMinecraft().gameSettings.renderDistanceChunks * 16);
+			float farPlaneDistance = Minecraft.getMinecraft().gameSettings.renderDistanceChunks * 16;
 			float fogDist = farPlaneDistance / (1 + soot * 5F / (float) RadiationConfig.sootFogDivisor);
 			GL11.glFogf(GL11.GL_FOG_START, 0);
 			GL11.glFogf(GL11.GL_FOG_END, fogDist);
@@ -369,7 +371,7 @@ public class ModEventHandlerRenderer {
 	
 	@SubscribeEvent(priority = EventPriority.LOW)
 	public void tintFog(FogColors event) {
-		float soot = (float) (renderSoot - RadiationConfig.sootFogThreshold);
+		float soot = (float) (this.renderSoot - RadiationConfig.sootFogThreshold);
 		float sootColor = 0.15F;
 		float sootReq = (float) RadiationConfig.sootFogDivisor;
 		if(soot > 0 && RadiationConfig.enableSootFog) {

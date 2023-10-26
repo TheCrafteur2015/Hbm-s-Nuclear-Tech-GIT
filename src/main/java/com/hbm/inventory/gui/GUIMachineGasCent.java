@@ -21,7 +21,7 @@ public class GUIMachineGasCent extends GuiInfoContainer {
 	
 	public GUIMachineGasCent(InventoryPlayer invPlayer, TileEntityMachineGasCent tedf) {
 		super(new ContainerMachineGasCent(invPlayer, tedf));
-		gasCent = tedf;
+		this.gasCent = tedf;
 
 		this.xSize = 206;
 		this.ySize = 204;
@@ -31,29 +31,30 @@ public class GUIMachineGasCent extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 		
-		String[] inTankInfo = new String[] {gasCent.inputTank.getTankType().getName(), gasCent.inputTank.getFill() + " / " + gasCent.inputTank.getMaxFill() + " mB"};
-		if(gasCent.inputTank.getTankType().getIfHighSpeed()) {
-			if(gasCent.getProcessingSpeed() > gasCent.processingSpeed - 70)
+		String[] inTankInfo = new String[] {this.gasCent.inputTank.getTankType().getName(), this.gasCent.inputTank.getFill() + " / " + this.gasCent.inputTank.getMaxFill() + " mB"};
+		if(this.gasCent.inputTank.getTankType().getIfHighSpeed()) {
+			if(this.gasCent.getProcessingSpeed() > TileEntityMachineGasCent.processingSpeed - 70)
 				inTankInfo[0] = EnumChatFormatting.DARK_RED + inTankInfo[0];
 			else
 				inTankInfo[0] = EnumChatFormatting.GOLD + inTankInfo[0];
 		}
-		String[] outTankInfo = new String[] {gasCent.outputTank.getTankType().getName(), gasCent.outputTank.getFill() + " / " + gasCent.outputTank.getMaxFill() + " mB"};
-		if(gasCent.outputTank.getTankType().getIfHighSpeed())
+		String[] outTankInfo = new String[] {this.gasCent.outputTank.getTankType().getName(), this.gasCent.outputTank.getFill() + " / " + this.gasCent.outputTank.getMaxFill() + " mB"};
+		if(this.gasCent.outputTank.getTankType().getIfHighSpeed())
 			outTankInfo[0] = EnumChatFormatting.GOLD + outTankInfo[0];
 		
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 15, guiTop + 15, 24, 55, mouseX, mouseY, inTankInfo);
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 137, guiTop + 15, 25, 55, mouseX, mouseY, outTankInfo);
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 15, this.guiTop + 15, 24, 55, mouseX, mouseY, inTankInfo);
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 137, this.guiTop + 15, 25, 55, mouseX, mouseY, outTankInfo);
 		
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 182, guiTop + 69 - 52, 16, 52, gasCent.power, gasCent.maxPower);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 182, this.guiTop + 69 - 52, 16, 52, this.gasCent.power, TileEntityMachineGasCent.maxPower);
 		
 		String[] enrichmentText = I18nUtil.resolveKeyArray("desc.gui.gasCent.enrichment");
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 12, guiTop + 16, 16, 16, guiLeft - 8, guiTop + 16 + 16, enrichmentText);
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft - 12, this.guiTop + 16, 16, 16, this.guiLeft - 8, this.guiTop + 16 + 16, enrichmentText);
 		
 		String[] transferText = I18nUtil.resolveKeyArray("desc.gui.gasCent.output");
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 12, guiTop + 32, 16, 16, guiLeft - 8, guiTop + 32 + 16, transferText);
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft - 12, this.guiTop + 32, 16, 16, this.guiLeft - 8, this.guiTop + 32 + 16, transferText);
 	}
 	
+	@SuppressWarnings("unused")
 	@Override
 	protected void drawGuiContainerForegroundLayer(int i, int j) {
 		String name = this.gasCent.hasCustomInventoryName() ? this.gasCent.getInventoryName() : I18n.format(this.gasCent.getInventoryName());
@@ -65,23 +66,23 @@ public class GUIMachineGasCent extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIMachineGasCent.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
-		int i = (int)gasCent.getPowerRemainingScaled(52);
-		drawTexturedModalRect(guiLeft + 182, guiTop + 69 - i, 206, 52 - i, 16, i);
+		int i = (int)this.gasCent.getPowerRemainingScaled(52);
+		drawTexturedModalRect(this.guiLeft + 182, this.guiTop + 69 - i, 206, 52 - i, 16, i);
 
-		int j = (int)gasCent.getCentrifugeProgressScaled(36);
-		drawTexturedModalRect(guiLeft + 70, guiTop + 35, 206, 52, j, 13);
+		int j = this.gasCent.getCentrifugeProgressScaled(36);
+		drawTexturedModalRect(this.guiLeft + 70, this.guiTop + 35, 206, 52, j, 13);
 		
-		this.renderTank(guiLeft + 16, guiTop + 16, this.zLevel, 6, 52, gasCent.inputTank.getFill(), gasCent.inputTank.getMaxFill());
-		this.renderTank(guiLeft + 32, guiTop + 16, this.zLevel, 6, 52, gasCent.inputTank.getFill(), gasCent.inputTank.getMaxFill());
+		renderTank(this.guiLeft + 16, this.guiTop + 16, this.zLevel, 6, 52, this.gasCent.inputTank.getFill(), this.gasCent.inputTank.getMaxFill());
+		renderTank(this.guiLeft + 32, this.guiTop + 16, this.zLevel, 6, 52, this.gasCent.inputTank.getFill(), this.gasCent.inputTank.getMaxFill());
 		
-		this.renderTank(guiLeft + 138, guiTop + 16, this.zLevel, 6, 52, gasCent.outputTank.getFill(), gasCent.outputTank.getMaxFill());
-		this.renderTank(guiLeft + 154, guiTop + 16, this.zLevel, 6, 52, gasCent.outputTank.getFill(), gasCent.outputTank.getMaxFill());
+		renderTank(this.guiLeft + 138, this.guiTop + 16, this.zLevel, 6, 52, this.gasCent.outputTank.getFill(), this.gasCent.outputTank.getMaxFill());
+		renderTank(this.guiLeft + 154, this.guiTop + 16, this.zLevel, 6, 52, this.gasCent.outputTank.getFill(), this.gasCent.outputTank.getMaxFill());
 		
-		this.drawInfoPanel(guiLeft - 12, guiTop + 16, 16, 16, 3);
-		this.drawInfoPanel(guiLeft - 12, guiTop + 32, 16, 16, 2);
+		drawInfoPanel(this.guiLeft - 12, this.guiTop + 16, 16, 16, 3);
+		drawInfoPanel(this.guiLeft - 12, this.guiTop + 32, 16, 16, 2);
 	}
 	
 	public void renderTank(int x, int y, double z, int width, int height, int fluid, int maxFluid) {
@@ -90,7 +91,7 @@ public class GUIMachineGasCent extends GuiInfoContainer {
 		
 		y += height;
 		
-		Minecraft.getMinecraft().getTextureManager().bindTexture(gasCent.tank.getTankType().getTexture());
+		Minecraft.getMinecraft().getTextureManager().bindTexture(this.gasCent.tank.getTankType().getTexture());
 		
 		int i = (fluid * height) / maxFluid;
 		

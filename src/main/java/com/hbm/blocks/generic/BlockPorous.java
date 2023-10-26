@@ -10,8 +10,8 @@ public class BlockPorous extends BlockStone {
 
 	public BlockPorous() {
 		super();
-		this.setHardness(1.5F);
-		this.setResistance(30.0F);
+		setHardness(1.5F);
+		setResistance(30.0F);
 	}
 	
 	@Override

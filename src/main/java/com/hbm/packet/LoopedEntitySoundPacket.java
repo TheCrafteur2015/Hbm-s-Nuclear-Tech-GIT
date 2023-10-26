@@ -29,12 +29,12 @@ public class LoopedEntitySoundPacket implements IMessage {
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		entityID = buf.readInt();
+		this.entityID = buf.readInt();
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeInt(entityID);
+		buf.writeInt(this.entityID);
 	}
 
 	public static class Handler implements IMessageHandler<LoopedEntitySoundPacket, IMessage> {
@@ -65,8 +65,8 @@ public class LoopedEntitySoundPacket implements IMessage {
 		        }
 		        
 				boolean flag = true;
-				for(int i = 0; i < MovingSoundBomber.globalSoundList.size(); i++)  {
-					if(MovingSoundBomber.globalSoundList.get(i).bomber == e && !MovingSoundBomber.globalSoundList.get(i).isDonePlaying())
+				for (MovingSoundBomber element : MovingSoundBomber.globalSoundList) {
+					if(element.bomber == e && !element.isDonePlaying())
 						flag = false;
 				}
 				

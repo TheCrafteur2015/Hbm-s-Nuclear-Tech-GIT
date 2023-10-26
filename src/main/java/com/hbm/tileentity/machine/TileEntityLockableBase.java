@@ -2,6 +2,7 @@ package com.hbm.tileentity.machine;
 
 import com.hbm.items.ModItems;
 import com.hbm.items.tool.ItemKey;
+import com.hbm.items.tool.ItemKeyPin;
 import com.hbm.main.MainRegistry;
 import com.hbm.util.ArmorUtil;
 
@@ -17,67 +18,67 @@ public abstract class TileEntityLockableBase extends TileEntity {
 	protected double lockMod = 0.1D;
 
 	public boolean isLocked() {
-		return isLocked;
+		return this.isLocked;
 	}
 	
 	public void lock() {
 		
-		if(lock == 0) {
-			MainRegistry.logger.error("A block has been set to locked state before setting pins, this should not happen and may cause errors! " + this.toString());
+		if(this.lock == 0) {
+			MainRegistry.logger.error("A block has been set to locked state before setting pins, this should not happen and may cause errors! " + toString());
 		}
 		
-		isLocked = true;
+		this.isLocked = true;
 	}
 	
 	public void setPins(int pins) {
-		lock = pins;
+		this.lock = pins;
 	}
 	
 	public int getPins() {
-		return lock;
+		return this.lock;
 	}
 	
 	public void setMod(double mod) {
-		lockMod = mod;
+		this.lockMod = mod;
 	}
 	
 	public double getMod() {
-		return lockMod;
+		return this.lockMod;
 	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		
-		lock = nbt.getInteger("lock");
-		isLocked = nbt.getBoolean("isLocked");
-		lockMod = nbt.getDouble("lockMod");
+		this.lock = nbt.getInteger("lock");
+		this.isLocked = nbt.getBoolean("isLocked");
+		this.lockMod = nbt.getDouble("lockMod");
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		
-		nbt.setInteger("lock", lock);
-		nbt.setBoolean("isLocked", isLocked);
-		nbt.setDouble("lockMod", lockMod);
+		nbt.setInteger("lock", this.lock);
+		nbt.setBoolean("isLocked", this.isLocked);
+		nbt.setDouble("lockMod", this.lockMod);
 	}
 
 	public boolean canAccess(EntityPlayer player) {
 		
-		if(!isLocked) {
+		if(!this.isLocked) {
 			return true;
 		} else {
 			ItemStack stack = player.getHeldItem();
 			
 			if(stack != null && stack.getItem() instanceof ItemKey &&
-					ItemKey.getPins(stack) == this.lock) {
-	        	worldObj.playSoundAtEntity(player, "hbm:block.lockOpen", 1.0F, 1.0F);
+					ItemKeyPin.getPins(stack) == this.lock) {
+	        	this.worldObj.playSoundAtEntity(player, "hbm:block.lockOpen", 1.0F, 1.0F);
 				return true;
 			}
 			
 			if(stack != null && stack.getItem() == ModItems.key_red) {
-	        	worldObj.playSoundAtEntity(player, "hbm:block.lockOpen", 1.0F, 1.0F);
+	        	this.worldObj.playSoundAtEntity(player, "hbm:block.lockOpen", 1.0F, 1.0F);
 				return true;
 			}
 			
@@ -112,11 +113,11 @@ public abstract class TileEntityLockableBase extends TileEntity {
 			double rand = player.worldObj.rand.nextDouble() * 100;
 			
 			if(chanceOfSuccess > rand) {
-        		worldObj.playSoundAtEntity(player, "hbm:item.pinUnlock", 1.0F, 1.0F);
+        		this.worldObj.playSoundAtEntity(player, "hbm:item.pinUnlock", 1.0F, 1.0F);
 				return true;
 			}
 
-    		worldObj.playSoundAtEntity(player, "hbm:item.pinBreak", 1.0F, 0.8F + player.worldObj.rand.nextFloat() * 0.2F);
+    		this.worldObj.playSoundAtEntity(player, "hbm:item.pinBreak", 1.0F, 0.8F + player.worldObj.rand.nextFloat() * 0.2F);
 		}
 		
 		return false;

@@ -19,8 +19,8 @@ public abstract class BlockConveyorBendable extends BlockConveyorBase implements
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		super.registerBlockIcons(iconRegister);
-		this.curveLeft = iconRegister.registerIcon(this.getTextureName() + "_curve_left");
-		this.curveRight = iconRegister.registerIcon(this.getTextureName() + "_curve_right");
+		this.curveLeft = iconRegister.registerIcon(getTextureName() + "_curve_left");
+		this.curveRight = iconRegister.registerIcon(getTextureName() + "_curve_right");
 	}
 	
 	protected int getPathDirection(int meta) {

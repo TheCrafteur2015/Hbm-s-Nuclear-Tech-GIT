@@ -28,15 +28,17 @@ public class MachineCapacitorBus extends Block implements IEnergyConnectorBlock,
 		super(mat);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister p_149651_1_) {
 		this.blockIcon = p_149651_1_.registerIcon(RefStrings.MODID + ":capacitor_bus_side");
 		this.topIcon = p_149651_1_.registerIcon(RefStrings.MODID + ":capacitor_bus_out");
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
-		return side == meta ? topIcon : blockIcon;
+		return side == meta ? this.topIcon : this.blockIcon;
 	}
 	
 	@Override
@@ -54,6 +56,6 @@ public class MachineCapacitorBus extends Block implements IEnergyConnectorBlock,
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		this.addStandardInfo(stack, player, list, ext);
+		addStandardInfo(stack, player, list, ext);
 	}
 }

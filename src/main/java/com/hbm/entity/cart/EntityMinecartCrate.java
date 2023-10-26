@@ -44,7 +44,7 @@ public class EntityMinecartCrate extends EntityMinecartContainerBase implements 
 		if(net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.event.entity.minecart.MinecartInteractEvent(this, player)))
 			return true;
 		if(!this.worldObj.isRemote) {
-			FMLNetworkHandler.openGui(player, MainRegistry.instance, 0, worldObj, this.getEntityId(), 0, 0);
+			FMLNetworkHandler.openGui(player, MainRegistry.instance, 0, this.worldObj, getEntityId(), 0, 0);
 		}
 
 		return true;
@@ -62,7 +62,7 @@ public class EntityMinecartCrate extends EntityMinecartContainerBase implements 
 
 	@Override
 	public void killMinecart(DamageSource p_94095_1_) {
-		this.setDead();
+		setDead();
 		ItemStack itemstack = ItemModMinecart.createCartItem(EnumCartBase.VANILLA, EnumMinecart.CRATE);
 		
 		NBTTagCompound nbt = new NBTTagCompound();
@@ -82,21 +82,21 @@ public class EntityMinecartCrate extends EntityMinecartContainerBase implements 
 			itemstack.stackTagCompound = nbt;
 		}
 
-		if(this.func_95999_t() != null) {
-			itemstack.setStackDisplayName(this.func_95999_t());
+		if(func_95999_t() != null) {
+			itemstack.setStackDisplayName(func_95999_t());
 		}
 		
 		try {
 			byte[] abyte = CompressedStreamTools.compress(nbt);
 			
 			if(abyte.length > 6000) {
-				worldObj.newExplosion(this, posX, posY, posZ, 2F, true, true);
-				this.entityDropItem(ItemModMinecart.createCartItem(EnumCartBase.VANILLA, EnumMinecart.CRATE), 0.0F);
+				this.worldObj.newExplosion(this, this.posX, this.posY, this.posZ, 2F, true, true);
+				entityDropItem(ItemModMinecart.createCartItem(EnumCartBase.VANILLA, EnumMinecart.CRATE), 0.0F);
 			}
 			
 		} catch(IOException e) { }
 
-		this.entityDropItem(itemstack, 0.0F);
+		entityDropItem(itemstack, 0.0F);
 	}
 
 	@Override

@@ -36,10 +36,12 @@ public class RenderIndustrialBoiler extends TileEntitySpecialRenderer implements
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase( ) {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(0, -3, 0);
 				GL11.glScaled(2.5, 2.5, 2.5);
 			}
+			@Override
 			public void renderCommonWithStack(ItemStack item) {
 				GL11.glRotatef(90, 0F, 1F, 0F);
 				GL11.glShadeModel(GL11.GL_SMOOTH);

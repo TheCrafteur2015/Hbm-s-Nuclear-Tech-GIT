@@ -18,7 +18,7 @@ public class ContainerMachineTeleporter extends Container {
 	
 	public ContainerMachineTeleporter(InventoryPlayer invPlayer, TileEntityMachineTeleporter tedf) {
 		
-		diFurnace = tedf;
+		this.diFurnace = tedf;
 	}
 	
 	@Override
@@ -44,9 +44,8 @@ public class ContainerMachineTeleporter extends Container {
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 		
-		for(int i = 0; i < this.crafters.size(); i++)
-		{
-			ICrafting par1 = (ICrafting)this.crafters.get(i);
+		for (Object element : this.crafters) {
+			ICrafting par1 = (ICrafting)element;
 
 			if(this.x != this.diFurnace.targetX)
 			{
@@ -71,15 +70,15 @@ public class ContainerMachineTeleporter extends Container {
 	public void updateProgressBar(int i, int j) {
 		if(i == 1)
 		{
-			diFurnace.targetX = j;
+			this.diFurnace.targetX = j;
 		}
 		if(i == 2)
 		{
-			diFurnace.targetY = j;
+			this.diFurnace.targetY = j;
 		}
 		if(i == 3)
 		{
-			diFurnace.targetZ = j;
+			this.diFurnace.targetZ = j;
 		}
 	}
 }

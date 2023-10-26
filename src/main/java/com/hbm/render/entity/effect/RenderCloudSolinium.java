@@ -20,9 +20,9 @@ public class RenderCloudSolinium extends Render {
     public float ring = 0;
     
     public RenderCloudSolinium() {
-    	blastModel = AdvancedModelLoader.loadModel(objTesterModelRL);
-    	blastTexture = new ResourceLocation(RefStrings.MODID, "textures/models/BlastSolinium.png");
-    	scale = 0;
+    	this.blastModel = AdvancedModelLoader.loadModel(RenderCloudSolinium.objTesterModelRL);
+    	this.blastTexture = new ResourceLocation(RefStrings.MODID, "textures/models/BlastSolinium.png");
+    	this.scale = 0;
     }
 
 	@Override
@@ -38,8 +38,8 @@ public class RenderCloudSolinium extends Render {
         
         GL11.glScalef(cloud.age, cloud.age, cloud.age);
         
-        bindTexture(blastTexture);
-        blastModel.renderAll();
+        bindTexture(this.blastTexture);
+        this.blastModel.renderAll();
         GL11.glPopMatrix();
 	}
 

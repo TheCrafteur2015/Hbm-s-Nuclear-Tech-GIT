@@ -12,7 +12,7 @@ import com.hbm.main.MainRegistry;
 
 public class HTTPHandler {
 
-	public static List<String> capsule = new ArrayList();
+	public static List<String> capsule = new ArrayList<>();
 	public static boolean newVersion = false;
 	public static String versionNumber = "";
 
@@ -23,8 +23,8 @@ public class HTTPHandler {
 			@Override
 			public void run() {
 				try {
-					loadVersion();
-					loadSoyuz();
+					HTTPHandler.loadVersion();
+					HTTPHandler.loadSoyuz();
 				} catch(IOException e) {
 					MainRegistry.logger.warn("Version checker failed!");
 				}
@@ -52,8 +52,8 @@ public class HTTPHandler {
 
 				String sub = line.substring(begin + 1, end);
 
-				newVersion = !RefStrings.VERSION.equals(sub);
-				versionNumber = sub;
+				HTTPHandler.newVersion = !RefStrings.VERSION.equals(sub);
+				HTTPHandler.versionNumber = sub;
 				MainRegistry.logger.info("Found version " + sub);
 				break;
 			}
@@ -71,7 +71,7 @@ public class HTTPHandler {
 		String line;
 
 		while((line = in.readLine()) != null) {
-			capsule.add(line);
+			HTTPHandler.capsule.add(line);
 		}
 
 		in.close();

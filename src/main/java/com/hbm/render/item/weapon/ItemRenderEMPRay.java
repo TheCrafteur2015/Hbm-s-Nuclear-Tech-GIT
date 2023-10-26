@@ -16,7 +16,7 @@ public class ItemRenderEMPRay implements IItemRenderer {
 	protected ModelEMPRay swordModel;
 	
 	public ItemRenderEMPRay() {
-		swordModel = new ModelEMPRay();
+		this.swordModel = new ModelEMPRay();
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class ItemRenderEMPRay implements IItemRenderer {
 				GL11.glScalef(0.5F, 0.5F, 0.5F);
 				GL11.glTranslatef(-0.8F, -0.2F, 0.0F);
 				GL11.glRotatef(-15.0F, 0.0F, 0.0F, 1.0F);
-				swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, f);
+				this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, f);
 			GL11.glPopMatrix();
 			break;
 		case EQUIPPED:
@@ -67,7 +67,7 @@ public class ItemRenderEMPRay implements IItemRenderer {
 				GL11.glTranslatef(0.5F, -0.2F, 0.0F);
 				GL11.glScalef(0.5F, 0.5F, 0.5F);
 				GL11.glTranslatef(-1.8F, -0.2F, 0.2F);
-				swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, f);
+				this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, f);
 			GL11.glPopMatrix();
 		default: break;
 		}

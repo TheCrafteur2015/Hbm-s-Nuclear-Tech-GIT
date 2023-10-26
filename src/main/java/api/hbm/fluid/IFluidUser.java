@@ -36,11 +36,11 @@ public interface IFluidUser extends IFluidConnector {
 			IFluidConnector con = (IFluidConnector) te;
 			
 			if(con.canConnect(type, dir.getOpposite())) {
-				long toSend = this.getTotalFluidForSend(type, pressure);
+				long toSend = getTotalFluidForSend(type, pressure);
 				
 				if(toSend > 0) {
 					long transfer = toSend - con.transferFluid(type, pressure, toSend);
-					this.removeFluidForTransfer(type, pressure, transfer);
+					removeFluidForTransfer(type, pressure, transfer);
 				}
 				red = true;
 			}
@@ -54,7 +54,7 @@ public interface IFluidUser extends IFluidConnector {
 			}
 		}
 		
-		if(particleDebug) {
+		if(IFluidConnector.particleDebug) {
 			NBTTagCompound data = new NBTTagCompound();
 			data.setString("type", "network");
 			data.setString("mode", "fluid");
@@ -107,7 +107,7 @@ public interface IFluidUser extends IFluidConnector {
 	public default void subscribeToAllAround(FluidType type, World world, int x, int y, int z) {
 		
 		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-			this.trySubscribe(type, world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, dir);
+			trySubscribe(type, world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, dir);
 	}
 	
 	public default void unsubscribeToAllAround(FluidType type, TileEntity te) {
@@ -117,7 +117,7 @@ public interface IFluidUser extends IFluidConnector {
 	public default void unsubscribeToAllAround(FluidType type, World world, int x, int y, int z) {
 		
 		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-			this.tryUnsubscribe(type, world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
+			tryUnsubscribe(type, world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
 	}
 	
 	/**

@@ -1,5 +1,6 @@
 package com.hbm.blocks.machine.rbmk;
 
+import com.hbm.blocks.BlockDummyable;
 import com.hbm.tileentity.TileEntityProxyCombo;
 import com.hbm.tileentity.machine.rbmk.TileEntityRBMKHeater;
 
@@ -12,7 +13,7 @@ public class RBMKHeater extends RBMKBase {
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
 		
-		if(meta >= this.offset)
+		if(meta >= BlockDummyable.offset)
 			return new TileEntityRBMKHeater();
 		
 		if(hasExtra(meta))
@@ -28,6 +29,6 @@ public class RBMKHeater extends RBMKBase {
 	
 	@Override
 	public int getRenderType(){
-		return this.renderIDControl;
+		return RBMKBase.renderIDControl;
 	}
 }

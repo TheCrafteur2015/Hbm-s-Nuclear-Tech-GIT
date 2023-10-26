@@ -20,7 +20,7 @@ public class GUIMachineSiren extends GuiContainer {
 
 	public GUIMachineSiren(InventoryPlayer invPlayer, TileEntityMachineSiren tedf) {
 		super(new ContainerMachineSiren(invPlayer, tedf));
-		siren = tedf;
+		this.siren = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 166;
@@ -33,18 +33,18 @@ public class GUIMachineSiren extends GuiContainer {
 		this.fontRendererObj.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 		
 		//Draw record meta here//
-		if(!siren.getCurrentType().name().equals(TrackType.NULL.name())) {
-			int color = siren.getCurrentType().getColor();
-			this.fontRendererObj.drawString(siren.getCurrentType().getTrackTitle(), 46, 28, color);
-			this.fontRendererObj.drawString("Type: " + siren.getCurrentType().getType().name(), 46, 40, color);
-			this.fontRendererObj.drawString("Volume: " + siren.getCurrentType().getVolume(), 46, 52, color);
+		if(!this.siren.getCurrentType().name().equals(TrackType.NULL.name())) {
+			int color = this.siren.getCurrentType().getColor();
+			this.fontRendererObj.drawString(this.siren.getCurrentType().getTrackTitle(), 46, 28, color);
+			this.fontRendererObj.drawString("Type: " + this.siren.getCurrentType().getType().name(), 46, 40, color);
+			this.fontRendererObj.drawString("Volume: " + this.siren.getCurrentType().getVolume(), 46, 52, color);
 		}
 	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIMachineSiren.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 	}
 }

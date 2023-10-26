@@ -14,16 +14,16 @@ public class ItemTurretBiometry extends Item {
 
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		String[] names = getNames(itemstack);
+		String[] names = ItemTurretBiometry.getNames(itemstack);
 		if(names != null)
-			for(int i = 0; i < names.length; i++)
-				list.add(names[i]);
+			for (String name : names)
+				list.add(name);
 	}
 
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
 
-		addName(stack, player.getDisplayName());
+		ItemTurretBiometry.addName(stack, player.getDisplayName());
 
 		if(world.isRemote)
 			player.addChatMessage(new ChatComponentText("Added player data!"));
@@ -58,7 +58,7 @@ public class ItemTurretBiometry extends Item {
 			stack.stackTagCompound = new NBTTagCompound();
 		}
 
-		String[] names = getNames(stack);
+		String[] names = ItemTurretBiometry.getNames(stack);
 		int count = 0;
 
 		if(names != null && Arrays.asList(names).contains(s))

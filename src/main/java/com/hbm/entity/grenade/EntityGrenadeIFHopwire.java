@@ -29,13 +29,13 @@ public class EntityGrenadeIFHopwire extends EntityGrenadeBouncyBase {
     	
         if (!this.worldObj.isRemote)
         {
-            this.setDead();
+            setDead();
     		
-    		EntityVortex vortex = new EntityVortex(worldObj, 0.75F);
-    		vortex.posX = posX;
-    		vortex.posY = posY;
-    		vortex.posZ = posZ;
-    		worldObj.spawnEntityInWorld(vortex);
+    		EntityVortex vortex = new EntityVortex(this.worldObj, 0.75F);
+    		vortex.posX = this.posX;
+    		vortex.posY = this.posY;
+    		vortex.posZ = this.posZ;
+    		this.worldObj.spawnEntityInWorld(vortex);
         }
     }
 

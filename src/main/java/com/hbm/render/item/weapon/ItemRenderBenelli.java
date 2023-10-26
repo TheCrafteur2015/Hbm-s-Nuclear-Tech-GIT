@@ -76,7 +76,7 @@ public class ItemRenderBenelli implements IItemRenderer
 			// Pump new round if empty
 			if (magSize == 0)
 				GL11.glTranslated(feedNew[0], feedNew[1], feedNew[2]);
-			ResourceManager.benelli.renderPart(slide);
+			ResourceManager.benelli.renderPart(ItemRenderBenelli.slide);
 			GL11.glPopMatrix();
 			// Eject spent shell
 			GL11.glPushMatrix();

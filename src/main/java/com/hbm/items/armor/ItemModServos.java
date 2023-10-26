@@ -64,6 +64,7 @@ public class ItemModServos extends ItemArmorMod {
 		}
 	}
 	
+	@Override
 	public void modUpdate(EntityLivingBase entity, ItemStack armor) {
 		
 		ItemArmor item = (ItemArmor)armor.getItem();

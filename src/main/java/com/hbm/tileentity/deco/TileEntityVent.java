@@ -14,41 +14,42 @@ public class TileEntityVent extends TileEntity {
 	
 	Random rand = new Random();
 
+	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote && worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)) {
-			Block b = worldObj.getBlock(xCoord, yCoord, zCoord);
+		if(!this.worldObj.isRemote && this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord)) {
+			Block b = this.worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord);
 
 			if(b == ModBlocks.vent_chlorine) {
 				//if(rand.nextInt(1) == 0) {
-					double x = rand.nextGaussian() * 1.5;
-					double y = rand.nextGaussian() * 1.5;
-					double z = rand.nextGaussian() * 1.5;
+					double x = this.rand.nextGaussian() * 1.5;
+					double y = this.rand.nextGaussian() * 1.5;
+					double z = this.rand.nextGaussian() * 1.5;
 					
-					if(!worldObj.getBlock(xCoord + (int)x, yCoord + (int)y, zCoord + (int)z).isNormalCube()) {
-						worldObj.spawnEntityInWorld(new EntityChlorineFX(worldObj, xCoord + (int)x, yCoord + (int)y, zCoord + (int)z, x/2, y/2, z/2));
+					if(!this.worldObj.getBlock(this.xCoord + (int)x, this.yCoord + (int)y, this.zCoord + (int)z).isNormalCube()) {
+						this.worldObj.spawnEntityInWorld(new EntityChlorineFX(this.worldObj, this.xCoord + (int)x, this.yCoord + (int)y, this.zCoord + (int)z, x/2, y/2, z/2));
 					}
 				//}
 			}
 			if(b == ModBlocks.vent_cloud) {
 				//if(rand.nextInt(50) == 0) {
-				double x = rand.nextGaussian() * 1.75;
-				double y = rand.nextGaussian() * 1.75;
-				double z = rand.nextGaussian() * 1.75;
+				double x = this.rand.nextGaussian() * 1.75;
+				double y = this.rand.nextGaussian() * 1.75;
+				double z = this.rand.nextGaussian() * 1.75;
 				
-				if(!worldObj.getBlock(xCoord + (int)x, yCoord + (int)y, zCoord + (int)z).isNormalCube()) {
-					worldObj.spawnEntityInWorld(new EntityCloudFX(worldObj, xCoord + (int)x, yCoord + (int)y, zCoord + (int)z, x/2, y/2, z/2));
+				if(!this.worldObj.getBlock(this.xCoord + (int)x, this.yCoord + (int)y, this.zCoord + (int)z).isNormalCube()) {
+					this.worldObj.spawnEntityInWorld(new EntityCloudFX(this.worldObj, this.xCoord + (int)x, this.yCoord + (int)y, this.zCoord + (int)z, x/2, y/2, z/2));
 					}
 				//}
 			}
 			if(b == ModBlocks.vent_pink_cloud) {
 				//if(rand.nextInt(65) == 0) {
-				double x = rand.nextGaussian() * 2;
-				double y = rand.nextGaussian() * 2;
-				double z = rand.nextGaussian() * 2;
+				double x = this.rand.nextGaussian() * 2;
+				double y = this.rand.nextGaussian() * 2;
+				double z = this.rand.nextGaussian() * 2;
 				
-				if(!worldObj.getBlock(xCoord + (int)x, yCoord + (int)y, zCoord + (int)z).isNormalCube()) {
-					worldObj.spawnEntityInWorld(new EntityPinkCloudFX(worldObj, xCoord + (int)x, yCoord + (int)y, zCoord + (int)z, x/2, y/2, z/2));
+				if(!this.worldObj.getBlock(this.xCoord + (int)x, this.yCoord + (int)y, this.zCoord + (int)z).isNormalCube()) {
+					this.worldObj.spawnEntityInWorld(new EntityPinkCloudFX(this.worldObj, this.xCoord + (int)x, this.yCoord + (int)y, this.zCoord + (int)z, x/2, y/2, z/2));
 					}
 				//}
 			}

@@ -24,7 +24,7 @@ public class ItemGunBio extends ItemGunBase {
 	
 	/* just a test */
 	public static long lastShot;
-	public static List<double[]> smokeNodes = new ArrayList();
+	public static List<double[]> smokeNodes = new ArrayList<>();
 	
 	@Override
 	public void startActionClient(ItemStack stack, World world, EntityPlayer player, boolean main) { }
@@ -34,10 +34,10 @@ public class ItemGunBio extends ItemGunBase {
 	protected void updateClient(ItemStack stack, World world, EntityPlayer entity, int slot, boolean isCurrentItem) {
 		super.updateClient(stack, world, entity, slot, isCurrentItem);
 		
-		boolean smoking = lastShot + 2000 > System.currentTimeMillis();
+		boolean smoking = ItemGunBio.lastShot + 2000 > System.currentTimeMillis();
 		
-		if(!smoking && !smokeNodes.isEmpty()) {
-			smokeNodes.clear();
+		if(!smoking && !ItemGunBio.smokeNodes.isEmpty()) {
+			ItemGunBio.smokeNodes.clear();
 		}
 		
 		if(smoking) {
@@ -48,7 +48,7 @@ public class ItemGunBio extends ItemGunBase {
 			double side = (entity.rotationYaw - entity.prevRotationYawHead) * 0.1D;
 			double waggle = 0.025D;
 			
-			for(double[] node : smokeNodes) {
+			for(double[] node : ItemGunBio.smokeNodes) {
 				node[0] += prev.xCoord * accel + world.rand.nextGaussian() * waggle + side;
 				node[1] += prev.yCoord + 1.5D;
 				node[2] += prev.zCoord * accel + world.rand.nextGaussian() * waggle;
@@ -57,9 +57,9 @@ public class ItemGunBio extends ItemGunBase {
 			double alpha = (System.currentTimeMillis() - ItemGunBio.lastShot) / 2000D;
 			alpha = (1 - alpha) * 0.5D;
 			
-			if(this.getIsReloading(stack)) alpha = 0;
+			if(getIsReloading(stack)) alpha = 0;
 			
-			smokeNodes.add(new double[] {0, 0, 0, alpha});
+			ItemGunBio.smokeNodes.add(new double[] {0, 0, 0, alpha});
 		}
 	}
 	
@@ -70,7 +70,7 @@ public class ItemGunBio extends ItemGunBase {
 		//return config.animations.get(type);
 		
 		 if(type == AnimType.CYCLE) {
-			lastShot = System.currentTimeMillis();
+			ItemGunBio.lastShot = System.currentTimeMillis();
 			return new BusAnimation()
 				.addBus("RECOIL", new BusAnimationSequence()
 						.addKeyframe(new BusAnimationKeyframe(0, 0, 0, 50))

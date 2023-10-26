@@ -41,17 +41,17 @@ public class EntityCloudFX extends EntityModFX {
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
 
-		if (maxAge < 900) {
-			maxAge = rand.nextInt(301) + 900;
+		if (this.maxAge < 900) {
+			this.maxAge = this.rand.nextInt(301) + 900;
 		}
 
-		if (!worldObj.isRemote && rand.nextInt(50) == 0)
-			ExplosionChaos.c(worldObj, (int) posX, (int) posY, (int) posZ, 2);
+		if (!this.worldObj.isRemote && this.rand.nextInt(50) == 0)
+			ExplosionChaos.c(this.worldObj, (int) this.posX, (int) this.posY, (int) this.posZ, 2);
 
 		this.particleAge++;
 
-		if (this.particleAge >= maxAge) {
-			this.setDead();
+		if (this.particleAge >= this.maxAge) {
+			setDead();
 		}
 
 		this.motionX *= 0.7599999785423279D;
@@ -63,7 +63,7 @@ public class EntityCloudFX extends EntityModFX {
 			this.motionZ *= 0.699999988079071D;
 		}
 		
-		if(worldObj.isRaining() && worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ))) {
+		if(this.worldObj.isRaining() && this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ))) {
 			this.motionY -= 0.01;
 		}
 		
@@ -75,13 +75,13 @@ public class EntityCloudFX extends EntityModFX {
 			this.posY += this.motionY/subdivisions;
 			this.posZ += this.motionZ/subdivisions;
 			
-			if (worldObj.getBlock((int) posX, (int) posY, (int) posZ).isNormalCube()) {
+			if (this.worldObj.getBlock((int) this.posX, (int) this.posY, (int) this.posZ).isNormalCube()) {
 	
-				if(!worldObj.isRemote && rand.nextInt(5) != 0) {
-					this.setDead();
+				if(!this.worldObj.isRemote && this.rand.nextInt(5) != 0) {
+					setDead();
 					
-					if(BlockCloudResidue.hasPosNeightbour(worldObj, (int) (posX - motionX/subdivisions), (int) (posY - motionY/subdivisions), (int) (posZ - motionZ/subdivisions)) && worldObj.getBlock((int) (posX - motionX/subdivisions), (int) (posY - motionY/subdivisions), (int) (posZ - motionZ/subdivisions)).isReplaceable(worldObj, (int) (posX - motionX/subdivisions), (int) (posY - motionY/subdivisions), (int) (posZ - motionZ/subdivisions))) {
-						worldObj.setBlock((int) (posX - motionX/subdivisions), (int) (posY - motionY/subdivisions), (int) (posZ - motionZ/subdivisions), ModBlocks.residue);
+					if(BlockCloudResidue.hasPosNeightbour(this.worldObj, (int) (this.posX - this.motionX/subdivisions), (int) (this.posY - this.motionY/subdivisions), (int) (this.posZ - this.motionZ/subdivisions)) && this.worldObj.getBlock((int) (this.posX - this.motionX/subdivisions), (int) (this.posY - this.motionY/subdivisions), (int) (this.posZ - this.motionZ/subdivisions)).isReplaceable(this.worldObj, (int) (this.posX - this.motionX/subdivisions), (int) (this.posY - this.motionY/subdivisions), (int) (this.posZ - this.motionZ/subdivisions))) {
+						this.worldObj.setBlock((int) (this.posX - this.motionX/subdivisions), (int) (this.posY - this.motionY/subdivisions), (int) (this.posZ - this.motionZ/subdivisions), ModBlocks.residue);
 					}
 				}
 				

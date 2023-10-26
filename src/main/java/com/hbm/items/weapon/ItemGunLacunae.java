@@ -16,7 +16,7 @@ public class ItemGunLacunae extends ItemGunBase {
 	public void startAction(ItemStack stack, World world, EntityPlayer player, boolean main) {
 		
 		if(main) {
-			setDelay(stack, 20);
+			ItemGunBase.setDelay(stack, 20);
 			world.playSoundAtEntity(player, "hbm:weapon.lacunaeSpinup", 1.0F, 1.0F);
 		}
 	}
@@ -28,15 +28,16 @@ public class ItemGunLacunae extends ItemGunBase {
 			world.playSoundAtEntity(player, "hbm:weapon.lacunaeSpindown", 1.0F, 1.0F);
 	}
 	
+	@Override
 	protected void updateServer(ItemStack stack, World world, EntityPlayer player, int slot, boolean isCurrentItem) {
 		
 		super.updateServer(stack, world, player, slot, isCurrentItem);
 		
-		if(getIsMouseDown(stack)) {
+		if(ItemGunBase.getIsMouseDown(stack)) {
 			
-			int rot = readNBT(stack, "rot") % 360;
+			int rot = ItemGunBase.readNBT(stack, "rot") % 360;
 			rot += 25;
-			writeNBT(stack, "rot", rot);
+			ItemGunBase.writeNBT(stack, "rot", rot);
 		}
 	}
 }

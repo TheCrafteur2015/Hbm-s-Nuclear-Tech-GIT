@@ -54,7 +54,7 @@ public class TileEntityDiFurnace extends TileEntityMachinePolluting implements I
 	}
 
 	public boolean hasItemPower(ItemStack stack) {
-		return getItemPower(stack) > 0;
+		return TileEntityDiFurnace.getItemPower(stack) > 0;
 	}
 
 	//TODO: replace this terribleness
@@ -70,8 +70,7 @@ public class TileEntityDiFurnace extends TileEntityMachinePolluting implements I
 			if(item == Items.lava_bucket) return 12800;
 			if(item == Items.blaze_rod) return 1000;
 			if(item == Items.blaze_powder) return 300;
-			if(item == ModItems.lignite) return 150;
-			if(item == ModItems.powder_lignite) return 150;
+			if((item == ModItems.lignite) || (item == ModItems.powder_lignite)) return 150;
 			if(item == ModItems.powder_coal) return 200;
 			if(item == ModItems.briquette) return 200;
 			if(item == ModItems.coke) return 400;
@@ -97,25 +96,24 @@ public class TileEntityDiFurnace extends TileEntityMachinePolluting implements I
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setInteger("powerTime", fuel);
-		nbt.setShort("cookTime", (short) progress);
-		nbt.setByteArray("modes", new byte[] {(byte) sideFuel, (byte) sideUpper, (byte) sideLower});
+		nbt.setInteger("powerTime", this.fuel);
+		nbt.setShort("cookTime", (short) this.progress);
+		nbt.setByteArray("modes", new byte[] {(byte) this.sideFuel, (byte) this.sideUpper, (byte) this.sideLower});
 	}
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
-		return slots_io;
+		return TileEntityDiFurnace.slots_io;
 	}
 
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemStack, int j) {
 
-		if(i == 0 && this.sideUpper != j) return false;
-		if(i == 1 && this.sideLower != j) return false;
+		if((i == 0 && this.sideUpper != j) || (i == 1 && this.sideLower != j)) return false;
 		if(i == 2 && this.sideFuel != j) return false;
 		if(i == 3) return false;
 		
-		return this.isItemValidForSlot(i, itemStack);
+		return isItemValidForSlot(i, itemStack);
 	}
 
 	@Override
@@ -124,23 +122,22 @@ public class TileEntityDiFurnace extends TileEntityMachinePolluting implements I
 	}
 
 	public int getDiFurnaceProgressScaled(int i) {
-		return (progress * i) / processingSpeed;
+		return (this.progress * i) / TileEntityDiFurnace.processingSpeed;
 	}
 
 	public int getPowerRemainingScaled(int i) {
-		return (fuel * i) / maxFuel;
+		return (this.fuel * i) / TileEntityDiFurnace.maxFuel;
 	}
 
 	public boolean canProcess() {
-		if(slots[0] == null || slots[1] == null) return false;
-		if(!this.hasPower()) return false;
+		if(this.slots[0] == null || this.slots[1] == null || !hasPower()) return false;
 		
-		ItemStack output = BlastFurnaceRecipes.getOutput(slots[0], slots[1]);
+		ItemStack output = BlastFurnaceRecipes.getOutput(this.slots[0], this.slots[1]);
 		if(output == null) return false;
-		if(slots[3] == null) return true;
-		if(!slots[3].isItemEqual(output)) return false;
+		if(this.slots[3] == null) return true;
+		if(!this.slots[3].isItemEqual(output)) return false;
 
-		if(slots[3].stackSize + output.stackSize <= slots[3].getMaxStackSize()) {
+		if(this.slots[3].stackSize + output.stackSize <= this.slots[3].getMaxStackSize()) {
 			return true;
 		}
 		
@@ -148,21 +145,21 @@ public class TileEntityDiFurnace extends TileEntityMachinePolluting implements I
 	}
 
 	private void processItem() {
-		ItemStack itemStack = BlastFurnaceRecipes.getOutput(slots[0], slots[1]);
+		ItemStack itemStack = BlastFurnaceRecipes.getOutput(this.slots[0], this.slots[1]);
 
-		if(slots[3] == null) {
-			slots[3] = itemStack.copy();
-		} else if(slots[3].isItemEqual(itemStack)) {
-			slots[3].stackSize += itemStack.stackSize;
+		if(this.slots[3] == null) {
+			this.slots[3] = itemStack.copy();
+		} else if(this.slots[3].isItemEqual(itemStack)) {
+			this.slots[3].stackSize += itemStack.stackSize;
 		}
 
 		for(int i = 0; i < 2; i++) {
-			this.decrStackSize(i, 1);
+			decrStackSize(i, 1);
 		}
 	}
 
 	public boolean hasPower() {
-		return fuel > 0;
+		return this.fuel > 0;
 	}
 
 	public boolean isProcessing() {
@@ -172,20 +169,20 @@ public class TileEntityDiFurnace extends TileEntityMachinePolluting implements I
 	@Override
 	public void updateEntity() {
 
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			boolean extension = worldObj.getBlock(xCoord, yCoord + 1, zCoord) == ModBlocks.machine_difurnace_extension;
+			boolean extension = this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord) == ModBlocks.machine_difurnace_extension;
 			
 			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-				this.sendSmoke(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, dir);
+				sendSmoke(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ, dir);
 			}
 			
-			if(extension) this.sendSmoke(xCoord, yCoord + 2, zCoord, ForgeDirection.UP);
+			if(extension) sendSmoke(this.xCoord, this.yCoord + 2, this.zCoord, ForgeDirection.UP);
 
 			boolean markDirty = false;
 			
-			if(this.hasItemPower(this.slots[2]) && this.fuel <= (TileEntityDiFurnace.maxFuel - TileEntityDiFurnace.getItemPower(this.slots[2]))) {
-				this.fuel += getItemPower(this.slots[2]);
+			if(hasItemPower(this.slots[2]) && this.fuel <= (TileEntityDiFurnace.maxFuel - TileEntityDiFurnace.getItemPower(this.slots[2]))) {
+				this.fuel += TileEntityDiFurnace.getItemPower(this.slots[2]);
 				if(this.slots[2] != null) {
 					markDirty = true;
 					this.slots[2].stackSize--;
@@ -198,23 +195,23 @@ public class TileEntityDiFurnace extends TileEntityMachinePolluting implements I
 			if(canProcess()) {
 
 				//fuel -= extension ? 2 : 1;
-				fuel -= 1; //switch it up on me, fuel efficiency, on fumes i'm running - running - running - running
-				progress += extension ? 3 : 1;
+				this.fuel -= 1; //switch it up on me, fuel efficiency, on fumes i'm running - running - running - running
+				this.progress += extension ? 3 : 1;
 
 				if(this.progress >= TileEntityDiFurnace.processingSpeed) {
 					this.progress = 0;
-					this.processItem();
+					processItem();
 					markDirty = true;
 				}
 				
-				if(fuel < 0) {
-					fuel = 0;
+				if(this.fuel < 0) {
+					this.fuel = 0;
 				}
 
-				if(worldObj.getTotalWorldTime() % 20 == 0) this.pollute(PollutionType.SOOT, PollutionHandler.SOOT_PER_SECOND * (extension ? 3 : 1));
+				if(this.worldObj.getTotalWorldTime() % 20 == 0) pollute(PollutionType.SOOT, PollutionHandler.SOOT_PER_SECOND * (extension ? 3 : 1));
 				
 			} else {
-				progress = 0;
+				this.progress = 0;
 			}
 
 			boolean trigger = true;
@@ -231,11 +228,11 @@ public class TileEntityDiFurnace extends TileEntityMachinePolluting implements I
 			NBTTagCompound data = new NBTTagCompound();
 			data.setShort("time", (short) this.progress);
 			data.setShort("fuel", (short) this.fuel);
-			data.setByteArray("modes", new byte[] { (byte) sideFuel, (byte) sideUpper, (byte) sideLower });
+			data.setByteArray("modes", new byte[] { (byte) this.sideFuel, (byte) this.sideUpper, (byte) this.sideLower });
 			INBTPacketReceiver.networkPack(this, data, 15);
 
 			if(markDirty) {
-				this.markDirty();
+				markDirty();
 			}
 		}
 	}
@@ -268,6 +265,6 @@ public class TileEntityDiFurnace extends TileEntityMachinePolluting implements I
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return this.getSmokeTanks();
+		return getSmokeTanks();
 	}
 }

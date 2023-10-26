@@ -18,6 +18,6 @@ public class ActionRemoveActor implements IJarAction {
 
 	@Override
 	public void act(WorldInAJar world, JarScene scene) {
-		scene.script.actors.remove(id);
+		scene.script.actors.remove(this.id);
 	}
 }

@@ -6,13 +6,13 @@ import com.hbm.blocks.BlockDummyable;
 import com.hbm.handler.pollution.PollutionHandler;
 import com.hbm.handler.pollution.PollutionHandler.PollutionType;
 import com.hbm.interfaces.IControlReceiver;
+import com.hbm.inventory.container.ContainerMachineTurbineGas;
+import com.hbm.inventory.fluid.FluidType;
+import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTank;
 import com.hbm.inventory.fluid.trait.FT_Combustible;
 import com.hbm.inventory.fluid.trait.FT_Combustible.FuelGrade;
 import com.hbm.inventory.gui.GUIMachineTurbineGas;
-import com.hbm.inventory.container.ContainerMachineTurbineGas;
-import com.hbm.inventory.fluid.FluidType;
-import com.hbm.inventory.fluid.Fluids;
 import com.hbm.items.machine.IItemFluidIdentifier;
 import com.hbm.lib.Library;
 import com.hbm.main.MainRegistry;
@@ -56,13 +56,13 @@ public class TileEntityMachineTurbineGas extends TileEntityMachineBase implement
 	
 	private AudioWrapper audio;
 	
-	public static HashMap<FluidType, Double> fuelMaxCons = new HashMap(); //fuel consumption per tick at max power
+	public static HashMap<FluidType, Double> fuelMaxCons = new HashMap<>(); //fuel consumption per tick at max power
 	
 	static {
-		fuelMaxCons.put(Fluids.GAS, 50D);			// natgas doesn't burn well so it burns faster to compensate
-		fuelMaxCons.put(Fluids.SYNGAS, 10D);		// syngas just fucks
-		fuelMaxCons.put(Fluids.OXYHYDROGEN, 100D);	// oxyhydrogen is terrible so it needs to burn a ton for the bare minimum
-		fuelMaxCons.put(Fluids.REFORMGAS, 2.5D);	// halved because it's too powerful
+		TileEntityMachineTurbineGas.fuelMaxCons.put(Fluids.GAS, 50D);			// natgas doesn't burn well so it burns faster to compensate
+		TileEntityMachineTurbineGas.fuelMaxCons.put(Fluids.SYNGAS, 10D);		// syngas just fucks
+		TileEntityMachineTurbineGas.fuelMaxCons.put(Fluids.OXYHYDROGEN, 100D);	// oxyhydrogen is terrible so it needs to burn a ton for the bare minimum
+		TileEntityMachineTurbineGas.fuelMaxCons.put(Fluids.REFORMGAS, 2.5D);	// halved because it's too powerful
 		// default to 5 if not in list
 	}
 	
@@ -71,27 +71,27 @@ public class TileEntityMachineTurbineGas extends TileEntityMachineBase implement
 	public TileEntityMachineTurbineGas() {
 		super(2);
 		this.tanks = new FluidTank[4];
-		tanks[0] = new FluidTank(Fluids.GAS, 100000);
-		tanks[1] = new FluidTank(Fluids.LUBRICANT, 16000);
-		tanks[2] = new FluidTank(Fluids.WATER, 16000);
-		tanks[3] = new FluidTank(Fluids.HOTSTEAM, 160000);
+		this.tanks[0] = new FluidTank(Fluids.GAS, 100000);
+		this.tanks[1] = new FluidTank(Fluids.LUBRICANT, 16000);
+		this.tanks[2] = new FluidTank(Fluids.WATER, 16000);
+		this.tanks[3] = new FluidTank(Fluids.HOTSTEAM, 160000);
 	}
 	
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			throttle = powerSliderPos * 100 / 60;
+			this.throttle = this.powerSliderPos * 100 / 60;
 			
-			if(slots[1] != null && slots[1].getItem() instanceof IItemFluidIdentifier) {
-				FluidType fluid = ((IItemFluidIdentifier) slots[1].getItem()).getType(worldObj, xCoord, yCoord, zCoord, slots[1]);
+			if(this.slots[1] != null && this.slots[1].getItem() instanceof IItemFluidIdentifier) {
+				FluidType fluid = ((IItemFluidIdentifier) this.slots[1].getItem()).getType(this.worldObj, this.xCoord, this.yCoord, this.zCoord, this.slots[1]);
 				if(fluid.hasTrait(FT_Combustible.class) && fluid.getTrait(FT_Combustible.class).getGrade() == FuelGrade.GAS) {
-					tanks[0].setTankType(fluid);
+					this.tanks[0].setTankType(fluid);
 				}
 			}
 			
-			switch(state) { //what to do when turbine offline, starting up and online			
+			switch(this.state) { //what to do when turbine offline, starting up and online			
 			case 0:
 				shutdown();	
 				break;
@@ -107,42 +107,42 @@ public class TileEntityMachineTurbineGas extends TileEntityMachineBase implement
 				break;
 			}
 			
-			if(autoMode) { //power production depending on power requirement
+			if(this.autoMode) { //power production depending on power requirement
 				
 				//scales the slider proportionally to the power gauge
-				int powerSliderTarget = 60 - (int) (60 * power / maxPower);
+				int powerSliderTarget = 60 - (int) (60 * this.power / TileEntityMachineTurbineGas.maxPower);
 				
-				if(powerSliderTarget > powerSliderPos) { //makes the auto slider slide instead of snapping into position
-					powerSliderPos++;
+				if(powerSliderTarget > this.powerSliderPos) { //makes the auto slider slide instead of snapping into position
+					this.powerSliderPos++;
 				}
-				else if(powerSliderTarget < powerSliderPos) {
-					powerSliderPos--;
+				else if(powerSliderTarget < this.powerSliderPos) {
+					this.powerSliderPos--;
 				}
 			}
 			
-			ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+			ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
 			ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setLong("power", Math.min(this.power, this.maxPower)); //set first to get an unmodified view of how much power was generated before deductions from the net
+			data.setLong("power", Math.min(this.power, TileEntityMachineTurbineGas.maxPower)); //set first to get an unmodified view of how much power was generated before deductions from the net
 			
 			//do net/battery deductions first...
-			power = Library.chargeItemsFromTE(slots, 0, power, maxPower);
-			this.sendPower(worldObj, xCoord - dir.offsetZ * 5, yCoord + 1, zCoord + dir.offsetX * 5, rot); //sends out power
+			this.power = Library.chargeItemsFromTE(this.slots, 0, this.power, TileEntityMachineTurbineGas.maxPower);
+			sendPower(this.worldObj, this.xCoord - dir.offsetZ * 5, this.yCoord + 1, this.zCoord + dir.offsetX * 5, rot); //sends out power
 			
 			//...and then cap it. Prevents potential future cases where power would be limited due to the fuel being too strong and the buffer too small.
-			if(this.power > this.maxPower)
-				this.power = this.maxPower;
+			if(this.power > TileEntityMachineTurbineGas.maxPower)
+				this.power = TileEntityMachineTurbineGas.maxPower;
 			
 			for(int i = 0; i < 2; i++) { //fuel and lube
-				this.trySubscribe(tanks[i].getTankType(), worldObj, xCoord - dir.offsetX * 2 + rot.offsetX, yCoord, zCoord - dir.offsetZ * 2 + rot.offsetZ, dir.getOpposite());
-				this.trySubscribe(tanks[i].getTankType(), worldObj, xCoord + dir.offsetX * 2 + rot.offsetX, yCoord, zCoord + dir.offsetZ * 2 + rot.offsetZ, dir);
+				this.trySubscribe(this.tanks[i].getTankType(), this.worldObj, this.xCoord - dir.offsetX * 2 + rot.offsetX, this.yCoord, this.zCoord - dir.offsetZ * 2 + rot.offsetZ, dir.getOpposite());
+				this.trySubscribe(this.tanks[i].getTankType(), this.worldObj, this.xCoord + dir.offsetX * 2 + rot.offsetX, this.yCoord, this.zCoord + dir.offsetZ * 2 + rot.offsetZ, dir);
 			}
 			//water
-			this.trySubscribe(tanks[2].getTankType(), worldObj, xCoord - dir.offsetX * 2 + rot.offsetX * -4, yCoord, zCoord - dir.offsetZ * 2 + rot.offsetZ * -4, dir.getOpposite());
-			this.trySubscribe(tanks[2].getTankType(), worldObj, xCoord + dir.offsetX * 2 + rot.offsetX * -4, yCoord, zCoord + dir.offsetZ * 2 + rot.offsetZ * -4, dir);
+			this.trySubscribe(this.tanks[2].getTankType(), this.worldObj, this.xCoord - dir.offsetX * 2 + rot.offsetX * -4, this.yCoord, this.zCoord - dir.offsetZ * 2 + rot.offsetZ * -4, dir.getOpposite());
+			this.trySubscribe(this.tanks[2].getTankType(), this.worldObj, this.xCoord + dir.offsetX * 2 + rot.offsetX * -4, this.yCoord, this.zCoord + dir.offsetZ * 2 + rot.offsetZ * -4, dir);
 			//steam
-			this.sendFluid(tanks[3], worldObj, xCoord + dir.offsetZ * 6, yCoord + 1, zCoord - dir.offsetX * 6, rot.getOpposite());
+			this.sendFluid(this.tanks[3], this.worldObj, this.xCoord + dir.offsetZ * 6, this.yCoord + 1, this.zCoord - dir.offsetX * 6, rot.getOpposite());
 			
 			data.setInteger("rpm",  this.rpm);
 			data.setInteger("temp",  this.temp);
@@ -151,42 +151,42 @@ public class TileEntityMachineTurbineGas extends TileEntityMachineBase implement
 			data.setInteger("throttle",  this.throttle);
 			data.setInteger("slidpos",  this.powerSliderPos);
 			
-			if(state != 1) {
+			if(this.state != 1) {
 				data.setInteger("counter", this.counter); //sent during startup and shutdown
 			} else {
 				data.setInteger("instantPow", this.instantPowerOutput); //sent while running
 			}
 			
-			tanks[0].writeToNBT(data, "fuel");
-			tanks[1].writeToNBT(data, "lube");
-			tanks[2].writeToNBT(data, "water");
-			tanks[3].writeToNBT(data, "steam");
+			this.tanks[0].writeToNBT(data, "fuel");
+			this.tanks[1].writeToNBT(data, "lube");
+			this.tanks[2].writeToNBT(data, "water");
+			this.tanks[3].writeToNBT(data, "steam");
 				
-			this.networkPack(data, 150);
+			networkPack(data, 150);
 			
 		} else { //client side, for sounds n shit
 			
-			if(rpm >= 10 && state != -1) { //if conditions are right, play the sound
+			if(this.rpm >= 10 && this.state != -1) { //if conditions are right, play the sound
 				
-				if(audio == null) { //if there is no sound playing, start it
+				if(this.audio == null) { //if there is no sound playing, start it
 					
-					audio = MainRegistry.proxy.getLoopedSound("hbm:block.turbinegasRunning", xCoord, yCoord, zCoord, 1.0F, 20F, 1.0F);
-					audio.startSound();
+					this.audio = MainRegistry.proxy.getLoopedSound("hbm:block.turbinegasRunning", this.xCoord, this.yCoord, this.zCoord, 1.0F, 20F, 1.0F);
+					this.audio.startSound();
 					
-				} else if(!audio.isPlaying()) {
-					audio.stopSound();
-					audio = MainRegistry.proxy.getLoopedSound("hbm:block.turbinegasRunning", xCoord, yCoord, zCoord, 1.0F, 20F, 1.0F);
-					audio.startSound();
+				} else if(!this.audio.isPlaying()) {
+					this.audio.stopSound();
+					this.audio = MainRegistry.proxy.getLoopedSound("hbm:block.turbinegasRunning", this.xCoord, this.yCoord, this.zCoord, 1.0F, 20F, 1.0F);
+					this.audio.startSound();
 				}
 				
-				audio.updatePitch((float) (0.55 + 0.1 * rpm / 10)); //dynamic pitch update based on rpm
-				audio.updateVolume(100F); //yeah i need this
+				this.audio.updatePitch((float) (0.55 + 0.1 * this.rpm / 10)); //dynamic pitch update based on rpm
+				this.audio.updateVolume(100F); //yeah i need this
 				
 			} else {
 				
-				if(audio != null) {
-					audio.stopSound();
-					audio = null;
+				if(this.audio != null) {
+					this.audio.stopSound();
+					this.audio = null;
 				}
 			}
 		}
@@ -194,18 +194,18 @@ public class TileEntityMachineTurbineGas extends TileEntityMachineBase implement
 	
 	private void stopIfNotReady() {
 		
-		if(tanks[0].getFill() == 0 || tanks[1].getFill() == 0) {
-			state = 0;
+		if(this.tanks[0].getFill() == 0 || this.tanks[1].getFill() == 0) {
+			this.state = 0;
 		}
 		if(!hasAcceptableFuel()) {
-			state = 0;
+			this.state = 0;
 		}
 	}
 	
 	public boolean hasAcceptableFuel() {
 		
-		if(tanks[0].getTankType().hasTrait(FT_Combustible.class)) {
-			return tanks[0].getTankType().getTrait(FT_Combustible.class).getGrade() == FuelGrade.GAS;
+		if(this.tanks[0].getTankType().hasTrait(FT_Combustible.class)) {
+			return this.tanks[0].getTankType().getTrait(FT_Combustible.class).getGrade() == FuelGrade.GAS;
 		}
 		
 		return false;
@@ -213,23 +213,23 @@ public class TileEntityMachineTurbineGas extends TileEntityMachineBase implement
 	
 	private void startup() {
 		
-		counter++;
+		this.counter++;
 		
-		if(counter <= 20) //rpm gauge 0-100-0
-			rpm = 5 * counter;
-		else if (counter > 20 && counter <= 40)
-			rpm = 100 - 5 * (counter - 20);
-		else if (counter > 50) {
-			rpm = (int) (rpmIdle * (counter - 50) / 530); //slowly ramps up temp and RPM
-			temp = (int) (tempIdle * (counter - 50) / 530);
+		if(this.counter <= 20) //rpm gauge 0-100-0
+			this.rpm = 5 * this.counter;
+		else if (this.counter > 20 && this.counter <= 40)
+			this.rpm = 100 - 5 * (this.counter - 20);
+		else if (this.counter > 50) {
+			this.rpm = this.rpmIdle * (this.counter - 50) / 530; //slowly ramps up temp and RPM
+			this.temp = this.tempIdle * (this.counter - 50) / 530;
 		}
 		
-		if(counter == 50) {
-			worldObj.playSoundEffect(xCoord, yCoord + 2, zCoord, "hbm:block.turbinegasStartup", 1F, 1.0F);
+		if(this.counter == 50) {
+			this.worldObj.playSoundEffect(this.xCoord, this.yCoord + 2, this.zCoord, "hbm:block.turbinegasStartup", 1F, 1.0F);
 		}
 			
-		if(counter == 580) {
-			state = 1;
+		if(this.counter == 580) {
+			this.state = 1;
 		}
 	}
 	
@@ -239,33 +239,33 @@ public class TileEntityMachineTurbineGas extends TileEntityMachineBase implement
 	
 	private void shutdown() {
 		
-		autoMode = false;
-		instantPowerOutput = 0;
+		this.autoMode = false;
+		this.instantPowerOutput = 0;
 		
-		if(powerSliderPos > 0)
-			powerSliderPos--;
+		if(this.powerSliderPos > 0)
+			this.powerSliderPos--;
 		
-		if(rpm <= 10 && counter > 0) {
+		if(this.rpm <= 10 && this.counter > 0) {
 			
-			if(counter == 225) {
+			if(this.counter == 225) {
 				
-				worldObj.playSoundEffect(xCoord, yCoord + 2, zCoord, "hbm:block.turbinegasShutdown", 1F, 1.0F);
+				this.worldObj.playSoundEffect(this.xCoord, this.yCoord + 2, this.zCoord, "hbm:block.turbinegasShutdown", 1F, 1.0F);
 				
-				rpmLast = rpm;
-				tempLast = temp;
+				this.rpmLast = this.rpm;
+				this.tempLast = this.temp;
 			}
 			
-			counter--;
+			this.counter--;
 			
-			rpm = (int) (rpmLast * (counter) / 225);
-			temp = (int) (tempLast * (counter) / 225);
+			this.rpm = this.rpmLast * (this.counter) / 225;
+			this.temp = this.tempLast * (this.counter) / 225;
 			
-		} else if(rpm > 11) { //quickly slows down the turbine to idle before shutdown
-			counter = 42069; //absolutely necessary to avoid fuckeries on shutdown
-			rpm--;
-		} else if(rpm == 11) {
-			counter = 225;
-			rpm--;
+		} else if(this.rpm > 11) { //quickly slows down the turbine to idle before shutdown
+			this.counter = 42069; //absolutely necessary to avoid fuckeries on shutdown
+			this.rpm--;
+		} else if(this.rpm == 11) {
+			this.counter = 225;
+			this.rpm--;
 		}
 	}
 	
@@ -277,31 +277,31 @@ public class TileEntityMachineTurbineGas extends TileEntityMachineBase implement
 	
 	private void run() {
 		
-		if((int) (throttle * 0.9) > rpm - rpmIdle) { //simulates the rotor's moment of inertia
-			if(worldObj.getTotalWorldTime() % 5 == 0) {
-				rpm++;
+		if((int) (this.throttle * 0.9) > this.rpm - this.rpmIdle) { //simulates the rotor's moment of inertia
+			if(this.worldObj.getTotalWorldTime() % 5 == 0) {
+				this.rpm++;
 			}
-		} else if((int) (throttle * 0.9) < rpm - rpmIdle) {
-			if(worldObj.getTotalWorldTime() % 2 == 0) {
-				rpm--;
-			}
-		}
-		
-		int maxTemp = getFluidBurnTemp(tanks[0].getTankType()); // fuelMaxTemp.get(tanks[0].getTankType())
-		
-		if(throttle * 5 * (maxTemp - tempIdle) / 500 > temp - tempIdle) { //simulates the heat exchanger's resistance to temperature variation
-			if(worldObj.getTotalWorldTime() % 2 == 0) {
-				temp++;
-			}
-		} else if(throttle * 5 * (maxTemp - tempIdle) / 500 < temp - tempIdle) {
-			if(worldObj.getTotalWorldTime() % 2 == 0) {
-				temp--;
+		} else if((int) (this.throttle * 0.9) < this.rpm - this.rpmIdle) {
+			if(this.worldObj.getTotalWorldTime() % 2 == 0) {
+				this.rpm--;
 			}
 		}
 		
-		double consumption = fuelMaxCons.containsKey(tanks[0].getTankType()) ? fuelMaxCons.get(tanks[0].getTankType()) : 5D;
-		if(worldObj.getTotalWorldTime() % 20 == 0 && tanks[0].getTankType() != Fluids.OXYHYDROGEN) PollutionHandler.incrementPollution(worldObj, xCoord, yCoord, zCoord, PollutionType.SOOT, PollutionHandler.SOOT_PER_SECOND * 3);
-		makePower(consumption, throttle);
+		int maxTemp = getFluidBurnTemp(this.tanks[0].getTankType()); // fuelMaxTemp.get(tanks[0].getTankType())
+		
+		if(this.throttle * 5 * (maxTemp - this.tempIdle) / 500 > this.temp - this.tempIdle) { //simulates the heat exchanger's resistance to temperature variation
+			if(this.worldObj.getTotalWorldTime() % 2 == 0) {
+				this.temp++;
+			}
+		} else if(this.throttle * 5 * (maxTemp - this.tempIdle) / 500 < this.temp - this.tempIdle) {
+			if(this.worldObj.getTotalWorldTime() % 2 == 0) {
+				this.temp--;
+			}
+		}
+		
+		double consumption = TileEntityMachineTurbineGas.fuelMaxCons.containsKey(this.tanks[0].getTankType()) ? TileEntityMachineTurbineGas.fuelMaxCons.get(this.tanks[0].getTankType()) : 5D;
+		if(this.worldObj.getTotalWorldTime() % 20 == 0 && this.tanks[0].getTankType() != Fluids.OXYHYDROGEN) PollutionHandler.incrementPollution(this.worldObj, this.xCoord, this.yCoord, this.zCoord, PollutionType.SOOT, PollutionHandler.SOOT_PER_SECOND * 3);
+		makePower(consumption, this.throttle);
 	}
 	
 	
@@ -314,56 +314,56 @@ public class TileEntityMachineTurbineGas extends TileEntityMachineBase implement
 		double idleConsumption = consMax * 0.05D;
 		double consumption = idleConsumption + consMax * throttle / 100;
 		
-		fuelToConsume += consumption;
+		this.fuelToConsume += consumption;
 		
-		tanks[0].setFill(tanks[0].getFill() - (int) Math.floor(fuelToConsume));
-		fuelToConsume -= (int) Math.floor(fuelToConsume);
+		this.tanks[0].setFill(this.tanks[0].getFill() - (int) Math.floor(this.fuelToConsume));
+		this.fuelToConsume -= (int) Math.floor(this.fuelToConsume);
 		
-		if(worldObj.getTotalWorldTime() % 10 == 0) //lube consumption 
-			tanks[1].setFill(tanks[1].getFill() - 1);
+		if(this.worldObj.getTotalWorldTime() % 10 == 0) //lube consumption 
+			this.tanks[1].setFill(this.tanks[1].getFill() - 1);
 		
-		if(tanks[0].getFill() < 0) { //avoids negative amounts of fluid
-			tanks[0].setFill(0);
-			state = 0;
+		if(this.tanks[0].getFill() < 0) { //avoids negative amounts of fluid
+			this.tanks[0].setFill(0);
+			this.state = 0;
 		}
-		if(tanks[1].getFill() < 0) {
-			tanks[1].setFill(0);
-			state = 0;
+		if(this.tanks[1].getFill() < 0) {
+			this.tanks[1].setFill(0);
+			this.state = 0;
 		}
 		
 		
 		long energy = 0; //energy per mb of fuel
 		
-		if(tanks[0].getTankType().hasTrait(FT_Combustible.class)) {
-			energy = tanks[0].getTankType().getTrait(FT_Combustible.class).getCombustionEnergy() / 1000L;
+		if(this.tanks[0].getTankType().hasTrait(FT_Combustible.class)) {
+			energy = this.tanks[0].getTankType().getTrait(FT_Combustible.class).getCombustionEnergy() / 1000L;
 		}
 		
-		int rpmEff = rpm - rpmIdle; // RPM above idle level, 0-90
+		int rpmEff = this.rpm - this.rpmIdle; // RPM above idle level, 0-90
 		
 		//consMax*energy is equivalent to power production at 100%
-		if(instantPowerOutput < (consMax * energy * rpmEff / 90)) { //this shit avoids power rising in steps of 2000 or so HE at a time, instead it does it smoothly
-			instantPowerOutput += Math.random() * 0.005 * consMax * energy;
-			if(instantPowerOutput > (consMax * energy * rpmEff / 90))
-				instantPowerOutput = (int) (consMax * energy * rpmEff / 90);
+		if(this.instantPowerOutput < (consMax * energy * rpmEff / 90)) { //this shit avoids power rising in steps of 2000 or so HE at a time, instead it does it smoothly
+			this.instantPowerOutput += Math.random() * 0.005 * consMax * energy;
+			if(this.instantPowerOutput > (consMax * energy * rpmEff / 90))
+				this.instantPowerOutput = (int) (consMax * energy * rpmEff / 90);
 		}
-		else if(instantPowerOutput > (consMax * energy * rpmEff / 90)) {
-			instantPowerOutput -= Math.random() * 0.011 * consMax * energy;
-			if(instantPowerOutput < (consMax * energy * rpmEff / 90))
-				instantPowerOutput = (int) (consMax * energy * rpmEff / 90);
+		else if(this.instantPowerOutput > (consMax * energy * rpmEff / 90)) {
+			this.instantPowerOutput -= Math.random() * 0.011 * consMax * energy;
+			if(this.instantPowerOutput < (consMax * energy * rpmEff / 90))
+				this.instantPowerOutput = (int) (consMax * energy * rpmEff / 90);
 		}
-		this.power += instantPowerOutput;
+		this.power += this.instantPowerOutput;
 		
-		waterPerTick = (consMax * energy * (temp - tempIdle) / 220000); //it just works fuck you
+		this.waterPerTick = (consMax * energy * (this.temp - this.tempIdle) / 220000); //it just works fuck you
 		
-		if(tanks[2].getFill() >= Math.ceil(waterPerTick)) { //checks if there's enough water to boil
+		if(this.tanks[2].getFill() >= Math.ceil(this.waterPerTick)) { //checks if there's enough water to boil
 			
-			waterToBoil += waterPerTick;
+			this.waterToBoil += this.waterPerTick;
 			
-			if(tanks[3].getFill() <= 160000 - waterToBoil * 10) { //checks if there's room for steam in the tank
+			if(this.tanks[3].getFill() <= 160000 - this.waterToBoil * 10) { //checks if there's room for steam in the tank
 				
-				tanks[2].setFill(tanks[2].getFill() - (int) Math.floor(waterToBoil));
-				tanks[3].setFill(tanks[3].getFill() + 10 * (int) Math.floor(waterToBoil));
-				waterToBoil -= (int) Math.floor(waterToBoil);
+				this.tanks[2].setFill(this.tanks[2].getFill() - (int) Math.floor(this.waterToBoil));
+				this.tanks[3].setFill(this.tanks[3].getFill() + 10 * (int) Math.floor(this.waterToBoil));
+				this.waterToBoil -= (int) Math.floor(this.waterToBoil);
 			}
 		}
 	}
@@ -413,18 +413,18 @@ public class TileEntityMachineTurbineGas extends TileEntityMachineBase implement
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		
-		tanks[0].writeToNBT(nbt, "gas");
-		tanks[1].writeToNBT(nbt, "lube");
-		tanks[2].writeToNBT(nbt, "water");
-		tanks[3].writeToNBT(nbt, "densesteam");
-		nbt.setBoolean("automode", autoMode);
-		nbt.setLong("power", power);
-		if(state == 1) {
+		this.tanks[0].writeToNBT(nbt, "gas");
+		this.tanks[1].writeToNBT(nbt, "lube");
+		this.tanks[2].writeToNBT(nbt, "water");
+		this.tanks[3].writeToNBT(nbt, "densesteam");
+		nbt.setBoolean("automode", this.autoMode);
+		nbt.setLong("power", this.power);
+		if(this.state == 1) {
 			nbt.setInteger("state", this.state);
 			nbt.setInteger("rpm", this.rpm);
 			nbt.setInteger("temperature", this.temp);
 			nbt.setInteger("slidPos", this.powerSliderPos);
-			nbt.setInteger("instPwr", instantPowerOutput);
+			nbt.setInteger("instPwr", this.instantPowerOutput);
 			nbt.setInteger("counter", 225);
 		} else {
 			nbt.setInteger("state", 0);
@@ -440,28 +440,28 @@ public class TileEntityMachineTurbineGas extends TileEntityMachineBase implement
 	public void receiveControl(NBTTagCompound data) {
 		
 		if(data.hasKey("slidPos"))
-			powerSliderPos = data.getInteger("slidPos");
+			this.powerSliderPos = data.getInteger("slidPos");
 		
 		if(data.hasKey("autoMode"))
-			autoMode = data.getBoolean("autoMode");
+			this.autoMode = data.getBoolean("autoMode");
 		
 		if(data.hasKey("state"))
-			state = data.getInteger("state");
+			this.state = data.getInteger("state");
 
-		this.markDirty();
+		markDirty();
 	}
 	
 	@Override
 	public boolean hasPermission(EntityPlayer player) {
-		return Vec3.createVectorHelper(xCoord - player.posX, yCoord - player.posY, zCoord - player.posZ).lengthVector() < 25;
+		return Vec3.createVectorHelper(this.xCoord - player.posX, this.yCoord - player.posY, this.zCoord - player.posZ).lengthVector() < 25;
 	}
 	
 	@Override
 	public void onChunkUnload() {
 
-		if(audio != null) {
-			audio.stopSound();
-			audio = null;
+		if(this.audio != null) {
+			this.audio.stopSound();
+			this.audio = null;
 		}
 	}
 
@@ -470,9 +470,9 @@ public class TileEntityMachineTurbineGas extends TileEntityMachineBase implement
 
 		super.invalidate();
 
-		if(audio != null) {
-			audio.stopSound();
-			audio = null;
+		if(this.audio != null) {
+			this.audio.stopSound();
+			this.audio = null;
 		}
 	}
 
@@ -488,7 +488,7 @@ public class TileEntityMachineTurbineGas extends TileEntityMachineBase implement
 	
 	@Override
 	public long getMaxPower() {
-		return this.maxPower;
+		return TileEntityMachineTurbineGas.maxPower;
 	}
 	
 	AxisAlignedBB bb = null;
@@ -496,18 +496,18 @@ public class TileEntityMachineTurbineGas extends TileEntityMachineBase implement
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 5,
-					yCoord,
-					zCoord - 5,
-					xCoord + 6,
-					yCoord + 3,
-					zCoord + 6
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 5,
+					this.yCoord,
+					this.zCoord - 5,
+					this.xCoord + 6,
+					this.yCoord + 3,
+					this.zCoord + 6
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 		
 	@Override
@@ -523,17 +523,17 @@ public class TileEntityMachineTurbineGas extends TileEntityMachineBase implement
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return tanks;
+		return this.tanks;
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] { tanks[0], tanks[1], tanks[2] };
+		return new FluidTank[] { this.tanks[0], this.tanks[1], this.tanks[2] };
 	}
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return new FluidTank[] { tanks[3] };
+		return new FluidTank[] { this.tanks[3] };
 	}
 	
 	@Override

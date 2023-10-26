@@ -1,7 +1,5 @@
 package com.hbm.handler.nei;
 
-import static codechicken.lib.gui.GuiDraw.drawTexturedModalRect;
-
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,6 +11,7 @@ import java.util.Map.Entry;
 import com.hbm.lib.RefStrings;
 import com.hbm.util.InventoryUtil;
 
+import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
@@ -23,10 +22,10 @@ import net.minecraft.item.ItemStack;
 
 public abstract class NEIUniversalHandler extends TemplateRecipeHandler {
 	
-	public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<RecipeTransferRect>();
-	public LinkedList<RecipeTransferRect> transferRectsGui = new LinkedList<RecipeTransferRect>();
-	public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<Class<? extends GuiContainer>>();
-	public LinkedList<Class<? extends GuiContainer>> guiGui = new LinkedList<Class<? extends GuiContainer>>();
+	public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<>();
+	public LinkedList<RecipeTransferRect> transferRectsGui = new LinkedList<>();
+	public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<>();
+	public LinkedList<Class<? extends GuiContainer>> guiGui = new LinkedList<>();
 	
 	/// SETUP ///
 	public final String display;
@@ -61,20 +60,20 @@ public abstract class NEIUniversalHandler extends TemplateRecipeHandler {
 		public RecipeSet(ItemStack[][] in, ItemStack[][] out, Object originalInputInstance /* for custom machine lookup */) {
 			this.originalInputInstance = originalInputInstance;
 			
-			input = new PositionedStack[in.length];
+			this.input = new PositionedStack[in.length];
 			int[][] inPos = NEIUniversalHandler.getInputCoords(in.length);
 			for(int i = 0; i < in.length; i++) {
 				ItemStack[] sub = in[i];
 				this.input[i] = new PositionedStack(sub, inPos[i][0], inPos[i][1]);
 			}
-			output = new PositionedStack[out.length];
+			this.output = new PositionedStack[out.length];
 			int[][] outPos = NEIUniversalHandler.getOutputCoords(out.length);
 			for(int i = 0; i < out.length; i++) {
 				ItemStack[] sub = out[i];
 				this.output[i] = new PositionedStack(sub, outPos[i][0], outPos[i][1]);
 			}
 			
-			ItemStack[] m = machine;
+			ItemStack[] m = NEIUniversalHandler.this.machine;
 			
 			if(NEIUniversalHandler.this.machineOverrides != null) {
 				Object key = NEIUniversalHandler.this.machineOverrides.get(originalInputInstance);
@@ -84,27 +83,27 @@ public abstract class NEIUniversalHandler extends TemplateRecipeHandler {
 				}
 			}
 			
-			if(machinePositioned == null) this.machinePositioned = new PositionedStack(m, 75, 31);
+			if(this.machinePositioned == null) this.machinePositioned = new PositionedStack(m, 75, 31);
 		}
 
 		@Override
 		public List<PositionedStack> getIngredients() {
-			return getCycledIngredients(cycleticks / 20, Arrays.asList(input));
+			return getCycledIngredients(NEIUniversalHandler.this.cycleticks / 20, Arrays.asList(this.input));
 		}
 
 		@Override
 		public PositionedStack getResult() {
-			return output[0];
+			return this.output[0];
 		}
 
 		@Override
 		public List<PositionedStack> getOtherStacks() {
-			List<PositionedStack> other = new ArrayList();
-			for(PositionedStack pos : output) {
+			List<PositionedStack> other = new ArrayList<>();
+			for(PositionedStack pos : this.output) {
 				other.add(pos);
 			}
-			other.add(machinePositioned);
-			return getCycledIngredients(cycleticks / 20, other);
+			other.add(this.machinePositioned);
+			return getCycledIngredients(NEIUniversalHandler.this.cycleticks / 20, other);
 		}
 	}
 
@@ -126,14 +125,14 @@ public abstract class NEIUniversalHandler extends TemplateRecipeHandler {
 
 		int[][] inPos = NEIUniversalHandler.getInputCoords(rec.input.length);
 		for(int[] pos : inPos) {
-			drawTexturedModalRect(pos[0] - 1, pos[1] - 1, 5, 87, 18, 18);
+			GuiDraw.drawTexturedModalRect(pos[0] - 1, pos[1] - 1, 5, 87, 18, 18);
 		}
 		int[][] outPos = NEIUniversalHandler.getOutputCoords(rec.output.length);
 		for(int[] pos : outPos) {
-			drawTexturedModalRect(pos[0] - 1, pos[1] - 1, 5, 87, 18, 18);
+			GuiDraw.drawTexturedModalRect(pos[0] - 1, pos[1] - 1, 5, 87, 18, 18);
 		}
 		
-		drawTexturedModalRect(74, 14, 59, 87, 18, 38);
+		GuiDraw.drawTexturedModalRect(74, 14, 59, 87, 18, 38);
 	}
 	
 	public static int[][] getInputCoords(int count) {
@@ -238,7 +237,7 @@ public abstract class NEIUniversalHandler extends TemplateRecipeHandler {
 		
 		if(outputId.equals(getKey())) {
 			
-			for(Entry<Object, Object> recipe : recipes.entrySet()) {
+			for(Entry<Object, Object> recipe : this.recipes.entrySet()) {
 				ItemStack[][] ins = InventoryUtil.extractObject(recipe.getKey());
 				ItemStack[][] outs = InventoryUtil.extractObject(recipe.getValue());
 				this.arecipes.add(new RecipeSet(ins, outs, recipe.getKey()));
@@ -252,7 +251,7 @@ public abstract class NEIUniversalHandler extends TemplateRecipeHandler {
 	@Override
 	public void loadCraftingRecipes(ItemStack result) {
 		
-		for(Entry<Object, Object> recipe : recipes.entrySet()) {
+		for(Entry<Object, Object> recipe : this.recipes.entrySet()) {
 			ItemStack[][] ins = InventoryUtil.extractObject(recipe.getKey());
 			ItemStack[][] outs = InventoryUtil.extractObject(recipe.getValue());
 			
@@ -280,7 +279,7 @@ public abstract class NEIUniversalHandler extends TemplateRecipeHandler {
 	@Override
 	public void loadUsageRecipes(ItemStack ingredient) {
 		
-		for(Entry<Object, Object> recipe : recipes.entrySet()) {
+		for(Entry<Object, Object> recipe : this.recipes.entrySet()) {
 			ItemStack[][] ins = InventoryUtil.extractObject(recipe.getKey());
 			ItemStack[][] outs = InventoryUtil.extractObject(recipe.getValue());
 			
@@ -298,10 +297,10 @@ public abstract class NEIUniversalHandler extends TemplateRecipeHandler {
 	
 	@Override
 	public void loadTransferRects() {
-		transferRectsGui = new LinkedList<RecipeTransferRect>();
-		guiGui = new LinkedList<Class<? extends GuiContainer>>();
-		transferRects.add(new RecipeTransferRect(new Rectangle(147, 1, 18, 18), getKey()));
-		RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), transferRects);
+		this.transferRectsGui = new LinkedList<>();
+		this.guiGui = new LinkedList<>();
+		this.transferRects.add(new RecipeTransferRect(new Rectangle(147, 1, 18, 18), getKey()));
+		RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), this.transferRects);
 	}
 	
 	public abstract String getKey();

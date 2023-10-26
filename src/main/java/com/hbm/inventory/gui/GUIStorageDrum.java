@@ -18,7 +18,7 @@ public class GUIStorageDrum extends GuiInfoContainer {
 
 	public GUIStorageDrum(InventoryPlayer invPlayer, TileEntityStorageDrum tedf) {
 		super(new ContainerStorageDrum(invPlayer, tedf));
-		drum = tedf;
+		this.drum = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 234;
@@ -28,8 +28,8 @@ public class GUIStorageDrum extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		drum.tanks[0].renderTankInfo(this, mouseX, mouseY, guiLeft + 16, guiTop + 23, 9, 108);
-		drum.tanks[1].renderTankInfo(this, mouseX, mouseY, guiLeft + 151, guiTop + 23, 9, 108);
+		this.drum.tanks[0].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 16, this.guiTop + 23, 9, 108);
+		this.drum.tanks[1].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 151, this.guiTop + 23, 9, 108);
 	}
 	
 	@Override
@@ -42,12 +42,12 @@ public class GUIStorageDrum extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIStorageDrum.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
-		int liquid = drum.tanks[0].getFill() * 106 / drum.tanks[0].getMaxFill();
-		drawTexturedModalRect(guiLeft + 17, guiTop + 130 - liquid, 176, 106 - liquid, 7, liquid);
-		int gas = drum.tanks[1].getFill() * 106 / drum.tanks[1].getMaxFill();
-		drawTexturedModalRect(guiLeft + 152, guiTop + 130 - gas, 183, 106 - gas, 7, gas);
+		int liquid = this.drum.tanks[0].getFill() * 106 / this.drum.tanks[0].getMaxFill();
+		drawTexturedModalRect(this.guiLeft + 17, this.guiTop + 130 - liquid, 176, 106 - liquid, 7, liquid);
+		int gas = this.drum.tanks[1].getFill() * 106 / this.drum.tanks[1].getMaxFill();
+		drawTexturedModalRect(this.guiLeft + 152, this.guiTop + 130 - gas, 183, 106 - gas, 7, gas);
 	}
 }

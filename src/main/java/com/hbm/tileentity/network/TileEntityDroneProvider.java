@@ -57,8 +57,8 @@ public class TileEntityDroneProvider extends TileEntityRequestNetworkContainer i
 
 	@Override
 	public PathNode createNode(BlockPos pos) {
-		List<ItemStack> offer = new ArrayList();
-		for(ItemStack stack : slots) if(stack != null) offer.add(stack.copy());
+		List<ItemStack> offer = new ArrayList<>();
+		for(ItemStack stack : this.slots) if(stack != null) offer.add(stack.copy());
 		return new OfferNode(pos, this.reachableNodes, offer);
 	}
 }

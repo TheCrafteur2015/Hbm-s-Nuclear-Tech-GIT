@@ -27,21 +27,21 @@ public class VolcanicBlock extends BlockFluidClassic {
 
 	public VolcanicBlock(Fluid fluid, Material material) {
 		super(fluid, material);
-		this.setTickRandomly(true);
-		this.setQuantaPerBlock(4);
+		setTickRandomly(true);
+		setQuantaPerBlock(4);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
-		return (side == 0 || side == 1) ? stillIcon : flowingIcon;
+		return (side == 0 || side == 1) ? VolcanicBlock.stillIcon : VolcanicBlock.flowingIcon;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister register) {
-		stillIcon = register.registerIcon(RefStrings.MODID + ":volcanic_lava_still");
-		flowingIcon = register.registerIcon(RefStrings.MODID + ":volcanic_lava_flowing");
+		VolcanicBlock.stillIcon = register.registerIcon(RefStrings.MODID + ":volcanic_lava_still");
+		VolcanicBlock.flowingIcon = register.registerIcon(RefStrings.MODID + ":volcanic_lava_flowing");
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public class VolcanicBlock extends BlockFluidClassic {
 			}
 		}
 		
-		if(!world.isRemote && ((!this.isSourceBlock(world, x, y, z) && lavaCount < 2) || (rand.nextInt(5) == 0) && lavaCount < 5) && world.getBlock(x, y - 1, z) != this) {
+		if(!world.isRemote && ((!isSourceBlock(world, x, y, z) && lavaCount < 2) || (rand.nextInt(5) == 0) && lavaCount < 5) && world.getBlock(x, y - 1, z) != this) {
 			
 			int r = rand.nextInt(200);
 			
@@ -116,10 +116,7 @@ public class VolcanicBlock extends BlockFluidClassic {
 	public boolean canDisplace(IBlockAccess world, int x, int y, int z) {
 		Block b = world.getBlock(x, y, z);
 		
-		if(Blocks.fire.getFlammability(b) > 0)
-			return true;
-		
-		if(b.isReplaceable(world, x, y, z))
+		if((Blocks.fire.getFlammability(b) > 0) || b.isReplaceable(world, x, y, z))
 			return true;
 		
 		return super.canDisplace(world, x, y, z);
@@ -136,6 +133,7 @@ public class VolcanicBlock extends BlockFluidClassic {
 		return 0;
 	}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
 

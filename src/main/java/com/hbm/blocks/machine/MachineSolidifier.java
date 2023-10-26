@@ -26,7 +26,7 @@ public class MachineSolidifier extends BlockDummyable implements ITooltipProvide
 		if(meta >= 12)
 			return new TileEntityMachineSolidifier();
 		
-		if(meta >= extra)
+		if(meta >= BlockDummyable.extra)
 			return new TileEntityProxyCombo(true, true, true);
 		
 		return null;
@@ -39,7 +39,7 @@ public class MachineSolidifier extends BlockDummyable implements ITooltipProvide
 	
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-		return this.standardOpenBehavior(world, x, y, z, player, 0);
+		return standardOpenBehavior(world, x, y, z, player, 0);
 	}
 
 	@Override
@@ -54,16 +54,16 @@ public class MachineSolidifier extends BlockDummyable implements ITooltipProvide
 		x = x + dir.offsetX * o;
 		z = z + dir.offsetZ * o;
 
-		this.makeExtra(world, x, y + 3, z);
+		makeExtra(world, x, y + 3, z);
 		
-		this.makeExtra(world, x + 1, y + 1, z);
-		this.makeExtra(world, x - 1, y + 1, z);
-		this.makeExtra(world, x, y + 1, z + 1);
-		this.makeExtra(world, x, y + 1, z - 1);
+		makeExtra(world, x + 1, y + 1, z);
+		makeExtra(world, x - 1, y + 1, z);
+		makeExtra(world, x, y + 1, z + 1);
+		makeExtra(world, x, y + 1, z - 1);
 	}
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		this.addStandardInfo(stack, player, list, ext);
+		addStandardInfo(stack, player, list, ext);
 	}
 }

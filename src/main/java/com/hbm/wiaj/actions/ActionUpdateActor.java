@@ -22,6 +22,6 @@ public class ActionUpdateActor implements IJarAction {
 
 	@Override
 	public void act(WorldInAJar world, JarScene scene) {
-		scene.script.actors.get(id).setDataPoint(key, data);
+		scene.script.actors.get(this.id).setDataPoint(this.key, this.data);
 	}
 }

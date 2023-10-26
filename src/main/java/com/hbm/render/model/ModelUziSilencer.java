@@ -17,35 +17,36 @@ public class ModelUziSilencer extends ModelBase {
 	ModelRenderer Shape3;
 
 	public ModelUziSilencer() {
-		textureWidth = 128;
-		textureHeight = 32;
+		this.textureWidth = 128;
+		this.textureHeight = 32;
 
-		Shape1 = new ModelRenderer(this, 0, 0);
-		Shape1.addBox(0F, 0F, 0F, 32, 5, 3);
-		Shape1.setRotationPoint(-60F, 0.5F, 0.5F);
-		Shape1.setTextureSize(128, 32);
-		Shape1.mirror = true;
-		setRotation(Shape1, 0F, 0F, 0F);
-		Shape2 = new ModelRenderer(this, 0, 8);
-		Shape2.addBox(0F, 0F, 0F, 32, 3, 5);
-		Shape2.setRotationPoint(-60F, 1.5F, -0.5F);
-		Shape2.setTextureSize(128, 32);
-		Shape2.mirror = true;
-		setRotation(Shape2, 0F, 0F, 0F);
-		Shape3 = new ModelRenderer(this, 0, 16);
-		Shape3.addBox(0F, 0F, 0F, 32, 4, 4);
-		Shape3.setRotationPoint(-60F, 1F, 0F);
-		Shape3.setTextureSize(128, 32);
-		Shape3.mirror = true;
-		setRotation(Shape3, 0F, 0F, 0F);
+		this.Shape1 = new ModelRenderer(this, 0, 0);
+		this.Shape1.addBox(0F, 0F, 0F, 32, 5, 3);
+		this.Shape1.setRotationPoint(-60F, 0.5F, 0.5F);
+		this.Shape1.setTextureSize(128, 32);
+		this.Shape1.mirror = true;
+		setRotation(this.Shape1, 0F, 0F, 0F);
+		this.Shape2 = new ModelRenderer(this, 0, 8);
+		this.Shape2.addBox(0F, 0F, 0F, 32, 3, 5);
+		this.Shape2.setRotationPoint(-60F, 1.5F, -0.5F);
+		this.Shape2.setTextureSize(128, 32);
+		this.Shape2.mirror = true;
+		setRotation(this.Shape2, 0F, 0F, 0F);
+		this.Shape3 = new ModelRenderer(this, 0, 16);
+		this.Shape3.addBox(0F, 0F, 0F, 32, 4, 4);
+		this.Shape3.setRotationPoint(-60F, 1F, 0F);
+		this.Shape3.setTextureSize(128, 32);
+		this.Shape3.mirror = true;
+		setRotation(this.Shape3, 0F, 0F, 0F);
 	}
 
+	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-		Shape1.render(f5);
-		Shape2.render(f5);
-		Shape3.render(f5);
+		this.Shape1.render(f5);
+		this.Shape2.render(f5);
+		this.Shape3.render(f5);
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -54,6 +55,7 @@ public class ModelUziSilencer extends ModelBase {
 		model.rotateAngleZ = z;
 	}
 
+	@Override
 	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
 		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 	}

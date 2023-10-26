@@ -22,14 +22,14 @@ public class MachineFieldDisturber extends Block {
 
 	@Override
 	public void onBlockAdded(World world, int x, int y, int z) {
-		if(!world.isRemote) world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
+		if(!world.isRemote) world.scheduleBlockUpdate(x, y, z, this, tickRate(world));
 	}
 
 	@Override
 	public void updateTick(World world, int x, int y, int z, Random rand) {
 
 		if(!world.isRemote) {
-			world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
+			world.scheduleBlockUpdate(x, y, z, this, tickRate(world));
 			EntityNukeExplosionMK3.at.put(new ATEntry(world.provider.dimensionId, x, y, z),  world.getTotalWorldTime() + 100);
 		}
 	}

@@ -51,7 +51,7 @@ public class TileEntitySILEX extends TileEntityMachineBase implements IFluidAcce
 
 	public TileEntitySILEX() {
 		super(11);
-		tank = new FluidTank(Fluids.ACID, 16000, 0);
+		this.tank = new FluidTank(Fluids.ACID, 16000, 0);
 	}
 
 	@Override
@@ -62,14 +62,14 @@ public class TileEntitySILEX extends TileEntityMachineBase implements IFluidAcce
 	@Override
 	public void updateEntity() {
 
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 
-			tank.setType(1, 1, slots);
-			tank.loadTank(2, 3, slots);
+			this.tank.setType(1, 1, this.slots);
+			this.tank.loadTank(2, 3, this.slots);
 			
-			ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - 10).getRotation(ForgeDirection.UP);
-			this.trySubscribe(tank.getTankType(), worldObj, xCoord + dir.offsetX * 2, yCoord + 1, zCoord + dir.offsetZ * 2, dir);
-			this.trySubscribe(tank.getTankType(), worldObj, xCoord - dir.offsetX * 2, yCoord + 1, zCoord - dir.offsetZ * 2, dir.getOpposite());
+			ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - 10).getRotation(ForgeDirection.UP);
+			trySubscribe(this.tank.getTankType(), this.worldObj, this.xCoord + dir.offsetX * 2, this.yCoord + 1, this.zCoord + dir.offsetZ * 2, dir);
+			trySubscribe(this.tank.getTankType(), this.worldObj, this.xCoord - dir.offsetX * 2, this.yCoord + 1, this.zCoord - dir.offsetZ * 2, dir.getOpposite());
 
 			loadFluid();
 
@@ -79,27 +79,28 @@ public class TileEntitySILEX extends TileEntityMachineBase implements IFluidAcce
 
 			dequeue();
 
-			if(currentFill <= 0) {
-				current = null;
+			if(this.currentFill <= 0) {
+				this.current = null;
 			}
 
 			NBTTagCompound data = new NBTTagCompound();
-			data.setInteger("fill", currentFill);
-			data.setInteger("progress", progress);
-			data.setString("mode", mode.toString());
+			data.setInteger("fill", this.currentFill);
+			data.setInteger("progress", this.progress);
+			data.setString("mode", this.mode.toString());
 
 			if(this.current != null) {
 				data.setInteger("item", Item.getIdFromItem(this.current.item));
 				data.setInteger("meta", this.current.meta);
 			}
 
-			tank.updateTank(xCoord, yCoord, zCoord, worldObj.provider.dimensionId);
-			this.networkPack(data, 50);
+			this.tank.updateTank(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId);
+			networkPack(data, 50);
 
 			this.mode = EnumWavelengths.NULL;
 		}
 	}
 
+	@Override
 	public void networkUnpack(NBTTagCompound nbt) {
 
 		this.currentFill = nbt.getInteger("fill");
@@ -114,6 +115,7 @@ public class TileEntitySILEX extends TileEntityMachineBase implements IFluidAcce
 		}
 	}
 
+	@Override
 	public void handleButtonPacket(int value, int meta) {
 
 		this.currentFill = 0;
@@ -121,118 +123,109 @@ public class TileEntitySILEX extends TileEntityMachineBase implements IFluidAcce
 	}
 
 	public int getProgressScaled(int i) {
-		return (progress * i) / processTime;
+		return (this.progress * i) / this.processTime;
 	}
 
 	public int getFluidScaled(int i) {
-		return (tank.getFill() * i) / tank.getMaxFill();
+		return (this.tank.getFill() * i) / this.tank.getMaxFill();
 	}
 
 	public int getFillScaled(int i) {
-		return (currentFill * i) / maxFill;
+		return (this.currentFill * i) / TileEntitySILEX.maxFill;
 	}
 
-	public static final HashMap<FluidType, ComparableStack> fluidConversion = new HashMap();
+	public static final HashMap<FluidType, ComparableStack> fluidConversion = new HashMap<>();
 
 	static {
-		putFluid(Fluids.UF6);
-		putFluid(Fluids.PUF6);
-		putFluid(Fluids.DEATH);
+		TileEntitySILEX.putFluid(Fluids.UF6);
+		TileEntitySILEX.putFluid(Fluids.PUF6);
+		TileEntitySILEX.putFluid(Fluids.DEATH);
 	}
 
 	private static void putFluid(FluidType fluid) {
-		fluidConversion.put(fluid, new ComparableStack(ModItems.fluid_icon, 1, fluid.getID()));
+		TileEntitySILEX.fluidConversion.put(fluid, new ComparableStack(ModItems.fluid_icon, 1, fluid.getID()));
 	}
 
 	int loadDelay;
 
 	public void loadFluid() {
 
-		ComparableStack conv = fluidConversion.get(tank.getTankType());
+		ComparableStack conv = TileEntitySILEX.fluidConversion.get(this.tank.getTankType());
 
 		if(conv != null) {
 
-			if(currentFill == 0) {
-				current = (ComparableStack) conv.copy();
+			if(this.currentFill == 0) {
+				this.current = (ComparableStack) conv.copy();
 			}
 
-			if(current != null && current.equals(conv)) {
+			if(this.current != null && this.current.equals(conv)) {
 
-				int toFill = Math.min(50, Math.min(maxFill - currentFill, tank.getFill()));
-				currentFill += toFill;
-				tank.setFill(tank.getFill() - toFill);
+				int toFill = Math.min(50, Math.min(TileEntitySILEX.maxFill - this.currentFill, this.tank.getFill()));
+				this.currentFill += toFill;
+				this.tank.setFill(this.tank.getFill() - toFill);
 			}
 		} else {
-			ComparableStack direct = new ComparableStack(ModItems.fluid_icon, 1, tank.getTankType().getID());
+			ComparableStack direct = new ComparableStack(ModItems.fluid_icon, 1, this.tank.getTankType().getID());
 			
 			if(SILEXRecipes.getOutput(direct.toStack()) != null) {
 
-				if(currentFill == 0) {
-					current = (ComparableStack) direct.copy();
+				if(this.currentFill == 0) {
+					this.current = (ComparableStack) direct.copy();
 				}
 
-				if(current != null && current.equals(direct)) {
+				if(this.current != null && this.current.equals(direct)) {
 
-					int toFill = Math.min(50, Math.min(maxFill - currentFill, tank.getFill()));
-					currentFill += toFill;
-					tank.setFill(tank.getFill() - toFill);
+					int toFill = Math.min(50, Math.min(TileEntitySILEX.maxFill - this.currentFill, this.tank.getFill()));
+					this.currentFill += toFill;
+					this.tank.setFill(this.tank.getFill() - toFill);
 				}
 			}
 		}
 
-		loadDelay++;
+		this.loadDelay++;
 
-		if(loadDelay > 20)
-			loadDelay = 0;
+		if(this.loadDelay > 20)
+			this.loadDelay = 0;
 
-		if(loadDelay == 0 && slots[0] != null && tank.getTankType() == Fluids.ACID && (this.current == null || this.current.equals(new ComparableStack(slots[0]).makeSingular()))) {
-			SILEXRecipe recipe = SILEXRecipes.getOutput(slots[0]);
+		if(this.loadDelay == 0 && this.slots[0] != null && this.tank.getTankType() == Fluids.ACID && (this.current == null || this.current.equals(new ComparableStack(this.slots[0]).makeSingular()))) {
+			SILEXRecipe recipe = SILEXRecipes.getOutput(this.slots[0]);
 
 			if(recipe == null)
 				return;
 
 			int load = recipe.fluidProduced;
 
-			if(load <= this.maxFill - this.currentFill && load <= tank.getFill()) {
+			if(load <= TileEntitySILEX.maxFill - this.currentFill && load <= this.tank.getFill()) {
 				this.currentFill += load;
-				this.current = new ComparableStack(slots[0]).makeSingular();
-				tank.setFill(tank.getFill() - load);
-				this.decrStackSize(0, 1);
+				this.current = new ComparableStack(this.slots[0]).makeSingular();
+				this.tank.setFill(this.tank.getFill() - load);
+				decrStackSize(0, 1);
 			}
 		}
 	}
 
 	private boolean process() {
 
-		if(current == null || currentFill <= 0)
+		if(this.current == null || this.currentFill <= 0)
 			return false;
 
-		SILEXRecipe recipe = SILEXRecipes.getOutput(current.toStack());
+		SILEXRecipe recipe = SILEXRecipes.getOutput(this.current.toStack());
 
-		if(recipe == null)
-			return false;
-
-		if(recipe.laserStrength.ordinal() > this.mode.ordinal())
-			return false;
-
-		if(currentFill < recipe.fluidConsumed)
-			return false;
-
-		if(slots[4] != null)
+		if((recipe == null) || (recipe.laserStrength.ordinal() > this.mode.ordinal()) || (this.currentFill < recipe.fluidConsumed) || (this.slots[4] != null))
 			return false;
 
 		int progressSpeed = (int) Math.pow(2, this.mode.ordinal() - recipe.laserStrength.ordinal() + 1) / 2;
 
-		progress += progressSpeed;
+		this.progress += progressSpeed;
 
-		if(progress >= processTime) {
+		if(this.progress >= this.processTime) {
 
-			currentFill -= recipe.fluidConsumed;
+			this.currentFill -= recipe.fluidConsumed;
 
-			ItemStack out = ((WeightedRandomObject) WeightedRandom.getRandomItem(worldObj.rand, recipe.outputs)).asStack();
-			slots[4] = out.copy();
-			progress = 0;
-			this.markDirty();
+			ItemStack out = ((WeightedRandomObject) WeightedRandom.getRandomItem(this.worldObj.rand, recipe.outputs)).asStack();
+			this.slots[4] = out.copy();
+			this.progress = 0;
+			markDirty();
 		}
 
 		return true;
@@ -240,22 +233,22 @@ public class TileEntitySILEX extends TileEntityMachineBase implements IFluidAcce
 
 	private void dequeue() {
 
-		if(slots[4] != null) {
+		if(this.slots[4] != null) {
 
 			for(int i = 5; i < 11; i++) {
 
-				if(slots[i] != null && slots[i].stackSize < slots[i].getMaxStackSize() && InventoryUtil.doesStackDataMatch(slots[4], slots[i])) {
-					slots[i].stackSize++;
-					this.decrStackSize(4, 1);
+				if(this.slots[i] != null && this.slots[i].stackSize < this.slots[i].getMaxStackSize() && InventoryUtil.doesStackDataMatch(this.slots[4], this.slots[i])) {
+					this.slots[i].stackSize++;
+					decrStackSize(4, 1);
 					return;
 				}
 			}
 
 			for(int i = 5; i < 11; i++) {
 
-				if(slots[i] == null) {
-					slots[i] = slots[4].copy();
-					slots[4] = null;
+				if(this.slots[i] == null) {
+					this.slots[i] = this.slots[4].copy();
+					this.slots[4] = null;
 					return;
 				}
 			}
@@ -298,7 +291,7 @@ public class TileEntitySILEX extends TileEntityMachineBase implements IFluidAcce
 		super.writeToNBT(nbt);
 		this.tank.writeToNBT(nbt, "tank");
 		nbt.setInteger("fill", this.currentFill);
-		nbt.setString("mode", mode.toString());
+		nbt.setString("mode", this.mode.toString());
 
 		if(this.current != null) {
 			nbt.setInteger("item", Item.getIdFromItem(this.current.item));
@@ -308,7 +301,7 @@ public class TileEntitySILEX extends TileEntityMachineBase implements IFluidAcce
 
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
-		return AxisAlignedBB.getBoundingBox(xCoord - 1, yCoord, zCoord - 1, xCoord + 2, yCoord + 3, zCoord + 2);
+		return AxisAlignedBB.getBoundingBox(this.xCoord - 1, this.yCoord, this.zCoord - 1, this.xCoord + 2, this.yCoord + 3, this.zCoord + 2);
 	}
 
 	@Override
@@ -319,26 +312,26 @@ public class TileEntitySILEX extends TileEntityMachineBase implements IFluidAcce
 
 	@Override
 	public void setFillForSync(int fill, int index) {
-		tank.setFill(fill);
+		this.tank.setFill(fill);
 	}
 
 	@Override
 	public void setFluidFill(int fill, FluidType type) {
 
-		if(type == tank.getTankType())
-			tank.setFill(fill);
+		if(type == this.tank.getTankType())
+			this.tank.setFill(fill);
 	}
 
 	@Override
 	public void setTypeForSync(FluidType type, int index) {
-		tank.setTankType(type);
+		this.tank.setTankType(type);
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
 
-		if(type == tank.getTankType())
-			return tank.getFill();
+		if(type == this.tank.getTankType())
+			return this.tank.getFill();
 
 		return 0;
 	}
@@ -346,20 +339,20 @@ public class TileEntitySILEX extends TileEntityMachineBase implements IFluidAcce
 	@Override
 	public int getMaxFluidFill(FluidType type) {
 
-		if(type == tank.getTankType())
-			return tank.getMaxFill();
+		if(type == this.tank.getTankType())
+			return this.tank.getMaxFill();
 
 		return 0;
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return new FluidTank[] {tank};
+		return new FluidTank[] {this.tank};
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] {tank};
+		return new FluidTank[] {this.tank};
 	}
 
 	@Override

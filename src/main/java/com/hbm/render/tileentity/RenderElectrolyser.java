@@ -49,10 +49,12 @@ public class RenderElectrolyser extends TileEntitySpecialRenderer implements IIt
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase( ) {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(-1, -1, 0);
 				GL11.glScaled(2.5, 2.5, 2.5);
 			}
+			@Override
 			public void renderCommon() {
 				GL11.glScaled(0.5, 0.5, 0.5);
 				GL11.glShadeModel(GL11.GL_SMOOTH);

@@ -39,7 +39,7 @@ public class GunDampfmaschine extends Item {
 	public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {
 		new ArrowNockEvent(p_77659_3_, p_77659_1_);
 		{
-			p_77659_3_.setItemInUse(p_77659_1_, this.getMaxItemUseDuration(p_77659_1_));
+			p_77659_3_.setItemInUse(p_77659_1_, getMaxItemUseDuration(p_77659_1_));
 		}
 
 		return p_77659_1_;
@@ -55,8 +55,8 @@ public class GunDampfmaschine extends Item {
 			if(!player.isSneaking()) {
 				EntityRocket entitybullet = new EntityRocket(world, player, 3.0F);
 				
-				world.playSoundAtEntity(player, "hbm:block.crateBreak", 10.0F, 0.9F + (rand.nextFloat() * 0.2F));
-				if(count == this.getMaxItemUseDuration(stack))
+				world.playSoundAtEntity(player, "hbm:block.crateBreak", 10.0F, 0.9F + (this.rand.nextFloat() * 0.2F));
+				if(count == getMaxItemUseDuration(stack))
 					world.playSoundAtEntity(player, "hbm:alarm.autopilot", 100.0F, 1.0F);
 				
 				if (!world.isRemote) {
@@ -64,7 +64,7 @@ public class GunDampfmaschine extends Item {
 				}
 			} else {
 				
-				world.playSoundAtEntity(player, "mob.pig.say", 10.0F, 0.9F + (rand.nextFloat() * 0.2F));
+				world.playSoundAtEntity(player, "mob.pig.say", 10.0F, 0.9F + (this.rand.nextFloat() * 0.2F));
 				
 				if(count % 10 == 0) {
 					EntityBombletSelena bomb = new EntityBombletSelena(world);
@@ -74,7 +74,7 @@ public class GunDampfmaschine extends Item {
 					bomb.motionX = player.getLookVec().xCoord * 5;
 					bomb.motionY = player.getLookVec().yCoord * 5;
 					bomb.motionZ = player.getLookVec().zCoord * 5;
-					if(count == this.getMaxItemUseDuration(stack))
+					if(count == getMaxItemUseDuration(stack))
 						world.playSoundAtEntity(player, "hbm:entity.chopperDrop", 10.0F, 1.0F);
 					
 					if (!world.isRemote) {
@@ -90,6 +90,7 @@ public class GunDampfmaschine extends Item {
 		return 0;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
@@ -105,11 +106,12 @@ public class GunDampfmaschine extends Item {
 		list.add("[LEGENDARY WEAPON]");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Multimap getItemAttributeModifiers() {
 		Multimap multimap = super.getItemAttributeModifiers();
 		multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
-				new AttributeModifier(field_111210_e, "Weapon modifier", -2, 0));
+				new AttributeModifier(Item.field_111210_e, "Weapon modifier", -2, 0));
 		return multimap;
 	}
 }

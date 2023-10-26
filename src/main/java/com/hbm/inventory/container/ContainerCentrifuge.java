@@ -16,25 +16,25 @@ public class ContainerCentrifuge extends Container {
 
 	public ContainerCentrifuge(InventoryPlayer invPlayer, TileEntityMachineCentrifuge tedf) {
 
-		diFurnace = tedf;
+		this.diFurnace = tedf;
 
-		this.addSlotToContainer(new Slot(tedf, 0, 36, 50));
-		this.addSlotToContainer(new Slot(tedf, 1, 9, 50));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 2, 63, 50));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 3, 83, 50));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 4, 103, 50));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 5, 123, 50));
-		this.addSlotToContainer(new SlotUpgrade(tedf, 6, 149, 22));
-		this.addSlotToContainer(new SlotUpgrade(tedf, 7, 149, 40));
+		addSlotToContainer(new Slot(tedf, 0, 36, 50));
+		addSlotToContainer(new Slot(tedf, 1, 9, 50));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 2, 63, 50));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 3, 83, 50));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 4, 103, 50));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 5, 123, 50));
+		addSlotToContainer(new SlotUpgrade(tedf, 6, 149, 22));
+		addSlotToContainer(new SlotUpgrade(tedf, 7, 149, 40));
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 104 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 104 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 162));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 162));
 		}
 	}
 
@@ -49,10 +49,10 @@ public class ContainerCentrifuge extends Container {
 			SlotCraftingOutput.checkAchievements(p_82846_1_, var5);
 
 			if(par2 <= 6) {
-				if(!this.mergeItemStack(var5, 6, this.inventorySlots.size(), true)) {
+				if(!mergeItemStack(var5, 6, this.inventorySlots.size(), true)) {
 					return null;
 				}
-			} else if(!this.mergeItemStack(var5, 0, 2, false)) {
+			} else if(!mergeItemStack(var5, 0, 2, false)) {
 				return null;
 			}
 
@@ -68,7 +68,7 @@ public class ContainerCentrifuge extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return diFurnace.isUseableByPlayer(player);
+		return this.diFurnace.isUseableByPlayer(player);
 	}
 
 }

@@ -19,7 +19,7 @@ public class Location {
 	}
 	
 	public Location add(int xa, int ya, int za) {		
-		return new Location(world, x + xa, y + ya, z + za);	
+		return new Location(this.world, this.x + xa, this.y + ya, this.z + za);	
 	}
 	
 	public Location add(ForgeDirection dir) {		
@@ -27,7 +27,7 @@ public class Location {
 	}
 	
 	public TileEntity getTileEntity() {
-		return world.getTileEntity(x, y, z);
+		return this.world.getTileEntity(this.x, this.y, this.z);
 	}
 	
 }

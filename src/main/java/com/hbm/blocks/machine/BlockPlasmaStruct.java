@@ -21,7 +21,8 @@ public class BlockPlasmaStruct extends BlockContainer {
 		return new TileEntityPlasmaStruct();
 	}
 	
-    public boolean isOpaqueCube() {
+    @Override
+	public boolean isOpaqueCube() {
     	
         return false;
     }

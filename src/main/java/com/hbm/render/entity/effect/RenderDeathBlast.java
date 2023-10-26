@@ -96,14 +96,14 @@ public class RenderDeathBlast extends Render {
 		GL11.glEnable(GL11.GL_BLEND);
         GL11.glScaled(scale, scale, scale);
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-        sphere.renderAll();
+        RenderDeathBlast.sphere.renderAll();
 
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         GL11.glScaled(1.25, 1.25, 1.25);
         GL11.glColor4d(1.0, 0, 0, alpha * 0.125);
         
         for(int i = 0; i < 8; i++) {
-        	sphere.renderAll();
+        	RenderDeathBlast.sphere.renderAll();
             GL11.glScaled(1.05, 1.05, 1.05);
         }
         

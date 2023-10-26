@@ -31,36 +31,36 @@ public class TileEntityLanternBehemoth extends TileEntity implements INBTPacketR
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 
-			if(comTimer == 360) worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:block.hornNearSingle", 10F, 1F);
-			if(comTimer == 280) worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:block.hornFarSingle", 10000F, 1F);
-			if(comTimer == 220) worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:block.hornNearDual", 10F, 1F);
-			if(comTimer == 100) worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:block.hornFarDual", 10000F, 1F);
+			if(this.comTimer == 360) this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:block.hornNearSingle", 10F, 1F);
+			if(this.comTimer == 280) this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:block.hornFarSingle", 10000F, 1F);
+			if(this.comTimer == 220) this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:block.hornNearDual", 10F, 1F);
+			if(this.comTimer == 100) this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:block.hornFarDual", 10000F, 1F);
 			
-			if(comTimer == 0) {
-				EntityBobmazon shuttle = new EntityBobmazon(worldObj);
-				shuttle.posX = xCoord + 0.5 + worldObj.rand.nextGaussian() * 10;
+			if(this.comTimer == 0) {
+				EntityBobmazon shuttle = new EntityBobmazon(this.worldObj);
+				shuttle.posX = this.xCoord + 0.5 + this.worldObj.rand.nextGaussian() * 10;
 				shuttle.posY = 300;
-				shuttle.posZ = zCoord + 0.5 + worldObj.rand.nextGaussian() * 10;
+				shuttle.posZ = this.zCoord + 0.5 + this.worldObj.rand.nextGaussian() * 10;
 				ItemStack payload = ItemKitCustom.create("Supplies", null, 0xffffff, 0x008000,
-						new ItemStack(ModItems.circuit_aluminium, 4 + worldObj.rand.nextInt(4)),
-						new ItemStack(ModItems.circuit_copper, 4 + worldObj.rand.nextInt(2)),
-						new ItemStack(ModItems.circuit_red_copper, 2 + worldObj.rand.nextInt(3)),
-						new ItemStack(ModItems.circuit_gold, 1 + worldObj.rand.nextInt(2)),
-						worldObj.rand.nextInt(3) == 0 ? new ItemStack(ModItems.gem_alexandrite) : new ItemStack(Items.diamond, 6 + worldObj.rand.nextInt(6)),
+						new ItemStack(ModItems.circuit_aluminium, 4 + this.worldObj.rand.nextInt(4)),
+						new ItemStack(ModItems.circuit_copper, 4 + this.worldObj.rand.nextInt(2)),
+						new ItemStack(ModItems.circuit_red_copper, 2 + this.worldObj.rand.nextInt(3)),
+						new ItemStack(ModItems.circuit_gold, 1 + this.worldObj.rand.nextInt(2)),
+						this.worldObj.rand.nextInt(3) == 0 ? new ItemStack(ModItems.gem_alexandrite) : new ItemStack(Items.diamond, 6 + this.worldObj.rand.nextInt(6)),
 						new ItemStack(Blocks.red_flower));
 				shuttle.payload = payload;
 				
-				worldObj.spawnEntityInWorld(shuttle);
+				this.worldObj.spawnEntityInWorld(shuttle);
 			}
 			
-			if(comTimer >= 0) {
-				comTimer--;
+			if(this.comTimer >= 0) {
+				this.comTimer--;
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setBoolean("isBroken", isBroken);
+			data.setBoolean("isBroken", this.isBroken);
 			INBTPacketReceiver.networkPack(this, data, 250);
 		}
 	}
@@ -73,39 +73,39 @@ public class TileEntityLanternBehemoth extends TileEntity implements INBTPacketR
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
-		isBroken = nbt.getBoolean("isBroken");
-		comTimer = nbt.getInteger("comTimer");
+		this.isBroken = nbt.getBoolean("isBroken");
+		this.comTimer = nbt.getInteger("comTimer");
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setBoolean("isBroken", isBroken);
-		nbt.setInteger("comTimer", comTimer);
+		nbt.setBoolean("isBroken", this.isBroken);
+		nbt.setInteger("comTimer", this.comTimer);
 	}
 
 	@Override
 	public boolean isDamaged() {
-		return isBroken;
+		return this.isBroken;
 	}
 	
-	List<AStack> repair = new ArrayList();
+	List<AStack> repair = new ArrayList<>();
 	@Override
 	public List<AStack> getRepairMaterials() {
 		
-		if(!repair.isEmpty())
-			return repair;
+		if(!this.repair.isEmpty())
+			return this.repair;
 
-		repair.add(new OreDictStack(OreDictManager.STEEL.plate(), 2));
-		repair.add(new ComparableStack(ModItems.circuit_copper, 1));
-		return repair;
+		this.repair.add(new OreDictStack(OreDictManager.STEEL.plate(), 2));
+		this.repair.add(new ComparableStack(ModItems.circuit_copper, 1));
+		return this.repair;
 	}
 
 	@Override
 	public void repair() {
 		this.isBroken = false;
 		this.comTimer = 400;
-		this.markDirty();
+		markDirty();
 	}
 
 	@Override public void tryExtinguish(World world, int x, int y, int z, EnumExtinguishType type) { }
@@ -115,18 +115,18 @@ public class TileEntityLanternBehemoth extends TileEntity implements INBTPacketR
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord,
-					yCoord,
-					zCoord,
-					xCoord + 1,
-					yCoord + 6,
-					zCoord + 1
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord,
+					this.yCoord,
+					this.zCoord,
+					this.xCoord + 1,
+					this.yCoord + 6,
+					this.zCoord + 1
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override

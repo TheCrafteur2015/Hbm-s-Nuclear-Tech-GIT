@@ -27,7 +27,7 @@ public class EntityCarrier extends EntityThrowable {
 	public EntityCarrier(World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.ignoreFrustumCheck = true;
-        this.setSize(3.0F, 26.0F);
+        setSize(3.0F, 26.0F);
 	}
 	
 	@Override
@@ -35,19 +35,19 @@ public class EntityCarrier extends EntityThrowable {
 		
 		//this.setDead();
 		
-		if(motionY < 3.0D) {
-			acceleration += 0.0005D;
-			motionY += acceleration;
+		if(this.motionY < 3.0D) {
+			this.acceleration += 0.0005D;
+			this.motionY += this.acceleration;
 		}
 		
-		this.setLocationAndAngles(posX + this.motionX, posY + this.motionY, posZ + this.motionZ, 0, 0);
+		setLocationAndAngles(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ, 0, 0);
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			for(int i = 0; i < 10; i++) {
 				NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "gasfire");
 				data.setDouble("mY", -0.2D);
-				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, posX + rand.nextGaussian() * 0.75D, posY - 0.25D, posZ + rand.nextGaussian() * 0.75D), new TargetPoint(worldObj.provider.dimensionId, posX, posY, posZ, 200));
+				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, this.posX + this.rand.nextGaussian() * 0.75D, this.posY - 0.25D, this.posZ + this.rand.nextGaussian() * 0.75D), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 200));
 			}
 			
 			if(this.dataWatcher.getWatchableObjectInt(8) == 1)
@@ -55,32 +55,32 @@ public class EntityCarrier extends EntityThrowable {
 					NBTTagCompound d1 = new NBTTagCompound();
 					d1.setString("type", "gasfire");
 					d1.setDouble("mY", -0.2D);
-					PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(d1, posX + rand.nextGaussian() * 0.75D + 2.5, posY - 0.25D, posZ + rand.nextGaussian() * 0.75D), new TargetPoint(worldObj.provider.dimensionId, posX, posY, posZ, 200));
+					PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(d1, this.posX + this.rand.nextGaussian() * 0.75D + 2.5, this.posY - 0.25D, this.posZ + this.rand.nextGaussian() * 0.75D), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 200));
 					
 					NBTTagCompound d2 = new NBTTagCompound();
 					d2.setString("type", "gasfire");
 					d2.setDouble("mY", -0.2D);
-					PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(d2, posX + rand.nextGaussian() * 0.75D - 2.5, posY - 0.25D, posZ + rand.nextGaussian() * 0.75D), new TargetPoint(worldObj.provider.dimensionId, posX, posY, posZ, 200));
+					PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(d2, this.posX + this.rand.nextGaussian() * 0.75D - 2.5, this.posY - 0.25D, this.posZ + this.rand.nextGaussian() * 0.75D), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 200));
 					
 					NBTTagCompound d3 = new NBTTagCompound();
 					d3.setString("type", "gasfire");
 					d3.setDouble("mY", -0.2D);
-					PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(d3, posX + rand.nextGaussian() * 0.75D, posY - 0.25D, posZ + rand.nextGaussian() * 0.75D + 2.5), new TargetPoint(worldObj.provider.dimensionId, posX, posY, posZ, 200));
+					PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(d3, this.posX + this.rand.nextGaussian() * 0.75D, this.posY - 0.25D, this.posZ + this.rand.nextGaussian() * 0.75D + 2.5), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 200));
 					
 					NBTTagCompound d4 = new NBTTagCompound();
 					d4.setString("type", "gasfire");
 					d4.setDouble("mY", -0.2D);
-					PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(d4, posX + rand.nextGaussian() * 0.75D, posY - 0.25D, posZ + rand.nextGaussian() * 0.75D - 2.5), new TargetPoint(worldObj.provider.dimensionId, posX, posY, posZ, 200));
+					PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(d4, this.posX + this.rand.nextGaussian() * 0.75D, this.posY - 0.25D, this.posZ + this.rand.nextGaussian() * 0.75D - 2.5), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 200));
 				}
 			
 			
 			if(this.ticksExisted < 20) {
-				ExplosionLarge.spawnShock(worldObj, posX, posY, posZ, 13 + rand.nextInt(3), 4 + rand.nextGaussian() * 2);
+				ExplosionLarge.spawnShock(this.worldObj, this.posX, this.posY, this.posZ, 13 + this.rand.nextInt(3), 4 + this.rand.nextGaussian() * 2);
 			}
 		}
 		
 		if(this.posY > 300 && this.dataWatcher.getWatchableObjectInt(8) == 1)
-			this.disengageBoosters();
+			disengageBoosters();
 			//this.setDead();
 		
 		if(this.posY > 600) {
@@ -90,28 +90,28 @@ public class EntityCarrier extends EntityThrowable {
 	
 	private void deployPayload() {
 
-		if(payload != null) {
+		if(this.payload != null) {
 			
-			if(payload.getItem() == ModItems.flame_pony) {
-				ExplosionLarge.spawnTracers(worldObj, posX, posY, posZ, 25);
-				for(Object p : worldObj.playerEntities)
+			if(this.payload.getItem() == ModItems.flame_pony) {
+				ExplosionLarge.spawnTracers(this.worldObj, this.posX, this.posY, this.posZ, 25);
+				for(Object p : this.worldObj.playerEntities)
 					((EntityPlayer)p).triggerAchievement(MainRegistry.achSpace);
 			}
 			
-			if(payload.getItem() == ModItems.sat_foeq) {
-				for(Object p : worldObj.playerEntities)
+			if(this.payload.getItem() == ModItems.sat_foeq) {
+				for(Object p : this.worldObj.playerEntities)
 					((EntityPlayer)p).triggerAchievement(MainRegistry.achFOEQ);
 			}
 			
-			if(payload.getItem() instanceof ISatChip) {
+			if(this.payload.getItem() instanceof ISatChip) {
 				
-			    int freq = ISatChip.getFreqS(payload);
+			    int freq = ISatChip.getFreqS(this.payload);
 		    	
-		    	Satellite.orbit(worldObj, Satellite.getIDFromItem(payload.getItem()), freq, posX, posY, posZ);
+		    	Satellite.orbit(this.worldObj, Satellite.getIDFromItem(this.payload.getItem()), freq, this.posX, this.posY, this.posZ);
 			}
 		}
 		
-		this.setDead();
+		setDead();
 	}
 
 	@Override
@@ -126,42 +126,42 @@ public class EntityCarrier extends EntityThrowable {
 	private void disengageBoosters() {
 		this.dataWatcher.updateObject(8, 0);
 		
-		if(!worldObj.isRemote) {
-			EntityBooster boost1 = new EntityBooster(worldObj);
-			boost1.posX = posX + 1.5D;
-			boost1.posY = posY;
-			boost1.posZ = posZ;
-			boost1.motionX = 0.45D + rand.nextDouble() * 0.2D;
-			boost1.motionY = motionY;
-			boost1.motionZ = rand.nextGaussian() * 0.1D;
-			worldObj.spawnEntityInWorld(boost1);
+		if(!this.worldObj.isRemote) {
+			EntityBooster boost1 = new EntityBooster(this.worldObj);
+			boost1.posX = this.posX + 1.5D;
+			boost1.posY = this.posY;
+			boost1.posZ = this.posZ;
+			boost1.motionX = 0.45D + this.rand.nextDouble() * 0.2D;
+			boost1.motionY = this.motionY;
+			boost1.motionZ = this.rand.nextGaussian() * 0.1D;
+			this.worldObj.spawnEntityInWorld(boost1);
 			
-			EntityBooster boost2 = new EntityBooster(worldObj);
-			boost2.posX = posX - 1.5D;
-			boost2.posY = posY;
-			boost2.posZ = posZ;
-			boost2.motionX = -0.45D - rand.nextDouble() * 0.2D;
-			boost2.motionY = motionY;
-			boost2.motionZ = rand.nextGaussian() * 0.1D;
-			worldObj.spawnEntityInWorld(boost2);
+			EntityBooster boost2 = new EntityBooster(this.worldObj);
+			boost2.posX = this.posX - 1.5D;
+			boost2.posY = this.posY;
+			boost2.posZ = this.posZ;
+			boost2.motionX = -0.45D - this.rand.nextDouble() * 0.2D;
+			boost2.motionY = this.motionY;
+			boost2.motionZ = this.rand.nextGaussian() * 0.1D;
+			this.worldObj.spawnEntityInWorld(boost2);
 			
-			EntityBooster boost3 = new EntityBooster(worldObj);
-			boost3.posX = posX;
-			boost3.posY = posY;
-			boost3.posZ = posZ + 1.5D;
-			boost3.motionZ = 0.45D + rand.nextDouble() * 0.2D;
-			boost3.motionY = motionY;
-			boost3.motionX = rand.nextGaussian() * 0.1D;
-			worldObj.spawnEntityInWorld(boost3);
+			EntityBooster boost3 = new EntityBooster(this.worldObj);
+			boost3.posX = this.posX;
+			boost3.posY = this.posY;
+			boost3.posZ = this.posZ + 1.5D;
+			boost3.motionZ = 0.45D + this.rand.nextDouble() * 0.2D;
+			boost3.motionY = this.motionY;
+			boost3.motionX = this.rand.nextGaussian() * 0.1D;
+			this.worldObj.spawnEntityInWorld(boost3);
 			
-			EntityBooster boost4 = new EntityBooster(worldObj);
-			boost4.posX = posX;
-			boost4.posY = posY;
-			boost4.posZ = posZ - 1.5D;
-			boost4.motionZ = -0.45D - rand.nextDouble() * 0.2D;
-			boost4.motionY = motionY;
-			boost4.motionX = rand.nextGaussian() * 0.1D;
-			worldObj.spawnEntityInWorld(boost4);
+			EntityBooster boost4 = new EntityBooster(this.worldObj);
+			boost4.posX = this.posX;
+			boost4.posY = this.posY;
+			boost4.posZ = this.posZ - 1.5D;
+			boost4.motionZ = -0.45D - this.rand.nextDouble() * 0.2D;
+			boost4.motionY = this.motionY;
+			boost4.motionX = this.rand.nextGaussian() * 0.1D;
+			this.worldObj.spawnEntityInWorld(boost4);
 		}
 	}
 

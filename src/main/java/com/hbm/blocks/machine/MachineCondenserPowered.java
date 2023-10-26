@@ -49,17 +49,17 @@ public class MachineCondenserPowered extends BlockDummyable implements ILookOver
 
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 
-		this.makeExtra(world, x + rot.offsetX * 3, y + 1, z + rot.offsetZ * 3);
-		this.makeExtra(world, x - rot.offsetX * 3, y + 1, z - rot.offsetZ * 3);
-		this.makeExtra(world, x + dir.offsetX + rot.offsetX, y + 1, z + dir.offsetZ + rot.offsetZ);
-		this.makeExtra(world, x + dir.offsetX - rot.offsetX, y + 1, z + dir.offsetZ - rot.offsetZ);
-		this.makeExtra(world, x - dir.offsetX + rot.offsetX, y + 1, z - dir.offsetZ + rot.offsetZ);
-		this.makeExtra(world, x - dir.offsetX - rot.offsetX, y + 1, z - dir.offsetZ - rot.offsetZ);
+		makeExtra(world, x + rot.offsetX * 3, y + 1, z + rot.offsetZ * 3);
+		makeExtra(world, x - rot.offsetX * 3, y + 1, z - rot.offsetZ * 3);
+		makeExtra(world, x + dir.offsetX + rot.offsetX, y + 1, z + dir.offsetZ + rot.offsetZ);
+		makeExtra(world, x + dir.offsetX - rot.offsetX, y + 1, z + dir.offsetZ - rot.offsetZ);
+		makeExtra(world, x - dir.offsetX + rot.offsetX, y + 1, z - dir.offsetZ + rot.offsetZ);
+		makeExtra(world, x - dir.offsetX - rot.offsetX, y + 1, z - dir.offsetZ - rot.offsetZ);
 	}
 
 	@Override
 	public void printHook(Pre event, World world, int x, int y, int z) {
-		int[] pos = this.findCore(world, x, y, z);
+		int[] pos = findCore(world, x, y, z);
 
 		if(pos == null)
 			return;
@@ -69,9 +69,9 @@ public class MachineCondenserPowered extends BlockDummyable implements ILookOver
 		if(!(te instanceof TileEntityCondenserPowered)) return;
 
 		TileEntityCondenserPowered tower = (TileEntityCondenserPowered) te;
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		
-		text.add(BobMathUtil.getShortNumber(tower.power) + "HE / " + BobMathUtil.getShortNumber(tower.maxPower) + "HE");
+		text.add(BobMathUtil.getShortNumber(tower.power) + "HE / " + BobMathUtil.getShortNumber(TileEntityCondenserPowered.maxPower) + "HE");
 
 		for(int i = 0; i < tower.tanks.length; i++)
 			text.add((i < 1 ? (EnumChatFormatting.GREEN + "-> ") : (EnumChatFormatting.RED + "<- ")) + EnumChatFormatting.RESET + tower.tanks[i].getTankType().getLocalizedName() + ": " + tower.tanks[i].getFill() + "/" + tower.tanks[i].getMaxFill() + "mB");

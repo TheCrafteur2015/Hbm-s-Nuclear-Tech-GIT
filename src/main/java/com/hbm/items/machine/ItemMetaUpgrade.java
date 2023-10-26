@@ -16,15 +16,15 @@ public class ItemMetaUpgrade extends ItemMachineUpgrade {
 	
 	public ItemMetaUpgrade(int levels) {
 		super();
-		this.setMaxDamage(0);
-		this.setHasSubtypes(true);
+		setMaxDamage(0);
+		setHasSubtypes(true);
 		this.levels = levels;
 	}
 	
 	public ItemMetaUpgrade(UpgradeType type, int levels) {
 		super(type);
-		this.setMaxDamage(0);
-		this.setHasSubtypes(true);
+		setMaxDamage(0);
+		setHasSubtypes(true);
 		this.levels = levels;
 	}
 
@@ -43,17 +43,17 @@ public class ItemMetaUpgrade extends ItemMachineUpgrade {
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister reg) {
 		
-		this.icons = new IIcon[levels];
+		this.icons = new IIcon[this.levels];
 
-		for(int i = 0; i < levels; i++) {
-			this.icons[i] = reg.registerIcon(this.getIconString() + "_" + (i + 1));
+		for(int i = 0; i < this.levels; i++) {
+			this.icons[i] = reg.registerIcon(getIconString() + "_" + (i + 1));
 		}
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIconFromDamage(int meta) {
-		if(meta >= 0 && meta < levels) {
+		if(meta >= 0 && meta < this.levels) {
 			return this.icons[meta];
 		}
 		

@@ -48,7 +48,7 @@ public class TileEntityFEL extends TileEntityMachineBase implements IEnergyUser,
 	public boolean isOn;
 	public boolean missingValidSilex = true	;
 	public int distance;
-	public List<EntityLivingBase> entities = new ArrayList();
+	public List<EntityLivingBase> entities = new ArrayList<>();
 	
 	
 	public TileEntityFEL() {
@@ -60,16 +60,16 @@ public class TileEntityFEL extends TileEntityMachineBase implements IEnergyUser,
 		return "container.machineFEL";
 	}
 
-	@SuppressWarnings("incomplete-switch")
+	@SuppressWarnings({ "incomplete-switch", "unchecked" })
 	@Override
 	@Spaghetti ("What the fuck were you thinking")
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
-			this.trySubscribe(worldObj, xCoord + dir.offsetX * -5, yCoord + 1, zCoord + dir.offsetZ  * -5, dir.getOpposite());
-			this.power = Library.chargeTEFromItems(slots, 0, power, maxPower);
+			ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
+			trySubscribe(this.worldObj, this.xCoord + dir.offsetX * -5, this.yCoord + 1, this.zCoord + dir.offsetZ  * -5, dir.getOpposite());
+			this.power = Library.chargeTEFromItems(this.slots, 0, this.power, TileEntityFEL.maxPower);
 			
 			if(this.isOn && !(this.slots[1] == null)) {
 				
@@ -85,23 +85,23 @@ public class TileEntityFEL extends TileEntityMachineBase implements IEnergyUser,
 			int range = 24;
 			boolean silexSpacing = false;
 			
-			int req = (int) (powerReq * ((mode.ordinal() == 0) ? 0 : Math.pow(3, mode.ordinal())));
+			int req = (int) (TileEntityFEL.powerReq * ((this.mode.ordinal() == 0) ? 0 : Math.pow(3, this.mode.ordinal())));
 			
-			if(this.isOn && this.mode != EnumWavelengths.NULL && power < req) {
+			if(this.isOn && this.mode != EnumWavelengths.NULL && this.power < req) {
 				this.power = 0;
 			}
 			
-			if(this.isOn && power >= req && this.mode != EnumWavelengths.NULL) {
+			if(this.isOn && this.power >= req && this.mode != EnumWavelengths.NULL) {
 				
 				int distance = this.distance-1;
-				double blx = Math.min(xCoord, xCoord + dir.offsetX * distance) + 0.2;
-				double bux = Math.max(xCoord, xCoord + dir.offsetX * distance) + 0.8;
-				double bly = Math.min(yCoord, 1 + yCoord + dir.offsetY * distance) + 0.2;
-				double buy = Math.max(yCoord, 1 + yCoord + dir.offsetY * distance) + 0.8;
-				double blz = Math.min(zCoord, zCoord + dir.offsetZ * distance) + 0.2;
-				double buz = Math.max(zCoord, zCoord + dir.offsetZ * distance) + 0.8;
+				double blx = Math.min(this.xCoord, this.xCoord + dir.offsetX * distance) + 0.2;
+				double bux = Math.max(this.xCoord, this.xCoord + dir.offsetX * distance) + 0.8;
+				double bly = Math.min(this.yCoord, 1 + this.yCoord + dir.offsetY * distance) + 0.2;
+				double buy = Math.max(this.yCoord, 1 + this.yCoord + dir.offsetY * distance) + 0.8;
+				double blz = Math.min(this.zCoord, this.zCoord + dir.offsetZ * distance) + 0.2;
+				double buz = Math.max(this.zCoord, this.zCoord + dir.offsetZ * distance) + 0.8;
 				
-				List<EntityLivingBase> list = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(blx, bly, blz, bux, buy, buz));
+				List<EntityLivingBase> list = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(blx, bly, blz, bux, buy, buz));
 				
 				for(EntityLivingBase entity : list) {
 					switch(this.mode) {
@@ -113,14 +113,14 @@ public class TileEntityFEL extends TileEntityMachineBase implements IEnergyUser,
 					}
 				}
 				
-				power -= req;
+				this.power -= req;
 				for(int i = 3; i < range; i++) {
 				
-					int x = xCoord + dir.offsetX * i;
-					int y = yCoord + 1;
-					int z = zCoord + dir.offsetZ * i;
+					int x = this.xCoord + dir.offsetX * i;
+					int y = this.yCoord + 1;
+					int z = this.zCoord + dir.offsetZ * i;
 					
-					Block b = worldObj.getBlock(x, y, z);
+					Block b = this.worldObj.getBlock(x, y, z);
 					
 					if(!(b.getMaterial().isOpaque()) && b != Blocks.tnt) {
 						this.distance = range;
@@ -130,12 +130,12 @@ public class TileEntityFEL extends TileEntityMachineBase implements IEnergyUser,
 					
 					if(b == ModBlocks.machine_silex) {
 					
-						TileEntity te = worldObj.getTileEntity(x + dir.offsetX, yCoord, z + dir.offsetZ);
+						TileEntity te = this.worldObj.getTileEntity(x + dir.offsetX, this.yCoord, z + dir.offsetZ);
 					
 						if(te instanceof TileEntitySILEX) {
 							TileEntitySILEX silex = (TileEntitySILEX) te;
 							int meta = silex.getBlockMetadata() - BlockDummyable.offset;
-							if(rotationIsValid(meta, this.getBlockMetadata() - BlockDummyable.offset) && i >= 5 && silexSpacing == false	) {
+							if(rotationIsValid(meta, getBlockMetadata() - BlockDummyable.offset) && i >= 5 && silexSpacing == false	) {
 								if(silex.mode != this.mode) {
 									silex.mode = this.mode;
 									this.missingValidSilex = false;
@@ -144,8 +144,8 @@ public class TileEntityFEL extends TileEntityMachineBase implements IEnergyUser,
 								} 
 							} else {
 								MachineSILEX silexBlock = (MachineSILEX)silex.getBlockType();
-								silexBlock.breakBlock(worldObj, silex.xCoord, silex.yCoord, silex.zCoord, silexBlock, 0);
-								worldObj.spawnEntityInWorld(new EntityItem(worldObj, x + 0.5, y + 0.5, z + 0.5, new ItemStack(Item.getItemFromBlock(ModBlocks.machine_silex))));
+								silexBlock.breakBlock(this.worldObj, silex.xCoord, silex.yCoord, silex.zCoord, silexBlock, 0);
+								this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, x + 0.5, y + 0.5, z + 0.5, new ItemStack(Item.getItemFromBlock(ModBlocks.machine_silex))));
 							} 
 						}
 						
@@ -154,18 +154,18 @@ public class TileEntityFEL extends TileEntityMachineBase implements IEnergyUser,
 						this.distance = i;
 						
 						if(b.getMaterial().isLiquid()) {
-							worldObj.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, "random.fizz", 1.0F, 1.0F);
-							worldObj.setBlockToAir(x, y, z);
+							this.worldObj.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, "random.fizz", 1.0F, 1.0F);
+							this.worldObj.setBlockToAir(x, y, z);
 							break;
 						} 
 						
 						float hardness = b.getExplosionResistance(null);
-						if(hardness < 75 && worldObj.rand.nextInt(5) == 0) {
-							worldObj.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, "random.fizz", 1.0F, 1.0F);
+						if(hardness < 75 && this.worldObj.rand.nextInt(5) == 0) {
+							this.worldObj.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, "random.fizz", 1.0F, 1.0F);
 							Block block = (this.mode != EnumWavelengths.DRX) ? Blocks.fire : (MainRegistry.polaroidID == 11) ? ModBlocks.digamma_matter : ModBlocks.fire_digamma;
-							worldObj.setBlock(x, y, z, block);
+							this.worldObj.setBlock(x, y, z, block);
 							if(this.mode == EnumWavelengths.DRX)
-								worldObj.setBlock(x, y-1, z, ModBlocks.ash_digamma);
+								this.worldObj.setBlock(x, y-1, z, ModBlocks.ash_digamma);
 						}
 						break;
 					}
@@ -173,12 +173,12 @@ public class TileEntityFEL extends TileEntityMachineBase implements IEnergyUser,
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setLong("power", power);
-			data.setString("mode", mode.toString());
-			data.setBoolean("isOn", isOn);
-			data.setBoolean("valid", missingValidSilex);
-			data.setInteger("distance", distance);
-			this.networkPack(data, 250);
+			data.setLong("power", this.power);
+			data.setString("mode", this.mode.toString());
+			data.setBoolean("isOn", this.isOn);
+			data.setBoolean("valid", this.missingValidSilex);
+			data.setInteger("distance", this.distance);
+			networkPack(data, 250);
 		}
 	}
 	
@@ -210,34 +210,34 @@ public class TileEntityFEL extends TileEntityMachineBase implements IEnergyUser,
 	}
 	
 	public long getPowerScaled(long i) {
-		return (power * i) / maxPower;
+		return (this.power * i) / TileEntityFEL.maxPower;
 	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		
-		power = nbt.getLong("power");
-		mode = EnumWavelengths.valueOf(nbt.getString("mode"));
-		isOn = nbt.getBoolean("isOn");
-		missingValidSilex = nbt.getBoolean("valid");
-		distance = nbt.getInteger("distance");
+		this.power = nbt.getLong("power");
+		this.mode = EnumWavelengths.valueOf(nbt.getString("mode"));
+		this.isOn = nbt.getBoolean("isOn");
+		this.missingValidSilex = nbt.getBoolean("valid");
+		this.distance = nbt.getInteger("distance");
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		
-		nbt.setLong("power", power);
-		nbt.setString("mode", mode.toString());
-		nbt.setBoolean("isOn", isOn);
-		nbt.setBoolean("valid", missingValidSilex);
-		nbt.setInteger("distance", distance);
+		nbt.setLong("power", this.power);
+		nbt.setString("mode", this.mode.toString());
+		nbt.setBoolean("isOn", this.isOn);
+		nbt.setBoolean("valid", this.missingValidSilex);
+		nbt.setInteger("distance", this.distance);
 	}
 	
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
-		return INFINITE_EXTENT_AABB;
+		return TileEntity.INFINITE_EXTENT_AABB;
 	}
 	
 	@Override
@@ -248,17 +248,17 @@ public class TileEntityFEL extends TileEntityMachineBase implements IEnergyUser,
 
 	@Override
 	public void setPower(long i) {
-		power = i;
+		this.power = i;
 	}
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 
 	@Override
 	public long getMaxPower() {
-		return maxPower;
+		return TileEntityFEL.maxPower;
 	}
 
 	@Override

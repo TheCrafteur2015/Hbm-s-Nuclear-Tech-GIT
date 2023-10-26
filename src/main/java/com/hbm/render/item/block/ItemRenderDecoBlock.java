@@ -26,11 +26,11 @@ public class ItemRenderDecoBlock implements IItemRenderer {
 	protected ModelSteelScaffold scaffold;
 	
 	public ItemRenderDecoBlock() {
-		wall = new ModelSteelWall();
-		corner = new ModelSteelCorner();
-		roof = new ModelSteelRoof();
-		beam = new ModelSteelBeam();
-		scaffold = new ModelSteelScaffold();
+		this.wall = new ModelSteelWall();
+		this.corner = new ModelSteelCorner();
+		this.roof = new ModelSteelRoof();
+		this.beam = new ModelSteelBeam();
+		this.scaffold = new ModelSteelScaffold();
 	}
 	
 	@Override
@@ -69,15 +69,15 @@ public class ItemRenderDecoBlock implements IItemRenderer {
 			GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
 			GL11.glTranslatef(0.0F, -1.0F, 0.0F);
 			if(item.getItem() == Item.getItemFromBlock(ModBlocks.steel_wall))
-				wall.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.wall.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			if(item.getItem() == Item.getItemFromBlock(ModBlocks.steel_corner))
-				corner.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.corner.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			if(item.getItem() == Item.getItemFromBlock(ModBlocks.steel_roof))
-				roof.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.roof.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			if(item.getItem() == Item.getItemFromBlock(ModBlocks.steel_beam))
-				beam.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.beam.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			if(item.getItem() == Item.getItemFromBlock(ModBlocks.steel_scaffold))
-				scaffold.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.scaffold.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 		GL11.glPopMatrix();
 			break;
 		case EQUIPPED:
@@ -85,15 +85,15 @@ public class ItemRenderDecoBlock implements IItemRenderer {
 				GL11.glScalef(0.5F, 0.5F, 0.5F);
 				GL11.glTranslatef(0.8F, -0.3F, 0.2F);
 				if(item.getItem() == Item.getItemFromBlock(ModBlocks.steel_wall))
-					wall.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.wall.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item.getItem() == Item.getItemFromBlock(ModBlocks.steel_corner))
-					corner.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.corner.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item.getItem() == Item.getItemFromBlock(ModBlocks.steel_roof))
-					roof.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.roof.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item.getItem() == Item.getItemFromBlock(ModBlocks.steel_beam))
-					beam.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.beam.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item.getItem() == Item.getItemFromBlock(ModBlocks.steel_scaffold))
-					scaffold.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.scaffold.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			GL11.glPopMatrix();
 			break;
 		case EQUIPPED_FIRST_PERSON:
@@ -102,15 +102,15 @@ public class ItemRenderDecoBlock implements IItemRenderer {
 				GL11.glTranslatef(-0.6F, -0.6F, -0.1F);
 				GL11.glScalef(0.5F, 0.5F, 0.5F);
 				if(item.getItem() == Item.getItemFromBlock(ModBlocks.steel_wall))
-					wall.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.wall.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item.getItem() == Item.getItemFromBlock(ModBlocks.steel_corner))
-					corner.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.corner.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item.getItem() == Item.getItemFromBlock(ModBlocks.steel_roof))
-					roof.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.roof.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item.getItem() == Item.getItemFromBlock(ModBlocks.steel_beam))
-					beam.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.beam.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item.getItem() == Item.getItemFromBlock(ModBlocks.steel_scaffold))
-					scaffold.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.scaffold.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 		GL11.glPopMatrix();
 			break;
 		default: break;

@@ -33,8 +33,8 @@ public class ArmorFSBFueled extends ArmorFSB implements IFillableItem {
 	public int getFill(ItemStack stack) {
 		if(stack.stackTagCompound == null) {
 			stack.stackTagCompound = new NBTTagCompound();
-			setFill(stack, maxFuel);
-			return maxFuel;
+			setFill(stack, this.maxFuel);
+			return this.maxFuel;
 		}
 		
 		return stack.stackTagCompound.getInteger("fuel");
@@ -62,7 +62,7 @@ public class ArmorFSBFueled extends ArmorFSB implements IFillableItem {
 
 	@Override
 	public void setDamage(ItemStack stack, int damage) {
-		this.setFill(stack, Math.max(this.getFill(stack) - (damage * consumption), 0));
+		setFill(stack, Math.max(getFill(stack) - (damage * this.consumption), 0));
 	}
 
 	@Override
@@ -76,10 +76,11 @@ public class ArmorFSBFueled extends ArmorFSB implements IFillableItem {
 		super.onArmorTick(world, player, stack);
 
 		if(this.drain > 0 && ArmorFSB.hasFSBArmor(player) && !player.capabilities.isCreativeMode && world.getTotalWorldTime() % 10 == 0) {
-			this.setFill(stack, Math.max(this.getFill(stack) - this.drain, 0));
+			setFill(stack, Math.max(getFill(stack) - this.drain, 0));
 		}
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		list.add(this.fuelType.getLocalizedName() + ": " + BobMathUtil.getShortNumber(getFill(stack)) + " / " + BobMathUtil.getShortNumber(getMaxFill(stack)));
@@ -108,8 +109,8 @@ public class ArmorFSBFueled extends ArmorFSB implements IFillableItem {
 			return amount;
 		
 		int toFill = Math.min(amount, this.fillRate);
-		toFill = Math.min(toFill, this.maxFuel - this.getFill(stack));
-		this.setFill(stack, this.getFill(stack) + toFill);
+		toFill = Math.min(toFill, this.maxFuel - getFill(stack));
+		setFill(stack, getFill(stack) + toFill);
 		
 		return amount - toFill;
 	}

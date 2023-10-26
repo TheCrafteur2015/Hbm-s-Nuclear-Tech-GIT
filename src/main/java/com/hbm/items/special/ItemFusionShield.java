@@ -32,12 +32,12 @@ public class ItemFusionShield extends Item {
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		
-		long damage = getShieldDamage(stack);
-		int percent = (int) ((maxDamage - damage) * 100 / maxDamage);
+		long damage = ItemFusionShield.getShieldDamage(stack);
+		int percent = (int) ((this.maxDamage - damage) * 100 / this.maxDamage);
 
-		list.add("Durability: " + (maxDamage - damage) + "/" + maxDamage + " (" + percent + "%)");
+		list.add("Durability: " + (this.maxDamage - damage) + "/" + this.maxDamage + " (" + percent + "%)");
 		
-		list.add("Melting point: " + EnumChatFormatting.RED + "" + maxTemp + "°C");
+		list.add("Melting point: " + EnumChatFormatting.RED + "" + this.maxTemp + "°C");
 	}
 	
 	public static void setShieldDamage(ItemStack stack, long damage) {
@@ -49,12 +49,14 @@ public class ItemFusionShield extends Item {
 		stack.stackTagCompound.setLong("damage", damage);
 	}
 	
-    public double getDurabilityForDisplay(ItemStack stack)
+    @Override
+	public double getDurabilityForDisplay(ItemStack stack)
     {
-        return (double)getShieldDamage(stack) / (double)maxDamage;
+        return (double)ItemFusionShield.getShieldDamage(stack) / (double)this.maxDamage;
     }
     
-    public boolean showDurabilityBar(ItemStack stack)
+    @Override
+	public boolean showDurabilityBar(ItemStack stack)
     {
         return getDurabilityForDisplay(stack) != 0;
     }

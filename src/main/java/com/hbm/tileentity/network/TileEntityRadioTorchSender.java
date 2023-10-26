@@ -8,27 +8,27 @@ public class TileEntityRadioTorchSender extends TileEntityRadioTorchBase {
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
-			ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata()).getOpposite();
-			int input = worldObj.getIndirectPowerLevelTo(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, this.getBlockMetadata());
+		if(!this.worldObj.isRemote) {
+			ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata()).getOpposite();
+			int input = this.worldObj.getIndirectPowerLevelTo(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ, getBlockMetadata());
 			
-			Block b = worldObj.getBlock(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
+			Block b = this.worldObj.getBlock(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
 			
 			if(b.hasComparatorInputOverride()) {
-				input = b.getComparatorInputOverride(worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, dir.getOpposite().ordinal());
+				input = b.getComparatorInputOverride(this.worldObj, this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ, dir.getOpposite().ordinal());
 			}
 			
 			boolean shouldSend = this.polling;
 			
 			if(input != this.lastState) {
-				this.markDirty();
-				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				markDirty();
+				this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
 				this.lastState = input;
 				shouldSend = true;
 			}
 
 			if(shouldSend && !this.channel.isEmpty()) {
-				RTTYSystem.broadcast(worldObj, this.channel, this.customMap ? this.mapping[input] : (input + ""));
+				RTTYSystem.broadcast(this.worldObj, this.channel, this.customMap ? this.mapping[input] : (input + ""));
 			}
 		}
 		

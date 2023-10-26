@@ -1,15 +1,15 @@
 package com.hbm.inventory.gui;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
 import com.hbm.inventory.container.ContainerNukeFurnace;
 import com.hbm.lib.RefStrings;
 import com.hbm.tileentity.machine.TileEntityNukeFurnace;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.ResourceLocation;
 
 public class GUINukeFurnace extends GuiInfoContainer {
 	
@@ -18,7 +18,7 @@ public class GUINukeFurnace extends GuiInfoContainer {
 
 	public GUINukeFurnace(InventoryPlayer invPlayer, TileEntityNukeFurnace tedf) {
 		super(new ContainerNukeFurnace(invPlayer, tedf));
-		furnace = tedf;
+		this.furnace = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 166;
@@ -28,7 +28,7 @@ public class GUINukeFurnace extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 55, guiTop + 34, 18, 18, mouseX, mouseY, new String[] { furnace.dualPower + " operation(s) left" });
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 55, this.guiTop + 34, 18, 18, mouseX, mouseY, new String[] { this.furnace.dualPower + " operation(s) left" });
 	}
 	
 	@Override
@@ -42,13 +42,13 @@ public class GUINukeFurnace extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUINukeFurnace.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		if(furnace.hasPower())
-			drawTexturedModalRect(guiLeft + 55, guiTop + 35, 176, 0, 18, 16);
+		if(this.furnace.hasPower())
+			drawTexturedModalRect(this.guiLeft + 55, this.guiTop + 35, 176, 0, 18, 16);
 		
-		int i = furnace.getDiFurnaceProgressScaled(24);
-		drawTexturedModalRect(guiLeft + 80, guiTop + 34, 176, 16, i, 17);
+		int i = this.furnace.getDiFurnaceProgressScaled(24);
+		drawTexturedModalRect(this.guiLeft + 80, this.guiTop + 34, 176, 16, i, 17);
 	}
 }

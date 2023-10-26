@@ -20,7 +20,7 @@ public class GUICrateTungsten extends GuiContainer {
 	
 	public GUICrateTungsten(InventoryPlayer invPlayer, TileEntityCrateTungsten tedf) {
 		super(new ContainerCrateTungsten(invPlayer, tedf));
-		diFurnace = tedf;
+		this.diFurnace = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 168;
@@ -38,11 +38,11 @@ public class GUICrateTungsten extends GuiContainer {
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
-		if(diFurnace.getWorldObj().getBlockMetadata(diFurnace.xCoord, diFurnace.yCoord, diFurnace.zCoord) == 0)
-			Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
+		if(this.diFurnace.getWorldObj().getBlockMetadata(this.diFurnace.xCoord, this.diFurnace.yCoord, this.diFurnace.zCoord) == 0)
+			Minecraft.getMinecraft().getTextureManager().bindTexture(GUICrateTungsten.texture);
 		else
-			Minecraft.getMinecraft().getTextureManager().bindTexture(texture_hot);
+			Minecraft.getMinecraft().getTextureManager().bindTexture(GUICrateTungsten.texture_hot);
 		
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 	}
 }

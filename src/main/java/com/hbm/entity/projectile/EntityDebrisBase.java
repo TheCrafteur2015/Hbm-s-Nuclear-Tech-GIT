@@ -34,6 +34,7 @@ abstract public class EntityDebrisBase extends Entity {
 		return true;
 	}
 
+	@Override
 	abstract public boolean interactFirst(EntityPlayer player);
 
 	abstract protected int getLifetime();
@@ -65,8 +66,8 @@ abstract public class EntityDebrisBase extends Entity {
 
 		List list = this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox.addCoord(moX, moY, moZ));
 
-		for(int i = 0; i < list.size(); ++i) {
-			moY = ((AxisAlignedBB) list.get(i)).calculateYOffset(this.boundingBox, moY);
+		for (Object element : list) {
+			moY = ((AxisAlignedBB) element).calculateYOffset(this.boundingBox, moY);
 		}
 
 		this.boundingBox.offset(0.0D, moY, 0.0D);
@@ -187,7 +188,7 @@ abstract public class EntityDebrisBase extends Entity {
 		this.isCollidedVertically = initMoY != moY;
 		this.onGround = initMoY != moY && initMoY < 0.0D;
 		this.isCollided = this.isCollidedHorizontally || this.isCollidedVertically;
-		this.updateFallState(moY, this.onGround);
+		updateFallState(moY, this.onGround);
 
 		if(initMoX != moX) {
 			//this.motionX = 0.0D;
@@ -205,11 +206,11 @@ abstract public class EntityDebrisBase extends Entity {
 		}
 
 		try {
-			this.func_145775_I();
+			func_145775_I();
 		} catch(Throwable throwable) {
 			CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Checking entity block collision");
 			CrashReportCategory crashreportcategory = crashreport.makeCategory("Entity being checked for collision");
-			this.addEntityCrashInfo(crashreportcategory);
+			addEntityCrashInfo(crashreportcategory);
 			throw new ReportedException(crashreport);
 		}
 

@@ -17,36 +17,36 @@ public class ModelRocketOld extends ModelBase {
 	ModelRenderer Shape9;
 
 	public ModelRocketOld() {
-		textureWidth = 64;
-		textureHeight = 32;
+		this.textureWidth = 64;
+		this.textureHeight = 32;
 
-		Shape7 = new ModelRenderer(this, 10, 0);
-		Shape7.addBox(0F, 0F, 0F, 1, 2, 2);
-		Shape7.setRotationPoint(-3F, -2F, -0.5F);
-		Shape7.setTextureSize(64, 32);
-		Shape7.mirror = true;
-		setRotation(Shape7, 0F, 0F, 0F);
-		Shape8 = new ModelRenderer(this, 0, 4);
-		Shape8.addBox(0F, 0F, 0F, 10, 1, 1);
-		Shape8.setRotationPoint(-8F, -1.5F, 0F);
-		Shape8.setTextureSize(64, 32);
-		Shape8.mirror = true;
-		setRotation(Shape8, 0F, 0F, 0F);
-		Shape9 = new ModelRenderer(this, 0, 0);
-		Shape9.addBox(0F, 0F, 0F, 3, 2, 2);
-		Shape9.setRotationPoint(-6.5F, -2F, -0.5F);
-		Shape9.setTextureSize(64, 32);
-		Shape9.mirror = true;
-		setRotation(Shape9, 0F, 0F, 0F);
+		this.Shape7 = new ModelRenderer(this, 10, 0);
+		this.Shape7.addBox(0F, 0F, 0F, 1, 2, 2);
+		this.Shape7.setRotationPoint(-3F, -2F, -0.5F);
+		this.Shape7.setTextureSize(64, 32);
+		this.Shape7.mirror = true;
+		setRotation(this.Shape7, 0F, 0F, 0F);
+		this.Shape8 = new ModelRenderer(this, 0, 4);
+		this.Shape8.addBox(0F, 0F, 0F, 10, 1, 1);
+		this.Shape8.setRotationPoint(-8F, -1.5F, 0F);
+		this.Shape8.setTextureSize(64, 32);
+		this.Shape8.mirror = true;
+		setRotation(this.Shape8, 0F, 0F, 0F);
+		this.Shape9 = new ModelRenderer(this, 0, 0);
+		this.Shape9.addBox(0F, 0F, 0F, 3, 2, 2);
+		this.Shape9.setRotationPoint(-6.5F, -2F, -0.5F);
+		this.Shape9.setTextureSize(64, 32);
+		this.Shape9.mirror = true;
+		setRotation(this.Shape9, 0F, 0F, 0F);
 	}
 
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-		Shape7.render(f5);
-		Shape8.render(f5);
-		Shape9.render(f5);
+		this.Shape7.render(f5);
+		this.Shape8.render(f5);
+		this.Shape9.render(f5);
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z) {

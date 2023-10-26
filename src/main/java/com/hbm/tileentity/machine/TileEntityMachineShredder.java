@@ -40,25 +40,25 @@ public class TileEntityMachineShredder extends TileEntityLoadedBase implements I
 	private String customName;
 	
 	public TileEntityMachineShredder() {
-		slots = new ItemStack[30];
+		this.slots = new ItemStack[30];
 	}
 
 	@Override
 	public int getSizeInventory() {
-		return slots.length;
+		return this.slots.length;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		return slots[i];
+		return this.slots[i];
 	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			ItemStack itemStack = slots[i];
-			slots[i] = null;
+			ItemStack itemStack = this.slots[i];
+			this.slots[i] = null;
 			return itemStack;
 		} else {
 		return null;
@@ -67,7 +67,7 @@ public class TileEntityMachineShredder extends TileEntityLoadedBase implements I
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemStack) {
-		slots[i] = itemStack;
+		this.slots[i] = itemStack;
 		if(itemStack != null && itemStack.stackSize > getInventoryStackLimit())
 		{
 			itemStack.stackSize = getInventoryStackLimit();
@@ -76,7 +76,7 @@ public class TileEntityMachineShredder extends TileEntityLoadedBase implements I
 
 	@Override
 	public String getInventoryName() {
-		return this.hasCustomInventoryName() ? this.customName : "container.machineShredder";
+		return hasCustomInventoryName() ? this.customName : "container.machineShredder";
 	}
 
 	@Override
@@ -95,11 +95,11 @@ public class TileEntityMachineShredder extends TileEntityLoadedBase implements I
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		if(worldObj.getTileEntity(xCoord, yCoord, zCoord) != this)
+		if(this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this)
 		{
 			return false;
 		}else{
-			return player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <=64;
+			return player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <=64;
 		}
 	}
 	
@@ -120,18 +120,18 @@ public class TileEntityMachineShredder extends TileEntityLoadedBase implements I
 	
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			if(slots[i].stackSize <= j)
+			if(this.slots[i].stackSize <= j)
 			{
-				ItemStack itemStack = slots[i];
-				slots[i] = null;
+				ItemStack itemStack = this.slots[i];
+				this.slots[i] = null;
 				return itemStack;
 			}
-			ItemStack itemStack1 = slots[i].splitStack(j);
-			if (slots[i].stackSize == 0)
+			ItemStack itemStack1 = this.slots[i].splitStack(j);
+			if (this.slots[i].stackSize == 0)
 			{
-				slots[i] = null;
+				this.slots[i] = null;
 			}
 			
 			return itemStack1;
@@ -146,15 +146,15 @@ public class TileEntityMachineShredder extends TileEntityLoadedBase implements I
 		NBTTagList list = nbt.getTagList("items", 10);
 		
 		this.power = nbt.getLong("powerTime");
-		slots = new ItemStack[getSizeInventory()];
+		this.slots = new ItemStack[getSizeInventory()];
 		
 		for(int i = 0; i < list.tagCount(); i++)
 		{
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("slot");
-			if(b0 >= 0 && b0 < slots.length)
+			if(b0 >= 0 && b0 < this.slots.length)
 			{
-				slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
+				this.slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
 			}
 		}
 	}
@@ -162,16 +162,16 @@ public class TileEntityMachineShredder extends TileEntityLoadedBase implements I
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setLong("powerTime", power);
+		nbt.setLong("powerTime", this.power);
 		NBTTagList list = new NBTTagList();
 		
-		for(int i = 0; i < slots.length; i++)
+		for(int i = 0; i < this.slots.length; i++)
 		{
-			if(slots[i] != null)
+			if(this.slots[i] != null)
 			{
 				NBTTagCompound nbt1 = new NBTTagCompound();
 				nbt1.setByte("slot", (byte)i);
-				slots[i].writeToNBT(nbt1);
+				this.slots[i].writeToNBT(nbt1);
 				list.appendTag(nbt1);
 			}
 		}
@@ -180,24 +180,21 @@ public class TileEntityMachineShredder extends TileEntityLoadedBase implements I
 	
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
-		return slots_io;
+		return TileEntityMachineShredder.slots_io;
 	}
 
 	@Override
 	public boolean canInsertItem(int slot, ItemStack itemStack, int side) {
-		if((slot >= 9 && slot != 27 && slot != 28) || !this.isItemValidForSlot(slot, itemStack))
+		if((slot >= 9 && slot != 27 && slot != 28) || !isItemValidForSlot(slot, itemStack))
 			return false;
 		
-		if(slots[slot] == null)
+		if(this.slots[slot] == null)
 			return true;
 		
-		int size = slots[slot].stackSize;
+		int size = this.slots[slot].stackSize;
 		
 		for(int k = 0; k < 9; k++) {
-			if(slots[k] == null)
-				return false;
-			
-			if(slots[k].getItem() == itemStack.getItem() && slots[k].getItemDamage() == itemStack.getItemDamage() && slots[k].stackSize < size)
+			if((this.slots[k] == null) || (this.slots[k].getItem() == itemStack.getItem() && this.slots[k].getItemDamage() == itemStack.getItemDamage() && this.slots[k].stackSize < size))
 				return false;
 		}
 		
@@ -213,11 +210,11 @@ public class TileEntityMachineShredder extends TileEntityLoadedBase implements I
 	}
 	
 	public int getDiFurnaceProgressScaled(int i) {
-		return (progress * i) / processingSpeed;
+		return (this.progress * i) / TileEntityMachineShredder.processingSpeed;
 	}
 	
 	public boolean hasPower() {
-		return power > 0;
+		return this.power > 0;
 	}
 	
 	public boolean isProcessing() {
@@ -228,34 +225,34 @@ public class TileEntityMachineShredder extends TileEntityLoadedBase implements I
 	public void updateEntity() {
 		boolean flag1 = false;
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			this.updateConnections();
+			updateConnections();
 			
 			if(hasPower() && canProcess())
 			{
-				progress++;
+				this.progress++;
 				
-				power -= 5;
+				this.power -= 5;
 				
 				if(this.progress == TileEntityMachineShredder.processingSpeed)
 				{
 					for(int i = 27; i <= 28; i++)
-						if(slots[i].getMaxDamage() > 0)
+						if(this.slots[i].getMaxDamage() > 0)
 							this.slots[i].setItemDamage(this.slots[i].getItemDamage() + 1);
 					
 					this.progress = 0;
-					this.processItem();
+					processItem();
 					flag1 = true;
 				}
-				if(soundCycle == 0)
+				if(this.soundCycle == 0)
 		        	this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "minecart.base", 1.0F, 0.75F);
-				soundCycle++;
+				this.soundCycle++;
 				
-				if(soundCycle >= 50)
-					soundCycle = 0;
+				if(this.soundCycle >= 50)
+					this.soundCycle = 0;
 			}else{
-				progress = 0;
+				this.progress = 0;
 			}
 			
 			boolean trigger = true;
@@ -270,42 +267,42 @@ public class TileEntityMachineShredder extends TileEntityLoadedBase implements I
                 flag1 = true;
             }
 			
-			power = Library.chargeTEFromItems(slots, 29, power, maxPower);
+			this.power = Library.chargeTEFromItems(this.slots, 29, this.power, TileEntityMachineShredder.maxPower);
 			
-			PacketDispatcher.wrapper.sendToAllAround(new AuxElectricityPacket(xCoord, yCoord, zCoord, power), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 50));
+			PacketDispatcher.wrapper.sendToAllAround(new AuxElectricityPacket(this.xCoord, this.yCoord, this.zCoord, this.power), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 50));
 		}
 		
 		if(flag1)
 		{
-			this.markDirty();
+			markDirty();
 		}
 	}
 	
 	private void updateConnections() {
 		
 		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-			this.trySubscribe(worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, dir);
+			trySubscribe(this.worldObj, this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ, dir);
 	}
 	
 	public void processItem() {
 		
 		for(int inpSlot = 0; inpSlot < 9; inpSlot++)
 		{
-			if(slots[inpSlot] != null && hasSpace(slots[inpSlot]))
+			if(this.slots[inpSlot] != null && hasSpace(this.slots[inpSlot]))
 			{
-				ItemStack inp = slots[inpSlot];
+				ItemStack inp = this.slots[inpSlot];
 				ItemStack outp = ShredderRecipes.getShredderResult(inp);
 				
 				boolean flag = false;
 				
 				for (int outSlot = 9; outSlot < 27; outSlot++)
 				{
-					if (slots[outSlot] != null && slots[outSlot].getItem() == outp.getItem() && 
-							slots[outSlot].getItemDamage() == outp.getItemDamage() &&
-							slots[outSlot].stackSize + outp.stackSize <= outp.getMaxStackSize()) {
+					if (this.slots[outSlot] != null && this.slots[outSlot].getItem() == outp.getItem() && 
+							this.slots[outSlot].getItemDamage() == outp.getItemDamage() &&
+							this.slots[outSlot].stackSize + outp.stackSize <= outp.getMaxStackSize()) {
 						
-						slots[outSlot].stackSize += outp.stackSize;
-						slots[inpSlot].stackSize -= 1;
+						this.slots[outSlot].stackSize += outp.stackSize;
+						this.slots[inpSlot].stackSize -= 1;
 						flag = true;
 						break;
 					}
@@ -314,27 +311,27 @@ public class TileEntityMachineShredder extends TileEntityLoadedBase implements I
 				if(!flag)
 					for (int outSlot = 9; outSlot < 27; outSlot++)
 					{
-						if (slots[outSlot] == null) {
-							slots[outSlot] = outp.copy();
-							slots[inpSlot].stackSize -= 1;
+						if (this.slots[outSlot] == null) {
+							this.slots[outSlot] = outp.copy();
+							this.slots[inpSlot].stackSize -= 1;
 							break;
 						}
 					}
 				
-				if(slots[inpSlot].stackSize <= 0)
-					slots[inpSlot] = null;
+				if(this.slots[inpSlot].stackSize <= 0)
+					this.slots[inpSlot] = null;
 			}
 		}
 	}
 	
 	public boolean canProcess() {
-		if(slots[27] != null && slots[28] != null && 
-				this.getGearLeft() > 0 && this.getGearLeft() < 3 && 
-				this.getGearRight() > 0 && this.getGearRight() < 3) {
+		if(this.slots[27] != null && this.slots[28] != null && 
+				getGearLeft() > 0 && getGearLeft() < 3 && 
+				getGearRight() > 0 && getGearRight() < 3) {
 			
 			for(int i = 0; i < 9; i++)
 			{
-				if(slots[i] != null && slots[i].stackSize > 0 && hasSpace(slots[i]))
+				if(this.slots[i] != null && this.slots[i].stackSize > 0 && hasSpace(this.slots[i]))
 				{
 					return true;
 				}
@@ -350,12 +347,8 @@ public class TileEntityMachineShredder extends TileEntityLoadedBase implements I
 		
 		if (result != null)
 			for (int i = 9; i < 27; i++) {
-				if (slots[i] == null) {
-					return true;
-				}
-
-				if (slots[i] != null && slots[i].getItem().equals(result.getItem())
-						&& slots[i].stackSize + result.stackSize <= result.getMaxStackSize()) {
+				if ((this.slots[i] == null) || (this.slots[i] != null && this.slots[i].getItem().equals(result.getItem())
+						&& this.slots[i].stackSize + result.stackSize <= result.getMaxStackSize())) {
 					return true;
 				}
 			}
@@ -370,7 +363,7 @@ public class TileEntityMachineShredder extends TileEntityLoadedBase implements I
 	}
 	
 	public long getPowerScaled(long i) {
-		return (power * i) / maxPower;
+		return (this.power * i) / TileEntityMachineShredder.maxPower;
 	}
 
 	@Override
@@ -385,15 +378,15 @@ public class TileEntityMachineShredder extends TileEntityLoadedBase implements I
 	
 	public int getGearLeft() {
 		
-		if(slots[27] != null && slots[27].getItem() instanceof ItemBlades)
+		if(this.slots[27] != null && this.slots[27].getItem() instanceof ItemBlades)
 		{
-			if(slots[27].getMaxDamage() == 0)
+			if(this.slots[27].getMaxDamage() == 0)
 				return 1;
 			
-			if(slots[27].getItemDamage() < slots[27].getItem().getMaxDamage()/2)
+			if(this.slots[27].getItemDamage() < this.slots[27].getItem().getMaxDamage()/2)
 			{
 				return 1;
-			} else if(slots[27].getItemDamage() != slots[27].getItem().getMaxDamage()) {
+			} else if(this.slots[27].getItemDamage() != this.slots[27].getItem().getMaxDamage()) {
 				return 2;
 			} else {
 				return 3;
@@ -405,15 +398,15 @@ public class TileEntityMachineShredder extends TileEntityLoadedBase implements I
 	
 	public int getGearRight() {
 		
-		if(slots[28] != null && slots[28].getItem() instanceof ItemBlades)
+		if(this.slots[28] != null && this.slots[28].getItem() instanceof ItemBlades)
 		{
-			if(slots[28].getMaxDamage() == 0)
+			if(this.slots[28].getMaxDamage() == 0)
 				return 1;
 			
-			if(slots[28].getItemDamage() < slots[28].getItem().getMaxDamage()/2)
+			if(this.slots[28].getItemDamage() < this.slots[28].getItem().getMaxDamage()/2)
 			{
 				return 1;
-			} else if(slots[28].getItemDamage() != slots[28].getItem().getMaxDamage()) {
+			} else if(this.slots[28].getItemDamage() != this.slots[28].getItem().getMaxDamage()) {
 				return 2;
 			} else {
 				return 3;

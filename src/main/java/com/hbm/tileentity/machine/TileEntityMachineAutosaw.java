@@ -27,17 +27,18 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.Vec3;
 
 public class TileEntityMachineAutosaw extends TileEntityLoadedBase implements INBTPacketReceiver, IFluidStandardReceiver {
 	
-	public static final HashSet<FluidType> acceptedFuels = new HashSet();
+	public static final HashSet<FluidType> acceptedFuels = new HashSet<>();
 	
 	static {
-		acceptedFuels.add(Fluids.WOODOIL);
-		acceptedFuels.add(Fluids.ETHANOL);
-		acceptedFuels.add(Fluids.FISHOIL);
-		acceptedFuels.add(Fluids.HEAVYOIL);
+		TileEntityMachineAutosaw.acceptedFuels.add(Fluids.WOODOIL);
+		TileEntityMachineAutosaw.acceptedFuels.add(Fluids.ETHANOL);
+		TileEntityMachineAutosaw.acceptedFuels.add(Fluids.FISHOIL);
+		TileEntityMachineAutosaw.acceptedFuels.add(Fluids.HEAVYOIL);
 	}
 	
 	public FluidTank tank;
@@ -62,42 +63,43 @@ public class TileEntityMachineAutosaw extends TileEntityLoadedBase implements IN
 		this.tank = new FluidTank(Fluids.WOODOIL, 100);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			if(worldObj.getTotalWorldTime() % 20 == 0) {
-				if(tank.getFill() > 0) {
-					tank.setFill(tank.getFill() - 1);
+			if(this.worldObj.getTotalWorldTime() % 20 == 0) {
+				if(this.tank.getFill() > 0) {
+					this.tank.setFill(this.tank.getFill() - 1);
 					this.isOn = true;
 				} else {
 					this.isOn = false;
 				}
 				
-				this.subscribeToAllAround(tank.getTankType(), this);
+				this.subscribeToAllAround(this.tank.getTankType(), this);
 			}
 
-			if(isOn) {
-				Vec3 pivot = Vec3.createVectorHelper(xCoord + 0.5, yCoord + 1.75, zCoord + 0.5);
+			if(this.isOn) {
+				Vec3 pivot = Vec3.createVectorHelper(this.xCoord + 0.5, this.yCoord + 1.75, this.zCoord + 0.5);
 				Vec3 upperArm = Vec3.createVectorHelper(0, 0, -4);
-				upperArm.rotateAroundX((float) Math.toRadians(80 - rotationPitch));
-				upperArm.rotateAroundY(-(float) Math.toRadians(rotationYaw));
+				upperArm.rotateAroundX((float) Math.toRadians(80 - this.rotationPitch));
+				upperArm.rotateAroundY(-(float) Math.toRadians(this.rotationYaw));
 				Vec3 lowerArm = Vec3.createVectorHelper(0, 0, -4);
-				lowerArm.rotateAroundX((float) -Math.toRadians(80 - rotationPitch));
-				lowerArm.rotateAroundY(-(float) Math.toRadians(rotationYaw));
+				lowerArm.rotateAroundX((float) -Math.toRadians(80 - this.rotationPitch));
+				lowerArm.rotateAroundY(-(float) Math.toRadians(this.rotationYaw));
 				Vec3 armTip = Vec3.createVectorHelper(0, 0, -2);
-				armTip.rotateAroundY(-(float) Math.toRadians(rotationYaw));
+				armTip.rotateAroundY(-(float) Math.toRadians(this.rotationYaw));
 	
 				double cX = pivot.xCoord + upperArm.xCoord + lowerArm.xCoord + armTip.xCoord;
 				double cY = pivot.yCoord;
 				double cZ = pivot.zCoord + upperArm.zCoord + lowerArm.zCoord + armTip.zCoord;
 				
-				List<EntityLivingBase> affected = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(cX - 1, cY - 0.25, cZ - 1, cX + 1, cY + 0.25, cZ + 1));
+				List<EntityLivingBase> affected = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(cX - 1, cY - 0.25, cZ - 1, cX + 1, cY + 0.25, cZ + 1));
 				
 				for(EntityLivingBase e : affected) {
 					if(e.isEntityAlive() && e.attackEntityFrom(ModDamageSource.turbofan, 100)) {
-						worldObj.playSoundEffect(e.posX, e.posY, e.posZ, "mob.zombie.woodbreak", 2.0F, 0.95F + worldObj.rand.nextFloat() * 0.2F);
+						this.worldObj.playSoundEffect(e.posX, e.posY, e.posZ, "mob.zombie.woodbreak", 2.0F, 0.95F + this.worldObj.rand.nextFloat() * 0.2F);
 						int count = Math.min((int)Math.ceil(e.getMaxHealth() / 4), 250);
 						NBTTagCompound data = new NBTTagCompound();
 						data.setString("type", "vanillaburst");
@@ -109,7 +111,7 @@ public class TileEntityMachineAutosaw extends TileEntityLoadedBase implements IN
 					}
 				}
 				
-				if(state == 0) {
+				if(this.state == 0) {
 					
 					this.rotationYaw += 1;
 					
@@ -118,27 +120,27 @@ public class TileEntityMachineAutosaw extends TileEntityLoadedBase implements IN
 					}
 					
 					Vec3 grace = Vec3.createVectorHelper(0, 0, -3.5);
-					grace.rotateAroundY(-(float) Math.toRadians(rotationYaw));
+					grace.rotateAroundY(-(float) Math.toRadians(this.rotationYaw));
 					grace.xCoord += pivot.xCoord;
 					grace.yCoord += pivot.yCoord;
 					grace.zCoord += pivot.zCoord;
 					
 					Vec3 detector = Vec3.createVectorHelper(0, 0, -9);
-					detector.rotateAroundY(-(float) Math.toRadians(rotationYaw));
+					detector.rotateAroundY(-(float) Math.toRadians(this.rotationYaw));
 					detector.xCoord += pivot.xCoord;
 					detector.yCoord += pivot.yCoord;
 					detector.zCoord += pivot.zCoord;
-					MovingObjectPosition pos = worldObj.func_147447_a(grace, detector, false, false, false);
+					MovingObjectPosition pos = this.worldObj.func_147447_a(grace, detector, false, false, false);
 					
-					if(pos != null && pos.typeOfHit == pos.typeOfHit.BLOCK) {
+					if(pos != null && pos.typeOfHit == MovingObjectType.BLOCK) {
 						
-						Block b = worldObj.getBlock(pos.blockX, pos.blockY, pos.blockZ);
+						Block b = this.worldObj.getBlock(pos.blockX, pos.blockY, pos.blockZ);
 						
 						if(b.getMaterial() == Material.wood || b.getMaterial() == Material.leaves || b.getMaterial() == Material.plants) {
 							
-							int meta = worldObj.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ);
-							if(!shouldIgnore(b, meta)) {
-								state = 1;
+							int meta = this.worldObj.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ);
+							if(!TileEntityMachineAutosaw.shouldIgnore(b, meta)) {
+								this.state = 1;
 							}
 						}
 					}
@@ -150,47 +152,47 @@ public class TileEntityMachineAutosaw extends TileEntityLoadedBase implements IN
 				int hitX1 = (int) Math.floor(cX + 0.5);
 				int hitZ1 = (int) Math.floor(cZ + 0.5);
 
-				this.tryInteract(hitX0, hitY, hitZ0);
-				this.tryInteract(hitX1, hitY, hitZ0);
-				this.tryInteract(hitX0, hitY, hitZ1);
-				this.tryInteract(hitX1, hitY, hitZ1);
+				tryInteract(hitX0, hitY, hitZ0);
+				tryInteract(hitX1, hitY, hitZ0);
+				tryInteract(hitX0, hitY, hitZ1);
+				tryInteract(hitX1, hitY, hitZ1);
 				
-				if(state == 1) {
+				if(this.state == 1) {
 					this.rotationPitch += 2;
 
 					if(this.rotationPitch > 80) {
 						this.rotationPitch = 80;
-						state = 2;
+						this.state = 2;
 					}
 				}
 				
-				if(state == 2) {
+				if(this.state == 2) {
 					this.rotationPitch -= 2;
 					
 					if(this.rotationPitch <= 0) {
 						this.rotationPitch = 0;
-						state = 0;
+						this.state = 0;
 					}
 				}
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setBoolean("isOn", isOn);
+			data.setBoolean("isOn", this.isOn);
 			data.setFloat("yaw", this.rotationYaw);
 			data.setFloat("pitch", this.rotationPitch);
-			tank.writeToNBT(data, "t");
+			this.tank.writeToNBT(data, "t");
 			INBTPacketReceiver.networkPack(this, data, 100);
 		} else {
 			
 			this.lastSpin = this.spin;
 			
-			if(isOn) {
+			if(this.isOn) {
 				this.spin += 15F;
 				
 				Vec3 vec = Vec3.createVectorHelper(0.625, 0, 1.625);
-				vec.rotateAroundY(-(float) Math.toRadians(rotationYaw));
+				vec.rotateAroundY(-(float) Math.toRadians(this.rotationYaw));
 				
-				worldObj.spawnParticle("smoke", xCoord + 0.5 + vec.xCoord, yCoord + 2.0625, zCoord + 0.5 + vec.zCoord, 0, 0, 0);
+				this.worldObj.spawnParticle("smoke", this.xCoord + 0.5 + vec.xCoord, this.yCoord + 2.0625, this.zCoord + 0.5 + vec.zCoord, 0, 0, 0);
 			}
 			
 			if(this.spin >= 360F) {
@@ -204,8 +206,8 @@ public class TileEntityMachineAutosaw extends TileEntityLoadedBase implements IN
 			if(this.turnProgress > 0) {
 				double d0 = MathHelper.wrapAngleTo180_double(this.syncYaw - (double) this.rotationYaw);
 				double d1 = MathHelper.wrapAngleTo180_double(this.syncPitch - (double) this.rotationPitch);
-				this.rotationYaw = (float) ((double) this.rotationYaw + d0 / (double) this.turnProgress);
-				this.rotationPitch = (float) ((double) this.rotationPitch + d1 / (double) this.turnProgress);
+				this.rotationYaw = (float) (this.rotationYaw + d0 / this.turnProgress);
+				this.rotationPitch = (float) (this.rotationPitch + d1 / this.turnProgress);
 				--this.turnProgress;
 			} else {
 				this.rotationYaw = this.syncYaw;
@@ -225,31 +227,31 @@ public class TileEntityMachineAutosaw extends TileEntityLoadedBase implements IN
 	
 	protected void tryInteract(int x, int y, int z) {
 		
-		Block b = worldObj.getBlock(x, y, z);
-		int meta = worldObj.getBlockMetadata(x, y, z);
+		Block b = this.worldObj.getBlock(x, y, z);
+		int meta = this.worldObj.getBlockMetadata(x, y, z);
 		
-		if(shouldIgnore(b, meta)) {
+		if(TileEntityMachineAutosaw.shouldIgnore(b, meta)) {
 			return;
 		}
 		
 		if(b.getMaterial() == Material.leaves || b.getMaterial() == Material.plants) {
-			worldObj.func_147480_a(x, y, z, true);
+			this.worldObj.func_147480_a(x, y, z, true);
 			return;
 		}
 		
 		if(b.getMaterial() == Material.wood) {
 			fellTree(x, y, z);
-			if(state == 1) {
-				state = 2;
+			if(this.state == 1) {
+				this.state = 2;
 			}
 		}
 	}
 	
 	protected void fellTree(int x, int y, int z) {
 		
-		if(worldObj.getBlock(x, y - 1, z).getMaterial() == Material.wood) {
+		if(this.worldObj.getBlock(x, y - 1, z).getMaterial() == Material.wood) {
 			y--;
-			if(worldObj.getBlock(x, y - 2, z).getMaterial() == Material.wood) {
+			if(this.worldObj.getBlock(x, y - 2, z).getMaterial() == Material.wood) {
 				y--;
 			}
 		}
@@ -261,20 +263,20 @@ public class TileEntityMachineAutosaw extends TileEntityLoadedBase implements IN
 			int[][] dir = new int[][] {{0, 0}, {1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 			
 			for(int[] d : dir) {
-				Block b = worldObj.getBlock(x + d[0], i, z + d[1]);
+				Block b = this.worldObj.getBlock(x + d[0], i, z + d[1]);
 
 				if(b.getMaterial() == Material.wood) {
-					worldObj.func_147480_a(x + d[0], i, z + d[1], true);
+					this.worldObj.func_147480_a(x + d[0], i, z + d[1], true);
 				} else if(b instanceof BlockLeaves) {
-					meta = worldObj.getBlockMetadata(x + d[0], i, z + d[1]) & 3;
-					worldObj.func_147480_a(x + d[0], i, z + d[1], true);
+					meta = this.worldObj.getBlockMetadata(x + d[0], i, z + d[1]) & 3;
+					this.worldObj.func_147480_a(x + d[0], i, z + d[1], true);
 				}
 			}
 		}
 		
 		if(meta >= 0) {
-			if(Blocks.sapling.canPlaceBlockAt(worldObj, x, y, z)) {
-				worldObj.setBlock(x, y, z, Blocks.sapling, meta, 3);
+			if(Blocks.sapling.canPlaceBlockAt(this.worldObj, x, y, z)) {
+				this.worldObj.setBlock(x, y, z, Blocks.sapling, meta, 3);
 			}
 		}
 	}
@@ -305,17 +307,17 @@ public class TileEntityMachineAutosaw extends TileEntityLoadedBase implements IN
 		nbt.setFloat("yaw", this.rotationYaw);
 		nbt.setFloat("pitch", this.rotationPitch);
 		nbt.setInteger("state", this.state);
-		tank.writeToNBT(nbt, "t");
+		this.tank.writeToNBT(nbt, "t");
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return new FluidTank[] {tank};
+		return new FluidTank[] {this.tank};
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] {tank};
+		return new FluidTank[] {this.tank};
 	}
 	
 	AxisAlignedBB bb = null;
@@ -323,18 +325,18 @@ public class TileEntityMachineAutosaw extends TileEntityLoadedBase implements IN
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 12,
-					yCoord,
-					zCoord - 12,
-					xCoord + 13,
-					yCoord + 10,
-					zCoord + 13
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 12,
+					this.yCoord,
+					this.zCoord - 12,
+					this.xCoord + 13,
+					this.yCoord + 10,
+					this.zCoord + 13
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override

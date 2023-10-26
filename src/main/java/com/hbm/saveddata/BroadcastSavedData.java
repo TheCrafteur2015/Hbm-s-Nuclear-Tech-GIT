@@ -10,7 +10,7 @@ public class BroadcastSavedData extends WorldSavedData {
 	
 	public int bcCount;
 	
-	public List<BroadcastSaveStructure> broadcasts = new ArrayList();
+	public List<BroadcastSaveStructure> broadcasts = new ArrayList<>();
 
 	public BroadcastSavedData(String p_i2141_1_) {
 		super(p_i2141_1_);
@@ -19,7 +19,7 @@ public class BroadcastSavedData extends WorldSavedData {
     public BroadcastSavedData()
     {
         super("broadcasts");
-        this.markDirty();
+        markDirty();
     }
     
     public boolean isIdTaken(int id) {
@@ -29,7 +29,7 @@ public class BroadcastSavedData extends WorldSavedData {
     
     public BroadcastSaveStructure getBroadcastFromId(int id) {
     	
-    	for(BroadcastSaveStructure bc : broadcasts)
+    	for(BroadcastSaveStructure bc : this.broadcasts)
     		if(bc.broadcastID == id)
     			return bc;
     	
@@ -38,22 +38,22 @@ public class BroadcastSavedData extends WorldSavedData {
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
-		bcCount = nbt.getInteger("bcCount");
+		this.bcCount = nbt.getInteger("bcCount");
 		
-		for(int i = 0; i < bcCount; i++) {
+		for(int i = 0; i < this.bcCount; i++) {
 			BroadcastSaveStructure struct = new BroadcastSaveStructure();
 			struct.readFromNBT(nbt, i);
 			
-			broadcasts.add(struct);
+			this.broadcasts.add(struct);
 		}
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
-		nbt.setInteger("bcCount", broadcasts.size());
+		nbt.setInteger("bcCount", this.broadcasts.size());
 		
-		for(int i = 0; i < broadcasts.size(); i++) {
-			broadcasts.get(i).writeToNBT(nbt, i);
+		for(int i = 0; i < this.broadcasts.size(); i++) {
+			this.broadcasts.get(i).writeToNBT(nbt, i);
 		}
 	}
 

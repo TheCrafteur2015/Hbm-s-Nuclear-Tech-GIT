@@ -14,13 +14,14 @@ public class TileEntityCyberCrab extends TileEntity {
 	
 	int age = 0;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void updateEntity() {
 		
 		if (!this.worldObj.isRemote) {
 			
-			age++;
-			if(age > 200 && worldObj.getBlock(xCoord, yCoord + 1, zCoord) == Blocks.air) {
+			this.age++;
+			if(this.age > 200 && this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord) == Blocks.air) {
 				List<Entity> entities = this.worldObj.getEntitiesWithinAABB(EntityCyberCrab.class,
 						AxisAlignedBB.getBoundingBox(this.xCoord - 5, this.yCoord - 2, this.zCoord - 5, this.xCoord + 6,
 								this.yCoord + 4, this.zCoord + 6));
@@ -29,16 +30,16 @@ public class TileEntityCyberCrab extends TileEntity {
 					
 					EntityCyberCrab crab;
 					
-					if(worldObj.rand.nextInt(5) == 0)
-						crab = new EntityTeslaCrab(worldObj);
+					if(this.worldObj.rand.nextInt(5) == 0)
+						crab = new EntityTeslaCrab(this.worldObj);
 					else
-						crab = new EntityCyberCrab(worldObj);
+						crab = new EntityCyberCrab(this.worldObj);
 					
 					crab.setPosition(this.xCoord + 0.5, this.yCoord + 1, this.zCoord + 0.5);
-					worldObj.spawnEntityInWorld(crab);
+					this.worldObj.spawnEntityInWorld(crab);
 				}
 				
-				age = 0;
+				this.age = 0;
 			}
 		}
 	}

@@ -25,26 +25,26 @@ public class TileEntitySolarMirror extends TileEntityTickingBase {
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			if(worldObj.getTotalWorldTime() % 20 == 0)
+			if(this.worldObj.getTotalWorldTime() % 20 == 0)
 				sendUpdate();
 			
-			if(tY < yCoord) {
-				isOn = false;
+			if(this.tY < this.yCoord) {
+				this.isOn = false;
 				return;
 			}
 			
-			int sun = worldObj.getSavedLightValue(EnumSkyBlock.Sky, xCoord, yCoord, zCoord) - worldObj.skylightSubtracted - 11;
+			int sun = this.worldObj.getSavedLightValue(EnumSkyBlock.Sky, this.xCoord, this.yCoord, this.zCoord) - this.worldObj.skylightSubtracted - 11;
 			
-			if(sun <= 0 || !worldObj.canBlockSeeTheSky(xCoord, yCoord + 1, zCoord)) {
-				isOn = false;
+			if(sun <= 0 || !this.worldObj.canBlockSeeTheSky(this.xCoord, this.yCoord + 1, this.zCoord)) {
+				this.isOn = false;
 				return;
 			}
 			
-			isOn = true;
+			this.isOn = true;
 			
-			TileEntity te = worldObj.getTileEntity(tX, tY - 1, tZ);
+			TileEntity te = this.worldObj.getTileEntity(this.tX, this.tY - 1, this.tZ);
 			
 			if(te instanceof TileEntitySolarBoiler) {
 				TileEntitySolarBoiler boiler = (TileEntitySolarBoiler)te;
@@ -52,56 +52,58 @@ public class TileEntitySolarMirror extends TileEntityTickingBase {
 			}
 		} else {
 			
-			TileEntity te = worldObj.getTileEntity(tX, tY - 1, tZ);
+			TileEntity te = this.worldObj.getTileEntity(this.tX, this.tY - 1, this.tZ);
 			
-			if(isOn && te instanceof TileEntitySolarBoiler) {
+			if(this.isOn && te instanceof TileEntitySolarBoiler) {
 				TileEntitySolarBoiler boiler = (TileEntitySolarBoiler)te;
-				boiler.primary.add(new ChunkCoordinates(xCoord, yCoord, zCoord));
+				boiler.primary.add(new ChunkCoordinates(this.xCoord, this.yCoord, this.zCoord));
 			}
 			
-			if(worldObj.getTotalWorldTime() % 20 == 0)
-				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			if(this.worldObj.getTotalWorldTime() % 20 == 0)
+				this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
 		}
 	}
 
 	public void sendUpdate() {
 
 		NBTTagCompound data = new NBTTagCompound();
-		data.setInteger("posX", tX);
-		data.setInteger("posY", tY);
-		data.setInteger("posZ", tZ);
-		data.setBoolean("isOn", isOn);
-		this.networkPack(data, 200);
+		data.setInteger("posX", this.tX);
+		data.setInteger("posY", this.tY);
+		data.setInteger("posZ", this.tZ);
+		data.setBoolean("isOn", this.isOn);
+		networkPack(data, 200);
 	}
 
 	@Override
 	public void networkUnpack(NBTTagCompound nbt) {
-		tX = nbt.getInteger("posX");
-		tY = nbt.getInteger("posY");
-		tZ = nbt.getInteger("posZ");
-		isOn = nbt.getBoolean("isOn");
+		this.tX = nbt.getInteger("posX");
+		this.tY = nbt.getInteger("posY");
+		this.tZ = nbt.getInteger("posZ");
+		this.isOn = nbt.getBoolean("isOn");
 	}
 	
 	public void setTarget(int x, int y, int z) {
-		tX = x;
-		tY = y;
-		tZ = z;
-		this.markDirty();
-		this.sendUpdate();
+		this.tX = x;
+		this.tY = y;
+		this.tZ = z;
+		markDirty();
+		sendUpdate();
 	}
 
+	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
-		tX = nbt.getInteger("targetX");
-		tY = nbt.getInteger("targetY");
-		tZ = nbt.getInteger("targetZ");
+		this.tX = nbt.getInteger("targetX");
+		this.tY = nbt.getInteger("targetY");
+		this.tZ = nbt.getInteger("targetZ");
 	}
 
+	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setInteger("targetX", tX);
-		nbt.setInteger("targetY", tY);
-		nbt.setInteger("targetZ", tZ);
+		nbt.setInteger("targetX", this.tX);
+		nbt.setInteger("targetY", this.tY);
+		nbt.setInteger("targetZ", this.tZ);
 	}
 	
 	AxisAlignedBB bb = null;
@@ -109,18 +111,18 @@ public class TileEntitySolarMirror extends TileEntityTickingBase {
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 25,
-					yCoord - 25,
-					zCoord - 25,
-					xCoord + 25,
-					yCoord + 25,
-					zCoord + 25
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 25,
+					this.yCoord - 25,
+					this.zCoord - 25,
+					this.xCoord + 25,
+					this.yCoord + 25,
+					this.zCoord + 25
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override

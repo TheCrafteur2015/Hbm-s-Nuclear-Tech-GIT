@@ -44,7 +44,7 @@ public abstract class BlockTNTBase extends BlockFlammable implements IToolable {
 		super.onBlockAdded(world, x, y, z);
 
 		if(world.isBlockIndirectlyGettingPowered(x, y, z)) {
-			this.onBlockDestroyedByPlayer(world, x, y, z, 1);
+			onBlockDestroyedByPlayer(world, x, y, z, 1);
 			world.setBlockToAir(x, y, z);
 		} else {
 			checkAndIgnite(world, x, y, z);
@@ -54,7 +54,7 @@ public abstract class BlockTNTBase extends BlockFlammable implements IToolable {
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
 		if(world.isBlockIndirectlyGettingPowered(x, y, z)) {
-			this.onBlockDestroyedByPlayer(world, x, y, z, 1);
+			onBlockDestroyedByPlayer(world, x, y, z, 1);
 			world.setBlockToAir(x, y, z);
 		} else {
 			checkAndIgnite(world, x, y, z);
@@ -65,7 +65,7 @@ public abstract class BlockTNTBase extends BlockFlammable implements IToolable {
 		
 		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 			if(world.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) == Blocks.fire) {
-				this.onBlockDestroyedByPlayer(world, x, y, z, 1);
+				onBlockDestroyedByPlayer(world, x, y, z, 1);
 				world.setBlockToAir(x, y, z);
 				return;
 			}
@@ -88,7 +88,7 @@ public abstract class BlockTNTBase extends BlockFlammable implements IToolable {
 
 	@Override
 	public void onBlockDestroyedByPlayer(World world, int x, int y, int z, int meta) {
-		this.prime(world, x, y, z, meta, (EntityLivingBase) null);
+		prime(world, x, y, z, meta, (EntityLivingBase) null);
 	}
 
 	public void prime(World world, int x, int y, int z, int meta, EntityLivingBase living) {
@@ -104,7 +104,7 @@ public abstract class BlockTNTBase extends BlockFlammable implements IToolable {
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
 		if(player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == Items.flint_and_steel) {
-			this.prime(world, x, y, z, 1, player);
+			prime(world, x, y, z, 1, player);
 			world.setBlockToAir(x, y, z);
 			player.getCurrentEquippedItem().damageItem(1, player);
 			return true;
@@ -119,7 +119,7 @@ public abstract class BlockTNTBase extends BlockFlammable implements IToolable {
 			EntityArrow entityarrow = (EntityArrow) entity;
 
 			if(entityarrow.isBurning()) {
-				this.prime(world, x, y, z, 1, entityarrow.shootingEntity instanceof EntityLivingBase ? (EntityLivingBase) entityarrow.shootingEntity : null);
+				prime(world, x, y, z, 1, entityarrow.shootingEntity instanceof EntityLivingBase ? (EntityLivingBase) entityarrow.shootingEntity : null);
 				world.setBlockToAir(x, y, z);
 			}
 		}
@@ -135,9 +135,9 @@ public abstract class BlockTNTBase extends BlockFlammable implements IToolable {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister p_149651_1_) {
-		this.blockIcon = p_149651_1_.registerIcon(this.getTextureName() + "_side");
-		this.topIcon = p_149651_1_.registerIcon(this.getTextureName() + "_top");
-		this.bottomIcon = p_149651_1_.registerIcon(this.getTextureName() + "_bottom");
+		this.blockIcon = p_149651_1_.registerIcon(getTextureName() + "_side");
+		this.topIcon = p_149651_1_.registerIcon(getTextureName() + "_top");
+		this.bottomIcon = p_149651_1_.registerIcon(getTextureName() + "_bottom");
 	}
 	
 	@Override

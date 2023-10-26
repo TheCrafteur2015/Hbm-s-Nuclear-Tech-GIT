@@ -13,11 +13,11 @@ import net.minecraft.util.IIcon;
 
 public class BlockEnumMulti extends BlockMulti {
 
-	public Class<? extends Enum> theEnum;
+	public Class<? extends Enum<?>> theEnum;
 	public boolean multiName;
 	private boolean multiTexture;
 
-	public BlockEnumMulti(Material mat, Class<? extends Enum> theEnum, boolean multiName, boolean multiTexture) {
+	public BlockEnumMulti(Material mat, Class<? extends Enum<?>> theEnum, boolean multiName, boolean multiTexture) {
 		super(mat);
 		this.theEnum = theEnum;
 		this.multiName = multiName;
@@ -30,23 +30,24 @@ public class BlockEnumMulti extends BlockMulti {
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister reg) {
 		
-		if(multiTexture) {
-			Enum[] enums = theEnum.getEnumConstants();
+		if(this.multiTexture) {
+			Enum<?>[] enums = this.theEnum.getEnumConstants();
 			this.icons = new IIcon[enums.length];
 			
-			for(int i = 0; i < icons.length; i++) {
-				Enum num = enums[i];
-				this.icons[i] = reg.registerIcon(this.getTextureName() + "." + num.name().toLowerCase(Locale.US));
+			for(int i = 0; i < this.icons.length; i++) {
+				Enum<?> num = enums[i];
+				this.icons[i] = reg.registerIcon(getTextureName() + "." + num.name().toLowerCase(Locale.US));
 			}
 		} else {
-			this.blockIcon = reg.registerIcon(this.getTextureName());
+			this.blockIcon = reg.registerIcon(getTextureName());
 		}
 	}
 	
+	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 		
 		if(this.multiName) {
-			Enum num = EnumUtil.grabEnumSafely(this.theEnum, stack.getItemDamage());
+			Enum<?> num = EnumUtil.grabEnumSafely(this.theEnum, stack.getItemDamage());
 			return super.getUnlocalizedName() + "." + num.name().toLowerCase(Locale.US);
 		}
 		
@@ -56,7 +57,7 @@ public class BlockEnumMulti extends BlockMulti {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
-		return multiTexture ? this.icons[meta % this.icons.length] : this.blockIcon;
+		return this.multiTexture ? this.icons[meta % this.icons.length] : this.blockIcon;
 	}
 
 	@Override

@@ -37,7 +37,7 @@ public class TileEntityMachineLargeTurbine extends TileEntityMachineBase impleme
 	public long power;
 	public static final long maxPower = 100000000;
 	public int age = 0;
-	public List<IFluidAcceptor> list2 = new ArrayList();
+	public List<IFluidAcceptor> list2 = new ArrayList<>();
 	public FluidTank[] tanks;
 	
 	private boolean shouldTurn;
@@ -48,9 +48,9 @@ public class TileEntityMachineLargeTurbine extends TileEntityMachineBase impleme
 	public TileEntityMachineLargeTurbine() {
 		super(7);
 		
-		tanks = new FluidTank[2];
-		tanks[0] = new FluidTank(Fluids.STEAM, 512000, 0);
-		tanks[1] = new FluidTank(Fluids.SPENTSTEAM, 10240000, 1);
+		this.tanks = new FluidTank[2];
+		this.tanks[0] = new FluidTank(Fluids.STEAM, 512000, 0);
+		this.tanks[1] = new FluidTank(Fluids.SPENTSTEAM, 10240000, 1);
 	}
 
 	@Override
@@ -61,57 +61,57 @@ public class TileEntityMachineLargeTurbine extends TileEntityMachineBase impleme
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			age++;
-			if(age >= 2)
+			this.age++;
+			if(this.age >= 2)
 			{
-				age = 0;
+				this.age = 0;
 			}
 			
-			fillFluidInit(tanks[1].getTankType());
+			fillFluidInit(this.tanks[1].getTankType());
 			
-			ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
-			this.sendPower(worldObj, xCoord + dir.offsetX * -4, yCoord, zCoord + dir.offsetZ * -4, dir.getOpposite());
-			for(DirPos pos : getConPos()) this.trySubscribe(tanks[0].getTankType(), worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
-			for(DirPos pos : getConPos()) this.sendFluid(tanks[1], worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
+			sendPower(this.worldObj, this.xCoord + dir.offsetX * -4, this.yCoord, this.zCoord + dir.offsetZ * -4, dir.getOpposite());
+			for(DirPos pos : getConPos()) this.trySubscribe(this.tanks[0].getTankType(), this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			for(DirPos pos : getConPos()) this.sendFluid(this.tanks[1], this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 
-			tanks[0].setType(0, 1, slots);
-			tanks[0].loadTank(2, 3, slots);
-			power = Library.chargeItemsFromTE(slots, 4, power, maxPower);
+			this.tanks[0].setType(0, 1, this.slots);
+			this.tanks[0].loadTank(2, 3, this.slots);
+			this.power = Library.chargeItemsFromTE(this.slots, 4, this.power, TileEntityMachineLargeTurbine.maxPower);
 			
 			boolean operational = false;
 			
-			FluidType in = tanks[0].getTankType();
+			FluidType in = this.tanks[0].getTankType();
 			boolean valid = false;
 			if(in.hasTrait(FT_Coolable.class)) {
 				FT_Coolable trait = in.getTrait(FT_Coolable.class);
 				double eff = trait.getEfficiency(CoolingType.TURBINE); //100% efficiency
 				if(eff > 0) {
-					tanks[1].setTankType(trait.coolsTo);
-					int inputOps = (int) Math.floor(tanks[0].getFill() / trait.amountReq); //amount of cycles possible with the entire input buffer
-					int outputOps = (tanks[1].getMaxFill() - tanks[1].getFill()) / trait.amountProduced; //amount of cycles possible with the output buffer's remaining space
-					int cap = (int) Math.ceil(tanks[0].getFill() / trait.amountReq / 5F); //amount of cycles by the "at least 20%" rule
+					this.tanks[1].setTankType(trait.coolsTo);
+					int inputOps = (int) Math.floor(this.tanks[0].getFill() / trait.amountReq); //amount of cycles possible with the entire input buffer
+					int outputOps = (this.tanks[1].getMaxFill() - this.tanks[1].getFill()) / trait.amountProduced; //amount of cycles possible with the output buffer's remaining space
+					int cap = (int) Math.ceil(this.tanks[0].getFill() / trait.amountReq / 5F); //amount of cycles by the "at least 20%" rule
 					int ops = Math.min(inputOps, Math.min(outputOps, cap)); //defacto amount of cycles
-					tanks[0].setFill(tanks[0].getFill() - ops * trait.amountReq);
-					tanks[1].setFill(tanks[1].getFill() + ops * trait.amountProduced);
+					this.tanks[0].setFill(this.tanks[0].getFill() - ops * trait.amountReq);
+					this.tanks[1].setFill(this.tanks[1].getFill() + ops * trait.amountProduced);
 					this.power += (ops * trait.heatEnergy * eff);
 					valid = true;
 					operational = ops > 0;
 				}
 			}
-			if(!valid) tanks[1].setTankType(Fluids.NONE);
-			if(power > maxPower) power = maxPower;
+			if(!valid) this.tanks[1].setTankType(Fluids.NONE);
+			if(this.power > TileEntityMachineLargeTurbine.maxPower) this.power = TileEntityMachineLargeTurbine.maxPower;
 			
-			tanks[1].unloadTank(5, 6, slots);
+			this.tanks[1].unloadTank(5, 6, this.slots);
 			
 			for(int i = 0; i < 2; i++)
-				tanks[i].updateTank(xCoord, yCoord, zCoord, worldObj.provider.dimensionId);
+				this.tanks[i].updateTank(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId);
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setLong("power", power);
+			data.setLong("power", this.power);
 			data.setBoolean("operational", operational);
-			this.networkPack(data, 50);
+			networkPack(data, 50);
 		} else {
 			this.lastRotor = this.rotor;
 			this.rotor += this.fanAcceleration;
@@ -121,69 +121,70 @@ public class TileEntityMachineLargeTurbine extends TileEntityMachineBase impleme
 				this.lastRotor -= 360;
 			}
 			
-			if(shouldTurn) {
+			if(this.shouldTurn) {
 
 				this.fanAcceleration = Math.max(0F, Math.min(15F, this.fanAcceleration += 0.1F));
 			}
-			if(!shouldTurn) {
+			if(!this.shouldTurn) {
 				this.fanAcceleration = Math.max(0F, Math.min(15F, this.fanAcceleration -= 0.1F));
 			}
 		}
 	}
 	
 	protected DirPos[] getConPos() {
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 		return new DirPos[] {
-				new DirPos(xCoord + rot.offsetX * 2, yCoord, zCoord + rot.offsetZ * 2, rot),
-				new DirPos(xCoord - rot.offsetX * 2, yCoord, zCoord - rot.offsetZ * 2, rot.getOpposite()),
-				new DirPos(xCoord + dir.offsetX * 2, yCoord, zCoord + dir.offsetZ * 2, dir)
+				new DirPos(this.xCoord + rot.offsetX * 2, this.yCoord, this.zCoord + rot.offsetZ * 2, rot),
+				new DirPos(this.xCoord - rot.offsetX * 2, this.yCoord, this.zCoord - rot.offsetZ * 2, rot.getOpposite()),
+				new DirPos(this.xCoord + dir.offsetX * 2, this.yCoord, this.zCoord + dir.offsetZ * 2, dir)
 		};
 	}
 	
+	@Override
 	public void networkUnpack(NBTTagCompound data) {
 		this.power = data.getLong("power");
 		this.shouldTurn = data.getBoolean("operational");
 	}
 	
 	public long getPowerScaled(int i) {
-		return (power * i) / maxPower;
+		return (this.power * i) / TileEntityMachineLargeTurbine.maxPower;
 	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
-		tanks[0].readFromNBT(nbt, "water");
-		tanks[1].readFromNBT(nbt, "steam");
-		power = nbt.getLong("power");
+		this.tanks[0].readFromNBT(nbt, "water");
+		this.tanks[1].readFromNBT(nbt, "steam");
+		this.power = nbt.getLong("power");
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		tanks[0].writeToNBT(nbt, "water");
-		tanks[1].writeToNBT(nbt, "steam");
-		nbt.setLong("power", power);
+		this.tanks[0].writeToNBT(nbt, "water");
+		this.tanks[1].writeToNBT(nbt, "steam");
+		nbt.setLong("power", this.power);
 	}
 
 	@Override
 	public void fillFluidInit(FluidType type) {
 		
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
 		dir = dir.getRotation(ForgeDirection.UP);
 
-		fillFluid(xCoord + dir.offsetX * 2, yCoord, zCoord + dir.offsetZ * 2, getTact(), type);
-		fillFluid(xCoord + dir.offsetX * -2, yCoord, zCoord + dir.offsetZ * -2, getTact(), type);
+		fillFluid(this.xCoord + dir.offsetX * 2, this.yCoord, this.zCoord + dir.offsetZ * 2, getTact(), type);
+		fillFluid(this.xCoord + dir.offsetX * -2, this.yCoord, this.zCoord + dir.offsetZ * -2, getTact(), type);
 	}
 
 	@Override
 	public void fillFluid(int x, int y, int z, boolean newTact, FluidType type) {
-		Library.transmitFluid(x, y, z, newTact, this, worldObj, type);
+		Library.transmitFluid(x, y, z, newTact, this, this.worldObj, type);
 	}
 	
 	@Override
 	public boolean getTact() {
-		if(age == 0)
+		if(this.age == 0)
 		{
 			return true;
 		}
@@ -193,55 +194,55 @@ public class TileEntityMachineLargeTurbine extends TileEntityMachineBase impleme
 
 	@Override
 	public void setFluidFill(int i, FluidType type) {
-		if(type.name().equals(tanks[0].getTankType().name()))
-			tanks[0].setFill(i);
-		else if(type.name().equals(tanks[1].getTankType().name()))
-			tanks[1].setFill(i);
+		if(type.name().equals(this.tanks[0].getTankType().name()))
+			this.tanks[0].setFill(i);
+		else if(type.name().equals(this.tanks[1].getTankType().name()))
+			this.tanks[1].setFill(i);
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		if(type.name().equals(tanks[0].getTankType().name()))
-			return tanks[0].getFill();
-		else if(type.name().equals(tanks[1].getTankType().name()))
-			return tanks[1].getFill();
+		if(type.name().equals(this.tanks[0].getTankType().name()))
+			return this.tanks[0].getFill();
+		else if(type.name().equals(this.tanks[1].getTankType().name()))
+			return this.tanks[1].getFill();
 		
 		return 0;
 	}
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		if(type.name().equals(tanks[0].getTankType().name()))
-			return tanks[0].getMaxFill();
+		if(type.name().equals(this.tanks[0].getTankType().name()))
+			return this.tanks[0].getMaxFill();
 		
 		return 0;
 	}
 
 	@Override
 	public void setFillForSync(int fill, int index) {
-		if(index < 2 && tanks[index] != null)
-			tanks[index].setFill(fill);
+		if(index < 2 && this.tanks[index] != null)
+			this.tanks[index].setFill(fill);
 	}
 
 	@Override
 	public void setTypeForSync(FluidType type, int index) {
-		if(index < 2 && tanks[index] != null)
-			tanks[index].setTankType(type);
+		if(index < 2 && this.tanks[index] != null)
+			this.tanks[index].setTankType(type);
 	}
 	
 	@Override
 	public List<IFluidAcceptor> getFluidList(FluidType type) {
-		return list2;
+		return this.list2;
 	}
 	
 	@Override
 	public void clearFluidList(FluidType type) {
-		list2.clear();
+		this.list2.clear();
 	}
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 
 	@Override
@@ -251,7 +252,7 @@ public class TileEntityMachineLargeTurbine extends TileEntityMachineBase impleme
 
 	@Override
 	public long getMaxPower() {
-		return this.maxPower;
+		return TileEntityMachineLargeTurbine.maxPower;
 	}
 	
 	@Override
@@ -267,17 +268,17 @@ public class TileEntityMachineLargeTurbine extends TileEntityMachineBase impleme
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return tanks;
+		return this.tanks;
 	}
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return new FluidTank[] {tanks[1]};
+		return new FluidTank[] {this.tanks[1]};
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] {tanks[0]};
+		return new FluidTank[] {this.tanks[0]};
 	}
 
 	@Override

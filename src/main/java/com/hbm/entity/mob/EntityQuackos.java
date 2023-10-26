@@ -23,12 +23,13 @@ public class EntityQuackos extends EntityDuck implements IBossDisplayData {
 	 */
 	public EntityQuackos(World world) {
 		super(world);
-		this.setSize(0.3F * 25, 0.7F * 25);
+		setSize(0.3F * 25, 0.7F * 25);
 	}
 
 	/**
 	 * BOW
 	 */
+	@Override
 	protected String getLivingSound() {
 		return "hbm:entity.megaquacc";
 	}
@@ -36,6 +37,7 @@ public class EntityQuackos extends EntityDuck implements IBossDisplayData {
 	/**
 	 * BOW
 	 */
+	@Override
 	protected String getHurtSound() {
 		return "hbm:entity.megaquacc";
 	}
@@ -43,6 +45,7 @@ public class EntityQuackos extends EntityDuck implements IBossDisplayData {
 	/**
 	 * BOW
 	 */
+	@Override
 	protected String getDeathSound() {
 		return "hbm:entity.megaquacc";
 	}
@@ -50,6 +53,7 @@ public class EntityQuackos extends EntityDuck implements IBossDisplayData {
 	/**
 	 * BOW
 	 */
+	@Override
 	public EntityQuackos createChild(EntityAgeable entity) {
 		return new EntityQuackos(this.worldObj);
 	}
@@ -57,6 +61,7 @@ public class EntityQuackos extends EntityDuck implements IBossDisplayData {
 	/**
 	 * BOW
 	 */
+	@Override
 	public boolean isEntityInvulnerable() {
 		return true;
 	}
@@ -64,21 +69,24 @@ public class EntityQuackos extends EntityDuck implements IBossDisplayData {
 	/**
 	 * BOW
 	 */
+	@Override
 	public void setDead() {
-		if(worldObj.isRemote)
+		if(this.worldObj.isRemote)
 			super.setDead();
 	} //prank'd
 
 	/**
 	 * BOW
 	 */
+	@Override
 	public void setHealth(float f) {
-		super.setHealth(this.getMaxHealth());
+		super.setHealth(getMaxHealth());
 	} //prank'd
 
 	/**
 	 * BOW
 	 */
+	@Override
 	public boolean interact(EntityPlayer player) {
 
 		if(super.interact(player)) {
@@ -100,12 +108,12 @@ public class EntityQuackos extends EntityDuck implements IBossDisplayData {
 	 */
 	public void despawn() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			for(int i = 0; i < 150; i++) {
 				
-				EntityBSmokeFX fx = new EntityBSmokeFX(worldObj);
-				fx.setPositionAndRotation(posX + rand.nextDouble() * 20 - 10, posY + rand.nextDouble() * 25, posZ + rand.nextDouble() * 20 - 10, 0, 0);
-				worldObj.spawnEntityInWorld(fx);
+				EntityBSmokeFX fx = new EntityBSmokeFX(this.worldObj);
+				fx.setPositionAndRotation(this.posX + this.rand.nextDouble() * 20 - 10, this.posY + this.rand.nextDouble() * 25, this.posZ + this.rand.nextDouble() * 20 - 10, 0, 0);
+				this.worldObj.spawnEntityInWorld(fx);
 			}
 			
 			dropItem(ModItems.spawn_duck, 3);
@@ -116,6 +124,7 @@ public class EntityQuackos extends EntityDuck implements IBossDisplayData {
 	/**
 	 * BOW
 	 */
+	@Override
 	public void updateRiderPosition() {
 
 		super.updateRiderPosition();
@@ -133,6 +142,7 @@ public class EntityQuackos extends EntityDuck implements IBossDisplayData {
 	/**
 	 * BOW
 	 */
+	@Override
 	@SideOnly(Side.CLIENT)
 	public float getShadowSize() {
 		return 7.5F;
@@ -145,8 +155,8 @@ public class EntityQuackos extends EntityDuck implements IBossDisplayData {
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
 		
-		if(!worldObj.isRemote && this.posY < -30) {
-			this.setPosition(this.posX + rand.nextGaussian() * 30, 256, this.posZ + rand.nextGaussian() * 30);
+		if(!this.worldObj.isRemote && this.posY < -30) {
+			setPosition(this.posX + this.rand.nextGaussian() * 30, 256, this.posZ + this.rand.nextGaussian() * 30);
 		}
 	}
 

@@ -70,10 +70,12 @@ public class RenderFurnaceSteel extends TileEntitySpecialRenderer implements IIt
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase( ) {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(0, -1.5, 0);
 				GL11.glScaled(3.25, 3.25, 3.25);
 			}
+			@Override
 			public void renderCommon() {
 				bindTexture(ResourceManager.furnace_steel_tex);
 				ResourceManager.furnace_steel.renderAll();

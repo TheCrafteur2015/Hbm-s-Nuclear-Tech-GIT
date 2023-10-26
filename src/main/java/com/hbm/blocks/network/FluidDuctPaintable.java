@@ -159,7 +159,7 @@ public class FluidDuctPaintable extends FluidDuctBase implements IToolable, IBlo
 		
 		TileEntityPipeBaseNT duct = (TileEntityPipeBaseNT) te;
 		
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		text.add("&[" + duct.getType().getColor() + "&]" + duct.getType().getLocalizedName());
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}
@@ -175,10 +175,10 @@ public class FluidDuctPaintable extends FluidDuctBase implements IToolable, IBlo
 		public void updateEntity() {
 			super.updateEntity();
 
-			if(worldObj.isRemote && (lastBlock != block || lastMeta != meta)) {
-				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-				lastBlock = block;
-				lastMeta = meta;
+			if(this.worldObj.isRemote && (this.lastBlock != this.block || this.lastMeta != this.meta)) {
+				this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+				this.lastBlock = this.block;
+				this.lastMeta = this.meta;
 			}
 		}
 
@@ -193,8 +193,8 @@ public class FluidDuctPaintable extends FluidDuctBase implements IToolable, IBlo
 		@Override
 		public void writeToNBT(NBTTagCompound nbt) {
 			super.writeToNBT(nbt);
-			if(block != null) nbt.setInteger("block", Block.getIdFromBlock(block));
-			nbt.setInteger("meta", meta);
+			if(this.block != null) nbt.setInteger("block", Block.getIdFromBlock(this.block));
+			nbt.setInteger("meta", this.meta);
 		}
 	}
 }

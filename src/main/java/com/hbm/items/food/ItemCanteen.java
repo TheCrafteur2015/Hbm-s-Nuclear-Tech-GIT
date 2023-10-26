@@ -21,7 +21,7 @@ public class ItemCanteen extends Item {
 
 	public ItemCanteen(int cooldown) {
 
-		this.setMaxDamage(cooldown);
+		setMaxDamage(cooldown);
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class ItemCanteen extends Item {
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
 		if (stack.getItemDamage() == 0 && !VersatileConfig.hasPotionSickness(player))
-			player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
+			player.setItemInUse(stack, getMaxItemUseDuration(stack));
 
 		return stack;
 	}

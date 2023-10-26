@@ -27,7 +27,7 @@ public class ItemGlitch extends Item implements IBatteryItem {
     public ItemGlitch()
     {
         this.maxStackSize = 1;
-        this.setMaxDamage(1);
+        setMaxDamage(1);
     }
 
 	
@@ -37,7 +37,7 @@ public class ItemGlitch extends Item implements IBatteryItem {
 		stack.damageItem(5, player);
 		
 		if(!world.isRemote)
-			switch(itemRand.nextInt(31)) {
+			switch(Item.itemRand.nextInt(31)) {
 			case 0:
 				player.addChatMessage(new ChatComponentText("Sorry nothing."));
 				break;
@@ -54,15 +54,15 @@ public class ItemGlitch extends Item implements IBatteryItem {
 				player.attackEntityFrom(ModDamageSource.blackhole, 1000);
 				break;
 			case 5:
-				player.inventory.addItemStackToInventory(new ItemStack(ModBlocks.block_meteor_treasure.getItemDropped(0, itemRand, 0)));
+				player.inventory.addItemStackToInventory(new ItemStack(ModBlocks.block_meteor_treasure.getItemDropped(0, Item.itemRand, 0)));
 				break;
 			case 6:
 				for(int i = 0; i < 3; i++)
-					player.inventory.addItemStackToInventory(new ItemStack(ModBlocks.block_meteor_treasure.getItemDropped(0, itemRand, 0)));
+					player.inventory.addItemStackToInventory(new ItemStack(ModBlocks.block_meteor_treasure.getItemDropped(0, Item.itemRand, 0)));
 				break;
 			case 7:
 				for(int i = 0; i < 10; i++)
-					player.inventory.addItemStackToInventory(new ItemStack(ModBlocks.block_meteor_treasure.getItemDropped(0, itemRand, 0)));
+					player.inventory.addItemStackToInventory(new ItemStack(ModBlocks.block_meteor_treasure.getItemDropped(0, Item.itemRand, 0)));
 				break;
 			case 8:
 				player.inventory.addItemStackToInventory(new ItemStack(ModItems.ammo_container, 10));
@@ -84,9 +84,9 @@ public class ItemGlitch extends Item implements IBatteryItem {
 			case 12:
 				for(int i = 0; i < 10; i++) {
 					EntityBoxcar pippo = new EntityBoxcar(world);
-					pippo.posX = player.posX + itemRand.nextGaussian() * 25;
+					pippo.posX = player.posX + Item.itemRand.nextGaussian() * 25;
 					pippo.posY = player.posY + 50;
-					pippo.posZ = player.posZ + itemRand.nextGaussian() * 25;
+					pippo.posZ = player.posZ + Item.itemRand.nextGaussian() * 25;
 					world.spawnEntityInWorld(pippo);
 				}
 				break;

@@ -28,7 +28,7 @@ public class RenderPress extends TileEntitySpecialRenderer {
 			GL11.glEnable(GL11.GL_LIGHTING);
 			GL11.glRotatef(180, 0F, 1F, 0F);
 			
-			this.bindTexture(ResourceManager.press_body_tex);
+			bindTexture(ResourceManager.press_body_tex);
 			
 			ResourceManager.press_body.renderAll();
 				
@@ -44,10 +44,10 @@ public class RenderPress extends TileEntitySpecialRenderer {
 			GL11.glScalef(0.99F, 1, 0.99F);
 
 			TileEntityMachinePress press = (TileEntityMachinePress)tileEntity;
-			double p = (press.lastPress + (press.renderPress - press.lastPress) * f) /(double) press.maxPress;
+			double p = (press.lastPress + (press.renderPress - press.lastPress) * f) /(double) TileEntityMachinePress.maxPress;
 			GL11.glTranslated(0, MathHelper.clamp_double((1D - p), 0D, 1D) * 0.875D, 0);
 		
-			this.bindTexture(ResourceManager.press_head_tex);
+			bindTexture(ResourceManager.press_head_tex);
 		
 			ResourceManager.press_head.renderAll();
 			
@@ -57,8 +57,8 @@ public class RenderPress extends TileEntitySpecialRenderer {
 	}
 
 	public void renderTileEntityAt3(TileEntity tileEntity, double x, double y, double z, float f) {
-		itemRenderer = new RenderDecoItem(this);
-		itemRenderer.setRenderManager(renderManager);
+		this.itemRenderer = new RenderDecoItem(this);
+		this.itemRenderer.setRenderManager(this.renderManager);
 		GL11.glPushMatrix();
 			GL11.glTranslated(x + 0.5D, y + 1, z - 0.5);
 			GL11.glEnable(GL11.GL_LIGHTING);

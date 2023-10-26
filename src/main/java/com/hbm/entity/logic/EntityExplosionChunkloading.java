@@ -20,18 +20,18 @@ public abstract class EntityExplosionChunkloading extends Entity implements IChu
 
 	@Override
 	protected void entityInit() {
-		init(ForgeChunkManager.requestTicket(MainRegistry.instance, worldObj, Type.ENTITY));
+		init(ForgeChunkManager.requestTicket(MainRegistry.instance, this.worldObj, Type.ENTITY));
 	}
 
 	@Override
 	public void init(Ticket ticket) {
-		if(!worldObj.isRemote && ticket != null) {
-			if(loaderTicket == null) {
-				loaderTicket = ticket;
-				loaderTicket.bindEntity(this);
-				loaderTicket.getModData();
+		if(!this.worldObj.isRemote && ticket != null) {
+			if(this.loaderTicket == null) {
+				this.loaderTicket = ticket;
+				this.loaderTicket.bindEntity(this);
+				this.loaderTicket.getModData();
 			}
-			ForgeChunkManager.forceChunk(loaderTicket, new ChunkCoordIntPair(chunkCoordX, chunkCoordZ));
+			ForgeChunkManager.forceChunk(this.loaderTicket, new ChunkCoordIntPair(this.chunkCoordX, this.chunkCoordZ));
 		}
 	}
 
@@ -39,13 +39,13 @@ public abstract class EntityExplosionChunkloading extends Entity implements IChu
 		
 		if(this.loadedChunk == null) {
 			this.loadedChunk = new ChunkCoordIntPair(x, z);
-			ForgeChunkManager.forceChunk(loaderTicket, loadedChunk);
+			ForgeChunkManager.forceChunk(this.loaderTicket, this.loadedChunk);
 		}
 	}
 	
 	public void clearChunkLoader() {
-		if(!worldObj.isRemote && loaderTicket != null && loadedChunk != null) {
-			ForgeChunkManager.unforceChunk(loaderTicket, loadedChunk);
+		if(!this.worldObj.isRemote && this.loaderTicket != null && this.loadedChunk != null) {
+			ForgeChunkManager.unforceChunk(this.loaderTicket, this.loadedChunk);
 		}
 	}
 }

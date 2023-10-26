@@ -23,8 +23,8 @@ public class BlockMush extends Block implements IGrowable, IPlantable {
 	public BlockMush(Material p_i45394_1_) {
 		super(p_i45394_1_);
 		float f = 0.2F;
-		this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, f * 2.0F, 0.5F + f);
-		this.setTickRandomly(true);
+		setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, f * 2.0F, 0.5F + f);
+		setTickRandomly(true);
 	}
 
 	protected boolean canPlaceBlockOn(Block block) {
@@ -33,7 +33,7 @@ public class BlockMush extends Block implements IGrowable, IPlantable {
 
 	@Override
 	public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-		return super.canPlaceBlockAt(world, x, y, z) && this.canBlockStay(world, x, y, z);
+		return super.canPlaceBlockAt(world, x, y, z) && canBlockStay(world, x, y, z);
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class BlockMush extends Block implements IGrowable, IPlantable {
 	
 	public boolean canMushGrowHere(World world, int x, int y, int z) {
 		Block block = world.getBlock(x, y - 1, z);
-		return canGrowOn.contains(block);
+		return BlockMush.canGrowOn.contains(block);
 	}
 
 	public boolean growHuge(World world, int x, int y, int z, Random rand) {
@@ -75,7 +75,7 @@ public class BlockMush extends Block implements IGrowable, IPlantable {
 	 */
 	@Override
 	public boolean func_149851_a(World world, int x, int y, int z, boolean b) {
-		return this.canMushGrowHere(world, x, y, z);
+		return canMushGrowHere(world, x, y, z);
 	}
 
 	/**
@@ -91,7 +91,7 @@ public class BlockMush extends Block implements IGrowable, IPlantable {
 	 */
 	@Override
 	public void func_149853_b(World world, Random rand, int x, int y, int z) {
-		this.growHuge(world, x, y, z, rand);
+		growHuge(world, x, y, z, rand);
 	}
 
 	@Override
@@ -129,7 +129,7 @@ public class BlockMush extends Block implements IGrowable, IPlantable {
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block b) {
 		super.onNeighborBlockChange(world, x, y, z, b);
-		this.checkAndDropBlock(world, x, y, z);
+		checkAndDropBlock(world, x, y, z);
 	}
 
 	/**
@@ -137,7 +137,7 @@ public class BlockMush extends Block implements IGrowable, IPlantable {
 	 */
 	protected void checkAndDropBlock(World world, int x, int y, int z) {
 		
-		if(!this.canBlockStay(world, x, y, z)) {
+		if(!canBlockStay(world, x, y, z)) {
 			this.dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
 			world.setBlockToAir(x, y, z);
 		}
@@ -145,7 +145,7 @@ public class BlockMush extends Block implements IGrowable, IPlantable {
 
 	@Override
 	public void updateTick(World world, int x, int y, int z, Random rand) {
-		this.checkAndDropBlock(world, x, y, z);
+		checkAndDropBlock(world, x, y, z);
 		
 		if(GeneralConfig.enableMycelium && world.getBlock(x, y - 1, z) == ModBlocks.waste_earth && rand.nextInt(5) == 0) {
 			world.setBlock(x, y - 1, z, ModBlocks.waste_mycelium);
@@ -177,7 +177,7 @@ public class BlockMush extends Block implements IGrowable, IPlantable {
 			iz = y + rand.nextInt(5) - 2;
 
 			for(int l1 = 0; l1 < 4; ++l1) {
-				if(world.isAirBlock(ix, iy, iz) && this.canMushGrowHere(world, ix, iy, iz)) {
+				if(world.isAirBlock(ix, iy, iz) && canMushGrowHere(world, ix, iy, iz)) {
 					x = ix;
 					z = iy;
 					y = iz;
@@ -188,7 +188,7 @@ public class BlockMush extends Block implements IGrowable, IPlantable {
 				iz = y + rand.nextInt(5) - 2;
 			}
 
-			if(world.isAirBlock(ix, iy, iz) && this.canMushGrowHere(world, ix, iy, iz)) {
+			if(world.isAirBlock(ix, iy, iz) && canMushGrowHere(world, ix, iy, iz)) {
 				world.setBlock(ix, iy, iz, this, 0, 2);
 			}
 		}

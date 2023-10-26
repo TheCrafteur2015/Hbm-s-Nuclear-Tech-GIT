@@ -38,11 +38,12 @@ public class TileEntityMachineTeleporter extends TileEntityLoadedBase implements
 	public static final int maxPower = 1_500_000;
 	public static final int consumption = 1_000_000;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void updateEntity() {
 		
 		if(!this.worldObj.isRemote) {
-			this.updateStandardConnections(worldObj, xCoord, yCoord, zCoord);
+			this.updateStandardConnections(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 			
 			if(this.targetY != -1) {
 				List<Entity> entities = this.worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(this.xCoord + 0.25, this.yCoord, this.zCoord + 0.25, this.xCoord + 0.75, this.yCoord + 2, this.zCoord + 0.75));
@@ -55,17 +56,17 @@ public class TileEntityMachineTeleporter extends TileEntityLoadedBase implements
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setLong("power", power);
-			data.setIntArray("target", new int[] {targetX, targetY, targetZ, targetDim});
+			data.setLong("power", this.power);
+			data.setIntArray("target", new int[] {this.targetX, this.targetY, this.targetZ, this.targetDim});
 			INBTPacketReceiver.networkPack(this, data, 15);
 			
 		} else {
 
-			if(this.targetY != -1 && power >= consumption) {
-				double x = xCoord + 0.5 + worldObj.rand.nextGaussian() * 0.25D;
-				double y = yCoord + 1 + worldObj.rand.nextDouble() * 2D;
-				double z = zCoord + 0.5 + worldObj.rand.nextGaussian() * 0.25D;
-				worldObj.spawnParticle("reddust", x, y, z, 0.4F, 0.8F, 1F);
+			if(this.targetY != -1 && this.power >= TileEntityMachineTeleporter.consumption) {
+				double x = this.xCoord + 0.5 + this.worldObj.rand.nextGaussian() * 0.25D;
+				double y = this.yCoord + 1 + this.worldObj.rand.nextDouble() * 2D;
+				double z = this.zCoord + 0.5 + this.worldObj.rand.nextGaussian() * 0.25D;
+				this.worldObj.spawnParticle("reddust", x, y, z, 0.4F, 0.8F, 1F);
 			}
 		}
 	}
@@ -84,29 +85,29 @@ public class TileEntityMachineTeleporter extends TileEntityLoadedBase implements
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 
-		power = nbt.getLong("power");
-		targetX = nbt.getInteger("x1");
-		targetY = nbt.getInteger("y1");
-		targetZ = nbt.getInteger("z1");
-		targetDim = nbt.getInteger("dim");
+		this.power = nbt.getLong("power");
+		this.targetX = nbt.getInteger("x1");
+		this.targetY = nbt.getInteger("y1");
+		this.targetZ = nbt.getInteger("z1");
+		this.targetDim = nbt.getInteger("dim");
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		
-		nbt.setLong("power", power);
-		nbt.setInteger("x1", targetX);
-		nbt.setInteger("y1", targetY);
-		nbt.setInteger("z1", targetZ);
-		nbt.setInteger("dim", targetDim);
+		nbt.setLong("power", this.power);
+		nbt.setInteger("x1", this.targetX);
+		nbt.setInteger("y1", this.targetY);
+		nbt.setInteger("z1", this.targetZ);
+		nbt.setInteger("dim", this.targetDim);
 	}
 
 	public void teleport(Entity entity) {
 		
-		if(this.power < consumption) return;
+		if(this.power < TileEntityMachineTeleporter.consumption) return;
 		
-		worldObj.playSoundEffect(xCoord + 0.5, yCoord + 1.5, zCoord + 0.5, "mob.endermen.portal", 1.0F, 1.0F);
+		this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 1.5, this.zCoord + 0.5, "mob.endermen.portal", 1.0F, 1.0F);
 		
 		if((entity instanceof EntityPlayerMP)) {
 			
@@ -114,7 +115,7 @@ public class TileEntityMachineTeleporter extends TileEntityLoadedBase implements
 			if(entity.dimension == this.targetDim) {
 				player.setPositionAndUpdate(this.targetX + 0.5D, this.targetY + 1.5D + entity.getYOffset(), this.targetZ + 0.5D);
 			} else {
-				teleportPlayerInterdimensionally(player, this.targetX + 0.5D, this.targetY + 1.5D + entity.getYOffset(), this.targetZ + 0.5D, this.targetDim);
+				TileEntityMachineTeleporter.teleportPlayerInterdimensionally(player, this.targetX + 0.5D, this.targetY + 1.5D + entity.getYOffset(), this.targetZ + 0.5D, this.targetDim);
 			}
 			
 		} else {
@@ -123,7 +124,7 @@ public class TileEntityMachineTeleporter extends TileEntityLoadedBase implements
 				entity.setPositionAndRotation(this.targetX + 0.5D, this.targetY + 1.5D + entity.getYOffset(), this.targetZ + 0.5D, entity.rotationYaw, entity.rotationPitch);
 				
 				try {
-					EntityTracker entitytracker = ((WorldServer)worldObj).getEntityTracker();
+					EntityTracker entitytracker = ((WorldServer)this.worldObj).getEntityTracker();
 					IntHashMap map = ReflectionHelper.getPrivateValue(EntityTracker.class, entitytracker, "trackedEntityIDs", "field_72794_c");
 					EntityTrackerEntry entry = (EntityTrackerEntry) map.lookup(entity.getEntityId());
 					int yawByte = MathHelper.floor_float(entity.rotationYaw * 256.0F / 360.0F);
@@ -134,14 +135,14 @@ public class TileEntityMachineTeleporter extends TileEntityLoadedBase implements
 					entry.func_151259_a(new S18PacketEntityTeleport(entity.getEntityId(), x32, y32, z32, (byte)yawByte, (byte)pitchByte));
 				} catch(Exception ex) { }
 			} else {
-				teleportEntityInterdimensionally(entity, this.targetX + 0.5D, this.targetY + 1.5D + entity.getYOffset(), this.targetZ + 0.5D, this.targetDim);
+				TileEntityMachineTeleporter.teleportEntityInterdimensionally(entity, this.targetX + 0.5D, this.targetY + 1.5D + entity.getYOffset(), this.targetZ + 0.5D, this.targetDim);
 			}
 		}
 		
-		worldObj.playSoundEffect(entity.posX, entity.posY, entity.posZ, "mob.endermen.portal", 1.0F, 1.0F);
+		this.worldObj.playSoundEffect(entity.posX, entity.posY, entity.posZ, "mob.endermen.portal", 1.0F, 1.0F);
 		
-		this.power -= consumption;
-		this.markDirty();
+		this.power -= TileEntityMachineTeleporter.consumption;
+		markDirty();
 	}
 	
 	/** Teleports a player to a different dimension, gracefully copied from ServerConfigurationManager */
@@ -215,16 +216,16 @@ public class TileEntityMachineTeleporter extends TileEntityLoadedBase implements
 
 	@Override
 	public void setPower(long i) {
-		power = i;
+		this.power = i;
 	}
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 
 	@Override
 	public long getMaxPower() {
-		return maxPower;
+		return TileEntityMachineTeleporter.maxPower;
 	}
 }

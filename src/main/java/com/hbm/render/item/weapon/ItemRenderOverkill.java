@@ -38,16 +38,16 @@ public class ItemRenderOverkill implements IItemRenderer {
 	protected ModelFolly folly;
 
 	public ItemRenderOverkill() {
-		powerJack = new ModelJack();
-		sparkPlug = new ModelSpark();
-		hppLaserjet = new ModelHP();
-		euthanasia = new ModelEuthanasia();
-		defab = new ModelDefabricator();
-		dasher = new ModelDash();
-		rgottp = new ModelTwiGun();
-		pip = new ModelPip();
-		lacunae = new ModelLacunae();
-		folly = new ModelFolly();
+		this.powerJack = new ModelJack();
+		this.sparkPlug = new ModelSpark();
+		this.hppLaserjet = new ModelHP();
+		this.euthanasia = new ModelEuthanasia();
+		this.defab = new ModelDefabricator();
+		this.dasher = new ModelDash();
+		this.rgottp = new ModelTwiGun();
+		this.pip = new ModelPip();
+		this.lacunae = new ModelLacunae();
+		this.folly = new ModelFolly();
 	}
 
 	@Override
@@ -148,35 +148,35 @@ public class ItemRenderOverkill implements IItemRenderer {
 				}
 				
 				if(item.getItem() == ModItems.gun_jack)
-					powerJack.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.powerJack.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item.getItem() == ModItems.gun_spark)
-					sparkPlug.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.sparkPlug.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item.getItem() == ModItems.gun_hp)
-					hppLaserjet.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.hppLaserjet.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item.getItem() == ModItems.gun_euthanasia)
-					euthanasia.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.euthanasia.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item.getItem() == ModItems.gun_defabricator)
-					defab.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.defab.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item.getItem() == ModItems.gun_dash)
-					dasher.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.dasher.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item.getItem() == ModItems.gun_twigun)
-					rgottp.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.rgottp.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item.getItem() == ModItems.gun_revolver_pip ||
 						item.getItem() == ModItems.gun_revolver_nopip ||
 						item.getItem() == ModItems.gun_revolver_blackjack ||
 						item.getItem() == ModItems.gun_revolver_silver ||
 						item.getItem() == ModItems.gun_revolver_red)
-					pip.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.pip.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				
 				if(item.getItem() == ModItems.gun_lacunae ||
 						item.getItem() == ModItems.gun_minigun ||
 						item.getItem() == ModItems.gun_avenger)
-					lacunae.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, ItemGunBase.readNBT(item, "rot"));
+					this.lacunae.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, ItemGunBase.readNBT(item, "rot"));
 				
 				if(item.getItem() == ModItems.gun_folly) {
 					int state = GunFolly.getState(item);
 					int time = GunFolly.getTimer(item);
-					folly.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, state, time);
+					this.folly.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, state, time);
 				}
 				
 			GL11.glPopMatrix();
@@ -254,35 +254,35 @@ public class ItemRenderOverkill implements IItemRenderer {
 			}
 			
 			if(item.getItem() == ModItems.gun_jack)
-				powerJack.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.powerJack.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			if(item.getItem() == ModItems.gun_spark)
-				sparkPlug.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.sparkPlug.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			if(item.getItem() == ModItems.gun_hp)
-				hppLaserjet.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.hppLaserjet.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			if(item.getItem() == ModItems.gun_euthanasia)
-				euthanasia.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.euthanasia.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			if(item.getItem() == ModItems.gun_defabricator)
-				defab.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.defab.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			if(item.getItem() == ModItems.gun_dash)
-				dasher.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.dasher.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			if(item.getItem() == ModItems.gun_twigun)
-				rgottp.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.rgottp.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			if(item.getItem() == ModItems.gun_revolver_pip ||
 					item.getItem() == ModItems.gun_revolver_nopip ||
 					item.getItem() == ModItems.gun_revolver_blackjack ||
 					item.getItem() == ModItems.gun_revolver_silver ||
 					item.getItem() == ModItems.gun_revolver_red)
-				pip.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.pip.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			
 			if(item.getItem() == ModItems.gun_lacunae ||
 					item.getItem() == ModItems.gun_minigun ||
 					item.getItem() == ModItems.gun_avenger)
-				lacunae.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, f);
+				this.lacunae.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, f);
 			
 			if(item.getItem() == ModItems.gun_folly) {
 				int state = GunFolly.getState(item);
 				int time = GunFolly.getTimer(item);
-				folly.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, state, time);
+				this.folly.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, state, time);
 			}
 			GL11.glPopMatrix();
 			break;
@@ -343,35 +343,35 @@ public class ItemRenderOverkill implements IItemRenderer {
 			}
 			
 			if(item.getItem() == ModItems.gun_jack)
-				powerJack.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.powerJack.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			if(item.getItem() == ModItems.gun_spark)
-				sparkPlug.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.sparkPlug.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			if(item.getItem() == ModItems.gun_hp)
-				hppLaserjet.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.hppLaserjet.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			if(item.getItem() == ModItems.gun_euthanasia)
-				euthanasia.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.euthanasia.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			if(item.getItem() == ModItems.gun_defabricator)
-				defab.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.defab.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			if(item.getItem() == ModItems.gun_dash)
-				dasher.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.dasher.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			if(item.getItem() == ModItems.gun_twigun)
-				rgottp.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.rgottp.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			if(item.getItem() == ModItems.gun_revolver_pip ||
 					item.getItem() == ModItems.gun_revolver_nopip ||
 					item.getItem() == ModItems.gun_revolver_blackjack ||
 					item.getItem() == ModItems.gun_revolver_silver ||
 					item.getItem() == ModItems.gun_revolver_red)
-				pip.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.pip.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			
 			if(item.getItem() == ModItems.gun_lacunae ||
 					item.getItem() == ModItems.gun_minigun ||
 					item.getItem() == ModItems.gun_avenger)
-				lacunae.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, f);
+				this.lacunae.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, f);
 			
 			if(item.getItem() == ModItems.gun_folly) {
 				int state = GunFolly.getState(item);
 				int time = GunFolly.getTimer(item);
-				folly.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, state, time);
+				this.folly.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, state, time);
 			}
 			GL11.glPopMatrix();
 			break;

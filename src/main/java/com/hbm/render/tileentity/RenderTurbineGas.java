@@ -48,10 +48,12 @@ public class RenderTurbineGas extends TileEntitySpecialRenderer implements IItem
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase() {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(0, -1, 1.5);
 				GL11.glScaled(2.5, 2.5, 2.5);
 			}
+			@Override
 			public void renderCommon() {
 				GL11.glDisable(GL11.GL_CULL_FACE);
 				GL11.glScaled(0.75, 0.75, 0.75);

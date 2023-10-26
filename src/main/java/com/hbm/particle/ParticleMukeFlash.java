@@ -31,40 +31,42 @@ public class ParticleMukeFlash extends EntityFX {
 		this.bf = bf;
 	}
 
+	@Override
 	public int getFXLayer() {
 		return 3;
 	}
 	
-    public void onUpdate() {
+    @Override
+	public void onUpdate() {
     	super.onUpdate();
     	
     	if(this.particleAge == 15) {
     		
     		//Stem
     		for(double d = 0.0D; d <= 1.8D; d += 0.1) {
-	    		ParticleMukeCloud cloud = getCloud(theRenderEngine, worldObj, posX, posY, posZ, rand.nextGaussian() * 0.05, d + rand.nextGaussian() * 0.02, rand.nextGaussian() * 0.05);
+	    		ParticleMukeCloud cloud = getCloud(this.theRenderEngine, this.worldObj, this.posX, this.posY, this.posZ, this.rand.nextGaussian() * 0.05, d + this.rand.nextGaussian() * 0.02, this.rand.nextGaussian() * 0.05);
 	    		Minecraft.getMinecraft().effectRenderer.addEffect(cloud);
     		}
     		
     		//Ground
     		for(int i = 0; i < 100; i++) {
-	    		ParticleMukeCloud cloud = getCloud(theRenderEngine, worldObj, posX, posY + 0.5, posZ, rand.nextGaussian() * 0.5, rand.nextInt(5) == 0 ? 0.02 : 0, rand.nextGaussian() * 0.5);
+	    		ParticleMukeCloud cloud = getCloud(this.theRenderEngine, this.worldObj, this.posX, this.posY + 0.5, this.posZ, this.rand.nextGaussian() * 0.5, this.rand.nextInt(5) == 0 ? 0.02 : 0, this.rand.nextGaussian() * 0.5);
 	    		Minecraft.getMinecraft().effectRenderer.addEffect(cloud);
     		}
     		
     		//Mush
     		for(int i = 0; i < 75; i++) {
-    			double x = rand.nextGaussian() * 0.5;
-    			double z = rand.nextGaussian() * 0.5;
+    			double x = this.rand.nextGaussian() * 0.5;
+    			double z = this.rand.nextGaussian() * 0.5;
     			
     			if(x * x + z * z > 1.5) {
     				x *= 0.5;
     				z *= 0.5;
     			}
     			
-    			double y = 1.8 + (rand.nextDouble() * 3 - 1.5) * (0.75 - (x * x + z * z)) * 0.5;
+    			double y = 1.8 + (this.rand.nextDouble() * 3 - 1.5) * (0.75 - (x * x + z * z)) * 0.5;
     			
-	    		ParticleMukeCloud cloud = getCloud(theRenderEngine, worldObj, posX, posY, posZ, x, y + rand.nextGaussian() * 0.02, z);
+	    		ParticleMukeCloud cloud = getCloud(this.theRenderEngine, this.worldObj, this.posX, this.posY, this.posZ, x, y + this.rand.nextGaussian() * 0.02, z);
 	    		Minecraft.getMinecraft().effectRenderer.addEffect(cloud);
     		}
     	}
@@ -73,15 +75,16 @@ public class ParticleMukeFlash extends EntityFX {
     private ParticleMukeCloud getCloud(TextureManager texman, World world, double x, double y, double z, double mx, double my, double mz) {
     	
     	if(this.bf) {
-    		return new ParticleMukeCloudBF(theRenderEngine, world, x, y, z, mx, my, mz);
+    		return new ParticleMukeCloudBF(this.theRenderEngine, world, x, y, z, mx, my, mz);
     	} else {
-    		return new ParticleMukeCloud(theRenderEngine, world, x, y, z, mx, my, mz);
+    		return new ParticleMukeCloud(this.theRenderEngine, world, x, y, z, mx, my, mz);
     	}
     }
 
+	@Override
 	public void renderParticle(Tessellator tess, float interp, float x, float y, float z, float tx, float tz) {
 		
-		this.theRenderEngine.bindTexture(texture);
+		this.theRenderEngine.bindTexture(ParticleMukeFlash.texture);
 		
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glDisable(GL11.GL_LIGHTING);
@@ -101,9 +104,9 @@ public class ParticleMukeFlash extends EntityFX {
 		
 		tess.setColorRGBA_F(1.0F, 0.9F, 0.75F, this.particleAlpha * 0.5F);
 
-		float dX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) interp - interpPosX);
-		float dY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) interp - interpPosY);
-		float dZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) interp - interpPosZ);
+		float dX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) interp - EntityFX.interpPosX);
+		float dY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) interp - EntityFX.interpPosY);
+		float dZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) interp - EntityFX.interpPosZ);
 		
 		Random rand = new Random();
 

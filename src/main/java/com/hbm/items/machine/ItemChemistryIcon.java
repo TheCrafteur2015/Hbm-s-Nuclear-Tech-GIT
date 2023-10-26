@@ -21,10 +21,11 @@ public class ItemChemistryIcon extends Item {
 	private IIcon[] icons;
 
 	public ItemChemistryIcon() {
-		this.setHasSubtypes(true);
-		this.setMaxDamage(0);
+		setHasSubtypes(true);
+		setMaxDamage(0);
 	}
 
+	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
 		
 		ChemRecipe recipe = ChemplantRecipes.indexMapping.get(stack.getItemDamage());
@@ -42,20 +43,22 @@ public class ItemChemistryIcon extends Item {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tabs, List list) {
-		for(int i = 0; i < ChemplantRecipes.recipes.size(); i++) {
-			list.add(new ItemStack(item, 1, ChemplantRecipes.recipes.get(i).getId()));
+		for (ChemRecipe element : ChemplantRecipes.recipes) {
+			list.add(new ItemStack(item, 1, element.getId()));
 		}
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister reg) {
 		this.icons = new IIcon[ChemplantRecipes.recipes.size()];
 
-		for(int i = 0; i < icons.length; ++i) {
+		for(int i = 0; i < this.icons.length; ++i) {
 			this.icons[i] = reg.registerIcon("hbm:chem_icon_" + ChemplantRecipes.recipes.get(i).name);
 		}
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIconFromDamage(int i) {
 		ChemRecipe rec = ChemplantRecipes.indexMapping.get(i);

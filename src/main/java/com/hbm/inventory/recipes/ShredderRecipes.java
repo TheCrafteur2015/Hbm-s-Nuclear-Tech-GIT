@@ -9,8 +9,8 @@ import java.util.Map.Entry;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
-import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.BlockEnums.EnumStoneType;
+import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.generic.BlockBobble.BobbleType;
 import com.hbm.interfaces.Untested;
 import com.hbm.inventory.OreDictManager.DictFrame;
@@ -38,15 +38,10 @@ public class ShredderRecipes extends SerializableRecipe {
 		
 		String[] names = OreDictionary.getOreNames();
 		
-		for(int i = 0; i < names.length; i++) {
-			
-			String name = names[i];
+		for (String name : names) {
 			
 			//if the dict contains invalid names, skip
-			if(name == null || name.isEmpty())
-				continue;
-			
-			if(name.contains("Any")) continue;
+			if(name == null || name.isEmpty() || name.contains("Any")) continue;
 			
 			List<ItemStack> matches = OreDictionary.getOres(name);
 			
@@ -55,33 +50,33 @@ public class ShredderRecipes extends SerializableRecipe {
 				continue;
 
 			//1 ingot unit, metal
-			generateRecipes("ingot", name, matches, 1);
-			generateRecipes("plate", name, matches, 1);
+			ShredderRecipes.generateRecipes("ingot", name, matches, 1);
+			ShredderRecipes.generateRecipes("plate", name, matches, 1);
 			//1 ingot unit, crystalline
-			generateRecipes("gem", name, matches, 1);
-			generateRecipes("crystal", name, matches, 1);
+			ShredderRecipes.generateRecipes("gem", name, matches, 1);
+			ShredderRecipes.generateRecipes("crystal", name, matches, 1);
 			//2 ingot units, any
-			generateRecipes("ore", name, matches, 2);
+			ShredderRecipes.generateRecipes("ore", name, matches, 2);
 			
 			if(name.length() > 5 && name.substring(0, 5).equals("block")) {
-				ItemStack dust = getDustByName(name.substring(5));
+				ItemStack dust = ShredderRecipes.getDustByName(name.substring(5));
 				
 				if(dust != null && dust.getItem() != ModItems.scrap) {
 					
 					dust.stackSize = 9;
 					
-					if(getIngotOrGemByName(name.substring(5)) == null)
+					if(ShredderRecipes.getIngotOrGemByName(name.substring(5)) == null)
 						dust.stackSize = 4;
 					
 					for(ItemStack stack : matches) {
-						putIfValid(stack, dust, name);
+						ShredderRecipes.putIfValid(stack, dust, name);
 					}
 				}
 			}
 			
 			if(name.length() > 3 && name.substring(0, 4).equals("dust")) {
 				for(ItemStack stack : matches) {
-					putIfValid(stack, new ItemStack(ModItems.dust), name);
+					ShredderRecipes.putIfValid(stack, new ItemStack(ModItems.dust), name);
 				}
 			}
 		}
@@ -96,14 +91,14 @@ public class ShredderRecipes extends SerializableRecipe {
 			
 			String matName = name.substring(len);
 			
-			ItemStack dust = getDustByName(matName);
+			ItemStack dust = ShredderRecipes.getDustByName(matName);
 			
 			if(dust != null && dust.getItem() != ModItems.scrap) {
 				
 				dust.stackSize = outCount;
 				
 				for(ItemStack stack : matches) {
-					putIfValid(stack, dust, name);
+					ShredderRecipes.putIfValid(stack, dust, name);
 				}
 			}
 		}
@@ -114,15 +109,17 @@ public class ShredderRecipes extends SerializableRecipe {
 		if(in != null) {
 			
 			if(in.getItem() != null) {
-				setRecipe(new ComparableStack(in), dust);
+				ShredderRecipes.setRecipe(new ComparableStack(in), dust);
 			} else {
 				MainRegistry.logger.error("Ore dict entry '" + name + "' has a null item in its stack! How does that even happen?");
-				Thread.currentThread().dumpStack();
+				Thread.currentThread();
+				Thread.dumpStack();
 			}
 			
 		} else {
 			MainRegistry.logger.error("Ore dict entry '" + name + "' has a null stack!");
-			Thread.currentThread().dumpStack();
+			Thread.currentThread();
+			Thread.dumpStack();
 		}
 	}
 
@@ -399,30 +396,30 @@ public class ShredderRecipes extends SerializableRecipe {
 	}
 	
 	public static void setRecipe(Item in, ItemStack out) {
-		setRecipe(new ComparableStack(in), out);
+		ShredderRecipes.setRecipe(new ComparableStack(in), out);
 	}
 	
 	public static void setRecipe(Block in, ItemStack out) {
-		setRecipe(new ComparableStack(in), out);
+		ShredderRecipes.setRecipe(new ComparableStack(in), out);
 	}
 	
 	public static void setRecipe(ItemStack in, ItemStack out) {
-		setRecipe(new ComparableStack(in), out);
+		ShredderRecipes.setRecipe(new ComparableStack(in), out);
 	}
 	
 	public static void setRecipe(ComparableStack in, ItemStack out) {
-		if(!shredderRecipes.containsKey(in)) {
-			shredderRecipes.put(in, out);
+		if(!ShredderRecipes.shredderRecipes.containsKey(in)) {
+			ShredderRecipes.shredderRecipes.put(in, out);
 		}
 	}
 	
 	public static Map<Object, Object> getShredderRecipes() {
 		
 		//convert the map only once to save on processing power (might be more ram intensive but that can't be THAT bad, right?)
-		if(neiShredderRecipes == null)
-			neiShredderRecipes = new HashMap(shredderRecipes);
+		if(ShredderRecipes.neiShredderRecipes == null)
+			ShredderRecipes.neiShredderRecipes = new HashMap<>(ShredderRecipes.shredderRecipes);
 		
-		return neiShredderRecipes;
+		return ShredderRecipes.neiShredderRecipes;
 	}
 	
 	public static ItemStack getShredderResult(ItemStack stack) {
@@ -431,11 +428,11 @@ public class ShredderRecipes extends SerializableRecipe {
 			return new ItemStack(ModItems.scrap);
 		
 		ComparableStack comp = new ComparableStack(stack).makeSingular();
-		ItemStack sta = shredderRecipes.get(comp);
+		ItemStack sta = ShredderRecipes.shredderRecipes.get(comp);
 		
 		if(sta == null) {
 			comp.meta = OreDictionary.WILDCARD_VALUE;
-			sta = shredderRecipes.get(comp);
+			sta = ShredderRecipes.shredderRecipes.get(comp);
 		}
 		
 		return sta == null ? new ItemStack(ModItems.scrap) : sta;
@@ -448,32 +445,33 @@ public class ShredderRecipes extends SerializableRecipe {
 
 	@Override
 	public Object getRecipeObject() {
-		return shredderRecipes;
+		return ShredderRecipes.shredderRecipes;
 	}
 
 	@Override
 	public void readRecipe(JsonElement recipe) {
 		JsonObject obj = (JsonObject) recipe;
-		ItemStack stack = this.readItemStack(obj.get("input").getAsJsonArray());
+		ItemStack stack = SerializableRecipe.readItemStack(obj.get("input").getAsJsonArray());
 		ComparableStack comp = new ComparableStack(stack).makeSingular();
-		ItemStack out = this.readItemStack(obj.get("output").getAsJsonArray());
-		this.shredderRecipes.put(comp, out);
+		ItemStack out = SerializableRecipe.readItemStack(obj.get("output").getAsJsonArray());
+		ShredderRecipes.shredderRecipes.put(comp, out);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void writeRecipe(Object recipe, JsonWriter writer) throws IOException {
 		Entry<ComparableStack, ItemStack> entry = (Entry<ComparableStack, ItemStack>) recipe;
 
 		writer.name("input");
-		this.writeItemStack(entry.getKey().toStack(), writer);
+		SerializableRecipe.writeItemStack(entry.getKey().toStack(), writer);
 		writer.name("output");
-		this.writeItemStack(entry.getValue(), writer);
+		SerializableRecipe.writeItemStack(entry.getValue(), writer);
 	}
 
 	@Override
 	public void deleteRecipes() {
-		this.shredderRecipes.clear();
-		this.neiShredderRecipes = null;
+		ShredderRecipes.shredderRecipes.clear();
+		ShredderRecipes.neiShredderRecipes = null;
 	}
 
 	@Override

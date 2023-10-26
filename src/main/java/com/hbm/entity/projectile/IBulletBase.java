@@ -1,7 +1,9 @@
 package com.hbm.entity.projectile;
 
 import java.util.List;
+
 import com.hbm.util.Tuple.Pair;
+
 import net.minecraft.util.Vec3;
 
 public interface IBulletBase {

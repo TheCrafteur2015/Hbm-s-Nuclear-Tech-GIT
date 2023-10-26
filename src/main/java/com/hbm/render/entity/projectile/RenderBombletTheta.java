@@ -18,8 +18,8 @@ public class RenderBombletTheta extends Render {
     private ResourceLocation boyTexture;
 	
 	public RenderBombletTheta() {
-		boyModel = AdvancedModelLoader.loadModel(objTesterModelRL);
-		boyTexture = new ResourceLocation(RefStrings.MODID, "textures/models/bombletThetaTexture.png");
+		this.boyModel = AdvancedModelLoader.loadModel(RenderBombletTheta.objTesterModelRL);
+		this.boyTexture = new ResourceLocation(RefStrings.MODID, "textures/models/bombletThetaTexture.png");
 	}
 
 	@Override
@@ -34,10 +34,10 @@ public class RenderBombletTheta extends Render {
         	GL11.glScaled(0.5D, 0.5D, 0.5D);
         	bindTexture(new ResourceLocation(RefStrings.MODID, "textures/models/bombletZetaTexture.png"));
         } else {
-        	bindTexture(boyTexture);
+        	bindTexture(this.boyTexture);
         }
         
-        boyModel.renderAll();
+        this.boyModel.renderAll();
 		GL11.glPopMatrix();
 	}
 

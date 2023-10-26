@@ -29,7 +29,7 @@ public class EntityGrenadeLemon extends EntityGrenadeBouncyBase
     	
         if (!this.worldObj.isRemote)
         {
-            this.setDead();
+            setDead();
 			this.worldObj.newExplosion((Entity)null, (float)this.posX, (float)this.posY, (float)this.posZ, 5.0F, true, true);
         }
     }

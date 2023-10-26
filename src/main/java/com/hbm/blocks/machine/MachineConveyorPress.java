@@ -53,7 +53,7 @@ public class MachineConveyorPress extends BlockDummyable implements IConveyorBel
 			return true;
 		} else {
 			
-			int[] pos = this.findCore(world, x, y, z);
+			int[] pos = findCore(world, x, y, z);
 			
 			if(pos == null)
 				return false;
@@ -84,7 +84,7 @@ public class MachineConveyorPress extends BlockDummyable implements IConveyorBel
 		
 		if(tool != ToolType.SCREWDRIVER) return false;
 		
-		int[] pos = this.findCore(world, x, y, z);
+		int[] pos = findCore(world, x, y, z);
 		
 		if(pos == null)
 			return false;
@@ -113,8 +113,8 @@ public class MachineConveyorPress extends BlockDummyable implements IConveyorBel
 
 	@Override
 	public Vec3 getTravelLocation(World world, int x, int y, int z, Vec3 itemPos, double speed) {
-		ForgeDirection dir = this.getTravelDirection(world, x, y, z, itemPos);
-		Vec3 snap = this.getClosestSnappingPosition(world, x, y, z, itemPos);
+		ForgeDirection dir = getTravelDirection(world, x, y, z, itemPos);
+		Vec3 snap = getClosestSnappingPosition(world, x, y, z, itemPos);
 		Vec3 dest = Vec3.createVectorHelper(snap.xCoord - dir.offsetX * speed, snap.yCoord - dir.offsetY * speed, snap.zCoord - dir.offsetZ * speed);
 		Vec3 motion = Vec3.createVectorHelper((dest.xCoord - itemPos.xCoord), (dest.yCoord - itemPos.yCoord), (dest.zCoord - itemPos.zCoord));
 		double len = motion.lengthVector();
@@ -123,14 +123,14 @@ public class MachineConveyorPress extends BlockDummyable implements IConveyorBel
 	}
 	
 	public ForgeDirection getTravelDirection(World world, int x, int y, int z, Vec3 itemPos) {
-		int meta = world.getBlockMetadata(x, y - 1, z) - offset;
+		int meta = world.getBlockMetadata(x, y - 1, z) - BlockDummyable.offset;
 		return ForgeDirection.getOrientation(meta).getRotation(ForgeDirection.UP);
 	}
 
 	@Override
 	public Vec3 getClosestSnappingPosition(World world, int x, int y, int z, Vec3 itemPos) {
 
-		ForgeDirection dir = this.getTravelDirection(world, x, y, z, itemPos);
+		ForgeDirection dir = getTravelDirection(world, x, y, z, itemPos);
 		itemPos.xCoord = MathHelper.clamp_double(itemPos.xCoord, x, x + 1);
 		itemPos.zCoord = MathHelper.clamp_double(itemPos.zCoord, z, z + 1);
 		double posX = x + 0.5;
@@ -147,7 +147,7 @@ public class MachineConveyorPress extends BlockDummyable implements IConveyorBel
 
 	@Override
 	public void printHook(Pre event, World world, int x, int y, int z) {
-		int[] pos = this.findCore(world, x, y, z);
+		int[] pos = findCore(world, x, y, z);
 		
 		if(pos == null)
 			return;
@@ -158,9 +158,9 @@ public class MachineConveyorPress extends BlockDummyable implements IConveyorBel
 			return;
 		
 		TileEntityConveyorPress press = (TileEntityConveyorPress) te;
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 
-		text.add(BobMathUtil.getShortNumber(press.power) + "HE / " + BobMathUtil.getShortNumber(press.maxPower) + "HE");
+		text.add(BobMathUtil.getShortNumber(press.power) + "HE / " + BobMathUtil.getShortNumber(TileEntityConveyorPress.maxPower) + "HE");
 		text.add("Installed stamp: " + ((press.syncStack == null || press.syncStack.getItem() == null) ? (EnumChatFormatting.RED + "NONE") : press.syncStack.getDisplayName()));
 		
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
@@ -168,6 +168,6 @@ public class MachineConveyorPress extends BlockDummyable implements IConveyorBel
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		this.addStandardInfo(stack, player, list, ext);
+		addStandardInfo(stack, player, list, ext);
 	}
 }

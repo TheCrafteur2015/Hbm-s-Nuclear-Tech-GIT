@@ -36,6 +36,7 @@ public abstract class FoundryCastingBase extends BlockContainer implements ICruc
 		super(Material.rock);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
 		return true;
@@ -192,7 +193,7 @@ public abstract class FoundryCastingBase extends BlockContainer implements ICruc
 	@Override
 	public void printHook(Pre event, World world, int x, int y, int z) {
 		TileEntityFoundryCastingBase cast = (TileEntityFoundryCastingBase) world.getTileEntity(x, y, z);
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		
 		if(cast.slots[0] == null) {
 			text.add(EnumChatFormatting.RED + I18nUtil.resolveKey("foundry.noCast"));
@@ -205,6 +206,6 @@ public abstract class FoundryCastingBase extends BlockContainer implements ICruc
 			text.add(EnumChatFormatting.YELLOW + cast.type.names[0] + ": " + cast.amount + " / " + cast.getCapacity());
 		}
 		
-		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(this.getUnlocalizedName() + ".name"), 0xFF4000, 0x401000, text);
+		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xFF4000, 0x401000, text);
 	}
 }

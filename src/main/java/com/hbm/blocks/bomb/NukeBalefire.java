@@ -13,7 +13,7 @@ public class NukeBalefire extends BlockMachineBase implements IBomb {
 
 	public NukeBalefire(Material mat) {
 		super(mat, 0);
-		rotatable = true;
+		this.rotatable = true;
 	}
 
 

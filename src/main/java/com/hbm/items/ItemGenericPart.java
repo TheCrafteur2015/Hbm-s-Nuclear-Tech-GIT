@@ -25,13 +25,14 @@ public class ItemGenericPart extends ItemEnumMulti {
 		super(EnumPartType.class, true, true);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister reg) {
 		
-		Enum[] enums = theEnum.getEnumConstants();
+		Enum[] enums = this.theEnum.getEnumConstants();
 		this.icons = new IIcon[enums.length];
 		
-		for(int i = 0; i < icons.length; i++) {
+		for(int i = 0; i < this.icons.length; i++) {
 			EnumPartType num = (EnumPartType)enums[i];
 			this.icons[i] = reg.registerIcon(RefStrings.MODID + ":" + num.texName);
 		}

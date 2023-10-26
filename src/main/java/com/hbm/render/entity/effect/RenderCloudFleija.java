@@ -20,9 +20,9 @@ public class RenderCloudFleija extends Render {
     public float ring = 0;
     
     public RenderCloudFleija() {
-    	blastModel = AdvancedModelLoader.loadModel(objTesterModelRL);
-    	blastTexture = new ResourceLocation(RefStrings.MODID, "textures/models/BlastFleija.png");
-    	scale = 0;
+    	this.blastModel = AdvancedModelLoader.loadModel(RenderCloudFleija.objTesterModelRL);
+    	this.blastTexture = new ResourceLocation(RefStrings.MODID, "textures/models/BlastFleija.png");
+    	this.scale = 0;
     }
 
 	@Override
@@ -38,8 +38,8 @@ public class RenderCloudFleija extends Render {
         
         GL11.glScalef(cloud.age, cloud.age, cloud.age);
         
-        bindTexture(blastTexture);
-        blastModel.renderAll();
+        bindTexture(this.blastTexture);
+        this.blastModel.renderAll();
         GL11.glPopMatrix();
 	}
 

@@ -1,5 +1,6 @@
 package com.hbm.blocks.machine.rbmk;
 
+import com.hbm.blocks.BlockDummyable;
 import com.hbm.tileentity.TileEntityProxyInventory;
 import com.hbm.tileentity.machine.rbmk.TileEntityRBMKRodReaSim;
 
@@ -15,7 +16,7 @@ public class RBMKRodReaSim extends RBMKRod {
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
 		
-		if(meta >= this.offset)
+		if(meta >= BlockDummyable.offset)
 			return new TileEntityRBMKRodReaSim();
 		
 		if(hasExtra(meta))

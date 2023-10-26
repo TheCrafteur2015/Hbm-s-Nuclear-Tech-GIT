@@ -16,12 +16,12 @@ public class PipeNet implements IPipeNet {
 
 	private boolean valid = true;
 	private FluidType type;
-	private List<IFluidConductor> links = new ArrayList();
-	private HashSet<IFluidConnector> subscribers = new HashSet();
+	private List<IFluidConductor> links = new ArrayList<>();
+	private HashSet<IFluidConnector> subscribers = new HashSet<>();
 	
 	public static List<PipeNet> trackingInstances = null;
 	protected BigInteger totalTransfer = BigInteger.ZERO;
-	public List<String> debug = new ArrayList();
+	public List<String> debug = new ArrayList<>();
 	
 	public PipeNet(FluidType type) {
 		this.type = type;
@@ -34,13 +34,13 @@ public class PipeNet implements IPipeNet {
 			return;
 
 		for(IFluidConductor conductor : network.getLinks()) {
-			conductor.setPipeNet(type, this);
-			this.getLinks().add(conductor);
+			conductor.setPipeNet(this.type, this);
+			getLinks().add(conductor);
 		}
 		network.getLinks().clear();
 		
 		for(IFluidConnector connector : network.getSubscribers()) {
-			this.subscribe(connector);
+			subscribe(connector);
 		}
 		
 		network.destroy();
@@ -48,28 +48,28 @@ public class PipeNet implements IPipeNet {
 
 	@Override
 	public List<IFluidConductor> getLinks() {
-		return links;
+		return this.links;
 	}
 
 	@Override
 	public HashSet<IFluidConnector> getSubscribers() {
-		return subscribers;
+		return this.subscribers;
 	}
 
 	@Override
 	public IPipeNet joinLink(IFluidConductor conductor) {
 		
-		if(conductor.getPipeNet(type) != null)
-			conductor.getPipeNet(type).leaveLink(conductor);
+		if(conductor.getPipeNet(this.type) != null)
+			conductor.getPipeNet(this.type).leaveLink(conductor);
 		
-		conductor.setPipeNet(type, this);
+		conductor.setPipeNet(this.type, this);
 		this.links.add(conductor);
 		return this;
 	}
 
 	@Override
 	public void leaveLink(IFluidConductor conductor) {
-		conductor.setPipeNet(type, null);
+		conductor.setPipeNet(this.type, null);
 		this.links.remove(conductor);
 	}
 
@@ -98,17 +98,17 @@ public class PipeNet implements IPipeNet {
 		if(this.subscribers.isEmpty())
 			return fill;
 		
-		trackingInstances = new ArrayList();
-		trackingInstances.add(this);
-		List<IFluidConnector> subList = new ArrayList(subscribers);
-		return fairTransfer(subList, type, pressure, fill);
+		PipeNet.trackingInstances = new ArrayList<>();
+		PipeNet.trackingInstances.add(this);
+		List<IFluidConnector> subList = new ArrayList<>(this.subscribers);
+		return PipeNet.fairTransfer(subList, this.type, pressure, fill);
 	}
 	
 	public static long fairTransfer(List<IFluidConnector> subList, FluidType type, int pressure, long fill) {
 		
 		if(fill <= 0) return 0;
 		
-		List<Long> weight = new ArrayList();
+		List<Long> weight = new ArrayList<>();
 		long totalReq = 0;
 		
 		for(IFluidConnector con : subList) {
@@ -133,21 +133,20 @@ public class PipeNet implements IPipeNet {
 				
 				totalGiven += (given - con.transferFluid(type, pressure, given));
 	
-				if(trackingInstances != null) {
-					for(int j = 0; j < trackingInstances.size(); j++) {
-						PipeNet net = trackingInstances.get(j);
+				if(PipeNet.trackingInstances != null) {
+					for (PipeNet net : PipeNet.trackingInstances) {
 						SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss:SSS");
 						sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-						log(net, sdf.format(new Date(System.currentTimeMillis())) + " Sending " + given + "mB to " + conToString(con));
+						PipeNet.log(net, sdf.format(new Date(System.currentTimeMillis())) + " Sending " + given + "mB to " + PipeNet.conToString(con));
 					}
 				}
 			}
 		}
 		
-		if(trackingInstances != null) {
+		if(PipeNet.trackingInstances != null) {
 			
-			for(int i = 0; i < trackingInstances.size(); i++) {
-				PipeNet net = trackingInstances.get(i);
+			for (PipeNet element : PipeNet.trackingInstances) {
+				PipeNet net = element;
 				net.totalTransfer = net.totalTransfer.add(BigInteger.valueOf(totalGiven));
 			}
 		}
@@ -157,7 +156,7 @@ public class PipeNet implements IPipeNet {
 
 	@Override
 	public FluidType getType() {
-		return type;
+		return this.type;
 	}
 
 	@Override
@@ -166,7 +165,7 @@ public class PipeNet implements IPipeNet {
 		this.subscribers.clear();
 		
 		for(IFluidConductor con : this.links)
-			con.setPipeNet(type, null);
+			con.setPipeNet(this.type, null);
 		
 		this.links.clear();
 	}

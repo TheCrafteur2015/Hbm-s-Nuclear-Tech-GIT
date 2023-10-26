@@ -34,7 +34,7 @@ public abstract class EntityBeamBase extends Entity {
 		vec0.yCoord *= d;
 		vec0.zCoord *= d;
 		
-		this.setPosition(player.posX + vec.xCoord + vec0.xCoord, player.posY + player.getEyeHeight() + vec0.yCoord, player.posZ + vec.zCoord + vec0.zCoord);
+		setPosition(player.posX + vec.xCoord + vec0.xCoord, player.posY + player.getEyeHeight() + vec0.yCoord, player.posZ + vec.zCoord + vec0.zCoord);
 	}
 
 	@Override

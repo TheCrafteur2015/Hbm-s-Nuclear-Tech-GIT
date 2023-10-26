@@ -24,25 +24,25 @@ public class EntityGhost extends EntityCreature {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(8.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.2D);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(8.0D);
+		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.2D);
 	}
 	
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			double despawnRange = 50;
-			List<EntityPlayer> players = worldObj.getEntitiesWithinAABB(EntityPlayer.class, this.boundingBox.expand(despawnRange, despawnRange, despawnRange));
+			List<EntityPlayer> players = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, this.boundingBox.expand(despawnRange, despawnRange, despawnRange));
 			if(!players.isEmpty())
-				this.setDead();
+				setDead();
 		}
 	}
 
 	@Override
 	public void setHealth(float health) {
-		super.setHealth(this.getMaxHealth());
+		super.setHealth(getMaxHealth());
 	}
 	
 	@Override

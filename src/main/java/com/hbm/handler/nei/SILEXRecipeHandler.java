@@ -26,10 +26,10 @@ import net.minecraft.util.EnumChatFormatting;
 
 public class SILEXRecipeHandler extends TemplateRecipeHandler {
 
-	public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<RecipeTransferRect>();
-	public LinkedList<RecipeTransferRect> transferRectsGui = new LinkedList<RecipeTransferRect>();
-	public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<Class<? extends GuiContainer>>();
-	public LinkedList<Class<? extends GuiContainer>> guiGui = new LinkedList<Class<? extends GuiContainer>>();
+	public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<>();
+	public LinkedList<RecipeTransferRect> transferRectsGui = new LinkedList<>();
+	public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<>();
+	public LinkedList<Class<? extends GuiContainer>> guiGui = new LinkedList<>();
 
 	public class RecipeSet extends TemplateRecipeHandler.CachedRecipe {
 
@@ -42,8 +42,8 @@ public class SILEXRecipeHandler extends TemplateRecipeHandler {
 		public RecipeSet(Object input, SILEXRecipe recipe) {
 			
 			this.input = new PositionedStack(input, 12, 24);
-			this.outputs = new ArrayList<PositionedStack>();
-			this.chances = new ArrayList<Double>();
+			this.outputs = new ArrayList<>();
+			this.chances = new ArrayList<>();
 			this.produced = recipe.fluidProduced / recipe.fluidConsumed;
 			this.crystalStrength = recipe.laserStrength;
 			
@@ -60,12 +60,12 @@ public class SILEXRecipeHandler extends TemplateRecipeHandler {
 				WeightedRandomObject obj = recipe.outputs.get(i);
 				
 				if(i < sep) {
-					outputs.add(new PositionedStack(obj.asStack(), 68, 24 + i * 18 - 9 * ((Math.min(recipe.outputs.size(), sep) + 1) / 2)));
+					this.outputs.add(new PositionedStack(obj.asStack(), 68, 24 + i * 18 - 9 * ((Math.min(recipe.outputs.size(), sep) + 1) / 2)));
 				} else {
-					outputs.add(new PositionedStack(obj.asStack(), 116, 24 + (i - sep) * 18 - 9 * ((Math.min(recipe.outputs.size() - sep, sep) + 1) / 2)));
+					this.outputs.add(new PositionedStack(obj.asStack(), 116, 24 + (i - sep) * 18 - 9 * ((Math.min(recipe.outputs.size() - sep, sep) + 1) / 2)));
 				}
 				
-				chances.add(100 * obj.itemWeight / weight);
+				this.chances.add(100 * obj.itemWeight / weight);
 			}
 			
 			/*for(WeightedRandomObject obj : recipe.outputs) {
@@ -76,17 +76,17 @@ public class SILEXRecipeHandler extends TemplateRecipeHandler {
 
 		@Override
 		public List<PositionedStack> getIngredients() {
-			return getCycledIngredients(cycleticks / 48, Arrays.asList(input));
+			return getCycledIngredients(SILEXRecipeHandler.this.cycleticks / 48, Arrays.asList(this.input));
 		}
 
 		@Override
 		public List<PositionedStack> getOtherStacks() {
-			return outputs;
+			return this.outputs;
 		}
 
 		@Override
 		public PositionedStack getResult() {
-			return outputs.get(0);
+			return this.outputs.get(0);
 		}
 	}
 
@@ -163,14 +163,14 @@ public class SILEXRecipeHandler extends TemplateRecipeHandler {
 
 	@Override
 	public void loadTransferRects() {
-		transferRectsGui = new LinkedList<RecipeTransferRect>();
-		guiGui = new LinkedList<Class<? extends GuiContainer>>();
+		this.transferRectsGui = new LinkedList<>();
+		this.guiGui = new LinkedList<>();
 
-		transferRects.add(new RecipeTransferRect(new Rectangle(42, 34 - 11, 24, 18), "silex"));
-		transferRectsGui.add(new RecipeTransferRect(new Rectangle(39, 60, 60, 50), "silex"));
-		guiGui.add(GUISILEX.class);
-		RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), transferRects);
-		RecipeTransferRectHandler.registerRectsToGuis(guiGui, transferRectsGui);
+		this.transferRects.add(new RecipeTransferRect(new Rectangle(42, 34 - 11, 24, 18), "silex"));
+		this.transferRectsGui.add(new RecipeTransferRect(new Rectangle(39, 60, 60, 50), "silex"));
+		this.guiGui.add(GUISILEX.class);
+		RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), this.transferRects);
+		RecipeTransferRectHandler.registerRectsToGuis(this.guiGui, this.transferRectsGui);
 	}
 
 	@Override

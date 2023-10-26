@@ -1,20 +1,21 @@
 package com.hbm.commands;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
+
 import com.hbm.items.ISatChip;
 import com.hbm.items.ModItems;
 import com.hbm.saveddata.SatelliteSavedData;
 import com.hbm.saveddata.satellites.Satellite;
+
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.stream.Collectors;
 
 public class CommandSatellites extends CommandBase {
     @Override
@@ -40,7 +41,7 @@ public class CommandSatellites extends CommandBase {
         }
         switch (args[0]) {
             case "orbit":
-                EntityPlayer player = getCommandSenderAsPlayer(sender);
+                EntityPlayer player = CommandBase.getCommandSenderAsPlayer(sender);
                 if(player.getHeldItem().getItem() instanceof ISatChip && player.getHeldItem().getItem() != ModItems.sat_chip) {
                     Satellite.orbit(
                             player.worldObj,
@@ -55,7 +56,7 @@ public class CommandSatellites extends CommandBase {
                 }
                 break;
             case "descend":
-                int freq = parseInt(sender, args[1]);
+                int freq = CommandBase.parseInt(sender, args[1]);
                 SatelliteSavedData data = SatelliteSavedData.getData(sender.getEntityWorld());
                 if(data.sats.containsKey(freq)) {
                     data.sats.remove(freq);
@@ -69,19 +70,16 @@ public class CommandSatellites extends CommandBase {
     }
 
     @SuppressWarnings("rawtypes")
-    @Override
+	@Override
     public List addTabCompletionOptions(ICommandSender sender, String[] args) {
-        if(!(sender instanceof EntityPlayer)) {
-            return Collections.emptyList();
-        }
-        if(args.length < 1) {
+        if(!(sender instanceof EntityPlayer) || (args.length < 1)) {
             return Collections.emptyList();
         }
         if(args.length == 1) {
-            return getListOfStringsMatchingLastWord(args, "orbit", "descend");
+            return CommandBase.getListOfStringsMatchingLastWord(args, "orbit", "descend");
         }
         if (args[0].equals("descend")) {
-            return getListOfStringsFromIterableMatchingLastWord(args, SatelliteSavedData.getData(sender.getEntityWorld()).sats.keySet().stream().map(String::valueOf).collect(Collectors.toList()));
+            return CommandBase.getListOfStringsFromIterableMatchingLastWord(args, SatelliteSavedData.getData(sender.getEntityWorld()).sats.keySet().stream().map(String::valueOf).collect(Collectors.toList()));
         }
         return Collections.emptyList();
     }

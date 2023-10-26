@@ -12,9 +12,9 @@ import net.minecraft.util.MathHelper;
 
 public class JarScript {
 
-	public  WorldInAJar world;
-	public List<JarScene> scenes = new ArrayList();
-	public HashMap<Integer, ISpecialActor> actors = new HashMap();
+	public WorldInAJar world;
+	public List<JarScene> scenes = new ArrayList<>();
+	public HashMap<Integer, ISpecialActor> actors = new HashMap<>();
 	public JarScene currentScene;
 	public int sceneNumber = 0;
 
@@ -48,7 +48,7 @@ public class JarScript {
 	/**supposed to be called every frame, it calculates tick times and interp values */
 	public void run() {
 		
-		if(this.isPaused && !freeRun) return;
+		if(this.isPaused && !JarScript.freeRun) return;
 		
 		long now = System.currentTimeMillis();
 		
@@ -59,14 +59,14 @@ public class JarScript {
 			nextTick = true;
 		}
 		
-		if(this.lastTick + 50 < now || freeRun) {
+		if(this.lastTick + 50 < now || JarScript.freeRun) {
 			this.lastTick = now;
 			this.ticksElapsed++;
 			nextTick = true;
 		}
 		
 		if(this.currentScene != null) {
-			this.interp = MathHelper.clamp_float((float) (now - this.lastTick) / 50F, 0F, 1F);
+			this.interp = MathHelper.clamp_float((now - this.lastTick) / 50F, 0F, 1F);
 		} else {
 			this.interp = 0;
 		}
@@ -99,7 +99,7 @@ public class JarScript {
 			this.sceneNumber++;
 			
 			if(this.sceneNumber < this.scenes.size()) {
-				this.currentScene = this.scenes.get(sceneNumber);
+				this.currentScene = this.scenes.get(this.sceneNumber);
 				this.currentScene.reset();
 			} else {
 				this.currentScene = null;
@@ -125,21 +125,21 @@ public class JarScript {
 	
 	private void ffw() {
 		
-		this.reset();
+		reset();
 		
-		freeRun = true;
+		JarScript.freeRun = true;
 		int i = 0;
 		
-		while(this.sceneNumber < ffwTarget && this.currentScene != null && i < 10_000) {
-			this.run();
+		while(this.sceneNumber < JarScript.ffwTarget && this.currentScene != null && i < 10_000) {
+			run();
 			i++;
 		}
 		
 		if(i > 0) { //i don't know why it needs one more cycle but it does
-			this.run();
+			run();
 		}
 		
-		freeRun = false;
+		JarScript.freeRun = false;
 	}
 	
 	/** how far we want to fast forward */
@@ -172,9 +172,9 @@ public class JarScript {
 	public void rewindOne() {
 		
 		if(this.sceneNumber > 0) {
-			this.ffwTarget = this.sceneNumber - 1;
+			JarScript.ffwTarget = this.sceneNumber - 1;
 		} else {
-			this.ffwTarget = 0;
+			JarScript.ffwTarget = 0;
 		}
 		
 		ffw();
@@ -182,18 +182,18 @@ public class JarScript {
 	
 	public void forwardOne() {
 		if(this.sceneNumber < this.scenes.size()) {
-			this.ffwTarget = this.sceneNumber + 1;
+			JarScript.ffwTarget = this.sceneNumber + 1;
 		} else {
-			this.ffwTarget = this.scenes.size();
+			JarScript.ffwTarget = this.scenes.size();
 		}
 		
 		ffw();
 	}
 	
-	public double yaw() { return BobMathUtil.interp(this.lastRotationYaw, this.rotationYaw, interp); }
-	public double pitch() { return BobMathUtil.interp(this.lastRotationPitch, this.rotationPitch, interp); }
-	public double offsetX() { return BobMathUtil.interp(this.lastOffsetX, this.offsetX, interp); }
-	public double offsetY() { return BobMathUtil.interp(this.lastOffsetY, this.offsetY, interp); }
-	public double offsetZ() { return BobMathUtil.interp(this.lastOffsetZ, this.offsetZ, interp); }
-	public double zoom() { return BobMathUtil.interp(this.lastZoom, this.zoom, interp); }
+	public double yaw() { return BobMathUtil.interp(this.lastRotationYaw, this.rotationYaw, this.interp); }
+	public double pitch() { return BobMathUtil.interp(this.lastRotationPitch, this.rotationPitch, this.interp); }
+	public double offsetX() { return BobMathUtil.interp(this.lastOffsetX, this.offsetX, this.interp); }
+	public double offsetY() { return BobMathUtil.interp(this.lastOffsetY, this.offsetY, this.interp); }
+	public double offsetZ() { return BobMathUtil.interp(this.lastOffsetZ, this.offsetZ, this.interp); }
+	public double zoom() { return BobMathUtil.interp(this.lastZoom, this.zoom, this.interp); }
 }

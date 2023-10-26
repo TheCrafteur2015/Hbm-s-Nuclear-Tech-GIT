@@ -46,61 +46,61 @@ public class TileEntityConveyorPress extends TileEntityMachineBase implements IE
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			this.updateConnections();
+			updateConnections();
 			
-			if(delay <= 0) {
+			if(this.delay <= 0) {
 				
-				if(isRetracting) {
+				if(this.isRetracting) {
 					
-					if(this.canRetract()) {
-						this.press -= speed;
+					if(canRetract()) {
+						this.press -= this.speed;
 						this.power -= this.usage;
 						
-						if(press <= 0) {
-							press = 0;
+						if(this.press <= 0) {
+							this.press = 0;
 							this.isRetracting = false;
-							delay = 0;
+							this.delay = 0;
 						}
 					}
 					
 				} else {
 					
-					if(this.canExtend()) {
-						this.press += speed;
+					if(canExtend()) {
+						this.press += this.speed;
 						this.power -= this.usage;
 						
-						if(press >= 1) {
-							press = 1;
+						if(this.press >= 1) {
+							this.press = 1;
 							this.isRetracting = true;
-							delay = 5;
-							this.process();
+							this.delay = 5;
+							process();
 						}
 					}
 				}
 				
 			} else {
-				delay--;
+				this.delay--;
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setLong("power", power);
-			data.setDouble("press", press);
-			if(slots[0] != null) {
+			data.setLong("power", this.power);
+			data.setDouble("press", this.press);
+			if(this.slots[0] != null) {
 				NBTTagCompound stack = new NBTTagCompound();
-				slots[0].writeToNBT(stack);
+				this.slots[0].writeToNBT(stack);
 				data.setTag("stack", stack);
 			}
 			
-			this.networkPack(data, 50);
+			networkPack(data, 50);
 		} else {
 			
 			// approach-based interpolation, GO!
 			this.lastPress = this.renderPress;
 			
 			if(this.turnProgress > 0) {
-				this.renderPress = this.renderPress + ((this.syncPress - this.renderPress) / (double) this.turnProgress);
+				this.renderPress = this.renderPress + ((this.syncPress - this.renderPress) / this.turnProgress);
 				--this.turnProgress;
 			} else {
 				this.renderPress = this.syncPress;
@@ -109,34 +109,34 @@ public class TileEntityConveyorPress extends TileEntityMachineBase implements IE
 	}
 	
 	protected void updateConnections() {
-		for(DirPos pos : getConPos()) this.trySubscribe(worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+		for(DirPos pos : getConPos()) trySubscribe(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 	}
 	
 	protected DirPos[] getConPos() {
 		return new DirPos[] {
-				new DirPos(xCoord + 1, yCoord, zCoord, Library.POS_X),
-				new DirPos(xCoord - 1, yCoord, zCoord, Library.NEG_X),
-				new DirPos(xCoord, yCoord, zCoord + 1, Library.POS_Z),
-				new DirPos(xCoord, yCoord, zCoord - 1, Library.NEG_Z),
+				new DirPos(this.xCoord + 1, this.yCoord, this.zCoord, Library.POS_X),
+				new DirPos(this.xCoord - 1, this.yCoord, this.zCoord, Library.NEG_X),
+				new DirPos(this.xCoord, this.yCoord, this.zCoord + 1, Library.POS_Z),
+				new DirPos(this.xCoord, this.yCoord, this.zCoord - 1, Library.NEG_Z),
 		};
 	}
 	
+	@SuppressWarnings("unchecked")
 	public boolean canExtend() {
 		
-		if(this.power < usage) return false;
-		if(slots[0] == null) return false;
+		if((this.power < this.usage) || (this.slots[0] == null)) return false;
 		
-		List<EntityMovingItem> items = worldObj.getEntitiesWithinAABB(EntityMovingItem.class, AxisAlignedBB.getBoundingBox(xCoord, yCoord + 1, zCoord, xCoord + 1, yCoord + 1.5, zCoord + 1));
+		List<EntityMovingItem> items = this.worldObj.getEntitiesWithinAABB(EntityMovingItem.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord + 1, this.zCoord, this.xCoord + 1, this.yCoord + 1.5, this.zCoord + 1));
 		if(items.isEmpty()) return false;
 		
 		for(EntityMovingItem item : items) {
 			ItemStack stack = item.getItemStack();
-			if(PressRecipes.getOutput(stack, slots[0]) != null && stack.stackSize == 1) {
+			if(PressRecipes.getOutput(stack, this.slots[0]) != null && stack.stackSize == 1) {
 				
 				double d0 = 0.35;
 				double d1 = 0.65;
-				if(item.posX > xCoord + d0 && item.posX < xCoord + d1 && item.posZ > zCoord + d0 && item.posZ < zCoord + d1) {
-					item.setPosition(xCoord + 0.5, item.posY, zCoord + 0.5);
+				if(item.posX > this.xCoord + d0 && item.posX < this.xCoord + d1 && item.posZ > this.zCoord + d0 && item.posZ < this.zCoord + d1) {
+					item.setPosition(this.xCoord + 0.5, item.posY, this.zCoord + 0.5);
 				}
 				
 				return true;
@@ -146,35 +146,36 @@ public class TileEntityConveyorPress extends TileEntityMachineBase implements IE
 		return false;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void process() {
 		
-		List<EntityMovingItem> items = worldObj.getEntitiesWithinAABB(EntityMovingItem.class, AxisAlignedBB.getBoundingBox(xCoord, yCoord + 1, zCoord, xCoord + 1, yCoord + 1.5, zCoord + 1));
+		List<EntityMovingItem> items = this.worldObj.getEntitiesWithinAABB(EntityMovingItem.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord + 1, this.zCoord, this.xCoord + 1, this.yCoord + 1.5, this.zCoord + 1));
 		
 		for(EntityMovingItem item : items) {
 			ItemStack stack = item.getItemStack();
-			ItemStack output = PressRecipes.getOutput(stack, slots[0]);
+			ItemStack output = PressRecipes.getOutput(stack, this.slots[0]);
 			
 			if(output != null && stack.stackSize == 1) {
 				item.setDead();
-				EntityMovingItem out = new EntityMovingItem(worldObj);
+				EntityMovingItem out = new EntityMovingItem(this.worldObj);
 				out.setPosition(item.posX, item.posY, item.posZ);
 				out.setItemStack(output.copy());
-				worldObj.spawnEntityInWorld(out);
+				this.worldObj.spawnEntityInWorld(out);
 			}
 		}
 		
 		this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:block.pressOperate", 1.5F, 1.0F);
 		
-		if(slots[0].getMaxDamage() != 0) {
-			slots[0].setItemDamage(slots[0].getItemDamage() + 1);
-			if(slots[0].getItemDamage() >= slots[0].getMaxDamage()) {
-				slots[0] = null;
+		if(this.slots[0].getMaxDamage() != 0) {
+			this.slots[0].setItemDamage(this.slots[0].getItemDamage() + 1);
+			if(this.slots[0].getItemDamage() >= this.slots[0].getMaxDamage()) {
+				this.slots[0] = null;
 			}
 		}
 	}
 	
 	public boolean canRetract() {
-		if(this.power < usage) return false;
+		if(this.power < this.usage) return false;
 		return true;
 	}
 	
@@ -205,17 +206,17 @@ public class TileEntityConveyorPress extends TileEntityMachineBase implements IE
 
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemStack, int j) {
-		return this.isItemValidForSlot(i, itemStack);
+		return isItemValidForSlot(i, itemStack);
 	}
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 
 	@Override
 	public long getMaxPower() {
-		return maxPower;
+		return TileEntityConveyorPress.maxPower;
 	}
 
 	@Override
@@ -238,8 +239,8 @@ public class TileEntityConveyorPress extends TileEntityMachineBase implements IE
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setLong("power", power);
-		nbt.setDouble("press", press);
+		nbt.setLong("power", this.power);
+		nbt.setDouble("press", this.press);
 	}
 	
 	AxisAlignedBB bb = null;
@@ -247,18 +248,18 @@ public class TileEntityConveyorPress extends TileEntityMachineBase implements IE
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 1,
-					yCoord,
-					zCoord - 1,
-					xCoord + 2,
-					yCoord + 3,
-					zCoord + 2
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 1,
+					this.yCoord,
+					this.zCoord - 1,
+					this.xCoord + 2,
+					this.yCoord + 3,
+					this.zCoord + 2
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override

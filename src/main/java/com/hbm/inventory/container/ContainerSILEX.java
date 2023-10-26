@@ -17,36 +17,36 @@ public class ContainerSILEX extends Container {
 	private TileEntitySILEX silex;
 
 	public ContainerSILEX(InventoryPlayer invPlayer, TileEntitySILEX te) {
-		silex = te;
+		this.silex = te;
 		
 		//Input
-		this.addSlotToContainer(new Slot(te, 0, 80, 12));
+		addSlotToContainer(new Slot(te, 0, 80, 12));
 		//Fluid ID
-		this.addSlotToContainer(new Slot(te, 1, 8, 24));
+		addSlotToContainer(new Slot(te, 1, 8, 24));
 		//Fluid Container
-		this.addSlotToContainer(new Slot(te, 2, 8 + 18, 24));
-		this.addSlotToContainer(new SlotTakeOnly(te, 3, 8 + 18*2, 24));
+		addSlotToContainer(new Slot(te, 2, 8 + 18, 24));
+		addSlotToContainer(new SlotTakeOnly(te, 3, 8 + 18*2, 24));
 		//Output
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, te, 4, 116, 90));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, te, 4, 116, 90));
 		//Output Queue
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, te, 5, 134, 72));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, te, 6, 152, 72));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, te, 7, 134, 90));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, te, 8, 152, 90));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, te, 9, 134, 108));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, te, 10, 152, 108));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, te, 5, 134, 72));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, te, 6, 152, 72));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, te, 7, 134, 90));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, te, 8, 152, 90));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, te, 9, 134, 108));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, te, 10, 152, 108));
 		
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + (18 * 3) + 2));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + (18 * 3) + 2));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++)
 		{
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + (18 * 3) + 2));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + (18 * 3) + 2));
 		}
 	}
 
@@ -60,21 +60,21 @@ public class ContainerSILEX extends Container {
 			var3 = var5.copy();
 
 			if(par2 <= 10) {
-				if(!this.mergeItemStack(var5, 11, this.inventorySlots.size(), true)) {
+				if(!mergeItemStack(var5, 11, this.inventorySlots.size(), true)) {
 					return null;
 				}
 			} else {
 				
 				if(var3.getItem() instanceof IItemFluidIdentifier) {
-					if(!this.mergeItemStack(var5, 1, 2, false)) {
+					if(!mergeItemStack(var5, 1, 2, false)) {
 						return null;
 					}
-				} else if(FluidContainerRegistry.getFluidContent(var3, silex.tank.getTankType()) > 0) {
-					if(!this.mergeItemStack(var5, 2, 3, false)) {
+				} else if(FluidContainerRegistry.getFluidContent(var3, this.silex.tank.getTankType()) > 0) {
+					if(!mergeItemStack(var5, 2, 3, false)) {
 						return null;
 					}
 				} else {
-					if(!this.mergeItemStack(var5, 0, 1, false)) {
+					if(!mergeItemStack(var5, 0, 1, false)) {
 						return null;
 					}
 				}
@@ -94,6 +94,6 @@ public class ContainerSILEX extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return silex.isUseableByPlayer(player);
+		return this.silex.isUseableByPlayer(player);
 	}
 }

@@ -13,19 +13,20 @@ public class TileEntityMachinePumpSteam extends TileEntityMachinePumpBase {
 	
 	public TileEntityMachinePumpSteam() {
 		super();
-		water = new FluidTank(Fluids.WATER, 100_000);
-		steam = new FluidTank(Fluids.STEAM, 1_000);
-		lps = new FluidTank(Fluids.SPENTSTEAM, 10);
+		this.water = new FluidTank(Fluids.WATER, 100_000);
+		this.steam = new FluidTank(Fluids.STEAM, 1_000);
+		this.lps = new FluidTank(Fluids.SPENTSTEAM, 10);
 	}
 	
+	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			for(DirPos pos : getConPos()) {
-				this.trySubscribe(steam.getTankType(), worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
-				if(lps.getFill() > 0) {
-					this.sendFluid(lps, worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+				trySubscribe(this.steam.getTankType(), this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+				if(this.lps.getFill() > 0) {
+					this.sendFluid(this.lps, this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 				}
 			}
 		}
@@ -35,42 +36,43 @@ public class TileEntityMachinePumpSteam extends TileEntityMachinePumpBase {
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return new FluidTank[] {water, steam, lps};
+		return new FluidTank[] {this.water, this.steam, this.lps};
 	}
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return new FluidTank[] {water, lps};
+		return new FluidTank[] {this.water, this.lps};
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] {steam};
+		return new FluidTank[] {this.steam};
 	}
 	
+	@Override
 	protected NBTTagCompound getSync() {
 		NBTTagCompound data = super.getSync();
-		steam.writeToNBT(data, "s");
-		lps.writeToNBT(data, "l");
+		this.steam.writeToNBT(data, "s");
+		this.lps.writeToNBT(data, "l");
 		return data;
 	}
 
 	@Override
 	public void networkUnpack(NBTTagCompound nbt) {
 		super.networkUnpack(nbt);
-		steam.readFromNBT(nbt, "s");
-		lps.readFromNBT(nbt, "l");
+		this.steam.readFromNBT(nbt, "s");
+		this.lps.readFromNBT(nbt, "l");
 	}
 
 	@Override
 	protected boolean canOperate() {
-		return steam.getFill() >= 100 && lps.getMaxFill() - lps.getFill() > 0 && water.getFill() < water.getMaxFill();
+		return this.steam.getFill() >= 100 && this.lps.getMaxFill() - this.lps.getFill() > 0 && this.water.getFill() < this.water.getMaxFill();
 	}
 
 	@Override
 	protected void operate() {
-		steam.setFill(steam.getFill() - 100);
-		lps.setFill(lps.getFill() + 1);
-		water.setFill(Math.min(water.getFill() + 1000, water.getMaxFill()));
+		this.steam.setFill(this.steam.getFill() - 100);
+		this.lps.setFill(this.lps.getFill() + 1);
+		this.water.setFill(Math.min(this.water.getFill() + 1000, this.water.getMaxFill()));
 	}
 }

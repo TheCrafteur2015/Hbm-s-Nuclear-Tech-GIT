@@ -24,11 +24,11 @@ public class ItemMissile extends Item {
 	private String witty;
 	
 	public ItemMissile() {
-		this.setMaxStackSize(1);
-		this.setCreativeTab(MainRegistry.missileTab);
+		setMaxStackSize(1);
+		setCreativeTab(MainRegistry.missileTab);
 	}
 	
-	public static HashMap<Integer, ItemMissile> parts = new HashMap();
+	public static HashMap<Integer, ItemMissile> parts = new HashMap<>();
 	
 	/**
 	 * == Chips ==
@@ -121,7 +121,7 @@ public class ItemMissile extends Item {
 		this.bottom = PartSize.ANY;
 		this.attributes = new Object[] { inaccuracy };
 		
-		parts.put(this.hashCode(), this);
+		ItemMissile.parts.put(hashCode(), this);
 		
 		return this;
 	}
@@ -134,7 +134,7 @@ public class ItemMissile extends Item {
 		this.attributes = new Object[] { type, punch, weight };
 		setTextureName(RefStrings.MODID + ":mp_warhead");
 		
-		parts.put(this.hashCode(), this);
+		ItemMissile.parts.put(hashCode(), this);
 		
 		return this;
 	}
@@ -144,10 +144,10 @@ public class ItemMissile extends Item {
 		this.type = PartType.FUSELAGE;
 		this.top = top;
 		this.bottom = bottom;
-		attributes = new Object[] { type, fuel };
+		this.attributes = new Object[] { type, fuel };
 		setTextureName(RefStrings.MODID + ":mp_fuselage");
 		
-		parts.put(this.hashCode(), this);
+		ItemMissile.parts.put(hashCode(), this);
 		
 		return this;
 	}
@@ -160,7 +160,7 @@ public class ItemMissile extends Item {
 		this.attributes = new Object[] { inaccuracy };
 		setTextureName(RefStrings.MODID + ":mp_stability");
 		
-		parts.put(this.hashCode(), this);
+		ItemMissile.parts.put(hashCode(), this);
 		
 		return this;
 	}
@@ -173,59 +173,60 @@ public class ItemMissile extends Item {
 		this.attributes = new Object[] { type, consumption, lift };
 		setTextureName(RefStrings.MODID + ":mp_thruster");
 		
-		parts.put(this.hashCode(), this);
+		ItemMissile.parts.put(hashCode(), this);
 		
 		return this;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool)
 	{
 
-		if(title != null)
-			list.add(EnumChatFormatting.DARK_PURPLE + "\"" + title + "\"");
+		if(this.title != null)
+			list.add(EnumChatFormatting.DARK_PURPLE + "\"" + this.title + "\"");
 		
 		try {
-			switch(type) {
+			switch(this.type) {
 			case CHIP:
-				list.add(EnumChatFormatting.BOLD + "Inaccuracy: " + EnumChatFormatting.GRAY + (Float)attributes[0] * 100 + "%");
+				list.add(EnumChatFormatting.BOLD + "Inaccuracy: " + EnumChatFormatting.GRAY + (Float)this.attributes[0] * 100 + "%");
 				break;
 			case WARHEAD:
-				list.add(EnumChatFormatting.BOLD + "Size: " + EnumChatFormatting.GRAY + getSize(bottom));
-				list.add(EnumChatFormatting.BOLD + "Type: " + EnumChatFormatting.GRAY + getWarhead((WarheadType)attributes[0]));
-				list.add(EnumChatFormatting.BOLD + "Strength: " + EnumChatFormatting.GRAY + (Float)attributes[1]);
-				list.add(EnumChatFormatting.BOLD + "Weight: " + EnumChatFormatting.GRAY + (Float)attributes[2] + "t");
+				list.add(EnumChatFormatting.BOLD + "Size: " + EnumChatFormatting.GRAY + getSize(this.bottom));
+				list.add(EnumChatFormatting.BOLD + "Type: " + EnumChatFormatting.GRAY + getWarhead((WarheadType)this.attributes[0]));
+				list.add(EnumChatFormatting.BOLD + "Strength: " + EnumChatFormatting.GRAY + this.attributes[1]);
+				list.add(EnumChatFormatting.BOLD + "Weight: " + EnumChatFormatting.GRAY + this.attributes[2] + "t");
 				break;
 			case FUSELAGE:
-				list.add(EnumChatFormatting.BOLD + "Top size: " + EnumChatFormatting.GRAY + getSize(top));
-				list.add(EnumChatFormatting.BOLD + "Bottom size: " + EnumChatFormatting.GRAY + getSize(bottom));
-				list.add(EnumChatFormatting.BOLD + "Fuel type: " + EnumChatFormatting.GRAY + getFuel((FuelType)attributes[0]));
-				list.add(EnumChatFormatting.BOLD + "Fuel amount: " + EnumChatFormatting.GRAY + (Float)attributes[1] + "l");
+				list.add(EnumChatFormatting.BOLD + "Top size: " + EnumChatFormatting.GRAY + getSize(this.top));
+				list.add(EnumChatFormatting.BOLD + "Bottom size: " + EnumChatFormatting.GRAY + getSize(this.bottom));
+				list.add(EnumChatFormatting.BOLD + "Fuel type: " + EnumChatFormatting.GRAY + getFuel((FuelType)this.attributes[0]));
+				list.add(EnumChatFormatting.BOLD + "Fuel amount: " + EnumChatFormatting.GRAY + this.attributes[1] + "l");
 				break;
 			case FINS:
-				list.add(EnumChatFormatting.BOLD + "Size: " + EnumChatFormatting.GRAY + getSize(top));
-				list.add(EnumChatFormatting.BOLD + "Inaccuracy: " + EnumChatFormatting.GRAY + (Float)attributes[0] * 100 + "%");
+				list.add(EnumChatFormatting.BOLD + "Size: " + EnumChatFormatting.GRAY + getSize(this.top));
+				list.add(EnumChatFormatting.BOLD + "Inaccuracy: " + EnumChatFormatting.GRAY + (Float)this.attributes[0] * 100 + "%");
 				break;
 			case THRUSTER:
-				list.add(EnumChatFormatting.BOLD + "Size: " + EnumChatFormatting.GRAY + getSize(top));
-				list.add(EnumChatFormatting.BOLD + "Fuel type: " + EnumChatFormatting.GRAY + getFuel((FuelType)attributes[0]));
-				list.add(EnumChatFormatting.BOLD + "Fuel consumption: " + EnumChatFormatting.GRAY + (Float)attributes[1] + "l/tick");
-				list.add(EnumChatFormatting.BOLD + "Max. payload: " + EnumChatFormatting.GRAY + (Float)attributes[2] + "t");
+				list.add(EnumChatFormatting.BOLD + "Size: " + EnumChatFormatting.GRAY + getSize(this.top));
+				list.add(EnumChatFormatting.BOLD + "Fuel type: " + EnumChatFormatting.GRAY + getFuel((FuelType)this.attributes[0]));
+				list.add(EnumChatFormatting.BOLD + "Fuel consumption: " + EnumChatFormatting.GRAY + this.attributes[1] + "l/tick");
+				list.add(EnumChatFormatting.BOLD + "Max. payload: " + EnumChatFormatting.GRAY + this.attributes[2] + "t");
 				break;
 			}
 		} catch(Exception ex) {
 			list.add("### I AM ERROR ###");
 		}
 		
-		if(type != PartType.CHIP)
-			list.add(EnumChatFormatting.BOLD + "Health: " + EnumChatFormatting.GRAY + health + "HP");
+		if(this.type != PartType.CHIP)
+			list.add(EnumChatFormatting.BOLD + "Health: " + EnumChatFormatting.GRAY + this.health + "HP");
 		
 		if(this.rarity != null)
 			list.add(EnumChatFormatting.BOLD + "Rarity: " + EnumChatFormatting.GRAY + this.rarity.name);
-		if(author != null)
-			list.add(EnumChatFormatting.WHITE + "   by " + author);
-		if(witty != null)
-			list.add(EnumChatFormatting.GOLD + "   " + EnumChatFormatting.ITALIC + "\"" + witty + "\"");
+		if(this.author != null)
+			list.add(EnumChatFormatting.WHITE + "   by " + this.author);
+		if(this.witty != null)
+			list.add(EnumChatFormatting.GOLD + "   " + EnumChatFormatting.ITALIC + "\"" + this.witty + "\"");
 	}
 	
 	public String getSize(PartSize size) {

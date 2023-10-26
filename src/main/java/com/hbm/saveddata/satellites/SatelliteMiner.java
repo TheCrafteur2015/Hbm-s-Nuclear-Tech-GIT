@@ -1,13 +1,14 @@
 package com.hbm.saveddata.satellites;
 
+import java.util.HashMap;
+
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.ModItems;
 import com.hbm.util.WeightedRandomObject;
+
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-
-import java.util.HashMap;
 
 public class SatelliteMiner extends Satellite {
 	/**
@@ -21,12 +22,14 @@ public class SatelliteMiner extends Satellite {
 		this.satIface = Interfaces.NONE;
 	}
 	
+	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
-		nbt.setLong("lastOp", lastOp);
+		nbt.setLong("lastOp", this.lastOp);
 	}
 	
+	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
-		lastOp = nbt.getLong("lastOp");
+		this.lastOp = nbt.getLong("lastOp");
 	}
 
 	/**
@@ -34,7 +37,7 @@ public class SatelliteMiner extends Satellite {
 	 * @param cargo - Array of {@link WeightedRandomObject} representing the loot that will be delivered.
 	 */
 	public static void registerCargo(Class<? extends SatelliteMiner> minerSatelliteClass, WeightedRandomObject[] cargo) {
-		CARGO.put(minerSatelliteClass, cargo);
+		SatelliteMiner.CARGO.put(minerSatelliteClass, cargo);
 	}
 
 	/**
@@ -42,11 +45,11 @@ public class SatelliteMiner extends Satellite {
 	 * @return - Array of {@link WeightedRandomObject} of satellite loot.
 	 */
 	public WeightedRandomObject[] getCargo() {
-		return CARGO.get(getClass());
+		return SatelliteMiner.CARGO.get(getClass());
 	}
 
 	static {
-		registerCargo(SatelliteMiner.class, new WeightedRandomObject[] {
+		SatelliteMiner.registerCargo(SatelliteMiner.class, new WeightedRandomObject[] {
 			new WeightedRandomObject(new ItemStack(ModItems.powder_aluminium, 3), 10),
 					new WeightedRandomObject(new ItemStack(ModItems.powder_iron, 3), 10),
 					new WeightedRandomObject(new ItemStack(ModItems.powder_titanium, 2), 8),

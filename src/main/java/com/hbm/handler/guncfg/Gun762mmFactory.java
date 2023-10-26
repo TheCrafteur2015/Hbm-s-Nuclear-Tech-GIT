@@ -6,11 +6,11 @@ import com.hbm.handler.BulletConfiguration;
 import com.hbm.handler.CasingEjector;
 import com.hbm.handler.GunConfiguration;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
-import com.hbm.items.ModItems;
 import com.hbm.items.ItemAmmoEnums.Ammo762NATO;
+import com.hbm.items.ModItems;
 import com.hbm.lib.HbmCollection;
-import com.hbm.lib.RefStrings;
 import com.hbm.lib.HbmCollection.EnumGunManufacturer;
+import com.hbm.lib.RefStrings;
 import com.hbm.particle.SpentCasing;
 import com.hbm.particle.SpentCasing.CasingType;
 import com.hbm.potion.HbmPotion;
@@ -75,7 +75,7 @@ public class Gun762mmFactory {
 		
 		config.config = HbmCollection.r762;
 		
-		config.ejector = EJECTOR_RIFLE;
+		config.ejector = Gun762mmFactory.EJECTOR_RIFLE;
 		
 		return config;
 	}
@@ -104,13 +104,13 @@ public class Gun762mmFactory {
 
 		config.config.addAll(HbmCollection.r762);
 		
-		config.ejector = EJECTOR_RIFLE;
+		config.ejector = Gun762mmFactory.EJECTOR_RIFLE;
 
 		return config;
 	}
 
 	public static GunConfiguration getUACCarbineConfig() {
-		final GunConfiguration config = getUACDMRConfig();
+		final GunConfiguration config = Gun762mmFactory.getUACDMRConfig();
 
 		config.rateOfFire = 2;
 		config.reloadDuration = 20;
@@ -126,7 +126,7 @@ public class Gun762mmFactory {
 	}
 
 	public static GunConfiguration getUACLMGConfig() {
-		final GunConfiguration config = getUACCarbineConfig();
+		final GunConfiguration config = Gun762mmFactory.getUACCarbineConfig();
 
 		config.ammoCap = 60;
 		config.durability = 50000;
@@ -159,7 +159,7 @@ public class Gun762mmFactory {
 		config.comment.add(" ~ Stuart Brown (aka Ahoy)");
 		config.config.addAll(HbmCollection.r762);
 		
-		config.ejector = EJECTOR_RIFLE;
+		config.ejector = Gun762mmFactory.EJECTOR_RIFLE;
 
 		return config;
 	}
@@ -196,7 +196,7 @@ public class Gun762mmFactory {
 		config.name = "win20Inox";
 		config.manufacturer = EnumGunManufacturer.WINCHESTER;
 		
-		config.ejector = EJECTOR_BOLT;
+		config.ejector = Gun762mmFactory.EJECTOR_BOLT;
 		
 		config.config = HbmCollection.r762;
 		
@@ -235,7 +235,7 @@ public class Gun762mmFactory {
 		config.name = "win20Poly";
 		config.manufacturer = EnumGunManufacturer.WINCHESTER;
 		
-		config.ejector = EJECTOR_BOLT;
+		config.ejector = Gun762mmFactory.EJECTOR_BOLT;
 		
 		config.config = HbmCollection.r762;
 		
@@ -254,7 +254,7 @@ public class Gun762mmFactory {
 		config.hasSights = true;
 		config.absoluteFOV = true;
 		config.zoomFOV = 0.25F;
-		config.scopeTexture = scope_bolt;
+		config.scopeTexture = Gun762mmFactory.scope_bolt;
 		config.crosshair = Crosshair.CIRCLE;
 		
 		config.animations.put(AnimType.CYCLE, new BusAnimation()
@@ -278,7 +278,7 @@ public class Gun762mmFactory {
 		config.name = "win20Satur";
 		config.manufacturer = EnumGunManufacturer.WINCHESTER_BIGMT;
 		
-		config.ejector = EJECTOR_BOLT;
+		config.ejector = Gun762mmFactory.EJECTOR_BOLT;
 		
 		config.config = HbmCollection.r762;
 		
@@ -295,71 +295,71 @@ public class Gun762mmFactory {
 		bullet.maxAge *= 2;
 		bullet.spread /= 2;
 		
-		bullet.spentCasing = CASING762NATO.clone().register("762NATOStock");
+		bullet.spentCasing = Gun762mmFactory.CASING762NATO.clone().register("762NATOStock");
 
 		return bullet;
 	}
 
 	public static BulletConfiguration get762APConfig() {
-		final BulletConfiguration bullet = get762NATOConfig();
+		final BulletConfiguration bullet = Gun762mmFactory.get762NATOConfig();
 
 		bullet.ammo = new ComparableStack(ModItems.ammo_762.stackFromEnum(Ammo762NATO.AP));
 		bullet.dmgMax = 24;
 		bullet.dmgMin = 28;
 		
-		bullet.spentCasing = CASING762NATO.clone().register("762NATOAP");
+		bullet.spentCasing = Gun762mmFactory.CASING762NATO.clone().register("762NATOAP");
 
 		return bullet;
 	}
 
 	public static BulletConfiguration get762DUConfig() {
-		final BulletConfiguration bullet = get762NATOConfig();
+		final BulletConfiguration bullet = Gun762mmFactory.get762NATOConfig();
 
 		bullet.ammo = new ComparableStack(ModItems.ammo_762.stackFromEnum(Ammo762NATO.DU));
 		bullet.dmgMax = 36;
 		bullet.dmgMin = 40;
 		
-		bullet.spentCasing = CASING762NATO.clone().register("762NATODU");
+		bullet.spentCasing = Gun762mmFactory.CASING762NATO.clone().register("762NATODU");
 
 		return bullet;
 	}
 
 	public static BulletConfiguration get762TracerConfig() {
-		final BulletConfiguration bullet = get762NATOConfig();
+		final BulletConfiguration bullet = Gun762mmFactory.get762NATOConfig();
 
 		bullet.ammo = new ComparableStack(ModItems.ammo_762.stackFromEnum(Ammo762NATO.TRACER));
 		bullet.vPFX = "reddust";
 		
-		bullet.spentCasing = CASING762NATO.clone().register("762NATOTrac");
+		bullet.spentCasing = Gun762mmFactory.CASING762NATO.clone().register("762NATOTrac");
 
 		return bullet;
 	}
 
 	public static BulletConfiguration get762WPConfig() {
-		final BulletConfiguration bullet = get762NATOConfig();
+		final BulletConfiguration bullet = Gun762mmFactory.get762NATOConfig();
 
 		bullet.ammo = new ComparableStack(ModItems.ammo_762.stackFromEnum(Ammo762NATO.PHOSPHORUS));
 		bullet.setToFire(20 * 5);
 		bullet.vPFX = "reddust";
 		final PotionEffect eff = new PotionEffect(HbmPotion.phosphorus.id, 20 * 20, 0, true);
 		eff.getCurativeItems().clear();
-		bullet.effects = new ArrayList<PotionEffect>();
+		bullet.effects = new ArrayList<>();
 		bullet.effects.add(new PotionEffect(eff));
 		
-		bullet.spentCasing = CASING762NATO.clone().register("762NATOPhos");
+		bullet.spentCasing = Gun762mmFactory.CASING762NATO.clone().register("762NATOPhos");
 
 		return bullet;
 	}
 
 	public static BulletConfiguration get762BlankConfig() {
-		final BulletConfiguration bullet = get762NATOConfig();
+		final BulletConfiguration bullet = Gun762mmFactory.get762NATOConfig();
 
 		bullet.ammo = new ComparableStack(ModItems.ammo_762.stackFromEnum(Ammo762NATO.BLANK));
 		bullet.dmgMax = 0;
 		bullet.dmgMin = 0;
 		bullet.maxAge = 0;
 		
-		bullet.spentCasing = CASING762NATO.clone().register("762NATOK");
+		bullet.spentCasing = Gun762mmFactory.CASING762NATO.clone().register("762NATOK");
 
 		return bullet;
 	}

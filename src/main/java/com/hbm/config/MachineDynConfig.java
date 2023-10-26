@@ -35,7 +35,7 @@ public class MachineDynConfig {
 
 		//it's a lit of dummy tile entity instances that are only used once in order to make the init work 
 		//not exactly a great solution but this little smear of ugliness carries all the good parts on its back so i will allow it
-		List<IConfigurableMachine> dummies = new ArrayList();
+		List<IConfigurableMachine> dummies = new ArrayList<>();
 		TileMappings.configurables.forEach(x -> { try { dummies.add(x.newInstance()); } catch(Exception ex) {} }); // <- lambda comes with a hidden little try/catch block hidden inside, like a kinder surprise egg that is filled with shit
 		File file = new File(dir.getAbsolutePath() + File.separatorChar + "hbmMachines.json");
 		
@@ -45,7 +45,7 @@ public class MachineDynConfig {
 		try { // <- useless overarching try/catch to make the reader shut up
 			
 			if(file.exists()) {
-				JsonObject json = gson.fromJson(new FileReader(file), JsonObject.class);
+				JsonObject json = MachineDynConfig.gson.fromJson(new FileReader(file), JsonObject.class);
 				
 				for(IConfigurableMachine dummy : dummies) {
 					
@@ -65,7 +65,7 @@ public class MachineDynConfig {
 			writer.beginObject();
 			
 			writer.name("info").beginArray();
-			for(String line : getComment()) writer.value(line);
+			for(String line : MachineDynConfig.getComment()) writer.value(line);
 			writer.endArray();
 			
 			for(IConfigurableMachine dummy : dummies) {

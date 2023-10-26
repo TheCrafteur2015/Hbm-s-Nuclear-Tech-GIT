@@ -58,7 +58,7 @@ public class DroneWaypointRequest extends BlockContainer {
 		int meta = world.getBlockMetadata(x, y, z) & 7;
 		ForgeDirection dir = ForgeDirection.getOrientation(meta);
 		
-		this.setBlockBounds(
+		setBlockBounds(
 				dir.offsetX == 1 ? 0F : 0.375F,
 				dir.offsetY == 1 ? 0F : 0.375F,
 				dir.offsetZ == 1 ? 0F : 0.375F,

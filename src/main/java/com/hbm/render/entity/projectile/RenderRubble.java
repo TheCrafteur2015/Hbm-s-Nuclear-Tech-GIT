@@ -16,7 +16,7 @@ public class RenderRubble extends Render {
 	ModelRubble mine;
 
 	public RenderRubble() {
-		mine = new ModelRubble();
+		this.mine = new ModelRubble();
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class RenderRubble extends Render {
 			
 			bindTexture(new ResourceLocation(prefix + ":textures/blocks/" + suffix + ".png"));
 			
-			mine.renderAll(0.0625F);
+			this.mine.renderAll(0.0625F);
 		} catch(Exception ex) { }
 		
 		GL11.glPopMatrix();

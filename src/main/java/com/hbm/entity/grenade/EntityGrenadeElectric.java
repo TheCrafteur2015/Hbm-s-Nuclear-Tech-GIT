@@ -29,7 +29,7 @@ public class EntityGrenadeElectric extends EntityGrenadeBouncyBase
     	
         if (!this.worldObj.isRemote)
         {
-            this.setDead();
+            setDead();
             this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 2.0F, true);
         }
             this.worldObj.spawnEntityInWorld(new EntityLightningBolt(this.worldObj, this.posX, this.posY, this.posZ));

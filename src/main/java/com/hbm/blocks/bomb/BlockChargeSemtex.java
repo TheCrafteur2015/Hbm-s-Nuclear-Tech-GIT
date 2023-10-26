@@ -18,9 +18,9 @@ public class BlockChargeSemtex extends BlockChargeBase {
 	public BombReturnCode explode(World world, int x, int y, int z) {
 		
 		if(!world.isRemote) {
-			safe = true;
+			BlockChargeBase.safe = true;
 			world.setBlockToAir(x, y, z);
-			safe = false;
+			BlockChargeBase.safe = false;
 			
 			ExplosionVNT xnt = new ExplosionVNT(world, x + 0.5, y + 0.5, z + 0.5, 10F);
 			xnt.setBlockAllocator(new BlockAllocatorStandard(32));
@@ -42,7 +42,7 @@ public class BlockChargeSemtex extends BlockChargeBase {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean ext) {
 		super.addInformation(stack, player, list, ext);
 		list.add(EnumChatFormatting.BLUE + "Will drop all blocks.");
 		list.add(EnumChatFormatting.BLUE + "Does not do damage.");

@@ -30,22 +30,20 @@ public class ItemGunDart extends ItemGunBase implements IDesignatorItem {
 	
 	public static EntityPlayer readPlayer(World world, ItemStack stack) {
 		
-		if(!stack.hasTagCompound())
-			return null;
-		
-		if(stack.stackTagCompound.getLong("lease") < world.getTotalWorldTime())
+		if(!stack.hasTagCompound() || (stack.stackTagCompound.getLong("lease") < world.getTotalWorldTime()))
 			return null;
 		
 		return MinecraftServer.getServer().getConfigurationManager().func_152612_a(stack.stackTagCompound.getString("player"));
 	}
 	
+	@Override
 	public void startAction(ItemStack stack, World world, EntityPlayer player, boolean main) {
 		
 		if(main) {
 			super.startAction(stack, world, player, main);
 		} else {
 			
-			EntityPlayer target = readPlayer(world, stack);
+			EntityPlayer target = ItemGunDart.readPlayer(world, stack);
 			
 			if(target != null) {
 				
@@ -66,13 +64,13 @@ public class ItemGunDart extends ItemGunBase implements IDesignatorItem {
 
 	@Override
 	public boolean isReady(World world, ItemStack stack, int x, int y, int z) {
-		EntityPlayer target = readPlayer(world, stack);
+		EntityPlayer target = ItemGunDart.readPlayer(world, stack);
 		return target != null && target.dimension == world.provider.dimensionId;
 	}
 
 	@Override
 	public Vec3 getCoords(World world, ItemStack stack, int x, int y, int z) {
-		EntityPlayer target = readPlayer(world, stack);
+		EntityPlayer target = ItemGunDart.readPlayer(world, stack);
 		return Vec3.createVectorHelper(target.posX, target.posY, target.posZ);
 	}
 }

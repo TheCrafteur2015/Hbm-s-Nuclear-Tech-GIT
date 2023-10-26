@@ -20,7 +20,7 @@ public class EntityMovingPackage extends EntityMovingConveyorObject implements I
 
 	public EntityMovingPackage(World world) {
 		super(world);
-		this.setSize(0.5F, 0.5F);
+		setSize(0.5F, 0.5F);
 	}
 
 	@Override
@@ -32,21 +32,21 @@ public class EntityMovingPackage extends EntityMovingConveyorObject implements I
 
 	@Override
 	public ItemStack[] getItemStacks() {
-		return contents;
+		return this.contents;
 	}
 
 	@Override
 	public boolean interactFirst(EntityPlayer player) {
 
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			for(ItemStack stack : contents) {
+			for(ItemStack stack : this.contents) {
 				if(!player.inventory.addItemStackToInventory(stack.copy())) {
-					worldObj.spawnEntityInWorld(new EntityItem(worldObj, posX, posY + 0.125, posZ, stack));
+					this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.posX, this.posY + 0.125, this.posZ, stack));
 				}
 			}
 			
-			this.setDead();
+			setDead();
 		}
 
 		return false;
@@ -55,11 +55,11 @@ public class EntityMovingPackage extends EntityMovingConveyorObject implements I
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
 
-		if(!worldObj.isRemote) {
-			this.setDead();
+		if(!this.worldObj.isRemote) {
+			setDead();
 			
-			for(ItemStack stack : contents) {
-				worldObj.spawnEntityInWorld(new EntityItem(worldObj, posX, posY + 0.125, posZ, stack));
+			for(ItemStack stack : this.contents) {
+				this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.posX, this.posY + 0.125, this.posZ, stack));
 			}
 		}
 		return true;
@@ -68,24 +68,24 @@ public class EntityMovingPackage extends EntityMovingConveyorObject implements I
 	@Override
 	public void enterBlock(IEnterableBlock enterable, BlockPos pos, ForgeDirection dir) {
 		
-		if(enterable.canPackageEnter(worldObj, pos.getX(), pos.getY(), pos.getZ(), dir, this)) {
-			enterable.onPackageEnter(worldObj, pos.getX(), pos.getY(), pos.getZ(), dir, this);
-			this.setDead();
+		if(enterable.canPackageEnter(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), dir, this)) {
+			enterable.onPackageEnter(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), dir, this);
+			setDead();
 		}
 	}
 
 	@Override
 	public boolean onLeaveConveyor() {
 		
-		this.setDead();
+		setDead();
 		
-		for(ItemStack stack : contents) {
-			EntityItem item = new EntityItem(worldObj, posX + motionX * 2, posY + motionY * 2, posZ + motionZ * 2, stack);
+		for(ItemStack stack : this.contents) {
+			EntityItem item = new EntityItem(this.worldObj, this.posX + this.motionX * 2, this.posY + this.motionY * 2, this.posZ + this.motionZ * 2, stack);
 			item.motionX = this.motionX * 2;
 			item.motionY = 0.1;
 			item.motionZ = this.motionZ * 2;
 			item.velocityChanged = true;
-			worldObj.spawnEntityInWorld(item);
+			this.worldObj.spawnEntityInWorld(item);
 		}
 		
 		return true;

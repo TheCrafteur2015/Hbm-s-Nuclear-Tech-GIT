@@ -50,66 +50,66 @@ public class EntityNukeExplosionMK5 extends EntityExplosionChunkloading {
 	@Override
 	public void onUpdate() {
 		
-		if(strength == 0) {
-			this.clearChunkLoader();
-			this.setDead();
+		if(this.strength == 0) {
+			clearChunkLoader();
+			setDead();
 			return;
 		}
 
-		if(!worldObj.isRemote) loadChunk((int) Math.floor(posX / 16D), (int) Math.floor(posZ / 16D));
+		if(!this.worldObj.isRemote) loadChunk((int) Math.floor(this.posX / 16D), (int) Math.floor(this.posZ / 16D));
 		
 		for(Object player : this.worldObj.playerEntities) {
 			((EntityPlayer)player).triggerAchievement(MainRegistry.achManhattan);
 		}
 		
-		if(!worldObj.isRemote && fallout && explosion != null && this.ticksExisted < 10) {
+		if(!this.worldObj.isRemote && this.fallout && this.explosion != null && this.ticksExisted < 10) {
 			radiate(500_000, this.length * 2);
 		}
 		
-		if(!mute) {
+		if(!this.mute) {
 			this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "ambient.weather.thunder", 10000.0F, 0.8F + this.rand.nextFloat() * 0.2F);
-			if(rand.nextInt(5) == 0)
+			if(this.rand.nextInt(5) == 0)
 				this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "random.explode", 10000.0F, 0.8F + this.rand.nextFloat() * 0.2F);
 		}
 		
 		ExplosionNukeGeneric.dealDamage(this.worldObj, this.posX, this.posY, this.posZ, this.length * 2);
 		
-		if(explosion == null) {
-			explosion = new ExplosionNukeRayBatched(worldObj, (int)this.posX, (int)this.posY, (int)this.posZ, this.strength, this.speed, this.length);
+		if(this.explosion == null) {
+			this.explosion = new ExplosionNukeRayBatched(this.worldObj, (int)this.posX, (int)this.posY, (int)this.posZ, this.strength, this.speed, this.length);
 		}
 		
-		if(!explosion.isAusf3Complete) {
-			explosion.collectTip(speed * 10);
-		} else if(explosion.perChunk.size() > 0) {
+		if(!this.explosion.isAusf3Complete) {
+			this.explosion.collectTip(this.speed * 10);
+		} else if(this.explosion.perChunk.size() > 0) {
 			long start = System.currentTimeMillis();
 			
-			while(explosion.perChunk.size() > 0 && System.currentTimeMillis() < start + BombConfig.mk5) explosion.processChunk();
+			while(this.explosion.perChunk.size() > 0 && System.currentTimeMillis() < start + BombConfig.mk5) this.explosion.processChunk();
 			
-		} else if(fallout) {
+		} else if(this.fallout) {
 
 			EntityFalloutRain fallout = new EntityFalloutRain(this.worldObj);
 			fallout.posX = this.posX;
 			fallout.posY = this.posY;
 			fallout.posZ = this.posZ;
-			fallout.setScale((int)(this.length * 2.5 + falloutAdd) * BombConfig.falloutRange / 100);
+			fallout.setScale((int)(this.length * 2.5 + this.falloutAdd) * BombConfig.falloutRange / 100);
 
 			this.worldObj.spawnEntityInWorld(fallout);
 
-			this.clearChunkLoader();
-			this.setDead();
+			clearChunkLoader();
+			setDead();
 		} else {
-			this.clearChunkLoader();
-			this.setDead();
+			clearChunkLoader();
+			setDead();
 		}
 	}
 	
 	private void radiate(float rads, double range) {
 		
-		List<EntityLivingBase> entities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(posX, posY, posZ, posX, posY, posZ).expand(range, range, range));
+		List<EntityLivingBase> entities = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(this.posX, this.posY, this.posZ, this.posX, this.posY, this.posZ).expand(range, range, range));
 		
 		for(EntityLivingBase e : entities) {
 			
-			Vec3 vec = Vec3.createVectorHelper(e.posX - posX, (e.posY + e.getEyeHeight()) - posY, e.posZ - posZ);
+			Vec3 vec = Vec3.createVectorHelper(e.posX - this.posX, (e.posY + e.getEyeHeight()) - this.posY, e.posZ - this.posZ);
 			double len = vec.lengthVector();
 			vec = vec.normalize();
 			
@@ -117,11 +117,11 @@ public class EntityNukeExplosionMK5 extends EntityExplosionChunkloading {
 			
 			for(int i = 1; i < len; i++) {
 
-				int ix = (int)Math.floor(posX + vec.xCoord * i);
-				int iy = (int)Math.floor(posY + vec.yCoord * i);
-				int iz = (int)Math.floor(posZ + vec.zCoord * i);
+				int ix = (int)Math.floor(this.posX + vec.xCoord * i);
+				int iy = (int)Math.floor(this.posY + vec.yCoord * i);
+				int iz = (int)Math.floor(this.posZ + vec.zCoord * i);
 				
-				res += worldObj.getBlock(ix, iy, iz).getExplosionResistance(null);
+				res += this.worldObj.getBlock(ix, iy, iz).getExplosionResistance(null);
 			}
 			
 			if(res < 1)
@@ -168,13 +168,13 @@ public class EntityNukeExplosionMK5 extends EntityExplosionChunkloading {
 	
 	public static EntityNukeExplosionMK5 statFacNoRad(World world, int r, double x, double y, double z) {
 		
-		EntityNukeExplosionMK5 mk5 = statFac(world, r, x, y ,z);
+		EntityNukeExplosionMK5 mk5 = EntityNukeExplosionMK5.statFac(world, r, x, y ,z);
 		mk5.fallout = false;
 		return mk5;
 	}
 	
 	public EntityNukeExplosionMK5 moreFallout(int fallout) {
-		falloutAdd = fallout;
+		this.falloutAdd = fallout;
 		return this;
 	}
 	

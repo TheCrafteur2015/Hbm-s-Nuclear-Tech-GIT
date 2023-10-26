@@ -46,13 +46,13 @@ public class MachineShredder extends BlockContainer {
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int metadata) {
 		if(side == 0)
-			return iconBottom;
+			return this.iconBottom;
 		if(side == 1)
-			return iconTop;
+			return this.iconTop;
 		if(side == 2 || side == 3)
-			return blockIcon;
+			return this.blockIcon;
 		if(side == 4 || side == 5)
-			return iconSide;
+			return this.iconSide;
 		
 		return null;
 	}
@@ -93,7 +93,7 @@ public class MachineShredder extends BlockContainer {
 	@Override
 	public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_)
     {
-        if (!keepInventory)
+        if (!MachineShredder.keepInventory)
         {
         	TileEntityMachineShredder tileentityfurnace = (TileEntityMachineShredder)p_149749_1_.getTileEntity(p_149749_2_, p_149749_3_, p_149749_4_);
 

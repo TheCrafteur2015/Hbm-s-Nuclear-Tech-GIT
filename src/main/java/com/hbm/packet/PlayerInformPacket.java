@@ -49,26 +49,26 @@ public class PlayerInformPacket implements IMessage {
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		id = buf.readInt();
-		millis = buf.readInt();
-		fancy = buf.readBoolean();
+		this.id = buf.readInt();
+		this.millis = buf.readInt();
+		this.fancy = buf.readBoolean();
 		
-		if(!fancy) {
-			dmesg = ByteBufUtils.readUTF8String(buf);
+		if(!this.fancy) {
+			this.dmesg = ByteBufUtils.readUTF8String(buf);
 		} else {
-			component = IChatComponent.Serializer.func_150699_a(ByteBufUtils.readUTF8String(buf));
+			this.component = IChatComponent.Serializer.func_150699_a(ByteBufUtils.readUTF8String(buf));
 		}
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeInt(id);
-		buf.writeInt(millis);
-		buf.writeBoolean(fancy);
-		if(!fancy) {
-			ByteBufUtils.writeUTF8String(buf, dmesg);
+		buf.writeInt(this.id);
+		buf.writeInt(this.millis);
+		buf.writeBoolean(this.fancy);
+		if(!this.fancy) {
+			ByteBufUtils.writeUTF8String(buf, this.dmesg);
 		} else {
-			ByteBufUtils.writeUTF8String(buf, IChatComponent.Serializer.func_150696_a(component));
+			ByteBufUtils.writeUTF8String(buf, IChatComponent.Serializer.func_150696_a(this.component));
 		}
 	}
 

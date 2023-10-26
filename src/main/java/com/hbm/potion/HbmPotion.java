@@ -6,8 +6,8 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.bomb.BlockTaint;
 import com.hbm.config.GeneralConfig;
 import com.hbm.config.PotionConfig;
-import com.hbm.entity.mob.EntityTaintCrab;
 import com.hbm.entity.mob.EntityCreeperTainted;
+import com.hbm.entity.mob.EntityTaintCrab;
 import com.hbm.explosion.ExplosionLarge;
 import com.hbm.extprop.HbmLivingProps;
 import com.hbm.items.ModItems;
@@ -47,18 +47,18 @@ public class HbmPotion extends Potion {
 	}
 
 	public static void init() {
-		taint = registerPotion(PotionConfig.taintID, true, 0x800080, "potion.hbm_taint", 0, 0);
-		radiation = registerPotion(PotionConfig.radiationID, true, 0x84C128, "potion.hbm_radiation", 1, 0);
-		bang = registerPotion(PotionConfig.bangID, true, 0x111111, "potion.hbm_bang", 3, 0);
-		mutation = registerPotion(PotionConfig.mutationID, false, 0x800080, "potion.hbm_mutation", 2, 0);
-		radx = registerPotion(PotionConfig.radxID, false, 0xBB4B00, "potion.hbm_radx", 5, 0);
-		lead = registerPotion(PotionConfig.leadID, true, 0x767682, "potion.hbm_lead", 6, 0);
-		radaway = registerPotion(PotionConfig.radawayID, false, 0xBB4B00, "potion.hbm_radaway", 7, 0);
+		HbmPotion.taint = HbmPotion.registerPotion(PotionConfig.taintID, true, 0x800080, "potion.hbm_taint", 0, 0);
+		HbmPotion.radiation = HbmPotion.registerPotion(PotionConfig.radiationID, true, 0x84C128, "potion.hbm_radiation", 1, 0);
+		HbmPotion.bang = HbmPotion.registerPotion(PotionConfig.bangID, true, 0x111111, "potion.hbm_bang", 3, 0);
+		HbmPotion.mutation = HbmPotion.registerPotion(PotionConfig.mutationID, false, 0x800080, "potion.hbm_mutation", 2, 0);
+		HbmPotion.radx = HbmPotion.registerPotion(PotionConfig.radxID, false, 0xBB4B00, "potion.hbm_radx", 5, 0);
+		HbmPotion.lead = HbmPotion.registerPotion(PotionConfig.leadID, true, 0x767682, "potion.hbm_lead", 6, 0);
+		HbmPotion.radaway = HbmPotion.registerPotion(PotionConfig.radawayID, false, 0xBB4B00, "potion.hbm_radaway", 7, 0);
 		//telekinesis = registerPotion(PotionConfig.telekinesisID, true, 0x00F3FF, "potion.hbm_telekinesis", 0, 1);
-		phosphorus = registerPotion(PotionConfig.phosphorusID, true, 0xFFFF00, "potion.hbm_phosphorus", 1, 1);
-		stability = registerPotion(PotionConfig.stabilityID, false, 0xD0D0D0, "potion.hbm_stability", 2, 1);
-		potionsickness = registerPotion(PotionConfig.potionsicknessID, false, 0xff8080, "potion.hbm_potionsickness", 3, 1);
-		death = registerPotion(PotionConfig.deathID, false, 0x111111, "potion.hbm_death", 4, 1);
+		HbmPotion.phosphorus = HbmPotion.registerPotion(PotionConfig.phosphorusID, true, 0xFFFF00, "potion.hbm_phosphorus", 1, 1);
+		HbmPotion.stability = HbmPotion.registerPotion(PotionConfig.stabilityID, false, 0xD0D0D0, "potion.hbm_stability", 2, 1);
+		HbmPotion.potionsickness = HbmPotion.registerPotion(PotionConfig.potionsicknessID, false, 0xff8080, "potion.hbm_potionsickness", 3, 1);
+		HbmPotion.death = HbmPotion.registerPotion(PotionConfig.deathID, false, 0x111111, "potion.hbm_death", 4, 1);
 	}
 
 	public static HbmPotion registerPotion(int id, boolean isBad, int color, String name, int x, int y) {
@@ -98,11 +98,12 @@ public class HbmPotion extends Potion {
 		return super.getStatusIconIndex();
 	}
 
+	@Override
 	public void performEffect(EntityLivingBase entity, int level) {
 		
 		if(entity.worldObj.isRemote) return;
 
-		if(this == taint) {
+		if(this == HbmPotion.taint) {
 			
 			if(!(entity instanceof EntityCreeperTainted) && !(entity instanceof EntityTaintCrab) && entity.worldObj.rand.nextInt(40) == 0)
 				entity.attackEntityFrom(ModDamageSource.taint, (level + 1));
@@ -121,14 +122,14 @@ public class HbmPotion extends Potion {
 				}
 			}
 		}
-		if(this == radiation) {
+		if(this == HbmPotion.radiation) {
 			ContaminationUtil.contaminate(entity, HazardType.RADIATION, ContaminationType.CREATIVE, (float)(level + 1F) * 0.05F);
 		}
-		if(this == radaway) {
+		if(this == HbmPotion.radaway) {
 			HbmLivingProps.incrementRadiation(entity, -(level + 1));
 			
 		}
-		if(this == bang) {
+		if(this == HbmPotion.bang) {
 			
 			entity.attackEntityFrom(ModDamageSource.bang, 1000);
 			entity.setHealth(0.0F);
@@ -145,29 +146,30 @@ public class HbmPotion extends Potion {
 				cow.entityDropItem(new ItemStack(ModItems.cheese, toDrop), 1.0F);
 			}
 		}
-		if(this == lead) {
+		if(this == HbmPotion.lead) {
 			entity.attackEntityFrom(ModDamageSource.lead, (level + 1));
 		}
-		if(this == phosphorus) {
+		if(this == HbmPotion.phosphorus) {
 			entity.setFire(1);
 		}
 	}
 
+	@Override
 	public boolean isReady(int par1, int par2) {
 
-		if(this == taint) {
+		if(this == HbmPotion.taint) {
 			return par1 % 2 == 0;
 		}
 		
-		if(this == radiation || this == radaway || /*this == telekinesis ||*/ this == phosphorus) {
+		if(this == HbmPotion.radiation || this == HbmPotion.radaway || /*this == telekinesis ||*/ this == HbmPotion.phosphorus) {
 			return true;
 		}
 		
-		if(this == bang) {
+		if(this == HbmPotion.bang) {
 			return par1 <= 10;
 		}
 		
-		if(this == lead) {
+		if(this == HbmPotion.lead) {
 			int k = 60;
 			return k > 0 ? par1 % k == 0 : true;
 		}

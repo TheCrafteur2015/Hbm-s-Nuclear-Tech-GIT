@@ -18,7 +18,7 @@ public class ParticleCoolingTower extends EntityFX {
 
 	public ParticleCoolingTower(TextureManager texman, World world, double x, double y, double z) {
 		super(world, x, y, z);
-		particleIcon = ModEventHandlerClient.particleBase;
+		this.particleIcon = ModEventHandlerClient.particleBase;
 		this.particleRed = this.particleGreen = this.particleBlue = 0.9F + world.rand.nextFloat() * 0.05F;
 		this.noClip = true;
 	}
@@ -39,6 +39,7 @@ public class ParticleCoolingTower extends EntityFX {
 		this.particleMaxAge = i;
 	}
 
+	@Override
 	public void onUpdate() {
 		
 		this.prevPosX = this.posX;
@@ -48,7 +49,7 @@ public class ParticleCoolingTower extends EntityFX {
 		float ageScale = (float) this.particleAge / (float) this.particleMaxAge;
 		
 		this.particleAlpha = 0.25F - ageScale * 0.25F;
-		this.particleScale = baseScale + (float)Math.pow((maxScale * ageScale - baseScale), 2);
+		this.particleScale = this.baseScale + (float)Math.pow((this.maxScale * ageScale - this.baseScale), 2);
 
 		this.particleAge++;
 		
@@ -56,27 +57,29 @@ public class ParticleCoolingTower extends EntityFX {
 			this.motionY += 0.01F;
 		}
 
-		this.motionX += rand.nextGaussian() * 0.075D * ageScale;
-		this.motionZ += rand.nextGaussian() * 0.075D * ageScale;
+		this.motionX += this.rand.nextGaussian() * 0.075D * ageScale;
+		this.motionZ += this.rand.nextGaussian() * 0.075D * ageScale;
 
 		this.motionX += 0.02 * ageScale;
 		this.motionX -= 0.01 * ageScale;
 
 		if(this.particleAge == this.particleMaxAge) {
-			this.setDead();
+			setDead();
 		}
 
-		this.moveEntity(this.motionX, this.motionY, this.motionZ);
+		moveEntity(this.motionX, this.motionY, this.motionZ);
 
-		motionX *= 0.925;
-		motionY *= 0.925;
-		motionZ *= 0.925;
+		this.motionX *= 0.925;
+		this.motionY *= 0.925;
+		this.motionZ *= 0.925;
 	}
 
+	@Override
 	public int getFXLayer() {
 		return 1;
 	}
 
+	@Override
 	public void renderParticle(Tessellator tess, float interp, float fX, float fY, float fZ, float sX, float sZ) {
 
 		tess.setNormal(0.0F, 1.0F, 0.0F);
@@ -84,13 +87,13 @@ public class ParticleCoolingTower extends EntityFX {
 		tess.setColorRGBA_F(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha);
 
 		float scale = this.particleScale;
-		float pX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) interp - interpPosX);
-		float pY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) interp - interpPosY);
-		float pZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) interp - interpPosZ);
+		float pX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) interp - EntityFX.interpPosX);
+		float pY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) interp - EntityFX.interpPosY);
+		float pZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) interp - EntityFX.interpPosZ);
 
-		tess.addVertexWithUV((double) (pX - fX * scale - sX * scale), (double) (pY - fY * scale), (double) (pZ - fZ * scale - sZ * scale), particleIcon.getMaxU(), particleIcon.getMaxV());
-		tess.addVertexWithUV((double) (pX - fX * scale + sX * scale), (double) (pY + fY * scale), (double) (pZ - fZ * scale + sZ * scale), particleIcon.getMaxU(), particleIcon.getMinV());
-		tess.addVertexWithUV((double) (pX + fX * scale + sX * scale), (double) (pY + fY * scale), (double) (pZ + fZ * scale + sZ * scale), particleIcon.getMinU(), particleIcon.getMinV());
-		tess.addVertexWithUV((double) (pX + fX * scale - sX * scale), (double) (pY - fY * scale), (double) (pZ + fZ * scale - sZ * scale), particleIcon.getMinU(), particleIcon.getMaxV());
+		tess.addVertexWithUV((double) (pX - fX * scale - sX * scale), (double) (pY - fY * scale), (double) (pZ - fZ * scale - sZ * scale), this.particleIcon.getMaxU(), this.particleIcon.getMaxV());
+		tess.addVertexWithUV((double) (pX - fX * scale + sX * scale), (double) (pY + fY * scale), (double) (pZ - fZ * scale + sZ * scale), this.particleIcon.getMaxU(), this.particleIcon.getMinV());
+		tess.addVertexWithUV((double) (pX + fX * scale + sX * scale), (double) (pY + fY * scale), (double) (pZ + fZ * scale + sZ * scale), this.particleIcon.getMinU(), this.particleIcon.getMinV());
+		tess.addVertexWithUV((double) (pX + fX * scale - sX * scale), (double) (pY - fY * scale), (double) (pZ + fZ * scale - sZ * scale), this.particleIcon.getMinU(), this.particleIcon.getMaxV());
 	}
 }

@@ -39,7 +39,7 @@ public abstract class EntityThrowableNT extends Entity implements IProjectile {
 
 	public EntityThrowableNT(World world) {
 		super(world);
-		this.setSize(0.25F, 0.25F);
+		setSize(0.25F, 0.25F);
 	}
 
 	@Override
@@ -67,25 +67,25 @@ public abstract class EntityThrowableNT extends Entity implements IProjectile {
 	public EntityThrowableNT(World world, EntityLivingBase thrower) {
 		super(world);
 		this.thrower = thrower;
-		this.setSize(0.25F, 0.25F);
-		this.setLocationAndAngles(thrower.posX, thrower.posY + (double) thrower.getEyeHeight(), thrower.posZ, thrower.rotationYaw, thrower.rotationPitch);
+		setSize(0.25F, 0.25F);
+		setLocationAndAngles(thrower.posX, thrower.posY + (double) thrower.getEyeHeight(), thrower.posZ, thrower.rotationYaw, thrower.rotationPitch);
 		this.posX -= (double) (MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F);
 		this.posY -= 0.1D;
 		this.posZ -= (double) (MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F);
-		this.setPosition(this.posX, this.posY, this.posZ);
+		setPosition(this.posX, this.posY, this.posZ);
 		this.yOffset = 0.0F;
 		float velocity = 0.4F;
 		this.motionX = (double) (-MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI) * velocity);
 		this.motionZ = (double) (MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI) * velocity);
-		this.motionY = (double) (-MathHelper.sin((this.rotationPitch + this.throwAngle()) / 180.0F * (float) Math.PI) * velocity);
-		this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, this.throwForce(), 1.0F);
+		this.motionY = (double) (-MathHelper.sin((this.rotationPitch + throwAngle()) / 180.0F * (float) Math.PI) * velocity);
+		setThrowableHeading(this.motionX, this.motionY, this.motionZ, throwForce(), 1.0F);
 	}
 
 	public EntityThrowableNT(World world, double x, double y, double z) {
 		super(world);
 		this.ticksInGround = 0;
-		this.setSize(0.25F, 0.25F);
-		this.setPosition(x, y, z);
+		setSize(0.25F, 0.25F);
+		setPosition(x, y, z);
 		this.yOffset = 0.0F;
 	}
 
@@ -155,8 +155,8 @@ public abstract class EntityThrowableNT extends Entity implements IProjectile {
 			if(this.worldObj.getBlock(this.stuckBlockX, this.stuckBlockY, this.stuckBlockZ) == this.stuckBlock) {
 				++this.ticksInGround;
 
-				if(this.groundDespawn() > 0 && this.ticksInGround == this.groundDespawn()) {
-					this.setDead();
+				if(groundDespawn() > 0 && this.ticksInGround == groundDespawn()) {
+					setDead();
 				}
 
 				return;
@@ -177,7 +177,7 @@ public abstract class EntityThrowableNT extends Entity implements IProjectile {
 			Vec3 pos = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
 			Vec3 nextPos = Vec3.createVectorHelper(this.posX + this.motionX * motionMult(), this.posY + this.motionY * motionMult(), this.posZ + this.motionZ * motionMult());
 			MovingObjectPosition mop = null;
-			if(!this.isSpectral()) mop = this.worldObj.func_147447_a(pos, nextPos, false, true, false);
+			if(!isSpectral()) mop = this.worldObj.func_147447_a(pos, nextPos, false, true, false);
 			pos = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
 			nextPos = Vec3.createVectorHelper(this.posX + this.motionX * motionMult(), this.posY + this.motionY * motionMult(), this.posZ + this.motionZ * motionMult());
 	
@@ -190,13 +190,13 @@ public abstract class EntityThrowableNT extends Entity implements IProjectile {
 				Entity hitEntity = null;
 				List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX * motionMult(), this.motionY * motionMult(), this.motionZ * motionMult()).expand(1.0D, 1.0D, 1.0D));
 				double nearest = 0.0D;
-				EntityLivingBase thrower = this.getThrower();
+				EntityLivingBase thrower = getThrower();
 				MovingObjectPosition nonPenImpact = null;
 	
-				for(int j = 0; j < list.size(); ++j) {
-					Entity entity = (Entity) list.get(j);
+				for (Object element : list) {
+					Entity entity = (Entity) element;
 					
-					if(entity.canBeCollidedWith() && (entity != thrower || this.ticksInAir >= this.selfDamageDelay())) {
+					if(entity.canBeCollidedWith() && (entity != thrower || this.ticksInAir >= selfDamageDelay())) {
 						double hitbox = 0.3F;
 						AxisAlignedBB aabb = entity.boundingBox.expand(hitbox, hitbox, hitbox);
 						MovingObjectPosition hitMop = aabb.calculateIntercept(pos, nextPos);
@@ -204,8 +204,8 @@ public abstract class EntityThrowableNT extends Entity implements IProjectile {
 						if(hitMop != null) {
 							
 							// if penetration is enabled, run impact for all intersecting entities
-							if(this.doesPenetrate()) {
-								this.onImpact(new MovingObjectPosition(entity, hitMop.hitVec));
+							if(doesPenetrate()) {
+								onImpact(new MovingObjectPosition(entity, hitMop.hitVec));
 							} else {
 								
 								double dist = pos.distanceTo(hitMop.hitVec);
@@ -221,16 +221,16 @@ public abstract class EntityThrowableNT extends Entity implements IProjectile {
 				}
 	
 				// if not, only run it for the closest MOP
-				if(!this.doesPenetrate() && hitEntity != null) {
+				if(!doesPenetrate() && hitEntity != null) {
 					mop = new MovingObjectPosition(hitEntity, nonPenImpact.hitVec);
 				}
 			}
 	
 			if(mop != null) {
 				if(mop.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK && this.worldObj.getBlock(mop.blockX, mop.blockY, mop.blockZ) == Blocks.portal) {
-					this.setInPortal();
+					setInPortal();
 				} else {
-					this.onImpact(mop);
+					onImpact(mop);
 				}
 			}
 			
@@ -258,27 +258,27 @@ public abstract class EntityThrowableNT extends Entity implements IProjectile {
 				this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
 			}
 			
-			float drag = this.getAirDrag();
-			double gravity = this.getGravityVelocity();
+			float drag = getAirDrag();
+			double gravity = getGravityVelocity();
 	
 			this.posX += this.motionX * motionMult();
 			this.posY += this.motionY * motionMult();
 			this.posZ += this.motionZ * motionMult();
 	
-			if(this.isInWater()) {
+			if(isInWater()) {
 				for(int i = 0; i < 4; ++i) {
 					float f = 0.25F;
 					this.worldObj.spawnParticle("bubble", this.posX - this.motionX * (double) f, this.posY - this.motionY * (double) f, this.posZ - this.motionZ * (double) f, this.motionX, this.motionY, this.motionZ);
 				}
 	
-				drag = this.getWaterDrag();
+				drag = getWaterDrag();
 			}
 	
 			this.motionX *= (double) drag;
 			this.motionY *= (double) drag;
 			this.motionZ *= (double) drag;
 			this.motionY -= gravity;
-			this.setPosition(this.posX, this.posY, this.posZ);
+			setPosition(this.posX, this.posY, this.posZ);
 		}
 	}
 	
@@ -298,13 +298,13 @@ public abstract class EntityThrowableNT extends Entity implements IProjectile {
 		this.stuckBlockX = x;
 		this.stuckBlockY = y;
 		this.stuckBlockZ = z;
-		this.stuckBlock = worldObj.getBlock(x, y, z);
+		this.stuckBlock = this.worldObj.getBlock(x, y, z);
 		this.inGround = true;
 		this.motionX = 0;
 		this.motionY = 0;
 		this.motionZ = 0;
-		this.setStuckIn(side);
-		TrackerUtil.sendTeleport(worldObj, this);
+		setStuckIn(side);
+		TrackerUtil.sendTeleport(this.worldObj, this);
 	}
 	
 	public double getGravityVelocity() {

@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.hbm.blocks.ModBlocks;
-import com.hbm.inventory.material.Mats;
 import com.hbm.inventory.material.MaterialShapes;
+import com.hbm.inventory.material.Mats;
 import com.hbm.inventory.material.NTMMaterial;
 import com.hbm.items.ModItems;
 import com.hbm.lib.RefStrings;
@@ -26,18 +26,18 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class ItemMold extends Item {
 	
-	public static List<Mold> molds = new ArrayList(); //molds in "pretty" order, variable between versions
-	public static HashMap<Integer, Mold> moldById = new HashMap(); //molds by their static ID -> stack item damage
+	public static List<Mold> molds = new ArrayList<>(); //molds in "pretty" order, variable between versions
+	public static HashMap<Integer, Mold> moldById = new HashMap<>(); //molds by their static ID -> stack item damage
 	
-	public HashMap<NTMMaterial, ItemStack> blockOverrides = new HashMap();
+	public HashMap<NTMMaterial, ItemStack> blockOverrides = new HashMap<>();
 	
 	public ItemMold() {
 
-		this.setHasSubtypes(true);
-		this.setMaxDamage(0);
+		setHasSubtypes(true);
+		setMaxDamage(0);
 
-		blockOverrides.put(Mats.MAT_STONE,		new ItemStack(Blocks.stone));
-		blockOverrides.put(Mats.MAT_OBSIDIAN,	new ItemStack(Blocks.obsidian));
+		this.blockOverrides.put(Mats.MAT_STONE,		new ItemStack(Blocks.stone));
+		this.blockOverrides.put(Mats.MAT_OBSIDIAN,	new ItemStack(Blocks.obsidian));
 		
 		int S = 0;
 		int L = 1;
@@ -87,41 +87,44 @@ public class ItemMold extends Item {
 	}
 	
 	public void registerMold(Mold mold) {
-		this.molds.add(mold);
-		this.moldById.put(mold.id, mold);
+		ItemMold.molds.add(mold);
+		ItemMold.moldById.put(mold.id, mold);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tab, List list) {
-		for(int i = 0; i < molds.size(); i++) {
-			Mold mold = molds.get(i);
+		for (Mold mold : ItemMold.molds) {
 			list.add(new ItemStack(item, 1, mold.id));
 		}
 	}
 	
 	protected IIcon[] icons;
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister reg) {
 		
-		icons = new IIcon[molds.size()];
+		this.icons = new IIcon[ItemMold.molds.size()];
 		
-		for(int i = 0; i < molds.size(); i++) {
-			Mold mold = molds.get(i);
+		for(int i = 0; i < ItemMold.molds.size(); i++) {
+			Mold mold = ItemMold.molds.get(i);
 			this.icons[i] = reg.registerIcon(RefStrings.MODID + ":mold_" + mold.name);
 		}
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIconFromDamage(int meta) {
-		Mold mold = this.moldById.get(meta);
+		Mold mold = ItemMold.moldById.get(meta);
 		if(mold != null)
 			return this.icons[mold.order];
 		
 		return this.icons[0];
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		Mold mold = getMold(stack);
@@ -132,8 +135,8 @@ public class ItemMold extends Item {
 	}
 	
 	public Mold getMold(ItemStack stack) {
-		Mold mold = moldById.get(stack.getItemDamage());
-		return mold != null ? mold : molds.get(0);
+		Mold mold = ItemMold.moldById.get(stack.getItemDamage());
+		return mold != null ? mold : ItemMold.molds.get(0);
 	}
 	
 	public static int nextOrder = 0;
@@ -145,7 +148,7 @@ public class ItemMold extends Item {
 		public String name;
 		
 		public Mold(int id, int size, String name) {
-			this.order = nextOrder++;
+			this.order = ItemMold.nextOrder++;
 			this.id = id;
 			this.size = size;
 			this.name = name;
@@ -175,7 +178,7 @@ public class ItemMold extends Item {
 		public ItemStack getOutput(NTMMaterial mat) {
 			
 			for(String name : mat.names) {
-				String od = shape.name() + name;
+				String od = this.shape.name() + name;
 				List<ItemStack> ores = OreDictionary.getOres(od);
 				if(!ores.isEmpty()) {
 					ItemStack copy = ores.get(0).copy();
@@ -189,12 +192,12 @@ public class ItemMold extends Item {
 
 		@Override
 		public int getCost() {
-			return shape.q(amount);
+			return this.shape.q(this.amount);
 		}
 
 		@Override
 		public String getTitle() {
-			return I18nUtil.resolveKey("shape." + shape.name()) + " x" + amount;
+			return I18nUtil.resolveKey("shape." + this.shape.name()) + " x" + this.amount;
 		}
 	}
 
@@ -207,7 +210,7 @@ public class ItemMold extends Item {
 		@Override
 		public ItemStack getOutput(NTMMaterial mat) {
 			
-			ItemStack override = blockOverrides.get(mat);
+			ItemStack override = ItemMold.this.blockOverrides.get(mat);
 			
 			if(override != null)
 				return override.copy();
@@ -263,24 +266,24 @@ public class ItemMold extends Item {
 
 		@Override
 		public ItemStack getOutput(NTMMaterial mat) {
-			return this.mat == mat ? out.copy() : null;
+			return this.mat == mat ? this.out.copy() : null;
 		}
 
 		@Override
 		public int getCost() {
-			return amount;
+			return this.amount;
 		}
 
 		@Override
 		public String getTitle() {
-			return out.getDisplayName() + " x" + this.out.stackSize;
+			return this.out.getDisplayName() + " x" + this.out.stackSize;
 		}
 	}
 
 	/* not so graceful but it does the job and it does it well */
 	public class MoldMulti extends Mold {
 		
-		public HashMap<NTMMaterial, ItemStack> map = new HashMap();
+		public HashMap<NTMMaterial, ItemStack> map = new HashMap<>();
 		public int amount;
 		public int stacksize;
 
@@ -289,9 +292,9 @@ public class ItemMold extends Item {
 			this.amount = amount;
 			
 			for(int i = 0; i < inputs.length; i += 2) {
-				map.put((NTMMaterial) inputs[i], (ItemStack) inputs[i + 1]);
+				this.map.put((NTMMaterial) inputs[i], (ItemStack) inputs[i + 1]);
 				
-				if(i == 0) stacksize = (((ItemStack) inputs[i + 1])).stackSize;
+				if(i == 0) this.stacksize = (((ItemStack) inputs[i + 1])).stackSize;
 			}
 		}
 
@@ -307,12 +310,12 @@ public class ItemMold extends Item {
 
 		@Override
 		public int getCost() {
-			return amount;
+			return this.amount;
 		}
 
 		@Override
 		public String getTitle() {
-			return I18nUtil.resolveKey("shape." + name) + " x" + this.stacksize;
+			return I18nUtil.resolveKey("shape." + this.name) + " x" + this.stacksize;
 		}
 	}
 }

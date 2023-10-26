@@ -30,7 +30,7 @@ public class TileEntityMachineAutocrafter extends TileEntityMachineBase implemen
 	public static final String MODE_WILDCARD = "wildcard";
 	public String[] modes = new String[9];
 	
-	public List<IRecipe> recipes = new ArrayList();
+	public List<IRecipe> recipes = new ArrayList<>();
 	public int recipeIndex;
 	public int recipeCount;
 
@@ -40,25 +40,22 @@ public class TileEntityMachineAutocrafter extends TileEntityMachineBase implemen
 	
 	public void initPattern(ItemStack stack, int i) {
 		
-		if(worldObj.isRemote) return;
+		if(this.worldObj.isRemote) return;
 		
 		if(stack == null) {
-			modes[i] = null;
+			this.modes[i] = null;
 			return;
 		}
 		
 		List<String> names = ItemStackUtil.getOreDictNames(stack);
 
-		if(iterateAndCheck(names, i ,"ingot")) return;
-		if(iterateAndCheck(names, i ,"block")) return;
-		if(iterateAndCheck(names, i ,"dust")) return;
-		if(iterateAndCheck(names, i ,"nugget")) return;
+		if(iterateAndCheck(names, i ,"ingot") || iterateAndCheck(names, i ,"block") || iterateAndCheck(names, i ,"dust") || iterateAndCheck(names, i ,"nugget")) return;
 		if(iterateAndCheck(names, i ,"plate")) return;
 		
 		if(stack.getHasSubtypes()) {
-			modes[i] = MODE_EXACT;
+			this.modes[i] = TileEntityMachineAutocrafter.MODE_EXACT;
 		} else {
-			modes[i] = MODE_WILDCARD;
+			this.modes[i] = TileEntityMachineAutocrafter.MODE_WILDCARD;
 		}
 	}
 	
@@ -66,7 +63,7 @@ public class TileEntityMachineAutocrafter extends TileEntityMachineBase implemen
 		
 		for(String s : names) {
 			if(s.startsWith(prefix)) {
-				modes[i] = s;
+				this.modes[i] = s;
 				return true;
 			}
 		}
@@ -76,40 +73,40 @@ public class TileEntityMachineAutocrafter extends TileEntityMachineBase implemen
 	
 	public void nextMode(int i) {
 		
-		if(worldObj.isRemote) return;
+		if(this.worldObj.isRemote) return;
 		
-		ItemStack stack = slots[i];
+		ItemStack stack = this.slots[i];
 		
 		if(stack == null) {
-			modes[i] = null;
+			this.modes[i] = null;
 			return;
 		}
 		
-		if(modes[i] == null) {
-			modes[i] = MODE_EXACT;
-		} else if(MODE_EXACT.equals(modes[i])) {
-			modes[i] = MODE_WILDCARD;
-		} else if(MODE_WILDCARD.equals(modes[i])) {
+		if(this.modes[i] == null) {
+			this.modes[i] = TileEntityMachineAutocrafter.MODE_EXACT;
+		} else if(TileEntityMachineAutocrafter.MODE_EXACT.equals(this.modes[i])) {
+			this.modes[i] = TileEntityMachineAutocrafter.MODE_WILDCARD;
+		} else if(TileEntityMachineAutocrafter.MODE_WILDCARD.equals(this.modes[i])) {
 			
 			List<String> names = ItemStackUtil.getOreDictNames(stack);
 			
 			if(names.isEmpty()) {
-				modes[i] = MODE_EXACT;
+				this.modes[i] = TileEntityMachineAutocrafter.MODE_EXACT;
 			} else {
-				modes[i] = names.get(0);
+				this.modes[i] = names.get(0);
 			}
 		} else {
 			
 			List<String> names = ItemStackUtil.getOreDictNames(stack);
 			
-			if(names.size() < 2 || modes[i].equals(names.get(names.size() - 1))) {
-				modes[i] = MODE_EXACT;
+			if(names.size() < 2 || this.modes[i].equals(names.get(names.size() - 1))) {
+				this.modes[i] = TileEntityMachineAutocrafter.MODE_EXACT;
 			} else {
 				
 				for(int j = 0; j < names.size() - 1; j++) {
 					
-					if(modes[i].equals(names.get(j))) {
-						modes[i] = names.get(j + 1);
+					if(this.modes[i].equals(names.get(j))) {
+						this.modes[i] = names.get(j + 1);
 						return;
 					}
 				}
@@ -119,7 +116,7 @@ public class TileEntityMachineAutocrafter extends TileEntityMachineBase implemen
 	
 	public void nextTemplate() {
 		
-		if(worldObj.isRemote) return;
+		if(this.worldObj.isRemote) return;
 		
 		this.recipeIndex++;
 		
@@ -127,9 +124,9 @@ public class TileEntityMachineAutocrafter extends TileEntityMachineBase implemen
 			this.recipeIndex = 0;
 		
 		if(!this.recipes.isEmpty()) {
-			slots[9] = this.recipes.get(this.recipeIndex).getCraftingResult(getTemplateGrid());
+			this.slots[9] = this.recipes.get(this.recipeIndex).getCraftingResult(getTemplateGrid());
 		} else {
-			slots[9] = null;
+			this.slots[9] = null;
 		}
 	}
 
@@ -143,65 +140,65 @@ public class TileEntityMachineAutocrafter extends TileEntityMachineBase implemen
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			this.power = Library.chargeTEFromItems(slots, 20, power, maxPower);
-			this.updateStandardConnections(worldObj, this);
+			this.power = Library.chargeTEFromItems(this.slots, 20, this.power, TileEntityMachineAutocrafter.maxPower);
+			this.updateStandardConnections(this.worldObj, this);
 			
-			if(!this.recipes.isEmpty() && this.power >= this.consumption) {
-				IRecipe recipe = this.recipes.get(recipeIndex);
+			if(!this.recipes.isEmpty() && this.power >= TileEntityMachineAutocrafter.consumption) {
+				IRecipe recipe = this.recipes.get(this.recipeIndex);
 				
-				if(recipe.matches(this.getRecipeGrid(), this.worldObj)) {
-					ItemStack stack = recipe.getCraftingResult(this.getRecipeGrid());
+				if(recipe.matches(getRecipeGrid(), this.worldObj)) {
+					ItemStack stack = recipe.getCraftingResult(getRecipeGrid());
 					
 					if(stack != null) {
 						
 						boolean didCraft = false;
 						
-						if(slots[19] == null) {
-							slots[19] = stack.copy();
+						if(this.slots[19] == null) {
+							this.slots[19] = stack.copy();
 							didCraft = true;
-						} else if(slots[19].isItemEqual(stack) && ItemStack.areItemStackTagsEqual(stack, slots[19]) && slots[19].stackSize + stack.stackSize <= slots[19].getMaxStackSize()) {
-							slots[19].stackSize += stack.stackSize;
+						} else if(this.slots[19].isItemEqual(stack) && ItemStack.areItemStackTagsEqual(stack, this.slots[19]) && this.slots[19].stackSize + stack.stackSize <= this.slots[19].getMaxStackSize()) {
+							this.slots[19].stackSize += stack.stackSize;
 							didCraft = true;
 						}
 						
 						if(didCraft) {
 							for(int i = 10; i < 19; i++) {
 								
-								ItemStack ingredient = this.getStackInSlot(i);
+								ItemStack ingredient = getStackInSlot(i);
 
 								if(ingredient != null) {
-									this.decrStackSize(i, 1);
+									decrStackSize(i, 1);
 
-									if(slots[i] == null && ingredient.getItem().hasContainerItem(ingredient)) {
+									if(this.slots[i] == null && ingredient.getItem().hasContainerItem(ingredient)) {
 										ItemStack container = ingredient.getItem().getContainerItem(ingredient);
 
 										if(container != null && container.isItemStackDamageable() && container.getItemDamage() > container.getMaxDamage()) {
 											continue;
 										}
 
-										this.setInventorySlotContents(i, container);
+										setInventorySlotContents(i, container);
 									}
 								}
 							}
 							
-							this.power -= this.consumption;
+							this.power -= TileEntityMachineAutocrafter.consumption;
 						}
 					}
 				}
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setLong("power", power);
+			data.setLong("power", this.power);
 			for(int i = 0; i < 9; i++) {
-				if(modes[i] != null) {
-					data.setString("mode" + i, modes[i]);
+				if(this.modes[i] != null) {
+					data.setString("mode" + i, this.modes[i]);
 				}
 			}
 			data.setInteger("count", this.recipeCount);
 			data.setInteger("rec", this.recipeIndex);
-			this.networkPack(data, 15);
+			networkPack(data, 15);
 		}
 	}
 	
@@ -209,10 +206,10 @@ public class TileEntityMachineAutocrafter extends TileEntityMachineBase implemen
 	public void networkUnpack(NBTTagCompound data) {
 		this.power = data.getLong("power");
 		
-		modes = new String[9];
+		this.modes = new String[9];
 		for(int i = 0; i < 9; i++) {
 			if(data.hasKey("mode" + i)) {
-				modes[i] = data.getString("mode" + i);
+				this.modes[i] = data.getString("mode" + i);
 			}
 		}
 		this.recipeCount = data.getInteger("count");
@@ -221,24 +218,24 @@ public class TileEntityMachineAutocrafter extends TileEntityMachineBase implemen
 	
 	public void updateTemplateGrid() {
 
-		this.recipes = getMatchingRecipes(this.getTemplateGrid());
-		this.recipeCount = recipes.size();
+		this.recipes = getMatchingRecipes(getTemplateGrid());
+		this.recipeCount = this.recipes.size();
 		this.recipeIndex = 0;
 		
 		if(!this.recipes.isEmpty()) {
-			slots[9] = this.recipes.get(this.recipeIndex).getCraftingResult(getTemplateGrid());
+			this.slots[9] = this.recipes.get(this.recipeIndex).getCraftingResult(getTemplateGrid());
 		} else {
-			slots[9] = null;
+			this.slots[9] = null;
 		}
 	}
 	
 	public List<IRecipe> getMatchingRecipes(InventoryCrafting grid) {
-		List<IRecipe> recipes = new ArrayList();
+		List<IRecipe> recipes = new ArrayList<>();
 		
 		for(Object o : CraftingManager.getInstance().getRecipeList()) {
 			IRecipe recipe = (IRecipe) o;
 			
-			if(recipe.matches(grid, worldObj)) {
+			if(recipe.matches(grid, this.worldObj)) {
 				recipes.add(recipe);
 			}
 		}
@@ -250,7 +247,7 @@ public class TileEntityMachineAutocrafter extends TileEntityMachineBase implemen
 	
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
-		return access;
+		return this.access;
 	}
 
 	@Override
@@ -259,8 +256,8 @@ public class TileEntityMachineAutocrafter extends TileEntityMachineBase implemen
 			return true;
 		
 		if(i > 9 && i < 19) {
-			ItemStack filter = slots[i - 10];
-			String mode = modes[i - 10];
+			ItemStack filter = this.slots[i - 10];
+			String mode = this.modes[i - 10];
 			
 			if(filter == null || mode == null || mode.isEmpty()) return true;
 			
@@ -278,22 +275,19 @@ public class TileEntityMachineAutocrafter extends TileEntityMachineBase implemen
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
 		//automatically prohibit any stacked item with a container
-		if(stack.stackSize > 1 && stack.getItem().hasContainerItem(stack))
-			return false;
-		
 		//only allow insertion for the nine recipe slots
-		if(slot < 10 || slot > 18)
+		if((stack.stackSize > 1 && stack.getItem().hasContainerItem(stack)) || slot < 10 || slot > 18)
 			return false;
 		
 		//is the filter at this space null? no input.
-		if(slots[slot - 10] == null)
+		if(this.slots[slot - 10] == null)
 			return false;
 		
 		//let's find all slots that this item could potentially go in
-		List<Integer> validSlots = new ArrayList();
+		List<Integer> validSlots = new ArrayList<>();
 		for(int i = 0; i < 9; i++) {
-			ItemStack filter = slots[i];
-			String mode = modes[i];
+			ItemStack filter = this.slots[i];
+			String mode = this.modes[i];
 			
 			if(filter == null || mode == null || mode.isEmpty()) continue;
 			
@@ -301,7 +295,7 @@ public class TileEntityMachineAutocrafter extends TileEntityMachineBase implemen
 				validSlots.add(i + 10);
 				
 				//if the current slot is valid and has no item in it, shortcut to true [*]
-				if(i + 10 == slot && slots[slot] == null) {
+				if(i + 10 == slot && this.slots[slot] == null) {
 					return true;
 				}
 			}
@@ -313,11 +307,11 @@ public class TileEntityMachineAutocrafter extends TileEntityMachineBase implemen
 		}
 		
 		//assumption from [*]: the slot has to be valid by now, and it cannot be null
-		int size = slots[slot].stackSize;
+		int size = this.slots[slot].stackSize;
 		
 		//now we decide based on stacksize, woohoo
 		for(Integer i : validSlots) {
-			ItemStack valid = slots[i];
+			ItemStack valid = this.slots[i];
 			
 			if(valid == null) return false; //null? since slots[slot] is not null by now, this other slot needs the item more
 			if(!(valid.isItemEqual(stack) && ItemStack.areItemStackTagsEqual(valid, stack))) continue; //different item anyway? out with it
@@ -347,12 +341,12 @@ public class TileEntityMachineAutocrafter extends TileEntityMachineBase implemen
 	}
 	
 	public InventoryCrafting getTemplateGrid() {
-		this.craftingInventory.loadIventory(slots, 0);
+		this.craftingInventory.loadIventory(this.slots, 0);
 		return this.craftingInventory;
 	}
 	
 	public InventoryCrafting getRecipeGrid() {
-		this.craftingInventory.loadIventory(slots, 10);
+		this.craftingInventory.loadIventory(this.slots, 10);
 		return this.craftingInventory;
 	}
 	
@@ -364,8 +358,8 @@ public class TileEntityMachineAutocrafter extends TileEntityMachineBase implemen
 		
 		public void loadIventory(ItemStack[] slots, int start) {
 			
-			for(int i = 0; i < this.getSizeInventory(); i++) {
-				this.setInventorySlotContents(i, slots[start + i]);
+			for(int i = 0; i < getSizeInventory(); i++) {
+				setInventorySlotContents(i, slots[start + i]);
 			}
 		}
 		
@@ -376,17 +370,17 @@ public class TileEntityMachineAutocrafter extends TileEntityMachineBase implemen
 	}
 	
 	public static int consumption = 100;
-	public static long maxPower = consumption * 100;
+	public static long maxPower = TileEntityMachineAutocrafter.consumption * 100;
 	public long power;
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 
 	@Override
 	public long getMaxPower() {
-		return maxPower;
+		return TileEntityMachineAutocrafter.maxPower;
 	}
 
 	@Override
@@ -401,29 +395,29 @@ public class TileEntityMachineAutocrafter extends TileEntityMachineBase implemen
 		
 		for(int i = 0; i < 9; i++) {
 			if(nbt.hasKey("mode" + i)) {
-				modes[i] = nbt.getString("mode" + i);
+				this.modes[i] = nbt.getString("mode" + i);
 			}
 		}
 		
-		this.recipes = getMatchingRecipes(this.getTemplateGrid());
-		this.recipeCount = recipes.size();
+		this.recipes = getMatchingRecipes(getTemplateGrid());
+		this.recipeCount = this.recipes.size();
 		this.recipeIndex = nbt.getInteger("rec");
 		
 		if(!this.recipes.isEmpty()) {
-			slots[9] = this.recipes.get(this.recipeIndex).getCraftingResult(getTemplateGrid());
+			this.slots[9] = this.recipes.get(this.recipeIndex).getCraftingResult(getTemplateGrid());
 		} else {
-			slots[9] = null;
+			this.slots[9] = null;
 		}
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setLong("power", power);
+		nbt.setLong("power", this.power);
 		
 		for(int i = 0; i < 9; i++) {
-			if(modes[i] != null) {
-				nbt.setString("mode" + i, modes[i]);
+			if(this.modes[i] != null) {
+				nbt.setString("mode" + i, this.modes[i]);
 			}
 		}
 		

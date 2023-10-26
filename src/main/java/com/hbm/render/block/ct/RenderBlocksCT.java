@@ -55,43 +55,43 @@ public class RenderBlocksCT extends RenderBlocks {
 		int light = (brightnessTopLeft + brightnessTopRight + brightnessBottomLeft + brightnessBottomRight) / 4;*/
 		
 		if(side == ForgeDirection.SOUTH.ordinal()) {
-			this.tl = new VertInfo(colorRedTopLeft, colorGreenTopLeft, colorBlueTopLeft, brightnessTopLeft);
-			this.tr = new VertInfo(colorRedTopRight, colorGreenTopRight, colorBlueTopRight, brightnessTopRight);
-			this.bl = new VertInfo(colorRedBottomLeft, colorGreenBottomLeft, colorBlueBottomLeft, brightnessBottomLeft);
-			this.br = new VertInfo(colorRedBottomRight, colorGreenBottomRight, colorBlueBottomRight, brightnessBottomRight);
+			this.tl = new VertInfo(this.colorRedTopLeft, this.colorGreenTopLeft, this.colorBlueTopLeft, this.brightnessTopLeft);
+			this.tr = new VertInfo(this.colorRedTopRight, this.colorGreenTopRight, this.colorBlueTopRight, this.brightnessTopRight);
+			this.bl = new VertInfo(this.colorRedBottomLeft, this.colorGreenBottomLeft, this.colorBlueBottomLeft, this.brightnessBottomLeft);
+			this.br = new VertInfo(this.colorRedBottomRight, this.colorGreenBottomRight, this.colorBlueBottomRight, this.brightnessBottomRight);
 		} else if(side == ForgeDirection.NORTH.ordinal()) {
-			this.tr = new VertInfo(colorRedTopLeft, colorGreenTopLeft, colorBlueTopLeft, brightnessTopLeft);
-			this.br = new VertInfo(colorRedTopRight, colorGreenTopRight, colorBlueTopRight, brightnessTopRight);
-			this.tl = new VertInfo(colorRedBottomLeft, colorGreenBottomLeft, colorBlueBottomLeft, brightnessBottomLeft);
-			this.bl = new VertInfo(colorRedBottomRight, colorGreenBottomRight, colorBlueBottomRight, brightnessBottomRight);
+			this.tr = new VertInfo(this.colorRedTopLeft, this.colorGreenTopLeft, this.colorBlueTopLeft, this.brightnessTopLeft);
+			this.br = new VertInfo(this.colorRedTopRight, this.colorGreenTopRight, this.colorBlueTopRight, this.brightnessTopRight);
+			this.tl = new VertInfo(this.colorRedBottomLeft, this.colorGreenBottomLeft, this.colorBlueBottomLeft, this.brightnessBottomLeft);
+			this.bl = new VertInfo(this.colorRedBottomRight, this.colorGreenBottomRight, this.colorBlueBottomRight, this.brightnessBottomRight);
 		} else if(side == ForgeDirection.EAST.ordinal()) {
-			this.bl = new VertInfo(colorRedTopLeft, colorGreenTopLeft, colorBlueTopLeft, brightnessTopLeft);
-			this.tl = new VertInfo(colorRedTopRight, colorGreenTopRight, colorBlueTopRight, brightnessTopRight);
-			this.br = new VertInfo(colorRedBottomLeft, colorGreenBottomLeft, colorBlueBottomLeft, brightnessBottomLeft);
-			this.tr = new VertInfo(colorRedBottomRight, colorGreenBottomRight, colorBlueBottomRight, brightnessBottomRight);
+			this.bl = new VertInfo(this.colorRedTopLeft, this.colorGreenTopLeft, this.colorBlueTopLeft, this.brightnessTopLeft);
+			this.tl = new VertInfo(this.colorRedTopRight, this.colorGreenTopRight, this.colorBlueTopRight, this.brightnessTopRight);
+			this.br = new VertInfo(this.colorRedBottomLeft, this.colorGreenBottomLeft, this.colorBlueBottomLeft, this.brightnessBottomLeft);
+			this.tr = new VertInfo(this.colorRedBottomRight, this.colorGreenBottomRight, this.colorBlueBottomRight, this.brightnessBottomRight);
 		} else if(side == ForgeDirection.WEST.ordinal()) {
-			this.tr = new VertInfo(colorRedTopLeft, colorGreenTopLeft, colorBlueTopLeft, brightnessTopLeft);
-			this.br = new VertInfo(colorRedTopRight, colorGreenTopRight, colorBlueTopRight, brightnessTopRight);
-			this.tl = new VertInfo(colorRedBottomLeft, colorGreenBottomLeft, colorBlueBottomLeft, brightnessBottomLeft);
-			this.bl = new VertInfo(colorRedBottomRight, colorGreenBottomRight, colorBlueBottomRight, brightnessBottomRight);
+			this.tr = new VertInfo(this.colorRedTopLeft, this.colorGreenTopLeft, this.colorBlueTopLeft, this.brightnessTopLeft);
+			this.br = new VertInfo(this.colorRedTopRight, this.colorGreenTopRight, this.colorBlueTopRight, this.brightnessTopRight);
+			this.tl = new VertInfo(this.colorRedBottomLeft, this.colorGreenBottomLeft, this.colorBlueBottomLeft, this.brightnessBottomLeft);
+			this.bl = new VertInfo(this.colorRedBottomRight, this.colorGreenBottomRight, this.colorBlueBottomRight, this.brightnessBottomRight);
 		} else if(side == ForgeDirection.UP.ordinal()) {
-			this.br = new VertInfo(colorRedTopLeft, colorGreenTopLeft, colorBlueTopLeft, brightnessTopLeft);
-			this.bl = new VertInfo(colorRedTopRight, colorGreenTopRight, colorBlueTopRight, brightnessTopRight);
-			this.tr = new VertInfo(colorRedBottomLeft, colorGreenBottomLeft, colorBlueBottomLeft, brightnessBottomLeft);
-			this.tl = new VertInfo(colorRedBottomRight, colorGreenBottomRight, colorBlueBottomRight, brightnessBottomRight);
+			this.br = new VertInfo(this.colorRedTopLeft, this.colorGreenTopLeft, this.colorBlueTopLeft, this.brightnessTopLeft);
+			this.bl = new VertInfo(this.colorRedTopRight, this.colorGreenTopRight, this.colorBlueTopRight, this.brightnessTopRight);
+			this.tr = new VertInfo(this.colorRedBottomLeft, this.colorGreenBottomLeft, this.colorBlueBottomLeft, this.brightnessBottomLeft);
+			this.tl = new VertInfo(this.colorRedBottomRight, this.colorGreenBottomRight, this.colorBlueBottomRight, this.brightnessBottomRight);
 		} else {
-			this.tl = new VertInfo(colorRedTopLeft, colorGreenTopLeft, colorBlueTopLeft, brightnessTopLeft);
-			this.tr = new VertInfo(colorRedTopRight, colorGreenTopRight, colorBlueTopRight, brightnessTopRight);
-			this.bl = new VertInfo(colorRedBottomLeft, colorGreenBottomLeft, colorBlueBottomLeft, brightnessBottomLeft);
-			this.br = new VertInfo(colorRedBottomRight, colorGreenBottomRight, colorBlueBottomRight, brightnessBottomRight);
+			this.tl = new VertInfo(this.colorRedTopLeft, this.colorGreenTopLeft, this.colorBlueTopLeft, this.brightnessTopLeft);
+			this.tr = new VertInfo(this.colorRedTopRight, this.colorGreenTopRight, this.colorBlueTopRight, this.brightnessTopRight);
+			this.bl = new VertInfo(this.colorRedBottomLeft, this.colorGreenBottomLeft, this.colorBlueBottomLeft, this.brightnessBottomLeft);
+			this.br = new VertInfo(this.colorRedBottomRight, this.colorGreenBottomRight, this.colorBlueBottomRight, this.brightnessBottomRight);
 		}
 
-		this.tc = VertInfo.avg(tl, tr);
-		this.bc = VertInfo.avg(bl, br);
-		this.cl = VertInfo.avg(tl, bl);
-		this.cr = VertInfo.avg(tr, br);
+		this.tc = VertInfo.avg(this.tl, this.tr);
+		this.bc = VertInfo.avg(this.bl, this.br);
+		this.cl = VertInfo.avg(this.tl, this.bl);
+		this.cr = VertInfo.avg(this.tr, this.br);
 		
-		this.cc = VertInfo.avg(tl, tr, bl, br);
+		this.cc = VertInfo.avg(this.tl, this.tr, this.bl, this.br);
 	}
 
 	@Override
@@ -102,7 +102,7 @@ public class RenderBlocksCT extends RenderBlocks {
 			return false;
 		}
 		
-		CTContext.loadContext(blockAccess, x, y, z, block);
+		CTContext.loadContext(this.blockAccess, x, y, z, block);
 		
 		return super.renderStandardBlock(block, x, y, z);
 	}
@@ -240,13 +240,13 @@ public class RenderBlocksCT extends RenderBlocks {
 		boolean debugColor = false;
 		
 		/// ORDER: ROTATIONAL ///
-		if(debugColor) tess.setColorOpaque_F(1F, 1F, 0F);
+		if(debugColor) this.tess.setColorOpaque_F(1F, 1F, 0F);
 		drawVert(ftr, icon.getMaxU(), icon.getMinV(), ntr);
-		if(debugColor) tess.setColorOpaque_F(1F, 0F, 0F);
+		if(debugColor) this.tess.setColorOpaque_F(1F, 0F, 0F);
 		drawVert(ftl, icon.getMinU(), icon.getMinV(), ntl);
-		if(debugColor) tess.setColorOpaque_F(0F, 0F, 1F);
+		if(debugColor) this.tess.setColorOpaque_F(0F, 0F, 1F);
 		drawVert(fbl, icon.getMinU(), icon.getMaxV(), nbl);
-		if(debugColor) tess.setColorOpaque_F(0F, 1F, 0F);
+		if(debugColor) this.tess.setColorOpaque_F(0F, 1F, 0F);
 		drawVert(fbr, icon.getMaxU(), icon.getMaxV(), nbr);
 	}
 	
@@ -257,11 +257,11 @@ public class RenderBlocksCT extends RenderBlocks {
 	private void drawVert(double x, double y, double z, double u, double v, VertInfo info) {
 		
 		if(this.enableAO) {
-			tess.setColorOpaque_F(info.red, info.green, info.blue);
-			tess.setBrightness(info.brightness);
+			this.tess.setColorOpaque_F(info.red, info.green, info.blue);
+			this.tess.setBrightness(info.brightness);
 		}
 		
-		tess.addVertexWithUV(x, y, z, u, v);
+		this.tess.addVertexWithUV(x, y, z, u, v);
 	}
 	
 	private double[] avgCoords(double[] first, double[] second) {
@@ -311,36 +311,36 @@ public class RenderBlocksCT extends RenderBlocks {
 	public void renderBlockAsItem(Block block, int meta, float mult) {
 
 		block.setBlockBoundsForItemRender();
-		this.setRenderBoundsFromBlock(block);
+		setRenderBoundsFromBlock(block);
 		GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
 		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 		
-		tess.startDrawingQuads();
-		tess.setNormal(0.0F, -1.0F, 0.0F);
-		super.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(block, 0, meta));
-		tess.draw();
-		tess.startDrawingQuads();
-		tess.setNormal(0.0F, 1.0F, 0.0F);
-		super.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(block, 1, meta));
-		tess.draw();
+		this.tess.startDrawingQuads();
+		this.tess.setNormal(0.0F, -1.0F, 0.0F);
+		super.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(block, 0, meta));
+		this.tess.draw();
+		this.tess.startDrawingQuads();
+		this.tess.setNormal(0.0F, 1.0F, 0.0F);
+		super.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(block, 1, meta));
+		this.tess.draw();
 
-		tess.startDrawingQuads();
-		tess.setNormal(0.0F, 0.0F, -1.0F);
-		super.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(block, 2, meta));
-		tess.draw();
-		tess.startDrawingQuads();
-		tess.setNormal(0.0F, 0.0F, 1.0F);
-		super.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(block, 3, meta));
-		tess.draw();
+		this.tess.startDrawingQuads();
+		this.tess.setNormal(0.0F, 0.0F, -1.0F);
+		super.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(block, 2, meta));
+		this.tess.draw();
+		this.tess.startDrawingQuads();
+		this.tess.setNormal(0.0F, 0.0F, 1.0F);
+		super.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(block, 3, meta));
+		this.tess.draw();
 		
-		tess.startDrawingQuads();
-		tess.setNormal(-1.0F, 0.0F, 0.0F);
-		super.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(block, 4, meta));
-		tess.draw();
-		tess.startDrawingQuads();
-		tess.setNormal(1.0F, 0.0F, 0.0F);
-		super.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(block, 5, meta));
-		tess.draw();
+		this.tess.startDrawingQuads();
+		this.tess.setNormal(-1.0F, 0.0F, 0.0F);
+		super.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(block, 4, meta));
+		this.tess.draw();
+		this.tess.startDrawingQuads();
+		this.tess.setNormal(1.0F, 0.0F, 0.0F);
+		super.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, getBlockIconFromSideAndMetadata(block, 5, meta));
+		this.tess.draw();
 		
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 	}

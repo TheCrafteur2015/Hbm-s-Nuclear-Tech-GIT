@@ -1,6 +1,7 @@
 package com.hbm.tileentity.machine.rbmk;
 
 import com.hbm.entity.projectile.EntityRBMKDebris.DebrisType;
+
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -31,26 +32,26 @@ public abstract class TileEntityRBMKControl extends TileEntityRBMKSlottedBase im
 	@Override
 	public void updateEntity() {
 		
-		if(worldObj.isRemote) {
+		if(this.worldObj.isRemote) {
 			
 			this.lastLevel = this.level;
 		
 		} else {
 			
-			if(level < targetLevel) {
+			if(this.level < this.targetLevel) {
 				
-				level += speed * RBMKDials.getControlSpeed(worldObj);
+				this.level += TileEntityRBMKControl.speed * RBMKDials.getControlSpeed(this.worldObj);
 				
-				if(level > targetLevel)
-					level = targetLevel;
+				if(this.level > this.targetLevel)
+					this.level = this.targetLevel;
 			}
 			
-			if(level > targetLevel) {
+			if(this.level > this.targetLevel) {
 				
-				level -= speed * RBMKDials.getControlSpeed(worldObj);
+				this.level -= TileEntityRBMKControl.speed * RBMKDials.getControlSpeed(this.worldObj);
 				
-				if(level < targetLevel)
-					level = targetLevel;
+				if(this.level < this.targetLevel)
+					this.level = this.targetLevel;
 			}
 		}
 		
@@ -95,22 +96,22 @@ public abstract class TileEntityRBMKControl extends TileEntityRBMKSlottedBase im
 	@Override
 	public void onMelt(int reduce) {
 		
-		if(this.isModerated()) {
+		if(isModerated()) {
 			
-			int count = 2 + worldObj.rand.nextInt(2);
+			int count = 2 + this.worldObj.rand.nextInt(2);
 			
 			for(int i = 0; i < count; i++) {
 				spawnDebris(DebrisType.GRAPHITE);
 			}
 		}
 		
-		int count = 2 + worldObj.rand.nextInt(2);
+		int count = 2 + this.worldObj.rand.nextInt(2);
 		
 		for(int i = 0; i < count; i++) {
 			spawnDebris(DebrisType.ROD);
 		}
 		
-		this.standardMelt(reduce);
+		standardMelt(reduce);
 	}
 
 	@Override
@@ -135,25 +136,25 @@ public abstract class TileEntityRBMKControl extends TileEntityRBMKSlottedBase im
 	@Callback(direct = true, limit = 16)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getTargetLevel(Context context, Arguments args) {
-		return new Object[] {targetLevel * 100};
+		return new Object[] {this.targetLevel * 100};
 	}
 
 	@Callback(direct = true, limit = 16)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getCoordinates(Context context, Arguments args) {
-		return new Object[] {xCoord, yCoord, zCoord};
+		return new Object[] {this.xCoord, this.yCoord, this.zCoord};
 	}
 
 	@Callback(direct = true, limit = 16)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getHeat(Context context, Arguments args) {
-		return new Object[] {heat};
+		return new Object[] {this.heat};
 	}
 
 	@Callback(direct = true, limit = 16)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getInfo(Context context, Arguments args) {
-		return new Object[] {heat, getMult() * 100, targetLevel * 100, xCoord, yCoord, zCoord};
+		return new Object[] {this.heat, getMult() * 100, this.targetLevel * 100, this.xCoord, this.yCoord, this.zCoord};
 	}
 
 	@Callback(direct = true, limit = 16)
@@ -165,7 +166,7 @@ public abstract class TileEntityRBMKControl extends TileEntityRBMKSlottedBase im
 		} else if (newLevel < 0.0) {
 			newLevel = 0.0;
 		}	
-		targetLevel = newLevel;
+		this.targetLevel = newLevel;
 		return new Object[] {};
 	}
 }

@@ -4,15 +4,15 @@ import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
 
+import com.hbm.entity.projectile.EntityBullet;
+import com.hbm.lib.RefStrings;
+import com.hbm.render.model.ModelBullet;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-
-import com.hbm.entity.projectile.EntityBullet;
-import com.hbm.lib.RefStrings;
-import com.hbm.render.model.ModelBullet;
 
 @SideOnly(Side.CLIENT)
 public class RenderRocket extends Render {
@@ -20,7 +20,7 @@ public class RenderRocket extends Render {
 	private ModelBullet miniNuke;
 
 	public RenderRocket() {
-		miniNuke = new ModelBullet();
+		this.miniNuke = new ModelBullet();
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class RenderRocket extends Render {
 		} else if (rocket instanceof EntityBullet) {
 			bindTexture(new ResourceLocation(RefStrings.MODID + ":textures/models/bullet.png"));
 		}
-		miniNuke.renderAll(0.0625F);
+		this.miniNuke.renderAll(0.0625F);
 		
 		//renderFlechette();
 		//renderDart();

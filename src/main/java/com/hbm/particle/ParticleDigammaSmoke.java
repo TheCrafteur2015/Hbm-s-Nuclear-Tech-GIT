@@ -17,13 +17,13 @@ public class ParticleDigammaSmoke extends EntityFX {
 
 	public ParticleDigammaSmoke(TextureManager p_i1213_1_, World p_i1218_1_, double p_i1218_2_, double p_i1218_4_, double p_i1218_6_) {
 		super(p_i1218_1_, p_i1218_2_, p_i1218_4_, p_i1218_6_);
-		particleIcon = ModEventHandlerClient.particleBase;
-		maxAge = 100 + rand.nextInt(40);
+		this.particleIcon = ModEventHandlerClient.particleBase;
+		this.maxAge = 100 + this.rand.nextInt(40);
 		this.noClip = true;
 		
 		this.particleScale = 5;
 		
-		this.particleRed = 0.5F + rand.nextFloat() * 0.2F;
+		this.particleRed = 0.5F + this.rand.nextFloat() * 0.2F;
 		this.particleGreen = 0.0F;
 		this.particleBlue = 0.0F;
 	}
@@ -34,19 +34,19 @@ public class ParticleDigammaSmoke extends EntityFX {
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
 
-		particleAlpha = 1 - ((float) age / (float) maxAge);
+		this.particleAlpha = 1 - ((float) this.age / (float) this.maxAge);
 
 		++this.age;
 
 		if(this.age == this.maxAge) {
-			this.setDead();
+			setDead();
 		}
 
 		this.motionX *= 0.99D;
 		this.motionY *= 0.99D;
 		this.motionZ *= 0.99D;
 
-		this.moveEntity(this.motionX, this.motionY, this.motionZ);
+		moveEntity(this.motionX, this.motionY, this.motionZ);
 	}
 	
 	@Override
@@ -61,14 +61,14 @@ public class ParticleDigammaSmoke extends EntityFX {
 		tess.setNormal(0.0F, 1.0F, 0.0F);
 
 		float scale = this.particleScale;
-		float pX = (float) ((this.prevPosX + (this.posX - this.prevPosX) * (double) p_70539_2_ - interpPosX));
-		float pY = (float) ((this.prevPosY + (this.posY - this.prevPosY) * (double) p_70539_2_ - interpPosY));
-		float pZ = (float) ((this.prevPosZ + (this.posZ - this.prevPosZ) * (double) p_70539_2_ - interpPosZ));
+		float pX = (float) ((this.prevPosX + (this.posX - this.prevPosX) * (double) p_70539_2_ - EntityFX.interpPosX));
+		float pY = (float) ((this.prevPosY + (this.posY - this.prevPosY) * (double) p_70539_2_ - EntityFX.interpPosY));
+		float pZ = (float) ((this.prevPosZ + (this.posZ - this.prevPosZ) * (double) p_70539_2_ - EntityFX.interpPosZ));
 
-		tess.addVertexWithUV((double) (pX - p_70539_3_ * scale - p_70539_6_ * scale), (double) (pY - p_70539_4_ * scale), (double) (pZ - p_70539_5_ * scale - p_70539_7_ * scale), particleIcon.getMaxU(), particleIcon.getMaxV());
-		tess.addVertexWithUV((double) (pX - p_70539_3_ * scale + p_70539_6_ * scale), (double) (pY + p_70539_4_ * scale), (double) (pZ - p_70539_5_ * scale + p_70539_7_ * scale), particleIcon.getMaxU(), particleIcon.getMinV());
-		tess.addVertexWithUV((double) (pX + p_70539_3_ * scale + p_70539_6_ * scale), (double) (pY + p_70539_4_ * scale), (double) (pZ + p_70539_5_ * scale + p_70539_7_ * scale), particleIcon.getMinU(), particleIcon.getMinV());
-		tess.addVertexWithUV((double) (pX + p_70539_3_ * scale - p_70539_6_ * scale), (double) (pY - p_70539_4_ * scale), (double) (pZ + p_70539_5_ * scale - p_70539_7_ * scale), particleIcon.getMinU(), particleIcon.getMaxV());
+		tess.addVertexWithUV((double) (pX - p_70539_3_ * scale - p_70539_6_ * scale), (double) (pY - p_70539_4_ * scale), (double) (pZ - p_70539_5_ * scale - p_70539_7_ * scale), this.particleIcon.getMaxU(), this.particleIcon.getMaxV());
+		tess.addVertexWithUV((double) (pX - p_70539_3_ * scale + p_70539_6_ * scale), (double) (pY + p_70539_4_ * scale), (double) (pZ - p_70539_5_ * scale + p_70539_7_ * scale), this.particleIcon.getMaxU(), this.particleIcon.getMinV());
+		tess.addVertexWithUV((double) (pX + p_70539_3_ * scale + p_70539_6_ * scale), (double) (pY + p_70539_4_ * scale), (double) (pZ + p_70539_5_ * scale + p_70539_7_ * scale), this.particleIcon.getMinU(), this.particleIcon.getMinV());
+		tess.addVertexWithUV((double) (pX + p_70539_3_ * scale - p_70539_6_ * scale), (double) (pY - p_70539_4_ * scale), (double) (pZ + p_70539_5_ * scale - p_70539_7_ * scale), this.particleIcon.getMinU(), this.particleIcon.getMaxV());
 	}
 	
 	@Override

@@ -24,7 +24,7 @@ public class BlockBase extends Block {
 	@Override
 	public Block setBlockName(String name) {
 		super.setBlockName(name);
-		this.setBlockTextureName(RefStrings.MODID + ":" + name);
+		setBlockTextureName(RefStrings.MODID + ":" + name);
 		return this;
 	}
 	

@@ -29,8 +29,8 @@ public class TileEntityCraneRouter extends TileEntityMachineBase implements IGUI
 	public TileEntityCraneRouter() {
 		super(5 * 6);
 		
-		for(int i = 0; i < patterns.length; i++) {
-			patterns[i] = new ModulePatternMatcher(5);
+		for(int i = 0; i < this.patterns.length; i++) {
+			this.patterns[i] = new ModulePatternMatcher(5);
 		}
 	}
 
@@ -42,24 +42,24 @@ public class TileEntityCraneRouter extends TileEntityMachineBase implements IGUI
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 
 			NBTTagCompound data = new NBTTagCompound();
-			for(int i = 0; i < patterns.length; i++) {
+			for(int i = 0; i < this.patterns.length; i++) {
 				NBTTagCompound compound = new NBTTagCompound();
-				patterns[i].writeToNBT(compound);
+				this.patterns[i].writeToNBT(compound);
 				data.setTag("pattern" + i, compound);
 			}
 			data.setIntArray("modes", this.modes);
-			this.networkPack(data, 15);
+			networkPack(data, 15);
 		}
 	}
 	
 	@Override
 	public void networkUnpack(NBTTagCompound data) {
-		for(int i = 0; i < patterns.length; i++) {
+		for(int i = 0; i < this.patterns.length; i++) {
 			NBTTagCompound compound = data.getCompoundTag("pattern" + i);
-			patterns[i].readFromNBT(compound);
+			this.patterns[i].readFromNBT(compound);
 		}
 		this.modes = data.getIntArray("modes");
 	}
@@ -80,7 +80,7 @@ public class TileEntityCraneRouter extends TileEntityMachineBase implements IGUI
 		int matcher = index / 5;
 		int mIndex = index % 5;
 		
-		this.patterns[matcher].nextMode(worldObj, slots[index], mIndex);
+		this.patterns[matcher].nextMode(this.worldObj, this.slots[index], mIndex);
 	}
 
 	public void initPattern(ItemStack stack, int index) {
@@ -88,16 +88,16 @@ public class TileEntityCraneRouter extends TileEntityMachineBase implements IGUI
 		int matcher = index / 5;
 		int mIndex = index % 5;
 		
-		this.patterns[matcher].initPatternSmart(worldObj, stack, mIndex);
+		this.patterns[matcher].initPatternSmart(this.worldObj, stack, mIndex);
 	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		
-		for(int i = 0; i < patterns.length; i++) {
+		for(int i = 0; i < this.patterns.length; i++) {
 			NBTTagCompound compound = nbt.getCompoundTag("pattern" + i);
-			patterns[i].readFromNBT(compound);
+			this.patterns[i].readFromNBT(compound);
 		}
 		this.modes = nbt.getIntArray("modes");
 	}
@@ -106,9 +106,9 @@ public class TileEntityCraneRouter extends TileEntityMachineBase implements IGUI
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		
-		for(int i = 0; i < patterns.length; i++) {
+		for(int i = 0; i < this.patterns.length; i++) {
 			NBTTagCompound compound = new NBTTagCompound();
-			patterns[i].writeToNBT(compound);
+			this.patterns[i].writeToNBT(compound);
 			nbt.setTag("pattern" + i, compound);
 		}
 		nbt.setIntArray("modes", this.modes);
@@ -116,14 +116,14 @@ public class TileEntityCraneRouter extends TileEntityMachineBase implements IGUI
 
 	@Override
 	public boolean hasPermission(EntityPlayer player) {
-		return Vec3.createVectorHelper(xCoord - player.posX, yCoord - player.posY, zCoord - player.posZ).lengthVector() < 20;
+		return Vec3.createVectorHelper(this.xCoord - player.posX, this.yCoord - player.posY, this.zCoord - player.posZ).lengthVector() < 20;
 	}
 
 	@Override
 	public void receiveControl(NBTTagCompound data) {
 		int i = data.getInteger("toggle");
-		modes[i]++;
-		if(modes[i] > 3)
-			modes [i] = 0;
+		this.modes[i]++;
+		if(this.modes[i] > 3)
+			this.modes [i] = 0;
 	}
 }

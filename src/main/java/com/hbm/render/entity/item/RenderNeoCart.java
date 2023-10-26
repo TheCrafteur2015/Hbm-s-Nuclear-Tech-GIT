@@ -21,7 +21,7 @@ public class RenderNeoCart extends Render {
 	public void doRender(EntityMinecartNTM cart, double x, double y, double z, float rot, float interp) {
 		
 		GL11.glPushMatrix();
-		this.bindEntityTexture(cart);
+		bindEntityTexture(cart);
 		long rand = (long) cart.getEntityId() * 493286711L;
 		rand = rand * rand * 4392167121L + rand * 98761L;
 		float randX = (((float) (rand >> 16 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
@@ -102,7 +102,7 @@ public class RenderNeoCart extends Render {
 	//"NoT vIsIbLe" how about you kiss my fucking ass
 	@Override
 	public void bindEntityTexture(Entity entity) {
-		this.bindTexture(this.getEntityTexture(entity));
+		bindTexture(this.getEntityTexture(entity));
 	}
 
 	@Override

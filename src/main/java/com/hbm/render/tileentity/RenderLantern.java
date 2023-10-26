@@ -50,11 +50,13 @@ public class RenderLantern extends TileEntitySpecialRenderer implements IItemRen
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase() {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(0, -5, 0);
 				double scale = 2.75;
 				GL11.glScaled(scale, scale, scale);
 			}
+			@Override
 			public void renderCommon() {
 				bindTexture(ResourceManager.lantern_tex);
 				ResourceManager.lantern.renderPart("Lantern");

@@ -22,7 +22,7 @@ public class BlockMetalFence extends BlockFence {
 
 	@Override
 	public int getRenderType(){
-		return renderID;
+		return BlockMetalFence.renderID;
 	}
 	
 	@Override
@@ -35,18 +35,20 @@ public class BlockMetalFence extends BlockFence {
 		return false;
 	}
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister p_149651_1_)
     {
-        this.blockIcon = p_149651_1_.registerIcon(this.getTextureName());
+        this.blockIcon = p_149651_1_.registerIcon(getTextureName());
     }
     
-    public void addCollisionBoxesToList(World p_149743_1_, int p_149743_2_, int p_149743_3_, int p_149743_4_, AxisAlignedBB p_149743_5_, List p_149743_6_, Entity p_149743_7_)
+    @Override
+	public void addCollisionBoxesToList(World p_149743_1_, int p_149743_2_, int p_149743_3_, int p_149743_4_, AxisAlignedBB p_149743_5_, List p_149743_6_, Entity p_149743_7_)
     {
-        boolean flag = this.canConnectFenceTo(p_149743_1_, p_149743_2_, p_149743_3_, p_149743_4_ - 1);
-        boolean flag1 = this.canConnectFenceTo(p_149743_1_, p_149743_2_, p_149743_3_, p_149743_4_ + 1);
-        boolean flag2 = this.canConnectFenceTo(p_149743_1_, p_149743_2_ - 1, p_149743_3_, p_149743_4_);
-        boolean flag3 = this.canConnectFenceTo(p_149743_1_, p_149743_2_ + 1, p_149743_3_, p_149743_4_);
+        boolean flag = canConnectFenceTo(p_149743_1_, p_149743_2_, p_149743_3_, p_149743_4_ - 1);
+        boolean flag1 = canConnectFenceTo(p_149743_1_, p_149743_2_, p_149743_3_, p_149743_4_ + 1);
+        boolean flag2 = canConnectFenceTo(p_149743_1_, p_149743_2_ - 1, p_149743_3_, p_149743_4_);
+        boolean flag3 = canConnectFenceTo(p_149743_1_, p_149743_2_ + 1, p_149743_3_, p_149743_4_);
         float f = 0.375F;
         float f1 = 0.625F;
         float f2 = 0.375F;
@@ -64,7 +66,7 @@ public class BlockMetalFence extends BlockFence {
 
         if (flag || flag1)
         {
-            this.setBlockBounds(f, 0.0F, f2, f1, 1.0F, f3);
+            setBlockBounds(f, 0.0F, f2, f1, 1.0F, f3);
             addCol(p_149743_1_, p_149743_2_, p_149743_3_, p_149743_4_, p_149743_5_, p_149743_6_, p_149743_7_);
         }
 
@@ -83,7 +85,7 @@ public class BlockMetalFence extends BlockFence {
 
         if (flag2 || flag3 || !flag && !flag1)
         {
-            this.setBlockBounds(f, 0.0F, f2, f1, 1.0F, f3);
+            setBlockBounds(f, 0.0F, f2, f1, 1.0F, f3);
             addCol(p_149743_1_, p_149743_2_, p_149743_3_, p_149743_4_, p_149743_5_, p_149743_6_, p_149743_7_);
         }
 
@@ -97,12 +99,13 @@ public class BlockMetalFence extends BlockFence {
             f3 = 1.0F;
         }
 
-        this.setBlockBounds(f, 0.0F, f2, f1, 1.0F, f3);
+        setBlockBounds(f, 0.0F, f2, f1, 1.0F, f3);
     }
     
-    public void addCol(World p_149743_1_, int p_149743_2_, int p_149743_3_, int p_149743_4_, AxisAlignedBB p_149743_5_, List p_149743_6_, Entity p_149743_7_)
+    @SuppressWarnings("unchecked")
+	public void addCol(World p_149743_1_, int p_149743_2_, int p_149743_3_, int p_149743_4_, AxisAlignedBB p_149743_5_, List p_149743_6_, Entity p_149743_7_)
     {
-        AxisAlignedBB axisalignedbb1 = this.getCollisionBoundingBoxFromPool(p_149743_1_, p_149743_2_, p_149743_3_, p_149743_4_);
+        AxisAlignedBB axisalignedbb1 = getCollisionBoundingBoxFromPool(p_149743_1_, p_149743_2_, p_149743_3_, p_149743_4_);
 
         if (axisalignedbb1 != null && p_149743_5_.intersectsWith(axisalignedbb1))
         {

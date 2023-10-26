@@ -18,23 +18,24 @@ public class ItemAnchorRemote extends ItemBattery {
 		super(1_000_000, 10_000, 0);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		
-		long charge = maxCharge;
+		long charge = this.maxCharge;
 		
 		if(itemstack.hasTagCompound())
 			charge = getCharge(itemstack);
 
 		if(itemstack.getItem() != ModItems.fusion_core && itemstack.getItem() != ModItems.energy_core) {
-			list.add("Energy stored: " + BobMathUtil.getShortNumber(charge) + "/" + BobMathUtil.getShortNumber(maxCharge) + "HE");
+			list.add("Energy stored: " + BobMathUtil.getShortNumber(charge) + "/" + BobMathUtil.getShortNumber(this.maxCharge) + "HE");
 		} else {
 			String charge1 = BobMathUtil.getShortNumber((charge * 100) / this.maxCharge);
 			list.add("Charge: " + charge1 + "%");
-			list.add("(" + BobMathUtil.getShortNumber(charge) + "/" + BobMathUtil.getShortNumber(maxCharge) + "HE)");
+			list.add("(" + BobMathUtil.getShortNumber(charge) + "/" + BobMathUtil.getShortNumber(this.maxCharge) + "HE)");
 		}
 		
-		list.add("Charge rate: " + BobMathUtil.getShortNumber(chargeRate) + "HE/t");
+		list.add("Charge rate: " + BobMathUtil.getShortNumber(this.chargeRate) + "HE/t");
 	}
 
 	@Override
@@ -62,12 +63,7 @@ public class ItemAnchorRemote extends ItemBattery {
 			return stack;
 		}
 
-		if(!stack.hasTagCompound()) {
-			world.playSoundAtEntity(player, "random.orb", 0.25F, 0.75F);
-			return stack;
-		}
-		
-		if(this.getCharge(stack) < 10_000) {
+		if(!stack.hasTagCompound() || (getCharge(stack) < 10_000)) {
 			world.playSoundAtEntity(player, "random.orb", 0.25F, 0.75F);
 			return stack;
 		}
@@ -94,7 +90,7 @@ public class ItemAnchorRemote extends ItemBattery {
 				world.spawnParticle("portal", player.posX, player.posY + player.getRNG().nextDouble() * 2.0D, player.posZ, player.getRNG().nextGaussian(), 0.0D, player.getRNG().nextGaussian());
 			}
 			
-			this.dischargeBattery(stack, 10_000);
+			dischargeBattery(stack, 10_000);
 			
 		} else {
 			world.playSoundAtEntity(player, "random.orb", 0.25F, 0.75F);

@@ -92,8 +92,8 @@ public class NumberDisplay {
 	 */
 	public NumberDisplay(GuiInfoContainer gui, int x, int y)
 	{
-		displayX = x;
-		displayY = y;
+		this.displayX = x;
+		this.displayY = y;
 		setColor(0xFFFF55);
 		this.gui = gui;
 	}
@@ -157,26 +157,26 @@ public class NumberDisplay {
 	 */
 	public void drawNumber(char[] num)
 	{
-		if (blink && !BobMathUtil.getBlink())
+		if (this.blink && !BobMathUtil.getBlink())
 			return;
 			
-		short gap = (short) (digitLength - num.length);
+		short gap = (short) (this.digitLength - num.length);
 		for (int i = 0; i < num.length; i++)
 		{
 			if (num[i] == '.')
 				gap--;
-			dispOffset = (short) ((padding + horizontalLength + 2 * thickness) * (i + gap));
+			this.dispOffset = (short) ((this.padding + this.horizontalLength + 2 * this.thickness) * (i + gap));
 			drawChar(num[i]);
 		}
-		if (pads)
+		if (this.pads)
 			padOut(gap);
 	}
 	/** Draw the previously provided number **/
 	public void drawNumber()
 	{
-		if (isFloat)
+		if (this.isFloat)
 			formatForFloat();
-		drawNumber(toDisp);
+		drawNumber(this.toDisp);
 	}
 	public void drawNumber(Number num)
 	{
@@ -189,7 +189,7 @@ public class NumberDisplay {
 			return;
 		for (int i = 0; i < gap; i++)
 		{
-			dispOffset = (short) ((padding + horizontalLength + 2 * thickness) * i);
+			this.dispOffset = (short) ((this.padding + this.horizontalLength + 2 * this.thickness) * i);
 			drawChar('0');
 		}
 	}
@@ -287,21 +287,21 @@ public class NumberDisplay {
 	
 	private void drawHorizontal(int pos)
 	{
-		byte offset = (byte) (pos * (verticalLength + thickness));
-		renderSegment(gui.getGuiLeft() + displayX + dispOffset + thickness, gui.getGuiTop() + displayY + offset, horizontalLength, thickness);
+		byte offset = (byte) (pos * (this.verticalLength + this.thickness));
+		renderSegment(this.gui.getGuiLeft() + this.displayX + this.dispOffset + this.thickness, this.gui.getGuiTop() + this.displayY + offset, this.horizontalLength, this.thickness);
 	}
 	
 	private void drawPeriod()
 	{
-		renderSegment(gui.getGuiLeft() + displayX + dispOffset + padding - (int) Math.ceil(padding / 2) + (horizontalLength + thickness), 
-				gui.getGuiLeft() + displayY + 2 * (verticalLength + thickness), thickness, thickness);
+		renderSegment(this.gui.getGuiLeft() + this.displayX + this.dispOffset + this.padding - (int) Math.ceil(this.padding / 2) + (this.horizontalLength + this.thickness), 
+				this.gui.getGuiLeft() + this.displayY + 2 * (this.verticalLength + this.thickness), this.thickness, this.thickness);
 	}
 	
 	private void drawVertical(int posX, int posY)
 	{
-		byte offsetX = (byte) (posX * (horizontalLength + thickness));
-		byte offsetY = (byte) (posY * (verticalLength + thickness));
-		renderSegment(gui.getGuiLeft() + displayX + offsetX + dispOffset, gui.getGuiTop() + displayY + offsetY + thickness, thickness, verticalLength);
+		byte offsetX = (byte) (posX * (this.horizontalLength + this.thickness));
+		byte offsetY = (byte) (posY * (this.verticalLength + this.thickness));
+		renderSegment(this.gui.getGuiLeft() + this.displayX + offsetX + this.dispOffset, this.gui.getGuiTop() + this.displayY + offsetY + this.thickness, this.thickness, this.verticalLength);
 	}
 	/**
 	 * drawTexturedModalRect() for cool kids
@@ -313,11 +313,11 @@ public class NumberDisplay {
 	private void renderSegment(int renX, int renY, int width, int height)
 	{
 		final Tessellator tess = Tessellator.instance;
-		final float z = gui.getZLevel();
+		final float z = this.gui.getZLevel();
 		
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		tess.startDrawingQuads();
-		tess.setColorOpaque_I(color);
+		tess.setColorOpaque_I(this.color);
 		tess.addVertex(renX, renY + height, z);
 		tess.addVertex(renX + width, renY + height, z);
 		tess.addVertex(renX + width, renY + 0, z);
@@ -328,44 +328,44 @@ public class NumberDisplay {
 
 	public void setNumber(Number num)
 	{
-		numIn = num;
-		if (customBounds)
-			numIn = MathHelper.clamp_double(num.doubleValue(), minNum, maxNum);
-		if (isFloat)
+		this.numIn = num;
+		if (this.customBounds)
+			this.numIn = MathHelper.clamp_double(num.doubleValue(), this.minNum, this.maxNum);
+		if (this.isFloat)
 			formatForFloat();
 		else
 		{
-			toDisp = new Long(Math.round(numIn.doubleValue())).toString().toCharArray();
-			toDisp = truncOrExpand();
+			this.toDisp = new Long(Math.round(this.numIn.doubleValue())).toString().toCharArray();
+			this.toDisp = truncOrExpand();
 		}
 	}
 	/** Get the set number **/
 	public Number getNumber()
 	{
-		return numIn;
+		return this.numIn;
 	}
 	/** Get the char array for display **/
 	public char[] getDispNumber()
 	{
-		return toDisp.clone();
+		return this.toDisp.clone();
 	}
 	/** Make the display blink **/
 	public NumberDisplay setBlinks(boolean doesBlink)
 	{
-		blink = doesBlink;
+		this.blink = doesBlink;
 		return this;
 	}
 	/** Padding between digits, default 3 **/
 	public NumberDisplay setPadding(@Nonnegative int p)
 	{
-		padding = (byte) p;
+		this.padding = (byte) p;
 		return this;
 	}
 	/** Max number of digits **/
 	public NumberDisplay setDigitLength(@Nonnegative int l)
 	{
-		digitLength = (byte) l;
-		toDisp = truncOrExpand();
+		this.digitLength = (byte) l;
+		this.toDisp = truncOrExpand();
 		return this;
 	}
 	/** Set sizes and thickness of horizontal and vertical segments. **/
@@ -381,15 +381,15 @@ public class NumberDisplay {
 	{
 		if (min > max)
 			throw new IllegalArgumentException("Minimum value is larger than maximum value!");
-		maxNum = max;
-		minNum = min;
-		customBounds = true;
+		this.maxNum = max;
+		this.minNum = min;
+		this.customBounds = true;
 		return this;
 	}
 	/** Pad out the left side of the number with zeros **/
 	public NumberDisplay setPadNumber()
 	{
-		pads = true;
+		this.pads = true;
 		return this;
 	}
 	/** Set the number to be a decimal, default zero trailing is 1 **/
@@ -400,8 +400,8 @@ public class NumberDisplay {
 	/** Set the number to be a decimal with specified zero trailing **/
 	public NumberDisplay setFloat(@Nonnegative int pad)
 	{
-		floatPad = (byte) pad;
-		isFloat = true;
+		this.floatPad = (byte) pad;
+		this.isFloat = true;
 		
 		formatForFloat();
 		
@@ -409,29 +409,29 @@ public class NumberDisplay {
 	}
 	private void formatForFloat()
 	{
-		BigDecimal bd = new BigDecimal(numIn.toString());
-		bd = bd.setScale(floatPad, RoundingMode.HALF_UP);
+		BigDecimal bd = new BigDecimal(this.numIn.toString());
+		bd = bd.setScale(this.floatPad, RoundingMode.HALF_UP);
 		
 //		char[] proc = new Double(bd.doubleValue()).toString().toCharArray();
 		char[] proc = bd.toString().toCharArray();
-		proc = Double.valueOf(BobMathUtil.roundDecimal(numIn.doubleValue(), floatPad)).toString().toCharArray();
+		proc = Double.valueOf(BobMathUtil.roundDecimal(this.numIn.doubleValue(), this.floatPad)).toString().toCharArray();
 		
-		if (proc.length == digitLength)
-			toDisp = proc;
+		if (proc.length == this.digitLength)
+			this.toDisp = proc;
 		else
-			toDisp = truncOrExpand();
+			this.toDisp = truncOrExpand();
 	}
 	@Beta
 	private char[] truncOrExpand()
 	{
-		if (isFloat)
+		if (this.isFloat)
 		{
-			char[] out = Arrays.copyOf(toDisp, digitLength);
-			for (int i = 0; i < digitLength; i++)
+			char[] out = Arrays.copyOf(this.toDisp, this.digitLength);
+			for (int i = 0; i < this.digitLength; i++)
 				if (out[i] == '\u0000')
 					out[i] = '0';
 			return out.clone();
 		}
-		return toDisp;
+		return this.toDisp;
 	}
 }

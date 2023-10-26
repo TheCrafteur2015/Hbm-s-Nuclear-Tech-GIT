@@ -18,7 +18,7 @@ public interface IPersistentNBT {
 	public void readNBT(NBTTagCompound nbt);
 	
 	public default ArrayList<ItemStack> getDrops(Block b) {
-		ArrayList<ItemStack> list = new ArrayList();
+		ArrayList<ItemStack> list = new ArrayList<>();
 		ItemStack stack = new ItemStack(b);
 		NBTTagCompound data = new NBTTagCompound();
 		writeNBT(data);
@@ -36,7 +36,7 @@ public interface IPersistentNBT {
 			return ((IPersistentNBT) tile).getDrops(b);
 		}
 		
-		return new ArrayList();
+		return new ArrayList<>();
 	}
 	
 	public static void restoreData(World world, int x, int y, int z, ItemStack stack) {

@@ -20,18 +20,18 @@ public class EntityCreeperTainted extends EntityCreeper implements IRadiationImm
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(15.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.35D);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(15.0D);
+		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.35D);
 	}
 
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
 		
-		if(this.isEntityAlive()) {
+		if(isEntityAlive()) {
 
-			if(this.getHealth() < this.getMaxHealth() && this.ticksExisted % 10 == 0) {
-				this.heal(1.0F);
+			if(getHealth() < getMaxHealth() && this.ticksExisted % 10 == 0) {
+				heal(1.0F);
 			}
 		}
 	}
@@ -46,21 +46,21 @@ public class EntityCreeperTainted extends EntityCreeper implements IRadiationImm
 		if(!this.worldObj.isRemote) {
 			boolean griefing = this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing");
 
-			worldObj.newExplosion(this, posX, posY, posZ, 5.0F, false, false);
+			this.worldObj.newExplosion(this, this.posX, this.posY, this.posZ, 5.0F, false, false);
 
 			if(griefing) {
-				if(this.getPowered()) {
+				if(getPowered()) {
 	
 					for(int i = 0; i < 255; i++) {
-						int a = rand.nextInt(15) + (int) posX - 7;
-						int b = rand.nextInt(15) + (int) posY - 7;
-						int c = rand.nextInt(15) + (int) posZ - 7;
+						int a = this.rand.nextInt(15) + (int) this.posX - 7;
+						int b = this.rand.nextInt(15) + (int) this.posY - 7;
+						int c = this.rand.nextInt(15) + (int) this.posZ - 7;
 						
-						if(worldObj.getBlock(a, b, c).isReplaceable(worldObj, a, b, c) && hasPosNeightbour(worldObj, a, b, c)) {
+						if(this.worldObj.getBlock(a, b, c).isReplaceable(this.worldObj, a, b, c) && EntityCreeperTainted.hasPosNeightbour(this.worldObj, a, b, c)) {
 							if(!GeneralConfig.enableHardcoreTaint) {
-								worldObj.setBlock(a, b, c, ModBlocks.taint, rand.nextInt(3) + 5, 2);
+								this.worldObj.setBlock(a, b, c, ModBlocks.taint, this.rand.nextInt(3) + 5, 2);
 							} else {
-								worldObj.setBlock(a, b, c, ModBlocks.taint, rand.nextInt(3), 2);
+								this.worldObj.setBlock(a, b, c, ModBlocks.taint, this.rand.nextInt(3), 2);
 							}
 						}
 					}
@@ -68,22 +68,22 @@ public class EntityCreeperTainted extends EntityCreeper implements IRadiationImm
 				} else {
 	
 					for(int i = 0; i < 85; i++) {
-						int a = rand.nextInt(7) + (int) posX - 3;
-						int b = rand.nextInt(7) + (int) posY - 3;
-						int c = rand.nextInt(7) + (int) posZ - 3;
+						int a = this.rand.nextInt(7) + (int) this.posX - 3;
+						int b = this.rand.nextInt(7) + (int) this.posY - 3;
+						int c = this.rand.nextInt(7) + (int) this.posZ - 3;
 						
-						if(worldObj.getBlock(a, b, c).isReplaceable(worldObj, a, b, c) && hasPosNeightbour(worldObj, a, b, c)) {
+						if(this.worldObj.getBlock(a, b, c).isReplaceable(this.worldObj, a, b, c) && EntityCreeperTainted.hasPosNeightbour(this.worldObj, a, b, c)) {
 							if(!GeneralConfig.enableHardcoreTaint) {
-								worldObj.setBlock(a, b, c, ModBlocks.taint, rand.nextInt(6) + 10, 2);
+								this.worldObj.setBlock(a, b, c, ModBlocks.taint, this.rand.nextInt(6) + 10, 2);
 							} else {
-								worldObj.setBlock(a, b, c, ModBlocks.taint, rand.nextInt(3) + 4, 2);
+								this.worldObj.setBlock(a, b, c, ModBlocks.taint, this.rand.nextInt(3) + 4, 2);
 							}
 						}
 					}
 				}
 			}
 
-			this.setDead();
+			setDead();
 		}
 	}
 

@@ -44,23 +44,23 @@ public class RenderScreenOverlay {
 
 		float radiation = 0;
 
-		radiation = lastResult - prevResult;
+		radiation = RenderScreenOverlay.lastResult - RenderScreenOverlay.prevResult;
 
-		if(System.currentTimeMillis() >= lastSurvey + 1000) {
-			lastSurvey = System.currentTimeMillis();
-			prevResult = lastResult;
-			lastResult = in;
+		if(System.currentTimeMillis() >= RenderScreenOverlay.lastSurvey + 1000) {
+			RenderScreenOverlay.lastSurvey = System.currentTimeMillis();
+			RenderScreenOverlay.prevResult = RenderScreenOverlay.lastResult;
+			RenderScreenOverlay.lastResult = in;
 		}
 
 		int length = 74;
 		int maxRad = 1000;
 
-		int bar = getScaled(in, maxRad, 74);
+		int bar = RenderScreenOverlay.getScaled(in, maxRad, 74);
 
 		int posX = 16;
 		int posY = resolution.getScaledHeight() - 18 - 2;
 
-		Minecraft.getMinecraft().renderEngine.bindTexture(misc);
+		Minecraft.getMinecraft().renderEngine.bindTexture(RenderScreenOverlay.misc);
 		gui.drawTexturedModalRect(posX, posY, 0, 0, 94, 18);
 		gui.drawTexturedModalRect(posX + 1, posY + 1, 1, 19, bar, 16);
 
@@ -78,7 +78,7 @@ public class RenderScreenOverlay {
 		if(radiation > 1000) {
 			Minecraft.getMinecraft().fontRenderer.drawString(">1000 RAD/s", posX, posY - 8, 0xFF0000);
 		} else if(radiation >= 1) {
-			Minecraft.getMinecraft().fontRenderer.drawString(((int) Math.round(radiation)) + " RAD/s", posX, posY - 8, 0xFF0000);
+			Minecraft.getMinecraft().fontRenderer.drawString((Math.round(radiation)) + " RAD/s", posX, posY - 8, 0xFF0000);
 		} else if(radiation > 0) {
 			Minecraft.getMinecraft().fontRenderer.drawString("<1 RAD/s", posX, posY - 8, 0xFF0000);
 		}
@@ -105,7 +105,7 @@ public class RenderScreenOverlay {
 		int size = cross.size;
 
 		GL11.glPushMatrix();
-			Minecraft.getMinecraft().renderEngine.bindTexture(misc);
+			Minecraft.getMinecraft().renderEngine.bindTexture(RenderScreenOverlay.misc);
 	        GL11.glEnable(GL11.GL_BLEND);
 	        OpenGlHelper.glBlendFunc(GL11.GL_ONE_MINUS_DST_COLOR, GL11.GL_ONE_MINUS_SRC_COLOR, 1, 0);
 	        gui.drawTexturedModalRect(resolution.getScaledWidth() / 2 - (size / 2), resolution.getScaledHeight() / 2 - (size / 2), cross.x, cross.y, size, size);
@@ -124,7 +124,7 @@ public class RenderScreenOverlay {
 		int pX = resolution.getScaledWidth() / 2 + 62 + 36;
 		int pZ = resolution.getScaledHeight() - 21;
 		
-		Minecraft.getMinecraft().renderEngine.bindTexture(misc);
+		Minecraft.getMinecraft().renderEngine.bindTexture(RenderScreenOverlay.misc);
 		gui.drawTexturedModalRect(pX, pZ + 16, 94, 0, 52, 3);
 		gui.drawTexturedModalRect(pX + 1, pZ + 16, 95, 3, 50 - dura, 3);
 		
@@ -136,7 +136,7 @@ public class RenderScreenOverlay {
 		GL11.glDisable(GL11.GL_BLEND);
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		RenderHelper.enableGUIStandardItemLighting();
-		itemRenderer.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.getTextureManager(), ammo, pX, pZ);
+		RenderScreenOverlay.itemRenderer.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.getTextureManager(), ammo, pX, pZ);
 		RenderHelper.disableStandardItemLighting();
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		
@@ -153,14 +153,14 @@ public class RenderScreenOverlay {
 		int pX = resolution.getScaledWidth() / 2 + 62 + 36 + 18;
 		int pZ = resolution.getScaledHeight() - 21 - 16;
 		
-		Minecraft.getMinecraft().renderEngine.bindTexture(misc);
+		Minecraft.getMinecraft().renderEngine.bindTexture(RenderScreenOverlay.misc);
 		
 		Minecraft.getMinecraft().fontRenderer.drawString(count + "x", pX + 16, pZ + 6, 0xFFFFFF);
 
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         RenderHelper.enableGUIStandardItemLighting();
-        	itemRenderer.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.getTextureManager(), ammo, pX, pZ);
+        	RenderScreenOverlay.itemRenderer.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.getTextureManager(), ammo, pX, pZ);
         RenderHelper.disableStandardItemLighting();
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         
@@ -188,7 +188,7 @@ public class RenderScreenOverlay {
 		int posX = 16;//(int)(resolution.getScaledWidth()/2 - ((props.getDashCount()*(width+2))/2));
 		int posY = resolution.getScaledHeight() - 40 - 2;
 		
-		mc.renderEngine.bindTexture(misc);
+		mc.renderEngine.bindTexture(RenderScreenOverlay.misc);
 		
 		gui.drawTexturedModalRect(posX-10, posY, 107, 18, 7, 10); 
 		
@@ -216,26 +216,27 @@ public class RenderScreenOverlay {
 					barStatus = 3;
 				} else if(staminaDiv == barID) {
 					barStatus = 2;
-					barSize = (int)((float)(stamina % 30) * (width/30F) );
+					barSize = (int)(stamina % 30 * (width/30F) );
 					if(barID == 0)
 						barStatus = 0;
 				}
 				gui.drawTexturedModalRect(posX + (width+2)*x, posY - 12*y, 76, 18+(10*barStatus), barSize, 10);
 				
 				if(staminaDiv == barID && staminaMod >= 27) {
-					fadeOut = 1F;
+					RenderScreenOverlay.fadeOut = 1F;
 				}
-				if(fadeOut > 0 && staminaDiv-1 == barID) {
-					GL11.glColor4f(1F, 1F, 1F, fadeOut);
+				if(RenderScreenOverlay.fadeOut > 0 && staminaDiv-1 == barID) {
+					GL11.glColor4f(1F, 1F, 1F, RenderScreenOverlay.fadeOut);
 					int bar = barID;
 					if(stamina % 30 >= 25) 
 						bar++;
+					@SuppressWarnings("unused")
 					int yPos = y;
 					if(bar / 3 != y)
 						y++;
 					bar = bar % 3;
 					gui.drawTexturedModalRect(posX + (width+2)*bar, posY - 12*y, 76, 58, width, 10);
-					fadeOut -= 0.04F;
+					RenderScreenOverlay.fadeOut -= 0.04F;
 					GL11.glColor4f(1F, 1F, 1F, 1F);
 				}
 			}
@@ -295,7 +296,7 @@ public class RenderScreenOverlay {
 		int left = width / 2 - 91;
 		int top = height - GuiIngameForge.left_height;
 
-		Minecraft.getMinecraft().renderEngine.bindTexture(misc);
+		Minecraft.getMinecraft().renderEngine.bindTexture(RenderScreenOverlay.misc);
 		gui.drawTexturedModalRect(left, top, 146, 0, 81, 9);
 		int i = (int) Math.ceil(props.shield * 79 / props.maxShield);
 		gui.drawTexturedModalRect(left + 1, top, 147, 9, i, 9);

@@ -21,7 +21,7 @@ public class ActionSetZoom implements IJarAction {
 	@Override
 	public void act(WorldInAJar world, JarScene scene) {
 		
-		if(this.getDuration() == 0) {
+		if(getDuration() == 0) {
 			scene.script.lastZoom = scene.script.zoom = this.zoom;
 		} else {
 			scene.script.zoom += this.zoom;

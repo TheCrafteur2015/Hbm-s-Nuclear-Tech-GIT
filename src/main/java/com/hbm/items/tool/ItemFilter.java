@@ -13,9 +13,9 @@ import net.minecraft.world.World;
 public class ItemFilter extends Item {
 	
 	public ItemFilter() {
-		this.setMaxDamage(20000);
-		this.setCreativeTab(MainRegistry.consumableTab);
-		this.setMaxStackSize(1);
+		setMaxDamage(20000);
+		setCreativeTab(MainRegistry.consumableTab);
+		setMaxStackSize(1);
 	}
 	
 	@Override

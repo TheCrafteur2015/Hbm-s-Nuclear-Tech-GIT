@@ -47,12 +47,12 @@ public class GUICounterTorch extends GuiInfoContainer {
 		
 		for(int i = 0; i < 3; i++) {
 
-			this.frequency[i] = new GuiTextField(this.fontRendererObj, guiLeft + 29, guiTop + 21 + 44 * i, 86, 14);
+			this.frequency[i] = new GuiTextField(this.fontRendererObj, this.guiLeft + 29, this.guiTop + 21 + 44 * i, 86, 14);
 			this.frequency[i].setTextColor(0x00ff00);
 			this.frequency[i].setDisabledTextColour(0x00ff00);
 			this.frequency[i].setEnableBackgroundDrawing(false);
 			this.frequency[i].setMaxStringLength(10);
-			this.frequency[i].setText(counter.channel[i] == null ? "" : counter.channel[i]);
+			this.frequency[i].setText(this.counter.channel[i] == null ? "" : this.counter.channel[i]);
 		}
 	}
 	
@@ -60,10 +60,10 @@ public class GUICounterTorch extends GuiInfoContainer {
 	public void drawScreen(int x, int y, float interp) {
 		super.drawScreen(x, y, interp);
 
-		if(guiLeft + 193 <= x && guiLeft + 193 + 18 > x && guiTop + 8 < y && guiTop + 8 + 18 >= y) {
-			func_146283_a(Arrays.asList(new String[] { counter.polling ? "Polling" : "State Change" }), x, y);
+		if(this.guiLeft + 193 <= x && this.guiLeft + 193 + 18 > x && this.guiTop + 8 < y && this.guiTop + 8 + 18 >= y) {
+			func_146283_a(Arrays.asList(new String[] { this.counter.polling ? "Polling" : "State Change" }), x, y);
 		}
-		if(guiLeft + 193 <= x && guiLeft + 193 + 18 > x && guiTop + 30 < y && guiTop + 30 + 18 >= y) {
+		if(this.guiLeft + 193 <= x && this.guiLeft + 193 + 18 > x && this.guiTop + 30 < y && this.guiTop + 30 + 18 >= y) {
 			func_146283_a(Arrays.asList(new String[] { "Save Settings" }), x, y);
 		}
 
@@ -71,17 +71,17 @@ public class GUICounterTorch extends GuiInfoContainer {
 			for(int i = 0; i < 3; ++i) {
 				Slot slot = (Slot) this.inventorySlots.inventorySlots.get(i);
 	
-				if(this.isMouseOverSlot(slot, x, y) && counter.matcher.modes[i] != null) {
+				if(isMouseOverSlot(slot, x, y) && this.counter.matcher.modes[i] != null) {
 					
 					String label = EnumChatFormatting.YELLOW + "";
 					
-					switch(counter.matcher.modes[i]) {
+					switch(this.counter.matcher.modes[i]) {
 					case "exact": label += "Item and meta match"; break;
 					case "wildcard": label += "Item matches"; break;
-					default: label += "Ore dict key matches: " + counter.matcher.modes[i]; break;
+					default: label += "Ore dict key matches: " + this.counter.matcher.modes[i]; break;
 					}
 					
-					this.func_146283_a(Arrays.asList(new String[] { EnumChatFormatting.RED + "Right click to change", label }), x, y - 30);
+					func_146283_a(Arrays.asList(new String[] { EnumChatFormatting.RED + "Right click to change", label }), x, y - 30);
 				}
 			}
 		}
@@ -93,20 +93,20 @@ public class GUICounterTorch extends GuiInfoContainer {
 		
 		for(int j = 0; j < 3; j++) this.frequency[j].mouseClicked(x, y, i);
 
-		if(guiLeft + 193 <= x && guiLeft + 193 + 18 > x && guiTop + 8 < y && guiTop + 8 + 18 >= y) {
+		if(this.guiLeft + 193 <= x && this.guiLeft + 193 + 18 > x && this.guiTop + 8 < y && this.guiTop + 8 + 18 >= y) {
 
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 			NBTTagCompound data = new NBTTagCompound();
 			data.setBoolean("polling", true);
-			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, counter.xCoord, counter.yCoord, counter.zCoord));
+			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, this.counter.xCoord, this.counter.yCoord, this.counter.zCoord));
 		}
 		
-		if(guiLeft + 193 <= x && guiLeft + 193 + 18 > x && guiTop + 30 < y && guiTop + 30 + 18 >= y) {
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+		if(this.guiLeft + 193 <= x && this.guiLeft + 193 + 18 > x && this.guiTop + 30 < y && this.guiTop + 30 + 18 >= y) {
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 			NBTTagCompound data = new NBTTagCompound();
 			
 			for(int j = 0; j < 3; j++) data.setString("c" + j, this.frequency[j].getText());
-			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, counter.xCoord, counter.yCoord, counter.zCoord));
+			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, this.counter.xCoord, this.counter.yCoord, this.counter.zCoord));
 		}
 	}
 
@@ -120,11 +120,11 @@ public class GUICounterTorch extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float interp, int x, int y) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUICounterTorch.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		if(counter.polling) {
-			drawTexturedModalRect(guiLeft + 193, guiTop + 8, 218, 0, 18, 18);
+		if(this.counter.polling) {
+			drawTexturedModalRect(this.guiLeft + 193, this.guiTop + 8, 218, 0, 18, 18);
 		}
 		
 		for(int i = 0; i < 3; i++) this.frequency[i].drawTextBox();

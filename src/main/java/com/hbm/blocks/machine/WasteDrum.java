@@ -49,7 +49,7 @@ public class WasteDrum extends BlockContainer {
 		if(side == 0 || side == 1)
 			return this.iconTop;
 		
-		return blockIcon;
+		return this.blockIcon;
 	}
 
 	@Override

@@ -21,23 +21,23 @@ public class EntityRagingVortex extends EntityBlackHole {
 	@Override
 	public void onUpdate() {
 		
-		timer++;
+		this.timer++;
 		
-		if(timer <= 20)
-			timer -= 20;
+		if(this.timer <= 20)
+			this.timer -= 20;
 		
-		float pulse = (float)(Math.sin(timer) * Math.PI / 20D) * 0.35F;
+		float pulse = (float)(Math.sin(this.timer) * Math.PI / 20D) * 0.35F;
 		
 		float dec = 0.0F;
 		
-		if(rand.nextInt(100) == 0) {
+		if(this.rand.nextInt(100) == 0) {
 			dec = 0.1F;
-			worldObj.createExplosion(null, posX, posY, posZ, 10F, false);
+			this.worldObj.createExplosion(null, this.posX, this.posY, this.posZ, 10F, false);
 		}
 		
 		this.dataWatcher.updateObject(16, this.dataWatcher.getWatchableObjectFloat(16) - pulse - dec);
 		if(this.dataWatcher.getWatchableObjectFloat(16) <= 0) {
-			this.setDead();
+			setDead();
 			return;
 		}
 		
@@ -48,13 +48,13 @@ public class EntityRagingVortex extends EntityBlackHole {
 	protected void readEntityFromNBT(NBTTagCompound nbt) {
 		super.readEntityFromNBT(nbt);
 		
-		timer = nbt.getInteger("vortexTimer");
+		this.timer = nbt.getInteger("vortexTimer");
 	}
 
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound nbt) {
 		super.writeEntityToNBT(nbt);
 		
-		nbt.setInteger("vortexTimer", timer);
+		nbt.setInteger("vortexTimer", this.timer);
 	}
 }

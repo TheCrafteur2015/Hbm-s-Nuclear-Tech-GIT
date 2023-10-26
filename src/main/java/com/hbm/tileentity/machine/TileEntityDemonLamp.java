@@ -20,11 +20,12 @@ public class TileEntityDemonLamp extends TileEntity {
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
-			radiate(worldObj, xCoord, yCoord, zCoord);
+		if(!this.worldObj.isRemote) {
+			radiate(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void radiate(World world, int x, int y, int z) {
 		
 		float rads = 100000F;
@@ -53,7 +54,7 @@ public class TileEntityDemonLamp extends TileEntity {
 				res = 1;
 			
 			float eRads = rads;
-			eRads /= (float)res;
+			eRads /= res;
 			eRads /= (float)(len * len);
 			
 			ContaminationUtil.contaminate(e, HazardType.RADIATION, ContaminationType.CREATIVE, eRads);

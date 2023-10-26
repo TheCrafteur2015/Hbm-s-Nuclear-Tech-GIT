@@ -14,8 +14,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -23,12 +23,12 @@ public class EntitySawblade extends EntityThrowableInterp {
 
 	public EntitySawblade(World world) {
 		super(world);
-		this.setSize(1F, 1F);
+		setSize(1F, 1F);
 	}
 
 	public EntitySawblade(World world, double x, double y, double z) {
 		super(world, x, y, z);
-		this.setSize(1F, 1F);
+		setSize(1F, 1F);
 	}
 
 	@Override
@@ -54,10 +54,10 @@ public class EntitySawblade extends EntityThrowableInterp {
 	@Override
 	public boolean interactFirst(EntityPlayer player) {
 
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			if(player.inventory.addItemStackToInventory(new ItemStack(ModItems.sawblade)))
-				this.setDead();
+				setDead();
 			
 			player.inventoryContainer.detectAndSendChanges();
 		}
@@ -73,7 +73,7 @@ public class EntitySawblade extends EntityThrowableInterp {
 	@Override
 	protected void onImpact(MovingObjectPosition mop) {
 		
-		if(worldObj != null && mop != null && mop.typeOfHit == MovingObjectType.ENTITY && mop.entityHit.isEntityAlive()) {
+		if(this.worldObj != null && mop != null && mop.typeOfHit == MovingObjectType.ENTITY && mop.entityHit.isEntityAlive()) {
 			Entity e = mop.entityHit;
 			e.attackEntityFrom(ModDamageSource.rubble, 1000);
 			if(!e.isEntityAlive() && e instanceof EntityLivingBase) {
@@ -83,17 +83,17 @@ public class EntitySawblade extends EntityThrowableInterp {
 				vdat.setInteger("cDiv", 5);
 				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(vdat, e.posX, e.posY + e.height * 0.5, e.posZ), new TargetPoint(e.dimension, e.posX, e.posY + e.height * 0.5, e.posZ, 150));
 				
-				worldObj.playSoundEffect(e.posX, e.posY, e.posZ, "mob.zombie.woodbreak", 2.0F, 0.95F + worldObj.rand.nextFloat() * 0.2F);
+				this.worldObj.playSoundEffect(e.posX, e.posY, e.posZ, "mob.zombie.woodbreak", 2.0F, 0.95F + this.worldObj.rand.nextFloat() * 0.2F);
 			}
 		}
 		
-		if(this.ticksExisted > 1 && worldObj != null && mop != null && mop.typeOfHit == MovingObjectType.BLOCK) {
+		if(this.ticksExisted > 1 && this.worldObj != null && mop != null && mop.typeOfHit == MovingObjectType.BLOCK) {
 			
 			int orientation = this.dataWatcher.getWatchableObjectInt(10);
 
 			if(orientation < 6) {
 				
-				if(Vec3.createVectorHelper(motionX, motionY, motionZ).lengthVector() < 0.75) {
+				if(Vec3.createVectorHelper(this.motionX, this.motionY, this.motionZ).lengthVector() < 0.75) {
 					this.dataWatcher.updateObject(10, orientation + 6);
 					orientation += 6;
 				} else {
@@ -101,10 +101,10 @@ public class EntitySawblade extends EntityThrowableInterp {
 					this.motionX *= 1 - (Math.abs(side.offsetX) * 2);
 					this.motionY *= 1 - (Math.abs(side.offsetY) * 2);
 					this.motionZ *= 1 - (Math.abs(side.offsetZ) * 2);
-					worldObj.createExplosion(this, posX, posY, posZ, 3F, false);
+					this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 3F, false);
 					
-					if(worldObj.getBlock(mop.blockX, mop.blockY, mop.blockZ).getExplosionResistance(this) < 50) {
-						worldObj.func_147480_a(mop.blockX, mop.blockY, mop.blockZ, false);
+					if(this.worldObj.getBlock(mop.blockX, mop.blockY, mop.blockZ).getExplosionResistance(this) < 50) {
+						this.worldObj.func_147480_a(mop.blockX, mop.blockY, mop.blockZ, false);
 					}
 				}
 			}
@@ -121,7 +121,7 @@ public class EntitySawblade extends EntityThrowableInterp {
 	@Override
 	public void onUpdate() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			int orientation = this.dataWatcher.getWatchableObjectInt(10);
 			if(orientation >= 6 && !this.inGround) {
 				this.dataWatcher.updateObject(10, orientation - 6);
@@ -139,7 +139,7 @@ public class EntitySawblade extends EntityThrowableInterp {
 
 	@Override
 	public double getGravityVelocity() {
-		return inGround ? 0 : 0.03D;
+		return this.inGround ? 0 : 0.03D;
 	}
 
 	@Override
@@ -150,12 +150,12 @@ public class EntitySawblade extends EntityThrowableInterp {
 	@Override
 	public void writeEntityToNBT(NBTTagCompound nbt) {
 		super.writeEntityToNBT(nbt);
-		nbt.setInteger("rot", this.getOrientation());
+		nbt.setInteger("rot", getOrientation());
 	}
 
 	@Override
 	public void readEntityFromNBT(NBTTagCompound nbt) {
 		super.readEntityFromNBT(nbt);
-		this.setOrientation(nbt.getInteger("rot"));
+		setOrientation(nbt.getInteger("rot"));
 	}
 }

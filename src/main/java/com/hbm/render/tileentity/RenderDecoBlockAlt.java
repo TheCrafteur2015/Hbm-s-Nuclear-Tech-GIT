@@ -36,8 +36,8 @@ private static final ResourceLocation gunTexture = new ResourceLocation(RefStrin
 	
 	@Override
 	public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float f) {
-		itemRenderer = new RenderDecoItem(this);
-		itemRenderer.setRenderManager(renderManager);
+		this.itemRenderer = new RenderDecoItem(this);
+		this.itemRenderer.setRenderManager(this.renderManager);
 		GL11.glPushMatrix();
 			GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
 			GL11.glRotatef(180, 0F, 0F, 1F);
@@ -55,7 +55,7 @@ private static final ResourceLocation gunTexture = new ResourceLocation(RefStrin
 			
 			EntityItem watch = new EntityItem(null, 0.0D, 0.0D, 0.0D, new ItemStack(ModItems.watch));
 			
-			this.bindTexture(texture);
+			bindTexture(RenderDecoBlockAlt.texture);
 			RenderItem.renderInFrame = true;
 			this.model.renderModel(0.0625F);
 			float g = 0.0625F;
@@ -72,7 +72,7 @@ private static final ResourceLocation gunTexture = new ResourceLocation(RefStrin
 			GL11.glScalef(0.5F, 0.5F, 0.5F);
 			GL11.glTranslatef(-g * 20, g * 4, g * 11);
 			GL11.glRotatef(-20, 0F, 0F, 1F);
-			this.bindTexture(gunTexture);
+			bindTexture(RenderDecoBlockAlt.gunTexture);
 			if(tileentity instanceof TileEntityDecoBlockAltG || tileentity instanceof TileEntityDecoBlockAltF)
 				this.gun.renderModel(0.0625F);
 		GL11.glPopMatrix();

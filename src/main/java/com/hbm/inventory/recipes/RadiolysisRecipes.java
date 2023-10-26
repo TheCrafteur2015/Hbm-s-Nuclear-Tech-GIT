@@ -8,7 +8,6 @@ import java.util.Map.Entry;
 import com.hbm.inventory.FluidStack;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
-import com.hbm.inventory.recipes.CrackingRecipes;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemFluidIcon;
 import com.hbm.util.Tuple.Pair;
@@ -18,12 +17,13 @@ import net.minecraft.item.ItemStack;
 public class RadiolysisRecipes {
 	//All cracking recipes, + 2H2O => H2O2 + H2, + heavy oil => light oil + waste product, and others i haven't even thought of yet
 	
-	private static Map<FluidType, Pair<FluidStack, FluidStack>> radiolysis = new HashMap(); //fluidstacks :reimumunch:
+	private static Map<FluidType, Pair<FluidStack, FluidStack>> radiolysis = new HashMap<>(); //fluidstacks :reimumunch:
 	
 	/* I am proud of this */
+	@SuppressWarnings("unchecked")
 	public static Map<Object, Object[]> getRecipesForNEI() {
-		Map<Object, Object[]> recipes = new HashMap<Object, Object[]>();
-		Iterator itr = radiolysis.entrySet().iterator();
+		Map<Object, Object[]> recipes = new HashMap<>();
+		Iterator itr = RadiolysisRecipes.radiolysis.entrySet().iterator();
 		
 		while(itr.hasNext()) {
 			Map.Entry entry = (Entry) itr.next();
@@ -47,7 +47,7 @@ public class RadiolysisRecipes {
 	}
 	
 	public static void registerRadiolysis() {
-		radiolysis.put(Fluids.WATER, new Pair(new FluidStack(80, Fluids.ACID), new FluidStack(20, Fluids.HYDROGEN)));
+		RadiolysisRecipes.radiolysis.put(Fluids.WATER, new Pair<>(new FluidStack(80, Fluids.ACID), new FluidStack(20, Fluids.HYDROGEN)));
 		
 		//automatically add cracking recipes to the radiolysis recipe list
 		//we want the numbers and types to stay consistent anyway and this will save us a lot of headache later on
@@ -58,11 +58,11 @@ public class RadiolysisRecipes {
 		}
 		
 		for(Entry<FluidType, Pair<FluidStack, FluidStack>> recipe : cracking.entrySet()) {
-			radiolysis.put(recipe.getKey(), recipe.getValue());
+			RadiolysisRecipes.radiolysis.put(recipe.getKey(), recipe.getValue());
 		}
 	}
 	
 	public static Pair<FluidStack, FluidStack> getRadiolysis(FluidType input) {
-		return radiolysis.get(input);
+		return RadiolysisRecipes.radiolysis.get(input);
 	}
 }

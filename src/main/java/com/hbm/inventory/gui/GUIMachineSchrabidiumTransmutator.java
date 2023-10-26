@@ -18,7 +18,7 @@ public class GUIMachineSchrabidiumTransmutator extends GuiInfoContainer {
 
 	public GUIMachineSchrabidiumTransmutator(InventoryPlayer invPlayer, TileEntityMachineSchrabidiumTransmutator tedf) {
 		super(new ContainerMachineSchrabidiumTransmutator(invPlayer, tedf));
-		diFurnace = tedf;
+		this.diFurnace = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 222;
@@ -28,7 +28,7 @@ public class GUIMachineSchrabidiumTransmutator extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 8, guiTop + 106 - 88, 16, 88, diFurnace.power, diFurnace.maxPower);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 8, this.guiTop + 106 - 88, 16, 88, this.diFurnace.power, TileEntityMachineSchrabidiumTransmutator.maxPower);
 	}
 	
 	@Override
@@ -36,25 +36,25 @@ public class GUIMachineSchrabidiumTransmutator extends GuiInfoContainer {
 		String name = this.diFurnace.hasCustomInventoryName() ? this.diFurnace.getInventoryName() : I18n.format(this.diFurnace.getInventoryName());
 		
 		this.fontRendererObj.drawString(name, this.xSize / 2 - this.fontRendererObj.getStringWidth(name) / 2, 6, 4210752);
-		this.fontRendererObj.drawString(I18n.format(String.valueOf(diFurnace.getPower()) + " HE"), this.xSize / 2 - this.fontRendererObj.getStringWidth(String.valueOf(diFurnace.getPower()) + " HE") / 2, 16, 4210752);
+		this.fontRendererObj.drawString(I18n.format(String.valueOf(this.diFurnace.getPower()) + " HE"), this.xSize / 2 - this.fontRendererObj.getStringWidth(String.valueOf(this.diFurnace.getPower()) + " HE") / 2, 16, 4210752);
 		this.fontRendererObj.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIMachineSchrabidiumTransmutator.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		if(diFurnace.getPower() > 0) {
-			int i = (int)diFurnace.getPowerScaled(88);
-			drawTexturedModalRect(guiLeft + 8, guiTop + 106 - i, 176, 88 - i, 16, i);
+		if(this.diFurnace.getPower() > 0) {
+			int i = (int)this.diFurnace.getPowerScaled(88);
+			drawTexturedModalRect(this.guiLeft + 8, this.guiTop + 106 - i, 176, 88 - i, 16, i);
 		}
 
-		if(diFurnace.isProcessing())
+		if(this.diFurnace.isProcessing())
 		{
-			int j1 = diFurnace.getProgressScaled(66);
-			drawTexturedModalRect(guiLeft + 64, guiTop + 55, 176, 88, j1, 66);
+			int j1 = this.diFurnace.getProgressScaled(66);
+			drawTexturedModalRect(this.guiLeft + 64, this.guiTop + 55, 176, 88, j1, 66);
 		}
 	}
 }

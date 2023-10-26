@@ -42,7 +42,7 @@ public class ArmorHazmatMask extends ArmorHazmat implements IGasMask {
 
 	@Override
 	public ArrayList<HazardClass> getBlacklist(ItemStack stack, EntityLivingBase entity) {
-		return new ArrayList(); // full hood has no restrictions
+		return new ArrayList<>(); // full hood has no restrictions
 	}
 
 	@Override
@@ -60,6 +60,7 @@ public class ArmorHazmatMask extends ArmorHazmat implements IGasMask {
 		ArmorUtil.damageGasMaskFilter(stack, damage);
 	}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		ArmorUtil.addGasMaskTooltip(stack, player, list, ext);
@@ -77,7 +78,7 @@ public class ArmorHazmatMask extends ArmorHazmat implements IGasMask {
 		
 		if(player.isSneaking()) {
 			
-			ItemStack filter = this.getFilter(stack, player);
+			ItemStack filter = getFilter(stack, player);
 			
 			if(filter != null) {
 				ArmorUtil.removeFilter(stack);

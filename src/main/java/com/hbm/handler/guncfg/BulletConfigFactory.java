@@ -5,13 +5,15 @@ import java.util.Random;
 
 import com.hbm.entity.particle.EntityBSmokeFX;
 import com.hbm.entity.projectile.EntityBulletBaseNT;
-import com.hbm.entity.projectile.EntityBulletBaseNT.*;
+import com.hbm.entity.projectile.EntityBulletBaseNT.IBulletHurtBehaviorNT;
+import com.hbm.entity.projectile.EntityBulletBaseNT.IBulletImpactBehaviorNT;
+import com.hbm.entity.projectile.EntityBulletBaseNT.IBulletUpdateBehaviorNT;
 import com.hbm.explosion.ExplosionNukeSmall;
 import com.hbm.explosion.ExplosionNukeSmall.MukeParams;
 import com.hbm.handler.BulletConfigSyncingUtil;
 import com.hbm.handler.BulletConfiguration;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
-import com.hbm.items.ItemAmmoEnums.*;
+import com.hbm.items.ItemAmmoEnums.Ammo357Magnum;
 import com.hbm.items.ModItems;
 import com.hbm.lib.Library;
 import com.hbm.packet.AuxParticlePacketNT;
@@ -73,7 +75,7 @@ public class BulletConfigFactory {
 		BulletConfiguration bullet = new BulletConfiguration();
 		
 		bullet.velocity = 5.0F;
-		bullet.spread = defaultSpread;
+		bullet.spread = BulletConfigFactory.defaultSpread;
 		bullet.wear = 10;
 		bullet.bulletsMin = 1;
 		bullet.bulletsMax = 1;
@@ -94,7 +96,7 @@ public class BulletConfigFactory {
 		return bullet;
 	}
 	public static BulletConfiguration standardPistolConfig() {
-		BulletConfiguration bullet = standardBulletConfig();
+		BulletConfiguration bullet = BulletConfigFactory.standardBulletConfig();
 		bullet.style = BulletConfiguration.STYLE_PISTOL;
 		bullet.plink = BulletConfiguration.PLINK_BULLET;
 		return bullet;
@@ -105,7 +107,7 @@ public class BulletConfigFactory {
 		BulletConfiguration bullet = new BulletConfiguration();
 		
 		bullet.velocity = 5.0F;
-		bullet.spread = defaultSpread * 10F;
+		bullet.spread = BulletConfigFactory.defaultSpread * 10F;
 		bullet.wear = 10;
 		bullet.bulletsMin = 6;
 		bullet.bulletsMax = 8;
@@ -186,7 +188,7 @@ public class BulletConfigFactory {
 		BulletConfiguration bullet = new BulletConfiguration();
 		
 		bullet.velocity = 2.0F;
-		bullet.spread = defaultSpread;
+		bullet.spread = BulletConfigFactory.defaultSpread;
 		bullet.wear = 10;
 		bullet.bulletsMin = 1;
 		bullet.bulletsMax = 1;
@@ -212,7 +214,7 @@ public class BulletConfigFactory {
 		BulletConfiguration bullet = new BulletConfiguration();
 		
 		bullet.velocity = 2.0F;
-		bullet.spread = defaultSpread;
+		bullet.spread = BulletConfigFactory.defaultSpread;
 		bullet.wear = 10;
 		bullet.bulletsMin = 1;
 		bullet.bulletsMax = 1;
@@ -238,7 +240,7 @@ public class BulletConfigFactory {
 		BulletConfiguration bullet = new BulletConfiguration();
 		
 		bullet.velocity = 3.0F;
-		bullet.spread = defaultSpread;
+		bullet.spread = BulletConfigFactory.defaultSpread;
 		bullet.wear = 10;
 		bullet.bulletsMin = 1;
 		bullet.bulletsMax = 1;
@@ -263,7 +265,7 @@ public class BulletConfigFactory {
 		BulletConfiguration bullet = new BulletConfiguration();
 		
 		bullet.velocity = 3.0F;
-		bullet.spread = defaultSpread;
+		bullet.spread = BulletConfigFactory.defaultSpread;
 		bullet.wear = 10;
 		bullet.bulletsMin = 1;
 		bullet.bulletsMax = 1;
@@ -415,10 +417,7 @@ public class BulletConfigFactory {
 			@Override
 			public void behaveUpdate(EntityBulletBaseNT bullet) {
 				
-				if(bullet.getThrower() == null || !(bullet.getThrower() instanceof EntityPlayer))
-					return;
-				
-				if(Vec3.createVectorHelper(bullet.posX - bullet.getThrower().posX, bullet.posY - bullet.getThrower().posY, bullet.posZ - bullet.getThrower().posZ).lengthVector() > 100)
+				if(bullet.getThrower() == null || !(bullet.getThrower() instanceof EntityPlayer) || (Vec3.createVectorHelper(bullet.posX - bullet.getThrower().posX, bullet.posY - bullet.getThrower().posY, bullet.posZ - bullet.getThrower().posZ).lengthVector() > 100))
 					return;
 				
 				MovingObjectPosition mop = Library.rayTrace((EntityPlayer)bullet.getThrower(), 200, 1);

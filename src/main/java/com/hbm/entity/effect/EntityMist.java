@@ -19,9 +19,9 @@ import com.hbm.lib.ModDamageSource;
 import com.hbm.main.MainRegistry;
 import com.hbm.util.ArmorUtil;
 import com.hbm.util.ContaminationUtil;
-import com.hbm.util.EntityDamageUtil;
 import com.hbm.util.ContaminationUtil.ContaminationType;
 import com.hbm.util.ContaminationUtil.HazardType;
+import com.hbm.util.EntityDamageUtil;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -64,55 +64,56 @@ public class EntityMist extends Entity {
 	}
 	
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onEntityUpdate() {
 		
 		float height = this.dataWatcher.getWatchableObjectFloat(12);
 		this.yOffset = 0;
-		this.setSize(this.dataWatcher.getWatchableObjectFloat(11), height);
-		this.setPosition(this.posX, this.posY, this.posZ);
+		setSize(this.dataWatcher.getWatchableObjectFloat(11), height);
+		setPosition(this.posX, this.posY, this.posZ);
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			if(this.ticksExisted > this.getMaxAge()) {
-				this.setDead();
+			if(this.ticksExisted > getMaxAge()) {
+				setDead();
 			}
 
-			FluidType type = this.getType();
+			FluidType type = getType();
 			
 			if(type.hasTrait(FT_VentRadiation.class)) {
 				FT_VentRadiation trait = type.getTrait(FT_VentRadiation.class);
-				ChunkRadiationManager.proxy.incrementRad(worldObj, (int) Math.floor(posX), (int) Math.floor(posY), (int) Math.floor(posZ), trait.getRadPerMB() * 2);
+				ChunkRadiationManager.proxy.incrementRad(this.worldObj, (int) Math.floor(this.posX), (int) Math.floor(this.posY), (int) Math.floor(this.posZ), trait.getRadPerMB() * 2);
 			}
 			
-			double intensity = 1D - (double) this.ticksExisted / (double) this.getMaxAge();
+			double intensity = 1D - (double) this.ticksExisted / (double) getMaxAge();
 			
-			if(type.hasTrait(FT_Flammable.class) && this.isBurning()) {
-				worldObj.createExplosion(this, posX, posY + height / 2, posZ, (float) intensity * 15F, true);
-				this.setDead();
+			if(type.hasTrait(FT_Flammable.class) && isBurning()) {
+				this.worldObj.createExplosion(this, this.posX, this.posY + height / 2, this.posZ, (float) intensity * 15F, true);
+				setDead();
 				return;
 			}
 			
 			AxisAlignedBB aabb = this.boundingBox.copy();
-			List<Entity> affected = worldObj.getEntitiesWithinAABBExcludingEntity(this, aabb.offset(-this.width / 2, 0, -this.width / 2));
+			List<Entity> affected = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, aabb.offset(-this.width / 2, 0, -this.width / 2));
 			
 			for(Entity e : affected) {
-				this.affect(e, intensity);
+				affect(e, intensity);
 			}
 		} else {
 			
 			for(int i = 0; i < 2; i++) {
-				double x = this.boundingBox.minX + (rand.nextDouble() - 0.5) * (this.boundingBox.maxX - this.boundingBox.minX);
-				double y = this.boundingBox.minY + rand.nextDouble() * (this.boundingBox.maxY - this.boundingBox.minY);
-				double z = this.boundingBox.minZ + (rand.nextDouble() - 0.5) * (this.boundingBox.maxZ - this.boundingBox.minZ);
+				double x = this.boundingBox.minX + (this.rand.nextDouble() - 0.5) * (this.boundingBox.maxX - this.boundingBox.minX);
+				double y = this.boundingBox.minY + this.rand.nextDouble() * (this.boundingBox.maxY - this.boundingBox.minY);
+				double z = this.boundingBox.minZ + (this.rand.nextDouble() - 0.5) * (this.boundingBox.maxZ - this.boundingBox.minZ);
 				
 				NBTTagCompound fx = new NBTTagCompound();
 				fx.setString("type", "tower");
 				fx.setFloat("lift", 0.5F);
 				fx.setFloat("base", 0.75F);
 				fx.setFloat("max", 2F);
-				fx.setInteger("life", 50 + worldObj.rand.nextInt(10));
-				fx.setInteger("color",this.getType().getColor());
+				fx.setInteger("life", 50 + this.worldObj.rand.nextInt(10));
+				fx.setInteger("color",getType().getColor());
 				fx.setDouble("posX", x);
 				fx.setDouble("posY", y);
 				fx.setDouble("posZ", z);
@@ -124,7 +125,7 @@ public class EntityMist extends Entity {
 	/* can't reuse EntityChemical here, while similar or identical in some places, the actual effects are often different */
 	protected void affect(Entity e, double intensity) {
 
-		FluidType type = this.getType();
+		FluidType type = getType();
 		EntityLivingBase living = e instanceof EntityLivingBase ? (EntityLivingBase) e : null;
 		
 		if(type.temperature >= 100) {
@@ -154,7 +155,7 @@ public class EntityMist extends Entity {
 			}
 		}
 		
-		if(this.isExtinguishing(type)) {
+		if(isExtinguishing(type)) {
 			e.extinguish();
 		}
 		
@@ -194,22 +195,22 @@ public class EntityMist extends Entity {
 	}
 	
 	protected boolean isExtinguishing(FluidType type) {
-		return this.getStyleFromType(type) == SprayStyle.MIST && this.getType().temperature < 50 && !type.hasTrait(FT_Flammable.class);
+		return getStyleFromType(type) == SprayStyle.MIST && getType().temperature < 50 && !type.hasTrait(FT_Flammable.class);
 	}
 
 	public int getMaxAge() {
-		return getStyleFromType(this.getType()) == SprayStyle.GAS ? 600 : 150;
+		return EntityMist.getStyleFromType(getType()) == SprayStyle.GAS ? 600 : 150;
 	}
 
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound nbt) {
-		this.setType(Fluids.fromID(nbt.getInteger("type")));
-		this.setArea(nbt.getFloat("width"), nbt.getFloat("height"));
+		setType(Fluids.fromID(nbt.getInteger("type")));
+		setArea(nbt.getFloat("width"), nbt.getFloat("height"));
 	}
 
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound nbt) {
-		nbt.setInteger("type", this.getType().getID());
+		nbt.setInteger("type", getType().getID());
 		nbt.setFloat("width", this.dataWatcher.getWatchableObjectFloat(11));
 		nbt.setFloat("height", this.dataWatcher.getWatchableObjectFloat(12));
 	}

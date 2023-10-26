@@ -1,11 +1,11 @@
 package com.hbm.tileentity.machine.rbmk;
 
-import api.hbm.fluid.IFluidStandardReceiver;
 import com.hbm.blocks.machine.rbmk.RBMKBase;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTank;
 import com.hbm.tileentity.TileEntityLoadedBase;
 
+import api.hbm.fluid.IFluidStandardReceiver;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -16,32 +16,32 @@ public class TileEntityRBMKInlet extends TileEntityLoadedBase implements IFluidS
 	public FluidTank water;
 	
 	public TileEntityRBMKInlet() {
-		water = new FluidTank(Fluids.WATER, 32000);
+		this.water = new FluidTank(Fluids.WATER, 32000);
 	}
 	
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			this.subscribeToAllAround(water.getTankType(), this);
+			this.subscribeToAllAround(this.water.getTankType(), this);
 			
 			for(int i = 2; i < 6; i++) {
 				ForgeDirection dir = ForgeDirection.getOrientation(i);
-				Block b = worldObj.getBlock(xCoord + dir.offsetX, yCoord, zCoord + dir.offsetZ);
+				Block b = this.worldObj.getBlock(this.xCoord + dir.offsetX, this.yCoord, this.zCoord + dir.offsetZ);
 				
 				if(b instanceof RBMKBase) {
-					int[] pos = ((RBMKBase)b).findCore(worldObj, xCoord + dir.offsetX, yCoord, zCoord + dir.offsetZ);
+					int[] pos = ((RBMKBase)b).findCore(this.worldObj, this.xCoord + dir.offsetX, this.yCoord, this.zCoord + dir.offsetZ);
 					
 					if(pos != null) {
-						TileEntity te = worldObj.getTileEntity(pos[0], pos[1], pos[2]);
+						TileEntity te = this.worldObj.getTileEntity(pos[0], pos[1], pos[2]);
 						
 						if(te instanceof TileEntityRBMKBase) {
 							TileEntityRBMKBase rbmk = (TileEntityRBMKBase) te;
 							
-							int prov = Math.min(rbmk.maxWater - rbmk.water, water.getFill());
+							int prov = Math.min(TileEntityRBMKBase.maxWater - rbmk.water, this.water.getFill());
 							rbmk.water += prov;
-							water.setFill(water.getFill() - prov);
+							this.water.setFill(this.water.getFill() - prov);
 						}
 					}
 				}
@@ -63,12 +63,12 @@ public class TileEntityRBMKInlet extends TileEntityLoadedBase implements IFluidS
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return new FluidTank[] {water};
+		return new FluidTank[] {this.water};
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] {water};
+		return new FluidTank[] {this.water};
 	}
 
 }

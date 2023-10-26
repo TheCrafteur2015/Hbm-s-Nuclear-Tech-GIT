@@ -29,8 +29,8 @@ public class ItemKitCustom extends ItemKitNBT {
 	public void registerIcons(IIconRegister reg) {
 		super.registerIcons(reg);
 
-		this.overlay1 = reg.registerIcon(this.getIconString() + "_1");
-		this.overlay2 = reg.registerIcon(this.getIconString() + "_2");
+		this.overlay1 = reg.registerIcon(getIconString() + "_1");
+		this.overlay2 = reg.registerIcon(getIconString() + "_2");
 	}
 
 	@Override
@@ -49,9 +49,9 @@ public class ItemKitCustom extends ItemKitNBT {
 	@SideOnly(Side.CLIENT)
 	public int getColorFromItemStack(ItemStack stack, int pass) {
 		if(pass == 1)
-			return getColor(stack, 1);
+			return ItemKitCustom.getColor(stack, 1);
 		if(pass == 2)
-			return getColor(stack, 2);
+			return ItemKitCustom.getColor(stack, 2);
 		return 0xffffff;
 	}
 	
@@ -60,8 +60,8 @@ public class ItemKitCustom extends ItemKitNBT {
 		
 		stack.stackTagCompound = new NBTTagCompound();
 
-		setColor(stack, color1, 1);
-		setColor(stack, color2, 2);
+		ItemKitCustom.setColor(stack, color1, 1);
+		ItemKitCustom.setColor(stack, color2, 2);
 		
 		if(lore != null) ItemStackUtil.addTooltipToStack(stack, lore.split("\\$"));
 		stack.setStackDisplayName(EnumChatFormatting.RESET + name);

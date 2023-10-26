@@ -25,16 +25,16 @@ public class BlockBiomeStone extends BlockEnumMulti {
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister reg) {
 		
-		Enum[] enums = theEnum.getEnumConstants();
+		Enum[] enums = this.theEnum.getEnumConstants();
 		this.icons = new IIcon[enums.length];
 		this.iconsTop = new IIcon[enums.length];
 		this.iconsLayer = new IIcon[enums.length];
 		
-		for(int i = 0; i < icons.length; i++) {
+		for(int i = 0; i < this.icons.length; i++) {
 			Enum num = enums[i];
-			this.icons[i] = reg.registerIcon(this.getTextureName() + "." + num.name().toLowerCase(Locale.US));
-			this.iconsTop[i] = reg.registerIcon(this.getTextureName() + "_top." + num.name().toLowerCase(Locale.US));
-			this.iconsLayer[i] = reg.registerIcon(this.getTextureName() + "_layer." + num.name().toLowerCase(Locale.US));
+			this.icons[i] = reg.registerIcon(getTextureName() + "." + num.name().toLowerCase(Locale.US));
+			this.iconsTop[i] = reg.registerIcon(getTextureName() + "_top." + num.name().toLowerCase(Locale.US));
+			this.iconsLayer[i] = reg.registerIcon(getTextureName() + "_layer." + num.name().toLowerCase(Locale.US));
 		}
 	}
 
@@ -43,8 +43,7 @@ public class BlockBiomeStone extends BlockEnumMulti {
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
 		
 		int meta = world.getBlockMetadata(x, y, z);
-		if(side == 0) return this.iconsTop[meta % this.icons.length];
-		if(side == 1) return this.iconsTop[meta % this.icons.length];
+		if((side == 0) || (side == 1)) return this.iconsTop[meta % this.icons.length];
 		
 		if(world.getBlock(x, y + 1, z) == this && world.getBlockMetadata(x, y + 1, z) == meta) {
 			return this.getIcon(side, meta);

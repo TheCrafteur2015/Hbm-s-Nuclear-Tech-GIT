@@ -1,5 +1,7 @@
 package com.hbm.render.tileentity;
 
+import org.lwjgl.opengl.GL11;
+
 import com.hbm.config.CustomMachineConfigJSON;
 import com.hbm.render.util.SmallBlockPronter;
 import com.hbm.tileentity.machine.TileEntityCustomMachine;
@@ -8,7 +10,6 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.opengl.GL11;
 
 public class RenderCustomMachine extends TileEntitySpecialRenderer {
 	

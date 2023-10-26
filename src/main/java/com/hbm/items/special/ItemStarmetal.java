@@ -19,13 +19,13 @@ public class ItemStarmetal extends Item {
 	private IIcon[] icons = new IIcon[4];
 	
 	public ItemStarmetal() {
-		this.setHasSubtypes(true);
+		setHasSubtypes(true);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister reg) {
-		this.itemIcon = reg.registerIcon(this.getIconString());
+		this.itemIcon = reg.registerIcon(getIconString());
 
 		this.icons[0] = reg.registerIcon(RefStrings.MODID + ":ingot_starmetal");
 		this.icons[1] = reg.registerIcon(RefStrings.MODID + ":ingot_starmetal_astra");
@@ -33,6 +33,7 @@ public class ItemStarmetal extends Item {
 		this.icons[3] = reg.registerIcon(RefStrings.MODID + ":ingot_starmetal_orion");
 	}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tab, List list) {
 		
@@ -42,11 +43,12 @@ public class ItemStarmetal extends Item {
 		//	list.add(new ItemStack(item, 1, i));
 	}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIconFromDamage(int meta) {
 		
 		int s = Math.abs(meta) % 4;
-		return icons[s];
+		return this.icons[s];
 	}
 	
 	@Override

@@ -16,19 +16,19 @@ public class ContainerMachineReactorBreeding extends Container {
 
 	public ContainerMachineReactorBreeding(InventoryPlayer invPlayer, TileEntityMachineReactorBreeding tedf) {
 
-		reactor = tedf;
+		this.reactor = tedf;
 
-		this.addSlotToContainer(new Slot(tedf, 0, 35, 35));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 1, 125, 35));
+		addSlotToContainer(new Slot(tedf, 0, 35, 35));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 1, 125, 35));
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
 		}
 	}
 
@@ -44,12 +44,12 @@ public class ContainerMachineReactorBreeding extends Container {
 			var3 = stack.copy();
 
 			if(index <= 2) {
-				if(!this.mergeItemStack(stack, 2, this.inventorySlots.size(), true)) {
+				if(!mergeItemStack(stack, 2, this.inventorySlots.size(), true)) {
 					return null;
 				}
 
 			} else if(stack.getItem() instanceof ItemBreedingRod) {
-				if(!this.mergeItemStack(stack, 0, 1, false)) {
+				if(!mergeItemStack(stack, 0, 1, false)) {
 					return null;
 				}
 			} else {
@@ -69,6 +69,6 @@ public class ContainerMachineReactorBreeding extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return reactor.isUseableByPlayer(player);
+		return this.reactor.isUseableByPlayer(player);
 	}
 }

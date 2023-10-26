@@ -46,9 +46,9 @@ public class BlockConveyorLift extends BlockConveyorBase {
 		boolean top = !(world.getBlock(x, y + 1, z) instanceof IConveyorBelt) && !bottom && !(world.getBlock(x, y + 1, z) instanceof IEnterableBlock);
 		
 		if(top)
-			this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
+			setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
 		else
-			this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+			setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class BlockConveyorLift extends BlockConveyorBase {
 
 	@Override
 	public int getRenderType() {
-		return renderID;
+		return BlockConveyorLift.renderID;
 	}
 	
 	@Override

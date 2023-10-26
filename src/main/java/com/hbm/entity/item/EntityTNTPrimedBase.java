@@ -18,14 +18,14 @@ public class EntityTNTPrimedBase extends Entity {
 	public EntityTNTPrimedBase(World world) {
 		super(world);
 		this.preventEntitySpawning = true;
-		this.setSize(0.98F, 0.98F);
+		setSize(0.98F, 0.98F);
 		this.yOffset = this.height / 2.0F;
 		this.fuse = 80;
 	}
 
 	public EntityTNTPrimedBase(World world, double x, double y, double z, EntityLivingBase entity, BlockTNTBase bomb) {
 		this(world);
-		this.setPosition(x, y, z);
+		setPosition(x, y, z);
 		float f = (float) (Math.random() * Math.PI * 2.0D);
 		this.motionX = (double) (-((float) Math.sin((double) f)) * 0.02F);
 		this.motionY = 0.2D;
@@ -59,7 +59,7 @@ public class EntityTNTPrimedBase extends Entity {
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
 		this.motionY -= 0.04D;
-		this.moveEntity(this.motionX, this.motionY, this.motionZ);
+		moveEntity(this.motionX, this.motionY, this.motionZ);
 		this.motionX *= 0.98D;
 		this.motionY *= 0.98D;
 		this.motionZ *= 0.98D;
@@ -71,10 +71,10 @@ public class EntityTNTPrimedBase extends Entity {
 		}
 
 		if(this.fuse-- <= 0) {
-			this.setDead();
+			setDead();
 
 			if(!this.worldObj.isRemote) {
-				this.explode();
+				explode();
 			}
 		} else {
 			this.worldObj.spawnParticle("smoke", this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
@@ -82,7 +82,7 @@ public class EntityTNTPrimedBase extends Entity {
 	}
 
 	private void explode() {
-		this.getBomb().explodeEntity(worldObj, posX, posY, posZ, this);
+		getBomb().explodeEntity(this.worldObj, this.posX, this.posY, this.posZ, this);
 	}
 	
 	public BlockTNTBase getBomb() {

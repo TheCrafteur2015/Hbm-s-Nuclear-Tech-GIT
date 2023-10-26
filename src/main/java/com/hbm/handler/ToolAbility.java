@@ -55,15 +55,13 @@ public abstract class ToolAbility {
 			
 			Block b = world.getBlock(x, y, z);
 
-			if(b == Blocks.stone && !ToolConfig.recursiveStone)
-				return false;
-			if(b == Blocks.netherrack && !ToolConfig.recursiveNetherrack)
+			if((b == Blocks.stone && !ToolConfig.recursiveStone) || (b == Blocks.netherrack && !ToolConfig.recursiveNetherrack))
 				return false;
 			
 			List<Integer> indices = Arrays.asList(new Integer[] {0, 1, 2, 3, 4, 5});
 			Collections.shuffle(indices);
 			
-			pos.clear();
+			this.pos.clear();
 			
 			for(Integer i : indices) {
 				switch(i) {
@@ -80,7 +78,7 @@ public abstract class ToolAbility {
 		
 		private void breakExtra(World world, int x, int y, int z, int refX, int refY, int refZ, EntityPlayer player, IItemAbility tool, int depth) {
 			
-			if(pos.contains(new ThreeInts(x, y, z)))
+			if(this.pos.contains(new ThreeInts(x, y, z)))
 				return;
 			
 			depth += 1;
@@ -88,13 +86,10 @@ public abstract class ToolAbility {
 			if(depth > ToolConfig.recursionDepth)
 				return;
 			
-			pos.add(new ThreeInts(x, y, z));
+			this.pos.add(new ThreeInts(x, y, z));
 			
 			//don't lose the ref block just yet
-			if(x == refX && y == refY && z == refZ)
-				return;
-			
-			if(Vec3.createVectorHelper(x - refX, y - refY, z - refZ).lengthVector() > radius)
+			if((x == refX && y == refY && z == refZ) || (Vec3.createVectorHelper(x - refX, y - refY, z - refZ).lengthVector() > this.radius))
 				return;
 			
 			Block b = world.getBlock(x, y, z);
@@ -148,7 +143,7 @@ public abstract class ToolAbility {
 
 		@Override
 		public String getExtension() {
-			return " (" + radius + ")";
+			return " (" + this.radius + ")";
 		}
 
 		@Override
@@ -168,9 +163,9 @@ public abstract class ToolAbility {
 		@Override
 		public boolean onDig(World world, int x, int y, int z, EntityPlayer player, Block block, int meta, IItemAbility tool) {
 			
-			for(int a = x - range; a <= x + range; a++) {
-				for(int b = y - range; b <= y + range; b++) {
-					for(int c = z - range; c <= z + range; c++) {
+			for(int a = x - this.range; a <= x + this.range; a++) {
+				for(int b = y - this.range; b <= y + this.range; b++) {
+					for(int c = z - this.range; c <= z + this.range; c++) {
 						
 						if(a == x && b == y && c == z)
 							continue;
@@ -195,7 +190,7 @@ public abstract class ToolAbility {
 
 		@Override
 		public String getExtension() {
-			return " (" + range + ")";
+			return " (" + this.range + ")";
 		}
 
 		@Override
@@ -259,7 +254,7 @@ public abstract class ToolAbility {
 				return false;
 			
 			ItemStack stack = player.getHeldItem();
-			EnchantmentUtil.addEnchantment(stack, Enchantment.fortune, luck);
+			EnchantmentUtil.addEnchantment(stack, Enchantment.fortune, this.luck);
 			
 			if(player instanceof EntityPlayerMP)
 				IItemAbility.standardDigPost(world, x, y, z, (EntityPlayerMP) player);
@@ -281,7 +276,7 @@ public abstract class ToolAbility {
 
 		@Override
 		public String getExtension() {
-			return " (" + luck + ")";
+			return " (" + this.luck + ")";
 		}
 
 		@Override
@@ -530,7 +525,7 @@ public abstract class ToolAbility {
 		@Override
 		public boolean onDig(World world, int x, int y, int z, EntityPlayer player, Block block, int meta, IItemAbility tool) {
 			
-			ExplosionNT ex = new ExplosionNT(player.worldObj, player, x + 0.5, y + 0.5, z + 0.5, strength);
+			ExplosionNT ex = new ExplosionNT(player.worldObj, player, x + 0.5, y + 0.5, z + 0.5, this.strength);
 			ex.addAttrib(ExAttrib.ALLDROP);
 			ex.addAttrib(ExAttrib.NOHURT);
 			ex.addAttrib(ExAttrib.NOPARTICLE);
@@ -544,7 +539,7 @@ public abstract class ToolAbility {
 
 		@Override
 		public String getExtension() {
-			return " (" + strength + ")";
+			return " (" + this.strength + ")";
 		}
 
 		@Override

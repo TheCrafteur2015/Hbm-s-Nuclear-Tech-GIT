@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import com.hbm.inventory.container.ContainerMachineRadGen;
 import com.hbm.lib.RefStrings;
 import com.hbm.tileentity.machine.TileEntityMachineRadGen;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -17,7 +18,7 @@ public class GUIMachineRadGen extends GuiInfoContainer {
 
 	public GUIMachineRadGen(InventoryPlayer invPlayer, TileEntityMachineRadGen tedf) {
 		super(new ContainerMachineRadGen(invPlayer, tedf));
-		radgen = tedf;
+		this.radgen = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 184;
@@ -26,17 +27,17 @@ public class GUIMachineRadGen extends GuiInfoContainer {
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 64, guiTop + 83, 48, 4, radgen.power, radgen.maxPower);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 64, this.guiTop + 83, 48, 4, this.radgen.power, TileEntityMachineRadGen.maxPower);
 		
 		for(int i = 0; i < 12; i++) {
 			
-			if(radgen.maxProgress[i] <= 0)
+			if(this.radgen.maxProgress[i] <= 0)
 				continue;
 			
-			this.drawCustomInfo(this, mouseX, mouseY, guiLeft + 65, guiTop + 18 + i * 5, 46, 5, new String[] {
+			drawCustomInfo(this, mouseX, mouseY, this.guiLeft + 65, this.guiTop + 18 + i * 5, 46, 5, new String[] {
 					"Slot " + (i + 1) + ":",
-					radgen.production[i] + "HE/t for",
-					(radgen.maxProgress[i] - radgen.progress[i]) + " ticks. (" + ((radgen.maxProgress[i] - radgen.progress[i]) * 100 / radgen.maxProgress[i]) + "%)"
+					this.radgen.production[i] + "HE/t for",
+					(this.radgen.maxProgress[i] - this.radgen.progress[i]) + " ticks. (" + ((this.radgen.maxProgress[i] - this.radgen.progress[i]) * 100 / this.radgen.maxProgress[i]) + "%)"
 			});
 		}
 	}
@@ -51,19 +52,19 @@ public class GUIMachineRadGen extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIMachineRadGen.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
 		for(int i = 0; i < 12; i++) {
 			
-			if(radgen.maxProgress[i] <= 0)
+			if(this.radgen.maxProgress[i] <= 0)
 				continue;
 			
-			int j = radgen.progress[i] * 44 / radgen.maxProgress[i];
-			drawTexturedModalRect(guiLeft + 66, guiTop + 19 + i * 5, 176, 0, j, 3);
+			int j = this.radgen.progress[i] * 44 / this.radgen.maxProgress[i];
+			drawTexturedModalRect(this.guiLeft + 66, this.guiTop + 19 + i * 5, 176, 0, j, 3);
 		}
 		
-		int j = (int)(radgen.power * 48 / radgen.maxPower);
-		drawTexturedModalRect(guiLeft + 64, guiTop + 83, 176, 3, j, 4);
+		int j = (int)(this.radgen.power * 48 / TileEntityMachineRadGen.maxPower);
+		drawTexturedModalRect(this.guiLeft + 64, this.guiTop + 83, 176, 3, j, 4);
 	}
 }

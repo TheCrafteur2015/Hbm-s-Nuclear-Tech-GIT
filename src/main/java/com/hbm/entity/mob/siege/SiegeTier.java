@@ -18,7 +18,7 @@ public class SiegeTier {
 	private static int nextID = 0;
 	
 	public static int getLength() {
-		return nextID;
+		return SiegeTier.nextID;
 	}
 	
 	public static SiegeTier DEFAULT_BUFF;
@@ -32,15 +32,15 @@ public class SiegeTier {
 	public static SiegeTier DNT;
 	
 	public static void registerTiers() {
-		DEFAULT_BUFF =	new SiegeTier(20, "buff")		.addDrop(new ItemStack(ModItems.ingot_steel, 1, 0))	.setDR(0.2F)										.setDMG(2F)									.setLaser(0F, 0F, false);
-		CLAY =			new SiegeTier(30, "clay")		.addDrop(new ItemStack(ModItems.ingot_steel, 1, 0))	.setDR(0.2F)										.setDMG(3F)									.setLaser(0F, 0F, false);
-		STONE =			new SiegeTier(40, "stone")		.addDrop(new ItemStack(ModItems.ingot_steel, 1, 0))	.setDR(0.3F)	.setDT(1F)				.setFP()	.setDMG(5F)									.setLaser(0F, 0F, true);
-		IRON =			new SiegeTier(50, "iron")		.addDrop(new ItemStack(ModItems.ingot_steel, 1, 0))	.setDR(0.3F)	.setDT(2F)				.setFP()	.setDMG(7.5F)					.setFF()	.setLaser(0F, 1F, true);
-		SILVER =		new SiegeTier(70, "silver")		.addDrop(new ItemStack(ModItems.ingot_steel, 1, 0))	.setDR(0.5F)	.setDT(3F)	.setNF()	.setFP()	.setDMG(10F)	.setSP(0.5F)	.setFF()	.setLaser(0.01F, 1F, true);
-		GOLD =			new SiegeTier(100, "gold")		.addDrop(new ItemStack(ModItems.ingot_steel, 1, 0))	.setDR(0.5F)	.setDT(5F)	.setNF()	.setFP()	.setDMG(15F)	.setSP(0.5F)	.setFF()	.setLaser(0.02F, 1.5F, true);
-		DESH =			new SiegeTier(150, "desh")		.addDrop(new ItemStack(ModItems.ingot_steel, 1, 0))	.setDR(0.7F)	.setDT(7F)	.setNF()	.setFP()	.setDMG(25F)	.setSP(0.5F)	.setFF()	.setLaser(0.05F, 1.5F, true);
-		SCHRAB =		new SiegeTier(250, "schrab")	.addDrop(new ItemStack(ModItems.ingot_steel, 1, 0))	.setDR(0.7F)	.setDT(10F)	.setNF()	.setFP()	.setDMG(50F)	.setSP(1F)		.setFF()	.setLaser(0.1F, 2F, true);
-		DNT =			new SiegeTier(500, "dnt")		.addDrop(new ItemStack(ModItems.ingot_steel, 1, 0))	.setDR(0.9F)	.setDT(20F)	.setNF()	.setFP()	.setDMG(100F)	.setSP(1F)		.setFF()	.setLaser(0.2F, 2F, true);
+		SiegeTier.DEFAULT_BUFF =	new SiegeTier(20, "buff")		.addDrop(new ItemStack(ModItems.ingot_steel, 1, 0))	.setDR(0.2F)										.setDMG(2F)									.setLaser(0F, 0F, false);
+		SiegeTier.CLAY =			new SiegeTier(30, "clay")		.addDrop(new ItemStack(ModItems.ingot_steel, 1, 0))	.setDR(0.2F)										.setDMG(3F)									.setLaser(0F, 0F, false);
+		SiegeTier.STONE =			new SiegeTier(40, "stone")		.addDrop(new ItemStack(ModItems.ingot_steel, 1, 0))	.setDR(0.3F)	.setDT(1F)				.setFP()	.setDMG(5F)									.setLaser(0F, 0F, true);
+		SiegeTier.IRON =			new SiegeTier(50, "iron")		.addDrop(new ItemStack(ModItems.ingot_steel, 1, 0))	.setDR(0.3F)	.setDT(2F)				.setFP()	.setDMG(7.5F)					.setFF()	.setLaser(0F, 1F, true);
+		SiegeTier.SILVER =		new SiegeTier(70, "silver")		.addDrop(new ItemStack(ModItems.ingot_steel, 1, 0))	.setDR(0.5F)	.setDT(3F)	.setNF()	.setFP()	.setDMG(10F)	.setSP(0.5F)	.setFF()	.setLaser(0.01F, 1F, true);
+		SiegeTier.GOLD =			new SiegeTier(100, "gold")		.addDrop(new ItemStack(ModItems.ingot_steel, 1, 0))	.setDR(0.5F)	.setDT(5F)	.setNF()	.setFP()	.setDMG(15F)	.setSP(0.5F)	.setFF()	.setLaser(0.02F, 1.5F, true);
+		SiegeTier.DESH =			new SiegeTier(150, "desh")		.addDrop(new ItemStack(ModItems.ingot_steel, 1, 0))	.setDR(0.7F)	.setDT(7F)	.setNF()	.setFP()	.setDMG(25F)	.setSP(0.5F)	.setFF()	.setLaser(0.05F, 1.5F, true);
+		SiegeTier.SCHRAB =		new SiegeTier(250, "schrab")	.addDrop(new ItemStack(ModItems.ingot_steel, 1, 0))	.setDR(0.7F)	.setDT(10F)	.setNF()	.setFP()	.setDMG(50F)	.setSP(1F)		.setFF()	.setLaser(0.1F, 2F, true);
+		SiegeTier.DNT =			new SiegeTier(500, "dnt")		.addDrop(new ItemStack(ModItems.ingot_steel, 1, 0))	.setDR(0.9F)	.setDT(20F)	.setNF()	.setFP()	.setDMG(100F)	.setSP(1F)		.setFF()	.setLaser(0.2F, 2F, true);
 	}
 
 	public int id;
@@ -53,7 +53,7 @@ public class SiegeTier {
 	public boolean fireProof = false;
 	public boolean noFall = false;
 	public boolean noFriendlyFire = false;
-	public List<ItemStack> dropItem = new ArrayList();
+	public List<ItemStack> dropItem = new ArrayList<>();
 
 	public float laserBreak = 0F;
 	public float laserExplosive = 0F;
@@ -63,9 +63,9 @@ public class SiegeTier {
 	public Consumer<EntityLivingBase> delegate;
 	
 	public SiegeTier(float baseHealth, String name) {
-		this.id = nextID;
+		this.id = SiegeTier.nextID;
 		SiegeTier.tiers[this.id] = this;
-		nextID++;
+		SiegeTier.nextID++;
 		
 		this.health = baseHealth;
 		this.name = name;
@@ -113,6 +113,7 @@ public class SiegeTier {
 		return this;
 	}
 	
+	@SuppressWarnings("unused")
 	private SiegeTier addDrop(Item drop) {
 		return addDrop(new ItemStack(drop));
 	}
@@ -122,8 +123,9 @@ public class SiegeTier {
 		return this;
 	}
 	
+	@SuppressWarnings("unused")
 	private SiegeTier setAura(int range, PotionEffect... effects) {
-		this.daisyChain(x -> SiegeTier.doAura(x, range, effects)); //HOLY SHIT THAT ACTUALLY WORKS!!
+		daisyChain(x -> SiegeTier.doAura(x, range, effects)); //HOLY SHIT THAT ACTUALLY WORKS!!
 		return this;
 	}
 	
@@ -144,6 +146,7 @@ public class SiegeTier {
 	/*
 	 * DELEGATIONS
 	 */
+	@SuppressWarnings("unchecked")
 	private static void doAura(EntityLivingBase entity, int range, PotionEffect... effects) {
 		
 		List<EntityPlayer> players = entity.worldObj.getEntitiesWithinAABB(EntityPlayer.class, entity.boundingBox.expand(range, range, range));

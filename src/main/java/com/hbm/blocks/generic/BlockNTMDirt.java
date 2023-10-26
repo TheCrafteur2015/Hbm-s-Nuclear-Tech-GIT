@@ -14,6 +14,7 @@ import net.minecraft.util.StatCollector;
 
 public class BlockNTMDirt extends BlockDirt {
 	
+	@SuppressWarnings("unchecked")
 	@Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List p_149666_3_)
@@ -21,7 +22,8 @@ public class BlockNTMDirt extends BlockDirt {
         p_149666_3_.add(new ItemStack(this, 1, 0));
     }
     
-    public String getLocalizedName()
+    @Override
+	public String getLocalizedName()
     {
 		return ("" + StatCollector.translateToLocal(Blocks.dirt.getUnlocalizedName()) + ".name").trim();
     }

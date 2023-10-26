@@ -24,20 +24,20 @@ public class ItemModLodestone extends ItemArmorMod {
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
 		list.add(EnumChatFormatting.DARK_GRAY + "Attracts nearby items");
-		list.add(EnumChatFormatting.DARK_GRAY + "Item attraction range: " + range);
+		list.add(EnumChatFormatting.DARK_GRAY + "Item attraction range: " + this.range);
 		list.add("");
 		super.addInformation(itemstack, player, list, bool);
 	}
 
 	@Override
 	public void addDesc(List list, ItemStack stack, ItemStack armor) {
-		list.add(EnumChatFormatting.DARK_GRAY + "  " + stack.getDisplayName() + " (Magnetic range: " + range + ")");
+		list.add(EnumChatFormatting.DARK_GRAY + "  " + stack.getDisplayName() + " (Magnetic range: " + this.range + ")");
 	}
 	
 	@Override
 	public void modUpdate(EntityLivingBase entity, ItemStack armor) {
 		
-		List<EntityItem> items = entity.worldObj.getEntitiesWithinAABB(EntityItem.class, entity.boundingBox.expand(range, range, range));
+		List<EntityItem> items = entity.worldObj.getEntitiesWithinAABB(EntityItem.class, entity.boundingBox.expand(this.range, this.range, this.range));
 		
 		for(EntityItem item : items) {
 			

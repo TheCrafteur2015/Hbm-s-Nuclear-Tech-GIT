@@ -15,6 +15,7 @@ public class JungleDungeonRoomArrowFire extends JungleDungeonRoom {
 		super(parent);
 	}
 
+	@Override
 	public void generateMain(final World world, final int x, final int y, final int z) {
 		super.generateMain(world, x, y, z);
 		
@@ -30,24 +31,24 @@ public class JungleDungeonRoomArrowFire extends JungleDungeonRoom {
 						
 						Block bl;
 						
-						bl = world.getBlock(x + parent.width / 2, y + 2, z);
+						bl = world.getBlock(x + JungleDungeonRoomArrowFire.this.parent.width / 2, y + 2, z);
 						if(bl == ModBlocks.brick_jungle || bl == ModBlocks.brick_jungle_cracked || bl == ModBlocks.brick_jungle_lava) {
-							world.setBlock(x + parent.width / 2, y + 2, z, ModBlocks.brick_jungle_trap, Trap.FLAMING_ARROW.ordinal(), 3);
+							world.setBlock(x + JungleDungeonRoomArrowFire.this.parent.width / 2, y + 2, z, ModBlocks.brick_jungle_trap, Trap.FLAMING_ARROW.ordinal(), 3);
 						}
 		
-						bl = world.getBlock(x + parent.width / 2, y + 2, z + parent.width - 1);
+						bl = world.getBlock(x + JungleDungeonRoomArrowFire.this.parent.width / 2, y + 2, z + JungleDungeonRoomArrowFire.this.parent.width - 1);
 						if(bl == ModBlocks.brick_jungle || bl == ModBlocks.brick_jungle_cracked || bl == ModBlocks.brick_jungle_lava) {
-							world.setBlock(x + parent.width / 2, y + 2, z + parent.width - 1, ModBlocks.brick_jungle_trap, Trap.FLAMING_ARROW.ordinal(), 3);
+							world.setBlock(x + JungleDungeonRoomArrowFire.this.parent.width / 2, y + 2, z + JungleDungeonRoomArrowFire.this.parent.width - 1, ModBlocks.brick_jungle_trap, Trap.FLAMING_ARROW.ordinal(), 3);
 						}
 		
-						bl = world.getBlock(x, y + 2, z + parent.width / 2);
+						bl = world.getBlock(x, y + 2, z + JungleDungeonRoomArrowFire.this.parent.width / 2);
 						if(bl == ModBlocks.brick_jungle || bl == ModBlocks.brick_jungle_cracked || bl == ModBlocks.brick_jungle_lava) {
-							world.setBlock(x, y + 2, z + parent.width / 2, ModBlocks.brick_jungle_trap, Trap.FLAMING_ARROW.ordinal(), 3);
+							world.setBlock(x, y + 2, z + JungleDungeonRoomArrowFire.this.parent.width / 2, ModBlocks.brick_jungle_trap, Trap.FLAMING_ARROW.ordinal(), 3);
 						}
 		
-						bl = world.getBlock(x + parent.width - 1, y + 2, z + parent.width / 2);
+						bl = world.getBlock(x + JungleDungeonRoomArrowFire.this.parent.width - 1, y + 2, z + JungleDungeonRoomArrowFire.this.parent.width / 2);
 						if(bl == ModBlocks.brick_jungle || bl == ModBlocks.brick_jungle_cracked || bl == ModBlocks.brick_jungle_lava) {
-							world.setBlock(x + parent.width - 1, y + 2, z + parent.width / 2, ModBlocks.brick_jungle_trap, Trap.FLAMING_ARROW.ordinal(), 3);
+							world.setBlock(x + JungleDungeonRoomArrowFire.this.parent.width - 1, y + 2, z + JungleDungeonRoomArrowFire.this.parent.width / 2, ModBlocks.brick_jungle_trap, Trap.FLAMING_ARROW.ordinal(), 3);
 						}
 					}
 				};

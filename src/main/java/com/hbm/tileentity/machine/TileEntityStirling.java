@@ -43,40 +43,40 @@ public class TileEntityStirling extends TileEntityLoadedBase implements INBTPack
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			if(hasCog) {
+			if(this.hasCog) {
 				tryPullHeat();
 				
-				this.powerBuffer = (long) (this.heat * (this.isCreative() ? 1 : this.efficiency));
+				this.powerBuffer = (long) (this.heat * (isCreative() ? 1 : TileEntityStirling.efficiency));
 				
-				if(warnCooldown > 0)
-					warnCooldown--;
+				if(this.warnCooldown > 0)
+					this.warnCooldown--;
 				
-				if(heat > maxHeat() && !isCreative()) {
+				if(this.heat > maxHeat() && !isCreative()) {
 					
 					this.overspeed++;
 					
-					if(overspeed > 60 && warnCooldown == 0) {
-						warnCooldown = 100;
-						worldObj.playSoundEffect(xCoord + 0.5, yCoord + 1, zCoord + 0.5, "hbm:block.warnOverspeed", 2.0F, 1.0F);
+					if(this.overspeed > 60 && this.warnCooldown == 0) {
+						this.warnCooldown = 100;
+						this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 1, this.zCoord + 0.5, "hbm:block.warnOverspeed", 2.0F, 1.0F);
 					}
 					
-					if(overspeed > overspeedLimit) {
+					if(this.overspeed > TileEntityStirling.overspeedLimit) {
 						this.hasCog = false;
-						this.worldObj.newExplosion(null, xCoord + 0.5, yCoord + 1, zCoord + 0.5, 5F, false, false);
+						this.worldObj.newExplosion(null, this.xCoord + 0.5, this.yCoord + 1, this.zCoord + 0.5, 5F, false, false);
 						
-						int orientation = this.getBlockMetadata() - BlockDummyable.offset;
+						int orientation = getBlockMetadata() - BlockDummyable.offset;
 						ForgeDirection dir = ForgeDirection.getOrientation(orientation);
-						EntityCog cog = new EntityCog(worldObj, xCoord + 0.5 + dir.offsetX, yCoord + 1, zCoord + 0.5 + dir.offsetZ).setOrientation(orientation).setMeta(this.getGeatMeta());
+						EntityCog cog = new EntityCog(this.worldObj, this.xCoord + 0.5 + dir.offsetX, this.yCoord + 1, this.zCoord + 0.5 + dir.offsetZ).setOrientation(orientation).setMeta(getGeatMeta());
 						ForgeDirection rot = dir.getRotation(ForgeDirection.DOWN);
 						
 						cog.motionX = rot.offsetX;
-						cog.motionY = 1 + (heat - maxHeat()) * 0.0001D;
+						cog.motionY = 1 + (this.heat - maxHeat()) * 0.0001D;
 						cog.motionZ = rot.offsetZ;
-						worldObj.spawnEntityInWorld(cog);
+						this.worldObj.spawnEntityInWorld(cog);
 						
-						this.markDirty();
+						markDirty();
 					}
 					
 				} else {
@@ -88,14 +88,14 @@ public class TileEntityStirling extends TileEntityLoadedBase implements INBTPack
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setLong("power", powerBuffer);
-			data.setInteger("heat", heat);
-			data.setBoolean("hasCog", hasCog);
+			data.setLong("power", this.powerBuffer);
+			data.setInteger("heat", this.heat);
+			data.setBoolean("hasCog", this.hasCog);
 			INBTPacketReceiver.networkPack(this, data, 150);
 			
-			if(hasCog) {
+			if(this.hasCog) {
 				for(DirPos pos : getConPos()) {
-					this.sendPower(worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+					sendPower(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 				}
 				this.powerBuffer = 0;
 			} else {
@@ -107,9 +107,9 @@ public class TileEntityStirling extends TileEntityLoadedBase implements INBTPack
 			this.heat = 0;
 		} else {
 			
-			float momentum = powerBuffer * 50F / ((float) maxHeat());
+			float momentum = this.powerBuffer * 50F / ((float) maxHeat());
 			
-			if(this.isCreative()) momentum = Math.min(momentum, 45F);
+			if(isCreative()) momentum = Math.min(momentum, 45F);
 			
 			this.lastSpin = this.spin;
 			this.spin += momentum;
@@ -122,23 +122,23 @@ public class TileEntityStirling extends TileEntityLoadedBase implements INBTPack
 	}
 	
 	public int getGeatMeta() {
-		return this.getBlockType() == ModBlocks.machine_stirling ? 0 : this.getBlockType() == ModBlocks.machine_stirling_creative ? 2 : 1;
+		return getBlockType() == ModBlocks.machine_stirling ? 0 : getBlockType() == ModBlocks.machine_stirling_creative ? 2 : 1;
 	}
 	
 	public int maxHeat() {
-		return this.getBlockType() == ModBlocks.machine_stirling ? 300 : 1500;
+		return getBlockType() == ModBlocks.machine_stirling ? 300 : 1500;
 	}
 	
 	public boolean isCreative() {
-		return this.getBlockType() == ModBlocks.machine_stirling_creative;
+		return getBlockType() == ModBlocks.machine_stirling_creative;
 	}
 	
 	protected DirPos[] getConPos() {
 		return new DirPos[] {
-				new DirPos(xCoord + 2, yCoord, zCoord, Library.POS_X),
-				new DirPos(xCoord - 2, yCoord, zCoord, Library.NEG_X),
-				new DirPos(xCoord, yCoord, zCoord + 2, Library.POS_Z),
-				new DirPos(xCoord, yCoord, zCoord - 2, Library.NEG_Z)
+				new DirPos(this.xCoord + 2, this.yCoord, this.zCoord, Library.POS_X),
+				new DirPos(this.xCoord - 2, this.yCoord, this.zCoord, Library.NEG_X),
+				new DirPos(this.xCoord, this.yCoord, this.zCoord + 2, Library.POS_Z),
+				new DirPos(this.xCoord, this.yCoord, this.zCoord - 2, Library.NEG_Z)
 		};
 	}
 
@@ -150,11 +150,11 @@ public class TileEntityStirling extends TileEntityLoadedBase implements INBTPack
 	}
 	
 	protected void tryPullHeat() {
-		TileEntity con = worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
+		TileEntity con = this.worldObj.getTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
 		
 		if(con instanceof IHeatSource) {
 			IHeatSource source = (IHeatSource) con;
-			int heatSrc = (int) (source.getHeatStored() * diffusion);
+			int heatSrc = (int) (source.getHeatStored() * TileEntityStirling.diffusion);
 			
 			if(heatSrc > 0) {
 				source.useUpHeat(heatSrc);
@@ -179,9 +179,9 @@ public class TileEntityStirling extends TileEntityLoadedBase implements INBTPack
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 
-		nbt.setLong("powerBuffer", powerBuffer);
-		nbt.setBoolean("hasCog", hasCog);
-		nbt.setInteger("overspeed", overspeed);
+		nbt.setLong("powerBuffer", this.powerBuffer);
+		nbt.setBoolean("hasCog", this.hasCog);
+		nbt.setInteger("overspeed", this.overspeed);
 	}
 
 	@Override
@@ -191,12 +191,12 @@ public class TileEntityStirling extends TileEntityLoadedBase implements INBTPack
 
 	@Override
 	public long getPower() {
-		return powerBuffer;
+		return this.powerBuffer;
 	}
 
 	@Override
 	public long getMaxPower() {
-		return powerBuffer;
+		return this.powerBuffer;
 	}
 	
 	AxisAlignedBB bb = null;
@@ -204,18 +204,18 @@ public class TileEntityStirling extends TileEntityLoadedBase implements INBTPack
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 1,
-					yCoord,
-					zCoord - 1,
-					xCoord + 2,
-					yCoord + 2,
-					zCoord + 2
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 1,
+					this.yCoord,
+					this.zCoord - 1,
+					this.xCoord + 2,
+					this.yCoord + 2,
+					this.zCoord + 2
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override
@@ -231,19 +231,19 @@ public class TileEntityStirling extends TileEntityLoadedBase implements INBTPack
 
 	@Override
 	public void readIfPresent(JsonObject obj) {
-		diffusion = IConfigurableMachine.grab(obj, "D:diffusion", diffusion);
-		efficiency = IConfigurableMachine.grab(obj, "D:efficiency", efficiency);
-		maxHeatNormal = IConfigurableMachine.grab(obj, "I:maxHeatNormal", maxHeatNormal);
-		maxHeatSteel = IConfigurableMachine.grab(obj, "I:maxHeatSteel", maxHeatSteel);
-		overspeedLimit = IConfigurableMachine.grab(obj, "I:overspeedLimit", overspeedLimit);
+		TileEntityStirling.diffusion = IConfigurableMachine.grab(obj, "D:diffusion", TileEntityStirling.diffusion);
+		TileEntityStirling.efficiency = IConfigurableMachine.grab(obj, "D:efficiency", TileEntityStirling.efficiency);
+		TileEntityStirling.maxHeatNormal = IConfigurableMachine.grab(obj, "I:maxHeatNormal", TileEntityStirling.maxHeatNormal);
+		TileEntityStirling.maxHeatSteel = IConfigurableMachine.grab(obj, "I:maxHeatSteel", TileEntityStirling.maxHeatSteel);
+		TileEntityStirling.overspeedLimit = IConfigurableMachine.grab(obj, "I:overspeedLimit", TileEntityStirling.overspeedLimit);
 	}
 
 	@Override
 	public void writeConfig(JsonWriter writer) throws IOException {
-		writer.name("D:diffusion").value(diffusion);
-		writer.name("D:efficiency").value(efficiency);
-		writer.name("I:maxHeatNormal").value(maxHeatNormal);
-		writer.name("I:maxHeatSteel").value(maxHeatSteel);
-		writer.name("I:overspeedLimit").value(overspeedLimit);
+		writer.name("D:diffusion").value(TileEntityStirling.diffusion);
+		writer.name("D:efficiency").value(TileEntityStirling.efficiency);
+		writer.name("I:maxHeatNormal").value(TileEntityStirling.maxHeatNormal);
+		writer.name("I:maxHeatSteel").value(TileEntityStirling.maxHeatSteel);
+		writer.name("I:overspeedLimit").value(TileEntityStirling.overspeedLimit);
 	}
 }

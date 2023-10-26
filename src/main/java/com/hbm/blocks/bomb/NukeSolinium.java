@@ -45,7 +45,7 @@ public class NukeSolinium extends BlockContainer implements IBomb {
 
 	@Override
 	public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_) {
-		if(!keepInventory) {
+		if(!NukeSolinium.keepInventory) {
 			TileEntityNukeSolinium tileentityfurnace = (TileEntityNukeSolinium) p_149749_1_.getTileEntity(p_149749_2_, p_149749_3_, p_149749_4_);
 
 			if(tileentityfurnace != null) {
@@ -107,7 +107,7 @@ public class NukeSolinium extends BlockContainer implements IBomb {
 		TileEntityNukeSolinium entity = (TileEntityNukeSolinium) p_149695_1_.getTileEntity(x, y, z);
 		if(p_149695_1_.isBlockIndirectlyGettingPowered(x, y, z) && !p_149695_1_.isRemote) {
 			if(entity.isReady()) {
-				this.onBlockDestroyedByPlayer(p_149695_1_, x, y, z, 1);
+				onBlockDestroyedByPlayer(p_149695_1_, x, y, z, 1);
 				entity.clearSlots();
 				p_149695_1_.setBlockToAir(x, y, z);
 				igniteTestBomb(p_149695_1_, x, y, z, BombConfig.soliniumRadius);
@@ -172,7 +172,7 @@ public class NukeSolinium extends BlockContainer implements IBomb {
 		if(!world.isRemote) {
 			TileEntityNukeSolinium entity = (TileEntityNukeSolinium) world.getTileEntity(x, y, z);
 			if(entity.isReady()) {
-				this.onBlockDestroyedByPlayer(world, x, y, z, 1);
+				onBlockDestroyedByPlayer(world, x, y, z, 1);
 				entity.clearSlots();
 				world.setBlockToAir(x, y, z);
 				igniteTestBomb(world, x, y, z, BombConfig.soliniumRadius);

@@ -84,7 +84,7 @@ public class ItemSyringe extends Item {
 
 		if(this == ModItems.syringe_poison) {
 			if(!world.isRemote) {
-				if(rand.nextInt(2) == 0)
+				if(this.rand.nextInt(2) == 0)
 					player.attackEntityFrom(ModDamageSource.euthanizedSelf, 30);
 				else
 					player.attackEntityFrom(ModDamageSource.euthanizedSelf2, 30);

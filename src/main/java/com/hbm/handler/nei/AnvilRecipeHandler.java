@@ -1,7 +1,5 @@
 package com.hbm.handler.nei;
 
-import static codechicken.lib.gui.GuiDraw.drawTexturedModalRect;
-
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -17,6 +15,7 @@ import com.hbm.inventory.recipes.anvil.AnvilRecipes.OverlayType;
 import com.hbm.lib.RefStrings;
 import com.hbm.util.ItemStackUtil;
 
+import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
@@ -26,15 +25,15 @@ import net.minecraft.util.EnumChatFormatting;
 
 public class AnvilRecipeHandler extends TemplateRecipeHandler {
 
-	public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<RecipeTransferRect>();
-	public LinkedList<RecipeTransferRect> transferRectsGui = new LinkedList<RecipeTransferRect>();
-	public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<Class<? extends GuiContainer>>();
-	public LinkedList<Class<? extends GuiContainer>> guiGui = new LinkedList<Class<? extends GuiContainer>>();
+	public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<>();
+	public LinkedList<RecipeTransferRect> transferRectsGui = new LinkedList<>();
+	public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<>();
+	public LinkedList<Class<? extends GuiContainer>> guiGui = new LinkedList<>();
 
 	public class RecipeSet extends TemplateRecipeHandler.CachedRecipe {
 		
-		List<PositionedStack> input = new ArrayList();
-		List<PositionedStack> output = new ArrayList();
+		List<PositionedStack> input = new ArrayList<>();
+		List<PositionedStack> output = new ArrayList<>();
 		PositionedStack anvil;
 		int tier;
 		OverlayType shape;
@@ -52,14 +51,14 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler {
 			int anvY = 31;
 			
 			if(in.size() == 1 && out.size() == 1) {
-				shape = OverlayType.SMITHING;
+				this.shape = OverlayType.SMITHING;
 				inOX = 48;
 				inOY = 24;
 				outOX = 102;
 				outOY = 24;
 				anvX = 75;
 			} else if(in.size() == 1 && out.size() > 1) {
-				shape = OverlayType.RECYCLING;
+				this.shape = OverlayType.RECYCLING;
 				outLine = 6;
 				inOX = 12;
 				inOY = 24;
@@ -67,7 +66,7 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler {
 				outOY = 6;
 				anvX = 30;
 			} else if(in.size() > 1 && out.size() == 1) {
-				shape = OverlayType.CONSTRUCTION;
+				this.shape = OverlayType.CONSTRUCTION;
 				inLine = 6;
 				inOX = 12;
 				inOY = 6;
@@ -75,7 +74,7 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler {
 				outOY = 24;
 				anvX = 120;
 			} else {
-				shape = OverlayType.NONE;
+				this.shape = OverlayType.NONE;
 				inLine = 4;
 				outLine = 4;
 				inOX = 3;
@@ -100,20 +99,20 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler {
 
 		@Override
 		public List<PositionedStack> getIngredients() {
-			return getCycledIngredients(cycleticks / 20, input);
+			return getCycledIngredients(AnvilRecipeHandler.this.cycleticks / 20, this.input);
 		}
 
 		@Override
 		public PositionedStack getResult() {
-			return output.get(0);
+			return this.output.get(0);
 		}
 
 		@Override
 		public List<PositionedStack> getOtherStacks() {
-			List<PositionedStack> other = new ArrayList();
-			other.addAll(output);
-			other.add(anvil);
-			return getCycledIngredients(cycleticks / 20, other);
+			List<PositionedStack> other = new ArrayList<>();
+			other.addAll(this.output);
+			other.add(this.anvil);
+			return getCycledIngredients(AnvilRecipeHandler.this.cycleticks / 20, other);
 		}
 	}
 
@@ -129,7 +128,7 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler {
 			List<AnvilConstructionRecipe> recipes = AnvilRecipes.getConstruction();
 			
 			for(AnvilConstructionRecipe recipe : recipes) {
-				this.addRecipeToList(recipe);
+				addRecipeToList(recipe);
 			}
 		} else {
 			super.loadCraftingRecipes(outputId, results);
@@ -145,7 +144,7 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler {
 			
 			for(AnvilOutput out : recipe.output) {
 				if(NEIServerUtils.areStacksSameTypeCrafting(out.stack, result)) {
-					this.addRecipeToList(recipe);
+					addRecipeToList(recipe);
 					break;
 				}
 			}
@@ -175,7 +174,7 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler {
 				List<ItemStack> stacks = in.extractForNEI();
 				for(ItemStack stack : stacks) {
 					if(NEIServerUtils.areStacksSameTypeCrafting(stack, ingredient)) {
-						this.addRecipeToList(recipe);
+						addRecipeToList(recipe);
 						break outer;
 					}
 				}
@@ -185,12 +184,12 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler {
 	
 	private void addRecipeToList(AnvilConstructionRecipe recipe) {
 		
-		List<Object> ins = new ArrayList();
+		List<Object> ins = new ArrayList<>();
 		for(AStack input : recipe.input) {
 			ins.add(input.extractForNEI());
 		}
 		
-		List<Object> outs = new ArrayList();
+		List<Object> outs = new ArrayList<>();
 		for(AnvilOutput output : recipe.output) {
 			
 			ItemStack stack = output.stack.copy();
@@ -208,14 +207,14 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler {
 	public void loadTransferRects() {
 		
 		//hey asshole, stop nulling my fucking lists
-		transferRectsGui = new LinkedList<RecipeTransferRect>();
-		guiGui = new LinkedList<Class<? extends GuiContainer>>();
+		this.transferRectsGui = new LinkedList<>();
+		this.guiGui = new LinkedList<>();
 
-		transferRectsGui.add(new RecipeTransferRect(new Rectangle(11, 42, 36, 18), "ntmAnvil"));
-		transferRectsGui.add(new RecipeTransferRect(new Rectangle(65, 42, 36, 18), "ntmAnvil"));
+		this.transferRectsGui.add(new RecipeTransferRect(new Rectangle(11, 42, 36, 18), "ntmAnvil"));
+		this.transferRectsGui.add(new RecipeTransferRect(new Rectangle(65, 42, 36, 18), "ntmAnvil"));
 		
-		guiGui.add(GUIAnvil.class);
-		RecipeTransferRectHandler.registerRectsToGuis(guiGui, transferRectsGui);
+		this.guiGui.add(GUIAnvil.class);
+		RecipeTransferRectHandler.registerRectsToGuis(this.guiGui, this.transferRectsGui);
 	}
 
 	@Override
@@ -231,24 +230,24 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler {
 		
 		switch(set.shape) {
 		case NONE:
-			drawTexturedModalRect(2, 5, 5, 87, 72, 54);			//in
-			drawTexturedModalRect(92, 5, 5, 87, 72, 54);		//out
-			drawTexturedModalRect(74, 14, 131, 96, 18, 36);		//operation
+			GuiDraw.drawTexturedModalRect(2, 5, 5, 87, 72, 54);			//in
+			GuiDraw.drawTexturedModalRect(92, 5, 5, 87, 72, 54);		//out
+			GuiDraw.drawTexturedModalRect(74, 14, 131, 96, 18, 36);		//operation
 			break;
 		case SMITHING:
-			drawTexturedModalRect(47, 23, 113, 105, 18, 18);	//in
-			drawTexturedModalRect(101, 23, 113, 105, 18, 18);	//out
-			drawTexturedModalRect(74, 14, 149, 96, 18, 36);		//operation
+			GuiDraw.drawTexturedModalRect(47, 23, 113, 105, 18, 18);	//in
+			GuiDraw.drawTexturedModalRect(101, 23, 113, 105, 18, 18);	//out
+			GuiDraw.drawTexturedModalRect(74, 14, 149, 96, 18, 36);		//operation
 			break;
 		case CONSTRUCTION:
-			drawTexturedModalRect(11, 5, 5, 87, 108, 54);		//in
-			drawTexturedModalRect(137, 23, 113, 105, 18, 18);	//out
-			drawTexturedModalRect(119, 14, 167, 96, 18, 36);	//operation
+			GuiDraw.drawTexturedModalRect(11, 5, 5, 87, 108, 54);		//in
+			GuiDraw.drawTexturedModalRect(137, 23, 113, 105, 18, 18);	//out
+			GuiDraw.drawTexturedModalRect(119, 14, 167, 96, 18, 36);	//operation
 			break;
 		case RECYCLING:
-			drawTexturedModalRect(11, 23, 113, 105, 18, 18);	//in
-			drawTexturedModalRect(47, 5, 5, 87, 108, 54);		//out
-			drawTexturedModalRect(29, 14, 185, 96, 18, 36);		//operation
+			GuiDraw.drawTexturedModalRect(11, 23, 113, 105, 18, 18);	//in
+			GuiDraw.drawTexturedModalRect(47, 5, 5, 87, 108, 54);		//out
+			GuiDraw.drawTexturedModalRect(29, 14, 185, 96, 18, 36);		//operation
 			break;
 		}
 	}

@@ -11,17 +11,17 @@ public class TileEntityConverterRfHe extends TileEntityLoadedBase implements IEn
 
 	@Override
 	public void setPower(long power) {
-		subBuffer = power;
+		this.subBuffer = power;
 	}
 
 	@Override
 	public long getPower() {
-		return subBuffer;
+		return this.subBuffer;
 	}
 
 	@Override
 	public long getMaxPower() {
-		return subBuffer;
+		return this.subBuffer;
 	}
 
 	@Override
@@ -36,24 +36,24 @@ public class TileEntityConverterRfHe extends TileEntityLoadedBase implements IEn
 	@Override
 	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
 		
-		if(recursionBrake)
+		if(this.recursionBrake)
 			return 0;
 		
 		if(simulate)
 			return maxReceive;
 		
-		recursionBrake = true;
+		this.recursionBrake = true;
 		
 		long capacity = maxReceive / 4L;
-		subBuffer = capacity;
+		this.subBuffer = capacity;
 		
 		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-			this.sendPower(worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, dir);
+			sendPower(this.worldObj, this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ, dir);
 		}
 		
-		recursionBrake = false;
+		this.recursionBrake = false;
 		
-		return (int) ((capacity - subBuffer) * 4L);
+		return (int) ((capacity - this.subBuffer) * 4L);
 	}
 
 	@Override

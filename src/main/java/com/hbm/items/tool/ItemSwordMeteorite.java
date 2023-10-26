@@ -13,14 +13,15 @@ import net.minecraft.util.EnumChatFormatting;
 
 public class ItemSwordMeteorite extends ItemSwordAbility {
 	
-	public static final List<ItemSwordMeteorite> swords = new ArrayList();
+	public static final List<ItemSwordMeteorite> swords = new ArrayList<>();
 
 	public ItemSwordMeteorite(float damage, double movement, ToolMaterial material) {
 		super(damage, movement, material);
-		this.setMaxDamage(0);
-		swords.add(this);
+		setMaxDamage(0);
+		ItemSwordMeteorite.swords.add(this);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		super.addInformation(stack, player, list, ext);

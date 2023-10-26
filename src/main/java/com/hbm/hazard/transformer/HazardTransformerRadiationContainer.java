@@ -24,8 +24,7 @@ public class HazardTransformerRadiationContainer extends HazardTransformerBase {
 		boolean isCrate = Block.getBlockFromItem(stack.getItem()) instanceof BlockStorageCrate;
 		boolean isBox = stack.getItem() == ModItems.containment_box;
 		
-		if(!isCrate && !isBox) return;
-		if(!stack.hasTagCompound()) return;
+		if((!isCrate && !isBox) || !stack.hasTagCompound()) return;
 		
 		float radiation = 0;
 		

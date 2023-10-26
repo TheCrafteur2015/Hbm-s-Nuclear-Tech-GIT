@@ -49,28 +49,28 @@ public class TileEntityFWatzCore extends TileEntityLoadedBase implements ISidedI
 	private String customName;
 
 	public TileEntityFWatzCore() {
-		slots = new ItemStack[7];
-		tanks = new FluidTank[3];
-		tanks[0] = new FluidTank(Fluids.COOLANT, 128000, 0);
-		tanks[1] = new FluidTank(Fluids.AMAT, 64000, 1);
-		tanks[2] = new FluidTank(Fluids.ASCHRAB, 64000, 2);
+		this.slots = new ItemStack[7];
+		this.tanks = new FluidTank[3];
+		this.tanks[0] = new FluidTank(Fluids.COOLANT, 128000, 0);
+		this.tanks[1] = new FluidTank(Fluids.AMAT, 64000, 1);
+		this.tanks[2] = new FluidTank(Fluids.ASCHRAB, 64000, 2);
 	}
 	@Override
 	public int getSizeInventory() {
-		return slots.length;
+		return this.slots.length;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		return slots[i];
+		return this.slots[i];
 	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			ItemStack itemStack = slots[i];
-			slots[i] = null;
+			ItemStack itemStack = this.slots[i];
+			this.slots[i] = null;
 			return itemStack;
 		} else {
 		return null;
@@ -79,7 +79,7 @@ public class TileEntityFWatzCore extends TileEntityLoadedBase implements ISidedI
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemStack) {
-		slots[i] = itemStack;
+		this.slots[i] = itemStack;
 		if(itemStack != null && itemStack.stackSize > getInventoryStackLimit())
 		{
 			itemStack.stackSize = getInventoryStackLimit();
@@ -88,7 +88,7 @@ public class TileEntityFWatzCore extends TileEntityLoadedBase implements ISidedI
 
 	@Override
 	public String getInventoryName() {
-		return this.hasCustomInventoryName() ? this.customName : "container.fusionaryWatzPlant";
+		return hasCustomInventoryName() ? this.customName : "container.fusionaryWatzPlant";
 	}
 
 	@Override
@@ -107,7 +107,7 @@ public class TileEntityFWatzCore extends TileEntityLoadedBase implements ISidedI
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		if(worldObj.getTileEntity(xCoord, yCoord, zCoord) != this)
+		if(this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this)
 		{
 			return false;
 		}else{
@@ -128,18 +128,18 @@ public class TileEntityFWatzCore extends TileEntityLoadedBase implements ISidedI
 	
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			if(slots[i].stackSize <= j)
+			if(this.slots[i].stackSize <= j)
 			{
-				ItemStack itemStack = slots[i];
-				slots[i] = null;
+				ItemStack itemStack = this.slots[i];
+				this.slots[i] = null;
 				return itemStack;
 			}
-			ItemStack itemStack1 = slots[i].splitStack(j);
-			if (slots[i].stackSize == 0)
+			ItemStack itemStack1 = this.slots[i].splitStack(j);
+			if (this.slots[i].stackSize == 0)
 			{
-				slots[i] = null;
+				this.slots[i] = null;
 			}
 			
 			return itemStack1;
@@ -168,20 +168,20 @@ public class TileEntityFWatzCore extends TileEntityLoadedBase implements ISidedI
 		super.readFromNBT(nbt);
 		NBTTagList list = nbt.getTagList("items", 10);
 
-		power = nbt.getLong("power");
-		tanks[0].readFromNBT(nbt, "cool");
-		tanks[1].readFromNBT(nbt, "amat");
-		tanks[2].readFromNBT(nbt, "aschrab");
+		this.power = nbt.getLong("power");
+		this.tanks[0].readFromNBT(nbt, "cool");
+		this.tanks[1].readFromNBT(nbt, "amat");
+		this.tanks[2].readFromNBT(nbt, "aschrab");
 		
-		slots = new ItemStack[getSizeInventory()];
+		this.slots = new ItemStack[getSizeInventory()];
 		
 		for(int i = 0; i < list.tagCount(); i++)
 		{
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("slot");
-			if(b0 >= 0 && b0 < slots.length)
+			if(b0 >= 0 && b0 < this.slots.length)
 			{
-				slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
+				this.slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
 			}
 		}
 	}
@@ -190,20 +190,20 @@ public class TileEntityFWatzCore extends TileEntityLoadedBase implements ISidedI
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 
-		nbt.setLong("power", power);
-		tanks[0].writeToNBT(nbt, "cool");
-		tanks[1].writeToNBT(nbt, "amat");
-		tanks[2].writeToNBT(nbt, "aschrab");
+		nbt.setLong("power", this.power);
+		this.tanks[0].writeToNBT(nbt, "cool");
+		this.tanks[1].writeToNBT(nbt, "amat");
+		this.tanks[2].writeToNBT(nbt, "aschrab");
 		
 		NBTTagList list = new NBTTagList();
 		
-		for(int i = 0; i < slots.length; i++)
+		for(int i = 0; i < this.slots.length; i++)
 		{
-			if(slots[i] != null)
+			if(this.slots[i] != null)
 			{
 				NBTTagCompound nbt1 = new NBTTagCompound();
 				nbt1.setByte("slot", (byte)i);
-				slots[i].writeToNBT(nbt1);
+				this.slots[i].writeToNBT(nbt1);
 				list.appendTag(nbt1);
 			}
 		}
@@ -224,7 +224,7 @@ public class TileEntityFWatzCore extends TileEntityLoadedBase implements ISidedI
 
 	@Override
 	public boolean hasFuse() {
-		return slots[1] != null && (slots[1].getItem() == ModItems.fuse || slots[1].getItem() == ModItems.screwdriver);
+		return this.slots[1] != null && (this.slots[1].getItem() == ModItems.fuse || this.slots[1].getItem() == ModItems.screwdriver);
 	}
 	
 	@Override
@@ -234,7 +234,7 @@ public class TileEntityFWatzCore extends TileEntityLoadedBase implements ISidedI
 	
 	@Override
 	public long getPowerScaled(long i) {
-		return (power/100 * i) / (maxPower/100);
+		return (this.power/100 * i) / (TileEntityFWatzCore.maxPower/100);
 	}
 	
 	@Override
@@ -249,8 +249,8 @@ public class TileEntityFWatzCore extends TileEntityLoadedBase implements ISidedI
 	
 	public int getSingularityType() {
 		
-		if(slots[2] != null) {
-			Item item = slots[2].getItem();
+		if(this.slots[2] != null) {
+			Item item = this.slots[2].getItem();
 
 			if(item == ModItems.singularity)
 				return 1;
@@ -269,133 +269,133 @@ public class TileEntityFWatzCore extends TileEntityLoadedBase implements ISidedI
 	
 	public DirPos[] getConPos() {
 		return new DirPos[] {
-				new DirPos(xCoord + 10, yCoord - 11, zCoord, Library.POS_X),
-				new DirPos(xCoord - 10, yCoord - 11, zCoord, Library.NEG_X),
-				new DirPos(xCoord, yCoord - 11, zCoord + 10, Library.POS_Z),
-				new DirPos(xCoord, yCoord - 11, zCoord - 10, Library.NEG_Z)
+				new DirPos(this.xCoord + 10, this.yCoord - 11, this.zCoord, Library.POS_X),
+				new DirPos(this.xCoord - 10, this.yCoord - 11, this.zCoord, Library.NEG_X),
+				new DirPos(this.xCoord, this.yCoord - 11, this.zCoord + 10, Library.POS_Z),
+				new DirPos(this.xCoord, this.yCoord - 11, this.zCoord - 10, Library.NEG_Z)
 		};
 	}
 
 	@Override
 	public void updateEntity() {
-		if(!worldObj.isRemote && this.isStructureValid(this.worldObj)) {
+		if(!this.worldObj.isRemote && isStructureValid(this.worldObj)) {
 
-			for(DirPos pos : this.getConPos()) {
-				this.sendPower(worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			for(DirPos pos : getConPos()) {
+				sendPower(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 
-				this.trySubscribe(tanks[1].getTankType(), worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
-				this.trySubscribe(tanks[2].getTankType(), worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+				this.trySubscribe(this.tanks[1].getTankType(), this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+				this.trySubscribe(this.tanks[2].getTankType(), this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 			}
 
 			if (hasFuse() && getSingularityType() > 0) {
-				if(cooldown) {
+				if(this.cooldown) {
 					
 					int i = getSingularityType();
 
 					if(i == 1)
-						tanks[0].setFill(tanks[0].getFill() + 1500);
+						this.tanks[0].setFill(this.tanks[0].getFill() + 1500);
 					if(i == 2)
-						tanks[0].setFill(tanks[0].getFill() + 3000);
+						this.tanks[0].setFill(this.tanks[0].getFill() + 3000);
 					if(i == 3)
-						tanks[0].setFill(tanks[0].getFill() + 750);
+						this.tanks[0].setFill(this.tanks[0].getFill() + 750);
 					if(i == 4)
-						tanks[0].setFill(tanks[0].getFill() + 7500);
+						this.tanks[0].setFill(this.tanks[0].getFill() + 7500);
 					if(i == 5)
-						tanks[0].setFill(tanks[0].getFill() + 15000);
+						this.tanks[0].setFill(this.tanks[0].getFill() + 15000);
 					
-					if(tanks[0].getFill() >= tanks[0].getMaxFill()) {
-						cooldown = false;
-						tanks[0].setFill(tanks[0].getMaxFill());
+					if(this.tanks[0].getFill() >= this.tanks[0].getMaxFill()) {
+						this.cooldown = false;
+						this.tanks[0].setFill(this.tanks[0].getMaxFill());
 					}
 					
 				} else {
 					int i = getSingularityType();
 					
-					if(i == 1 && tanks[1].getFill() - 75 >= 0 && tanks[2].getFill() - 75 >= 0) {
-						tanks[0].setFill(tanks[0].getFill() - 150);
-						tanks[1].setFill(tanks[1].getFill() - 75);
-						tanks[2].setFill(tanks[2].getFill() - 75);
-						power += 5000000;
+					if(i == 1 && this.tanks[1].getFill() - 75 >= 0 && this.tanks[2].getFill() - 75 >= 0) {
+						this.tanks[0].setFill(this.tanks[0].getFill() - 150);
+						this.tanks[1].setFill(this.tanks[1].getFill() - 75);
+						this.tanks[2].setFill(this.tanks[2].getFill() - 75);
+						this.power += 5000000;
 					}
-					if(i == 2 && tanks[1].getFill() - 75 >= 0 && tanks[2].getFill() - 35 >= 0) {
-						tanks[0].setFill(tanks[0].getFill() - 75);
-						tanks[1].setFill(tanks[1].getFill() - 35);
-						tanks[2].setFill(tanks[2].getFill() - 30);
-						power += 2500000;
+					if(i == 2 && this.tanks[1].getFill() - 75 >= 0 && this.tanks[2].getFill() - 35 >= 0) {
+						this.tanks[0].setFill(this.tanks[0].getFill() - 75);
+						this.tanks[1].setFill(this.tanks[1].getFill() - 35);
+						this.tanks[2].setFill(this.tanks[2].getFill() - 30);
+						this.power += 2500000;
 					}
-					if(i == 3 && tanks[1].getFill() - 75 >= 0 && tanks[2].getFill() - 140 >= 0) {
-						tanks[0].setFill(tanks[0].getFill() - 300);
-						tanks[1].setFill(tanks[1].getFill() - 75);
-						tanks[2].setFill(tanks[2].getFill() - 140);
-						power += 10000000;
+					if(i == 3 && this.tanks[1].getFill() - 75 >= 0 && this.tanks[2].getFill() - 140 >= 0) {
+						this.tanks[0].setFill(this.tanks[0].getFill() - 300);
+						this.tanks[1].setFill(this.tanks[1].getFill() - 75);
+						this.tanks[2].setFill(this.tanks[2].getFill() - 140);
+						this.power += 10000000;
 					}
-					if(i == 4 && tanks[1].getFill() - 100 >= 0 && tanks[2].getFill() - 100 >= 0) {
-						tanks[0].setFill(tanks[0].getFill() - 100);
-						tanks[1].setFill(tanks[1].getFill() - 100);
-						tanks[2].setFill(tanks[2].getFill() - 100);
-						power += 10000000;
+					if(i == 4 && this.tanks[1].getFill() - 100 >= 0 && this.tanks[2].getFill() - 100 >= 0) {
+						this.tanks[0].setFill(this.tanks[0].getFill() - 100);
+						this.tanks[1].setFill(this.tanks[1].getFill() - 100);
+						this.tanks[2].setFill(this.tanks[2].getFill() - 100);
+						this.power += 10000000;
 					}
-					if(i == 5 && tanks[1].getFill() - 15 >= 0 && tanks[2].getFill() - 15 >= 0) {
-						tanks[0].setFill(tanks[0].getFill() - 150);
-						tanks[1].setFill(tanks[1].getFill() - 15);
-						tanks[2].setFill(tanks[2].getFill() - 15);
-						power += 100000000;
+					if(i == 5 && this.tanks[1].getFill() - 15 >= 0 && this.tanks[2].getFill() - 15 >= 0) {
+						this.tanks[0].setFill(this.tanks[0].getFill() - 150);
+						this.tanks[1].setFill(this.tanks[1].getFill() - 15);
+						this.tanks[2].setFill(this.tanks[2].getFill() - 15);
+						this.power += 100000000;
 					}
 					
-					if(power > maxPower)
-						power = maxPower;
+					if(this.power > TileEntityFWatzCore.maxPower)
+						this.power = TileEntityFWatzCore.maxPower;
 					
-					if(tanks[0].getFill() <= 0) {
-						cooldown = true;
-						tanks[0].setFill(0);
+					if(this.tanks[0].getFill() <= 0) {
+						this.cooldown = true;
+						this.tanks[0].setFill(0);
 					}
 				}
 			}
 			
-			if(power > maxPower)
-				power = maxPower;
+			if(this.power > TileEntityFWatzCore.maxPower)
+				this.power = TileEntityFWatzCore.maxPower;
 			
-			power = Library.chargeItemsFromTE(slots, 0, power, maxPower);
+			this.power = Library.chargeItemsFromTE(this.slots, 0, this.power, TileEntityFWatzCore.maxPower);
 			
-			tanks[1].loadTank(3, 5, slots);
-			tanks[2].loadTank(4, 6, slots);
+			this.tanks[1].loadTank(3, 5, this.slots);
+			this.tanks[2].loadTank(4, 6, this.slots);
 			
 			for(int i = 0; i < 3; i++)
-				tanks[i].updateTank(xCoord, yCoord, zCoord, worldObj.provider.dimensionId);
+				this.tanks[i].updateTank(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId);
 		}
 		
-		if(this.isRunning() && (tanks[1].getFill() <= 0 || tanks[2].getFill() <= 0 || !hasFuse() || getSingularityType() == 0) || cooldown || !this.isStructureValid(worldObj))
-			this.emptyPlasma();
+		if(isRunning() && (this.tanks[1].getFill() <= 0 || this.tanks[2].getFill() <= 0 || !hasFuse() || getSingularityType() == 0) || this.cooldown || !isStructureValid(this.worldObj))
+			emptyPlasma();
 		
-		if(!this.isRunning() && tanks[1].getFill() >= 100 && tanks[2].getFill() >= 100 && hasFuse() && getSingularityType() > 0 && !cooldown && this.isStructureValid(worldObj))
-			this.fillPlasma();
+		if(!isRunning() && this.tanks[1].getFill() >= 100 && this.tanks[2].getFill() >= 100 && hasFuse() && getSingularityType() > 0 && !this.cooldown && isStructureValid(this.worldObj))
+			fillPlasma();
 
-		if(!worldObj.isRemote)
-			PacketDispatcher.wrapper.sendToAllAround(new AuxElectricityPacket(xCoord, yCoord, zCoord, power), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 50));
+		if(!this.worldObj.isRemote)
+			PacketDispatcher.wrapper.sendToAllAround(new AuxElectricityPacket(this.xCoord, this.yCoord, this.zCoord, this.power), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 50));
 	}
 	
 	public void fillPlasma() {
 		if(!this.worldObj.isRemote)
-			FWatz.fillPlasma(worldObj, this.xCoord, this.yCoord, this.zCoord);
+			FWatz.fillPlasma(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 	}
 	
 	public void emptyPlasma() {
 		if(!this.worldObj.isRemote)
-			FWatz.emptyPlasma(worldObj, this.xCoord, this.yCoord, this.zCoord);
+			FWatz.emptyPlasma(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 	}
 	
 	public boolean isRunning() {
-		return FWatz.getPlasma(worldObj, this.xCoord, this.yCoord, this.zCoord) && this.isStructureValid(worldObj);
+		return FWatz.getPlasma(this.worldObj, this.xCoord, this.yCoord, this.zCoord) && isStructureValid(this.worldObj);
 	}
 	
 	@Override
 	public long getMaxPower() {
-		return this.maxPower;
+		return TileEntityFWatzCore.maxPower;
 	}
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 
 	@Override
@@ -405,52 +405,52 @@ public class TileEntityFWatzCore extends TileEntityLoadedBase implements ISidedI
 
 	@Override
 	public void setFillForSync(int fill, int index) {
-		if(index < 3 && tanks[index] != null)
-			tanks[index].setFill(fill);
+		if(index < 3 && this.tanks[index] != null)
+			this.tanks[index].setFill(fill);
 	}
 
 	@Override
 	public void setTypeForSync(FluidType type, int index) {
-		if(index < 3 && tanks[index] != null)
-			tanks[index].setTankType(type);
+		if(index < 3 && this.tanks[index] != null)
+			this.tanks[index].setTankType(type);
 	}
 
 	@Override
 	public void setFluidFill(int i, FluidType type) {
-		if(type.name().equals(tanks[1].getTankType().name()))
-			tanks[1].setFill(i);
-		else if(type.name().equals(tanks[2].getTankType().name()))
-			tanks[2].setFill(i);
+		if(type.name().equals(this.tanks[1].getTankType().name()))
+			this.tanks[1].setFill(i);
+		else if(type.name().equals(this.tanks[2].getTankType().name()))
+			this.tanks[2].setFill(i);
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		if(type.name().equals(tanks[1].getTankType().name()))
-			return tanks[1].getFill();
-		else if(type.name().equals(tanks[2].getTankType().name()))
-			return tanks[2].getFill();
+		if(type.name().equals(this.tanks[1].getTankType().name()))
+			return this.tanks[1].getFill();
+		else if(type.name().equals(this.tanks[2].getTankType().name()))
+			return this.tanks[2].getFill();
 		else
 			return 0;
 	}
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		if(type.name().equals(tanks[1].getTankType().name()))
-			return tanks[1].getMaxFill();
-		else if(type.name().equals(tanks[2].getTankType().name()))
-			return tanks[2].getMaxFill();
+		if(type.name().equals(this.tanks[1].getTankType().name()))
+			return this.tanks[1].getMaxFill();
+		else if(type.name().equals(this.tanks[2].getTankType().name()))
+			return this.tanks[2].getMaxFill();
 		else
 			return 0;
 	}
 	
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] { tanks[1], tanks[2] };
+		return new FluidTank[] { this.tanks[1], this.tanks[2] };
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return tanks;
+		return this.tanks;
 	}
 	@Override
 	public Container provideContainer(int ID, EntityPlayer player, World world, int x, int y, int z) {

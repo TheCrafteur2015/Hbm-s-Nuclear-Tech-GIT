@@ -17,8 +17,8 @@ public class HazardTransformerRadiationNBT extends HazardTransformerBase {
 	@Override
 	public void transformPost(ItemStack stack, List<HazardEntry> entries) {
 		
-		if(stack.hasTagCompound() && stack.stackTagCompound.hasKey(RAD_KEY)) {
-			entries.add(new HazardEntry(HazardRegistry.RADIATION, stack.stackTagCompound.getFloat(RAD_KEY)));
+		if(stack.hasTagCompound() && stack.stackTagCompound.hasKey(HazardTransformerRadiationNBT.RAD_KEY)) {
+			entries.add(new HazardEntry(HazardRegistry.RADIATION, stack.stackTagCompound.getFloat(HazardTransformerRadiationNBT.RAD_KEY)));
 		}
 	}
 

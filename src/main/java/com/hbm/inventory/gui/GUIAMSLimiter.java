@@ -18,7 +18,7 @@ public class GUIAMSLimiter extends GuiInfoContainer {
 	
 	public GUIAMSLimiter(InventoryPlayer invPlayer, TileEntityAMSLimiter tedf) {
 		super(new ContainerAMSLimiter(invPlayer, tedf));
-		limiter = tedf;
+		this.limiter = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 166;
@@ -28,10 +28,10 @@ public class GUIAMSLimiter extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		limiter.tank.renderTankInfo(this, mouseX, mouseY, guiLeft + 26, guiTop + 69 - 52, 16, 52);
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 134, guiTop + 69 - 52, 16, 52, limiter.power, limiter.maxPower);
-		this.drawCustomInfo(this, mouseX, mouseY, guiLeft + 152, guiTop + 69 - 52, 16, 52, new String[] { "Efficiency:", limiter.efficiency + "%" });
-		this.drawCustomInfo(this, mouseX, mouseY, guiLeft + 8, guiTop + 69 - 52, 16, 52, new String[] { "Heat:", limiter.heat + "/" + limiter.maxHeat });
+		this.limiter.tank.renderTankInfo(this, mouseX, mouseY, this.guiLeft + 26, this.guiTop + 69 - 52, 16, 52);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 134, this.guiTop + 69 - 52, 16, 52, this.limiter.power, TileEntityAMSLimiter.maxPower);
+		drawCustomInfo(this, mouseX, mouseY, this.guiLeft + 152, this.guiTop + 69 - 52, 16, 52, new String[] { "Efficiency:", this.limiter.efficiency + "%" });
+		drawCustomInfo(this, mouseX, mouseY, this.guiLeft + 8, this.guiTop + 69 - 52, 16, 52, new String[] { "Heat:", this.limiter.heat + "/" + TileEntityAMSLimiter.maxHeat });
 	}
 
 	@Override
@@ -45,26 +45,26 @@ public class GUIAMSLimiter extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIAMSLimiter.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		int i = (int) limiter.getPowerScaled(52);
-		drawTexturedModalRect(guiLeft + 134, guiTop + 69 - i, 192, 52 - i, 16, i);
+		int i = (int) this.limiter.getPowerScaled(52);
+		drawTexturedModalRect(this.guiLeft + 134, this.guiTop + 69 - i, 192, 52 - i, 16, i);
 		
-		int j = limiter.getEfficiencyScaled(52);
-		drawTexturedModalRect(guiLeft + 152, guiTop + 69 - j, 208, 52 - j, 16, j);
+		int j = this.limiter.getEfficiencyScaled(52);
+		drawTexturedModalRect(this.guiLeft + 152, this.guiTop + 69 - j, 208, 52 - j, 16, j);
 		
-		int k = limiter.getHeatScaled(52);
-		drawTexturedModalRect(guiLeft + 8, guiTop + 69 - k, 176, 52 - k, 16, k);
+		int k = this.limiter.getHeatScaled(52);
+		drawTexturedModalRect(this.guiLeft + 8, this.guiTop + 69 - k, 176, 52 - k, 16, k);
 		
-		int l = limiter.mode;
+		int l = this.limiter.mode;
 		if(l > 0)
-			drawTexturedModalRect(guiLeft + 98, guiTop + 17, 176, 84 + 16 * l, 16, 16);
+			drawTexturedModalRect(this.guiLeft + 98, this.guiTop + 17, 176, 84 + 16 * l, 16, 16);
 		
-		int m = limiter.warning;
+		int m = this.limiter.warning;
 		if(m > 0)
-			drawTexturedModalRect(guiLeft + 80, guiTop + 17, 176, 36 + 16 * m, 16, 16);
+			drawTexturedModalRect(this.guiLeft + 80, this.guiTop + 17, 176, 36 + 16 * m, 16, 16);
 		
-		limiter.tank.renderTank(guiLeft + 26, guiTop + 69, this.zLevel, 16, 52);
+		this.limiter.tank.renderTank(this.guiLeft + 26, this.guiTop + 69, this.zLevel, 16, 52);
 	}
 }

@@ -41,7 +41,7 @@ public class ToolboxCraftingHandler implements IRecipe {
 	@Override
 	public ItemStack getCraftingResult(InventoryCrafting inventory) {
 		
-		List<ItemStack> stacks = new ArrayList();
+		List<ItemStack> stacks = new ArrayList<>();
 		
 		for(int i = 0; i < 9; i++) {
 			ItemStack stack = inventory.getStackInRowAndColumn(i % 3, i / 3);

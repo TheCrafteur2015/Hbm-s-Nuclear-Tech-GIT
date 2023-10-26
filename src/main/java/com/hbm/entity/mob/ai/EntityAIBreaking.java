@@ -27,21 +27,21 @@ public class EntityAIBreaking extends EntityAIBase {
 	@Override
 	public boolean shouldExecute()
 	{
-		target = entityDigger.getAttackTarget();
+		this.target = this.entityDigger.getAttackTarget();
 		
-		if(target != null && entityDigger.getNavigator().noPath() && entityDigger.getDistanceToEntity(target) > 1D && (target.onGround || !entityDigger.canEntityBeSeen(target)))
+		if(this.target != null && this.entityDigger.getNavigator().noPath() && this.entityDigger.getDistanceToEntity(this.target) > 1D && (this.target.onGround || !this.entityDigger.canEntityBeSeen(this.target)))
 		{
-			MovingObjectPosition mop = GetNextObstical(entityDigger, 2D);
+			MovingObjectPosition mop = GetNextObstical(this.entityDigger, 2D);
 			
 			if(mop == null || mop.typeOfHit != MovingObjectType.BLOCK)
 			{
 				return false;
 			}
 
-			Block block = entityDigger.worldObj.getBlock(mop.blockX, mop.blockY, mop.blockZ);
+			Block block = this.entityDigger.worldObj.getBlock(mop.blockX, mop.blockY, mop.blockZ);
 			
-			if(block.getBlockHardness(entityDigger.worldObj, mop.blockX, mop.blockY, mop.blockZ) >= 0) {
-				markedLoc = new int[]{mop.blockX, mop.blockY, mop.blockZ};
+			if(block.getBlockHardness(this.entityDigger.worldObj, mop.blockX, mop.blockY, mop.blockZ) >= 0) {
+				this.markedLoc = new int[]{mop.blockX, mop.blockY, mop.blockZ};
 				return true;
 			}
 		}
@@ -54,14 +54,14 @@ public class EntityAIBreaking extends EntityAIBase {
 	{
 		//return target != null && entityDigger != null && target.isEntityAlive() && entityDigger.isEntityAlive() && markedLoc != null && entityDigger.getNavigator().noPath() && entityDigger.getDistanceToEntity(target) > 1D && (target.onGround || !entityDigger.canEntityBeSeen(target));
 		
-		if(markedLoc != null)  {
+		if(this.markedLoc != null)  {
 			
 			Vec3 vector = Vec3.createVectorHelper(
-					markedLoc[0] - entityDigger.posX,
-					markedLoc[1] - (entityDigger.posY + entityDigger.getEyeHeight()),
-					markedLoc[2] - entityDigger.posZ);
+					this.markedLoc[0] - this.entityDigger.posX,
+					this.markedLoc[1] - (this.entityDigger.posY + this.entityDigger.getEyeHeight()),
+					this.markedLoc[2] - this.entityDigger.posZ);
 
-			return entityDigger != null && entityDigger.isEntityAlive() && vector.lengthVector() <= 4;
+			return this.entityDigger != null && this.entityDigger.isEntityAlive() && vector.lengthVector() <= 4;
 		}
 		
 		return false;
@@ -72,51 +72,51 @@ public class EntityAIBreaking extends EntityAIBase {
 	{
     	MovingObjectPosition mop = null;
     	
-    	if(entityDigger.ticksExisted % 10 == 0)
+    	if(this.entityDigger.ticksExisted % 10 == 0)
     	{
-    		mop = GetNextObstical(entityDigger, 2D);
+    		mop = GetNextObstical(this.entityDigger, 2D);
     	}
 		
 		if(mop != null && mop.typeOfHit == MovingObjectType.BLOCK)
 		{
-			markedLoc = new int[]{mop.blockX, mop.blockY, mop.blockZ};
+			this.markedLoc = new int[]{mop.blockX, mop.blockY, mop.blockZ};
 		}
 		
-		if(markedLoc == null || markedLoc.length != 3 || entityDigger.worldObj.getBlock(markedLoc[0], markedLoc[1], markedLoc[2]) == Blocks.air)
+		if(this.markedLoc == null || this.markedLoc.length != 3 || this.entityDigger.worldObj.getBlock(this.markedLoc[0], this.markedLoc[1], this.markedLoc[2]) == Blocks.air)
 		{
-			digTick = 0;
+			this.digTick = 0;
 			return;
 		}
 		
-		Block block = entityDigger.worldObj.getBlock(markedLoc[0], markedLoc[1], markedLoc[2]);
-		digTick++;
+		Block block = this.entityDigger.worldObj.getBlock(this.markedLoc[0], this.markedLoc[1], this.markedLoc[2]);
+		this.digTick++;
 		
-		int health = (int) block.getBlockHardness(entityDigger.worldObj, markedLoc[0], markedLoc[1], markedLoc[2]) / 3;
+		int health = (int) block.getBlockHardness(this.entityDigger.worldObj, this.markedLoc[0], this.markedLoc[1], this.markedLoc[2]) / 3;
 		
 		if(health < 0) {
-			markedLoc = null;
+			this.markedLoc = null;
 			return;
 		}
 		
-		float str = (digTick * 0.05F) / (float)health;
+		float str = (this.digTick * 0.05F) / (float)health;
 		
 		if(str >= 1F)
 		{
-			digTick = 0;
+			this.digTick = 0;
 			
 			boolean canHarvest = false;
-			entityDigger.worldObj.func_147480_a(markedLoc[0], markedLoc[1], markedLoc[2], canHarvest);
-			markedLoc = null;
+			this.entityDigger.worldObj.func_147480_a(this.markedLoc[0], this.markedLoc[1], this.markedLoc[2], canHarvest);
+			this.markedLoc = null;
 			
-			if(target != null)
-				entityDigger.getNavigator().setPath(entityDigger.getNavigator().getPathToEntityLiving(target), 1D);
+			if(this.target != null)
+				this.entityDigger.getNavigator().setPath(this.entityDigger.getNavigator().getPathToEntityLiving(this.target), 1D);
 		} else
 		{
-			if(digTick % 5 == 0)
+			if(this.digTick % 5 == 0)
 			{
-				entityDigger.worldObj.playSoundAtEntity(entityDigger, block.stepSound.getStepResourcePath(), block.stepSound.getVolume() + 1F, block.stepSound.getPitch());
-				entityDigger.swingItem();
-				entityDigger.worldObj.destroyBlockInWorldPartially(entityDigger.getEntityId(), markedLoc[0], markedLoc[1], markedLoc[2], (int)(str * 10F));
+				this.entityDigger.worldObj.playSoundAtEntity(this.entityDigger, block.stepSound.getStepResourcePath(), block.stepSound.getVolume() + 1F, block.stepSound.getPitch());
+				this.entityDigger.swingItem();
+				this.entityDigger.worldObj.destroyBlockInWorldPartially(this.entityDigger.getEntityId(), this.markedLoc[0], this.markedLoc[1], this.markedLoc[2], (int)(str * 10F));
 			}
 		}
 	}
@@ -124,8 +124,8 @@ public class EntityAIBreaking extends EntityAIBase {
 	@Override
 	public void resetTask()
 	{
-		markedLoc = null;
-		digTick = 0;
+		this.markedLoc = null;
+		this.digTick = 0;
 	}
 	
 	/**
@@ -144,15 +144,15 @@ public class EntityAIBreaking extends EntityAIBase {
         
         int passMax = digWidth * digWidth * digHeight;
         
-        int x = scanTick%digWidth - (digWidth/2);
-        int y = scanTick/(digWidth * digWidth);
-        int z = (scanTick%(digWidth * digWidth))/digWidth - (digWidth/2);
+        int x = this.scanTick%digWidth - (digWidth/2);
+        int y = this.scanTick/(digWidth * digWidth);
+        int z = (this.scanTick%(digWidth * digWidth))/digWidth - (digWidth/2);
         
 		double rayX = x + entityLiving.posX;
 		double rayY = y + entityLiving.posY;
 		double rayZ = z + entityLiving.posZ;
 		
-    	MovingObjectPosition mop = RayCastBlocks(entityLiving.worldObj, rayX, rayY, rayZ, f2, f1, dist, false);
+    	MovingObjectPosition mop = EntityAIBreaking.RayCastBlocks(entityLiving.worldObj, rayX, rayY, rayZ, f2, f1, dist, false);
     	
     	if(mop != null && mop.typeOfHit == MovingObjectType.BLOCK)
     	{
@@ -160,16 +160,16 @@ public class EntityAIBreaking extends EntityAIBase {
     		
     		if(block.getBlockHardness(entityLiving.worldObj, mop.blockX, mop.blockY, mop.blockZ) >= 0)
     		{
-    			scanTick = 0;
+    			this.scanTick = 0;
     			return mop;
     		} else
     		{
-    			scanTick = (scanTick + 1)%passMax;
+    			this.scanTick = (this.scanTick + 1)%passMax;
     			return null;
     		}
     	} else
     	{
-			scanTick = (scanTick + 1)%passMax;
+			this.scanTick = (this.scanTick + 1)%passMax;
 			return null;
     	}
     }
@@ -185,7 +185,7 @@ public class EntityAIBreaking extends EntityAIBase {
         float f8 = f3 * f5;
         double d3 = dist; // Ray Distance
         Vec3 vec31 = vec3.addVector((double)f7 * d3, (double)f6 * d3, (double)f8 * d3);
-        return RayCastBlocks(world, vec3, vec31, liquids);
+        return EntityAIBreaking.RayCastBlocks(world, vec3, vec31, liquids);
     }
     
     public static MovingObjectPosition RayCastBlocks(World world, Vec3 vector1, Vec3 vector2, boolean liquids)

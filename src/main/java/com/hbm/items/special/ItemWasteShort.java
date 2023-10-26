@@ -16,9 +16,9 @@ public class ItemWasteShort extends Item {
 
 	public ItemWasteShort() {
 		super();
-		this.setHasSubtypes(true);
-		this.setMaxDamage(0);
-		this.setCreativeTab(MainRegistry.controlTab);
+		setHasSubtypes(true);
+		setMaxDamage(0);
+		setCreativeTab(MainRegistry.controlTab);
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class ItemWasteShort extends Item {
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		
-		list.add(EnumChatFormatting.ITALIC + WasteClass.values()[rectify(stack.getItemDamage())].name);
+		list.add(EnumChatFormatting.ITALIC + WasteClass.values()[ItemWasteShort.rectify(stack.getItemDamage())].name);
 		
 		super.addInformation(stack, player, list, bool);
 	}

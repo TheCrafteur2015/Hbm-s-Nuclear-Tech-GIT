@@ -23,8 +23,8 @@ public class ItemFluidIcon extends Item {
 	IIcon overlayIcon;
 
 	public ItemFluidIcon() {
-		this.setHasSubtypes(true);
-		this.setMaxDamage(0);
+		setHasSubtypes(true);
+		setMaxDamage(0);
 	}
 
 	@Override
@@ -39,8 +39,8 @@ public class ItemFluidIcon extends Item {
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		if(stack.hasTagCompound()) {
-			if(getQuantity(stack) > 0) list.add(getQuantity(stack) + "mB");
-			if(getPressure(stack) > 0) list.add(EnumChatFormatting.RED + "" + getPressure(stack) + "PU");
+			if(ItemFluidIcon.getQuantity(stack) > 0) list.add(ItemFluidIcon.getQuantity(stack) + "mB");
+			if(ItemFluidIcon.getPressure(stack) > 0) list.add(EnumChatFormatting.RED + "" + ItemFluidIcon.getPressure(stack) + "PU");
 		}
 		
 		Fluids.fromID(stack.getItemDamage()).addInfo(list);
@@ -59,15 +59,15 @@ public class ItemFluidIcon extends Item {
 	}
 
 	public static ItemStack make(FluidStack stack) {
-		return make(stack.type, stack.fill, stack.pressure);
+		return ItemFluidIcon.make(stack.type, stack.fill, stack.pressure);
 	}
 
 	public static ItemStack make(FluidType fluid, int i) {
-		return make(fluid, i, 0);
+		return ItemFluidIcon.make(fluid, i, 0);
 	}
 
 	public static ItemStack make(FluidType fluid, int i, int pressure) {
-		return addPressure(addQuantity(new ItemStack(ModItems.fluid_icon, 1, fluid.ordinal()), i), pressure);
+		return ItemFluidIcon.addPressure(ItemFluidIcon.addQuantity(new ItemStack(ModItems.fluid_icon, 1, fluid.ordinal()), i), pressure);
 	}
 
 	public static int getQuantity(ItemStack stack) {

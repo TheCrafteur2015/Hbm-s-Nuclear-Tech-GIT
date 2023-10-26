@@ -45,12 +45,12 @@ public class ItemBobmazonPacket implements IMessage {
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		offer = buf.readInt();
+		this.offer = buf.readInt();
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeInt(offer);
+		buf.writeInt(this.offer);
 	}
 
 	public static class Handler implements IMessageHandler<ItemBobmazonPacket, IMessage> {

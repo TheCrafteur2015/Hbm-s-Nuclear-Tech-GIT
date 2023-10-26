@@ -50,7 +50,7 @@ public class SuicideThreadDump extends CommandBase {
 		ThreadInfo[] threads = ManagementFactory.getThreadMXBean().dumpAllThreads(true, true);
 		
 		for(ThreadInfo thread : threads) {
-			dumpThread(thread);
+			SuicideThreadDump.dumpThread(thread);
 		}
 		
 		if(args[0].equals("crash")) {

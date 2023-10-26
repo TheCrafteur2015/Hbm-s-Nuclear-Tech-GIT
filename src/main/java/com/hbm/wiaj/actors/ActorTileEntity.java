@@ -23,11 +23,11 @@ public class ActorTileEntity extends ActorBase {
 
 	@Override
 	public void drawBackgroundComponent(WorldInAJar world, int ticks, float interp) {
-		renderer.renderActor(world, ticks, interp, data);
+		this.renderer.renderActor(world, ticks, interp, this.data);
 	}
 
 	@Override
 	public void updateActor(JarScene scene) {
-		renderer.updateActor(scene.script.ticksElapsed, data);
+		this.renderer.updateActor(scene.script.ticksElapsed, this.data);
 	}
 }

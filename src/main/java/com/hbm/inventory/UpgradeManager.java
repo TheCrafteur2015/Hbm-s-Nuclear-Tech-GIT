@@ -16,7 +16,7 @@ public class UpgradeManager {
 	@Untested
 	public static void eval(ItemStack[] slots, int start, int end) {
 		
-		upgrades.clear();
+		UpgradeManager.upgrades.clear();
 		
 		for(int i = start; i <= end; i++) {
 			
@@ -25,26 +25,26 @@ public class UpgradeManager {
 				
 				if(item.type.mutex) {
 					
-					if(mutexType == null || mutexType.ordinal() < item.type.ordinal()) {
-						mutexType = item.type;
+					if(UpgradeManager.mutexType == null || UpgradeManager.mutexType.ordinal() < item.type.ordinal()) {
+						UpgradeManager.mutexType = item.type;
 					}
 					
 				} else {
-					Integer up = upgrades.get(item.type);
+					Integer up = UpgradeManager.upgrades.get(item.type);
 					int upgrade = (up == null ? 0 : up);
 					upgrade += item.tier;
-					upgrades.put(item.type, upgrade);
+					UpgradeManager.upgrades.put(item.type, upgrade);
 				}
 			}
 		}
 	}
 	
 	public static int getLevel(UpgradeType type) {
-		Integer up = upgrades.get(type);
+		Integer up = UpgradeManager.upgrades.get(type);
 		return up == null ? 0 : up;
 	}
 	
 	public static UpgradeType getMinerMutex() {
-		return mutexType;
+		return UpgradeManager.mutexType;
 	}
 }

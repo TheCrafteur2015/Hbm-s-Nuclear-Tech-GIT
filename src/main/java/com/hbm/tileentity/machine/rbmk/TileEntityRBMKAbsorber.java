@@ -8,7 +8,7 @@ public class TileEntityRBMKAbsorber extends TileEntityRBMKBase {
 	@Override
 	public void onMelt(int reduce) {
 		
-		int count = 1 + worldObj.rand.nextInt(2);
+		int count = 1 + this.worldObj.rand.nextInt(2);
 		
 		for(int i = 0; i < count; i++) {
 			spawnDebris(DebrisType.BLANK);

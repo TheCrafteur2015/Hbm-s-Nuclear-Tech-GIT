@@ -26,43 +26,45 @@ public class GUICoreStabilizer extends GuiInfoContainer {
 	
 	public GUICoreStabilizer(InventoryPlayer invPlayer, TileEntityCoreStabilizer tedf) {
 		super(new ContainerCoreStabilizer(invPlayer, tedf));
-		stabilizer = tedf;
+		this.stabilizer = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 166;
 	}
 	
+	@Override
 	public void initGui() {
 
 		super.initGui();
 
         Keyboard.enableRepeatEvents(true);
-        this.field = new GuiTextField(this.fontRendererObj, guiLeft + 75, guiTop + 57, 29, 12);
+        this.field = new GuiTextField(this.fontRendererObj, this.guiLeft + 75, this.guiTop + 57, 29, 12);
         this.field.setTextColor(-1);
         this.field.setDisabledTextColour(-1);
         this.field.setEnableBackgroundDrawing(false);
         this.field.setMaxStringLength(3);
-        this.field.setText(String.valueOf(stabilizer.watts));
+        this.field.setText(String.valueOf(this.stabilizer.watts));
 	}
 	
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 35, guiTop + 17, 16, 52, stabilizer.power, stabilizer.maxPower);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 35, this.guiTop + 17, 16, 52, this.stabilizer.power, TileEntityCoreStabilizer.maxPower);
 	}
 	
+	@Override
 	protected void mouseClicked(int x, int y, int i) {
     	super.mouseClicked(x, y, i);
         this.field.mouseClicked(x, y, i);
 
-    	if(guiLeft + 124 <= x && guiLeft + 124 + 18 > x && guiTop + 52 < y && guiTop + 52 + 18 >= y) {
+    	if(this.guiLeft + 124 <= x && this.guiLeft + 124 + 18 > x && this.guiTop + 52 < y && this.guiTop + 52 + 18 >= y) {
     		
-    		if(NumberUtils.isNumber(field.getText())) {
-    			int j = MathHelper.clamp_int(Integer.parseInt(field.getText()), 1, 100);
-    			field.setText(j + "");
-				mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
-	    		PacketDispatcher.wrapper.sendToServer(new AuxButtonPacket(stabilizer.xCoord, stabilizer.yCoord, stabilizer.zCoord, j, 0));
+    		if(NumberUtils.isNumber(this.field.getText())) {
+    			int j = MathHelper.clamp_int(Integer.parseInt(this.field.getText()), 1, 100);
+    			this.field.setText(j + "");
+				this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+	    		PacketDispatcher.wrapper.sendToServer(new AuxButtonPacket(this.stabilizer.xCoord, this.stabilizer.yCoord, this.stabilizer.zCoord, j, 0));
     		}
     	}
 	}
@@ -78,21 +80,22 @@ public class GUICoreStabilizer extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUICoreStabilizer.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
-		if(field.isFocused())
-			drawTexturedModalRect(guiLeft + 71, guiTop + 53, 192, 4, 34, 16);
+		if(this.field.isFocused())
+			drawTexturedModalRect(this.guiLeft + 71, this.guiTop + 53, 192, 4, 34, 16);
 
-		drawTexturedModalRect(guiLeft + 71, guiTop + 45, 192, 0, stabilizer.watts * 34 / 100, 4);
+		drawTexturedModalRect(this.guiLeft + 71, this.guiTop + 45, 192, 0, this.stabilizer.watts * 34 / 100, 4);
 		
-		int i = (int) stabilizer.getPowerScaled(52);
-		drawTexturedModalRect(guiLeft + 35, guiTop + 69 - i, 176, 52 - i, 16, i);
+		int i = (int) this.stabilizer.getPowerScaled(52);
+		drawTexturedModalRect(this.guiLeft + 35, this.guiTop + 69 - i, 176, 52 - i, 16, i);
 		
         this.field.drawTextBox();
 	}
 	
-    protected void keyTyped(char p_73869_1_, int p_73869_2_)
+    @Override
+	protected void keyTyped(char p_73869_1_, int p_73869_2_)
     {
         if (this.field.textboxKeyTyped(p_73869_1_, p_73869_2_)) { }
         else {

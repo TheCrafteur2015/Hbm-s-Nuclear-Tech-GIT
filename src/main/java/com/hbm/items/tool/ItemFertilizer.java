@@ -28,7 +28,7 @@ public class ItemFertilizer extends Item {
 		for(int i = x - 1; i <= x + 1; i++) {
 			for(int j = y - 1; j <= y + 1; j++) {
 				for(int k = z - 1; k <= z + 1; k++) {
-					boolean success = fertilize(world, i, j, k, player, i == x && j == y && k == z);
+					boolean success = ItemFertilizer.fertilize(world, i, j, k, player, i == x && j == y && k == z);
 					didSomething = didSomething || success;
 					if(success && !world.isRemote) {
 						world.playAuxSFX(2005, i, j, k, 0);
@@ -54,7 +54,7 @@ public class ItemFertilizer extends Item {
 		for(int i = x - 1; i <= x + 1; i++) {
 			for(int j = y - 1; j <= y + 1; j++) {
 				for(int k = z - 1; k <= z + 1; k++) {
-					boolean success = fertilize(world, i, j, k, player, i == x && j == y && k == z);
+					boolean success = ItemFertilizer.fertilize(world, i, j, k, player, i == x && j == y && k == z);
 					didSomething = didSomething || success;
 					if(success && !world.isRemote) {
 						world.playAuxSFX(2005, i, j, k, 0);

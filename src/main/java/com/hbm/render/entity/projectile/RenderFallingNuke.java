@@ -17,8 +17,8 @@ public class RenderFallingNuke extends Render {
 	private ResourceLocation boyTexture;
 
 	public RenderFallingNuke() {
-		boyModel = AdvancedModelLoader.loadModel(objTesterModelRL);
-		boyTexture = new ResourceLocation(RefStrings.MODID, "textures/models/CustomNuke.png");
+		this.boyModel = AdvancedModelLoader.loadModel(RenderFallingNuke.objTesterModelRL);
+		this.boyTexture = new ResourceLocation(RefStrings.MODID, "textures/models/CustomNuke.png");
 	}
 
 	@Override
@@ -55,8 +55,8 @@ public class RenderFallingNuke extends Render {
 		// p_76986_1_.prevRotationYaw) * p_76986_9_ - 90.0F, 0.0F, 1.0F, 0.0F);
 		GL11.glRotatef(f, 0.0F, 0.0F, 1.0F);
 
-		bindTexture(boyTexture);
-		boyModel.renderAll();
+		bindTexture(this.boyTexture);
+		this.boyModel.renderAll();
 
 		GL11.glPopMatrix();
 	}

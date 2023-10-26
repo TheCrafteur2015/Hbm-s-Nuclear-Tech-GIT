@@ -34,7 +34,7 @@ public class ParticleSpentCasing extends EntityFX {
 	private double smokeLift = 0.5D;
 	private int nodeLife = 30;
 
-	private final List<Pair<Vec3, Double>> smokeNodes = new ArrayList();
+	private final List<Pair<Vec3, Double>> smokeNodes = new ArrayList<>();
 
 	private final TextureManager textureManager;
 
@@ -53,7 +53,7 @@ public class ParticleSpentCasing extends EntityFX {
 		this.config = config;
 
 		this.particleMaxAge = config.getMaxAge();
-		this.isSmoking = rand.nextFloat() < config.getSmokeChance();
+		this.isSmoking = ParticleSpentCasing.rand.nextFloat() < config.getSmokeChance();
 		this.maxSmokeGen = config.getSmokeDuration();
 		this.smokeLift = config.getSmokeLift();
 		this.nodeLife = config.getSmokeNodeLife();
@@ -66,9 +66,9 @@ public class ParticleSpentCasing extends EntityFX {
 		this.motionY = my;
 		this.motionZ = mz;
 
-		particleGravity = 8F;
+		this.particleGravity = 8F;
 
-		maxHeight = y;
+		this.maxHeight = y;
 	}
 
 	@Override
@@ -80,52 +80,52 @@ public class ParticleSpentCasing extends EntityFX {
 	public void onUpdate() {
 		super.onUpdate();
 
-		if(motionY > 0 && posY > maxHeight)
-			maxHeight = posY;
+		if(this.motionY > 0 && this.posY > this.maxHeight)
+			this.maxHeight = this.posY;
 
-		if(!onGroundPreviously && onGround)
+		if(!this.onGroundPreviously && this.onGround)
 			tryPlayBounceSound();
 
-		if(!onGroundPreviously && onGround) {
+		if(!this.onGroundPreviously && this.onGround) {
 			
-			onGroundPreviously = true;
-			motionY = Math.log10(maxHeight - posY + 2);
-			momentumPitch = (float) rand.nextGaussian() * config.getBouncePitch();
-			momentumYaw = (float) rand.nextGaussian() * config.getBounceYaw();
-			maxHeight = posY;
+			this.onGroundPreviously = true;
+			this.motionY = Math.log10(this.maxHeight - this.posY + 2);
+			this.momentumPitch = (float) ParticleSpentCasing.rand.nextGaussian() * this.config.getBouncePitch();
+			this.momentumYaw = (float) ParticleSpentCasing.rand.nextGaussian() * this.config.getBounceYaw();
+			this.maxHeight = this.posY;
 			
-		} else if(onGroundPreviously && !onGround) {
-			onGroundPreviously = false;
+		} else if(this.onGroundPreviously && !this.onGround) {
+			this.onGroundPreviously = false;
 		}
 
-		if(particleAge > maxSmokeGen && !smokeNodes.isEmpty())
-			smokeNodes.clear();
+		if(this.particleAge > this.maxSmokeGen && !this.smokeNodes.isEmpty())
+			this.smokeNodes.clear();
 
-		if(isSmoking && particleAge <= maxSmokeGen) {
+		if(this.isSmoking && this.particleAge <= this.maxSmokeGen) {
 
-			for(Pair<Vec3, Double> pair : smokeNodes) {
+			for(Pair<Vec3, Double> pair : this.smokeNodes) {
 				Vec3 node = pair.getKey();
 
-				node.xCoord += rand.nextGaussian() * smokeJitter;
-				node.zCoord += rand.nextGaussian() * smokeJitter;
-				node.yCoord += smokeLift * dScale;
+				node.xCoord += ParticleSpentCasing.rand.nextGaussian() * ParticleSpentCasing.smokeJitter;
+				node.zCoord += ParticleSpentCasing.rand.nextGaussian() * ParticleSpentCasing.smokeJitter;
+				node.yCoord += this.smokeLift * ParticleSpentCasing.dScale;
 				
-				pair.value = Math.max(0, pair.value - (1D / (double) nodeLife));
+				pair.value = Math.max(0, pair.value - (1D / (double) this.nodeLife));
 			}
 
-			if(particleAge < maxSmokeGen || inWater) {
-				smokeNodes.add(new Pair<Vec3, Double>(Vec3.createVectorHelper(0, 0, 0), smokeNodes.isEmpty() ? 0.0D : 1D));
+			if(this.particleAge < this.maxSmokeGen || this.inWater) {
+				this.smokeNodes.add(new Pair<>(Vec3.createVectorHelper(0, 0, 0), this.smokeNodes.isEmpty() ? 0.0D : 1D));
 			}
 		}
 
-		prevRotationPitch = rotationPitch;
-		prevRotationYaw = rotationYaw;
+		this.prevRotationPitch = this.rotationPitch;
+		this.prevRotationYaw = this.rotationYaw;
 
-		if(onGround) {
-			rotationPitch = 0;
+		if(this.onGround) {
+			this.rotationPitch = 0;
 		} else {
-			rotationPitch += momentumPitch;
-			rotationYaw += momentumYaw;
+			this.rotationPitch += this.momentumPitch;
+			this.rotationYaw += this.momentumYaw;
 		}
 	}
 
@@ -146,40 +146,40 @@ public class ParticleSpentCasing extends EntityFX {
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glDepthMask(true);
 
-		double pX = prevPosX + (posX - prevPosX) * interp;
-		double pY = prevPosY + (posY - prevPosY) * interp;
-		double pZ = prevPosZ + (posZ - prevPosZ) * interp;
+		double pX = this.prevPosX + (this.posX - this.prevPosX) * interp;
+		double pY = this.prevPosY + (this.posY - this.prevPosY) * interp;
+		double pZ = this.prevPosZ + (this.posZ - this.prevPosZ) * interp;
 		
-		if(!setupDeltas) {
-			prevRenderX = pX;
-			prevRenderY = pY;
-			prevRenderZ = pZ;
-			setupDeltas = true;
+		if(!this.setupDeltas) {
+			this.prevRenderX = pX;
+			this.prevRenderY = pY;
+			this.prevRenderZ = pZ;
+			this.setupDeltas = true;
 		}
 		
-		int brightness = worldObj.getLightBrightnessForSkyBlocks(MathHelper.floor_double(pX), MathHelper.floor_double(pY), MathHelper.floor_double(pZ), 0);
+		int brightness = this.worldObj.getLightBrightnessForSkyBlocks(MathHelper.floor_double(pX), MathHelper.floor_double(pY), MathHelper.floor_double(pZ), 0);
 		int lX = brightness % 65536;
 		int lY = brightness / 65536;
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)lX / 1.0F, (float)lY / 1.0F);
 
-		textureManager.bindTexture(ResourceManager.casings_tex);
+		this.textureManager.bindTexture(ResourceManager.casings_tex);
 		
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 		double dX = player.lastTickPosX + (player.posX - player.lastTickPosX) * (double)interp;
 		double dY = player.lastTickPosY + (player.posY - player.lastTickPosY) * (double)interp;
 		double dZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * (double)interp;
 
-		GL11.glTranslated(pX - dX, pY - dY - this.height / 4 + config.getScaleY() * 0.01, pZ - dZ);
+		GL11.glTranslated(pX - dX, pY - dY - this.height / 4 + this.config.getScaleY() * 0.01, pZ - dZ);
 
-		GL11.glScalef(dScale, dScale, dScale);
+		GL11.glScalef(ParticleSpentCasing.dScale, ParticleSpentCasing.dScale, ParticleSpentCasing.dScale);
 
-		GL11.glRotatef(180 - rotationYaw, 0, 1, 0);
-		GL11.glRotatef(-rotationPitch, 1, 0, 0);
+		GL11.glRotatef(180 - this.rotationYaw, 0, 1, 0);
+		GL11.glRotatef(-this.rotationPitch, 1, 0, 0);
 
-		GL11.glScalef(config.getScaleX(), config.getScaleY(), config.getScaleZ());
+		GL11.glScalef(this.config.getScaleX(), this.config.getScaleY(), this.config.getScaleZ());
 
 		int index = 0;
-		for(String name : config.getType().partNames) {
+		for(String name : this.config.getType().partNames) {
 			int col = this.config.getColors()[index]; //unsafe on purpose, set your colors properly or else...!
 			Color color = new Color(col);
 			GL11.glColor3f(color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F);
@@ -196,20 +196,20 @@ public class ParticleSpentCasing extends EntityFX {
 		//GL11.glScalef(dScale, dScale, dScale);
 		//GL11.glScalef(config.getScaleX(), config.getScaleY(), config.getScaleZ());
 
-		if(!smokeNodes.isEmpty()) {
+		if(!this.smokeNodes.isEmpty()) {
 			tessellator.startDrawingQuads();
 			tessellator.setNormal(0F, 1F, 0F);
 			
-			float scale = config.getScaleX() * 0.5F * dScale;
+			float scale = this.config.getScaleX() * 0.5F * ParticleSpentCasing.dScale;
 			Vec3 vec = Vec3.createVectorHelper(scale, 0, 0);
 			float yaw = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw) * interp;
 			vec.rotateAroundY((float) Math.toRadians(-yaw));
 			
-			double deltaX = prevRenderX - pX;
-			double deltaY = prevRenderY - pY;
-			double deltaZ = prevRenderZ - pZ;
+			double deltaX = this.prevRenderX - pX;
+			double deltaY = this.prevRenderY - pY;
+			double deltaZ = this.prevRenderZ - pZ;
 			
-			for(Pair<Vec3, Double> pair : smokeNodes) {
+			for(Pair<Vec3, Double> pair : this.smokeNodes) {
 				Vec3 pos = pair.getKey();
 				double mult = 1D;
 				pos.xCoord += deltaX * mult;
@@ -217,13 +217,13 @@ public class ParticleSpentCasing extends EntityFX {
 				pos.zCoord += deltaZ * mult;
 			}
 
-			for(int i = 0; i < smokeNodes.size() - 1; i++) {
-				final Pair<Vec3, Double> node = smokeNodes.get(i), past = smokeNodes.get(i + 1);
+			for(int i = 0; i < this.smokeNodes.size() - 1; i++) {
+				final Pair<Vec3, Double> node = this.smokeNodes.get(i), past = this.smokeNodes.get(i + 1);
 				final Vec3 nodeLoc = node.getKey(), pastLoc = past.getKey();
 				float nodeAlpha = node.getValue().floatValue();
 				float pastAlpha = past.getValue().floatValue();
 				
-				double timeAlpha = 1D - (double) particleAge / (double) maxSmokeGen;
+				double timeAlpha = 1D - (double) this.particleAge / (double) this.maxSmokeGen;
 				nodeAlpha *= timeAlpha;
 				pastAlpha *= timeAlpha;
 
@@ -263,9 +263,9 @@ public class ParticleSpentCasing extends EntityFX {
 		
 		RenderHelper.disableStandardItemLighting();
 		
-		prevRenderX = pX;
-		prevRenderY = pY;
-		prevRenderZ = pZ;
+		this.prevRenderX = pX;
+		this.prevRenderY = pY;
+		this.prevRenderZ = pZ;
 	}
 
 	@Override
@@ -285,10 +285,10 @@ public class ParticleSpentCasing extends EntityFX {
 
 	private void tryPlayBounceSound() {
 
-		String sound = config.getSound();
+		String sound = this.config.getSound();
 		
 		if(sound != null && !sound.isEmpty()) {
-			worldObj.playSoundAtEntity(this, sound, 2, 1);
+			this.worldObj.playSoundAtEntity(this, sound, 2, 1);
 		}
 	}
 }

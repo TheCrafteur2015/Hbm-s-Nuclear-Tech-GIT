@@ -23,8 +23,8 @@ import com.hbm.interfaces.Spaghetti;
 import com.hbm.lib.ModDamageSource;
 import com.hbm.potion.HbmPotion;
 import com.hbm.util.ArmorRegistry;
-import com.hbm.util.ArmorUtil;
 import com.hbm.util.ArmorRegistry.HazardClass;
+import com.hbm.util.ArmorUtil;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -63,7 +63,7 @@ public class ExplosionChaos {
 					int Z = zz + z;
 					int ZZ = YY + zz * zz;
 					if (ZZ < r22) {
-						destruction(world, X, Y, Z);
+						ExplosionChaos.destruction(world, X, Y, Z);
 					}
 				}
 			}
@@ -85,7 +85,7 @@ public class ExplosionChaos {
 					int Z = zz + z;
 					int ZZ = YY + zz * zz;
 					if (ZZ < r22) {
-						if (rand.nextInt(15) == 0 && world.getBlock(X, Y, Z) != Blocks.air)
+						if (ExplosionChaos.rand.nextInt(15) == 0 && world.getBlock(X, Y, Z) != Blocks.air)
 							world.setBlock(X, Y, Z, ModBlocks.cheater_virus);
 					}
 				}
@@ -131,7 +131,7 @@ public class ExplosionChaos {
 					int Z = zz + z;
 					int ZZ = YY + zz * zz;
 					if (ZZ < r22) {
-						if (rand.nextInt(15) == 0 && world.getBlock(X, Y, Z) != Blocks.air)
+						if (ExplosionChaos.rand.nextInt(15) == 0 && world.getBlock(X, Y, Z) != Blocks.air)
 							world.setBlock(X, Y, Z, ModBlocks.cheater_virus_seed);
 					}
 				}
@@ -156,7 +156,7 @@ public class ExplosionChaos {
 					if (ZZ < r22) {
 						
 						if(world.getBlock(X, Y, Z).getExplosionResistance(null) <= 70)
-							pDestruction(world, X, Y, Z);
+							ExplosionChaos.pDestruction(world, X, Y, Z);
 					}
 				}
 			}
@@ -201,7 +201,7 @@ public class ExplosionChaos {
 					int Z = zz + z;
 					int ZZ = YY + zz * zz;
 					if (ZZ < r22) {
-						decontaminate(world, X, Y, Z);
+						ExplosionChaos.decontaminate(world, X, Y, Z);
 					}
 				}
 			}
@@ -216,64 +216,64 @@ public class ExplosionChaos {
 
 		for (int i = 0; i < 25; i++) {
 
-			randX = random.nextInt(bound);
-			randY = random.nextInt(bound);
-			randZ = random.nextInt(bound);
+			randX = ExplosionChaos.random.nextInt(bound);
+			randY = ExplosionChaos.random.nextInt(bound);
+			randZ = ExplosionChaos.random.nextInt(bound);
 
 			world.createExplosion(null, x + randX, y + randY, z + randZ, 10.0F, true);
 			// ExplosionChaos.explode(world, x + randX, y + randY, z + randZ,
 			// 5);
 
-			randX = random.nextInt(bound);
-			randY = random.nextInt(bound);
-			randZ = random.nextInt(bound);
+			randX = ExplosionChaos.random.nextInt(bound);
+			randY = ExplosionChaos.random.nextInt(bound);
+			randZ = ExplosionChaos.random.nextInt(bound);
 
 			world.createExplosion(null, x + randX, y - randY, z + randZ, 10.0F, true);
 			// ExplosionChaos.explode(world, x - randX, y + randY, z + randZ,
 			// 5);
 
-			randX = random.nextInt(bound);
-			randY = random.nextInt(bound);
-			randZ = random.nextInt(bound);
+			randX = ExplosionChaos.random.nextInt(bound);
+			randY = ExplosionChaos.random.nextInt(bound);
+			randZ = ExplosionChaos.random.nextInt(bound);
 
 			world.createExplosion(null, x + randX, y + randY, z - randZ, 10.0F, true);
 			// ExplosionChaos.explode(world, x + randX, y - randY, z + randZ,
 			// 5);
 
-			randX = random.nextInt(bound);
-			randY = random.nextInt(bound);
-			randZ = random.nextInt(bound);
+			randX = ExplosionChaos.random.nextInt(bound);
+			randY = ExplosionChaos.random.nextInt(bound);
+			randZ = ExplosionChaos.random.nextInt(bound);
 
 			world.createExplosion(null, x - randX, y + randY, z + randZ, 10.0F, true);
 			// ExplosionChaos.explode(world, x + randX, y + randY, z - randZ,
 			// 5);
-			randX = random.nextInt(bound);
-			randY = random.nextInt(bound);
-			randZ = random.nextInt(bound);
+			randX = ExplosionChaos.random.nextInt(bound);
+			randY = ExplosionChaos.random.nextInt(bound);
+			randZ = ExplosionChaos.random.nextInt(bound);
 
 			world.createExplosion(null, x - randX, y - randY, z + randZ, 10.0F, true);
 			// ExplosionChaos.explode(world, x - randX, y - randY, z + randZ,
 			// 5);
 
-			randX = random.nextInt(bound);
-			randY = random.nextInt(bound);
-			randZ = random.nextInt(bound);
+			randX = ExplosionChaos.random.nextInt(bound);
+			randY = ExplosionChaos.random.nextInt(bound);
+			randZ = ExplosionChaos.random.nextInt(bound);
 
 			world.createExplosion(null, x - randX, y + randY, z - randZ, 10.0F, true);
 			// ExplosionChaos.explode(world, x - randX, y + randY, z - randZ,
 			// 5);
 
-			randX = random.nextInt(bound);
-			randY = random.nextInt(bound);
-			randZ = random.nextInt(bound);
+			randX = ExplosionChaos.random.nextInt(bound);
+			randY = ExplosionChaos.random.nextInt(bound);
+			randZ = ExplosionChaos.random.nextInt(bound);
 
 			world.createExplosion(null, x + randX, y - randY, z - randZ, 10.0F, true);
 			// ExplosionChaos.explode(world, x + randX, y - randY, z - randZ,
 			// 5);
 
-			randX = random.nextInt(bound);
-			randY = random.nextInt(bound);
-			randZ = random.nextInt(bound);
+			randX = ExplosionChaos.random.nextInt(bound);
+			randY = ExplosionChaos.random.nextInt(bound);
+			randZ = ExplosionChaos.random.nextInt(bound);
 
 			world.createExplosion(null, x - randX, y - randY, z - randZ, 10.0F, true);
 			// ExplosionChaos.explode(world, x - randX, y - randY, z - randZ,
@@ -368,9 +368,9 @@ public class ExplosionChaos {
 				fx = new EntityOrangeFX(world, x, y, z, 0.0, 0.0, 0.0);
 			}
 			
-			fx.motionY = rand.nextGaussian() * speed;
-			fx.motionX = rand.nextGaussian() * speed;
-			fx.motionZ = rand.nextGaussian() * speed;
+			fx.motionY = ExplosionChaos.rand.nextGaussian() * speed;
+			fx.motionX = ExplosionChaos.rand.nextGaussian() * speed;
+			fx.motionZ = ExplosionChaos.rand.nextGaussian() * speed;
 			world.spawnEntityInWorld(fx);
 		}
 	}
@@ -381,10 +381,10 @@ public class ExplosionChaos {
 			
 			EntityModFX fx = new EntityOrangeFX(world, x, y, z, 0.0, 0.0, 0.0);
 			
-			fx.motionX = rand.nextGaussian() * speed;
-			fx.motionZ = rand.nextGaussian() * speed;
+			fx.motionX = ExplosionChaos.rand.nextGaussian() * speed;
+			fx.motionZ = ExplosionChaos.rand.nextGaussian() * speed;
 			
-			fx.motionY = rand.nextDouble() * speed * 7.5D;
+			fx.motionY = ExplosionChaos.rand.nextDouble() * speed * 7.5D;
 			
 			world.spawnEntityInWorld(fx);
 		}
@@ -418,15 +418,15 @@ public class ExplosionChaos {
 		EntityRocket fragment;
 
 		for (int i = 0; i < count; i++) {
-			d1 = rand.nextDouble();
-			d2 = rand.nextDouble();
-			d3 = rand.nextDouble();
+			d1 = ExplosionChaos.rand.nextDouble();
+			d2 = ExplosionChaos.rand.nextDouble();
+			d3 = ExplosionChaos.rand.nextDouble();
 
-			if (rand.nextInt(2) == 0) {
+			if (ExplosionChaos.rand.nextInt(2) == 0) {
 				d1 *= -1;
 			}
 
-			if (rand.nextInt(2) == 0) {
+			if (ExplosionChaos.rand.nextInt(2) == 0) {
 				d3 *= -1;
 			}
 
@@ -444,15 +444,15 @@ public class ExplosionChaos {
 		EntitySchrab fragment;
 
 		for (int i = 0; i < count; i++) {
-			d1 = rand.nextDouble();
-			d2 = rand.nextDouble();
-			d3 = rand.nextDouble();
+			d1 = ExplosionChaos.rand.nextDouble();
+			d2 = ExplosionChaos.rand.nextDouble();
+			d3 = ExplosionChaos.rand.nextDouble();
 
-			if (rand.nextInt(2) == 0) {
+			if (ExplosionChaos.rand.nextInt(2) == 0) {
 				d1 *= -1;
 			}
 
-			if (rand.nextInt(2) == 0) {
+			if (ExplosionChaos.rand.nextInt(2) == 0) {
 				d3 *= -1;
 			}
 
@@ -470,15 +470,15 @@ public class ExplosionChaos {
 		EntityTNTPrimed fragment;
 
 		for (int i = 0; i < 5; i++) {
-			d1 = rand.nextDouble();
-			d2 = rand.nextDouble();
-			d3 = rand.nextDouble();
+			d1 = ExplosionChaos.rand.nextDouble();
+			d2 = ExplosionChaos.rand.nextDouble();
+			d3 = ExplosionChaos.rand.nextDouble();
 
-			if (rand.nextInt(2) == 0) {
+			if (ExplosionChaos.rand.nextInt(2) == 0) {
 				d1 *= -1;
 			}
 
-			if (rand.nextInt(2) == 0) {
+			if (ExplosionChaos.rand.nextInt(2) == 0) {
 				d3 *= -1;
 			}
 
@@ -499,15 +499,15 @@ public class ExplosionChaos {
 		EntityArrow fragment;
 
 		for (int i = 0; i < count; i++) {
-			d1 = rand.nextDouble();
-			d2 = rand.nextDouble();
-			d3 = rand.nextDouble();
+			d1 = ExplosionChaos.rand.nextDouble();
+			d2 = ExplosionChaos.rand.nextDouble();
+			d3 = ExplosionChaos.rand.nextDouble();
 
-			if (rand.nextInt(2) == 0) {
+			if (ExplosionChaos.rand.nextInt(2) == 0) {
 				d1 *= -1;
 			}
 
-			if (rand.nextInt(2) == 0) {
+			if (ExplosionChaos.rand.nextInt(2) == 0) {
 				d3 *= -1;
 			}
 
@@ -645,8 +645,8 @@ public class ExplosionChaos {
 		int j2 = MathHelper.floor_double(z + wat + 1.0D);
 		List list = world.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBox(i, k, l, j, i2, j2));
 
-		for (int i1 = 0; i1 < list.size(); ++i1) {
-			Entity entity = (Entity) list.get(i1);
+		for (Object element : list) {
+			Entity entity = (Entity) element;
 			double d4 = entity.getDistance(x, y, z) / radius;
 
 			if (d4 <= 1.0D) {
@@ -654,7 +654,7 @@ public class ExplosionChaos {
 				d6 = entity.posY + entity.getEyeHeight() - y;
 				d7 = entity.posZ - z;
 				if (entity instanceof EntityLiving && !(entity instanceof EntitySheep)) {
-					rand = random.nextInt(2);
+					rand = ExplosionChaos.random.nextInt(2);
 					if (rand == 0) {
 						((EntityLiving) entity).setCustomNameTag("Dinnerbone");
 					} else {
@@ -695,8 +695,8 @@ public class ExplosionChaos {
 		int j2 = MathHelper.floor_double(z + wat + 1.0D);
 		List list = world.getEntitiesWithinAABBExcludingEntity(e, AxisAlignedBB.getBoundingBox(i, k, l, j, i2, j2));
 
-		for (int i1 = 0; i1 < list.size(); ++i1) {
-			Entity entity = (Entity) list.get(i1);
+		for (Object element : list) {
+			Entity entity = (Entity) element;
 			double d4 = entity.getDistance(x, y, z) / radius;
 
 			if (d4 <= 1.0D) {
@@ -738,8 +738,8 @@ public class ExplosionChaos {
 		int j2 = MathHelper.floor_double(z + wat + 1.0D);
 		List list = world.getEntitiesWithinAABBExcludingEntity(e, AxisAlignedBB.getBoundingBox(i, k, l, j, i2, j2));
 
-		for (int i1 = 0; i1 < list.size(); ++i1) {
-			Entity entity = (Entity) list.get(i1);
+		for (Object element : list) {
+			Entity entity = (Entity) element;
 			double d4 = entity.getDistance(x, y, z) / radius;
 
 			if (d4 <= 1.0D) {
@@ -796,28 +796,28 @@ public class ExplosionChaos {
 
 		if (shooter != null && shooter instanceof EntityPlayer)
 			for (int i = 0; i < count; i++) {
-				d1 = rand.nextDouble();
-				d2 = rand.nextDouble();
-				d3 = rand.nextDouble();
+				d1 = ExplosionChaos.rand.nextDouble();
+				d2 = ExplosionChaos.rand.nextDouble();
+				d3 = ExplosionChaos.rand.nextDouble();
 
-				if (rand.nextInt(2) == 0) {
+				if (ExplosionChaos.rand.nextInt(2) == 0) {
 					d1 *= -1;
 				}
 
-				if (rand.nextInt(2) == 0) {
+				if (ExplosionChaos.rand.nextInt(2) == 0) {
 					d2 *= -1;
 				}
 
-				if (rand.nextInt(2) == 0) {
+				if (ExplosionChaos.rand.nextInt(2) == 0) {
 					d3 *= -1;
 				}
 
-				if (rand.nextInt(5) == 0) {
+				if (ExplosionChaos.rand.nextInt(5) == 0) {
 					fragment = new EntityBullet(world, (EntityPlayer) shooter, 3.0F, 35, 45, false, "tauDay", tau);
-					fragment.setDamage(rand.nextInt(301) + 100);
+					fragment.setDamage(ExplosionChaos.rand.nextInt(301) + 100);
 				} else {
 					fragment = new EntityBullet(world, (EntityPlayer) shooter, 3.0F, 35, 45, false, "eyyOk", tau);
-					fragment.setDamage(rand.nextInt(11) + 35);
+					fragment.setDamage(ExplosionChaos.rand.nextInt(11) + 35);
 				}
 
 				fragment.motionX = d1 * 5;
@@ -840,19 +840,19 @@ public class ExplosionChaos {
 
 		// if (shooter != null && shooter instanceof EntityPlayer)
 		for (int i = 0; i < count; i++) {
-			d1 = rand.nextDouble();
-			d2 = rand.nextDouble();
-			d3 = rand.nextDouble();
+			d1 = ExplosionChaos.rand.nextDouble();
+			d2 = ExplosionChaos.rand.nextDouble();
+			d3 = ExplosionChaos.rand.nextDouble();
 
-			if (rand.nextInt(2) == 0) {
+			if (ExplosionChaos.rand.nextInt(2) == 0) {
 				d1 *= -1;
 			}
 
-			if (rand.nextInt(2) == 0) {
+			if (ExplosionChaos.rand.nextInt(2) == 0) {
 				d2 *= -1;
 			}
 
-			if (rand.nextInt(2) == 0) {
+			if (ExplosionChaos.rand.nextInt(2) == 0) {
 				d3 *= -1;
 			}
 
@@ -864,7 +864,7 @@ public class ExplosionChaos {
 			entityZomg.shootingEntity = shooter;
 
 			world.spawnEntityInWorld(entityZomg);
-			world.playSoundAtEntity(zomg, "hbm:weapon.zomgShoot", 10.0F, 0.8F + (rand.nextFloat() * 0.4F));
+			world.playSoundAtEntity(zomg, "hbm:weapon.zomgShoot", 10.0F, 0.8F + (ExplosionChaos.rand.nextFloat() * 0.4F));
 		}
 	}
 

@@ -15,15 +15,15 @@ public class TileEntityDecoTapeRecorder extends TileEntity {
 		{
 			if(this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord))
 			{
-				rot += 3;
-				if(rot >= 360)
+				this.rot += 3;
+				if(this.rot >= 360)
 				{
-					rot -=360;
+					this.rot -=360;
 				}
-				return rot;
+				return this.rot;
 			}
 			
-			rot = 0;
+			this.rot = 0;
 		}
 		
 		return 0;

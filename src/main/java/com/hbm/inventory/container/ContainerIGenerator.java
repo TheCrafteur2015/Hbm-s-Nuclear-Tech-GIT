@@ -15,39 +15,39 @@ public class ContainerIGenerator extends Container {
 	
 	public ContainerIGenerator(InventoryPlayer invPlayer, TileEntityMachineIGenerator te) {
 		
-		igen = te;
+		this.igen = te;
 		
 		//Battery
-		this.addSlotToContainer(new Slot(te, 0, 8, 134));
+		addSlotToContainer(new Slot(te, 0, 8, 134));
 		//Water
-		this.addSlotToContainer(new Slot(te, 1, 62, 112));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, te, 2, 154, 112));
+		addSlotToContainer(new Slot(te, 1, 62, 112));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, te, 2, 154, 112));
 		//Solid Fuel
-		this.addSlotToContainer(new Slot(te, 3, 67, 51));
-		this.addSlotToContainer(new Slot(te, 4, 85, 51));
-		this.addSlotToContainer(new Slot(te, 5, 67, 87));
-		this.addSlotToContainer(new Slot(te, 6, 85, 87));
+		addSlotToContainer(new Slot(te, 3, 67, 51));
+		addSlotToContainer(new Slot(te, 4, 85, 51));
+		addSlotToContainer(new Slot(te, 5, 67, 87));
+		addSlotToContainer(new Slot(te, 6, 85, 87));
 		//Lubricant
-		this.addSlotToContainer(new Slot(te, 7, 132, 33));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, te, 8, 132, 51));
+		addSlotToContainer(new Slot(te, 7, 132, 33));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, te, 8, 132, 51));
 		//Fuel
-		this.addSlotToContainer(new Slot(te, 9, 132, 69));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, te, 10, 132, 87));
+		addSlotToContainer(new Slot(te, 9, 132, 69));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, te, 10, 132, 87));
 		//RTG
 		for(int i = 0; i < 5; i++) {
 			for(int j = 0; j < 2; j++) {
-				this.addSlotToContainer(new Slot(te, 11 + i * 2 + j, 15 + j * 18, 35 + i * 18));
+				addSlotToContainer(new Slot(te, 11 + i * 2 + j, 15 + j * 18, 35 + i * 18));
 			}
 		}
 		
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 71));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 71));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 71));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 71));
 		}
 	}
 	
@@ -61,7 +61,7 @@ public class ContainerIGenerator extends Container {
 			var3 = var5.copy();
 
 			if(par2 <= 20) {
-				if(!this.mergeItemStack(var5, 21, this.inventorySlots.size(), true)) {
+				if(!mergeItemStack(var5, 21, this.inventorySlots.size(), true)) {
 					return null;
 				}
 			} else {
@@ -80,6 +80,6 @@ public class ContainerIGenerator extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return igen.isUseableByPlayer(player);
+		return this.igen.isUseableByPlayer(player);
 	}
 }

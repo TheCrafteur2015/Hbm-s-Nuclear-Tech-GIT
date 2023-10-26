@@ -57,6 +57,7 @@ public class ArmorLiquidator extends ArmorFSB {
 		return multimap;
 	}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void renderHelmetOverlay(ItemStack stack, EntityPlayer player, ScaledResolution resolution, float partialTicks, boolean hasScreen, int mouseX, int mouseY) {
 
@@ -66,7 +67,7 @@ public class ArmorLiquidator extends ArmorFSB {
 		OpenGlHelper.glBlendFunc(770, 771, 1, 0);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glDisable(GL11.GL_ALPHA_TEST);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(hazmatBlur);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(this.hazmatBlur);
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
 		tessellator.addVertexWithUV(0.0D, (double) resolution.getScaledHeight(), -90.0D, 0.0D, 1.0D);

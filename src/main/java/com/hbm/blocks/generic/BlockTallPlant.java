@@ -33,7 +33,7 @@ public class BlockTallPlant extends BlockEnumMulti implements IPlantable, IGrowa
 	
 	public BlockTallPlant() {
 		super(Material.plants, EnumTallFlower.class, true, true);
-		this.setTickRandomly(true);
+		setTickRandomly(true);
 	}
 
 	public static enum EnumTallFlower {
@@ -82,14 +82,14 @@ public class BlockTallPlant extends BlockEnumMulti implements IPlantable, IGrowa
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister reg) {
 		
-		Enum[] enums = theEnum.getEnumConstants();
+		Enum[] enums = this.theEnum.getEnumConstants();
 		this.icons = new IIcon[enums.length];
 		this.bottomIcons = new IIcon[enums.length];
 		
-		for(int i = 0; i < icons.length; i++) {
+		for(int i = 0; i < this.icons.length; i++) {
 			Enum num = enums[i];
-			this.icons[i] = reg.registerIcon(this.getTextureName() + "." + num.name().toLowerCase(Locale.US) + ".upper");
-			this.bottomIcons[i] = reg.registerIcon(this.getTextureName() + "." + num.name().toLowerCase(Locale.US) + ".lower");
+			this.icons[i] = reg.registerIcon(getTextureName() + "." + num.name().toLowerCase(Locale.US) + ".upper");
+			this.bottomIcons[i] = reg.registerIcon(getTextureName() + "." + num.name().toLowerCase(Locale.US) + ".lower");
 		}
 	}
 	
@@ -121,7 +121,7 @@ public class BlockTallPlant extends BlockEnumMulti implements IPlantable, IGrowa
 
 	@Override
 	public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-		return super.canPlaceBlockAt(world, x, y, z) && this.canBlockStay(world, x, y, z) && world.isAirBlock(x, y + 1, z);
+		return super.canPlaceBlockAt(world, x, y, z) && canBlockStay(world, x, y, z) && world.isAirBlock(x, y + 1, z);
 	}
 
 	protected boolean canPlaceBlockOn(Block block) {
@@ -131,19 +131,19 @@ public class BlockTallPlant extends BlockEnumMulti implements IPlantable, IGrowa
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
 		super.onNeighborBlockChange(world, x, y, z, block);
-		this.checkAndDropBlock(world, x, y, z);
+		checkAndDropBlock(world, x, y, z);
 	}
 	
 	public static boolean detectCut = true;
 	protected void checkAndDropBlock(World world, int x, int y, int z) {
-		if(!this.canBlockStay(world, x, y, z)) {
+		if(!canBlockStay(world, x, y, z)) {
 			if(world.getBlockMetadata(x, y, z) < 8) {
 				this.dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
 			}
 			world.setBlock(x, y, z, Blocks.air, 0, 3);
 		}
 		
-		if(!detectCut) return;
+		if(!BlockTallPlant.detectCut) return;
 		
 		Block block = world.getBlock(x, y + 1, z);
 		int meta = world.getBlockMetadata(x, y + 1, z);
@@ -263,7 +263,7 @@ public class BlockTallPlant extends BlockEnumMulti implements IPlantable, IGrowa
 		int meta = world.getBlockMetadata(x, y, z);
 		int rec = rectify(meta);
 		
-		detectCut = false;
+		BlockTallPlant.detectCut = false;
 		
 		if(rec == EnumTallFlower.CD2.ordinal() || rec == EnumTallFlower.CD3.ordinal()) {
 			
@@ -282,7 +282,7 @@ public class BlockTallPlant extends BlockEnumMulti implements IPlantable, IGrowa
 			}
 		}
 		
-		detectCut = true;
+		BlockTallPlant.detectCut = true;
 	}
 
 	@Override

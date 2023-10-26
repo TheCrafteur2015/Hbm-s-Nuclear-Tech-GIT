@@ -14,8 +14,8 @@ public class BroadcastSaveStructure {
 	public BroadcastSaveStructure() { }
 	
 	public BroadcastSaveStructure(int id, BroadcastType type) {
-		broadcastID = id;
-		broadcastType = type;
+		this.broadcastID = id;
+		this.broadcastType = type;
 	}
 	
 	public enum BroadcastType {
@@ -35,17 +35,17 @@ public class BroadcastSaveStructure {
 	}
 
 	public void readFromNBT(NBTTagCompound nbt, int index) {
-		broadcastID = nbt.getInteger("bc_" + index + "_id");
-		broadcastType = BroadcastType.getEnum(nbt.getInteger("bc_" + index + "_type"));
-		posX = nbt.getInteger("bc_" + index + "_x");
-		posZ = nbt.getInteger("bc_" + index + "_z");
+		this.broadcastID = nbt.getInteger("bc_" + index + "_id");
+		this.broadcastType = BroadcastType.getEnum(nbt.getInteger("bc_" + index + "_type"));
+		this.posX = nbt.getInteger("bc_" + index + "_x");
+		this.posZ = nbt.getInteger("bc_" + index + "_z");
 	}
 
 	public void writeToNBT(NBTTagCompound nbt, int index) {
-		nbt.setInteger("bc_" + index + "_id", broadcastID);
-		nbt.setInteger("bc_" + index + "_type", broadcastType.getID());
-		nbt.setInteger("bc_" + index + "_x", posX);
-		nbt.setInteger("bc_" + index + "_z", posZ);
+		nbt.setInteger("bc_" + index + "_id", this.broadcastID);
+		nbt.setInteger("bc_" + index + "_type", this.broadcastType.getID());
+		nbt.setInteger("bc_" + index + "_x", this.posX);
+		nbt.setInteger("bc_" + index + "_z", this.posZ);
 	}
 
 }

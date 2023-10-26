@@ -29,12 +29,12 @@ public class FluidRecipeHandler extends TemplateRecipeHandler {
 
         @Override
 		public List<PositionedStack> getIngredients() {
-            return getCycledIngredients(cycleticks / 48, Arrays.asList(new PositionedStack[] {input}));
+            return getCycledIngredients(FluidRecipeHandler.this.cycleticks / 48, Arrays.asList(new PositionedStack[] {this.input}));
         }
 
         @Override
 		public PositionedStack getResult() {
-            return result;
+            return this.result;
         }
     }
     
@@ -100,7 +100,7 @@ public class FluidRecipeHandler extends TemplateRecipeHandler {
     @Override
     public void loadTransferRects() {
         
-        transferRects.add(new RecipeTransferRect(new Rectangle(74 + 6 - 18, 23, 42, 18), "fluidcons"));
-        RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), transferRects);
+        this.transferRects.add(new RecipeTransferRect(new Rectangle(74 + 6 - 18, 23, 42, 18), "fluidcons"));
+        RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), this.transferRects);
     }
 }

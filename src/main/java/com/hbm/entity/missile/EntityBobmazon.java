@@ -19,7 +19,7 @@ public class EntityBobmazon extends Entity {
 	public EntityBobmazon(World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.ignoreFrustumCheck = true;
-        this.setSize(1F, 3F);
+        setSize(1F, 3F);
 	}
 
 	@Override
@@ -30,9 +30,9 @@ public class EntityBobmazon extends Entity {
 	@Override
 	public void onUpdate() {
 		
-		motionY = -0.5;
-		motionX = 0;
-		motionZ = 0;
+		this.motionY = -0.5;
+		this.motionX = 0;
+		this.motionZ = 0;
 
 		this.lastTickPosX = this.prevPosX = this.posX;
 		this.lastTickPosY = this.prevPosY = this.posY;
@@ -40,19 +40,19 @@ public class EntityBobmazon extends Entity {
 		
 		for(int i = 0; i < 4; i++) {
 			
-			if(worldObj.getBlock((int)(posX - 0.5), (int)(posY + 1), (int)(posZ - 0.5)).getMaterial() != Material.air && !worldObj.isRemote && dataWatcher.getWatchableObjectInt(16) != 1) {
-				ExplosionLarge.spawnParticles(worldObj, posX, posY + 1, posZ, 50);
+			if(this.worldObj.getBlock((int)(this.posX - 0.5), (int)(this.posY + 1), (int)(this.posZ - 0.5)).getMaterial() != Material.air && !this.worldObj.isRemote && this.dataWatcher.getWatchableObjectInt(16) != 1) {
+				ExplosionLarge.spawnParticles(this.worldObj, this.posX, this.posY + 1, this.posZ, 50);
 
 	            this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "hbm:entity.oldExplosion", 10.0F, 0.5F + this.rand.nextFloat() * 0.1F);
 				
-				if(payload != null) {
-					EntityItem pack = new EntityItem(worldObj, posX, posY + 2, posZ, payload);
+				if(this.payload != null) {
+					EntityItem pack = new EntityItem(this.worldObj, this.posX, this.posY + 2, this.posZ, this.payload);
 					pack.motionX = 0;
 					pack.motionZ = 0;
-					worldObj.spawnEntityInWorld(pack);
+					this.worldObj.spawnEntityInWorld(pack);
 				}
 				
-				this.setDead();
+				setDead();
 				
 				break;
 			}
@@ -62,7 +62,7 @@ public class EntityBobmazon extends Entity {
 			this.posZ += this.motionZ;
 		}
 		
-		if(worldObj.isRemote) {
+		if(this.worldObj.isRemote) {
 
 
 			NBTTagCompound data = new NBTTagCompound();
@@ -70,9 +70,9 @@ public class EntityBobmazon extends Entity {
 			data.setString("mode", "meteor");
 			data.setInteger("count", 1);
 			data.setDouble("width", 0);
-			data.setDouble("posX", posX);
-			data.setDouble("posY", posY + 1);
-			data.setDouble("posZ", posZ);
+			data.setDouble("posX", this.posX);
+			data.setDouble("posY", this.posY + 1);
+			data.setDouble("posZ", this.posZ);
 			
 			MainRegistry.proxy.effectNT(data);
 		}
@@ -89,7 +89,7 @@ public class EntityBobmazon extends Entity {
 	protected void writeEntityToNBT(NBTTagCompound nbt) {
 
 		NBTTagCompound nbt1 = new NBTTagCompound();
-		payload.writeToNBT(nbt1);
+		this.payload.writeToNBT(nbt1);
 		nbt.setTag("payload", nbt1);
 	}
 	

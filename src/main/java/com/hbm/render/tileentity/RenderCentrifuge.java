@@ -67,10 +67,12 @@ public class RenderCentrifuge extends TileEntitySpecialRenderer implements IItem
 	public IItemRenderer getRenderer() {
 		
 		return new ItemRenderBase() {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(0, -4, 0);
 				GL11.glScaled(3.5, 3.5, 3.5);
 			}
+			@Override
 			public void renderCommonWithStack(ItemStack item) {
 				GL11.glShadeModel(GL11.GL_SMOOTH);
 				if(item.getItem() == Item.getItemFromBlock(ModBlocks.machine_gascent)) {

@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.Tessellator;
 public class HbmGroupObject {
 	
     public String name;
-    public ArrayList<HbmFace> faces = new ArrayList<HbmFace>();
+    public ArrayList<HbmFace> faces = new ArrayList<>();
     public int glDrawingMode;
 
     public HbmGroupObject()
@@ -31,10 +31,10 @@ public class HbmGroupObject {
     @SideOnly(Side.CLIENT)
     public void render()
     {
-        if (faces.size() > 0)
+        if (this.faces.size() > 0)
         {
             Tessellator tessellator = Tessellator.instance;
-            tessellator.startDrawing(glDrawingMode);
+            tessellator.startDrawing(this.glDrawingMode);
             render(tessellator);
             tessellator.draw();
         }
@@ -43,9 +43,9 @@ public class HbmGroupObject {
     @SideOnly(Side.CLIENT)
     public void render(Tessellator tessellator)
     {
-        if (faces.size() > 0)
+        if (this.faces.size() > 0)
         {
-            for (HbmFace face : faces)
+            for (HbmFace face : this.faces)
             {
                 face.addFaceForRender(tessellator);
             }

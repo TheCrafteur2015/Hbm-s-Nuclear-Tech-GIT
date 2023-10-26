@@ -26,7 +26,7 @@ public class ActorFancyPanel implements ISpecialActor {
 	
 	static final ResourceLocation guiUtil =  new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_utility.png");
 
-	List<Object[]> lines = new ArrayList();
+	List<Object[]> lines = new ArrayList<>();
 	RenderItem itemRender = new RenderItem();
 	TextureManager texman = Minecraft.getMinecraft().getTextureManager();
 	FontRenderer font;
@@ -53,7 +53,7 @@ public class ActorFancyPanel implements ISpecialActor {
 		
 		if(autowrap <= 0) { //if autowrap is off, just add the lines 1:1
 			for(Object[] o : raw) {
-				lines.add(o);
+				this.lines.add(o);
 			}
 		} else {
 			
@@ -62,10 +62,10 @@ public class ActorFancyPanel implements ISpecialActor {
 				if(line.length == 1 && line[0] instanceof String) { //auto wrap can only apply to text-only lines
 					List<String> frags = I18nUtil.autoBreak(font, (String)line[0], autowrap);
 					for(String s : frags) {
-						lines.add(new Object[] { s });
+						this.lines.add(new Object[] { s });
 					}
 				} else {
-					lines.add(line);
+					this.lines.add(line);
 				}
 			}
 		}
@@ -124,12 +124,12 @@ public class ActorFancyPanel implements ISpecialActor {
 		}
 		
 		if(element instanceof ItemStack) {
-			return STACK_HEIGHT;
+			return ActorFancyPanel.STACK_HEIGHT;
 		}
 		
 		if(element instanceof Object[]) {
 			Object[] scaledStack = (Object[]) element; //[0] ItemStack, [1] double
-			return (int) Math.ceil(STACK_HEIGHT * (double) scaledStack[1]);
+			return (int) Math.ceil(ActorFancyPanel.STACK_HEIGHT * (double) scaledStack[1]);
 		}
 		
 		return 0;
@@ -142,12 +142,12 @@ public class ActorFancyPanel implements ISpecialActor {
 		}
 		
 		if(element instanceof ItemStack) {
-			return STACK_HEIGHT;
+			return ActorFancyPanel.STACK_HEIGHT;
 		}
 		
 		if(element instanceof Object[]) {
 			Object[] scaledStack = (Object[]) element; //[0] ItemStack, [1] double
-			return (int) Math.ceil(STACK_HEIGHT * (double) scaledStack[1]);
+			return (int) Math.ceil(ActorFancyPanel.STACK_HEIGHT * (double) scaledStack[1]);
 		}
 		
 		return 0;
@@ -214,13 +214,13 @@ public class ActorFancyPanel implements ISpecialActor {
 	@Override
 	public void drawForegroundComponent(int w, int h, int ticks, float interp) {
 		
-		int height = this.getBlockHeight();
-		int width = this.getBlockWidth();
+		int height = getBlockHeight();
+		int width = getBlockWidth();
 		
-		int posX = w / 2 + x;
-		int posY = h / 2 + y;
+		int posX = w / 2 + this.x;
+		int posY = h / 2 + this.y;
 		
-		switch(o) {
+		switch(this.o) {
 		case TOP:
 			posX -= width / 2;
 			posY += 15;
@@ -249,34 +249,34 @@ public class ActorFancyPanel implements ISpecialActor {
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		
-		this.drawRect(posX - 5, posY - 5, posX + width + 5, posY + height + 5, colorFrame);
+		drawRect(posX - 5, posY - 5, posX + width + 5, posY + height + 5, this.colorFrame);
 		
-		this.drawRect(posX - 5, posY - 5, posX - 4, posY + height + 4, colorBrighter);
-		this.drawRect(posX - 5, posY - 5, posX + width + 4, posY - 4, colorBrighter);
-		this.drawRect(posX + width + 2, posY - 2, posX + width + 3, posY + height + 3, colorBrighter);
-		this.drawRect(posX - 2, posY + height + 2, posX + width + 3, posY + height + 3, colorBrighter);
+		drawRect(posX - 5, posY - 5, posX - 4, posY + height + 4, this.colorBrighter);
+		drawRect(posX - 5, posY - 5, posX + width + 4, posY - 4, this.colorBrighter);
+		drawRect(posX + width + 2, posY - 2, posX + width + 3, posY + height + 3, this.colorBrighter);
+		drawRect(posX - 2, posY + height + 2, posX + width + 3, posY + height + 3, this.colorBrighter);
 		
-		this.drawRect(posX - 3, posY - 3, posX - 2, posY + height + 2, colorDarker);
-		this.drawRect(posX - 3, posY - 3, posX + width + 2, posY - 2, colorDarker);
-		this.drawRect(posX + width + 4, posY - 4, posX + width + 5, posY + height + 5, colorDarker);
-		this.drawRect(posX - 4, posY + height + 4, posX + width + 5, posY + height + 5, colorDarker);
+		drawRect(posX - 3, posY - 3, posX - 2, posY + height + 2, this.colorDarker);
+		drawRect(posX - 3, posY - 3, posX + width + 2, posY - 2, this.colorDarker);
+		drawRect(posX + width + 4, posY - 4, posX + width + 5, posY + height + 5, this.colorDarker);
+		drawRect(posX - 4, posY + height + 4, posX + width + 5, posY + height + 5, this.colorDarker);
 		
-		this.drawRect(posX - 2, posY - 2, posX + width + 2, posY + height + 2, colorBg);
+		drawRect(posX - 2, posY - 2, posX + width + 2, posY + height + 2, this.colorBg);
 
-		Minecraft.getMinecraft().getTextureManager().bindTexture(guiUtil);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(ActorFancyPanel.guiUtil);
 		
-		switch(o) {
+		switch(this.o) {
 		case TOP:
-			this.drawArrow(posX + width / 2 - 7, posY - 15, 40, 14, 14, 10);
+			drawArrow(posX + width / 2 - 7, posY - 15, 40, 14, 14, 10);
 			break;
 		case BOTTOM:
-			this.drawArrow(posX + width / 2 - 7, posY + height + 5, 54, 14, 14, 10);
+			drawArrow(posX + width / 2 - 7, posY + height + 5, 54, 14, 14, 10);
 			break;
 		case LEFT:
-			this.drawArrow(posX - 15, posY + height / 2 - 7, 40, 0, 10, 14);
+			drawArrow(posX - 15, posY + height / 2 - 7, 40, 0, 10, 14);
 			break;
 		case RIGHT:
-			this.drawArrow(posX + width + 5, posY + height / 2 - 7, 50, 0, 10, 14);
+			drawArrow(posX + width + 5, posY + height / 2 - 7, 50, 0, 10, 14);
 			break;
 		case CENTER: break;
 		}
@@ -287,7 +287,7 @@ public class ActorFancyPanel implements ISpecialActor {
 			
 			if(offsetY > 0) offsetY+= this.lineDist;
 			int lineHeight = 0;
-			for(Object element : line) lineHeight = Math.max(lineHeight, this.getElementHeight(element));
+			for(Object element : line) lineHeight = Math.max(lineHeight, getElementHeight(element));
 			
 			int indent = 0;
 			for(Object element : line) {
@@ -303,7 +303,7 @@ public class ActorFancyPanel implements ISpecialActor {
 			offsetY += lineHeight;
 		}
 
-		itemRender.zLevel = 0.0F;
+		this.itemRender.zLevel = 0.0F;
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		RenderHelper.enableStandardItemLighting();
@@ -329,11 +329,11 @@ public class ActorFancyPanel implements ISpecialActor {
 			GL11.glColor3f(1F, 1F, 1F);
 
 			if(stack.stackSize == 0) {
-				this.drawGradientRect(x - 1, y - 1 - 8, x + 17, y + 17, 0xffff0000, 0xffff0000);
-				this.drawGradientRect(x, y - 8, x + 16, y + 16, 0xffb0b0b0, 0xffb0b0b0);
+				drawGradientRect(x - 1, y - 1 - 8, x + 17, y + 17, 0xffff0000, 0xffff0000);
+				drawGradientRect(x, y - 8, x + 16, y + 16, 0xffb0b0b0, 0xffb0b0b0);
 			}
-			itemRender.renderItemAndEffectIntoGUI(this.font, texman, stack, x, y - 8);
-			itemRender.renderItemOverlayIntoGUI(this.font, texman, stack, x, y - 8, null);
+			this.itemRender.renderItemAndEffectIntoGUI(this.font, this.texman, stack, x, y - 8);
+			this.itemRender.renderItemOverlayIntoGUI(this.font, this.texman, stack, x, y - 8, null);
 			RenderHelper.disableStandardItemLighting();
 			GL11.glColor3f(1F, 1F, 1F);
 			GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -352,14 +352,14 @@ public class ActorFancyPanel implements ISpecialActor {
 	protected void drawGradientRect(int minX, int minY, int maxX, int maxY, int color1, int color2) {
 		
 		double zLevel = 300D;
-		float a1 = (float) (color1 >> 24 & 255) / 255.0F;
-		float r1 = (float) (color1 >> 16 & 255) / 255.0F;
-		float g1 = (float) (color1 >> 8 & 255) / 255.0F;
-		float b1 = (float) (color1 & 255) / 255.0F;
-		float a2 = (float) (color2 >> 24 & 255) / 255.0F;
-		float r2 = (float) (color2 >> 16 & 255) / 255.0F;
-		float g2 = (float) (color2 >> 8 & 255) / 255.0F;
-		float b2 = (float) (color2 & 255) / 255.0F;
+		float a1 = (color1 >> 24 & 255) / 255.0F;
+		float r1 = (color1 >> 16 & 255) / 255.0F;
+		float g1 = (color1 >> 8 & 255) / 255.0F;
+		float b1 = (color1 & 255) / 255.0F;
+		float a2 = (color2 >> 24 & 255) / 255.0F;
+		float r2 = (color2 >> 16 & 255) / 255.0F;
+		float g2 = (color2 >> 8 & 255) / 255.0F;
+		float b2 = (color2 & 255) / 255.0F;
 		
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glEnable(GL11.GL_BLEND);
@@ -370,11 +370,11 @@ public class ActorFancyPanel implements ISpecialActor {
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
 		tessellator.setColorRGBA_F(r1, g1, b1, a1);
-		tessellator.addVertex((double) maxX, (double) minY, (double) zLevel);
-		tessellator.addVertex((double) minX, (double) minY, (double) zLevel);
+		tessellator.addVertex(maxX, minY, zLevel);
+		tessellator.addVertex(minX, minY, zLevel);
 		tessellator.setColorRGBA_F(r2, g2, b2, a2);
-		tessellator.addVertex((double) minX, (double) maxY, (double) zLevel);
-		tessellator.addVertex((double) maxX, (double) maxY, (double) zLevel);
+		tessellator.addVertex(minX, maxY, zLevel);
+		tessellator.addVertex(maxX, maxY, zLevel);
 		tessellator.draw();
 		
 		GL11.glShadeModel(GL11.GL_FLAT);
@@ -389,10 +389,10 @@ public class ActorFancyPanel implements ISpecialActor {
 
 	public void drawTexturedModalRect(int posX, int posY, int u, int v, int sizeX, int sizeY, int color) {
 		double zLevel = 300D;
-		float a = (float) (color >> 24 & 255) / 255.0F;
-		float r = (float) (color >> 16 & 255) / 255.0F;
-		float g = (float) (color >> 8 & 255) / 255.0F;
-		float b = (float) (color & 255) / 255.0F;
+		float a = (color >> 24 & 255) / 255.0F;
+		float r = (color >> 16 & 255) / 255.0F;
+		float g = (color >> 8 & 255) / 255.0F;
+		float b = (color & 255) / 255.0F;
 		float f = 0.00390625F;
 		float f1 = 0.00390625F;
 		Tessellator tessellator = Tessellator.instance;

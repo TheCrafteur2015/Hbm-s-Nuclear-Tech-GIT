@@ -10,7 +10,7 @@ public class TestBomb extends Block {
 	int bombStartStrength = 40;
 	int bombStrengthA = 10;
 	protected int timer1 = 20;
-	int timer2 = timer1;
+	int timer2 = this.timer1;
 
 	public TestBomb(Material p_i45394_1_) {
 		super(p_i45394_1_);
@@ -23,9 +23,9 @@ public class TestBomb extends Block {
 
         if (world.isBlockIndirectlyGettingPowered(x, y, z))
         {
-            this.onBlockDestroyedByPlayer(world, x, y, z, 1);
+            onBlockDestroyedByPlayer(world, x, y, z, 1);
             world.setBlockToAir(x, y, z);
-            soos(world, x, y, z, bombStartStrength, bombStrengthA);
+            soos(world, x, y, z, this.bombStartStrength, this.bombStrengthA);
         }
     }
 
@@ -38,9 +38,9 @@ public class TestBomb extends Block {
     {
         if (p_149695_1_.isBlockIndirectlyGettingPowered(x, y, z))
         {
-            this.onBlockDestroyedByPlayer(p_149695_1_, x, y, z, 1);
+            onBlockDestroyedByPlayer(p_149695_1_, x, y, z, 1);
             p_149695_1_.setBlockToAir(x, y, z);
-            soos(p_149695_1_, x, y, z, bombStartStrength, bombStrengthA);
+            soos(p_149695_1_, x, y, z, this.bombStartStrength, this.bombStrengthA);
         }
     }
 	

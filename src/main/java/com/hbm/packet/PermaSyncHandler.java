@@ -23,7 +23,7 @@ import net.minecraft.world.World;
  */
 public class PermaSyncHandler {
 	
-	public static HashSet<Integer> boykissers = new HashSet();
+	public static HashSet<Integer> boykissers = new HashSet<>();
 	public static float[] pollution = new float[PollutionType.values().length];
 
 	public static void writePacket(ByteBuf buf, World world, EntityPlayerMP player) {
@@ -36,7 +36,7 @@ public class PermaSyncHandler {
 		/// TOM IMPACT DATA ///
 
 		/// SHITTY MEMES ///
-		List<Integer> ids = new ArrayList();
+		List<Integer> ids = new ArrayList<>();
 		for(Object o : world.playerEntities) {
 			EntityPlayer p = (EntityPlayer) o;
 			if(p.isPotionActive(HbmPotion.death.id)) {
@@ -66,14 +66,14 @@ public class PermaSyncHandler {
 		/// TOM IMPACT DATA ///
 
 		/// SHITTY MEMES ///
-		boykissers.clear();
+		PermaSyncHandler.boykissers.clear();
 		int ids = buf.readShort();
-		for(int i = 0; i < ids; i++) boykissers.add(buf.readInt());
+		for(int i = 0; i < ids; i++) PermaSyncHandler.boykissers.add(buf.readInt());
 		/// SHITTY MEMES ///
 
 		/// POLLUTION ///
 		for(int i = 0; i < PollutionType.values().length; i++) {
-			pollution[i] = buf.readFloat();
+			PermaSyncHandler.pollution[i] = buf.readFloat();
 		}
 		/// POLLUTION ///
 	}

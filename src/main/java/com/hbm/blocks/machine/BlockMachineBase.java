@@ -29,7 +29,7 @@ public abstract class BlockMachineBase extends BlockContainer {
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
 		
-		if(guiID == -1)
+		if(this.guiID == -1)
 			return false;
 		
 		if(world.isRemote) {
@@ -47,7 +47,7 @@ public abstract class BlockMachineBase extends BlockContainer {
 	@Override
 	public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
 
-		if(!keepInventory) {
+		if(!BlockMachineBase.keepInventory) {
 
 			TileEntity te = world.getTileEntity(x, y, z);
 
@@ -100,7 +100,7 @@ public abstract class BlockMachineBase extends BlockContainer {
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack itemStack) {
 		
-		if(!rotatable)
+		if(!this.rotatable)
 			return;
 		
 		int i = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;

@@ -35,7 +35,7 @@ public class DummyBlockAMSLimiter extends BlockContainer implements IDummy {
     @Override
 	public void breakBlock(World world, int x, int y, int z, Block block, int i)
     {
-    	if(!safeBreak) {
+    	if(!DummyBlockAMSLimiter.safeBreak) {
     		TileEntity te = world.getTileEntity(x, y, z);
     		if(te != null && te instanceof TileEntityDummy) {
     			int a = ((TileEntityDummy)te).targetX;

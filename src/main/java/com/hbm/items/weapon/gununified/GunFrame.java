@@ -19,7 +19,8 @@ import net.minecraft.world.World;
 
 public abstract class GunFrame extends Item implements IGunHUDProvider, IClickReceiver {
 	
-	private List<IStatusBarProvider> statusBars = new ArrayList();
+	@SuppressWarnings("unused")
+	private List<IStatusBarProvider> statusBars = new ArrayList<>();
 
 	@Override
 	public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean isCurrentItem) {
@@ -28,9 +29,9 @@ public abstract class GunFrame extends Item implements IGunHUDProvider, IClickRe
 			EntityPlayer player = (EntityPlayer) entity;
 			
 			if(world.isRemote) {
-				this.updatePlayerClient(stack, world, player, slot, isCurrentItem);
+				updatePlayerClient(stack, world, player, slot, isCurrentItem);
 			} else {
-				this.updatePlayerServer(stack, world, player, slot, isCurrentItem);
+				updatePlayerServer(stack, world, player, slot, isCurrentItem);
 			}
 		}
 	}
@@ -47,7 +48,7 @@ public abstract class GunFrame extends Item implements IGunHUDProvider, IClickRe
 
 	@Override
 	public List<Triplet<Double, Integer, Integer>> getStatusBars(ItemStack stack, EntityPlayer player) {
-		return new ArrayList();
+		return new ArrayList<>();
 	}
 
 	@Override

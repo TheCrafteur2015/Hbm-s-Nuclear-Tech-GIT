@@ -75,20 +75,20 @@ public class MachineFan extends BlockContainer implements IToolable, ITooltipPro
 			
 			this.prevSpin = this.spin;
 			
-			if(worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)) {
-				ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata());
+			if(this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord)) {
+				ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata());
 				
 				int range = 10;
 				int effRange = 0;
 				double push = 0.1;
 				
 				for(int i = 1; i <= range; i++) {
-					Block block = worldObj.getBlock(xCoord + dir.offsetX * i, yCoord + dir.offsetY * i, zCoord + dir.offsetZ * i);
+					Block block = this.worldObj.getBlock(this.xCoord + dir.offsetX * i, this.yCoord + dir.offsetY * i, this.zCoord + dir.offsetZ * i);
 					boolean blowable = block instanceof IBlowable;
 					
 					if(block.isNormalCube() || blowable) {
-						if(!worldObj.isRemote && blowable)
-							((IBlowable) block).applyFan(worldObj, xCoord + dir.offsetX * i, yCoord + dir.offsetY * i, zCoord + dir.offsetZ * i, dir, i);
+						if(!this.worldObj.isRemote && blowable)
+							((IBlowable) block).applyFan(this.worldObj, this.xCoord + dir.offsetX * i, this.yCoord + dir.offsetY * i, this.zCoord + dir.offsetZ * i, dir, i);
 						
 						break;
 					}
@@ -100,7 +100,7 @@ public class MachineFan extends BlockContainer implements IToolable, ITooltipPro
 				int y = dir.offsetY * effRange;
 				int z = dir.offsetZ * effRange;
 				
-				List<Entity> affected = worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(xCoord + 0.5 + Math.min(x, 0), yCoord + 0.5 + Math.min(y, 0), zCoord + 0.5 + Math.min(z, 0), xCoord + 0.5 + Math.max(x, 0), yCoord + 0.5 + Math.max(y, 0), zCoord + 0.5 + Math.max(z, 0)).expand(0.5, 0.5, 0.5));
+				List<Entity> affected = this.worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(this.xCoord + 0.5 + Math.min(x, 0), this.yCoord + 0.5 + Math.min(y, 0), this.zCoord + 0.5 + Math.min(z, 0), this.xCoord + 0.5 + Math.max(x, 0), this.yCoord + 0.5 + Math.max(y, 0), this.zCoord + 0.5 + Math.max(z, 0)).expand(0.5, 0.5, 0.5));
 				
 				for(Entity e : affected) {
 					
@@ -109,9 +109,9 @@ public class MachineFan extends BlockContainer implements IToolable, ITooltipPro
 					e.motionZ += dir.offsetZ * push;
 				}
 				
-				if(worldObj.isRemote && worldObj.rand.nextInt(30) == 0) {
+				if(this.worldObj.isRemote && this.worldObj.rand.nextInt(30) == 0) {
 					double speed = 0.2;
-					worldObj.spawnParticle("cloud", xCoord + 0.5 + dir.offsetX * 0.5, yCoord + 0.5 + dir.offsetY * 0.5, zCoord + 0.5 + dir.offsetZ * 0.5, dir.offsetX * speed, dir.offsetY * speed, dir.offsetZ * speed);
+					this.worldObj.spawnParticle("cloud", this.xCoord + 0.5 + dir.offsetX * 0.5, this.yCoord + 0.5 + dir.offsetY * 0.5, this.zCoord + 0.5 + dir.offsetZ * 0.5, dir.offsetX * speed, dir.offsetY * speed, dir.offsetZ * speed);
 				}
 				
 				this.spin += 30;
@@ -147,6 +147,6 @@ public class MachineFan extends BlockContainer implements IToolable, ITooltipPro
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		this.addStandardInfo(stack, player, list, ext);
+		addStandardInfo(stack, player, list, ext);
 	}
 }

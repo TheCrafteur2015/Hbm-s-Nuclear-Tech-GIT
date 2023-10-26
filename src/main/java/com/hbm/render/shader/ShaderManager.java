@@ -24,7 +24,7 @@ public class ShaderManager {
 
 	public static Shader loadShader(ResourceLocation file) {
 		
-		if(!enableShaders)
+		if(!ShaderManager.enableShaders)
 			return new Shader(0);
 		
 		int vertexShader = 0;
@@ -34,7 +34,7 @@ public class ShaderManager {
 			int program = GL20.glCreateProgram();
 
 			vertexShader = GL20.glCreateShader(GL20.GL_VERTEX_SHADER);
-			GL20.glShaderSource(vertexShader, readFileToBuf(new ResourceLocation(file.getResourceDomain(), file.getResourcePath() + ".vert")));
+			GL20.glShaderSource(vertexShader, ShaderManager.byteToChar(ShaderManager.readFileToBuf(new ResourceLocation(file.getResourceDomain(), file.getResourcePath() + ".vert"))));
 			GL20.glCompileShader(vertexShader);
 			if(GL20.glGetShaderi(vertexShader, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
 				MainRegistry.logger.error(GL20.glGetShaderInfoLog(vertexShader, GL20.GL_INFO_LOG_LENGTH));
@@ -42,7 +42,7 @@ public class ShaderManager {
 			}
 
 			fragmentShader = GL20.glCreateShader(GL20.GL_FRAGMENT_SHADER);
-			GL20.glShaderSource(fragmentShader, readFileToBuf(new ResourceLocation(file.getResourceDomain(), file.getResourcePath() + ".frag")));
+			GL20.glShaderSource(fragmentShader, ShaderManager.byteToChar(ShaderManager.readFileToBuf(new ResourceLocation(file.getResourceDomain(), file.getResourcePath() + ".frag"))));
 			GL20.glCompileShader(fragmentShader);
 			if(GL20.glGetShaderi(fragmentShader, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
 				MainRegistry.logger.error(GL20.glGetShaderInfoLog(fragmentShader, GL20.GL_INFO_LOG_LENGTH));
@@ -78,4 +78,9 @@ public class ShaderManager {
 		buf.rewind();
 		return buf;
 	}
+	
+	private static CharSequence byteToChar(ByteBuffer bb) {
+		return new String(bb.asCharBuffer().array());
+	}
+	
 }

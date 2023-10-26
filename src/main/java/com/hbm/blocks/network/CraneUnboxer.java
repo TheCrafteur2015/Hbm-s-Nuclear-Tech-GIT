@@ -1,11 +1,12 @@
 package com.hbm.blocks.network;
 
-import api.hbm.conveyor.IConveyorItem;
-import api.hbm.conveyor.IConveyorPackage;
-import api.hbm.conveyor.IEnterableBlock;
 import com.hbm.lib.RefStrings;
 import com.hbm.tileentity.network.TileEntityCraneBase;
 import com.hbm.tileentity.network.TileEntityCraneUnboxer;
+
+import api.hbm.conveyor.IConveyorItem;
+import api.hbm.conveyor.IConveyorPackage;
+import api.hbm.conveyor.IEnterableBlock;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -85,7 +86,7 @@ public class CraneUnboxer extends BlockCraneBase implements IEnterableBlock {
 
 	@Override
 	public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-		this.dropContents(world, x, y, z, block, meta, 0, 23);
+		dropContents(world, x, y, z, block, meta, 0, 23);
 		super.breakBlock(world, x, y, z, block, meta);
 	}
 

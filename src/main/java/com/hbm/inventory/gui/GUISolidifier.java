@@ -18,7 +18,7 @@ public class GUISolidifier extends GuiInfoContainer {
 
 	public GUISolidifier(InventoryPlayer invPlayer, TileEntityMachineSolidifier tedf) {
 		super(new ContainerSolidifier(invPlayer, tedf));
-		solidifier = tedf;
+		this.solidifier = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 204;
@@ -28,8 +28,8 @@ public class GUISolidifier extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		solidifier.tank.renderTankInfo(this, mouseX, mouseY, guiLeft + 35, guiTop + 36, 16, 52);
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 134, guiTop + 18, 16, 52, solidifier.power, solidifier.maxPower);
+		this.solidifier.tank.renderTankInfo(this, mouseX, mouseY, this.guiLeft + 35, this.guiTop + 36, 16, 52);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 134, this.guiTop + 18, 16, 52, this.solidifier.power, TileEntityMachineSolidifier.maxPower);
 	}
 	
 	@Override
@@ -44,18 +44,18 @@ public class GUISolidifier extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUISolidifier.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
-		int i = (int)(solidifier.getPower() * 52 / solidifier.getMaxPower());
-		drawTexturedModalRect(guiLeft + 134, guiTop + 70 - i, 176, 52 - i, 16, i);
+		int i = (int)(this.solidifier.getPower() * 52 / this.solidifier.getMaxPower());
+		drawTexturedModalRect(this.guiLeft + 134, this.guiTop + 70 - i, 176, 52 - i, 16, i);
 		
-		int j = solidifier.progress * 42 / solidifier.processTime;
-		drawTexturedModalRect(guiLeft + 42, guiTop + 17, 192, 0, j, 35);
+		int j = this.solidifier.progress * 42 / this.solidifier.processTime;
+		drawTexturedModalRect(this.guiLeft + 42, this.guiTop + 17, 192, 0, j, 35);
 		
 		if(i > 0)
-			drawTexturedModalRect(guiLeft + 138, guiTop + 4, 176, 52, 9, 12);
+			drawTexturedModalRect(this.guiLeft + 138, this.guiTop + 4, 176, 52, 9, 12);
 		
-		solidifier.tank.renderTank(guiLeft + 35, guiTop + 88, this.zLevel, 16, 52);
+		this.solidifier.tank.renderTank(this.guiLeft + 35, this.guiTop + 88, this.zLevel, 16, 52);
 	}
 }

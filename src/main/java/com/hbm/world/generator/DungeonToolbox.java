@@ -22,7 +22,7 @@ public class DungeonToolbox {
 		for(int i = x; i < x + sx; i++) {
 			for(int j = y; j < y + sy; j++) {
 				for(int k = z; k < z + sz; k++) {
-					MetaBlock b = getRandom(blocks, world.rand);
+					MetaBlock b = DungeonToolbox.getRandom(blocks, world.rand);
 					world.setBlock(i, j, k, b.block, b.meta, 2);
 				}
 			}
@@ -30,7 +30,7 @@ public class DungeonToolbox {
 	}
 	
 	public static void generateBox(World world, int x, int y, int z, int sx, int sy, int sz, Block block) {
-		generateBox(world, x, y, z, sx, sy, sz, new MetaBlock(block));
+		DungeonToolbox.generateBox(world, x, y, z, sx, sy, sz, new MetaBlock(block));
 	}
 
 	//i know it's copy paste, but it's a better strat than using a wrapper and generating single-entry lists for no good reason
@@ -51,7 +51,7 @@ public class DungeonToolbox {
 	//now with vectors to provide handy rotations
 	public static void generateBox(World world, int x, int y, int z, Vec3 size, List<MetaBlock> blocks) {
 		
-		generateBox(world, x, y, z, (int)size.xCoord, (int)size.yCoord, (int)size.zCoord, blocks);
+		DungeonToolbox.generateBox(world, x, y, z, (int)size.xCoord, (int)size.yCoord, (int)size.zCoord, blocks);
 	}
 	
 	public static <T> T getRandom(List<T> list, Random rand) {
@@ -63,15 +63,15 @@ public class DungeonToolbox {
 	}
 	
 	public static void generateOre(World world, Random rand, int chunkX, int chunkZ, int veinCount, int amount, int minHeight, int variance, Block ore) {
-		generateOre(world, rand, chunkX, chunkZ, veinCount, amount, minHeight, variance, ore, 0, Blocks.stone);
+		DungeonToolbox.generateOre(world, rand, chunkX, chunkZ, veinCount, amount, minHeight, variance, ore, 0, Blocks.stone);
 	}
 	
 	public static void generateOre(World world, Random rand, int chunkX, int chunkZ, int veinCount, int amount, int minHeight, int variance, Block ore, int meta) {
-		generateOre(world, rand, chunkX, chunkZ, veinCount, amount, minHeight, variance, ore, meta, Blocks.stone);
+		DungeonToolbox.generateOre(world, rand, chunkX, chunkZ, veinCount, amount, minHeight, variance, ore, meta, Blocks.stone);
 	}
 	
 	public static void generateOre(World world, Random rand, int chunkX, int chunkZ, int veinCount, int amount, int minHeight, int variance, Block ore, Block target) {
-		generateOre(world, rand, chunkX, chunkZ, veinCount, amount, minHeight, variance, ore, 0, target);
+		DungeonToolbox.generateOre(world, rand, chunkX, chunkZ, veinCount, amount, minHeight, variance, ore, 0, target);
 	}
 	
 	public static void generateOre(World world, Random rand, int chunkX, int chunkZ, int veinCount, int amount, int minHeight, int variance, Block ore, int meta, Block target) {
@@ -91,14 +91,13 @@ public class DungeonToolbox {
 		int x = chunkX + rand.nextInt(16);
 		int z = chunkZ + rand.nextInt(16);
 		int y = world.getHeightValue(x, z);
-		genFlowers.func_150550_a(flower, meta);
-		genFlowers.generate(world, rand, x, y, z);
+		DungeonToolbox.genFlowers.func_150550_a(flower, meta);
+		DungeonToolbox.genFlowers.generate(world, rand, x, y, z);
 	}
 	
 	public static boolean allowedToReplace(Block block) {
 		
-		if(block == Blocks.end_portal_frame) return false;
-		if(block == Blocks.bedrock) return false;
+		if((block == Blocks.end_portal_frame) || (block == Blocks.bedrock)) return false;
 		
 		return true;
 	}

@@ -1,5 +1,12 @@
 package com.hbm.items.armor;
 
+import org.lwjgl.opengl.GL11;
+
+import com.hbm.items.ModItems;
+import com.hbm.lib.RefStrings;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -14,14 +21,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
-
-import org.lwjgl.opengl.GL11;
-
-import com.hbm.items.ModItems;
-import com.hbm.lib.RefStrings;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ArmorAsbestos extends ItemArmor implements ISpecialArmor {
 
@@ -81,6 +80,7 @@ public class ArmorAsbestos extends ItemArmor implements ISpecialArmor {
 		player.extinguish();
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void renderHelmetOverlay(ItemStack stack, EntityPlayer player, ScaledResolution resolution, float partialTicks, boolean hasScreen, int mouseX, int mouseY) {
 
@@ -93,7 +93,7 @@ public class ArmorAsbestos extends ItemArmor implements ISpecialArmor {
 		OpenGlHelper.glBlendFunc(770, 771, 1, 0);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glDisable(GL11.GL_ALPHA_TEST);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(asbestosBlur);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(this.asbestosBlur);
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
 		tessellator.addVertexWithUV(0.0D, (double) resolution.getScaledHeight(), -90.0D, 0.0D, 1.0D);

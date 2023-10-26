@@ -26,12 +26,12 @@ public class RenderPylon extends RenderPylonBase {
 		GL11.glPushMatrix();
 			GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F - ((1F / 16F) * 14F), (float) z + 0.5F);
 			GL11.glRotatef(180, 0F, 0F, 1F);
-			bindTexture(texture);
+			bindTexture(RenderPylon.texture);
 			this.pylon.renderAll(0.0625F);
 		GL11.glPopMatrix();
 		
 		GL11.glPushMatrix();
-		this.renderSingleLine(pyl, x, y, z);
+		renderSingleLine(pyl, x, y, z);
 		GL11.glPopMatrix();
 	}
 }

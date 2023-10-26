@@ -19,47 +19,47 @@ public class MissileStruct {
 	public MissileStruct(ItemStack w, ItemStack f, ItemStack s, ItemStack t) {
 
 		if(w != null && w.getItem() instanceof ItemMissile)
-			warhead = (ItemMissile) w.getItem();
+			this.warhead = (ItemMissile) w.getItem();
 		if(f != null && f.getItem() instanceof ItemMissile)
-			fuselage = (ItemMissile) f.getItem();
+			this.fuselage = (ItemMissile) f.getItem();
 		if(s != null && s.getItem() instanceof ItemMissile)
-			fins = (ItemMissile) s.getItem();
+			this.fins = (ItemMissile) s.getItem();
 		if(t != null && t.getItem() instanceof ItemMissile)
-			thruster = (ItemMissile) t.getItem();
+			this.thruster = (ItemMissile) t.getItem();
 	}
 	
 	public MissileStruct(Item w, Item f, Item s, Item t) {
 
 		if(w instanceof ItemMissile)
-			warhead = (ItemMissile) w;
+			this.warhead = (ItemMissile) w;
 		if(f instanceof ItemMissile)
-			fuselage = (ItemMissile) f;
+			this.fuselage = (ItemMissile) f;
 		if(s instanceof ItemMissile)
-			fins = (ItemMissile) s;
+			this.fins = (ItemMissile) s;
 		if(t instanceof ItemMissile)
-			thruster = (ItemMissile) t;
+			this.thruster = (ItemMissile) t;
 	}
 	
 	public void writeToByteBuffer(ByteBuf buf) {
 
 
-		if(warhead != null && warhead.type == PartType.WARHEAD)
-			buf.writeInt(Item.getIdFromItem(warhead));
+		if(this.warhead != null && this.warhead.type == PartType.WARHEAD)
+			buf.writeInt(Item.getIdFromItem(this.warhead));
 		else
 			buf.writeInt(0);
 		
-		if(fuselage != null && fuselage.type == PartType.FUSELAGE)
-			buf.writeInt(Item.getIdFromItem(fuselage));
+		if(this.fuselage != null && this.fuselage.type == PartType.FUSELAGE)
+			buf.writeInt(Item.getIdFromItem(this.fuselage));
 		else
 			buf.writeInt(0);
 		
-		if(fins != null && fins.type == PartType.FINS)
-			buf.writeInt(Item.getIdFromItem(fins));
+		if(this.fins != null && this.fins.type == PartType.FINS)
+			buf.writeInt(Item.getIdFromItem(this.fins));
 		else
 			buf.writeInt(0);
 		
-		if(thruster != null && thruster.type == PartType.THRUSTER)
-			buf.writeInt(Item.getIdFromItem(thruster));
+		if(this.thruster != null && this.thruster.type == PartType.THRUSTER)
+			buf.writeInt(Item.getIdFromItem(this.thruster));
 		else
 			buf.writeInt(0);
 	}

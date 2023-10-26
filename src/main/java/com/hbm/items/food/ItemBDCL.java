@@ -19,7 +19,7 @@ public class ItemBDCL extends Item {
 	}
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-		player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
+		player.setItemInUse(stack, getMaxItemUseDuration(stack));
 		return stack;
 	}
 

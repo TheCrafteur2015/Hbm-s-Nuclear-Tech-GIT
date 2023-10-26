@@ -20,7 +20,7 @@ public class BlockCloudResidue extends Block {
 
     public static int func_150032_b(int p_150032_0_)
     {
-        return func_150031_c(p_150032_0_);
+        return BlockCloudResidue.func_150031_c(p_150032_0_);
     }
 
     public static int func_150031_c(int p_150031_0_)
@@ -28,7 +28,8 @@ public class BlockCloudResidue extends Block {
         return p_150031_0_ & 15;
     }
 
-    public MapColor getMapColor(int p_149728_1_)
+    @Override
+	public MapColor getMapColor(int p_149728_1_)
     {
         return MapColor.redColor;
     }
@@ -54,9 +55,10 @@ public class BlockCloudResidue extends Block {
 		return false;
 	}
     
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block b)
+    @Override
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block b)
     {
-    	if(!hasPosNeightbour(world, x, y, z) && !world.isRemote)
+    	if(!BlockCloudResidue.hasPosNeightbour(world, x, y, z) && !world.isRemote)
 			world.setBlockToAir(x, y, z);
     }
     

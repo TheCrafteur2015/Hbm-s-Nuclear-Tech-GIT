@@ -18,22 +18,24 @@ public class GUIBook extends GuiContainer {
 		super(new ContainerBook(player));
 	}
 
+	@Override
 	protected void drawGuiContainerForegroundLayer(int mX, int mY) {
 
 		Minecraft.getMinecraft().standardGalacticFontRenderer.drawString("Extended 4-Slot Crafting", 28, 6, 4210752);
 		Minecraft.getMinecraft().standardGalacticFontRenderer.drawString("Standard Inventory", 8, this.ySize - 96 + 2, 4210752);
 	}
 
+	@Override
 	protected void drawGuiContainerBackgroundLayer(float inter, int mX, int mY) {
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.getTextureManager().bindTexture(texture);
+		this.mc.getTextureManager().bindTexture(GUIBook.texture);
 		int left = (this.width - this.xSize) / 2;
 		int top = (this.height - this.ySize) / 2;
 
-		this.drawTexturedModalRect(left, top, 0, 0, this.xSize, this.ySize);
+		drawTexturedModalRect(left, top, 0, 0, this.xSize, this.ySize);
 
 		if(this.inventorySlots.getSlot(0).getHasStack())
-			this.drawTexturedModalRect(left + 29, top + 16, 176, 0, 54, 54);
+			drawTexturedModalRect(left + 29, top + 16, 176, 0, 54, 54);
 	}
 }

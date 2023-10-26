@@ -41,7 +41,7 @@ public class WasteEarth extends Block {
 
 	public WasteEarth(Material mat, boolean tick) {
 		super(mat);
-		this.setTickRandomly(tick);
+		setTickRandomly(tick);
 	}
 
 	@Override

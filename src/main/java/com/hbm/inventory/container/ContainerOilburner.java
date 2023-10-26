@@ -16,25 +16,25 @@ public class ContainerOilburner extends Container {
 
 	public ContainerOilburner(InventoryPlayer invPlayer, TileEntityHeaterOilburner tedf) {
 
-		heater = tedf;
+		this.heater = tedf;
 		
 		//In
-		this.addSlotToContainer(new Slot(tedf, 0, 26, 17));
+		addSlotToContainer(new Slot(tedf, 0, 26, 17));
 		//Out
-		this.addSlotToContainer(new SlotTakeOnly(tedf, 1, 26, 53));
+		addSlotToContainer(new SlotTakeOnly(tedf, 1, 26, 53));
 		//Fluid ID
-		this.addSlotToContainer(new Slot(tedf, 2, 44, 71));
+		addSlotToContainer(new Slot(tedf, 2, 44, 71));
 		
 		int offset = 37;
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + offset));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + offset));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + offset));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + offset));
 		}
 	}
 
@@ -48,17 +48,17 @@ public class ContainerOilburner extends Container {
 			var3 = var5.copy();
 
 			if(par2 <= 2) {
-				if(!this.mergeItemStack(var5, 3, this.inventorySlots.size(), true)) {
+				if(!mergeItemStack(var5, 3, this.inventorySlots.size(), true)) {
 					return null;
 				}
 			} else {
 				
 				if(var3.getItem() instanceof IItemFluidIdentifier) {
-					if(!this.mergeItemStack(var5, 2, 3, false)) {
+					if(!mergeItemStack(var5, 2, 3, false)) {
 						return null;
 					}
 				} else {
-					if(!this.mergeItemStack(var5, 0, 1, false)) {
+					if(!mergeItemStack(var5, 0, 1, false)) {
 						return null;
 					}
 				}
@@ -76,6 +76,6 @@ public class ContainerOilburner extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return heater.isUseableByPlayer(player);
+		return this.heater.isUseableByPlayer(player);
 	}
 }

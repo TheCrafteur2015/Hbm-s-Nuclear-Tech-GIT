@@ -40,7 +40,7 @@ public class MachineGasCent extends BlockDummyable implements IMultiblock {
 			return true;
 		} else if(!player.isSneaking())
 		{
-			int[] pos = this.findCore(world, x, y, z);
+			int[] pos = findCore(world, x, y, z);
 
 			if(pos == null)
 				return false;
@@ -62,6 +62,7 @@ public class MachineGasCent extends BlockDummyable implements IMultiblock {
 		return 0;
 	}
 	
+	@Override
 	protected void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		super.fillSpace(world, x, y, z, dir, o);
 	}

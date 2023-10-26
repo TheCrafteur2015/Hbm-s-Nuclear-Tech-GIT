@@ -2,6 +2,7 @@ package com.hbm.entity.projectile;
 
 import com.hbm.entity.effect.EntityCloudTom;
 import com.hbm.entity.logic.EntityTomBlast;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.projectile.EntityThrowable;
@@ -19,31 +20,31 @@ public class EntityTom extends EntityThrowable {
 	@Override
 	public void onUpdate() {
 
-		this.lastTickPosX = this.prevPosX = posX;
-		this.lastTickPosY = this.prevPosY = posY;
-		this.lastTickPosZ = this.prevPosZ = posZ;
-		this.setPosition(posX + this.motionX, posY + this.motionY, posZ + this.motionZ);
+		this.lastTickPosX = this.prevPosX = this.posX;
+		this.lastTickPosY = this.prevPosY = this.posY;
+		this.lastTickPosZ = this.prevPosZ = this.posZ;
+		setPosition(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
 		if(this.ticksExisted % 100 == 0) {
-			worldObj.playSoundEffect(posX, posY, posZ, "hbm:alarm.chime", 10000, 1.0F);
+			this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "hbm:alarm.chime", 10000, 1.0F);
 		}
 
-		motionY = -0.5;
+		this.motionY = -0.5;
 
 		if(this.worldObj.getBlock((int) this.posX, (int) this.posY, (int) this.posZ) != Blocks.air) {
 			if(!this.worldObj.isRemote) {
-				EntityTomBlast tom = new EntityTomBlast(worldObj);
-				tom.posX = posX;
-				tom.posY = posY;
-				tom.posZ = posZ;
+				EntityTomBlast tom = new EntityTomBlast(this.worldObj);
+				tom.posX = this.posX;
+				tom.posY = this.posY;
+				tom.posZ = this.posZ;
 				tom.destructionRange = 600;
-				worldObj.spawnEntityInWorld(tom);
+				this.worldObj.spawnEntityInWorld(tom);
 
-				EntityCloudTom cloud = new EntityCloudTom(worldObj, 500);
-				cloud.setLocationAndAngles(posX, posY, posZ, 0, 0);
-				worldObj.spawnEntityInWorld(cloud);
+				EntityCloudTom cloud = new EntityCloudTom(this.worldObj, 500);
+				cloud.setLocationAndAngles(this.posX, this.posY, this.posZ, 0, 0);
+				this.worldObj.spawnEntityInWorld(cloud);
 			}
-			this.setDead();
+			setDead();
 		}
 	}
 

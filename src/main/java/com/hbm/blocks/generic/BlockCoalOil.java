@@ -11,8 +11,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemTool;
 import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.item.ItemTool;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
@@ -52,6 +52,7 @@ public class BlockCoalOil extends Block {
 		return 2 + rand.nextInt(2);
 	}
 
+	@Override
 	public void onBlockHarvested(World world, int x, int y, int z, int meta, EntityPlayer player) {
 		
 		if(doesToolIgnite(player)) {
@@ -60,6 +61,7 @@ public class BlockCoalOil extends Block {
 		}
 	}
 
+	@Override
 	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
 
 		if(!world.isRemote)
@@ -89,16 +91,14 @@ public class BlockCoalOil extends Block {
 		}
 	}
 
+	@Override
 	public void onBlockDestroyedByExplosion(World world, int x, int y, int z, Explosion explosion) {
 		world.setBlock(x, y, z, Blocks.fire);
 	}
 	
 	private boolean doesToolIgnite(EntityPlayer player) {
 
-		if(player.getHeldItem() == null)
-			return false;
-
-		if(!(player.getHeldItem().getItem() instanceof ItemTool || player.getHeldItem().getItem() instanceof ItemToolAbility))
+		if((player.getHeldItem() == null) || !(player.getHeldItem().getItem() instanceof ItemTool || player.getHeldItem().getItem() instanceof ItemToolAbility))
 			return false;
 
 		ItemTool tool = (ItemTool) player.getHeldItem().getItem();

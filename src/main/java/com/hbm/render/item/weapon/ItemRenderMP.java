@@ -16,7 +16,7 @@ public class ItemRenderMP implements IItemRenderer {
 	protected ModelMP swordModel;
 	
 	public ItemRenderMP() {
-		swordModel = new ModelMP();
+		this.swordModel = new ModelMP();
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class ItemRenderMP implements IItemRenderer {
 			GL11.glTranslatef(1.0F, 0.75F, 0.0F);
 			GL11.glRotatef(150F, 0.0F, 0.0F, -1.0F);
 			GL11.glScalef(0.75F, 0.75F, 0.75F);
-			swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+			this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			break;
 			
 		case EQUIPPED:
@@ -55,14 +55,14 @@ public class ItemRenderMP implements IItemRenderer {
 			GL11.glRotatef(170F, 1.0F, 0.0F, 0.0F);
 			GL11.glRotatef(15F, 0.0F, 0.0F, -1.0F);
 			GL11.glScalef(0.75F, 0.75F, 0.75F);
-			swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+			this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			break;
 			
 		case ENTITY:
 			GL11.glTranslatef(0.0F, 1.0F, 0.0F);
 			GL11.glRotatef(180F, 1.0F, 0.0F, 0.0F);
 			GL11.glScalef(0.75F, 0.75F, 0.75F);
-			swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+			this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			break;
 			
 		default: break;

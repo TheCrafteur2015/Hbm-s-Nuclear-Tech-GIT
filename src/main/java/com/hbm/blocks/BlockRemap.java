@@ -19,13 +19,13 @@ public class BlockRemap extends Block implements ILookOverlay {
 		super(Material.tnt);
 		this.remapBlock = block;
 		this.remapMeta = meta;
-		this.setTickRandomly(true);
+		setTickRandomly(true);
 	}
 	
 	@Override
 	public Block setBlockName(String name) {
 		super.setBlockName(name);
-		this.setBlockTextureName(RefStrings.MODID + ":" + name);
+		setBlockTextureName(RefStrings.MODID + ":" + name);
 		return this;
 	}
 
@@ -36,6 +36,6 @@ public class BlockRemap extends Block implements ILookOverlay {
 
 	@Override
 	public void printHook(Pre event, World world, int x, int y, int z) {
-		ILookOverlay.printGeneric(event, "Compatibility block, will convert on update tick.", 0xffff00, 0x404000, new ArrayList());
+		ILookOverlay.printGeneric(event, "Compatibility block, will convert on update tick.", 0xffff00, 0x404000, new ArrayList<>());
 	}
 }

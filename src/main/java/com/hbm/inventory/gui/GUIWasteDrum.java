@@ -18,7 +18,7 @@ public class GUIWasteDrum extends GuiInfoContainer {
 
 	public GUIWasteDrum(InventoryPlayer invPlayer, TileEntityWasteDrum tedf) {
 		super(new ContainerWasteDrum(invPlayer, tedf));
-		diFurnace = tedf;
+		this.diFurnace = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 189;
@@ -31,7 +31,7 @@ public class GUIWasteDrum extends GuiInfoContainer {
 		String[] text = new String[] { "The drum will cool down hot nuclear",
 				"waste when submerged in water. More",
 				"water speeds up the process." };
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36, 16, 16, guiLeft - 8, guiTop + 36 + 16, text);
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft - 16, this.guiTop + 36, 16, 16, this.guiLeft - 8, this.guiTop + 36 + 16, text);
 	}
 	
 	@Override
@@ -45,9 +45,9 @@ public class GUIWasteDrum extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIWasteDrum.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
-		this.drawInfoPanel(guiLeft - 16, guiTop + 36, 16, 16, 2);
+		drawInfoPanel(this.guiLeft - 16, this.guiTop + 36, 16, 16, 2);
 	}
 }

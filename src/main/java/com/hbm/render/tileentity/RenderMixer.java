@@ -83,10 +83,12 @@ public class RenderMixer extends TileEntitySpecialRenderer implements IItemRende
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase( ) {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(0, -5, 0);
 				GL11.glScaled(5, 5, 5);
 			}
+			@Override
 			public void renderCommon() {
 				GL11.glRotated(180, 0, 1, 0);
 				GL11.glDisable(GL11.GL_CULL_FACE);

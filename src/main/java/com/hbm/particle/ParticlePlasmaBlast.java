@@ -38,13 +38,15 @@ public class ParticlePlasmaBlast extends EntityFX {
 		this.particleScale = scale;
 	}
 
+	@Override
 	public int getFXLayer() {
 		return 3;
 	}
 
+	@Override
 	public void renderParticle(Tessellator tess, float interp, float x, float y, float z, float tx, float tz) {
 		
-		this.theRenderEngine.bindTexture(texture);
+		this.theRenderEngine.bindTexture(ParticlePlasmaBlast.texture);
 
 		GL11.glPushMatrix();
 		GL11.glDisable(GL11.GL_LIGHTING);
@@ -58,9 +60,9 @@ public class ParticlePlasmaBlast extends EntityFX {
 		boolean fog = GL11.glIsEnabled(GL11.GL_FOG);
 		if(fog) GL11.glDisable(GL11.GL_FOG);
 		
-		float pX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double)interp - interpPosX);
-		float pY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double)interp - interpPosY);
-		float pZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double)interp - interpPosZ);
+		float pX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double)interp - EntityFX.interpPosX);
+		float pY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double)interp - EntityFX.interpPosY);
+		float pZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double)interp - EntityFX.interpPosZ);
 
 		GL11.glTranslatef(pX, pY, pZ);
 		GL11.glRotated(this.rotationYaw, 0, 1, 0);

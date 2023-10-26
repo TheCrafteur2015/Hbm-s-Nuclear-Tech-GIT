@@ -1,5 +1,6 @@
 package com.hbm.blocks.machine.rbmk;
 
+import com.hbm.blocks.BlockDummyable;
 import com.hbm.tileentity.machine.rbmk.TileEntityRBMKModerator;
 
 import net.minecraft.tileentity.TileEntity;
@@ -10,13 +11,13 @@ public class RBMKModerator extends RBMKBase {
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
 		
-		if(meta >= this.offset)
+		if(meta >= BlockDummyable.offset)
 			return new TileEntityRBMKModerator();
 		return null;
 	}
 	
 	@Override
 	public int getRenderType(){
-		return this.renderIDPassive;
+		return RBMKBase.renderIDPassive;
 	}
 }

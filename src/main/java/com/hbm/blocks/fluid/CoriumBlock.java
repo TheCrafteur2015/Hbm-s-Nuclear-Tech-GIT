@@ -34,23 +34,23 @@ public class CoriumBlock extends BlockFluidClassic {
 		super(fluid, material);
 		setQuantaPerBlock(5);
 		setCreativeTab(null);
-		displacements.put(this, false);
+		this.displacements.put(this, false);
 		this.tickRate = 30;
 		
-		this.setTickRandomly(true);
+		setTickRandomly(true);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
-		return (side == 0 || side == 1) ? stillIcon : flowingIcon;
+		return (side == 0 || side == 1) ? CoriumBlock.stillIcon : CoriumBlock.flowingIcon;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister register) {
-		stillIcon = register.registerIcon(RefStrings.MODID + ":corium_still");
-		flowingIcon = register.registerIcon(RefStrings.MODID + ":corium_flowing");
+		CoriumBlock.stillIcon = register.registerIcon(RefStrings.MODID + ":corium_still");
+		CoriumBlock.flowingIcon = register.registerIcon(RefStrings.MODID + ":corium_flowing");
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class CoriumBlock extends BlockFluidClassic {
 		
 		if(!world.isRemote && rand.nextInt(10) == 0) {
 			
-			if(this.isSourceBlock(world, x, y, z))
+			if(isSourceBlock(world, x, y, z))
 				world.setBlock(x, y, z, ModBlocks.block_corium);
 			else
 				world.setBlock(x, y, z, ModBlocks.block_corium_cobble);

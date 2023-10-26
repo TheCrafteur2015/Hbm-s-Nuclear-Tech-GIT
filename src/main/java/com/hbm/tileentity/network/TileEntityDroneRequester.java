@@ -43,7 +43,7 @@ public class TileEntityDroneRequester extends TileEntityRequestNetworkContainer 
 	public void updateEntity() {
 		super.updateEntity();
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			NBTTagCompound data = new NBTTagCompound();
 			this.matcher.writeToNBT(data);
@@ -57,7 +57,7 @@ public class TileEntityDroneRequester extends TileEntityRequestNetworkContainer 
 	}
 	
 	public void nextMode(int i) {
-		this.matcher.nextMode(worldObj, slots[i], i);
+		this.matcher.nextMode(this.worldObj, this.slots[i], i);
 	}
 
 	@Override
@@ -100,10 +100,10 @@ public class TileEntityDroneRequester extends TileEntityRequestNetworkContainer 
 
 	@Override
 	public PathNode createNode(BlockPos pos) {
-		List<AStack> request = new ArrayList();
+		List<AStack> request = new ArrayList<>();
 		for(int i = 0; i < 9; i++) {
-			ItemStack filter = slots[i];
-			ItemStack stock = slots[i + 9];
+			ItemStack filter = this.slots[i];
+			ItemStack stock = this.slots[i + 9];
 			if(filter == null) continue;
 			String mode = this.matcher.modes[i];
 			AStack aStack = null;

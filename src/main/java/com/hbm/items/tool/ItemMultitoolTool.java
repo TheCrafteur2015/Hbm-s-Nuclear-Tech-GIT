@@ -23,7 +23,8 @@ public class ItemMultitoolTool extends ItemTool {
 		super(f, mat, set);
 	}
     
-    public static Set getAllBlocks() {
+    @SuppressWarnings("unchecked")
+	public static Set getAllBlocks() {
     	
     	Set all = new HashSet();
     	

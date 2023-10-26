@@ -35,12 +35,12 @@ public class RenderOverhead {
 
 		GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
 
-		if(shouldRenderTag(living)) {
+		if(RenderOverhead.shouldRenderTag(living)) {
 			double distSq = living.getDistanceSqToEntity(thePlayer);
-			float range = living.isSneaking() ? renderer.NAME_TAG_RANGE_SNEAK : renderer.NAME_TAG_RANGE;
+			float range = living.isSneaking() ? RendererLivingEntity.NAME_TAG_RANGE_SNEAK : RendererLivingEntity.NAME_TAG_RANGE;
 
-			if(distSq < (double) (range * range)) {
-				drawTagAware(living, x, y, z, name, depthTest);
+			if(distSq < range * range) {
+				RenderOverhead.drawTagAware(living, x, y, z, name, depthTest);
 			}
 		}
 	}
@@ -51,19 +51,19 @@ public class RenderOverhead {
 
 	public static void drawTagAware(EntityLivingBase entity, double x, double y, double z, String string, boolean depthTest) {
 		if(entity.isPlayerSleeping()) {
-			drawTag(entity, string, x, y - 1.5D, z, 64, depthTest);
+			RenderOverhead.drawTag(entity, string, x, y - 1.5D, z, 64, depthTest);
 		} else {
-			drawTag(entity, string, x, y, z, 64, depthTest);
+			RenderOverhead.drawTag(entity, string, x, y, z, 64, depthTest);
 		}
 	}
 
 	public static void drawTag(Entity entity, String name, double x, double y, double z, int dist, boolean depthTest) {
-		drawTag(entity.height + 0.75F, entity.getDistanceSqToEntity(RenderManager.instance.livingPlayer), name, x, y, z, dist, depthTest, -1, 553648127);
+		RenderOverhead.drawTag(entity.height + 0.75F, entity.getDistanceSqToEntity(RenderManager.instance.livingPlayer), name, x, y, z, dist, depthTest, -1, 553648127);
 	}
 
 	public static void drawTag(float offset, double distsq, String name, double x, double y, double z, int dist, boolean depthTest, int color, int shadowColor) {
 
-		if(distsq <= (double) (dist * dist)) {
+		if(distsq <= dist * dist) {
 			FontRenderer fontrenderer = Minecraft.getMinecraft().fontRenderer;
 			float f = 1.6F;
 			float scale = 0.016666668F * f;
@@ -91,10 +91,10 @@ public class RenderOverhead {
 			tessellator.startDrawingQuads();
 			int center = fontrenderer.getStringWidth(name) / 2;
 			tessellator.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
-			tessellator.addVertex((double) (-center - 1), (double) (-1 + heightOffset), 0.0D);
-			tessellator.addVertex((double) (-center - 1), (double) (8 + heightOffset), 0.0D);
-			tessellator.addVertex((double) (center + 1), (double) (8 + heightOffset), 0.0D);
-			tessellator.addVertex((double) (center + 1), (double) (-1 + heightOffset), 0.0D);
+			tessellator.addVertex(-center - 1, -1 + heightOffset, 0.0D);
+			tessellator.addVertex(-center - 1, 8 + heightOffset, 0.0D);
+			tessellator.addVertex(center + 1, 8 + heightOffset, 0.0D);
+			tessellator.addVertex(center + 1, -1 + heightOffset, 0.0D);
 			tessellator.draw();
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
 			fontrenderer.drawString(name, -fontrenderer.getStringWidth(name) / 2, heightOffset, shadowColor);
@@ -131,10 +131,7 @@ public class RenderOverhead {
 			
 			Entity ent = (Entity) o;
 			
-			if(ent == player)
-				continue;
-			
-			if(ent.getDistanceSqToEntity(player) > 4096)
+			if((ent == player) || (ent.getDistanceSqToEntity(player) > 4096))
 				continue;
 			
 			if(ent instanceof IBossDisplayData)
@@ -194,15 +191,15 @@ public class RenderOverhead {
         GL11.glPopMatrix();
 	}
 
-	public static final HashMap<BlockPos, Marker> queuedMarkers = new HashMap();
-	private static final HashMap<BlockPos, Marker> markers = new HashMap();
+	public static final HashMap<BlockPos, Marker> queuedMarkers = new HashMap<>();
+	private static final HashMap<BlockPos, Marker> markers = new HashMap<>();
 	
 	public static void renderMarkers(float partialTicks) {
 		
-		markers.putAll(queuedMarkers);
-		queuedMarkers.clear();
+		RenderOverhead.markers.putAll(RenderOverhead.queuedMarkers);
+		RenderOverhead.queuedMarkers.clear();
 		
-		if(markers.isEmpty())
+		if(RenderOverhead.markers.isEmpty())
 			return;
 		
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
@@ -222,8 +219,8 @@ public class RenderOverhead {
 		Tessellator tess = Tessellator.instance;
 		tess.startDrawing(GL11.GL_LINES);
 		
-		Iterator<Entry<BlockPos, Marker>> it = markers.entrySet().iterator();
-		List<Entry<BlockPos, Marker>> tagList = new ArrayList();
+		Iterator<Entry<BlockPos, Marker>> it = RenderOverhead.markers.entrySet().iterator();
+		List<Entry<BlockPos, Marker>> tagList = new ArrayList<>();
 		while(it.hasNext()) {
 			Entry<BlockPos, Marker> entry = it.next();
 			BlockPos pos = entry.getKey();
@@ -328,7 +325,7 @@ public class RenderOverhead {
 				label += (!label.isEmpty() ? " " : "") + ((int) sqrt) + "m";
 			}
 			
-			if(!label.isEmpty()) drawTag(1F, len, label, vec.xCoord, vec.yCoord, vec.zCoord, 100, true, marker.color, marker.color);
+			if(!label.isEmpty()) RenderOverhead.drawTag(1F, len, label, vec.xCoord, vec.yCoord, vec.zCoord, 100, true, marker.color, marker.color);
 		}
 		GL11.glPopMatrix();
 	}

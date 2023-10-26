@@ -57,12 +57,12 @@ public class MachineTeleporter extends BlockContainer implements ILookOverlay {
 		
 		TileEntityMachineTeleporter tele = (TileEntityMachineTeleporter) tile;
 		
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		
 		if(tele.targetY == -1) {
 			text.add(EnumChatFormatting.RED + "No destination set!");
 		} else {
-			text.add((tele.power >= tele.consumption ? EnumChatFormatting.GREEN : EnumChatFormatting.RED) + String.format(Locale.US, "%,d", tele.power) + " / " + String.format(Locale.US, "%,d", tele.maxPower));
+			text.add((tele.power >= TileEntityMachineTeleporter.consumption ? EnumChatFormatting.GREEN : EnumChatFormatting.RED) + String.format(Locale.US, "%,d", tele.power) + " / " + String.format(Locale.US, "%,d", TileEntityMachineTeleporter.maxPower));
 			text.add("Destination: " + tele.targetX + " / " + tele.targetY + " / " + tele.targetZ + " (D: " + tele.targetDim + ")");
 		}
 		

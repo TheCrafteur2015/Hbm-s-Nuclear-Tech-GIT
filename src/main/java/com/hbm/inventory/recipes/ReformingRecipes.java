@@ -18,31 +18,31 @@ import net.minecraft.item.ItemStack;
 
 public class ReformingRecipes extends SerializableRecipe {
 	
-	private static HashMap<FluidType, Triplet<FluidStack, FluidStack, FluidStack>> recipes = new HashMap();
+	private static HashMap<FluidType, Triplet<FluidStack, FluidStack, FluidStack>> recipes = new HashMap<>();
 
 	@Override
 	public void registerDefaults() {
-		recipes.put(Fluids.NAPHTHA, new Triplet(
+		ReformingRecipes.recipes.put(Fluids.NAPHTHA, new Triplet<>(
 				new FluidStack(Fluids.REFORMATE, 50),
 				new FluidStack(Fluids.PETROLEUM, 15),
 				new FluidStack(Fluids.HYDROGEN, 10)
 				));
-		recipes.put(Fluids.NAPHTHA_CRACK, new Triplet(
+		ReformingRecipes.recipes.put(Fluids.NAPHTHA_CRACK, new Triplet<>(
 				new FluidStack(Fluids.REFORMATE, 50),
 				new FluidStack(Fluids.AROMATICS, 10),
 				new FluidStack(Fluids.HYDROGEN, 5)
 				));
-		recipes.put(Fluids.PETROLEUM, new Triplet(
+		ReformingRecipes.recipes.put(Fluids.PETROLEUM, new Triplet<>(
 				new FluidStack(Fluids.UNSATURATEDS, 85),
 				new FluidStack(Fluids.REFORMGAS, 10),
 				new FluidStack(Fluids.HYDROGEN, 5)
 				));
-		recipes.put(Fluids.SOURGAS, new Triplet(
+		ReformingRecipes.recipes.put(Fluids.SOURGAS, new Triplet<>(
 				new FluidStack(Fluids.SULFURIC_ACID, 75),
 				new FluidStack(Fluids.PETROLEUM, 10),
 				new FluidStack(Fluids.HYDROGEN, 15)
 				));
-		recipes.put(Fluids.CHOLESTEROL, new Triplet(
+		ReformingRecipes.recipes.put(Fluids.CHOLESTEROL, new Triplet<>(
 				new FluidStack(Fluids.ESTRADIOL, 50),
 				new FluidStack(Fluids.REFORMGAS, 35),
 				new FluidStack(Fluids.HYDROGEN, 15)
@@ -50,14 +50,14 @@ public class ReformingRecipes extends SerializableRecipe {
 	}
 	
 	public static Triplet<FluidStack, FluidStack, FluidStack> getOutput(FluidType type) {
-		return recipes.get(type);
+		return ReformingRecipes.recipes.get(type);
 	}
 	
 	public static HashMap<Object, Object[]> getRecipes() {
 
-		HashMap<Object, Object[]> map = new HashMap<Object, Object[]>();
+		HashMap<Object, Object[]> map = new HashMap<>();
 		
-		for(Entry<FluidType, Triplet<FluidStack, FluidStack, FluidStack>> recipe : recipes.entrySet()) {
+		for(Entry<FluidType, Triplet<FluidStack, FluidStack, FluidStack>> recipe : ReformingRecipes.recipes.entrySet()) {
 			map.put(ItemFluidIcon.make(recipe.getKey(), 1000),
 					new ItemStack[] {
 							ItemFluidIcon.make(recipe.getValue().getX().type,	recipe.getValue().getX().fill * 10),
@@ -75,7 +75,7 @@ public class ReformingRecipes extends SerializableRecipe {
 
 	@Override
 	public Object getRecipeObject() {
-		return recipes;
+		return ReformingRecipes.recipes;
 	}
 
 	@Override
@@ -83,25 +83,26 @@ public class ReformingRecipes extends SerializableRecipe {
 		JsonObject obj = (JsonObject) recipe;
 
 		FluidType input = Fluids.fromName(obj.get("input").getAsString());
-		FluidStack output1 = this.readFluidStack(obj.get("output1").getAsJsonArray());
-		FluidStack output2 = this.readFluidStack(obj.get("output2").getAsJsonArray());
-		FluidStack output3 = this.readFluidStack(obj.get("output3").getAsJsonArray());
+		FluidStack output1 = readFluidStack(obj.get("output1").getAsJsonArray());
+		FluidStack output2 = readFluidStack(obj.get("output2").getAsJsonArray());
+		FluidStack output3 = readFluidStack(obj.get("output3").getAsJsonArray());
 		
-		recipes.put(input, new Triplet(output1, output2, output3));
+		ReformingRecipes.recipes.put(input, new Triplet<>(output1, output2, output3));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void writeRecipe(Object recipe, JsonWriter writer) throws IOException {
 		Entry<FluidType, Triplet<FluidStack, FluidStack, FluidStack>> rec = (Entry<FluidType, Triplet<FluidStack, FluidStack, FluidStack>>) recipe;
 		
 		writer.name("input").value(rec.getKey().getName());
-		writer.name("output1"); this.writeFluidStack(rec.getValue().getX(), writer);
-		writer.name("output2"); this.writeFluidStack(rec.getValue().getY(), writer);
-		writer.name("output3"); this.writeFluidStack(rec.getValue().getZ(), writer);
+		writer.name("output1"); writeFluidStack(rec.getValue().getX(), writer);
+		writer.name("output2"); writeFluidStack(rec.getValue().getY(), writer);
+		writer.name("output3"); writeFluidStack(rec.getValue().getZ(), writer);
 	}
 
 	@Override
 	public void deleteRecipes() {
-		recipes.clear();
+		ReformingRecipes.recipes.clear();
 	}
 }

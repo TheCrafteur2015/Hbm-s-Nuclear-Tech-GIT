@@ -59,11 +59,11 @@ public class TileEntityMachineAssembler extends TileEntityMachineAssemblerBase {
 	public void updateEntity() {
 		super.updateEntity();
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			//meta below 12 means that it's an old multiblock configuration
-			if(this.getBlockMetadata() < 12) {
-				int meta = this.getBlockMetadata();
+			if(getBlockMetadata() < 12) {
+				int meta = getBlockMetadata();
 				if(meta == 2 || meta == 14) meta = 4;
 				else if(meta == 4 || meta == 13) meta = 3;
 				else if(meta == 3 || meta == 15) meta = 5;
@@ -71,68 +71,68 @@ public class TileEntityMachineAssembler extends TileEntityMachineAssemblerBase {
 				//get old direction
 				ForgeDirection dir = ForgeDirection.getOrientation(meta);
 				//remove tile from the world to prevent inventory dropping
-				worldObj.removeTileEntity(xCoord, yCoord, zCoord);
+				this.worldObj.removeTileEntity(this.xCoord, this.yCoord, this.zCoord);
 				//use fillspace to create a new multiblock configuration
-				worldObj.setBlock(xCoord, yCoord, zCoord, ModBlocks.machine_assembler, dir.ordinal() + 10, 3);
-				MultiblockHandlerXR.fillSpace(worldObj, xCoord, yCoord, zCoord, ((BlockDummyable) ModBlocks.machine_assembler).getDimensions(), ModBlocks.machine_assembler, dir);
+				this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, ModBlocks.machine_assembler, dir.ordinal() + 10, 3);
+				MultiblockHandlerXR.fillSpace(this.worldObj, this.xCoord, this.yCoord, this.zCoord, ((BlockDummyable) ModBlocks.machine_assembler).getDimensions(), ModBlocks.machine_assembler, dir);
 				//load the tile data to restore the old values
 				NBTTagCompound data = new NBTTagCompound();
-				this.writeToNBT(data);
-				worldObj.getTileEntity(xCoord, yCoord, zCoord).readFromNBT(data);
+				writeToNBT(data);
+				this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord).readFromNBT(data);
 				return;
 			}
 			
-			this.updateConnections();
+			updateConnections();
 
 			this.consumption = 100;
 			this.speed = 100;
 			
-			UpgradeManager.eval(slots, 1, 3);
+			UpgradeManager.eval(this.slots, 1, 3);
 
 			int speedLevel = Math.min(UpgradeManager.getLevel(UpgradeType.SPEED), 3);
 			int powerLevel = Math.min(UpgradeManager.getLevel(UpgradeType.POWER), 3);
 			int overLevel = UpgradeManager.getLevel(UpgradeType.OVERDRIVE);
 			
-			speed -= speedLevel * 25;
-			consumption += speedLevel * 300;
-			speed += powerLevel * 5;
-			consumption -= powerLevel * 30;
-			speed /= (overLevel + 1);
-			consumption *= (overLevel + 1);
+			this.speed -= speedLevel * 25;
+			this.consumption += speedLevel * 300;
+			this.speed += powerLevel * 5;
+			this.consumption -= powerLevel * 30;
+			this.speed /= (overLevel + 1);
+			this.consumption *= (overLevel + 1);
 
 			int rec = -1;
-			if(AssemblerRecipes.getOutputFromTempate(slots[4]) != null) {
-				ComparableStack comp = ItemAssemblyTemplate.readType(slots[4]);
+			if(AssemblerRecipes.getOutputFromTempate(this.slots[4]) != null) {
+				ComparableStack comp = ItemAssemblyTemplate.readType(this.slots[4]);
 				rec = AssemblerRecipes.recipeList.indexOf(comp);
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setLong("power", power);
+			data.setLong("power", this.power);
 			data.setIntArray("progress", this.progress);
 			data.setIntArray("maxProgress", this.maxProgress);
-			data.setBoolean("isProgressing", isProgressing);
+			data.setBoolean("isProgressing", this.isProgressing);
 			data.setInteger("recipe", rec);
-			this.networkPack(data, 150);
+			networkPack(data, 150);
 		} else {
 			
-			float volume = this.getVolume(2);
+			float volume = getVolume(2);
 
-			if(isProgressing && volume > 0) {
+			if(this.isProgressing && volume > 0) {
 				
-				if(audio == null) {
-					audio = this.createAudioLoop();
-					audio.updateVolume(volume);
-					audio.startSound();
-				} else if(!audio.isPlaying()) {
-					audio = rebootAudio(audio);
-					audio.updateVolume(volume);
+				if(this.audio == null) {
+					this.audio = createAudioLoop();
+					this.audio.updateVolume(volume);
+					this.audio.startSound();
+				} else if(!this.audio.isPlaying()) {
+					this.audio = rebootAudio(this.audio);
+					this.audio.updateVolume(volume);
 				}
 				
 			} else {
 				
-				if(audio != null) {
-					audio.stopSound();
-					audio = null;
+				if(this.audio != null) {
+					this.audio.stopSound();
+					this.audio = null;
 				}
 			}
 		}
@@ -149,35 +149,35 @@ public class TileEntityMachineAssembler extends TileEntityMachineAssemblerBase {
 	
 	@Override
 	public AudioWrapper createAudioLoop() {
-		return MainRegistry.proxy.getLoopedSound("hbm:block.assemblerOperate", xCoord, yCoord, zCoord, 1.0F, 10F, 1.0F);
+		return MainRegistry.proxy.getLoopedSound("hbm:block.assemblerOperate", this.xCoord, this.yCoord, this.zCoord, 1.0F, 10F, 1.0F);
 	}
 	
 	private void updateConnections() {
 		
 		for(DirPos pos : getConPos()) {
-			this.trySubscribe(worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			trySubscribe(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 		}
 	}
 	
 	public DirPos[] getConPos() {
 
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset).getOpposite();
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset).getOpposite();
 		ForgeDirection rot = dir.getRotation(ForgeDirection.DOWN);
 		
 		return new DirPos[] {
-				new DirPos(xCoord + rot.offsetX * 3,				yCoord,	zCoord + rot.offsetZ * 3,				rot),
-				new DirPos(xCoord - rot.offsetX * 2,				yCoord,	zCoord - rot.offsetZ * 2,				rot.getOpposite()),
-				new DirPos(xCoord + rot.offsetX * 3 + dir.offsetX,	yCoord,	zCoord + rot.offsetZ * 3 + dir.offsetZ, rot),
-				new DirPos(xCoord - rot.offsetX * 2 + dir.offsetX,	yCoord,	zCoord - rot.offsetZ * 2 + dir.offsetZ, rot.getOpposite())
+				new DirPos(this.xCoord + rot.offsetX * 3,				this.yCoord,	this.zCoord + rot.offsetZ * 3,				rot),
+				new DirPos(this.xCoord - rot.offsetX * 2,				this.yCoord,	this.zCoord - rot.offsetZ * 2,				rot.getOpposite()),
+				new DirPos(this.xCoord + rot.offsetX * 3 + dir.offsetX,	this.yCoord,	this.zCoord + rot.offsetZ * 3 + dir.offsetZ, rot),
+				new DirPos(this.xCoord - rot.offsetX * 2 + dir.offsetX,	this.yCoord,	this.zCoord - rot.offsetZ * 2 + dir.offsetZ, rot.getOpposite())
 		};
 	}
 
 	@Override
 	public void onChunkUnload() {
 
-		if(audio != null) {
-			audio.stopSound();
-			audio = null;
+		if(this.audio != null) {
+			this.audio.stopSound();
+			this.audio = null;
 		}
 	}
 
@@ -186,9 +186,9 @@ public class TileEntityMachineAssembler extends TileEntityMachineAssemblerBase {
 
 		super.invalidate();
 
-		if(audio != null) {
-			audio.stopSound();
-			audio = null;
+		if(this.audio != null) {
+			this.audio.stopSound();
+			this.audio = null;
 		}
 	}
 	
@@ -211,15 +211,15 @@ public class TileEntityMachineAssembler extends TileEntityMachineAssemblerBase {
 
 	@Override
 	public DirPos[] getInputPositions() {
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
-		return new DirPos[] {new DirPos(xCoord - dir.offsetX * 3 + rot.offsetX, yCoord, zCoord - dir.offsetZ * 3 + rot.offsetZ, dir.getOpposite())};
+		return new DirPos[] {new DirPos(this.xCoord - dir.offsetX * 3 + rot.offsetX, this.yCoord, this.zCoord - dir.offsetZ * 3 + rot.offsetZ, dir.getOpposite())};
 	}
 
 	@Override
 	public DirPos[] getOutputPositions() {
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
-		return new DirPos[] {new DirPos(xCoord + dir.offsetX * 2, yCoord, zCoord + dir.offsetZ * 2, dir)};
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
+		return new DirPos[] {new DirPos(this.xCoord + dir.offsetX * 2, this.yCoord, this.zCoord + dir.offsetZ * 2, dir)};
 	}
 
 	@Override
@@ -234,7 +234,7 @@ public class TileEntityMachineAssembler extends TileEntityMachineAssemblerBase {
 	
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
-		return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(2, 1, 2);
+		return AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1).expand(2, 1, 2);
 	}
 	
 	@Override
@@ -243,13 +243,14 @@ public class TileEntityMachineAssembler extends TileEntityMachineAssemblerBase {
 		return 65536.0D;
 	}
 	
+	@Override
 	public int countMufflers() {
 		
 		int count = 0;
 
-		for(int x = xCoord - 1; x <= xCoord + 1; x++)
-			for(int z = zCoord - 1; z <= zCoord + 1; z++)
-				if(worldObj.getBlock(x, yCoord - 1, z) == ModBlocks.muffler)
+		for(int x = this.xCoord - 1; x <= this.xCoord + 1; x++)
+			for(int z = this.zCoord - 1; z <= this.zCoord + 1; z++)
+				if(this.worldObj.getBlock(x, this.yCoord - 1, z) == ModBlocks.muffler)
 					count++;
 		
 		return count;

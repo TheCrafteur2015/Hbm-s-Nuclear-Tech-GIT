@@ -28,13 +28,13 @@ public class TileEntityRadioTorchBase extends TileEntity implements INBTPacketRe
 	@Override
 	public void updateEntity() {
 
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setBoolean("p", polling);
-			data.setBoolean("m", customMap);
-			if(channel != null) data.setString("c", channel);
-			for(int i = 0; i < 16; i++) if(mapping[i] != null) data.setString("m" + i, mapping[i]);
+			data.setBoolean("p", this.polling);
+			data.setBoolean("m", this.customMap);
+			if(this.channel != null) data.setString("c", this.channel);
+			for(int i = 0; i < 16; i++) if(this.mapping[i] != null) data.setString("m" + i, this.mapping[i]);
 			INBTPacketReceiver.networkPack(this, data, 50);
 		}
 	}
@@ -53,12 +53,12 @@ public class TileEntityRadioTorchBase extends TileEntity implements INBTPacketRe
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setBoolean("p", polling);
-		nbt.setBoolean("m", customMap);
-		nbt.setInteger("l", lastState);
-		nbt.setLong("u", lastUpdate);
-		if(channel != null) nbt.setString("c", channel);
-		for(int i = 0; i < 16; i++) if(mapping[i] != null) nbt.setString("m" + i, mapping[i]);
+		nbt.setBoolean("p", this.polling);
+		nbt.setBoolean("m", this.customMap);
+		nbt.setInteger("l", this.lastState);
+		nbt.setLong("u", this.lastUpdate);
+		if(this.channel != null) nbt.setString("c", this.channel);
+		for(int i = 0; i < 16; i++) if(this.mapping[i] != null) nbt.setString("m" + i, this.mapping[i]);
 	}
 
 	@Override
@@ -81,13 +81,13 @@ public class TileEntityRadioTorchBase extends TileEntity implements INBTPacketRe
 		int last = this.lastState;
 		this.lastState = pkt.func_148857_g().getByte("l");
 		if(this.lastState != last) {
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
 		}
 	}
 
 	@Override
 	public boolean hasPermission(EntityPlayer player) {
-		return player.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 16D;
+		return player.getDistance(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5) < 16D;
 	}
 
 	@Override
@@ -97,6 +97,6 @@ public class TileEntityRadioTorchBase extends TileEntity implements INBTPacketRe
 		if(data.hasKey("c")) this.channel = data.getString("c");
 		for(int i = 0; i < 16; i++) if(data.hasKey("m" + i)) this.mapping[i] = data.getString("m" + i);
 		
-		this.markDirty();
+		markDirty();
 	}
 }

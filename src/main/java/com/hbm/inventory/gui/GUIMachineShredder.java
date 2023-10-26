@@ -18,7 +18,7 @@ public class GUIMachineShredder extends GuiInfoContainer {
 
 	public GUIMachineShredder(InventoryPlayer invPlayer, TileEntityMachineShredder tedf) {
 		super(new ContainerMachineShredder(invPlayer, tedf));
-		diFurnace = tedf;
+		this.diFurnace = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 222;
@@ -28,19 +28,19 @@ public class GUIMachineShredder extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 8, guiTop + 106 - 88, 16, 88, diFurnace.power, diFurnace.maxPower);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 8, this.guiTop + 106 - 88, 16, 88, this.diFurnace.power, TileEntityMachineShredder.maxPower);
 		
 		boolean flag = false;
 
-		if(diFurnace.getGearLeft() == 0 || diFurnace.getGearLeft() == 3)
+		if(this.diFurnace.getGearLeft() == 0 || this.diFurnace.getGearLeft() == 3)
 			flag = true;
 		
-		if(diFurnace.getGearRight() == 0 || diFurnace.getGearRight() == 3)
+		if(this.diFurnace.getGearRight() == 0 || this.diFurnace.getGearRight() == 3)
 			flag = true;
 		
 		if(flag) {
 			String[] text = new String[] { "Error: Shredder blades are broken or missing!" };
-			this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36, 16, 16, guiLeft - 8, guiTop + 36 + 16, text);
+			this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft - 16, this.guiTop + 36, 16, 16, this.guiLeft - 8, this.guiTop + 36 + 16, text);
 		}
 	}
 	
@@ -55,53 +55,53 @@ public class GUIMachineShredder extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIMachineShredder.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		if(diFurnace.power > 0) {
-			int i = (int)diFurnace.getPowerScaled(88);
-			drawTexturedModalRect(guiLeft + 8, guiTop + 106 - i, 176, 160 - i, 16, i);
+		if(this.diFurnace.power > 0) {
+			int i = (int)this.diFurnace.getPowerScaled(88);
+			drawTexturedModalRect(this.guiLeft + 8, this.guiTop + 106 - i, 176, 160 - i, 16, i);
 		}
 		
-		int j1 = diFurnace.getDiFurnaceProgressScaled(34);
-		drawTexturedModalRect(guiLeft + 63, guiTop + 89, 176, 54, j1 + 1, 18);
+		int j1 = this.diFurnace.getDiFurnaceProgressScaled(34);
+		drawTexturedModalRect(this.guiLeft + 63, this.guiTop + 89, 176, 54, j1 + 1, 18);
 		
 		boolean flag = false;
 		
-		if(diFurnace.getGearLeft() != 0)
+		if(this.diFurnace.getGearLeft() != 0)
 		{
-			int i = diFurnace.getGearLeft();
+			int i = this.diFurnace.getGearLeft();
 			if(i == 1)
 			{
-				drawTexturedModalRect(guiLeft + 43, guiTop + 71, 176, 0, 18, 18);
+				drawTexturedModalRect(this.guiLeft + 43, this.guiTop + 71, 176, 0, 18, 18);
 			}
 			if(i == 2)
 			{
-				drawTexturedModalRect(guiLeft + 43, guiTop + 71, 176, 18, 18, 18);
+				drawTexturedModalRect(this.guiLeft + 43, this.guiTop + 71, 176, 18, 18, 18);
 			}
 			if(i == 3)
 			{
-				drawTexturedModalRect(guiLeft + 43, guiTop + 71, 176, 36, 18, 18);
+				drawTexturedModalRect(this.guiLeft + 43, this.guiTop + 71, 176, 36, 18, 18);
 				flag = true;
 			}
 		} else {
 			flag = true;
 		}
 		
-		if(diFurnace.getGearRight() != 0)
+		if(this.diFurnace.getGearRight() != 0)
 		{
-			int i = diFurnace.getGearRight();
+			int i = this.diFurnace.getGearRight();
 			if(i == 1)
 			{
-				drawTexturedModalRect(guiLeft + 79, guiTop + 71, 194, 0, 18, 18);
+				drawTexturedModalRect(this.guiLeft + 79, this.guiTop + 71, 194, 0, 18, 18);
 			}
 			if(i == 2)
 			{
-				drawTexturedModalRect(guiLeft + 79, guiTop + 71, 194, 18, 18, 18);
+				drawTexturedModalRect(this.guiLeft + 79, this.guiTop + 71, 194, 18, 18, 18);
 			}
 			if(i == 3)
 			{
-				drawTexturedModalRect(guiLeft + 79, guiTop + 71, 194, 36, 18, 18);
+				drawTexturedModalRect(this.guiLeft + 79, this.guiTop + 71, 194, 36, 18, 18);
 				flag = true;
 			}
 		} else {
@@ -109,6 +109,6 @@ public class GUIMachineShredder extends GuiInfoContainer {
 		}
 
 		if(flag)
-			this.drawInfoPanel(guiLeft - 16, guiTop + 36, 16, 16, 6);
+			drawInfoPanel(this.guiLeft - 16, this.guiTop + 36, 16, 16, 6);
 	}
 }

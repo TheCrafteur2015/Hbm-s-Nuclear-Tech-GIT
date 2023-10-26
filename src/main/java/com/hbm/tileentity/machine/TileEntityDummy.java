@@ -14,8 +14,8 @@ public class TileEntityDummy extends TileEntity {
     @Override
 	public void updateEntity() {
     	if(!this.worldObj.isRemote) {
-    		if(!(this.worldObj.getBlock(targetX, targetY, targetZ) instanceof IMultiblock)) {
-    			worldObj.func_147480_a(xCoord, yCoord, zCoord, false);
+    		if(!(this.worldObj.getBlock(this.targetX, this.targetY, this.targetZ) instanceof IMultiblock)) {
+    			this.worldObj.func_147480_a(this.xCoord, this.yCoord, this.zCoord, false);
     		}
     	}
     }

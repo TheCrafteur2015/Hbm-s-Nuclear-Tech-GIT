@@ -18,7 +18,7 @@ public class GUICraneInserter extends GuiInfoContainer {
 
 	public GUICraneInserter(InventoryPlayer invPlayer, TileEntityCraneInserter tedf) {
 		super(new ContainerCraneInserter(invPlayer, tedf));
-		inserter = tedf;
+		this.inserter = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 185;
@@ -34,7 +34,7 @@ public class GUICraneInserter extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUICraneInserter.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 	}
 }

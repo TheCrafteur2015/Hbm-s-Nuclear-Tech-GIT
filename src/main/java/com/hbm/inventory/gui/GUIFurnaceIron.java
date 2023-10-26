@@ -21,7 +21,7 @@ public class GUIFurnaceIron extends GuiInfoContainer {
 
 	public GUIFurnaceIron(InventoryPlayer invPlayer, TileEntityFurnaceIron tedf) {
 		super(new ContainerFurnaceIron(invPlayer, tedf));
-		furnace = tedf;
+		this.furnace = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 166;
@@ -36,19 +36,19 @@ public class GUIFurnaceIron extends GuiInfoContainer {
 			for(int i = 1; i < 3; ++i) {
 				Slot slot = (Slot) this.inventorySlots.inventorySlots.get(i);
 				
-				if(this.isMouseOverSlot(slot, x, y) && !slot.getHasStack()) {
+				if(isMouseOverSlot(slot, x, y) && !slot.getHasStack()) {
 					
 					List<String> bonuses = this.furnace.burnModule.getTimeDesc();
 					
 					if(!bonuses.isEmpty()) {
-						this.func_146283_a(bonuses, x, y);
+						func_146283_a(bonuses, x, y);
 					}
 				}
 			}
 		}
 
-		this.drawCustomInfoStat(x, y, guiLeft + 52, guiTop + 35, 71, 7, x, y, new String[] { (furnace.progress * 100 / Math.max(furnace.processingTime, 1)) + "%" });
-		this.drawCustomInfoStat(x, y, guiLeft + 52, guiTop + 44, 71, 7, x, y, new String[] { (furnace.burnTime / 20) + "s" });
+		this.drawCustomInfoStat(x, y, this.guiLeft + 52, this.guiTop + 35, 71, 7, x, y, new String[] { (this.furnace.progress * 100 / Math.max(this.furnace.processingTime, 1)) + "%" });
+		this.drawCustomInfoStat(x, y, this.guiLeft + 52, this.guiTop + 44, 71, 7, x, y, new String[] { (this.furnace.burnTime / 20) + "s" });
 	}
 	
 	@Override
@@ -62,16 +62,16 @@ public class GUIFurnaceIron extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIFurnaceIron.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		int i = furnace.progress * 70 / Math.max(furnace.processingTime, 1);
-		drawTexturedModalRect(guiLeft + 53, guiTop + 36, 176, 18, i, 5);
+		int i = this.furnace.progress * 70 / Math.max(this.furnace.processingTime, 1);
+		drawTexturedModalRect(this.guiLeft + 53, this.guiTop + 36, 176, 18, i, 5);
 		
-		int j = furnace.burnTime * 70 / Math.max(furnace.maxBurnTime, 1);
-		drawTexturedModalRect(guiLeft + 53, guiTop + 45, 176, 23, j, 5);
+		int j = this.furnace.burnTime * 70 / Math.max(this.furnace.maxBurnTime, 1);
+		drawTexturedModalRect(this.guiLeft + 53, this.guiTop + 45, 176, 23, j, 5);
 		
-		if(furnace.canSmelt())
-			drawTexturedModalRect(guiLeft + 70, guiTop + 16, 176, 0, 18, 18);
+		if(this.furnace.canSmelt())
+			drawTexturedModalRect(this.guiLeft + 70, this.guiTop + 16, 176, 0, 18, 18);
 	}
 }

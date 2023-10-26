@@ -54,14 +54,14 @@ public class DeuteriumTower extends BlockDummyable implements ILookOverlay {
 
 		ForgeDirection dr2 = dir.getRotation(ForgeDirection.UP);
 
-		this.makeExtra(world, x - dir.offsetX - dr2.offsetX, y, z - dir.offsetZ - dr2.offsetZ);
-		this.makeExtra(world, x, y, z - dir.offsetZ - dr2.offsetZ);
-		this.makeExtra(world, x - dir.offsetX - dr2.offsetX, y, z);
+		makeExtra(world, x - dir.offsetX - dr2.offsetX, y, z - dir.offsetZ - dr2.offsetZ);
+		makeExtra(world, x, y, z - dir.offsetZ - dr2.offsetZ);
+		makeExtra(world, x - dir.offsetX - dr2.offsetX, y, z);
 	}
 
 	@Override
 	public void printHook(Pre event, World world, int x, int y, int z) {
-		int[] pos = this.findCore(world, x, y, z);
+		int[] pos = findCore(world, x, y, z);
 
 		if(pos == null)
 			return;
@@ -73,7 +73,7 @@ public class DeuteriumTower extends BlockDummyable implements ILookOverlay {
 
 		TileEntityDeuteriumTower tower = (TileEntityDeuteriumTower) te;
 
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		text.add((tower.power < tower.getMaxPower() / 20 ? EnumChatFormatting.RED : EnumChatFormatting.GREEN) + "Power: " + BobMathUtil.getShortNumber(tower.power) + "HE");
 
 		for(int i = 0; i < tower.tanks.length; i++)

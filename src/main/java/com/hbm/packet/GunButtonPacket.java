@@ -22,20 +22,20 @@ public class GunButtonPacket implements IMessage {
 	public GunButtonPacket() { }
 
 	public GunButtonPacket(boolean m1, byte b) {
-		state = m1;
-		button = b;
+		this.state = m1;
+		this.button = b;
 	}
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		state = buf.readBoolean();
-		button = buf.readByte();
+		this.state = buf.readBoolean();
+		this.button = buf.readByte();
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeBoolean(state);
-		buf.writeByte(button);
+		buf.writeBoolean(this.state);
+		buf.writeByte(this.button);
 	}
 
 	public static class Handler implements IMessageHandler<GunButtonPacket, IMessage> {

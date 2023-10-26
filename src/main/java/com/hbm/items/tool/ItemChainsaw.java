@@ -19,10 +19,7 @@ public class ItemChainsaw extends ItemToolAbilityFueled implements IHeldSoundPro
 	@Override
 	public boolean onEntitySwing(EntityLivingBase entityLiving, ItemStack stack) {
 		
-		if(!(entityLiving instanceof EntityPlayerMP))
-			return false;
-		
-		if(stack.getItemDamage() >= stack.getMaxDamage())
+		if(!(entityLiving instanceof EntityPlayerMP) || (stack.getItemDamage() >= stack.getMaxDamage()))
 			return false;
 		
 		NBTTagCompound nbt = new NBTTagCompound();

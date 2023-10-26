@@ -21,7 +21,7 @@ import net.minecraftforge.client.event.RenderPlayerEvent;
 public class ItemModTesla extends ItemArmorMod {
 
 	private ModelBackTesla modelTesla;
-	public List<double[]> targets = new ArrayList();
+	public List<double[]> targets = new ArrayList<>();
 	
 	public ItemModTesla() {
 		super(ArmorModHandler.plate_only, false, true, false, false);
@@ -35,6 +35,7 @@ public class ItemModTesla extends ItemArmorMod {
 		super.addInformation(itemstack, player, list, bool);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void addDesc(List list, ItemStack stack, ItemStack armor) {
 		list.add(EnumChatFormatting.YELLOW + stack.getDisplayName() + " (zaps nearby entities)");
@@ -43,10 +44,10 @@ public class ItemModTesla extends ItemArmorMod {
 	@Override
 	public void modUpdate(EntityLivingBase entity, ItemStack armor) {
 		
-		if(!entity.worldObj.isRemote && entity instanceof EntityPlayer && armor.getItem() instanceof ArmorFSBPowered && ArmorFSBPowered.hasFSBArmor((EntityPlayer)entity)) {
-			targets = TileEntityTesla.zap(entity.worldObj, entity.posX, entity.posY + 1.25, entity.posZ, 5, entity);
+		if(!entity.worldObj.isRemote && entity instanceof EntityPlayer && armor.getItem() instanceof ArmorFSBPowered && ArmorFSB.hasFSBArmor((EntityPlayer)entity)) {
+			this.targets = TileEntityTesla.zap(entity.worldObj, entity.posX, entity.posY + 1.25, entity.posZ, 5, entity);
 			
-			if(targets != null && !targets.isEmpty() && entity.getRNG().nextInt(5) == 0) {
+			if(this.targets != null && !this.targets.isEmpty() && entity.getRNG().nextInt(5) == 0) {
 				armor.damageItem(1, entity);
 			}
 		}
@@ -65,7 +66,7 @@ public class ItemModTesla extends ItemArmorMod {
 		EntityPlayer player = event.entityPlayer;
 		//EntityPlayer me = Minecraft.getMinecraft().thePlayer;
 
-		modelTesla.isSneak = model.isSneak;
+		this.modelTesla.isSneak = model.isSneak;
 		
 		float interp = event.partialRenderTick;
 		float yawHead = player.prevRotationYawHead + (player.rotationYawHead - player.prevRotationYawHead) * interp;
@@ -74,7 +75,7 @@ public class ItemModTesla extends ItemArmorMod {
 		float yawWrapped = MathHelper.wrapAngleTo180_float(yawHead - yawOffset);
 		float pitch = player.rotationPitch;
 		
-		modelTesla.render(event.entityPlayer, 0.0F, 0.0F, yawWrapped, yaw, pitch, 0.0625F);
+		this.modelTesla.render(event.entityPlayer, 0.0F, 0.0F, yawWrapped, yaw, pitch, 0.0625F);
 		
 		/*GL11.glPushMatrix();
 		

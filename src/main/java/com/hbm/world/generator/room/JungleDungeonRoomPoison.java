@@ -15,6 +15,7 @@ public class JungleDungeonRoomPoison extends JungleDungeonRoom {
 		super(parent);
 	}
 
+	@Override
 	public void generateMain(final World world, final int x, final int y, final int z) {
 		super.generateMain(world, x, y, z);
 		
@@ -36,9 +37,9 @@ public class JungleDungeonRoomPoison extends JungleDungeonRoom {
 						}
 						
 						for(int i = 1; i < 4; i++) {
-							Block bl = world.getBlock(x + parent.width - 1, y + 2, z + i);
+							Block bl = world.getBlock(x + JungleDungeonRoomPoison.this.parent.width - 1, y + 2, z + i);
 							if(bl == ModBlocks.brick_jungle || bl == ModBlocks.brick_jungle_cracked || bl == ModBlocks.brick_jungle_lava) {
-								world.setBlock(x + parent.width - 1, y + 2, z + i, ModBlocks.brick_jungle_trap, Trap.POISON_DART.ordinal(), 3);
+								world.setBlock(x + JungleDungeonRoomPoison.this.parent.width - 1, y + 2, z + i, ModBlocks.brick_jungle_trap, Trap.POISON_DART.ordinal(), 3);
 							}
 						}
 						
@@ -50,9 +51,9 @@ public class JungleDungeonRoomPoison extends JungleDungeonRoom {
 						}
 						
 						for(int i = 1; i < 4; i++) {
-							Block bl = world.getBlock(x + i, y + 2, z + parent.width - 1);
+							Block bl = world.getBlock(x + i, y + 2, z + JungleDungeonRoomPoison.this.parent.width - 1);
 							if(bl == ModBlocks.brick_jungle || bl == ModBlocks.brick_jungle_cracked || bl == ModBlocks.brick_jungle_lava) {
-								world.setBlock(x + i, y + 2, z + parent.width - 1, ModBlocks.brick_jungle_trap, Trap.POISON_DART.ordinal(), 3);
+								world.setBlock(x + i, y + 2, z + JungleDungeonRoomPoison.this.parent.width - 1, ModBlocks.brick_jungle_trap, Trap.POISON_DART.ordinal(), 3);
 							}
 						}
 					}

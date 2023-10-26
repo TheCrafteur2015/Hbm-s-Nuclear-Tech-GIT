@@ -29,12 +29,12 @@ public class ItemRTGPellet extends Item {
 	private ItemStack decayItem = null;
 	private long lifespan = 0;
 	
-	public static final List<ItemRTGPellet> pelletList = new ArrayList();
+	public static final List<ItemRTGPellet> pelletList = new ArrayList<>();
 	
 	public ItemRTGPellet(int heatIn) {
-		heat = (short) heatIn;
+		this.heat = (short) heatIn;
 		setMaxStackSize(1);
-		pelletList.add(this);
+		ItemRTGPellet.pelletList.add(this);
 	}
 	
 	private static final String[] facts = new String[] {
@@ -57,23 +57,23 @@ public class ItemRTGPellet extends Item {
 	};
 	
 	public ItemRTGPellet setDecays(DepletedRTGMaterial mat, long life) {
-		doesDecay = true;
-		decayItem = new ItemStack(ModItems.pellet_rtg_depleted, 1, mat.ordinal());
-		lifespan = life;
+		this.doesDecay = true;
+		this.decayItem = new ItemStack(ModItems.pellet_rtg_depleted, 1, mat.ordinal());
+		this.lifespan = life;
 		return this;
 	}
 	
 	public long getMaxLifespan() {
-		return lifespan;
+		return this.lifespan;
 	}
 
 	public short getHeat() {
-		return heat;
+		return this.heat;
 	}
 
 	@CheckForNull
 	public ItemStack getDecayItem() {
-		return decayItem == null ? null : decayItem.copy();
+		return this.decayItem == null ? null : this.decayItem.copy();
 	}
 
 	public boolean getDoesDecay() {
@@ -128,7 +128,7 @@ public class ItemRTGPellet extends Item {
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
 		
 		if(!world.isRemote && this == ModItems.pellet_rtg) {
-			player.addChatComponentMessage(new ChatComponentText(facts[world.rand.nextInt(facts.length)]).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+			player.addChatComponentMessage(new ChatComponentText(ItemRTGPellet.facts[world.rand.nextInt(ItemRTGPellet.facts.length)]).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
 			world.playSoundAtEntity(player, "random.orb", 1.0F, 1.0F);
 		}
 		
@@ -151,7 +151,7 @@ public class ItemRTGPellet extends Item {
 		super.addInformation(stack, player, list, bool);
 		list.add(I18nUtil.resolveKey(this.getUnlocalizedName().concat(".desc")));
 		final ItemRTGPellet instance = (ItemRTGPellet) stack.getItem();
-		list.add(I18nUtil.resolveKey("desc.item.rtgHeat", instance.getDoesDecay() && VersatileConfig.scaleRTGPower() ? getScaledPower(instance, stack) : instance.getHeat()));
+		list.add(I18nUtil.resolveKey("desc.item.rtgHeat", instance.getDoesDecay() && VersatileConfig.scaleRTGPower() ? ItemRTGPellet.getScaledPower(instance, stack) : instance.getHeat()));
 		if (instance.getDoesDecay()) {
 			list.add(I18nUtil.resolveKey("desc.item.rtgDecay", I18nUtil.resolveKey(instance.getDecayItem().getUnlocalizedName() + ".name"), instance.getDecayItem().stackSize));
 			list.add(BobMathUtil.toPercentage(instance.getLifespan(stack), instance.getMaxLifespan()));
@@ -171,9 +171,9 @@ public class ItemRTGPellet extends Item {
 	}
 	
 	public static HashMap<ItemStack, ItemStack> getRecipeMap() {
-		HashMap<ItemStack, ItemStack> map = new HashMap<ItemStack, ItemStack>();
+		HashMap<ItemStack, ItemStack> map = new HashMap<>();
 		
-		for(ItemRTGPellet pellet : pelletList) {
+		for(ItemRTGPellet pellet : ItemRTGPellet.pelletList) {
 			if(pellet.decayItem != null) {
 				map.put(new ItemStack(pellet), pellet.decayItem.copy());
 			}

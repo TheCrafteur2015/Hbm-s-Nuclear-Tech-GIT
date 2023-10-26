@@ -17,7 +17,8 @@ public class ParticleMukeCloudBF extends ParticleMukeCloud {
 		super(texman, world, x, y, z, mx, my, mz);
 	}
 	
+	@Override
 	protected ResourceLocation getTexture() {
-		return texture;
+		return ParticleMukeCloudBF.texture;
 	}
 }

@@ -14,7 +14,7 @@ public class ItemCapacitor extends Item {
 	
 
 	public ItemCapacitor(int dura) {
-		this.setMaxDamage(dura);
+		setMaxDamage(dura);
 	}
 
 	@Override

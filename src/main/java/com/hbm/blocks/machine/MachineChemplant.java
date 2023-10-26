@@ -35,7 +35,7 @@ public class MachineChemplant extends BlockDummyable {
 	
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-		return this.standardOpenBehavior(world, x, y, z, player, 0);
+		return standardOpenBehavior(world, x, y, z, player, 0);
 	}
 
 	@Override
@@ -47,9 +47,9 @@ public class MachineChemplant extends BlockDummyable {
 		
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 
-		this.makeExtra(world, x + rot.offsetX * 2,					y,	z + rot.offsetZ * 2);
-		this.makeExtra(world, x - rot.offsetX * 1,					y,	z - rot.offsetZ * 1);
-		this.makeExtra(world, x + rot.offsetX * 2 - dir.offsetX,	y,	z + rot.offsetZ * 2 - dir.offsetZ);
-		this.makeExtra(world, x - rot.offsetX * 1 - dir.offsetX,	y,	z - rot.offsetZ * 1 - dir.offsetZ);
+		makeExtra(world, x + rot.offsetX * 2,					y,	z + rot.offsetZ * 2);
+		makeExtra(world, x - rot.offsetX * 1,					y,	z - rot.offsetZ * 1);
+		makeExtra(world, x + rot.offsetX * 2 - dir.offsetX,	y,	z + rot.offsetZ * 2 - dir.offsetZ);
+		makeExtra(world, x - rot.offsetX * 1 - dir.offsetX,	y,	z - rot.offsetZ * 1 - dir.offsetZ);
 	}
 }

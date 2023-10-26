@@ -27,22 +27,22 @@ public class GenericFiniteFluid extends BlockFluidFinite {
 	public GenericFiniteFluid(Fluid fluid, Material material, String still, String flowing) {
 		super(fluid, material);
 		setCreativeTab(null);
-		stillName = still;
-		flowingName = flowing;
-		displacements.put(this, false);
+		this.stillName = still;
+		this.flowingName = flowing;
+		this.displacements.put(this, false);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
-		return (side == 0 || side == 1) ? stillIcon : flowingIcon;
+		return (side == 0 || side == 1) ? GenericFiniteFluid.stillIcon : GenericFiniteFluid.flowingIcon;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister register) {
-		stillIcon = register.registerIcon(RefStrings.MODID + ":" + stillName);
-		flowingIcon = register.registerIcon(RefStrings.MODID + ":" + flowingName);
+		GenericFiniteFluid.stillIcon = register.registerIcon(RefStrings.MODID + ":" + this.stillName);
+		GenericFiniteFluid.flowingIcon = register.registerIcon(RefStrings.MODID + ":" + this.flowingName);
 	}
 	
 	@Override

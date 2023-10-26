@@ -19,6 +19,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.potion.Potion;
@@ -67,7 +68,7 @@ public class WeaponSpecial extends ItemSword {
 		if(this == ModItems.bottle_opener) {
 			if (!world.isRemote)
         	{
-				int i = rand.nextInt(7);
+				int i = this.rand.nextInt(7);
 				if(i == 0)
 					entity.addPotionEffect(new PotionEffect(Potion.blindness.id, 5 * 60 * 20, 0));
 				if(i == 1)
@@ -222,13 +223,13 @@ public class WeaponSpecial extends ItemSword {
     {
         Multimap multimap = super.getItemAttributeModifiers();
 		if(this == ModItems.schrabidium_hammer) {
-			multimap.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Weapon modifier", -0.5, 1));
+			multimap.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new AttributeModifier(Item.field_111210_e, "Weapon modifier", -0.5, 1));
 		}
 		if(this == ModItems.shimmer_sledge || this == ModItems.shimmer_axe) {
-			multimap.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Weapon modifier", -0.2, 1));
+			multimap.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new AttributeModifier(Item.field_111210_e, "Weapon modifier", -0.2, 1));
 		}
 		if(this == ModItems.wrench || this == ModItems.wrench_flipped) {
-			multimap.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Weapon modifier", -0.1, 1));
+			multimap.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new AttributeModifier(Item.field_111210_e, "Weapon modifier", -0.1, 1));
 		}
         return multimap;
     }

@@ -64,10 +64,12 @@ public class RenderTurretSentry extends TileEntitySpecialRenderer implements IIt
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase() {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(0, -4, 0);
 				GL11.glScaled(7, 7, 7);
 			}
+			@Override
 			public void renderCommon() {
 				GL11.glRotated(90, 0, 1, 0);
 				bindTexture(ResourceManager.turret_sentry_tex);

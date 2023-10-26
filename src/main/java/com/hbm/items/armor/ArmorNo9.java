@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
@@ -36,7 +37,7 @@ public class ArmorNo9 extends ArmorModel implements IAttackHandler, IDamageHandl
 
 	public ArmorNo9(ArmorMaterial armorMaterial, int armorType) {
 		super(armorMaterial, armorType);
-		this.setMaxDamage(0);
+		setMaxDamage(0);
 	}
 
 	@Override
@@ -72,11 +73,11 @@ public class ArmorNo9 extends ArmorModel implements IAttackHandler, IDamageHandl
 	@SideOnly(Side.CLIENT)
 	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot) {
 		
-		if(model == null) {
-			model = new ModelNo9(0);
+		if(this.model == null) {
+			this.model = new ModelNo9(0);
 		}
 		
-		return model;
+		return this.model;
 	}
 
 	@Override
@@ -110,16 +111,16 @@ public class ArmorNo9 extends ArmorModel implements IAttackHandler, IDamageHandl
 			int y = (int) Math.floor(player.posY + player.eyeHeight);
 			int z = (int) Math.floor(player.posZ);*/
 			
-			checkLights(world, false);
+			ArmorNo9.checkLights(world, false);
 			float range = 50F;
 			MovingObjectPosition mop = Library.rayTrace(player, range, 0F, false, true, false);
 			
-			if(mop != null && mop.typeOfHit == mop.typeOfHit.BLOCK) {
+			if(mop != null && mop.typeOfHit == MovingObjectType.BLOCK) {
 				Vec3 look = Vec3.createVectorHelper(player.posX - mop.hitVec.xCoord, player.posY + player.getEyeHeight() - mop.hitVec.yCoord, player.posZ - mop.hitVec.zCoord);
 				ForgeDirection dir = ForgeDirection.getOrientation(mop.sideHit);
 				int level = Math.min(15, (int) (25 - (look.lengthVector() * 25 / range)));
-				lightUpRecursively(world, mop.blockX + dir.offsetX, mop.blockY + dir.offsetY, mop.blockZ + dir.offsetZ, level);
-				breadcrumb.clear();
+				ArmorNo9.lightUpRecursively(world, mop.blockX + dir.offsetX, mop.blockY + dir.offsetY, mop.blockZ + dir.offsetZ, level);
+				ArmorNo9.breadcrumb.clear();
 			}
 		}
 	}
@@ -128,8 +129,8 @@ public class ArmorNo9 extends ArmorModel implements IAttackHandler, IDamageHandl
 	public static void lightUpRecursively(World world, int x, int y, int z, int light) {
 		if(light <= 0) return;
 		BlockPos pos = new BlockPos(x, y, z);
-		if(breadcrumb.contains(pos)) return;
-		breadcrumb.add(pos);
+		if(ArmorNo9.breadcrumb.contains(pos)) return;
+		ArmorNo9.breadcrumb.add(pos);
 		
 		int existingLight = world.getSavedLightValue(EnumSkyBlock.Block, x, y, z);
 		int occupancy = world.getBlockLightOpacity(x, y, z);
@@ -138,21 +139,21 @@ public class ArmorNo9 extends ArmorModel implements IAttackHandler, IDamageHandl
 		
 		int newLight = Math.min(15, Math.max(existingLight, light));
 		world.setLightValue(EnumSkyBlock.Block, x, y, z, newLight);
-		lightCheck.put(new Pair(world, pos), world.getTotalWorldTime() + 5);
+		ArmorNo9.lightCheck.put(new Pair(world, pos), world.getTotalWorldTime() + 5);
 
-		lightUpRecursively(world, x + 1, y, z, light - 1);
-		lightUpRecursively(world, x - 1, y, z, light - 1);
-		lightUpRecursively(world, x, y + 1, z, light - 1);
-		lightUpRecursively(world, x, y - 1, z, light - 1);
-		lightUpRecursively(world, x, y, z + 1, light - 1);
-		lightUpRecursively(world, x, y, z - 1, light - 1);
+		ArmorNo9.lightUpRecursively(world, x + 1, y, z, light - 1);
+		ArmorNo9.lightUpRecursively(world, x - 1, y, z, light - 1);
+		ArmorNo9.lightUpRecursively(world, x, y + 1, z, light - 1);
+		ArmorNo9.lightUpRecursively(world, x, y - 1, z, light - 1);
+		ArmorNo9.lightUpRecursively(world, x, y, z + 1, light - 1);
+		ArmorNo9.lightUpRecursively(world, x, y, z - 1, light - 1);
 	}
 	
 	public static HashMap<World, Long> lastChecks = new HashMap();
 	public static HashMap<Pair<World, BlockPos>, Long> lightCheck = new HashMap();
 	
 	public static void checkLights(World world, boolean force) {
-		Iterator it = lightCheck.entrySet().iterator();
+		Iterator it = ArmorNo9.lightCheck.entrySet().iterator();
 		
 		while(it.hasNext()) {
 			Entry<Pair<World, BlockPos>, Long> entry = (Entry<Pair<World, BlockPos>, Long>) it.next();
@@ -164,15 +165,15 @@ public class ArmorNo9 extends ArmorModel implements IAttackHandler, IDamageHandl
 			}
 		}
 		
-		lastChecks.put(world, world.getTotalWorldTime());
+		ArmorNo9.lastChecks.put(world, world.getTotalWorldTime());
 	}
 	
 	public static void updateWorldHook(World world) {
 		if(world == null || !world.isRemote) return;
-		Long last = lastChecks.get(world);
+		Long last = ArmorNo9.lastChecks.get(world);
 		
 		if(last != null && last < world.getTotalWorldTime() + 15) {
-			checkLights(world, false);
+			ArmorNo9.checkLights(world, false);
 		}
 	}
 	

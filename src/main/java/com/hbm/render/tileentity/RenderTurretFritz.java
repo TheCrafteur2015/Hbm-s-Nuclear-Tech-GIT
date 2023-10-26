@@ -22,7 +22,7 @@ public class RenderTurretFritz extends RenderTurretBase {
 		GL11.glEnable(GL11.GL_CULL_FACE);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		
-		this.renderConnectors(turret, true, true, turret.tank.getTankType());
+		renderConnectors(turret, true, true, turret.tank.getTankType());
 
 		bindTexture(ResourceManager.turret_base_tex);
 		ResourceManager.turret_chekhov.renderPart("Base");

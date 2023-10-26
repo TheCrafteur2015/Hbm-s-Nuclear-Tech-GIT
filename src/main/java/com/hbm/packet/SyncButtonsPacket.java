@@ -18,20 +18,20 @@ public class SyncButtonsPacket implements IMessage {
 	public SyncButtonsPacket() { }
 
 	public SyncButtonsPacket(boolean s, int b) {
-		state = s;
-		button = b;
+		this.state = s;
+		this.button = b;
 	}
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		state = buf.readBoolean();
-		button = buf.readInt();
+		this.state = buf.readBoolean();
+		this.button = buf.readInt();
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeBoolean(state);
-		buf.writeInt(button);
+		buf.writeBoolean(this.state);
+		buf.writeInt(this.button);
 	}
 
 	public static class Handler implements IMessageHandler<SyncButtonsPacket, IMessage> {

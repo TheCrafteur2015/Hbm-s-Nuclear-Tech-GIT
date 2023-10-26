@@ -15,26 +15,26 @@ import net.minecraft.world.World;
 public class RTTYSystem {
 
 	/** Public frequency band for reading purposes, delayed by one tick */
-	public static HashMap<Pair<World, String>, RTTYChannel> broadcast = new HashMap();
+	public static HashMap<Pair<World, String>, RTTYChannel> broadcast = new HashMap<>();
 	/** New message queue for writing, gets written into readable Map later on */
-	public static HashMap<Pair<World, String>, Object> newMessages = new HashMap();
+	public static HashMap<Pair<World, String>, Object> newMessages = new HashMap<>();
 	
 	/** Pushes a new signal to be used next tick. Only the last signal pushed will be used. */
 	public static void broadcast(World world, String channelName, Object signal) {
-		Pair identifier = new Pair(world, channelName);
-		newMessages.put(identifier, signal);
+		Pair<World, String> identifier = new Pair<>(world, channelName);
+		RTTYSystem.newMessages.put(identifier, signal);
 	}
 	
 	/** Returns the RTTY channel with that name, or null */
 	public static RTTYChannel listen(World world, String channelName) {
-		RTTYChannel channel = broadcast.get(new Pair(world, channelName));
+		RTTYChannel channel = RTTYSystem.broadcast.get(new Pair<>(world, channelName));
 		return channel;
 	}
 	
 	/** Moves all new messages to the broadcast map, adding the appropriate timestamp and clearing the new message queue */
 	public static void updateBroadcastQueue() {
 		
-		for(Entry<Pair<World, String>, Object> worldEntry : newMessages.entrySet()) {
+		for(Entry<Pair<World, String>, Object> worldEntry : RTTYSystem.newMessages.entrySet()) {
 			Pair<World, String> identifier = worldEntry.getKey();
 			Object lastSignal = worldEntry.getValue();
 			
@@ -42,19 +42,19 @@ public class RTTYSystem {
 			channel.timeStamp = identifier.getKey().getTotalWorldTime();
 			channel.signal = lastSignal;
 			
-			broadcast.put(identifier, channel);
+			RTTYSystem.broadcast.put(identifier, channel);
 		}
 		
-		HashMap<Pair<World, String>, RTTYChannel> toAdd = new HashMap();
+		HashMap<Pair<World, String>, RTTYChannel> toAdd = new HashMap<>();
 		for(World world : MinecraftServer.getServer().worldServers) {
 			RTTYChannel chan = new RTTYChannel();
 			chan.timeStamp = world.getTotalWorldTime();
-			chan.signal = getTestSender(chan.timeStamp);
-			toAdd.put(new Pair(world, "2012-08-06"), chan);
+			chan.signal = RTTYSystem.getTestSender(chan.timeStamp);
+			toAdd.put(new Pair<>(world, "2012-08-06"), chan);
 		}
 		
-		broadcast.putAll(toAdd);
-		newMessages.clear();
+		RTTYSystem.broadcast.putAll(toAdd);
+		RTTYSystem.newMessages.clear();
 	}
 	
 	public static class RTTYChannel {
@@ -79,8 +79,7 @@ public class RTTYSystem {
 		Instrument accordion = Instrument.BASSGUITAR;
 
 		if(time == tempo * 0) return NoteBuilder.start().add(accordion, Note.C, Octave.LOW).end();
-		if(time == tempo * 2) return NoteBuilder.start().add(accordion, Note.D, Octave.LOW).add(accordion, Note.F, Octave.LOW).add(accordion, Note.A, Octave.LOW).end();
-		if(time == tempo * 4) return NoteBuilder.start().add(accordion, Note.D, Octave.LOW).add(accordion, Note.F, Octave.LOW).add(accordion, Note.A, Octave.LOW).end();
+		if((time == tempo * 2) || (time == tempo * 4)) return NoteBuilder.start().add(accordion, Note.D, Octave.LOW).add(accordion, Note.F, Octave.LOW).add(accordion, Note.A, Octave.LOW).end();
 		
 		if(time == tempo * 6) return NoteBuilder.start().add(accordion, Note.C, Octave.LOW).end();
 		if(time == tempo * 8) return NoteBuilder.start().add(accordion, Note.E, Octave.LOW).add(accordion, Note.G, Octave.LOW).add(accordion, Note.B, Octave.LOW).end();

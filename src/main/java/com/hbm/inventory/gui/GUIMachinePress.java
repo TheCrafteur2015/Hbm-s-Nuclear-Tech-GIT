@@ -19,7 +19,7 @@ public class GUIMachinePress extends GuiInfoContainer {
 	
 	public GUIMachinePress(InventoryPlayer invPlayer, TileEntityMachinePress tedf) {
 		super(new ContainerMachinePress(invPlayer, tedf));
-		press = tedf;
+		this.press = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 166;
@@ -29,8 +29,8 @@ public class GUIMachinePress extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 25, guiTop + 16, 18, 18, mouseX, mouseY, (press.speed * 100 / press.maxSpeed) + "%");
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 25, guiTop + 34, 18, 18, mouseX, mouseY, (press.burnTime / 200) + " operations left");
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 25, this.guiTop + 16, 18, 18, mouseX, mouseY, (this.press.speed * 100 / TileEntityMachinePress.maxSpeed) + "%");
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 25, this.guiTop + 34, 18, 18, mouseX, mouseY, (this.press.burnTime / 200) + " operations left");
 	}
 
 	@Override
@@ -44,17 +44,17 @@ public class GUIMachinePress extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIMachinePress.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		if(press.burnTime >= 20) {
-			this.drawTexturedModalRect(guiLeft + 27, guiTop + 36, 176, 0, 14, 14);
+		if(this.press.burnTime >= 20) {
+			drawTexturedModalRect(this.guiLeft + 27, this.guiTop + 36, 176, 0, 14, 14);
 		}
 		
-		int k = (int) (press.renderPress * 16 / press.maxPress);
-		this.drawTexturedModalRect(guiLeft + 79, guiTop + 35, 194, 0, 18, k);
+		int k = (int) (this.press.renderPress * 16 / TileEntityMachinePress.maxPress);
+		drawTexturedModalRect(this.guiLeft + 79, this.guiTop + 35, 194, 0, 18, k);
 		
-		double i = (double) press.speed / (double) press.maxSpeed;
-		GaugeUtil.drawSmoothGauge(guiLeft + 34, guiTop + 25, this.zLevel, i, 5, 2, 1, 0x7f0000);
+		double i = (double) this.press.speed / (double) TileEntityMachinePress.maxSpeed;
+		GaugeUtil.drawSmoothGauge(this.guiLeft + 34, this.guiTop + 25, this.zLevel, i, 5, 2, 1, 0x7f0000);
 	}
 }

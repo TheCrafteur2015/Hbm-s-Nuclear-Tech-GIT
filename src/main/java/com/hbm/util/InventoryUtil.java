@@ -25,12 +25,12 @@ public class InventoryUtil {
 	 */
 	public static ItemStack tryAddItemToInventory(ItemStack[] inv, int start, int end, ItemStack stack) {
 		
-		ItemStack rem = tryAddItemToExistingStack(inv, start, end, stack);
+		ItemStack rem = InventoryUtil.tryAddItemToExistingStack(inv, start, end, stack);
 		
 		if(rem == null)
 			return null;
 		
-		boolean didAdd = tryAddItemToNewSlot(inv, start, end, rem);
+		boolean didAdd = InventoryUtil.tryAddItemToNewSlot(inv, start, end, rem);
 		
 		if(didAdd)
 			return null;
@@ -39,7 +39,7 @@ public class InventoryUtil {
 	}
 	
 	public static ItemStack tryAddItemToInventory(ItemStack[] inv, ItemStack stack) {
-		return tryAddItemToInventory(inv, 0, inv.length - 1, stack);
+		return InventoryUtil.tryAddItemToInventory(inv, 0, inv.length - 1, stack);
 	}
 	
 	/**
@@ -57,7 +57,7 @@ public class InventoryUtil {
 		
 		for(int i = start; i <= end; i++) {
 
-			if(doesStackDataMatch(inv[i], stack)) {
+			if(InventoryUtil.doesStackDataMatch(inv[i], stack)) {
 				
 				int transfer = Math.min(stack.stackSize, inv[i].getMaxStackSize() - inv[i].stackSize);
 				
@@ -108,12 +108,12 @@ public class InventoryUtil {
 	 */
 	public static ItemStack tryAddItemToInventory(IInventory inv, int start, int end, ItemStack stack) {
 		
-		ItemStack rem = tryAddItemToExistingStack(inv, start, end, stack);
+		ItemStack rem = InventoryUtil.tryAddItemToExistingStack(inv, start, end, stack);
 		
 		if(rem == null)
 			return null;
 		
-		boolean didAdd = tryAddItemToNewSlot(inv, start, end, rem);
+		boolean didAdd = InventoryUtil.tryAddItemToNewSlot(inv, start, end, rem);
 		
 		if(didAdd)
 			return null;
@@ -128,7 +128,7 @@ public class InventoryUtil {
 		
 		for(int i = start; i <= end; i++) {
 
-			if(doesStackDataMatch(inv.getStackInSlot(i), stack)) {
+			if(InventoryUtil.doesStackDataMatch(inv.getStackInSlot(i), stack)) {
 				
 				int transfer = Math.min(stack.stackSize, inv.getStackInSlot(i).getMaxStackSize() - inv.getStackInSlot(i).stackSize);
 				
@@ -196,8 +196,7 @@ public class InventoryUtil {
 	public static boolean doesStackDataMatch(ItemStack stack1, ItemStack stack2) {
 		
 		if(stack1 == null && stack2 == null) return true;
-		if(stack1 == null && stack2 != null) return false;
-		if(stack1 != null && stack2 == null) return false;
+		if((stack1 == null && stack2 != null) || (stack1 != null && stack2 == null)) return false;
 		if(stack1.getItem() != stack2.getItem()) return false;
 		if(stack1.getItemDamage() != stack2.getItemDamage()) return false;
 		if(!stack1.hasTagCompound() && !stack2.hasTagCompound()) return true;
@@ -296,16 +295,14 @@ public class InventoryUtil {
 	}
 	
 	public static boolean hasOreDictMatches(EntityPlayer player, String dict, int count) {
-		return countOreDictMatches(player, dict) >= count;
+		return InventoryUtil.countOreDictMatches(player, dict) >= count;
 	}
 	
 	public static int countOreDictMatches(EntityPlayer player, String dict) {
 		
 		int count = 0;
 		
-		for(int i = 0; i < player.inventory.mainInventory.length; i++) {
-			
-			ItemStack stack = player.inventory.mainInventory[i];
+		for (ItemStack stack : player.inventory.mainInventory) {
 			
 			if(stack != null) {
 				
@@ -466,7 +463,7 @@ public class InventoryUtil {
 			if(item == null)
 				continue;
 			
-			ItemStack remainder = tryAddItemToInventory(copy, item.copy());
+			ItemStack remainder = InventoryUtil.tryAddItemToInventory(copy, item.copy());
 			if(remainder != null) {
 				return false;
 			}
@@ -580,11 +577,11 @@ public class InventoryUtil {
 	}
 
 	public static int countAStackMatches(EntityPlayer player, AStack stack, boolean ignoreSize) {
-		return countAStackMatches(player.inventory.mainInventory, stack, ignoreSize);
+		return InventoryUtil.countAStackMatches(player.inventory.mainInventory, stack, ignoreSize);
 	}
 
 	public static boolean doesPlayerHaveAStack(EntityPlayer player, AStack stack, boolean shouldRemove, boolean ignoreSize) {
-		return doesInventoryHaveAStack(player.inventory.mainInventory, stack, shouldRemove, ignoreSize);
+		return InventoryUtil.doesInventoryHaveAStack(player.inventory.mainInventory, stack, shouldRemove, ignoreSize);
 	}
 
 	public static boolean doesInventoryHaveAStack(ItemStack[] inventory, AStack stack, boolean shouldRemove, boolean ignoreSize) {

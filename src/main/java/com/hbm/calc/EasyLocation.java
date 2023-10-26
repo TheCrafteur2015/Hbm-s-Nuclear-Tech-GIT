@@ -7,8 +7,8 @@ public class EasyLocation {
 	public double posZ;
 	
 	public EasyLocation(double x, double y, double z) {
-		posX = x;
-		posY = y;
-		posZ = z;
+		this.posX = x;
+		this.posY = y;
+		this.posZ = z;
 	}
 }

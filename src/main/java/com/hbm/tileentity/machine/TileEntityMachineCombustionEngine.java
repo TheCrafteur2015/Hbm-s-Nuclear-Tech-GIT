@@ -64,67 +64,67 @@ public class TileEntityMachineCombustionEngine extends TileEntityMachinePollutin
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 
-			this.tank.loadTank(0, 1, slots);
-			if(this.tank.setType(4, slots)) {
+			this.tank.loadTank(0, 1, this.slots);
+			if(this.tank.setType(4, this.slots)) {
 				this.tenth = 0;
 			}
 			
-			wasOn = false;
+			this.wasOn = false;
 
-			int fill = tank.getFill() * 10 + tenth;
-			if(isOn && setting > 0 && slots[2] != null && slots[2].getItem() == ModItems.piston_set && fill > 0 && tank.getTankType().hasTrait(FT_Combustible.class)) {
-				EnumPistonType piston = EnumUtil.grabEnumSafely(EnumPistonType.class, slots[2].getItemDamage());
-				FT_Combustible trait = tank.getTankType().getTrait(FT_Combustible.class);
+			int fill = this.tank.getFill() * 10 + this.tenth;
+			if(this.isOn && this.setting > 0 && this.slots[2] != null && this.slots[2].getItem() == ModItems.piston_set && fill > 0 && this.tank.getTankType().hasTrait(FT_Combustible.class)) {
+				EnumPistonType piston = EnumUtil.grabEnumSafely(EnumPistonType.class, this.slots[2].getItemDamage());
+				FT_Combustible trait = this.tank.getTankType().getTrait(FT_Combustible.class);
 				
 				double eff = piston.eff[trait.getGrade().ordinal()];
 				
 				if(eff > 0) {
-					int speed = setting * 2;
+					int speed = this.setting * 2;
 					
 					int toBurn = Math.min(fill, speed);
 					this.power += toBurn * (trait.getCombustionEnergy() / 10_000D) * eff;
 					fill -= toBurn;
 					
-					if(worldObj.getTotalWorldTime() % 20 == 0) {
-						this.pollute(PollutionType.SOOT, PollutionHandler.SOOT_PER_SECOND * setting * 0.1F);
-						if(tank.getTankType().hasTrait(FT_Leaded.class)) this.pollute(PollutionType.HEAVYMETAL, PollutionHandler.HEAVY_METAL_PER_SECOND * setting * 0.1F);
+					if(this.worldObj.getTotalWorldTime() % 20 == 0) {
+						pollute(PollutionType.SOOT, PollutionHandler.SOOT_PER_SECOND * this.setting * 0.1F);
+						if(this.tank.getTankType().hasTrait(FT_Leaded.class)) pollute(PollutionType.HEAVYMETAL, PollutionHandler.HEAVY_METAL_PER_SECOND * this.setting * 0.1F);
 					}
 					
 					if(toBurn > 0) {
-						wasOn = true;
+						this.wasOn = true;
 					}
 					
-					tank.setFill(fill / 10);
-					tenth = fill % 10;
+					this.tank.setFill(fill / 10);
+					this.tenth = fill % 10;
 				}
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setLong("power", Math.min(power, maxPower));
+			data.setLong("power", Math.min(this.power, TileEntityMachineCombustionEngine.maxPower));
 			
-			this.power = Library.chargeItemsFromTE(slots, 3, power, power);
+			this.power = Library.chargeItemsFromTE(this.slots, 3, this.power, this.power);
 			
 			for(DirPos pos : getConPos()) {
-				this.sendPower(worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
-				this.trySubscribe(tank.getTankType(), worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
-				this.sendSmoke(pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+				sendPower(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+				this.trySubscribe(this.tank.getTankType(), this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+				sendSmoke(pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 			}
 			
-			if(power > maxPower)
-				power = maxPower;
+			if(this.power > TileEntityMachineCombustionEngine.maxPower)
+				this.power = TileEntityMachineCombustionEngine.maxPower;
 			
-			data.setInteger("playersUsing", playersUsing);
-			data.setInteger("setting", setting);
-			data.setBoolean("isOn", isOn);
-			data.setBoolean("wasOn", wasOn);
-			tank.writeToNBT(data, "tank");
-			this.networkPack(data, 50);
+			data.setInteger("playersUsing", this.playersUsing);
+			data.setInteger("setting", this.setting);
+			data.setBoolean("isOn", this.isOn);
+			data.setBoolean("wasOn", this.wasOn);
+			this.tank.writeToNBT(data, "tank");
+			networkPack(data, 50);
 			
 		} else {
 			this.prevDoorAngle = this.doorAngle;
-			float swingSpeed = (doorAngle / 10F) + 3;
+			float swingSpeed = (this.doorAngle / 10F) + 3;
 			
 			if(this.playersUsing > 0) {
 				this.doorAngle += swingSpeed;
@@ -134,49 +134,50 @@ public class TileEntityMachineCombustionEngine extends TileEntityMachinePollutin
 			
 			this.doorAngle = MathHelper.clamp_float(this.doorAngle, 0F, 135F);
 
-			if(wasOn) {
+			if(this.wasOn) {
 				
-				if(audio == null) {
-					audio = createAudioLoop();
-					audio.startSound();
-				} else if(!audio.isPlaying()) {
-					audio = rebootAudio(audio);
+				if(this.audio == null) {
+					this.audio = createAudioLoop();
+					this.audio.startSound();
+				} else if(!this.audio.isPlaying()) {
+					this.audio = rebootAudio(this.audio);
 				}
 				
-				audio.keepAlive();
+				this.audio.keepAlive();
 				
 			} else {
 				
-				if(audio != null) {
-					audio.stopSound();
-					audio = null;
+				if(this.audio != null) {
+					this.audio.stopSound();
+					this.audio = null;
 				}
 			}
 		}
 	}
 	
 	private DirPos[] getConPos() {
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 		
 		return new DirPos[] {
-				new DirPos(xCoord + dir.offsetX * 1 + rot.offsetX, yCoord, zCoord + dir.offsetZ * 1 + rot.offsetZ, dir),
-				new DirPos(xCoord + dir.offsetX * 1 - rot.offsetX, yCoord, zCoord + dir.offsetZ * 1 - rot.offsetZ, dir),
-				new DirPos(xCoord - dir.offsetX * 2 + rot.offsetX, yCoord, zCoord - dir.offsetZ * 2 + rot.offsetZ, dir.getOpposite()),
-				new DirPos(xCoord - dir.offsetX * 2 - rot.offsetX, yCoord, zCoord - dir.offsetZ * 2 - rot.offsetZ, dir.getOpposite())
+				new DirPos(this.xCoord + dir.offsetX * 1 + rot.offsetX, this.yCoord, this.zCoord + dir.offsetZ * 1 + rot.offsetZ, dir),
+				new DirPos(this.xCoord + dir.offsetX * 1 - rot.offsetX, this.yCoord, this.zCoord + dir.offsetZ * 1 - rot.offsetZ, dir),
+				new DirPos(this.xCoord - dir.offsetX * 2 + rot.offsetX, this.yCoord, this.zCoord - dir.offsetZ * 2 + rot.offsetZ, dir.getOpposite()),
+				new DirPos(this.xCoord - dir.offsetX * 2 - rot.offsetX, this.yCoord, this.zCoord - dir.offsetZ * 2 - rot.offsetZ, dir.getOpposite())
 		};
 	}
 	
+	@Override
 	public AudioWrapper createAudioLoop() {
-		return MainRegistry.proxy.getLoopedSound("hbm:block.igeneratorOperate", xCoord, yCoord, zCoord, 1.0F, 10F, 1.0F, 20);
+		return MainRegistry.proxy.getLoopedSound("hbm:block.igeneratorOperate", this.xCoord, this.yCoord, this.zCoord, 1.0F, 10F, 1.0F, 20);
 	}
 
 	@Override
 	public void onChunkUnload() {
 
-		if(audio != null) {
-			audio.stopSound();
-			audio = null;
+		if(this.audio != null) {
+			this.audio.stopSound();
+			this.audio = null;
 		}
 	}
 
@@ -185,9 +186,9 @@ public class TileEntityMachineCombustionEngine extends TileEntityMachinePollutin
 
 		super.invalidate();
 
-		if(audio != null) {
-			audio.stopSound();
-			audio = null;
+		if(this.audio != null) {
+			this.audio.stopSound();
+			this.audio = null;
 		}
 	}
 
@@ -224,21 +225,21 @@ public class TileEntityMachineCombustionEngine extends TileEntityMachinePollutin
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setInteger("setting", setting);
-		nbt.setLong("power", power);
-		nbt.setBoolean("isOn", isOn);
-		tank.writeToNBT(nbt, "tank");
-		nbt.setInteger("tenth", tenth);
+		nbt.setInteger("setting", this.setting);
+		nbt.setLong("power", this.power);
+		nbt.setBoolean("isOn", this.isOn);
+		this.tank.writeToNBT(nbt, "tank");
+		nbt.setInteger("tenth", this.tenth);
 	}
 	
 	@Override
 	public void openInventory() {
-		if(!worldObj.isRemote) this.playersUsing++;
+		if(!this.worldObj.isRemote) this.playersUsing++;
 	}
 	
 	@Override
 	public void closeInventory() {
-		if(!worldObj.isRemote) this.playersUsing--;
+		if(!this.worldObj.isRemote) this.playersUsing--;
 	}
 
 	@Override
@@ -248,12 +249,12 @@ public class TileEntityMachineCombustionEngine extends TileEntityMachinePollutin
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 
 	@Override
 	public long getMaxPower() {
-		return maxPower;
+		return TileEntityMachineCombustionEngine.maxPower;
 	}
 
 	@Override
@@ -269,17 +270,17 @@ public class TileEntityMachineCombustionEngine extends TileEntityMachinePollutin
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return new FluidTank[] {tank};
+		return new FluidTank[] {this.tank};
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] {tank};
+		return new FluidTank[] {this.tank};
 	}
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return this.getSmokeTanks();
+		return getSmokeTanks();
 	}
 	
 	AxisAlignedBB bb = null;
@@ -287,18 +288,18 @@ public class TileEntityMachineCombustionEngine extends TileEntityMachinePollutin
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 3,
-					yCoord,
-					zCoord - 3,
-					xCoord + 4,
-					yCoord + 2,
-					zCoord + 4
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 3,
+					this.yCoord,
+					this.zCoord - 3,
+					this.xCoord + 4,
+					this.yCoord + 2,
+					this.zCoord + 4
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override
@@ -309,7 +310,7 @@ public class TileEntityMachineCombustionEngine extends TileEntityMachinePollutin
 
 	@Override
 	public boolean hasPermission(EntityPlayer player) {
-		return player.getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 25;
+		return player.getDistance(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5) < 25;
 	}
 
 	@Override
@@ -317,6 +318,6 @@ public class TileEntityMachineCombustionEngine extends TileEntityMachinePollutin
 		if(data.hasKey("turnOn")) this.isOn = !this.isOn;
 		if(data.hasKey("setting")) this.setting = data.getInteger("setting");
 		
-		this.markChanged();
+		markChanged();
 	}
 }

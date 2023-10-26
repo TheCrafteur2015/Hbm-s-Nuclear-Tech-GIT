@@ -10,21 +10,21 @@ public class WeightedRandomObject extends WeightedRandom.Item {
 
 	public WeightedRandomObject(Object o, int weight) {
 		super(weight);
-		item = o;
+		this.item = o;
 	}
 	
 	public ItemStack asStack() {
 		
-		if(item instanceof ItemStack)
-			return ((ItemStack) item).copy();
+		if(this.item instanceof ItemStack)
+			return ((ItemStack) this.item).copy();
 		
 		return null;
 	}
 	
 	public Item asItem() {
 		
-		if(item instanceof Item)
-			return (Item) item;
+		if(this.item instanceof Item)
+			return (Item) this.item;
 		
 		return null;
 	}

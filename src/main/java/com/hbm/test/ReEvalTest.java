@@ -15,7 +15,7 @@ public class ReEvalTest {
 	 */
 	public static void runTest() throws OutOfMemoryError {
 		
-		HashMap<Integer, int[]> collisions = new HashMap();
+		HashMap<Integer, int[]> collisions = new HashMap<>();
 		
 		int minX = -130;
 		int maxX = 140;

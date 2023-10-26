@@ -131,15 +131,15 @@ public class RenderRBMKConsole extends TileEntitySpecialRenderer {
 	}
 	
 	private void drawFuel(Tessellator tess, double x, double y, double z, double enrichment) {
-		this.drawDot(tess, x, y, z, 0F, 0.25F + (float) (enrichment * 0.75D), 0F);
+		drawDot(tess, x, y, z, 0F, 0.25F + (float) (enrichment * 0.75D), 0F);
 	}
 	
 	private void drawControl(Tessellator tess, double x, double y, double z, double level) {
-		this.drawDot(tess, x, y, z, (float) level, (float) level, 0F);
+		drawDot(tess, x, y, z, (float) level, (float) level, 0F);
 	}
 	
 	private void drawControlAuto(Tessellator tess, double x, double y, double z, double level) {
-		this.drawDot(tess, x, y, z, (float) level, 0F, (float) level);
+		drawDot(tess, x, y, z, (float) level, 0F, (float) level);
 	}
 	
 	private void drawDot(Tessellator tess, double x, double y, double z, float r, float g, float b) {

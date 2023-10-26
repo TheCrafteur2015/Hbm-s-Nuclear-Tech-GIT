@@ -55,7 +55,7 @@ public class BlockCableGauge extends BlockContainer implements IBlockMultiPass, 
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
 		
 		if(RenderBlockMultipass.currentPass == 0) {
-			return blockIcon;
+			return this.blockIcon;
 		}
 		
 		return side == world.getBlockMetadata(x, y, z) ? this.overlayGauge : this.blockIcon;
@@ -74,7 +74,7 @@ public class BlockCableGauge extends BlockContainer implements IBlockMultiPass, 
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		this.addStandardInfo(stack, player, list, ext);
+		addStandardInfo(stack, player, list, ext);
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class BlockCableGauge extends BlockContainer implements IBlockMultiPass, 
 		
 		TileEntityCableGauge duct = (TileEntityCableGauge) te;
 		
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		text.add(BobMathUtil.getShortNumber(duct.deltaTick) + "HE/t");
 		text.add(BobMathUtil.getShortNumber(duct.deltaLastSecond) + "HE/s");
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
@@ -109,27 +109,27 @@ public class BlockCableGauge extends BlockContainer implements IBlockMultiPass, 
 		public void updateEntity() {
 			super.updateEntity();
 
-			if(!worldObj.isRemote) {
+			if(!this.worldObj.isRemote) {
 				
-				if(network != null) {
-					BigInteger total = network.getTotalTransfer();
+				if(this.network != null) {
+					BigInteger total = this.network.getTotalTransfer();
 					BigInteger delta = total.subtract(this.lastMeasurement);
 					this.lastMeasurement = total;
 					
 					try {
 						this.deltaTick = delta.longValueExact();
-						if(worldObj.getTotalWorldTime() % 20 == 0) {
+						if(this.worldObj.getTotalWorldTime() % 20 == 0) {
 							this.deltaLastSecond = this.deltaSecond;
 							this.deltaSecond = 0;
 						}
-						this.deltaSecond += deltaTick;
+						this.deltaSecond += this.deltaTick;
 						
 					} catch(Exception ex) { }
 				}
 				
 				NBTTagCompound data = new NBTTagCompound();
-				data.setLong("deltaT", deltaTick);
-				data.setLong("deltaS", deltaLastSecond);
+				data.setLong("deltaT", this.deltaTick);
+				data.setLong("deltaS", this.deltaLastSecond);
 				INBTPacketReceiver.networkPack(this, data, 25);
 			}
 		}

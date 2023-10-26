@@ -20,56 +20,57 @@ public class ModelSRocket extends ModelBase {
 	ModelRenderer Shape6;
 
 	public ModelSRocket() {
-		textureWidth = 64;
-		textureHeight = 16;
+		this.textureWidth = 64;
+		this.textureHeight = 16;
 
-		Shape1 = new ModelRenderer(this, 0, 0);
-		Shape1.addBox(0F, 0F, 0F, 24, 2, 2);
-		Shape1.setRotationPoint(-12F, -1F, -1F);
-		Shape1.setTextureSize(64, 16);
-		Shape1.mirror = true;
-		setRotation(Shape1, 0F, 0F, 0F);
-		Shape2 = new ModelRenderer(this, 0, 4);
-		Shape2.addBox(0F, 0F, 0F, 1, 6, 0);
-		Shape2.setRotationPoint(7F, -3F, 0F);
-		Shape2.setTextureSize(64, 16);
-		Shape2.mirror = true;
-		setRotation(Shape2, 0F, 0F, 0F);
-		Shape3 = new ModelRenderer(this, 2, 4);
-		Shape3.addBox(0F, 0F, 0F, 1, 0, 6);
-		Shape3.setRotationPoint(7F, 0F, -3F);
-		Shape3.setTextureSize(64, 16);
-		Shape3.mirror = true;
-		setRotation(Shape3, 0F, 0F, 0F);
-		Shape4 = new ModelRenderer(this, 16, 4);
-		Shape4.addBox(0F, 0F, 0F, 1, 4, 0);
-		Shape4.setRotationPoint(-10F, -2F, 0F);
-		Shape4.setTextureSize(64, 16);
-		Shape4.mirror = true;
-		setRotation(Shape4, 0F, 0F, 0F);
-		Shape5 = new ModelRenderer(this, 0, 10);
-		Shape5.addBox(0F, 0F, 0F, 1, 0, 4);
-		Shape5.setRotationPoint(-10F, 0F, -2F);
-		Shape5.setTextureSize(64, 16);
-		Shape5.mirror = true;
-		setRotation(Shape5, 0F, 0F, 0F);
-		Shape6 = new ModelRenderer(this, 18, 4);
-		Shape6.addBox(0F, 0F, 0F, 2, 3, 3);
-		Shape6.setRotationPoint(9F, -1.5F, -1.5F);
-		Shape6.setTextureSize(64, 16);
-		Shape6.mirror = true;
-		setRotation(Shape6, 0F, 0F, 0F);
+		this.Shape1 = new ModelRenderer(this, 0, 0);
+		this.Shape1.addBox(0F, 0F, 0F, 24, 2, 2);
+		this.Shape1.setRotationPoint(-12F, -1F, -1F);
+		this.Shape1.setTextureSize(64, 16);
+		this.Shape1.mirror = true;
+		setRotation(this.Shape1, 0F, 0F, 0F);
+		this.Shape2 = new ModelRenderer(this, 0, 4);
+		this.Shape2.addBox(0F, 0F, 0F, 1, 6, 0);
+		this.Shape2.setRotationPoint(7F, -3F, 0F);
+		this.Shape2.setTextureSize(64, 16);
+		this.Shape2.mirror = true;
+		setRotation(this.Shape2, 0F, 0F, 0F);
+		this.Shape3 = new ModelRenderer(this, 2, 4);
+		this.Shape3.addBox(0F, 0F, 0F, 1, 0, 6);
+		this.Shape3.setRotationPoint(7F, 0F, -3F);
+		this.Shape3.setTextureSize(64, 16);
+		this.Shape3.mirror = true;
+		setRotation(this.Shape3, 0F, 0F, 0F);
+		this.Shape4 = new ModelRenderer(this, 16, 4);
+		this.Shape4.addBox(0F, 0F, 0F, 1, 4, 0);
+		this.Shape4.setRotationPoint(-10F, -2F, 0F);
+		this.Shape4.setTextureSize(64, 16);
+		this.Shape4.mirror = true;
+		setRotation(this.Shape4, 0F, 0F, 0F);
+		this.Shape5 = new ModelRenderer(this, 0, 10);
+		this.Shape5.addBox(0F, 0F, 0F, 1, 0, 4);
+		this.Shape5.setRotationPoint(-10F, 0F, -2F);
+		this.Shape5.setTextureSize(64, 16);
+		this.Shape5.mirror = true;
+		setRotation(this.Shape5, 0F, 0F, 0F);
+		this.Shape6 = new ModelRenderer(this, 18, 4);
+		this.Shape6.addBox(0F, 0F, 0F, 2, 3, 3);
+		this.Shape6.setRotationPoint(9F, -1.5F, -1.5F);
+		this.Shape6.setTextureSize(64, 16);
+		this.Shape6.mirror = true;
+		setRotation(this.Shape6, 0F, 0F, 0F);
 	}
 
+	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-		Shape1.render(f5);
-		Shape2.render(f5);
-		Shape3.render(f5);
-		Shape4.render(f5);
-		Shape5.render(f5);
-		Shape6.render(f5);
+		this.Shape1.render(f5);
+		this.Shape2.render(f5);
+		this.Shape3.render(f5);
+		this.Shape4.render(f5);
+		this.Shape5.render(f5);
+		this.Shape6.render(f5);
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -78,17 +79,18 @@ public class ModelSRocket extends ModelBase {
 		model.rotateAngleZ = z;
 	}
 
+	@Override
 	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
 		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 	}
 
 	public void renderAll(float f5) {
-		Shape1.render(f5);
-		Shape2.render(f5);
-		Shape3.render(f5);
-		Shape4.render(f5);
-		Shape5.render(f5);
-		Shape6.render(f5);
+		this.Shape1.render(f5);
+		this.Shape2.render(f5);
+		this.Shape3.render(f5);
+		this.Shape4.render(f5);
+		this.Shape5.render(f5);
+		this.Shape6.render(f5);
 	}
 
 }

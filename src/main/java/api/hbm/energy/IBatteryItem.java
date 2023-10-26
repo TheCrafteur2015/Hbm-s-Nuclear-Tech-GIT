@@ -27,7 +27,7 @@ public interface IBatteryItem {
 	/** Returns an empty battery stack from the passed ItemStack, the original won't be modified */
 	public static ItemStack emptyBattery(ItemStack stack) {
 		if(stack != null && stack.getItem() instanceof IBatteryItem) {
-			String keyName = getChargeTagName(stack);
+			String keyName = IBatteryItem.getChargeTagName(stack);
 			ItemStack stackOut = stack.copy();
 			stackOut.stackTagCompound = new NBTTagCompound();
 			stackOut.stackTagCompound.setLong(keyName, 0);
@@ -38,6 +38,6 @@ public interface IBatteryItem {
 
 	/** Returns an empty battery stack from the passed Item */
 	public static ItemStack emptyBattery(Item item) {
-		return item instanceof IBatteryItem ? emptyBattery(new ItemStack(item)) : null;
+		return item instanceof IBatteryItem ? IBatteryItem.emptyBattery(new ItemStack(item)) : null;
 	}
 }

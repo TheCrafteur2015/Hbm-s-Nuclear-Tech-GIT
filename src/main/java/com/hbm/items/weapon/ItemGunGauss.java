@@ -23,98 +23,103 @@ public class ItemGunGauss extends ItemGunBase {
 		super(config, alt);
 	}
 	
+	@Override
 	public void endAction(ItemStack stack, World world, EntityPlayer player, boolean main) {
 
-		if(getHasShot(stack)) {
+		if(ItemGunGauss.getHasShot(stack)) {
 			world.playSoundAtEntity(player, "hbm:weapon.sparkShoot", 2.0F, 1.0F);
-			setHasShot(stack, false);
+			ItemGunGauss.setHasShot(stack, false);
 		}
 		
-		if(!main && getStored(stack) > 0) {
-			EntityBulletBaseNT bullet = new EntityBulletBaseNT(world, altConfig.config.get(0), player);
-			bullet.overrideDamage = Math.max(getStored(stack), 1) * 10F;
+		if(!main && ItemGunGauss.getStored(stack) > 0) {
+			EntityBulletBaseNT bullet = new EntityBulletBaseNT(world, this.altConfig.config.get(0), player);
+			bullet.overrideDamage = Math.max(ItemGunGauss.getStored(stack), 1) * 10F;
 			world.spawnEntityInWorld(bullet);
 			world.playSoundAtEntity(player, "hbm:weapon.tauShoot", 0.5F, 0.75F);
-			setItemWear(stack, getItemWear(stack) + (getCharge(stack)) * 2);
-			setCharge(stack, 0);
+			ItemGunBase.setItemWear(stack, ItemGunBase.getItemWear(stack) + (ItemGunGauss.getCharge(stack)) * 2);
+			ItemGunGauss.setCharge(stack, 0);
 			
 			if(player instanceof EntityPlayerMP)
 				PacketDispatcher.wrapper.sendTo(new GunAnimationPacket(AnimType.CYCLE.ordinal()), (EntityPlayerMP) player);
 		}
 	}
 	
+	@Override
 	public void endActionClient(ItemStack stack, World world, EntityPlayer player, boolean main) {
 
-		if(chargeLoop != null) {
-			chargeLoop.stopSound();
-			chargeLoop = null;
+		if(this.chargeLoop != null) {
+			this.chargeLoop.stopSound();
+			this.chargeLoop = null;
 		}
 	}
 	
+	@Override
 	protected void altFire(ItemStack stack, World world, EntityPlayer player) {
-		setCharge(stack, 1);
+		ItemGunGauss.setCharge(stack, 1);
 	}
 	
 	@Override
 	public void startActionClient(ItemStack stack, World world, EntityPlayer player, boolean main) {
 
-		if(!main && getItemWear(stack) < mainConfig.durability && player.inventory.hasItem(ModItems.gun_xvl1456_ammo)) {
-			chargeLoop = MainRegistry.proxy.getLoopedSound("hbm:weapon.tauChargeLoop2", (float)player.posX, (float)player.posY, (float)player.posZ, 1.0F, 5F, 0.75F);
+		if(!main && ItemGunBase.getItemWear(stack) < this.mainConfig.durability && player.inventory.hasItem(ModItems.gun_xvl1456_ammo)) {
+			this.chargeLoop = MainRegistry.proxy.getLoopedSound("hbm:weapon.tauChargeLoop2", (float)player.posX, (float)player.posY, (float)player.posZ, 1.0F, 5F, 0.75F);
 			world.playSoundAtEntity(player, "hbm:weapon.tauChargeLoop2", 1.0F, 0.75F);
 			
-			if(chargeLoop != null) {
-				chargeLoop.startSound();
+			if(this.chargeLoop != null) {
+				this.chargeLoop.startSound();
 			}
 		}
 	}
 	
+	@Override
 	protected void updateServer(ItemStack stack, World world, EntityPlayer player, int slot, boolean isCurrentItem) {
 		
 		super.updateServer(stack, world, player, slot, isCurrentItem);
 		
-		if(getIsAltDown(stack) && getItemWear(stack) < mainConfig.durability) {
+		if(ItemGunBase.getIsAltDown(stack) && ItemGunBase.getItemWear(stack) < this.mainConfig.durability) {
 			
-			int c = getCharge(stack);
+			int c = ItemGunGauss.getCharge(stack);
 			
 			if(c > 200) {
-				setCharge(stack, 0);
-				setItemWear(stack, mainConfig.durability);
+				ItemGunGauss.setCharge(stack, 0);
+				ItemGunBase.setItemWear(stack, this.mainConfig.durability);
 				player.attackEntityFrom(ModDamageSource.tauBlast, 1000);
 				world.newExplosion(player, player.posX, player.posY + player.eyeHeight, player.posZ, 5.0F, true, true);
 				return;
 			}
 			
 			if(c > 0) {
-				setCharge(stack, c + 1);
+				ItemGunGauss.setCharge(stack, c + 1);
 				
 				if(c % 10 == 1 && c < 140 && c > 2) {
 					
 					if(player.inventory.hasItem(ModItems.gun_xvl1456_ammo)) {
 						player.inventory.consumeInventoryItem(ModItems.gun_xvl1456_ammo);
-						setStored(stack, getStored(stack) + 1);
+						ItemGunGauss.setStored(stack, ItemGunGauss.getStored(stack) + 1);
 					} else {
-						setCharge(stack, 0);
-						setStored(stack, 0);
+						ItemGunGauss.setCharge(stack, 0);
+						ItemGunGauss.setStored(stack, 0);
 					}
 				}
 			} else {
-				setStored(stack, 0);
+				ItemGunGauss.setStored(stack, 0);
 			}
 		} else {
-			setCharge(stack, 0);
-			setStored(stack, 0);
+			ItemGunGauss.setCharge(stack, 0);
+			ItemGunGauss.setStored(stack, 0);
 		}
 	}
 	
+	@Override
 	protected void updateClient(ItemStack stack, World world, EntityPlayer player, int slot, boolean isCurrentItem) {
 		super.updateClient(stack, world, player, slot, isCurrentItem);
 
-		if(chargeLoop != null) {
-			if(!chargeLoop.isPlaying()) {
-				chargeLoop = rebootAudio(chargeLoop, player);
+		if(this.chargeLoop != null) {
+			if(!this.chargeLoop.isPlaying()) {
+				this.chargeLoop = rebootAudio(this.chargeLoop, player);
 			}
-			chargeLoop.updatePosition((float)player.posX, (float)player.posY, (float)player.posZ);
-			chargeLoop.updatePitch(1 + (getCharge(stack)) * 0.01F);
+			this.chargeLoop.updatePosition((float)player.posX, (float)player.posY, (float)player.posZ);
+			this.chargeLoop.updatePitch(1 + (ItemGunGauss.getCharge(stack)) * 0.01F);
 		}
 	}
 	
@@ -125,34 +130,35 @@ public class ItemGunGauss extends ItemGunBase {
 		return audio;
 	}
 	
+	@Override
 	protected void spawnProjectile(World world, EntityPlayer player, ItemStack stack, int config) {
 		
 		super.spawnProjectile(world, player, stack, config);
-		setHasShot(stack, true);
+		ItemGunGauss.setHasShot(stack, true);
 	}
 	
 	public static void setHasShot(ItemStack stack, boolean b) {
-		writeNBT(stack, "hasShot", b ? 1 : 0);
+		ItemGunBase.writeNBT(stack, "hasShot", b ? 1 : 0);
 	}
 	
 	public static boolean getHasShot(ItemStack stack) {
-		return readNBT(stack, "hasShot") == 1;
+		return ItemGunBase.readNBT(stack, "hasShot") == 1;
 	}
 	
 	/// gauss charge state ///
 	public static void setCharge(ItemStack stack, int i) {
-		writeNBT(stack, "gauss_charge", i);
+		ItemGunBase.writeNBT(stack, "gauss_charge", i);
 	}
 	
 	public static int getCharge(ItemStack stack) {
-		return readNBT(stack, "gauss_charge");
+		return ItemGunBase.readNBT(stack, "gauss_charge");
 	}
 	
 	public static void setStored(ItemStack stack, int i) {
-		writeNBT(stack, "gauss_stored", i);
+		ItemGunBase.writeNBT(stack, "gauss_stored", i);
 	}
 	
 	public static int getStored(ItemStack stack) {
-		return readNBT(stack, "gauss_stored");
+		return ItemGunBase.readNBT(stack, "gauss_stored");
 	}
 }

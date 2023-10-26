@@ -29,11 +29,11 @@ public class EntityGrenadeIFMystery extends EntityGrenadeBouncyBase {
     	
         if (!this.worldObj.isRemote)
         {
-            this.setDead();
+            setDead();
     		
-    		worldObj.newExplosion(this, posX, posY, posZ, 10, false, false);
+    		this.worldObj.newExplosion(this, this.posX, this.posY, this.posZ, 10, false, false);
     		
-    		ExplosionChaos.spawnVolley(worldObj, posX, posY, posZ, 100, 1.0D);
+    		ExplosionChaos.spawnVolley(this.worldObj, this.posX, this.posY, this.posZ, 100, 1.0D);
         }
     }
 

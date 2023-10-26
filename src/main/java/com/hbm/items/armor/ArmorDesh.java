@@ -35,13 +35,13 @@ public class ArmorDesh extends ArmorFSBFueled {
 	@SideOnly(Side.CLIENT)
 	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot) {
 		
-		if(models == null) {
-			models = new ModelArmorDesh[4];
+		if(this.models == null) {
+			this.models = new ModelArmorDesh[4];
 			
 			for(int i = 0; i < 4; i++)
-				models[i] = new ModelArmorDesh(i);
+				this.models[i] = new ModelArmorDesh(i);
 		}
 		
-		return models[armorSlot];
+		return this.models[armorSlot];
 	}
 }

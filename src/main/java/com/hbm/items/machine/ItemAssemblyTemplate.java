@@ -29,10 +29,11 @@ public class ItemAssemblyTemplate extends Item {
 	protected IIcon hiddenIcon;
 
 	public ItemAssemblyTemplate() {
-		this.setHasSubtypes(true);
-		this.setMaxDamage(0);
+		setHasSubtypes(true);
+		setMaxDamage(0);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIconFromDamage(int meta) {
 
@@ -44,11 +45,12 @@ public class ItemAssemblyTemplate extends Item {
 		return this.itemIcon;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIconIndex(ItemStack stack) {
 
 		//NEW
-		ComparableStack out = readType(stack);
+		ComparableStack out = ItemAssemblyTemplate.readType(stack);
 		//LEGACY
 		if(out == null) out = AssemblerRecipes.recipeList.get(stack.getItemDamage());
 
@@ -58,6 +60,7 @@ public class ItemAssemblyTemplate extends Item {
 		return this.itemIcon;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister reg) {
 		super.registerIcons(reg);
@@ -76,10 +79,7 @@ public class ItemAssemblyTemplate extends Item {
 	}
 	
 	public static ComparableStack readType(ItemStack stack) {
-		if(!stack.hasTagCompound())
-			return null;
-		
-		if(!stack.stackTagCompound.hasKey("id"))
+		if(!stack.hasTagCompound() || !stack.stackTagCompound.hasKey("id"))
 			return null;
 		
 		int id = stack.stackTagCompound.getInteger("id");
@@ -89,11 +89,12 @@ public class ItemAssemblyTemplate extends Item {
 		return new ComparableStack(Item.getItemById(id), count, meta);
 	}
 
+	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
 
 		try {
 			//NEW
-			ComparableStack comp = readType(stack);
+			ComparableStack comp = ItemAssemblyTemplate.readType(stack);
 			//LEGACY
 			if(comp == null) comp = AssemblerRecipes.recipeList.get(stack.getItemDamage());
 			
@@ -126,7 +127,7 @@ public class ItemAssemblyTemplate extends Item {
 
 		for(int i = 0; i < count; i++) {
 			ComparableStack comp = AssemblerRecipes.recipeList.get(i);
-			list.add(writeType(new ItemStack(item), comp));
+			list.add(ItemAssemblyTemplate.writeType(new ItemStack(item), comp));
 		}
 	}
 
@@ -141,7 +142,7 @@ public class ItemAssemblyTemplate extends Item {
 			return 100;
 
 		//NEW
-		ComparableStack out = readType(stack);
+		ComparableStack out = ItemAssemblyTemplate.readType(stack);
 		//LEGACY
 		if(out == null) out = AssemblerRecipes.recipeList.get(i);
 		Integer time = AssemblerRecipes.time.get(out);
@@ -168,7 +169,7 @@ public class ItemAssemblyTemplate extends Item {
 		boolean nbtType = true;
 
 		//NEW
-		ComparableStack out = readType(stack);
+		ComparableStack out = ItemAssemblyTemplate.readType(stack);
 		//LEGACY
 		if(out == null) {
 			out = AssemblerRecipes.recipeList.get(i);
@@ -239,7 +240,7 @@ public class ItemAssemblyTemplate extends Item {
 		}
 
 		list.add(EnumChatFormatting.BOLD + I18nUtil.resolveKey("info.template_time"));
-		list.add(Math.floor((float) (getProcessTime(stack)) / 20 * 100) / 100 + " " + I18nUtil.resolveKey("info.template_seconds"));
+		list.add(Math.floor((float) (ItemAssemblyTemplate.getProcessTime(stack)) / 20 * 100) / 100 + " " + I18nUtil.resolveKey("info.template_seconds"));
 	}
 
 	/*

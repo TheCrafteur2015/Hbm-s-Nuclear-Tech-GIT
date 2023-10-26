@@ -32,7 +32,7 @@ public class RenderMagnusCartus extends Render {
 		GL11.glTranslated(x - vec.xCoord * 0.5, y - vec.yCoord * 0.5, z - vec.zCoord * 0.5);
 		GL11.glScaled(1.2, 1.2, 1.2);
 		GL11.glRotated(Math.atan2(vec.xCoord, vec.zCoord) / Math.PI * 180D - 90, 0, 1, 0);
-		this.bindTexture(this.getEntityTexture(cart));
+		bindTexture(getEntityTexture(cart));
 		ResourceManager.b29.renderAll();
 		GL11.glPopMatrix();
 	}

@@ -35,6 +35,7 @@ public class Substation extends BlockDummyable implements ITooltipProvider {
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		list.add(EnumChatFormatting.GOLD + "Connection Type: " + EnumChatFormatting.YELLOW + "Quadruple");
@@ -67,9 +68,9 @@ public class Substation extends BlockDummyable implements ITooltipProvider {
 	protected void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		super.fillSpace(world, x, y, z, dir, o);
 
-		this.makeExtra(world, x + dir.offsetX * o + 1, y, z + dir.offsetZ * o + 1);
-		this.makeExtra(world, x + dir.offsetX * o + 1, y, z + dir.offsetZ * o - 1);
-		this.makeExtra(world, x + dir.offsetX * o - 1, y, z + dir.offsetZ * o + 1);
-		this.makeExtra(world, x + dir.offsetX * o - 1, y, z + dir.offsetZ * o - 1);
+		makeExtra(world, x + dir.offsetX * o + 1, y, z + dir.offsetZ * o + 1);
+		makeExtra(world, x + dir.offsetX * o + 1, y, z + dir.offsetZ * o - 1);
+		makeExtra(world, x + dir.offsetX * o - 1, y, z + dir.offsetZ * o + 1);
+		makeExtra(world, x + dir.offsetX * o - 1, y, z + dir.offsetZ * o - 1);
 	}
 }

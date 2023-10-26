@@ -47,7 +47,7 @@ public class MachineCrystallizer extends BlockDummyable {
 			return true;
 		} else if(!player.isSneaking())
 		{
-			int[] pos = this.findCore(world, x, y, z);
+			int[] pos = findCore(world, x, y, z);
 			
 			if(pos == null)
 				return false;
@@ -73,22 +73,23 @@ public class MachineCrystallizer extends BlockDummyable {
 		return 1;
 	}
 	
+	@Override
 	protected void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		super.fillSpace(world, x, y, z, dir, o);
 
-		this.makeExtra(world, x + dir.offsetX * o + 1, y, z + dir.offsetZ * o);
-		this.makeExtra(world, x + dir.offsetX * o - 1, y, z + dir.offsetZ * o);
-		this.makeExtra(world, x + dir.offsetX * o, y, z + dir.offsetZ * o + 1);
-		this.makeExtra(world, x + dir.offsetX * o, y, z + dir.offsetZ * o - 1);
+		makeExtra(world, x + dir.offsetX * o + 1, y, z + dir.offsetZ * o);
+		makeExtra(world, x + dir.offsetX * o - 1, y, z + dir.offsetZ * o);
+		makeExtra(world, x + dir.offsetX * o, y, z + dir.offsetZ * o + 1);
+		makeExtra(world, x + dir.offsetX * o, y, z + dir.offsetZ * o - 1);
 
 		if(dir == ForgeDirection.NORTH || dir == ForgeDirection.SOUTH) {
-			this.makeExtra(world, x + dir.offsetX * o + 1, y + 5, z + dir.offsetZ * o);
-			this.makeExtra(world, x + dir.offsetX * o - 1, y + 5, z + dir.offsetZ * o);
+			makeExtra(world, x + dir.offsetX * o + 1, y + 5, z + dir.offsetZ * o);
+			makeExtra(world, x + dir.offsetX * o - 1, y + 5, z + dir.offsetZ * o);
 		}
 
 		if(dir == ForgeDirection.EAST || dir == ForgeDirection.WEST) {
-			this.makeExtra(world, x + dir.offsetX * o, y + 5, z + dir.offsetZ * o + 1);
-			this.makeExtra(world, x + dir.offsetX * o, y + 5, z + dir.offsetZ * o - 1);
+			makeExtra(world, x + dir.offsetX * o, y + 5, z + dir.offsetZ * o + 1);
+			makeExtra(world, x + dir.offsetX * o, y + 5, z + dir.offsetZ * o - 1);
 		}
 	}
 

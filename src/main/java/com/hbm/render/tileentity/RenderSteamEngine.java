@@ -88,12 +88,14 @@ public class RenderSteamEngine extends TileEntitySpecialRenderer implements IIte
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase( ) {
+			@Override
 			public void renderInventory() {
 				GL11.glRotatef(90, 0F, -1F, 0F);
 				GL11.glTranslated(0, -1.5, 0);
 				double scale = 2D;
 				GL11.glScaled(scale, scale, scale);
 			}
+			@Override
 			public void renderCommonWithStack(ItemStack item) {
 				GL11.glRotatef(90, 0F, 1F, 0F);
 				boolean cog = item.getItemDamage() != 1;

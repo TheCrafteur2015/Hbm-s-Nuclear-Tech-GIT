@@ -48,26 +48,26 @@ public class TileEntityMachineCMBFactory extends TileEntityLoadedBase implements
 	private String customName;
 	
 	public TileEntityMachineCMBFactory() {
-		slots = new ItemStack[6];
-		tank = new FluidTank(Fluids.WATZ, 8000, 0);
+		this.slots = new ItemStack[6];
+		this.tank = new FluidTank(Fluids.WATZ, 8000, 0);
 	}
 
 	@Override
 	public int getSizeInventory() {
-		return slots.length;
+		return this.slots.length;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		return slots[i];
+		return this.slots[i];
 	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			ItemStack itemStack = slots[i];
-			slots[i] = null;
+			ItemStack itemStack = this.slots[i];
+			this.slots[i] = null;
 			return itemStack;
 		} else {
 		return null;
@@ -76,7 +76,7 @@ public class TileEntityMachineCMBFactory extends TileEntityLoadedBase implements
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemStack) {
-		slots[i] = itemStack;
+		this.slots[i] = itemStack;
 		if(itemStack != null && itemStack.stackSize > getInventoryStackLimit())
 		{
 			itemStack.stackSize = getInventoryStackLimit();
@@ -85,7 +85,7 @@ public class TileEntityMachineCMBFactory extends TileEntityLoadedBase implements
 
 	@Override
 	public String getInventoryName() {
-		return this.hasCustomInventoryName() ? this.customName : "container.machineCMB";
+		return hasCustomInventoryName() ? this.customName : "container.machineCMB";
 	}
 
 	@Override
@@ -104,11 +104,11 @@ public class TileEntityMachineCMBFactory extends TileEntityLoadedBase implements
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		if(worldObj.getTileEntity(xCoord, yCoord, zCoord) != this)
+		if(this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this)
 		{
 			return false;
 		}else{
-			return player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <=64;
+			return player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <=64;
 		}
 	}
 	
@@ -144,18 +144,18 @@ public class TileEntityMachineCMBFactory extends TileEntityLoadedBase implements
 	
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			if(slots[i].stackSize <= j)
+			if(this.slots[i].stackSize <= j)
 			{
-				ItemStack itemStack = slots[i];
-				slots[i] = null;
+				ItemStack itemStack = this.slots[i];
+				this.slots[i] = null;
 				return itemStack;
 			}
-			ItemStack itemStack1 = slots[i].splitStack(j);
-			if (slots[i].stackSize == 0)
+			ItemStack itemStack1 = this.slots[i].splitStack(j);
+			if (this.slots[i].stackSize == 0)
 			{
-				slots[i] = null;
+				this.slots[i] = null;
 			}
 			
 			return itemStack1;
@@ -169,18 +169,18 @@ public class TileEntityMachineCMBFactory extends TileEntityLoadedBase implements
 		super.readFromNBT(nbt);
 		NBTTagList list = nbt.getTagList("items", 10);
 		
-		power = nbt.getLong("power");
-		tank.readFromNBT(nbt, "watz");
-		process = nbt.getShort("process");
-		slots = new ItemStack[getSizeInventory()];
+		this.power = nbt.getLong("power");
+		this.tank.readFromNBT(nbt, "watz");
+		this.process = nbt.getShort("process");
+		this.slots = new ItemStack[getSizeInventory()];
 		
 		for(int i = 0; i < list.tagCount(); i++)
 		{
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("slot");
-			if(b0 >= 0 && b0 < slots.length)
+			if(b0 >= 0 && b0 < this.slots.length)
 			{
-				slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
+				this.slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
 			}
 		}
 	}
@@ -188,18 +188,18 @@ public class TileEntityMachineCMBFactory extends TileEntityLoadedBase implements
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setLong("power", power);
-		tank.writeToNBT(nbt, "watz");
-		nbt.setShort("process", (short) process);
+		nbt.setLong("power", this.power);
+		this.tank.writeToNBT(nbt, "watz");
+		nbt.setShort("process", (short) this.process);
 		NBTTagList list = new NBTTagList();
 		
-		for(int i = 0; i < slots.length; i++)
+		for(int i = 0; i < this.slots.length; i++)
 		{
-			if(slots[i] != null)
+			if(this.slots[i] != null)
 			{
 				NBTTagCompound nbt1 = new NBTTagCompound();
 				nbt1.setByte("slot", (byte)i);
-				slots[i].writeToNBT(nbt1);
+				this.slots[i].writeToNBT(nbt1);
 				list.appendTag(nbt1);
 			}
 		}
@@ -209,12 +209,12 @@ public class TileEntityMachineCMBFactory extends TileEntityLoadedBase implements
 	@Override
 	public int[] getAccessibleSlotsFromSide(int p_94128_1_)
     {
-        return p_94128_1_ == 0 ? slots_bottom : (p_94128_1_ == 1 ? slots_top : slots_side);
+        return p_94128_1_ == 0 ? TileEntityMachineCMBFactory.slots_bottom : (p_94128_1_ == 1 ? TileEntityMachineCMBFactory.slots_top : TileEntityMachineCMBFactory.slots_side);
     }
 
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemStack, int j) {
-		return this.isItemValidForSlot(i, itemStack);
+		return isItemValidForSlot(i, itemStack);
 	}
 
 	@Override
@@ -232,21 +232,21 @@ public class TileEntityMachineCMBFactory extends TileEntityLoadedBase implements
 	}
 	
 	public long getPowerScaled(long i) {
-		return (power * i) / maxPower;
+		return (this.power * i) / TileEntityMachineCMBFactory.maxPower;
 	}
 	
 	public int getProgressScaled(int i) {
-		return (process * i) / processSpeed;
+		return (this.process * i) / TileEntityMachineCMBFactory.processSpeed;
 	}
 	
 	public boolean canProcess() {
 		
 		boolean b = false;
 		
-		if(tank.getFill() >= 1 && power >= 100000 && slots[1] != null && slots[3] != null && (slots[4] == null || slots[4].stackSize <= 60))
+		if(this.tank.getFill() >= 1 && this.power >= 100000 && this.slots[1] != null && this.slots[3] != null && (this.slots[4] == null || this.slots[4].stackSize <= 60))
 		{
-			boolean flag0 = slots[1].getItem() == ModItems.ingot_magnetized_tungsten || slots[1].getItem() == ModItems.powder_magnetized_tungsten;
-			boolean flag1 = slots[3].getItem() == ModItems.ingot_advanced_alloy || slots[3].getItem() == ModItems.powder_advanced_alloy;
+			boolean flag0 = this.slots[1].getItem() == ModItems.ingot_magnetized_tungsten || this.slots[1].getItem() == ModItems.powder_magnetized_tungsten;
+			boolean flag1 = this.slots[3].getItem() == ModItems.ingot_advanced_alloy || this.slots[3].getItem() == ModItems.powder_advanced_alloy;
 			
 			b = flag0 && flag1;
 		}
@@ -255,121 +255,121 @@ public class TileEntityMachineCMBFactory extends TileEntityLoadedBase implements
 	}
 	
 	public boolean isProcessing() {
-		return process > 0;
+		return this.process > 0;
 	}
 	
 	public void process() {
-		tank.setFill(tank.getFill() - 1);
-		power -= 100000;
+		this.tank.setFill(this.tank.getFill() - 1);
+		this.power -= 100000;
 		
-		process++;
+		this.process++;
 		
-		if(process >= processSpeed) {
+		if(this.process >= TileEntityMachineCMBFactory.processSpeed) {
 			
-			slots[1].stackSize--;
-			if (slots[1].stackSize == 0) {
-				slots[1] = null;
+			this.slots[1].stackSize--;
+			if (this.slots[1].stackSize == 0) {
+				this.slots[1] = null;
 			}
 
-			slots[3].stackSize--;
-			if (slots[3].stackSize == 0) {
-				slots[3] = null;
+			this.slots[3].stackSize--;
+			if (this.slots[3].stackSize == 0) {
+				this.slots[3] = null;
 			}
 			
-			if(slots[4] == null)
+			if(this.slots[4] == null)
 			{
-				slots[4] = new ItemStack(ModItems.ingot_combine_steel, 4);
+				this.slots[4] = new ItemStack(ModItems.ingot_combine_steel, 4);
 			} else {
 				
-				slots[4].stackSize += 4;
+				this.slots[4].stackSize += 4;
 			}
 			
-			process = 0;
+			this.process = 0;
 		}
 	}
 	
 	@Override
 	public void updateEntity() {
 
-		if (!worldObj.isRemote) {
+		if (!this.worldObj.isRemote) {
 			
-			this.updateConnections();
+			updateConnections();
 			
-			power = Library.chargeTEFromItems(slots, 0, power, maxPower);
+			this.power = Library.chargeTEFromItems(this.slots, 0, this.power, TileEntityMachineCMBFactory.maxPower);
 			
-			tank.loadTank(2, 5, slots);
-			tank.updateTank(xCoord, yCoord, zCoord, worldObj.provider.dimensionId);
+			this.tank.loadTank(2, 5, this.slots);
+			this.tank.updateTank(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId);
 
 			if (canProcess()) {
 				process();
-				if(soundCycle == 0)
+				if(this.soundCycle == 0)
 			        this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "minecart.base", 1.0F, 1.5F);
-				soundCycle++;
+				this.soundCycle++;
 					
-				if(soundCycle >= 25)
-					soundCycle = 0;
+				if(this.soundCycle >= 25)
+					this.soundCycle = 0;
 			} else {
-				process = 0;
+				this.process = 0;
 			}
 
-			PacketDispatcher.wrapper.sendToAllAround(new AuxElectricityPacket(xCoord, yCoord, zCoord, power), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 50));
+			PacketDispatcher.wrapper.sendToAllAround(new AuxElectricityPacket(this.xCoord, this.yCoord, this.zCoord, this.power), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 50));
 		}
 	}
 	
 	private void updateConnections() {
-		this.updateStandardConnections(worldObj, this);
-		this.subscribeToAllAround(tank.getTankType(), this);
+		this.updateStandardConnections(this.worldObj, this);
+		this.subscribeToAllAround(this.tank.getTankType(), this);
 	}
 
 	@Override
 	public void setPower(long i) {
-		power = i;
+		this.power = i;
 	}
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 
 	@Override
 	public long getMaxPower() {
-		return maxPower;
+		return TileEntityMachineCMBFactory.maxPower;
 	}
 
 	@Override
 	public void setFillForSync(int fill, int index) {
-		tank.setFill(fill);
+		this.tank.setFill(fill);
 	}
 
 	@Override
 	public void setTypeForSync(FluidType type, int index) {
-		tank.setTankType(type);
+		this.tank.setTankType(type);
 	}
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		return type.name().equals(this.tank.getTankType().name()) ? tank.getMaxFill() : 0;
+		return type.name().equals(this.tank.getTankType().name()) ? this.tank.getMaxFill() : 0;
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		return type.name().equals(this.tank.getTankType().name()) ? tank.getFill() : 0;
+		return type.name().equals(this.tank.getTankType().name()) ? this.tank.getFill() : 0;
 	}
 
 	@Override
 	public void setFluidFill(int i, FluidType type) {
-		if(type.name().equals(tank.getTankType().name()))
-			tank.setFill(i);
+		if(type.name().equals(this.tank.getTankType().name()))
+			this.tank.setFill(i);
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] { tank };
+		return new FluidTank[] { this.tank };
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return new FluidTank[] { tank };
+		return new FluidTank[] { this.tank };
 	}
 
 	@Override

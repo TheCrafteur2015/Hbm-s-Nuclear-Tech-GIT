@@ -41,94 +41,93 @@ public class TileEntityMicrowave extends TileEntityMachineBase implements IEnerg
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			this.updateStandardConnections(worldObj, xCoord, yCoord, zCoord);
+			this.updateStandardConnections(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 			
-			this.power = Library.chargeTEFromItems(slots, 2, power, maxPower);
+			this.power = Library.chargeTEFromItems(this.slots, 2, this.power, TileEntityMicrowave.maxPower);
 			
 			if(canProcess()) {
 				
-				if(speed >= maxSpeed) {
-					worldObj.func_147480_a(xCoord, yCoord, zCoord, false);
-					worldObj.newExplosion(null, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, 7.5F, true, true);
+				if(this.speed >= TileEntityMicrowave.maxSpeed) {
+					this.worldObj.func_147480_a(this.xCoord, this.yCoord, this.zCoord, false);
+					this.worldObj.newExplosion(null, this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, 7.5F, true, true);
 					return;
 				}
 				
-				if(time >= maxTime) {
+				if(this.time >= TileEntityMicrowave.maxTime) {
 					process();
-					time = 0;
+					this.time = 0;
 				}
 				
 				if(canProcess()) {
-					power -= consumption;
-					time += speed * 2;
+					this.power -= TileEntityMicrowave.consumption;
+					this.time += this.speed * 2;
 				}
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setLong("power", power);
-			data.setInteger("time", time);
-			data.setInteger("speed", speed);
+			data.setLong("power", this.power);
+			data.setInteger("time", this.time);
+			data.setInteger("speed", this.speed);
 			networkPack(data, 50);
 		}
 	}
 	
+	@Override
 	public void networkUnpack(NBTTagCompound data) {
-		power = data.getLong("power");
-		time = data.getInteger("time");
-		speed = data.getInteger("speed");
+		this.power = data.getLong("power");
+		this.time = data.getInteger("time");
+		this.speed = data.getInteger("speed");
 	}
 	
+	@Override
 	public void handleButtonPacket(int value, int meta) {
 		
 		if(value == 0)
-			speed++;
+			this.speed++;
 		
 		if(value == 1)
-			speed--;
+			this.speed--;
 		
-		if(speed < 0)
-			speed = 0;
+		if(this.speed < 0)
+			this.speed = 0;
 		
-		if(speed > maxSpeed)
-			speed = maxSpeed;
+		if(this.speed > TileEntityMicrowave.maxSpeed)
+			this.speed = TileEntityMicrowave.maxSpeed;
 	}
 	
 	private void process() {
 		
-		ItemStack stack = FurnaceRecipes.smelting().getSmeltingResult(slots[0]).copy();
+		ItemStack stack = FurnaceRecipes.smelting().getSmeltingResult(this.slots[0]).copy();
 		
-		if(slots[1] == null) {
-			slots[1] = stack;
+		if(this.slots[1] == null) {
+			this.slots[1] = stack;
 		} else {
-			slots[1].stackSize += stack.stackSize;
+			this.slots[1].stackSize += stack.stackSize;
 		}
 		
-		this.decrStackSize(0, 1);
+		decrStackSize(0, 1);
 		
-		this.markDirty();
+		markDirty();
 	}
 	
 	private boolean canProcess() {
 		
-		if(speed  == 0)
+		if((this.speed  == 0) || (this.power < TileEntityMicrowave.consumption))
 			return false;
 		
-		if(power < consumption)
-			return false;
-		
-		if(slots[0] != null && FurnaceRecipes.smelting().getSmeltingResult(slots[0]) != null) {
+		if(this.slots[0] != null && FurnaceRecipes.smelting().getSmeltingResult(this.slots[0]) != null) {
 			
-			ItemStack stack = FurnaceRecipes.smelting().getSmeltingResult(slots[0]);
+			ItemStack stack = FurnaceRecipes.smelting().getSmeltingResult(this.slots[0]);
 			
-			if(slots[1] == null)
+			if(this.slots[1] == null)
 				return true;
 			
-			if(!stack.isItemEqual(slots[1]))
+			if(!stack.isItemEqual(this.slots[1]))
 				return false;
 			
-			return stack.stackSize + slots[1].stackSize <= stack.getMaxStackSize();
+			return stack.stackSize + this.slots[1].stackSize <= stack.getMaxStackSize();
 		}
 		
 		return false;
@@ -141,7 +140,7 @@ public class TileEntityMicrowave extends TileEntityMachineBase implements IEnerg
 
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemStack, int j) {
-		return this.isItemValidForSlot(i, itemStack);
+		return isItemValidForSlot(i, itemStack);
 	}
 
 	@Override
@@ -155,15 +154,15 @@ public class TileEntityMicrowave extends TileEntityMachineBase implements IEnerg
 	}
 	
 	public long getPowerScaled(int i) {
-		return (power * i) / maxPower;
+		return (this.power * i) / TileEntityMicrowave.maxPower;
 	}
 	
 	public int getProgressScaled(int i) {
-		return (time * i) / maxTime;
+		return (this.time * i) / TileEntityMicrowave.maxTime;
 	}
 	
 	public int getSpeedScaled(int i) {
-		return (speed * i) / maxSpeed;
+		return (this.speed * i) / TileEntityMicrowave.maxSpeed;
 	}
 	
 	@Override
@@ -180,33 +179,33 @@ public class TileEntityMicrowave extends TileEntityMachineBase implements IEnerg
 
 	@Override
 	public void setPower(long i) {
-		power = i;
+		this.power = i;
 	}
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 
 	@Override
 	public long getMaxPower() {
-		return maxPower;
+		return TileEntityMicrowave.maxPower;
 	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		
-		power = nbt.getLong("power");
-		speed = nbt.getInteger("speed");
+		this.power = nbt.getLong("power");
+		this.speed = nbt.getInteger("speed");
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 
-		nbt.setLong("power", power);
-		nbt.setInteger("speed", speed);
+		nbt.setLong("power", this.power);
+		nbt.setInteger("speed", this.speed);
 	}
 
 	@Override

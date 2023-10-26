@@ -43,7 +43,7 @@ public class RenderTNTPrimedBase extends Render {
 		}
 
 		f2 = (1.0F - ((float) tnt.fuse - f1 + 1.0F) / 100.0F) * 0.8F;
-		this.bindEntityTexture(tnt);
+		bindEntityTexture(tnt);
 		this.blockRenderer.renderBlockAsItem(tnt.getBomb(), 0, tnt.getBrightness(f1));
 		
 		if(tnt.fuse / 5 % 2 == 0) {
@@ -71,10 +71,12 @@ public class RenderTNTPrimedBase extends Render {
 		return TextureMap.locationBlocksTexture;
 	}
 	
+	@Override
 	protected ResourceLocation getEntityTexture(Entity entity) {
 		return this.getEntityTexture((EntityTNTPrimedBase) entity);
 	}
 	
+	@Override
 	public void doRender(Entity entity, double x, double y, double z, float f0, float f1) {
 		this.doRender((EntityTNTPrimedBase) entity, x, y, z, f0, f1);
 	}

@@ -23,21 +23,21 @@ public abstract class EntityMinecartNTM extends EntityMinecart {
 
 	public EntityMinecartNTM(World world, double x, double y, double z, EnumCartBase type) {
 		super(world, x, y, z);
-		this.setBase(type);
+		setBase(type);
 	}
 	
 	@Override
 	protected void entityInit() {
 		super.entityInit();
-		this.dataWatcher.addObject(cart_base_id, new Integer(0)); //EnumCartBase
+		this.dataWatcher.addObject(EntityMinecartNTM.cart_base_id, new Integer(0)); //EnumCartBase
 	}
 	
 	public void setBase(EnumCartBase type) {
-		this.dataWatcher.updateObject(cart_base_id, type.ordinal());
+		this.dataWatcher.updateObject(EntityMinecartNTM.cart_base_id, type.ordinal());
 	}
 	
 	public EnumCartBase getBase() {
-		return EnumCartBase.values()[this.dataWatcher.getWatchableObjectInt(cart_base_id)];
+		return EnumCartBase.values()[this.dataWatcher.getWatchableObjectInt(EntityMinecartNTM.cart_base_id)];
 	}
 
 	@Override
@@ -62,20 +62,20 @@ public abstract class EntityMinecartNTM extends EntityMinecart {
 
 	@Override
 	public void killMinecart(DamageSource p_94095_1_) {
-		this.setDead();
+		setDead();
 		ItemStack itemstack = getCartItem();
 
-		if(this.func_95999_t() != null) {
-			itemstack.setStackDisplayName(this.func_95999_t());
+		if(func_95999_t() != null) {
+			itemstack.setStackDisplayName(func_95999_t());
 		}
 
-		this.entityDropItem(itemstack, 0.0F);
+		entityDropItem(itemstack, 0.0F);
 	}
 	
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound nbt) {
 		super.writeEntityToNBT(nbt);
-		nbt.setInteger("base", this.dataWatcher.getWatchableObjectInt(cart_base_id));
+		nbt.setInteger("base", this.dataWatcher.getWatchableObjectInt(EntityMinecartNTM.cart_base_id));
 	}
 
 	@Override

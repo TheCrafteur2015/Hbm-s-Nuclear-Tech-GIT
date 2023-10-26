@@ -45,8 +45,8 @@ public class WatzPump extends BlockDummyable {
 		@Override @SideOnly(Side.CLIENT) public double getMaxRenderDistanceSquared() { return 65536.0D; }
 		AxisAlignedBB bb = null;
 		@Override public AxisAlignedBB getRenderBoundingBox() {
-			if(bb == null) bb = AxisAlignedBB.getBoundingBox(xCoord - 1, yCoord, zCoord - 1, xCoord + 2, yCoord + 2, zCoord + 2);
-			return bb;
+			if(this.bb == null) this.bb = AxisAlignedBB.getBoundingBox(this.xCoord - 1, this.yCoord, this.zCoord - 1, this.xCoord + 2, this.yCoord + 2, this.zCoord + 2);
+			return this.bb;
 		}
 	}
 }

@@ -37,7 +37,7 @@ public class TileEntityFurnaceIron extends TileEntityMachineBase implements IGUI
 	public TileEntityFurnaceIron() {
 		super(5);
 		
-		burnModule = new ModuleBurnTime()
+		this.burnModule = new ModuleBurnTime()
 				.setLigniteTimeMod(1.25)
 				.setCoalTimeMod(1.25)
 				.setCokeTimeMod(1.5)
@@ -54,26 +54,26 @@ public class TileEntityFurnaceIron extends TileEntityMachineBase implements IGUI
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			UpgradeManager.eval(slots, 4, 4);
-			this.processingTime = baseTime - (100 * Math.min(UpgradeManager.getLevel(UpgradeType.SPEED), 3) / 3);
+			UpgradeManager.eval(this.slots, 4, 4);
+			this.processingTime = TileEntityFurnaceIron.baseTime - (100 * Math.min(UpgradeManager.getLevel(UpgradeType.SPEED), 3) / 3);
 			
-			wasOn = false;
+			this.wasOn = false;
 			
-			if(burnTime <= 0) {
+			if(this.burnTime <= 0) {
 				
 				for(int i = 1; i < 3; i++) {
-					if(slots[i] != null) {
+					if(this.slots[i] != null) {
 						
-						int fuel = burnModule.getBurnTime(slots[i]);
+						int fuel = this.burnModule.getBurnTime(this.slots[i]);
 						
 						if(fuel > 0) {
 							this.maxBurnTime = this.burnTime = fuel;
-							slots[i].stackSize--;
+							this.slots[i].stackSize--;
 
-							if(slots[i].stackSize == 0) {
-								slots[i] = slots[i].getItem().getContainerItem(slots[i]);
+							if(this.slots[i].stackSize == 0) {
+								this.slots[i] = this.slots[i].getItem().getContainerItem(this.slots[i]);
 							}
 							
 							break;
@@ -83,29 +83,29 @@ public class TileEntityFurnaceIron extends TileEntityMachineBase implements IGUI
 			}
 			
 			if(canSmelt()) {
-				wasOn = true;
+				this.wasOn = true;
 				this.progress++;
 				this.burnTime--;
 				
 				if(this.progress % 15 == 0) {
-					worldObj.playSoundEffect(xCoord, yCoord, zCoord, "fire.fire", 1.0F, 0.5F + worldObj.rand.nextFloat() * 0.5F);
+					this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "fire.fire", 1.0F, 0.5F + this.worldObj.rand.nextFloat() * 0.5F);
 				}
 				
 				if(this.progress >= this.processingTime) {
-					ItemStack result = FurnaceRecipes.smelting().getSmeltingResult(slots[0]);
+					ItemStack result = FurnaceRecipes.smelting().getSmeltingResult(this.slots[0]);
 					
-					if(slots[3] == null) {
-						slots[3] = result.copy();
+					if(this.slots[3] == null) {
+						this.slots[3] = result.copy();
 					} else {
-						slots[3].stackSize += result.stackSize;
+						this.slots[3].stackSize += result.stackSize;
 					}
 					
-					this.decrStackSize(0, 1);
+					decrStackSize(0, 1);
 					
 					this.progress = 0;
-					this.markDirty();
+					markDirty();
 				}
-				if(worldObj.getTotalWorldTime() % 20 == 0) PollutionHandler.incrementPollution(worldObj, xCoord, yCoord, zCoord, PollutionType.SOOT, PollutionHandler.SOOT_PER_SECOND);
+				if(this.worldObj.getTotalWorldTime() % 20 == 0) PollutionHandler.incrementPollution(this.worldObj, this.xCoord, this.yCoord, this.zCoord, PollutionType.SOOT, PollutionHandler.SOOT_PER_SECOND);
 			} else {
 				this.progress = 0;
 			}
@@ -116,19 +116,19 @@ public class TileEntityFurnaceIron extends TileEntityMachineBase implements IGUI
 			data.setInteger("progress", this.progress);
 			data.setInteger("processingTime", this.processingTime);
 			data.setBoolean("wasOn", this.wasOn);
-			this.networkPack(data, 50);
+			networkPack(data, 50);
 		} else {
 			
 			if(this.progress > 0) {
-				ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - 10);
+				ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - 10);
 				ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 				
 				double offset = this.progress % 2 == 0 ? 1 : 0.5;
-				worldObj.spawnParticle("smoke", xCoord + 0.5 - dir.offsetX * offset - rot.offsetX * 0.1875, yCoord + 2, zCoord + 0.5 - dir.offsetZ * offset - rot.offsetZ * 0.1875, 0.0, 0.01, 0.0);
+				this.worldObj.spawnParticle("smoke", this.xCoord + 0.5 - dir.offsetX * offset - rot.offsetX * 0.1875, this.yCoord + 2, this.zCoord + 0.5 - dir.offsetZ * offset - rot.offsetZ * 0.1875, 0.0, 0.01, 0.0);
 				
 				if(this.progress % 5 == 0) {
-					double rand = worldObj.rand.nextDouble();
-					worldObj.spawnParticle("flame", xCoord + 0.5 + dir.offsetX * 0.25 + rot.offsetX * rand, yCoord + 0.25 + worldObj.rand.nextDouble() * 0.25, zCoord + 0.5 + dir.offsetZ * 0.25 + rot.offsetZ * rand, 0.0, 0.0, 0.0);
+					double rand = this.worldObj.rand.nextDouble();
+					this.worldObj.spawnParticle("flame", this.xCoord + 0.5 + dir.offsetX * 0.25 + rot.offsetX * rand, this.yCoord + 0.25 + this.worldObj.rand.nextDouble() * 0.25, this.zCoord + 0.5 + dir.offsetZ * 0.25 + rot.offsetZ * rand, 0.0, 0.0, 0.0);
 				}
 			}
 		}
@@ -145,16 +145,15 @@ public class TileEntityFurnaceIron extends TileEntityMachineBase implements IGUI
 	
 	public boolean canSmelt() {
 		
-		if(this.burnTime <= 0) return false;
-		if(slots[0] == null) return false;
+		if((this.burnTime <= 0) || (this.slots[0] == null)) return false;
 		
-		ItemStack result = FurnaceRecipes.smelting().getSmeltingResult(slots[0]);
+		ItemStack result = FurnaceRecipes.smelting().getSmeltingResult(this.slots[0]);
 		
 		if(result == null) return false;
-		if(slots[3] == null) return true;
+		if(this.slots[3] == null) return true;
 		
-		if(!result.isItemEqual(slots[3])) return false;
-		if(result.stackSize + slots[3].stackSize > slots[3].getMaxStackSize()) return false;
+		if(!result.isItemEqual(this.slots[3])) return false;
+		if(result.stackSize + this.slots[3].stackSize > this.slots[3].getMaxStackSize()) return false;
 		
 		return true;
 	}
@@ -171,7 +170,7 @@ public class TileEntityFurnaceIron extends TileEntityMachineBase implements IGUI
 			return FurnaceRecipes.smelting().getSmeltingResult(itemStack) != null;
 		
 		if(i < 3)
-			return burnModule.getBurnTime(itemStack) > 0;
+			return this.burnModule.getBurnTime(itemStack) > 0;
 			
 		return false;
 	}
@@ -194,9 +193,9 @@ public class TileEntityFurnaceIron extends TileEntityMachineBase implements IGUI
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("maxBurnTime", maxBurnTime);
-		nbt.setInteger("burnTime", burnTime);
-		nbt.setInteger("progress", progress);
+		nbt.setInteger("maxBurnTime", this.maxBurnTime);
+		nbt.setInteger("burnTime", this.burnTime);
+		nbt.setInteger("progress", this.progress);
 	}
 
 	@Override
@@ -215,18 +214,18 @@ public class TileEntityFurnaceIron extends TileEntityMachineBase implements IGUI
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 1,
-					yCoord,
-					zCoord - 1,
-					xCoord + 2,
-					yCoord + 3,
-					zCoord + 2
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 1,
+					this.yCoord,
+					this.zCoord - 1,
+					this.xCoord + 2,
+					this.yCoord + 3,
+					this.zCoord + 2
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override

@@ -17,10 +17,12 @@ public class TileEntityLandmine extends TileEntity {
 	
 	private boolean isPrimed = false;
 
+	@SuppressWarnings("unchecked")
+	@Override
 	public void updateEntity() {
 
-		if(!worldObj.isRemote) {
-			Block block = worldObj.getBlock(xCoord, yCoord, zCoord);
+		if(!this.worldObj.isRemote) {
+			Block block = this.worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord);
 			double range = 1;
 			double height = 1;
 
@@ -38,11 +40,11 @@ public class TileEntityLandmine extends TileEntity {
 				range = 2.5D;
 			}
 			
-			if(!isPrimed)
+			if(!this.isPrimed)
 				range *= 2;
 	
-			List<Object> list = worldObj.getEntitiesWithinAABBExcludingEntity(null,
-					AxisAlignedBB.getBoundingBox(xCoord - range, yCoord - height, zCoord - range, xCoord + range + 1, yCoord + height, zCoord + range + 1));
+			List<Object> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(null,
+					AxisAlignedBB.getBoundingBox(this.xCoord - range, this.yCoord - height, this.zCoord - range, this.xCoord + range + 1, this.yCoord + height, this.zCoord + range + 1));
 	
 			boolean flag = false;
 			for(Object o : list) {
@@ -51,33 +53,35 @@ public class TileEntityLandmine extends TileEntity {
 
 					flag = true;
 
-					if(isPrimed) {
+					if(this.isPrimed) {
 						//why did i do it like that?
-						((Landmine) block).explode(worldObj, xCoord, yCoord, zCoord);
+						((Landmine) block).explode(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 					}
 
 					return;
 				}
 			}
 
-			if(!isPrimed && !flag) {
+			if(!this.isPrimed && !flag) {
 
 				this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:weapon.fstbmbStart", 3.0F, 1.0F);
-				isPrimed = true;
+				this.isPrimed = true;
 			}
 		}
 	}
 
+	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		
-		isPrimed = nbt.getBoolean("primed");
+		this.isPrimed = nbt.getBoolean("primed");
 	}
 
+	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		
-		nbt.setBoolean("primed", isPrimed);
+		nbt.setBoolean("primed", this.isPrimed);
 	}
 	
 	@Override

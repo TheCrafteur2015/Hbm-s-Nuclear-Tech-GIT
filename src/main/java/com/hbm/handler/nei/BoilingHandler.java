@@ -13,7 +13,7 @@ import com.hbm.items.machine.ItemFluidIcon;
 public class BoilingHandler extends NEIUniversalHandler {
 
 	public BoilingHandler() {
-		super("Boiler", ModBlocks.machine_boiler, generateRecipes());
+		super("Boiler", ModBlocks.machine_boiler, BoilingHandler.generateRecipes());
 	}
 
 	@Override
@@ -25,9 +25,9 @@ public class BoilingHandler extends NEIUniversalHandler {
 	
 	public static HashMap<Object, Object> generateRecipes() {
 		
-		if(cache != null) return cache;
+		if(BoilingHandler.cache != null) return BoilingHandler.cache;
 		
-		cache = new HashMap();
+		BoilingHandler.cache = new HashMap();
 		
 		for(FluidType type : Fluids.getInNiceOrder()) {
 			
@@ -36,11 +36,11 @@ public class BoilingHandler extends NEIUniversalHandler {
 				
 				if(trait.getEfficiency(HeatingType.BOILER) > 0) {
 					HeatingStep step = trait.getFirstStep();
-					cache.put(ItemFluidIcon.make(type, step.amountReq), ItemFluidIcon.make(step.typeProduced, step.amountProduced));
+					BoilingHandler.cache.put(ItemFluidIcon.make(type, step.amountReq), ItemFluidIcon.make(step.typeProduced, step.amountProduced));
 				}
 			}
 		}
 		
-		return cache;
+		return BoilingHandler.cache;
 	}
 }

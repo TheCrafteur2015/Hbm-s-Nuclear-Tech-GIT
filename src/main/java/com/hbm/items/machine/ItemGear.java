@@ -11,8 +11,8 @@ import net.minecraft.item.ItemStack;
 public class ItemGear extends Item {
 	
 	public ItemGear() {
-		this.setHasSubtypes(true);
-		this.setMaxDamage(0);
+		setHasSubtypes(true);
+		setMaxDamage(0);
 	}
 	
 	@Override

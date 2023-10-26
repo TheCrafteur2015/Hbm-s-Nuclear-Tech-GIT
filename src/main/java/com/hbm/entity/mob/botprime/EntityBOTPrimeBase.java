@@ -30,7 +30,7 @@ public abstract class EntityBOTPrimeBase extends EntityWormBaseNT implements IRa
 
 	public EntityBOTPrimeBase(World world) {
 		super(world);
-		this.setSize(2.0F, 2.0F);
+		setSize(2.0F, 2.0F);
 		this.isImmuneToFire = true;
 		this.isAirBorne = true;
 		this.noClip = true;
@@ -41,14 +41,14 @@ public abstract class EntityBOTPrimeBase extends EntityWormBaseNT implements IRa
 	}
 
 	public boolean canEntityBeSeenThroughNonSolids(Entity p_70685_1_) {
-		return this.worldObj.func_147447_a(Vec3.createVectorHelper(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ), Vec3.createVectorHelper(p_70685_1_.posX, p_70685_1_.posY + (double) p_70685_1_.getEyeHeight(), p_70685_1_.posZ), false, true, false) == null;
+		return this.worldObj.func_147447_a(Vec3.createVectorHelper(this.posX, this.posY + (double) getEyeHeight(), this.posZ), Vec3.createVectorHelper(p_70685_1_.posX, p_70685_1_.posY + (double) p_70685_1_.getEyeHeight(), p_70685_1_.posZ), false, true, false) == null;
 	}
 
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(15000.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(1.0D);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(15000.0D);
+		getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(1.0D);
 	}
 
 	@Override
@@ -61,10 +61,12 @@ public abstract class EntityBOTPrimeBase extends EntityWormBaseNT implements IRa
 		return false;
 	}
 
+	@Override
 	protected String getHurtSound() {
 		return "mob.blaze.hit";
 	}
 
+	@Override
 	protected String getDeathSound() {
 		return "hbm:entity.bombDet";
 	}
@@ -84,12 +86,12 @@ public abstract class EntityBOTPrimeBase extends EntityWormBaseNT implements IRa
 				this.worldObj.spawnEntityInWorld(bullet);
 			}
 
-			this.playSound("hbm:weapon.ballsLaser", 5.0F, 0.75F);
+			playSound("hbm:weapon.ballsLaser", 5.0F, 0.75F);
 
 		} else {
 			EntityBulletBaseNT bullet = new EntityBulletBaseNT(this.worldObj, BulletConfigSyncingUtil.WORM_BOLT, this, living, 0.5F, 0.125F);
 			this.worldObj.spawnEntityInWorld(bullet);
-			this.playSound("hbm:weapon.ballsLaser", 5.0F, 1.0F);
+			playSound("hbm:weapon.ballsLaser", 5.0F, 1.0F);
 		}
 	}
 }

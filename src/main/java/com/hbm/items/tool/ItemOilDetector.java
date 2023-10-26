@@ -3,7 +3,7 @@ package com.hbm.items.tool;
 import java.util.List;
 
 import com.hbm.blocks.ModBlocks;
-import com.hbm.main.MainRegistry;
+import com.hbm.main.ServerProxy;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.PlayerInformPacket;
 import com.hbm.util.ChatBuilder;
@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 
 public class ItemOilDetector extends Item {
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool)
 	{
@@ -82,11 +83,11 @@ public class ItemOilDetector extends Item {
 		if(!world.isRemote) {
 						
 			if(direct) {
-				PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.start("").nextTranslation(this.getUnlocalizedName() + ".bullseye").color(EnumChatFormatting.DARK_GREEN).flush(), MainRegistry.proxy.ID_DETONATOR), (EntityPlayerMP) player);
+				PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.start("").nextTranslation(this.getUnlocalizedName() + ".bullseye").color(EnumChatFormatting.DARK_GREEN).flush(), ServerProxy.ID_DETONATOR), (EntityPlayerMP) player);
 			} else if(oil) {
-				PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.start("").nextTranslation(this.getUnlocalizedName() + ".detected").color(EnumChatFormatting.GOLD).flush(), MainRegistry.proxy.ID_DETONATOR), (EntityPlayerMP) player);
+				PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.start("").nextTranslation(this.getUnlocalizedName() + ".detected").color(EnumChatFormatting.GOLD).flush(), ServerProxy.ID_DETONATOR), (EntityPlayerMP) player);
 			} else {
-				PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.start("").nextTranslation(this.getUnlocalizedName() + ".noOil").color(EnumChatFormatting.RED).flush(), MainRegistry.proxy.ID_DETONATOR), (EntityPlayerMP) player);
+				PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.start("").nextTranslation(this.getUnlocalizedName() + ".noOil").color(EnumChatFormatting.RED).flush(), ServerProxy.ID_DETONATOR), (EntityPlayerMP) player);
 			}
 		}
 

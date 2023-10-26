@@ -18,7 +18,7 @@ public class GUIMachineSatLinker extends GuiInfoContainer {
 
 	public GUIMachineSatLinker(InventoryPlayer invPlayer, TileEntityMachineSatLinker tedf) {
 		super(new ContainerMachineSatLinker(invPlayer, tedf));
-		siren = tedf;
+		this.siren = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 166;
@@ -30,11 +30,11 @@ public class GUIMachineSatLinker extends GuiInfoContainer {
 
 		String[] text = new String[] { "The first slot will copy the satellite/chip's",
 				"frequency and paste it to the second slot." };
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36, 16, 16, guiLeft - 8, guiTop + 36 + 16, text);
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft - 16, this.guiTop + 36, 16, 16, this.guiLeft - 8, this.guiTop + 36 + 16, text);
 		
 		String[] text1 = new String[] { "The third slot will randomize the",
 				"satellite/chip's frequency."};
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36 + 16, 16, 16, guiLeft - 8, guiTop + 36 + 16, text1);
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft - 16, this.guiTop + 36 + 16, 16, 16, this.guiLeft - 8, this.guiTop + 36 + 16, text1);
 	}
 	
 	@Override
@@ -47,10 +47,10 @@ public class GUIMachineSatLinker extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIMachineSatLinker.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
-		this.drawInfoPanel(guiLeft - 16, guiTop + 36, 16, 16, 2);
-		this.drawInfoPanel(guiLeft - 16, guiTop + 36 + 16, 16, 16, 3);
+		drawInfoPanel(this.guiLeft - 16, this.guiTop + 36, 16, 16, 2);
+		drawInfoPanel(this.guiLeft - 16, this.guiTop + 36 + 16, 16, 16, 3);
 	}
 }

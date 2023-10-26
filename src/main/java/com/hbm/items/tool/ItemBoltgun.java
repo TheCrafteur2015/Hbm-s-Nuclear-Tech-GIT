@@ -31,8 +31,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 public class ItemBoltgun extends Item implements IAnimatedItem {
 
 	public ItemBoltgun() {
-		this.setMaxStackSize(1);
-		this.setCreativeTab(MainRegistry.controlTab);
+		setMaxStackSize(1);
+		setCreativeTab(MainRegistry.controlTab);
 		
 		ToolType.BOLT.register(new ItemStack(this));
 	}
@@ -40,7 +40,7 @@ public class ItemBoltgun extends Item implements IAnimatedItem {
 	@Override
 	public Item setUnlocalizedName(String unlocalizedName) {
 		super.setUnlocalizedName(unlocalizedName);
-		this.setTextureName(RefStrings.MODID + ":"+ unlocalizedName);
+		setTextureName(RefStrings.MODID + ":"+ unlocalizedName);
 		return this;
 	}
 	

@@ -10,12 +10,12 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.hbm.handler.ToolAbility;
-import com.hbm.handler.ToolAbility.*;
-import com.hbm.main.MainRegistry;
+import com.hbm.handler.ToolAbility.SilkAbility;
+import com.hbm.handler.WeaponAbility;
+import com.hbm.main.ServerProxy;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.PlayerInformPacket;
 import com.hbm.util.ChatBuilder;
-import com.hbm.handler.WeaponAbility;
 
 import api.hbm.item.IDepthRockTool;
 import cpw.mods.fml.relauncher.Side;
@@ -29,6 +29,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
@@ -43,8 +44,9 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
 	//was there a reason for this to be private?
 	protected float damage;
 	protected double movement;
+	@SuppressWarnings({ "unchecked", "serial", "rawtypes" })
 	protected List<ToolAbility> breakAbility = new ArrayList() {{ add(null); }};
-	protected List<WeaponAbility> hitAbility = new ArrayList();
+	protected List<WeaponAbility> hitAbility = new ArrayList<>();
 	
 	public static enum EnumToolType {
 		
@@ -73,8 +75,8 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
 			this.blocks = blocks;
 		}
 
-		public Set<Material> materials = new HashSet();
-		public Set<Block> blocks = new HashSet();
+		public Set<Material> materials = new HashSet<>();
+		public Set<Block> blocks = new HashSet<>();
 	}
 	
 	public ItemToolAbility setShears() {
@@ -90,10 +92,10 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
 		
 		// hacky workaround, might be good to rethink this entire system
 		if(type == EnumToolType.MINER) {
-			this.setHarvestLevel("pickaxe", material.getHarvestLevel());
-			this.setHarvestLevel("shovel", material.getHarvestLevel());
+			setHarvestLevel("pickaxe", material.getHarvestLevel());
+			setHarvestLevel("shovel", material.getHarvestLevel());
 		} else {
-			this.setHarvestLevel(type.toString().toLowerCase(Locale.US), material.getHarvestLevel());
+			setHarvestLevel(type.toString().toLowerCase(Locale.US), material.getHarvestLevel());
 		}
 	}
 
@@ -113,10 +115,12 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
 		return this;
 	}
 
+	@Override
 	public EnumRarity getRarity(ItemStack stack) {
 		return this.rarity != EnumRarity.common ? this.rarity : super.getRarity(stack);
 	}
 
+	@Override
 	public boolean hitEntity(ItemStack stack, EntityLivingBase victim, EntityLivingBase attacker) {
 
 		if(!attacker.worldObj.isRemote && !this.hitAbility.isEmpty() && attacker instanceof EntityPlayer && canOperate(stack)) {
@@ -138,8 +142,8 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
 		Block block = world.getBlock(x, y, z);
 		int meta = world.getBlockMetadata(x, y, z);
 
-		if(!world.isRemote && (canHarvestBlock(block, stack) || canShearBlock(block, stack, world, x, y, z)) && this.getCurrentAbility(stack) != null && canOperate(stack))
-			return this.getCurrentAbility(stack).onDig(world, x, y, z, player, block, meta, this);
+		if(!world.isRemote && (canHarvestBlock(block, stack) || canShearBlock(block, stack, world, x, y, z)) && getCurrentAbility(stack) != null && canOperate(stack))
+			return getCurrentAbility(stack).onDig(world, x, y, z, player, block, meta, this);
 
 		return false;
 	}
@@ -155,10 +159,10 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
 		if(!canOperate(stack))
 			return 1;
 
-		if(toolType == null)
+		if(this.toolType == null)
 			return super.getDigSpeed(stack, block, meta);
 
-		if(toolType.blocks.contains(block) || toolType.materials.contains(block.getMaterial()))
+		if(this.toolType.blocks.contains(block) || this.toolType.materials.contains(block.getMaterial()))
 			return this.efficiencyOnProperMaterial;
 
 		return super.getDigSpeed(stack, block, meta);
@@ -170,26 +174,30 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
 		if(!canOperate(stack))
 			return false;
 
-		if(this.getCurrentAbility(stack) instanceof SilkAbility)
+		if(getCurrentAbility(stack) instanceof SilkAbility)
 			return true;
 
 		return getDigSpeed(stack, block, 0) > 1;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Multimap getItemAttributeModifiers() {
 
 		Multimap multimap = HashMultimap.create();
-		multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Tool modifier", (double) this.damage, 0));
-		multimap.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Tool modifier", movement, 1));
+		multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(Item.field_111210_e, "Tool modifier", this.damage, 0));
+		multimap.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new AttributeModifier(Item.field_111210_e, "Tool modifier", this.movement, 1));
 		return multimap;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean hasEffect(ItemStack stack) {
 		return getCurrentAbility(stack) != null || stack.isItemEnchanted();
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 
@@ -226,6 +234,7 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
 		}
 	}
 
+	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
 		
 		if(world.isRemote || this.breakAbility.size() < 2 || !canOperate(stack))
@@ -241,7 +250,7 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
 
 		while(getCurrentAbility(stack) != null && !getCurrentAbility(stack).isAllowed()) {
 
-			PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.start("[Ability ").nextTranslation(getCurrentAbility(stack).getName()).next(getCurrentAbility(stack).getExtension() + " is blacklisted!]").colorAll(EnumChatFormatting.RED).flush(), MainRegistry.proxy.ID_TOOLABILITY), (EntityPlayerMP) player);
+			PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.start("[Ability ").nextTranslation(getCurrentAbility(stack).getName()).next(getCurrentAbility(stack).getExtension() + " is blacklisted!]").colorAll(EnumChatFormatting.RED).flush(), ServerProxy.ID_TOOLABILITY), (EntityPlayerMP) player);
 
 
 			i++;
@@ -249,9 +258,9 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
 		}
 
 		if(getCurrentAbility(stack) != null) {
-			PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.start("[Enabled ").nextTranslation(getCurrentAbility(stack).getName()).next(getCurrentAbility(stack).getExtension() + "]").colorAll(EnumChatFormatting.YELLOW).flush(), MainRegistry.proxy.ID_TOOLABILITY), (EntityPlayerMP) player);
+			PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.start("[Enabled ").nextTranslation(getCurrentAbility(stack).getName()).next(getCurrentAbility(stack).getExtension() + "]").colorAll(EnumChatFormatting.YELLOW).flush(), ServerProxy.ID_TOOLABILITY), (EntityPlayerMP) player);
 		} else {
-			PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.start("[Tool ability deactivated]").color(EnumChatFormatting.GOLD).flush(), MainRegistry.proxy.ID_TOOLABILITY), (EntityPlayerMP) player);
+			PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.start("[Tool ability deactivated]").color(EnumChatFormatting.GOLD).flush(), ServerProxy.ID_TOOLABILITY), (EntityPlayerMP) player);
 		}
 
 		world.playSoundAtEntity(player, "random.orb", 0.25F, getCurrentAbility(stack) == null ? 0.75F : 1.25F);

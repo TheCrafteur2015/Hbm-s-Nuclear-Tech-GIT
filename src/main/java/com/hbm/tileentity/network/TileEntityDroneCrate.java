@@ -47,41 +47,42 @@ public class TileEntityDroneCrate extends TileEntityMachineBase implements IGUIP
 		return "container.droneCrate";
 	}
 
+	@SuppressWarnings({ "unchecked", "deprecation" })
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			this.tank.setType(18, slots);
+			this.tank.setType(18, this.slots);
 			
-			if(sendingMode && !itemType && worldObj.getTotalWorldTime() % 20 == 0) {
-				this.subscribeToAllAround(tank.getTankType(), this);
+			if(this.sendingMode && !this.itemType && this.worldObj.getTotalWorldTime() % 20 == 0) {
+				this.subscribeToAllAround(this.tank.getTankType(), this);
 			}
 			
-			if(!sendingMode && !itemType && worldObj.getTotalWorldTime() % 20 == 0) {
-				this.sendFluidToAll(tank, this);
+			if(!this.sendingMode && !this.itemType && this.worldObj.getTotalWorldTime() % 20 == 0) {
+				this.sendFluidToAll(this.tank, this);
 			}
 			
-			if(nextY != -1) {
+			if(this.nextY != -1) {
 				
-				List<EntityDeliveryDrone> drones = worldObj.getEntitiesWithinAABB(EntityDeliveryDrone.class, AxisAlignedBB.getBoundingBox(xCoord, yCoord + 1, zCoord, xCoord + 1, yCoord + 2, zCoord + 1));
+				List<EntityDeliveryDrone> drones = this.worldObj.getEntitiesWithinAABB(EntityDeliveryDrone.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord + 1, this.zCoord, this.xCoord + 1, this.yCoord + 2, this.zCoord + 1));
 				for(EntityDeliveryDrone drone : drones) {
 					if(Vec3.createVectorHelper(drone.motionX, drone.motionY, drone.motionZ).lengthVector() < 0.05) {
-						drone.setTarget(nextX + 0.5, nextY, nextZ + 0.5);
+						drone.setTarget(this.nextX + 0.5, this.nextY, this.nextZ + 0.5);
 
-						if(sendingMode && itemType) loadItems(drone);
-						if(!sendingMode && itemType) unloadItems(drone);
-						if(sendingMode && !itemType) loadFluid(drone);
-						if(!sendingMode && !itemType) unloadFluid(drone);
+						if(this.sendingMode && this.itemType) loadItems(drone);
+						if(!this.sendingMode && this.itemType) unloadItems(drone);
+						if(this.sendingMode && !this.itemType) loadFluid(drone);
+						if(!this.sendingMode && !this.itemType) unloadFluid(drone);
 					}
 				}
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setIntArray("pos", new int[] {nextX, nextY, nextZ});
-			data.setBoolean("mode", sendingMode);
-			data.setBoolean("type", itemType);
-			tank.writeToNBT(data, "t");
+			data.setIntArray("pos", new int[] {this.nextX, this.nextY, this.nextZ});
+			data.setBoolean("mode", this.sendingMode);
+			data.setBoolean("type", this.itemType);
+			this.tank.writeToNBT(data, "t");
 			INBTPacketReceiver.networkPack(this, data, 25);
 		}
 	}
@@ -94,7 +95,7 @@ public class TileEntityDroneCrate extends TileEntityMachineBase implements IGUIP
 		this.nextZ = pos[2];
 		this.sendingMode = nbt.getBoolean("mode");
 		this.itemType = nbt.getBoolean("type");
-		tank.readFromNBT(nbt, "t");
+		this.tank.readFromNBT(nbt, "t");
 	}
 	
 	protected void loadItems(EntityDeliveryDrone drone) {
@@ -112,9 +113,9 @@ public class TileEntityDroneCrate extends TileEntityMachineBase implements IGUIP
 		}
 		
 		if(loaded) {
-			this.markDirty();
+			markDirty();
 			drone.setAppearance(1);
-			worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "hbm:item.unpack", 0.5F, 0.75F);
+			this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, "hbm:item.unpack", 0.5F, 0.75F);
 		}
 	}
 	
@@ -135,11 +136,11 @@ public class TileEntityDroneCrate extends TileEntityMachineBase implements IGUIP
 			}
 		}
 		
-		this.markDirty();
+		markDirty();
 		
 		if(emptied) {
 			drone.setAppearance(0);
-			worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "hbm:item.unpack", 0.5F, 0.75F);
+			this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, "hbm:item.unpack", 0.5F, 0.75F);
 		}
 	}
 	
@@ -148,12 +149,12 @@ public class TileEntityDroneCrate extends TileEntityMachineBase implements IGUIP
 		if(drone.getAppearance() != 0) return;
 		
 		if(this.tank.getFill() > 0) {
-			drone.fluid = new FluidStack(tank.getTankType(), tank.getFill());
+			drone.fluid = new FluidStack(this.tank.getTankType(), this.tank.getFill());
 			this.tank.setFill(0);
 			drone.setAppearance(2);
-			worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "hbm:item.unpack", 0.5F, 0.75F);
+			this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, "hbm:item.unpack", 0.5F, 0.75F);
 			
-			this.markDirty();
+			markDirty();
 		}
 	}
 	
@@ -161,20 +162,20 @@ public class TileEntityDroneCrate extends TileEntityMachineBase implements IGUIP
 		
 		if(drone.getAppearance() != 2) return;
 		
-		if(drone.fluid != null && drone.fluid.type == tank.getTankType()) {
+		if(drone.fluid != null && drone.fluid.type == this.tank.getTankType()) {
 			
-			if(drone.fluid.fill + tank.getFill() <= tank.getMaxFill()) {
-				tank.setFill(tank.getFill() + drone.fluid.fill);
+			if(drone.fluid.fill + this.tank.getFill() <= this.tank.getMaxFill()) {
+				this.tank.setFill(this.tank.getFill() + drone.fluid.fill);
 				drone.fluid = null;
 				drone.setAppearance(0);
 			} else {
-				int overshoot = drone.fluid.fill + tank.getFill() - tank.getMaxFill();
-				tank.setFill(tank.getMaxFill());
+				int overshoot = drone.fluid.fill + this.tank.getFill() - this.tank.getMaxFill();
+				this.tank.setFill(this.tank.getMaxFill());
 				drone.fluid.fill = overshoot;
 			}
-			worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "hbm:item.unpack", 0.5F, 0.75F);
+			this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, "hbm:item.unpack", 0.5F, 0.75F);
 			
-			this.markDirty();
+			markDirty();
 		}
 	}
 
@@ -195,7 +196,7 @@ public class TileEntityDroneCrate extends TileEntityMachineBase implements IGUIP
 
 	@Override
 	public BlockPos getPoint() {
-		return new BlockPos(xCoord, yCoord + 1, zCoord);
+		return new BlockPos(this.xCoord, this.yCoord + 1, this.zCoord);
 	}
 
 	@Override
@@ -203,7 +204,7 @@ public class TileEntityDroneCrate extends TileEntityMachineBase implements IGUIP
 		this.nextX = x;
 		this.nextY = y;
 		this.nextZ = z;
-		this.markDirty();
+		markDirty();
 	}
 	
 	@Override
@@ -216,17 +217,17 @@ public class TileEntityDroneCrate extends TileEntityMachineBase implements IGUIP
 		this.nextZ = pos[2];
 		this.sendingMode = nbt.getBoolean("mode");
 		this.itemType = nbt.getBoolean("type");
-		tank.readFromNBT(nbt, "t");
+		this.tank.readFromNBT(nbt, "t");
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		
-		nbt.setIntArray("pos", new int[] {nextX, nextY, nextZ});
-		nbt.setBoolean("mode", sendingMode);
-		nbt.setBoolean("type", itemType);
-		tank.writeToNBT(nbt, "t");
+		nbt.setIntArray("pos", new int[] {this.nextX, this.nextY, this.nextZ});
+		nbt.setBoolean("mode", this.sendingMode);
+		nbt.setBoolean("type", this.itemType);
+		this.tank.writeToNBT(nbt, "t");
 	}
 
 	@Override
@@ -242,7 +243,7 @@ public class TileEntityDroneCrate extends TileEntityMachineBase implements IGUIP
 
 	@Override
 	public boolean hasPermission(EntityPlayer player) {
-		return this.isUseableByPlayer(player);
+		return isUseableByPlayer(player);
 	}
 
 	@Override
@@ -250,27 +251,27 @@ public class TileEntityDroneCrate extends TileEntityMachineBase implements IGUIP
 		
 		if(data.hasKey("mode")) {
 			this.sendingMode = !this.sendingMode;
-			this.markChanged();
+			markChanged();
 		}
 		
 		if(data.hasKey("type")) {
 			this.itemType = !this.itemType;
-			this.markChanged();
+			markChanged();
 		}
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return new FluidTank[] { tank };
+		return new FluidTank[] { this.tank };
 	}
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return !sendingMode && !itemType ? new FluidTank[] { tank } : new FluidTank[0];
+		return !this.sendingMode && !this.itemType ? new FluidTank[] { this.tank } : new FluidTank[0];
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return sendingMode && !itemType ? new FluidTank[] { tank } : new FluidTank[0];
+		return this.sendingMode && !this.itemType ? new FluidTank[] { this.tank } : new FluidTank[0];
 	}
 }

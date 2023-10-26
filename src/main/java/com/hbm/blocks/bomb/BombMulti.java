@@ -2,6 +2,15 @@ package com.hbm.blocks.bomb;
 
 import java.util.Random;
 
+import com.hbm.blocks.ModBlocks;
+import com.hbm.explosion.ExplosionChaos;
+import com.hbm.explosion.ExplosionLarge;
+import com.hbm.explosion.ExplosionNukeGeneric;
+import com.hbm.interfaces.IBomb;
+import com.hbm.main.MainRegistry;
+import com.hbm.tileentity.bomb.TileEntityBombMulti;
+
+import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -16,16 +25,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import com.hbm.blocks.ModBlocks;
-import com.hbm.explosion.ExplosionChaos;
-import com.hbm.explosion.ExplosionLarge;
-import com.hbm.explosion.ExplosionNukeGeneric;
-import com.hbm.interfaces.IBomb;
-import com.hbm.main.MainRegistry;
-import com.hbm.tileentity.bomb.TileEntityBombMulti;
-
-import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 
 public class BombMulti extends BlockContainer implements IBomb {
 
@@ -50,7 +49,7 @@ public class BombMulti extends BlockContainer implements IBomb {
 
 	@Override
 	public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_) {
-		if(!keepInventory) {
+		if(!BombMulti.keepInventory) {
 			TileEntityBombMulti tileentityfurnace = (TileEntityBombMulti) p_149749_1_.getTileEntity(p_149749_2_, p_149749_3_, p_149749_4_);
 
 			if(tileentityfurnace != null) {
@@ -112,7 +111,7 @@ public class BombMulti extends BlockContainer implements IBomb {
 		TileEntityBombMulti entity = (TileEntityBombMulti) p_149695_1_.getTileEntity(x, y, z);
 		if(p_149695_1_.isBlockIndirectlyGettingPowered(x, y, z)) {
 			if(/* entity.getExplosionType() != 0 */entity.isLoaded()) {
-				this.onBlockDestroyedByPlayer(p_149695_1_, x, y, z, 1);
+				onBlockDestroyedByPlayer(p_149695_1_, x, y, z, 1);
 				igniteTestBomb(p_149695_1_, x, y, z);
 			}
 		}
@@ -214,13 +213,13 @@ public class BombMulti extends BlockContainer implements IBomb {
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess p_149719_1_, int p_149719_2_, int p_149719_3_, int p_149719_4_) {
 		float f = 0.0625F;
-		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 8 * f, 1.0F);
+		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 8 * f, 1.0F);
 	}
 
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
 		float f = 0.0625F;
-		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 8 * f, 1.0F);
+		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 8 * f, 1.0F);
 		return AxisAlignedBB.getBoundingBox(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
 	}
 

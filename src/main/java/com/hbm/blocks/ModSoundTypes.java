@@ -1,6 +1,7 @@
 package com.hbm.blocks;
 
 import com.hbm.main.MainRegistry;
+
 import net.minecraft.block.Block;
 
 public class ModSoundTypes {

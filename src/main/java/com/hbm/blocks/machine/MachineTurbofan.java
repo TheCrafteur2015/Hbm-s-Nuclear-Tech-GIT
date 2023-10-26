@@ -47,7 +47,7 @@ public class MachineTurbofan extends BlockDummyable implements ITooltipProvider 
 		if(world.isRemote) {
 			return true;
 		} else if(!player.isSneaking()) {
-			int[] pos = this.findCore(world, x, y, z);
+			int[] pos = findCore(world, x, y, z);
 
 			if(pos == null)
 				return false;
@@ -69,10 +69,10 @@ public class MachineTurbofan extends BlockDummyable implements ITooltipProvider 
 		
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 
-		this.makeExtra(world, x, y, z);
-		this.makeExtra(world, x - rot.offsetX, y, z - rot.offsetZ);
-		this.makeExtra(world, x - dir.offsetX * 2, y, z - dir.offsetZ * 2);
-		this.makeExtra(world, x - dir.offsetX * 2 - rot.offsetX, y, z - dir.offsetZ * 2 - rot.offsetZ);
+		makeExtra(world, x, y, z);
+		makeExtra(world, x - rot.offsetX, y, z - rot.offsetZ);
+		makeExtra(world, x - dir.offsetX * 2, y, z - dir.offsetZ * 2);
+		makeExtra(world, x - dir.offsetX * 2 - rot.offsetX, y, z - dir.offsetZ * 2 - rot.offsetZ);
 	}
 
 	@Override

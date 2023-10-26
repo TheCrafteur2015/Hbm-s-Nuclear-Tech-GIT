@@ -5,11 +5,13 @@ import java.util.List;
 import com.hbm.items.ModItems;
 import com.hbm.potion.HbmPotion;
 import com.hbm.tileentity.machine.rbmk.RBMKDials;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
@@ -21,22 +23,22 @@ public class EntityZirnoxDebris extends EntityDebrisBase {
 
 	public EntityZirnoxDebris(World world, double x, double y, double z, DebrisType type) {
 		super(world);
-		this.setPosition(x, y, z);
-		this.setType(type);
+		setPosition(x, y, z);
+		setType(type);
 	}
 
 	@Override
 	public boolean interactFirst(EntityPlayer player) {
 
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 
-			switch(this.getType()) {
-			case BLANK: if(player.inventory.addItemStackToInventory(new ItemStack(ModItems.debris_metal))) this.setDead(); break;
-			case ELEMENT: if(player.inventory.addItemStackToInventory(new ItemStack(ModItems.debris_element))) this.setDead(); break;
-			case SHRAPNEL: if(player.inventory.addItemStackToInventory(new ItemStack(ModItems.debris_shrapnel))) this.setDead(); break;
-			case GRAPHITE: if(player.inventory.addItemStackToInventory(new ItemStack(ModItems.debris_graphite))) this.setDead(); break;
-			case CONCRETE: if(player.inventory.addItemStackToInventory(new ItemStack(ModItems.debris_concrete))) this.setDead(); break;
-			case EXCHANGER: if(player.inventory.addItemStackToInventory(new ItemStack(ModItems.debris_exchanger))) this.setDead(); break;
+			switch(getType()) {
+			case BLANK: if(player.inventory.addItemStackToInventory(new ItemStack(ModItems.debris_metal))) setDead(); break;
+			case ELEMENT: if(player.inventory.addItemStackToInventory(new ItemStack(ModItems.debris_element))) setDead(); break;
+			case SHRAPNEL: if(player.inventory.addItemStackToInventory(new ItemStack(ModItems.debris_shrapnel))) setDead(); break;
+			case GRAPHITE: if(player.inventory.addItemStackToInventory(new ItemStack(ModItems.debris_graphite))) setDead(); break;
+			case CONCRETE: if(player.inventory.addItemStackToInventory(new ItemStack(ModItems.debris_concrete))) setDead(); break;
+			case EXCHANGER: if(player.inventory.addItemStackToInventory(new ItemStack(ModItems.debris_exchanger))) setDead(); break;
 			}
 
 			player.inventoryContainer.detectAndSendChanges();
@@ -45,21 +47,22 @@ public class EntityZirnoxDebris extends EntityDebrisBase {
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onUpdate() {
 
-		if(!hasSizeSet) {
+		if(!this.hasSizeSet) {
 
-			switch(this.getType()) {
-			case BLANK: this.setSize(0.5F, 0.5F); break;
-			case ELEMENT: this.setSize(0.75F, 0.5F); break;
-			case SHRAPNEL: this.setSize(0.5F, 0.5F); break;
-			case GRAPHITE: this.setSize(0.25F, 0.25F); break;
-			case CONCRETE: this.setSize(0.75F, 0.5F); break;
-			case EXCHANGER: this.setSize(1F, 0.5F); break;
+			switch(getType()) {
+			case BLANK: setSize(0.5F, 0.5F); break;
+			case ELEMENT: setSize(0.75F, 0.5F); break;
+			case SHRAPNEL: setSize(0.5F, 0.5F); break;
+			case GRAPHITE: setSize(0.25F, 0.25F); break;
+			case CONCRETE: setSize(0.75F, 0.5F); break;
+			case EXCHANGER: setSize(1F, 0.5F); break;
 			}
 
-			hasSizeSet = true;
+			this.hasSizeSet = true;
 		}
 
 		this.prevPosX = this.posX;
@@ -67,7 +70,7 @@ public class EntityZirnoxDebris extends EntityDebrisBase {
 		this.prevPosZ = this.posZ;
 
 		this.motionY -= 0.04D;
-		this.moveEntity(this.motionX, this.motionY, this.motionZ);
+		moveEntity(this.motionX, this.motionY, this.motionZ);
 
 		this.lastRot = this.rot;
 
@@ -80,20 +83,20 @@ public class EntityZirnoxDebris extends EntityDebrisBase {
 
 			this.rot += 10F;
 
-			if(rot >= 360F) {
+			if(this.rot >= 360F) {
 				this.rot -= 360F;
 				this.lastRot -= 360F;
 			}
 		}
 
-		if(!worldObj.isRemote) {
-			if((this.getType() == DebrisType.CONCRETE || this.getType() == DebrisType.EXCHANGER) && motionY > 0) {
+		if(!this.worldObj.isRemote) {
+			if((getType() == DebrisType.CONCRETE || getType() == DebrisType.EXCHANGER) && this.motionY > 0) {
 
-				Vec3 pos = Vec3.createVectorHelper(posX, posY, posZ);
-				Vec3 next = Vec3.createVectorHelper(posX + motionX * 2, posY + motionY * 2, posZ + motionZ * 2);
-				MovingObjectPosition mop = worldObj.func_147447_a(pos, next, false, false, false);
+				Vec3 pos = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
+				Vec3 next = Vec3.createVectorHelper(this.posX + this.motionX * 2, this.posY + this.motionY * 2, this.posZ + this.motionZ * 2);
+				MovingObjectPosition mop = this.worldObj.func_147447_a(pos, next, false, false, false);
 
-				if(mop != null && mop.typeOfHit == mop.typeOfHit.BLOCK) {
+				if(mop != null && mop.typeOfHit == MovingObjectType.BLOCK) {
 
 					int x = mop.blockX;
 					int y = mop.blockY;
@@ -105,33 +108,34 @@ public class EntityZirnoxDebris extends EntityDebrisBase {
 
 								int rn = Math.abs(i) + Math.abs(j) + Math.abs(k);
 
-								if(rn <= 1 || rand.nextInt(rn) == 0)
-									worldObj.setBlockToAir(x + i, y + j, z + k);
+								if(rn <= 1 || this.rand.nextInt(rn) == 0)
+									this.worldObj.setBlockToAir(x + i, y + j, z + k);
 							}
 						}
 					}
 
-					this.setDead();
+					setDead();
 				}
 			}
 
-			if(this.getType() == DebrisType.ELEMENT || this.getType() == DebrisType.GRAPHITE) {
-				List<EntityLivingBase> entities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.boundingBox.expand(2.5, 2.5, 2.5));
+			if(getType() == DebrisType.ELEMENT || getType() == DebrisType.GRAPHITE) {
+				List<EntityLivingBase> entities = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.boundingBox.expand(2.5, 2.5, 2.5));
 				
-				int level = this.getType() == DebrisType.ELEMENT ? 7 : 4;
+				int level = getType() == DebrisType.ELEMENT ? 7 : 4;
 				for(EntityLivingBase e : entities) {
 					e.addPotionEffect(new PotionEffect(HbmPotion.radiation.id, 60 * 20, level));
 				}
 			}
 
-			if(!RBMKDials.getPermaScrap(worldObj) && this.ticksExisted > getLifetime() + this.getEntityId() % 50)
-				this.setDead();
+			if(!RBMKDials.getPermaScrap(this.worldObj) && this.ticksExisted > getLifetime() + getEntityId() % 50)
+				setDead();
 		}
 	}
 
+	@Override
 	protected int getLifetime() {
 
-		switch(this.getType()) {
+		switch(getType()) {
 		case BLANK: return 3 * 60 * 20;
 		case ELEMENT: return 10 * 60 * 20;
 		case SHRAPNEL: return 15 * 60 * 20;

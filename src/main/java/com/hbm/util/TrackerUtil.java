@@ -30,7 +30,7 @@ public class TrackerUtil {
 		
 		if(world instanceof WorldServer) {
 			WorldServer server = (WorldServer) world;
-			EntityTrackerEntry entry = getTrackerEntry(server, e.getEntityId());
+			EntityTrackerEntry entry = TrackerUtil.getTrackerEntry(server, e.getEntityId());
 			int xScaled = e.myEntitySize.multiplyBy32AndRound(e.posX);
 			int yScaled = MathHelper.floor_double(e.posY * 32.0D);
 			int zScaled = e.myEntitySize.multiplyBy32AndRound(e.posZ);
@@ -46,7 +46,7 @@ public class TrackerUtil {
 		
 		if(world instanceof WorldServer) {
 			WorldServer server = (WorldServer) world;
-			EntityTrackerEntry entry = getTrackerEntry(server, e.getEntityId());
+			EntityTrackerEntry entry = TrackerUtil.getTrackerEntry(server, e.getEntityId());
 			entry.blocksDistanceThreshold = range;
 		}
 	}

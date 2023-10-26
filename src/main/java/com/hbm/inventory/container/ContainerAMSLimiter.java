@@ -1,6 +1,7 @@
 package com.hbm.inventory.container;
 
 import com.hbm.tileentity.machine.TileEntityAMSLimiter;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -17,28 +18,28 @@ private TileEntityAMSLimiter amsLmiter;
 	private int mode;
 	
 	public ContainerAMSLimiter(InventoryPlayer invPlayer, TileEntityAMSLimiter tedf) {
-		amsLmiter = tedf;
+		this.amsLmiter = tedf;
 
 		//Fluid In
-		this.addSlotToContainer(new Slot(tedf, 0, 44, 17));
+		addSlotToContainer(new Slot(tedf, 0, 44, 17));
 		//Fluid Out
-		this.addSlotToContainer(new Slot(tedf, 1, 44, 53));
+		addSlotToContainer(new Slot(tedf, 1, 44, 53));
 		//Focus
-		this.addSlotToContainer(new Slot(tedf, 2, 80, 53));
+		addSlotToContainer(new Slot(tedf, 2, 80, 53));
 		//Battery
-		this.addSlotToContainer(new Slot(tedf, 3, 116, 53));
+		addSlotToContainer(new Slot(tedf, 3, 116, 53));
 		
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++)
 		{
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
 		}
 	}
 	
@@ -54,7 +55,7 @@ private TileEntityAMSLimiter amsLmiter;
 			var3 = var5.copy();
 			
             if (par2 <= 3) {
-				if (!this.mergeItemStack(var5, 4, this.inventorySlots.size(), true))
+				if (!mergeItemStack(var5, 4, this.inventorySlots.size(), true))
 				{
 					return null;
 				}
@@ -77,16 +78,15 @@ private TileEntityAMSLimiter amsLmiter;
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return amsLmiter.isUseableByPlayer(player);
+		return this.amsLmiter.isUseableByPlayer(player);
 	}
 	
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 		
-		for(int i = 0; i < this.crafters.size(); i++)
-		{
-			ICrafting par1 = (ICrafting)this.crafters.get(i);
+		for (Object element : this.crafters) {
+			ICrafting par1 = (ICrafting)element;
 			
 			if(this.heat != this.amsLmiter.heat)
 			{
@@ -113,15 +113,15 @@ private TileEntityAMSLimiter amsLmiter;
 	public void updateProgressBar(int i, int j) {
 		if(i == 0)
 		{
-			amsLmiter.heat = j;
+			this.amsLmiter.heat = j;
 		}
 		if(i == 2)
 		{
-			amsLmiter.warning = j;
+			this.amsLmiter.warning = j;
 		}
 		if(i == 3)
 		{
-			amsLmiter.mode = j;
+			this.amsLmiter.mode = j;
 		}
 	}
 }

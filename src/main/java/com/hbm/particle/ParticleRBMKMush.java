@@ -22,8 +22,8 @@ public class ParticleRBMKMush extends EntityFX {
 
 	public ParticleRBMKMush(TextureManager p_i1213_1_, World p_i1218_1_, double p_i1218_2_, double p_i1218_4_, double p_i1218_6_, float scale) {
 		super(p_i1218_1_, p_i1218_2_, p_i1218_4_, p_i1218_6_);
-		theRenderEngine = p_i1213_1_;
-		maxAge = 50;
+		this.theRenderEngine = p_i1213_1_;
+		this.maxAge = 50;
 
 		this.particleRed = this.particleGreen = this.particleBlue = 0;
 		
@@ -32,8 +32,8 @@ public class ParticleRBMKMush extends EntityFX {
 
 	public ParticleRBMKMush(TextureManager p_i1213_1_, World p_i1218_1_, double p_i1218_2_, double p_i1218_4_, double p_i1218_6_, float red, float green, float blue, float scale) {
 		super(p_i1218_1_, p_i1218_2_, p_i1218_4_, p_i1218_6_);
-		theRenderEngine = p_i1213_1_;
-		maxAge = 50;
+		this.theRenderEngine = p_i1213_1_;
+		this.maxAge = 50;
 
 		this.particleRed = red;
 		this.particleGreen = green;
@@ -42,6 +42,7 @@ public class ParticleRBMKMush extends EntityFX {
 		this.particleScale = scale;
 	}
 
+	@Override
 	public void onUpdate() {
 		this.prevPosX = this.posX;
 		this.prevPosY = this.posY;
@@ -50,24 +51,26 @@ public class ParticleRBMKMush extends EntityFX {
 		++this.age;
 
 		if(this.age == this.maxAge) {
-			this.setDead();
+			setDead();
 		}
 	}
 
+	@Override
 	public int getFXLayer() {
 		return 3;
 	}
 
+	@Override
 	public void renderParticle(Tessellator tessellator, float p_70539_2_, float x, float y, float z, float sx, float sz) {
 
-		this.theRenderEngine.bindTexture(texture);
+		this.theRenderEngine.bindTexture(ParticleRBMKMush.texture);
 
 		int segs = 30;
 
 		// the size of one frame
 		double frame = 1D / (double) segs;
 		// how many frames we're in
-		int prog = age * segs / maxAge;
+		int prog = this.age * segs / this.maxAge;
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glDisable(GL11.GL_LIGHTING);
@@ -86,9 +89,9 @@ public class ParticleRBMKMush extends EntityFX {
 		tessellator.setBrightness(240);
 
 		float scale = this.particleScale;
-		float pX = (float) ((this.prevPosX + (this.posX - this.prevPosX) * (double) p_70539_2_ - interpPosX));
-		float pY = (float) ((this.prevPosY + (this.posY - this.prevPosY) * (double) p_70539_2_ - interpPosY)) + particleScale;
-		float pZ = (float) ((this.prevPosZ + (this.posZ - this.prevPosZ) * (double) p_70539_2_ - interpPosZ));
+		float pX = (float) ((this.prevPosX + (this.posX - this.prevPosX) * (double) p_70539_2_ - EntityFX.interpPosX));
+		float pY = (float) ((this.prevPosY + (this.posY - this.prevPosY) * (double) p_70539_2_ - EntityFX.interpPosY)) + this.particleScale;
+		float pZ = (float) ((this.prevPosZ + (this.posZ - this.prevPosZ) * (double) p_70539_2_ - EntityFX.interpPosZ));
 
 		tessellator.addVertexWithUV((double) (pX - x * scale - sx * scale), (double) (pY - y * scale), (double) (pZ - z * scale - sz * scale), 1, (prog + 1) * frame);
 		tessellator.addVertexWithUV((double) (pX - x * scale + sx * scale), (double) (pY + y * scale), (double) (pZ - z * scale + sz * scale), 1, prog * frame);

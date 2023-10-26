@@ -1,6 +1,7 @@
 package com.hbm.tileentity.network;
 
 import com.hbm.tileentity.TileEntityMachineBase;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -24,10 +25,10 @@ public abstract class TileEntityCraneBase extends TileEntityMachineBase {
 
 	@Override
 	public void updateEntity() {
-		if(hasWorldObj() && worldObj.isRemote) {
-			if(cachedOutputOverride != outputOverride) {
-				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-				cachedOutputOverride = outputOverride;
+		if(hasWorldObj() && this.worldObj.isRemote) {
+			if(this.cachedOutputOverride != this.outputOverride) {
+				this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+				this.cachedOutputOverride = this.outputOverride;
 			}
 		}
 	}
@@ -42,14 +43,14 @@ public abstract class TileEntityCraneBase extends TileEntityMachineBase {
 	}
 
 	public ForgeDirection getOutputOverride() {
-		return outputOverride;
+		return this.outputOverride;
 	}
 
 	public void setOutputOverride(ForgeDirection direction) {
 		ForgeDirection oldSide = getOutputSide();
 		if(oldSide == direction) direction = direction.getOpposite();
 
-		outputOverride = direction;
+		this.outputOverride = direction;
 
 		if(direction == getInputSide())
 			setInput(oldSide);
@@ -58,13 +59,13 @@ public abstract class TileEntityCraneBase extends TileEntityMachineBase {
 	}
 
 	public void setInput(ForgeDirection direction) {
-		outputOverride = getOutputSide(); // save the current output, if it isn't saved yet
+		this.outputOverride = getOutputSide(); // save the current output, if it isn't saved yet
 
 		ForgeDirection oldSide = getInputSide();
 		if(oldSide == direction) direction = direction.getOpposite();
 
 		boolean needSwapOutput = direction == getOutputSide();
-		worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, direction.ordinal(), needSwapOutput ? 4 : 3);
+		this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, direction.ordinal(), needSwapOutput ? 4 : 3);
 
 		if(needSwapOutput)
 			setOutputOverride(oldSide);
@@ -72,8 +73,8 @@ public abstract class TileEntityCraneBase extends TileEntityMachineBase {
 
 	protected void onBlockChanged() {
 		if(!hasWorldObj()) return;
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		worldObj.notifyBlockChange(xCoord, yCoord, zCoord, getBlockType());
+		this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+		this.worldObj.notifyBlockChange(this.xCoord, this.yCoord, this.zCoord, getBlockType());
 		markDirty();
 	}
 
@@ -81,7 +82,7 @@ public abstract class TileEntityCraneBase extends TileEntityMachineBase {
 	public Packet getDescriptionPacket() {
 		NBTTagCompound nbt = new NBTTagCompound();
 		writeToNBT(nbt);
-		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, nbt);
+		return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, nbt);
 	}
 
 	@Override
@@ -93,12 +94,12 @@ public abstract class TileEntityCraneBase extends TileEntityMachineBase {
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		if(nbt.hasKey("CraneOutputOverride", Constants.NBT.TAG_BYTE))
-			outputOverride = ForgeDirection.getOrientation(nbt.getByte("CraneOutputOverride"));
+			this.outputOverride = ForgeDirection.getOrientation(nbt.getByte("CraneOutputOverride"));
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setByte("CraneOutputOverride", (byte) outputOverride.ordinal());
+		nbt.setByte("CraneOutputOverride", (byte) this.outputOverride.ordinal());
 	}
 }

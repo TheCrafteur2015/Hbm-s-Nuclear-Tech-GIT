@@ -3,6 +3,7 @@ package com.hbm.render.entity.projectile;
 import org.lwjgl.opengl.GL11;
 
 import com.hbm.lib.RefStrings;
+
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
@@ -42,7 +43,7 @@ public class RenderMeteor extends Render {
 			tesseract.addVertexWithUV(+0.5, -0.5, -0.5, 0, 0);
 			tesseract.addVertexWithUV(+0.5, +0.5, -0.5, 0, 1);
 			tesseract.addVertexWithUV(-0.5, +0.5, -0.5, 1, 1);
-			this.bindTexture(loc1);
+			bindTexture(loc1);
 			tesseract.draw();
 
 			tesseract.startDrawingQuads();
@@ -50,7 +51,7 @@ public class RenderMeteor extends Render {
 			tesseract.addVertexWithUV(-0.5, -0.5, -0.5, 0, 0);
 			tesseract.addVertexWithUV(-0.5, +0.5, -0.5, 0, 1);
 			tesseract.addVertexWithUV(-0.5, +0.5, +0.5, 1, 1);
-			this.bindTexture(loc1);
+			bindTexture(loc1);
 			tesseract.draw();
 
 			tesseract.startDrawingQuads();
@@ -58,7 +59,7 @@ public class RenderMeteor extends Render {
 			tesseract.addVertexWithUV(-0.5, -0.5, +0.5, 0, 0);
 			tesseract.addVertexWithUV(-0.5, +0.5, +0.5, 0, 1);
 			tesseract.addVertexWithUV(+0.5, +0.5, +0.5, 1, 1);
-			this.bindTexture(loc1);
+			bindTexture(loc1);
 			tesseract.draw();
 
 			tesseract.startDrawingQuads();
@@ -66,7 +67,7 @@ public class RenderMeteor extends Render {
 			tesseract.addVertexWithUV(+0.5, -0.5, +0.5, 0, 0);
 			tesseract.addVertexWithUV(+0.5, +0.5, +0.5, 0, 1);
 			tesseract.addVertexWithUV(+0.5, +0.5, -0.5, 1, 1);
-			this.bindTexture(loc1);
+			bindTexture(loc1);
 			tesseract.draw();
 
 			tesseract.startDrawingQuads();
@@ -74,7 +75,7 @@ public class RenderMeteor extends Render {
 			tesseract.addVertexWithUV(+0.5, -0.5, +0.5, 0, 0);
 			tesseract.addVertexWithUV(+0.5, -0.5, -0.5, 0, 1);
 			tesseract.addVertexWithUV(-0.5, -0.5, -0.5, 1, 1);
-			this.bindTexture(loc1);
+			bindTexture(loc1);
 			tesseract.draw();
 
 			tesseract.startDrawingQuads();
@@ -82,7 +83,7 @@ public class RenderMeteor extends Render {
 			tesseract.addVertexWithUV(-0.5, +0.5, +0.5, 0, 0);
 			tesseract.addVertexWithUV(-0.5, +0.5, -0.5, 0, 1);
 			tesseract.addVertexWithUV(+0.5, +0.5, -0.5, 1, 1);
-			this.bindTexture(loc1);
+			bindTexture(loc1);
 			tesseract.draw();
 		GL11.glPopMatrix();
 		

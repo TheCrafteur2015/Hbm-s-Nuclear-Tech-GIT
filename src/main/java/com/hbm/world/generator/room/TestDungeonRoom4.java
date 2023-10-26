@@ -20,12 +20,14 @@ public class TestDungeonRoom4 extends CellularDungeonRoom {
 		this.daisyDirection = dir;
 	}
 
+	@SuppressWarnings({ "unchecked", "serial", "rawtypes" })
+	@Override
 	public void generateMain(World world, int x, int y, int z) {
 		
 		super.generateMain(world, x, y, z);
-		DungeonToolbox.generateBox(world, x, y + parent.height - 2, z, parent.width, 1, parent.width, new ArrayList() {{ add(new MetaBlock(Blocks.air)); add(new MetaBlock(Blocks.web)); }});
+		DungeonToolbox.generateBox(world, x, y + this.parent.height - 2, z, this.parent.width, 1, this.parent.width, new ArrayList() {{ add(new MetaBlock(Blocks.air)); add(new MetaBlock(Blocks.web)); }});
 		
-		DungeonToolbox.generateBox(world, x + 1, y, z + 1, parent.width - 2, 1, parent.width - 2, new ArrayList() {{
+		DungeonToolbox.generateBox(world, x + 1, y, z + 1, this.parent.width - 2, 1, this.parent.width - 2, new ArrayList() {{
 			add(new MetaBlock(ModBlocks.meteor_polished));
 			add(new MetaBlock(ModBlocks.meteor_polished));
 			add(new MetaBlock(ModBlocks.meteor_polished));
@@ -35,6 +37,7 @@ public class TestDungeonRoom4 extends CellularDungeonRoom {
 		}});
 	}
 	
+	@Override
 	public void generateWall(World world, int x, int y, int z, ForgeDirection wall, boolean door) {
 		
 		if(wall != ForgeDirection.NORTH)

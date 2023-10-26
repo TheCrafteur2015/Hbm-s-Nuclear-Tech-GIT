@@ -11,73 +11,73 @@ public class AudioWrapperClient extends AudioWrapper {
 	
 	public AudioWrapperClient(ResourceLocation source) {
 		if(source != null)
-			sound = new AudioDynamic(source);
+			this.sound = new AudioDynamic(source);
 	}
 	
 	@Override
 	public void setKeepAlive(int keepAlive) {
-		if(sound != null)
-			sound.setKeepAlive(keepAlive);
+		if(this.sound != null)
+			this.sound.setKeepAlive(keepAlive);
 	}
 	
 	@Override
 	public void keepAlive() {
-		if(sound != null)
-			sound.keepAlive();
+		if(this.sound != null)
+			this.sound.keepAlive();
 	}
 	
 	@Override
 	public void updatePosition(float x, float y, float z) {
-		if(sound != null)
-			sound.setPosition(x, y, z);
+		if(this.sound != null)
+			this.sound.setPosition(x, y, z);
 	}
 
 	@Override
 	public void updateVolume(float volume) {
-		if(sound != null)
-			sound.setVolume(volume);
+		if(this.sound != null)
+			this.sound.setVolume(volume);
 	}
 
 	@Override
 	public void updateRange(float range) {
-		if(sound != null)
-			sound.setRange(range);
+		if(this.sound != null)
+			this.sound.setRange(range);
 	}
 
 	@Override
 	public void updatePitch(float pitch) {
-		if(sound != null)
-			sound.setPitch(pitch);
+		if(this.sound != null)
+			this.sound.setPitch(pitch);
 	}
 
 	@Override
 	public float getVolume() {
-		if(sound != null)
-			return sound.getVolume();
+		if(this.sound != null)
+			return this.sound.getVolume();
 		return 1;
 	}
 
 	@Override
 	public float getPitch() {
-		if(sound != null)
-			return sound.getPitch();
+		if(this.sound != null)
+			return this.sound.getPitch();
 		return 1;
 	}
 
 	@Override
 	public void startSound() {
-		if(sound != null)
-			sound.start();
+		if(this.sound != null)
+			this.sound.start();
 	}
 
 	@Override
 	public void stopSound() {
-		if(sound != null)
-			sound.stop();
+		if(this.sound != null)
+			this.sound.stop();
 	}
 
 	@Override
 	public boolean isPlaying() {
-		return sound.isPlaying();
+		return this.sound.isPlaying();
 	}
 }

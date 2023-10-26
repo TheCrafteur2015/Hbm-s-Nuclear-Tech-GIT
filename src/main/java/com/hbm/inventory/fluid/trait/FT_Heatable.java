@@ -1,5 +1,11 @@
 package com.hbm.inventory.fluid.trait;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
@@ -8,26 +14,20 @@ import com.hbm.inventory.fluid.Fluids;
 
 import net.minecraft.util.EnumChatFormatting;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map.Entry;
-
 public class FT_Heatable extends FluidTrait {
 	
-	protected List<HeatingStep> steps = new ArrayList();
+	protected List<HeatingStep> steps = new ArrayList<>();
 	protected HashMap<HeatingType, Double> efficiency = new HashMap();
 	
 	/** Add in ascending order, lowest heat required goes first! */
 	public FT_Heatable addStep(int heat, int req, FluidType type, int prod) {
-		steps.add(new HeatingStep(req, heat, type, prod));
+		this.steps.add(new HeatingStep(req, heat, type, prod));
 		return this;
 	}
 	
 	/** sets efficiency for different types of heating, main difference is with water */
 	public FT_Heatable setEff(HeatingType type, double eff) {
-		efficiency.put(type, eff);
+		this.efficiency.put(type, eff);
 		return this;
 	}
 	
@@ -42,7 +42,7 @@ public class FT_Heatable extends FluidTrait {
 
 	@Override
 	public void addInfoHidden(List<String> info) {
-		info.add(EnumChatFormatting.AQUA + "Thermal capacity: " + this.getFirstStep().heatReq + " TU");
+		info.add(EnumChatFormatting.AQUA + "Thermal capacity: " + getFirstStep().heatReq + " TU");
 		for(HeatingType type : HeatingType.values()) {
 			
 			double eff = getEfficiency(type);
@@ -85,7 +85,7 @@ public class FT_Heatable extends FluidTrait {
 		
 		writer.name("steps").beginArray();
 		
-		for(HeatingStep step : steps) {
+		for(HeatingStep step : this.steps) {
 			writer.beginObject();
 			writer.name("typeProduced").value(step.typeProduced.getName());
 			writer.name("amountReq").value(step.amountReq);
@@ -117,7 +117,7 @@ public class FT_Heatable extends FluidTrait {
 		}
 		
 		for(HeatingType type : HeatingType.values()) {
-			if(obj.has(type.name())) efficiency.put(type, obj.get(type.name()).getAsDouble());
+			if(obj.has(type.name())) this.efficiency.put(type, obj.get(type.name()).getAsDouble());
 		}
 	}
 }

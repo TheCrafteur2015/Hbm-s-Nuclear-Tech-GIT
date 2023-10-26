@@ -18,9 +18,9 @@ public class BlockFissure extends Block implements IBlockMultiPass {
 
 	public BlockFissure() {
 		super(Material.rock);
-		this.setBlockTextureName("bedrock");
-		this.setBlockUnbreakable();
-		this.setResistance(1_000_000);
+		setBlockTextureName("bedrock");
+		setBlockUnbreakable();
+		setResistance(1_000_000);
 	}
 
 	@Override

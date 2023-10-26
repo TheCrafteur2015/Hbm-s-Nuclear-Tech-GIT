@@ -29,14 +29,11 @@ public class RTGUtil {
 		int newHeat = 0;
 		for(int slot : rtgSlots) {
 			
-			if(inventory[slot] == null)
-				continue;
-			
-			if(!(inventory[slot].getItem() instanceof ItemRTGPellet))
+			if((inventory[slot] == null) || !(inventory[slot].getItem() instanceof ItemRTGPellet))
 				continue;
 			
 			final ItemRTGPellet pellet = (ItemRTGPellet) inventory[slot].getItem();
-			newHeat += getPower(pellet, inventory[slot]);
+			newHeat += RTGUtil.getPower(pellet, inventory[slot]);
 			inventory[slot] = ItemRTGPellet.handleDecay(inventory[slot], pellet);
 		}
 		

@@ -46,24 +46,24 @@ public class ModelRendererObj {
 
 	public void copyTo(ModelRendererObj obj) {
 
-		obj.offsetX = offsetX;
-		obj.offsetY = offsetY;
-		obj.offsetZ = offsetZ;
-		obj.rotateAngleX = rotateAngleX;
-		obj.rotateAngleY = rotateAngleY;
-		obj.rotateAngleZ = rotateAngleZ;
-		obj.rotationPointX = rotationPointX;
-		obj.rotationPointY = rotationPointY;
-		obj.rotationPointZ = rotationPointZ;
+		obj.offsetX = this.offsetX;
+		obj.offsetY = this.offsetY;
+		obj.offsetZ = this.offsetZ;
+		obj.rotateAngleX = this.rotateAngleX;
+		obj.rotateAngleY = this.rotateAngleY;
+		obj.rotateAngleZ = this.rotateAngleZ;
+		obj.rotationPointX = this.rotationPointX;
+		obj.rotationPointY = this.rotationPointY;
+		obj.rotationPointZ = this.rotationPointZ;
 	}
 
 	public void copyRotationFrom(ModelRenderer model) {
 		/*offsetX = model.offsetX;
 		offsetY = model.offsetY;
 		offsetZ = model.offsetZ;*/
-		rotateAngleX = model.rotateAngleX;
-		rotateAngleY = model.rotateAngleY;
-		rotateAngleZ = model.rotateAngleZ;
+		this.rotateAngleX = model.rotateAngleX;
+		this.rotateAngleY = model.rotateAngleY;
+		this.rotateAngleZ = model.rotateAngleZ;
 		/*rotationPointX = model.rotationPointX;
 		rotationPointY = model.rotationPointY;
 		rotationPointZ = model.rotationPointZ;*/
@@ -72,7 +72,7 @@ public class ModelRendererObj {
 	@SideOnly(Side.CLIENT)
 	public void render(float scale) {
 
-		if(parts == null)
+		if(this.parts == null)
 			return;
 
 		GL11.glPushMatrix();
@@ -97,11 +97,11 @@ public class ModelRendererObj {
 
 		GL11.glScalef(scale, scale, scale);
 
-		if(parts.length > 0)
-			for(String part : parts)
-				model.renderPart(part);
+		if(this.parts.length > 0)
+			for(String part : this.parts)
+				this.model.renderPart(part);
 		else
-			model.renderAll();
+			this.model.renderAll();
 
 		GL11.glPopMatrix();
 	}

@@ -111,7 +111,7 @@ public class GlyphidHive {
 			for(int j = 0; j < 7; j++) {
 				for(int k = 0; k < 11; k++) {
 					
-					int block = schematic[6 - j][i][k];
+					int block = GlyphidHive.schematic[6 - j][i][k];
 					
 					if(block == 1 || (block != orientation && block > 1 && block < 6)) {
 						world.setBlock(x + i - 5, y + j - 2, z + k - 5, ModBlocks.glyphid_base);

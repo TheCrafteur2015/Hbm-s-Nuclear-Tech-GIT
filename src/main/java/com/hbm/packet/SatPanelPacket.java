@@ -26,14 +26,14 @@ public class SatPanelPacket implements IMessage {
 	}
 
 	public SatPanelPacket(Satellite sat) {
-		type = sat.getID();
+		this.type = sat.getID();
 
 		this.buffer = new PacketBuffer(Unpooled.buffer());
 		NBTTagCompound nbt = new NBTTagCompound();
 		sat.writeToNBT(nbt);
 		
 		try {
-			buffer.writeNBTTagCompoundToBuffer(nbt);
+			this.buffer.writeNBTTagCompoundToBuffer(nbt);
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -43,23 +43,23 @@ public class SatPanelPacket implements IMessage {
 	@Override
 	public void fromBytes(ByteBuf buf) {
 		
-		type = buf.readInt();
+		this.type = buf.readInt();
 		
-		if (buffer == null) {
-			buffer = new PacketBuffer(Unpooled.buffer());
+		if (this.buffer == null) {
+			this.buffer = new PacketBuffer(Unpooled.buffer());
 		}
-		buffer.writeBytes(buf);
+		this.buffer.writeBytes(buf);
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
 		
-		buf.writeInt(type);
+		buf.writeInt(this.type);
 		
-		if (buffer == null) {
-			buffer = new PacketBuffer(Unpooled.buffer());
+		if (this.buffer == null) {
+			this.buffer = new PacketBuffer(Unpooled.buffer());
 		}
-		buf.writeBytes(buffer);
+		buf.writeBytes(this.buffer);
 	}
 
 	public static class Handler implements IMessageHandler<SatPanelPacket, IMessage> {

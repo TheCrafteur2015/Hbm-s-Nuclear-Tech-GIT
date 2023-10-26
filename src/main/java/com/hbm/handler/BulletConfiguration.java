@@ -3,7 +3,11 @@ package com.hbm.handler;
 import java.util.List;
 
 import com.hbm.entity.projectile.EntityBulletBaseNT;
-import com.hbm.entity.projectile.EntityBulletBaseNT.*;
+import com.hbm.entity.projectile.EntityBulletBaseNT.IBulletHitBehaviorNT;
+import com.hbm.entity.projectile.EntityBulletBaseNT.IBulletHurtBehaviorNT;
+import com.hbm.entity.projectile.EntityBulletBaseNT.IBulletImpactBehaviorNT;
+import com.hbm.entity.projectile.EntityBulletBaseNT.IBulletRicochetBehaviorNT;
+import com.hbm.entity.projectile.EntityBulletBaseNT.IBulletUpdateBehaviorNT;
 import com.hbm.handler.guncfg.BulletConfigFactory;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
 import com.hbm.lib.ModDamageSource;
@@ -158,7 +162,7 @@ public class BulletConfiguration implements Cloneable {
 	
 	public BulletConfiguration setToBolt(int trail) {
 		
-		this.style = STYLE_BOLT;
+		this.style = BulletConfiguration.STYLE_BOLT;
 		this.trail = trail;
 		return this;
 	}
@@ -222,7 +226,7 @@ public class BulletConfiguration implements Cloneable {
 		
 		DamageSource dmg;
 		
-		String unloc = damageType;
+		String unloc = this.damageType;
 		
 		if(unloc.equals(ModDamageSource.s_zomg_prefix))
 			unloc += (bullet.worldObj.rand.nextInt(5) + 1); //pain

@@ -35,16 +35,16 @@ public class RocketTargetingPredictive implements IRocketTargetingBehavior {
 		
 		/* shift the buffer and add the older values */
 		for(int i = 1; i < 20; i++) {
-			targetMotion[i - 1] = targetMotion[i];
-			motionX += targetMotion[i][0];
-			motionY += targetMotion[i][1];
-			motionZ += targetMotion[i][2];
+			this.targetMotion[i - 1] = this.targetMotion[i];
+			motionX += this.targetMotion[i][0];
+			motionY += this.targetMotion[i][1];
+			motionZ += this.targetMotion[i][2];
 		}
 
 		/* push the new values to the buffer for future use */
-		targetMotion[19][0] = target.motionX;
-		targetMotion[19][1] = target.motionY;
-		targetMotion[19][2] = target.motionZ;
+		this.targetMotion[19][0] = target.motionX;
+		this.targetMotion[19][1] = target.motionY;
+		this.targetMotion[19][2] = target.motionZ;
 		
 		if(eta <= 1) {
 			rocket.setTarget(target.posX, target.posY - target.yOffset + target.height * 0.5D, target.posZ);

@@ -9,6 +9,7 @@ import com.hbm.lib.RefStrings;
 import com.hbm.render.model.ModelB92;
 import com.hbm.render.model.ModelB93;
 import com.hbm.render.model.ModelLeverAction;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
@@ -22,9 +23,9 @@ public class ItemRenderGunAnim implements IItemRenderer {
 	protected ModelB93 b93;
 	
 	public ItemRenderGunAnim() {
-		flippedGun = new ModelLeverAction();
-		b92 = new ModelB92();
-		b93 = new ModelB93();
+		this.flippedGun = new ModelLeverAction();
+		this.b92 = new ModelB92();
+		this.b93 = new ModelB93();
 	}
 
 	@Override
@@ -90,11 +91,11 @@ public class ItemRenderGunAnim implements IItemRenderer {
 				}
 				
 				if(item.getItem() == ModItems.gun_lever_action_sonata)
-					flippedGun.renderAnim((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, GunLeverActionS.getRotationFromAnim(item));
+					this.flippedGun.renderAnim((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, GunLeverActionS.getRotationFromAnim(item));
 				if(item.getItem() == ModItems.gun_b92)
-					b92.renderAnim((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, GunB92.getTransFromAnim(item));
+					this.b92.renderAnim((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, GunB92.getTransFromAnim(item));
 				if(item.getItem() == ModItems.gun_b93)
-					b93.renderAnim((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, GunB92.getTransFromAnim(item));
+					this.b93.renderAnim((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, GunB92.getTransFromAnim(item));
 				
 			GL11.glPopMatrix();
 			break;
@@ -132,11 +133,11 @@ public class ItemRenderGunAnim implements IItemRenderer {
 				}
 
 				if(item.getItem() == ModItems.gun_lever_action_sonata)
-					flippedGun.renderAnim((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, GunLeverActionS.getRotationFromAnim(item));
+					this.flippedGun.renderAnim((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, GunLeverActionS.getRotationFromAnim(item));
 				if(item.getItem() == ModItems.gun_b92)
-					b92.renderAnim((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, GunB92.getTransFromAnim(item));
+					this.b92.renderAnim((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, GunB92.getTransFromAnim(item));
 				if(item.getItem() == ModItems.gun_b93)
-					b93.renderAnim((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, GunB92.getTransFromAnim(item));
+					this.b93.renderAnim((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, GunB92.getTransFromAnim(item));
 			GL11.glPopMatrix();
 		default: break;
 		}

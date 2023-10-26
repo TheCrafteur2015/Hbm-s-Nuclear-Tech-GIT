@@ -109,10 +109,12 @@ public class RenderFluidTank extends TileEntitySpecialRenderer implements IItemR
 		
 		return new ItemRenderBase() {
 			
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(0, -2, 0);
 				GL11.glScaled(3.5, 3.5, 3.5);
 			}
+			@Override
 			public void renderCommonWithStack(ItemStack item) {
 				GL11.glRotated(90, 0, 1, 0);
 				GL11.glScaled(0.75, 0.75, 0.75);

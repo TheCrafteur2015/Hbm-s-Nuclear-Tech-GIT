@@ -82,10 +82,12 @@ public class RenderTurretHIMARS extends TileEntitySpecialRenderer implements IIt
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase( ) {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(0, -2, 0);
 				GL11.glScaled(3.5, 3.5, 3.5);
 			}
+			@Override
 			public void renderCommonWithStack(ItemStack item) {
 				GL11.glRotatef(-90, 0F, 1F, 0F);
 				GL11.glScaled(0.5, 0.5, 0.5);

@@ -24,13 +24,13 @@ public class ItemSiegeCoin extends Item {
 	
 	public ItemSiegeCoin() {
 		this.hasSubtypes = true;
-		this.setMaxDamage(0);
+		setMaxDamage(0);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIconFromDamage(int meta) {
-		return this.icons[meta % icons.length];
+		return this.icons[meta % this.icons.length];
 	}
 
 	@Override
@@ -38,10 +38,10 @@ public class ItemSiegeCoin extends Item {
 	public void registerIcons(IIconRegister p_94581_1_) {
 		this.itemIcon = Items.stick.getIconFromDamage(0);
 		
-		icons = new IIcon[SiegeTier.getLength()];
+		this.icons = new IIcon[SiegeTier.getLength()];
 		
 		for(int i = 0; i < SiegeTier.getLength(); i++) {
-			icons[i] = p_94581_1_.registerIcon(RefStrings.MODID + ":coin_siege_" + SiegeTier.tiers[i].name);
+			this.icons[i] = p_94581_1_.registerIcon(RefStrings.MODID + ":coin_siege_" + SiegeTier.tiers[i].name);
 		}
 	}
 

@@ -19,9 +19,8 @@ public abstract class RenderPylonBase extends TileEntitySpecialRenderer {
 	@Deprecated
 	public void renderSingleLine(TileEntityPylonBase pyl, double x, double y, double z) {
 		
-		for(int i = 0; i < pyl.connected.size(); i++) {
+		for (int[] wire : pyl.connected) {
 
-			int[] wire = pyl.connected.get(i);
 			TileEntity tile = pyl.getWorldObj().getTileEntity(wire[0], wire[1], wire[2]);
 			
 			if(tile instanceof TileEntityPylonBase) {
@@ -82,9 +81,8 @@ public abstract class RenderPylonBase extends TileEntitySpecialRenderer {
 	 */
 	public void renderLinesGeneric(TileEntityPylonBase pyl, double x, double y, double z) {
 		
-		for(int i = 0; i < pyl.connected.size(); i++) {
+		for (int[] wire : pyl.connected) {
 
-			int[] wire = pyl.connected.get(i);
 			TileEntity tile = pyl.getWorldObj().getTileEntity(wire[0], wire[1], wire[2]);
 			
 			if(tile instanceof TileEntityPylonBase) {
@@ -205,7 +203,7 @@ public abstract class RenderPylonBase extends TileEntitySpecialRenderer {
 		GL11.glDisable(GL11.GL_CULL_FACE);
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawing(5);
-		tessellator.setColorOpaque_I(LINE_COLOR);
+		tessellator.setColorOpaque_I(RenderPylonBase.LINE_COLOR);
 		tessellator.addVertex(x, y + girth, z);
 		tessellator.addVertex(x, y - girth, z);
 		tessellator.addVertex(a, b + girth, c);

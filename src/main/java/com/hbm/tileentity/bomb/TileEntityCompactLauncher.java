@@ -64,27 +64,27 @@ public class TileEntityCompactLauncher extends TileEntityLoadedBase implements I
 	private String customName;
 
 	public TileEntityCompactLauncher() {
-		slots = new ItemStack[8];
-		tanks = new FluidTank[2];
-		tanks[0] = new FluidTank(Fluids.NONE, 25000, 0);
-		tanks[1] = new FluidTank(Fluids.NONE, 25000, 1);
+		this.slots = new ItemStack[8];
+		this.tanks = new FluidTank[2];
+		this.tanks[0] = new FluidTank(Fluids.NONE, 25000, 0);
+		this.tanks[1] = new FluidTank(Fluids.NONE, 25000, 1);
 	}
 
 	@Override
 	public int getSizeInventory() {
-		return slots.length;
+		return this.slots.length;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		return slots[i];
+		return this.slots[i];
 	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
-		if (slots[i] != null) {
-			ItemStack itemStack = slots[i];
-			slots[i] = null;
+		if (this.slots[i] != null) {
+			ItemStack itemStack = this.slots[i];
+			this.slots[i] = null;
 			return itemStack;
 		} else {
 			return null;
@@ -93,7 +93,7 @@ public class TileEntityCompactLauncher extends TileEntityLoadedBase implements I
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemStack) {
-		slots[i] = itemStack;
+		this.slots[i] = itemStack;
 		if (itemStack != null && itemStack.stackSize > getInventoryStackLimit()) {
 			itemStack.stackSize = getInventoryStackLimit();
 		}
@@ -101,7 +101,7 @@ public class TileEntityCompactLauncher extends TileEntityLoadedBase implements I
 
 	@Override
 	public String getInventoryName() {
-		return this.hasCustomInventoryName() ? this.customName : "container.compactLauncher";
+		return hasCustomInventoryName() ? this.customName : "container.compactLauncher";
 	}
 
 	@Override
@@ -120,10 +120,10 @@ public class TileEntityCompactLauncher extends TileEntityLoadedBase implements I
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		if (worldObj.getTileEntity(xCoord, yCoord, zCoord) != this) {
+		if (this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this) {
 			return false;
 		} else {
-			return player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64;
+			return player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64;
 		}
 	}
 
@@ -143,15 +143,15 @@ public class TileEntityCompactLauncher extends TileEntityLoadedBase implements I
 
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		if (slots[i] != null) {
-			if (slots[i].stackSize <= j) {
-				ItemStack itemStack = slots[i];
-				slots[i] = null;
+		if (this.slots[i] != null) {
+			if (this.slots[i].stackSize <= j) {
+				ItemStack itemStack = this.slots[i];
+				this.slots[i] = null;
 				return itemStack;
 			}
-			ItemStack itemStack1 = slots[i].splitStack(j);
-			if (slots[i].stackSize == 0) {
-				slots[i] = null;
+			ItemStack itemStack1 = this.slots[i].splitStack(j);
+			if (this.slots[i].stackSize == 0) {
+				this.slots[i] = null;
 			}
 
 			return itemStack1;
@@ -161,52 +161,53 @@ public class TileEntityCompactLauncher extends TileEntityLoadedBase implements I
 	}
 	
 	public long getPowerScaled(long i) {
-		return (power * i) / maxPower;
+		return (this.power * i) / TileEntityCompactLauncher.maxPower;
 	}
 	
 	public int getSolidScaled(int i) {
-		return (solid * i) / maxSolid;
+		return (this.solid * i) / TileEntityCompactLauncher.maxSolid;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void updateEntity() {
 
-		if (!worldObj.isRemote) {
+		if (!this.worldObj.isRemote) {
 			
 			updateTypes();
 
-			tanks[0].loadTank(2, 6, slots);
-			tanks[1].loadTank(3, 7, slots);
+			this.tanks[0].loadTank(2, 6, this.slots);
+			this.tanks[1].loadTank(3, 7, this.slots);
 
 			for (int i = 0; i < 2; i++)
-				tanks[i].updateTank(xCoord, yCoord, zCoord, worldObj.provider.dimensionId);
+				this.tanks[i].updateTank(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId);
 			
-			power = Library.chargeTEFromItems(slots, 5, power, maxPower);
+			this.power = Library.chargeTEFromItems(this.slots, 5, this.power, TileEntityCompactLauncher.maxPower);
 			
-			if(slots[4] != null && slots[4].getItem() == ModItems.rocket_fuel && solid + 250 <= maxSolid) {
+			if(this.slots[4] != null && this.slots[4].getItem() == ModItems.rocket_fuel && this.solid + 250 <= TileEntityCompactLauncher.maxSolid) {
 				
-				this.decrStackSize(4, 1);
-				solid += 250;
+				decrStackSize(4, 1);
+				this.solid += 250;
 			}
 
-			if(worldObj.getTotalWorldTime() % 20 == 0)
-				this.updateConnections();
+			if(this.worldObj.getTotalWorldTime() % 20 == 0)
+				updateConnections();
 			
-			PacketDispatcher.wrapper.sendToAllAround(new AuxElectricityPacket(xCoord, yCoord, zCoord, power), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 50));
-			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(xCoord, yCoord, zCoord, solid, 0), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 50));
+			PacketDispatcher.wrapper.sendToAllAround(new AuxElectricityPacket(this.xCoord, this.yCoord, this.zCoord, this.power), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 50));
+			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(this.xCoord, this.yCoord, this.zCoord, this.solid, 0), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 50));
 			
-			MissileStruct multipart = getStruct(slots[0]);
+			MissileStruct multipart = TileEntityCompactLauncher.getStruct(this.slots[0]);
 			
 			if(multipart != null)
-				PacketDispatcher.wrapper.sendToAllAround(new TEMissileMultipartPacket(xCoord, yCoord, zCoord, multipart), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 250));
+				PacketDispatcher.wrapper.sendToAllAround(new TEMissileMultipartPacket(this.xCoord, this.yCoord, this.zCoord, multipart), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 250));
 			else
-				PacketDispatcher.wrapper.sendToAllAround(new TEMissileMultipartPacket(xCoord, yCoord, zCoord, new MissileStruct()), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 250));
+				PacketDispatcher.wrapper.sendToAllAround(new TEMissileMultipartPacket(this.xCoord, this.yCoord, this.zCoord, new MissileStruct()), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 250));
 
 			outer:
 			for(int x = -1; x <= 1; x++) {
 				for(int z = -1; z <= 1; z++) {
 						
-					if(worldObj.isBlockIndirectlyGettingPowered(xCoord + x, yCoord, zCoord + z) && canLaunch()) {
+					if(this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord + x, this.yCoord, this.zCoord + z) && canLaunch()) {
 						launch();
 						break outer;
 					}
@@ -214,7 +215,7 @@ public class TileEntityCompactLauncher extends TileEntityLoadedBase implements I
 			}
 		} else {
 			
-			List<Entity> entities = worldObj.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBox(xCoord - 0.5, yCoord, zCoord - 0.5, xCoord + 1.5, yCoord + 10, zCoord + 1.5));
+			List<Entity> entities = this.worldObj.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBox(this.xCoord - 0.5, this.yCoord, this.zCoord - 0.5, this.xCoord + 1.5, this.yCoord + 10, this.zCoord + 1.5));
 			
 			for(Entity e : entities) {
 				
@@ -222,11 +223,11 @@ public class TileEntityCompactLauncher extends TileEntityLoadedBase implements I
 					
 					for(int i = 0; i < 15; i++) {
 						
-						boolean dir = worldObj.rand.nextBoolean();
-						float moX = (float) (dir ? 0 : worldObj.rand.nextGaussian() * 0.5F);
-						float moZ = (float) (!dir ? 0 : worldObj.rand.nextGaussian() * 0.5F);
+						boolean dir = this.worldObj.rand.nextBoolean();
+						float moX = (float) (dir ? 0 : this.worldObj.rand.nextGaussian() * 0.5F);
+						float moZ = (float) (!dir ? 0 : this.worldObj.rand.nextGaussian() * 0.5F);
 						
-						MainRegistry.proxy.spawnParticle(xCoord + 0.5, yCoord + 0.25, zCoord + 0.5, "launchsmoke", new float[] {moX, 0, moZ});
+						MainRegistry.proxy.spawnParticle(this.xCoord + 0.5, this.yCoord + 0.25, this.zCoord + 0.5, "launchsmoke", new float[] {moX, 0, moZ});
 					}
 					
 					break;
@@ -238,32 +239,32 @@ public class TileEntityCompactLauncher extends TileEntityLoadedBase implements I
 	private void updateConnections() {
 		
 		for(DirPos pos : getConPos()) {
-			this.trySubscribe(worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
-			this.trySubscribe(tanks[0].getTankType(), worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
-			this.trySubscribe(tanks[1].getTankType(), worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			this.trySubscribe(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			this.trySubscribe(this.tanks[0].getTankType(), this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			this.trySubscribe(this.tanks[1].getTankType(), this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 		}
 	}
 	
 	public DirPos[] getConPos() {
 		return new DirPos[] {
-				new DirPos(xCoord + 2, yCoord, zCoord + 1, Library.POS_X),
-				new DirPos(xCoord + 2, yCoord, zCoord - 1, Library.POS_X),
-				new DirPos(xCoord - 2, yCoord, zCoord + 1, Library.NEG_X),
-				new DirPos(xCoord - 2, yCoord, zCoord - 1, Library.NEG_X),
-				new DirPos(xCoord + 1, yCoord, zCoord + 2, Library.POS_Z),
-				new DirPos(xCoord - 1, yCoord, zCoord + 2, Library.POS_Z),
-				new DirPos(xCoord + 1, yCoord, zCoord - 2, Library.NEG_Z),
-				new DirPos(xCoord - 1, yCoord, zCoord - 2, Library.NEG_Z),
-				new DirPos(xCoord + 1, yCoord - 1, zCoord + 1, Library.NEG_Y),
-				new DirPos(xCoord + 1, yCoord - 1, zCoord - 1, Library.NEG_Y),
-				new DirPos(xCoord - 1, yCoord - 1, zCoord + 1, Library.NEG_Y),
-				new DirPos(xCoord - 1, yCoord - 1, zCoord - 1, Library.NEG_Y)
+				new DirPos(this.xCoord + 2, this.yCoord, this.zCoord + 1, Library.POS_X),
+				new DirPos(this.xCoord + 2, this.yCoord, this.zCoord - 1, Library.POS_X),
+				new DirPos(this.xCoord - 2, this.yCoord, this.zCoord + 1, Library.NEG_X),
+				new DirPos(this.xCoord - 2, this.yCoord, this.zCoord - 1, Library.NEG_X),
+				new DirPos(this.xCoord + 1, this.yCoord, this.zCoord + 2, Library.POS_Z),
+				new DirPos(this.xCoord - 1, this.yCoord, this.zCoord + 2, Library.POS_Z),
+				new DirPos(this.xCoord + 1, this.yCoord, this.zCoord - 2, Library.NEG_Z),
+				new DirPos(this.xCoord - 1, this.yCoord, this.zCoord - 2, Library.NEG_Z),
+				new DirPos(this.xCoord + 1, this.yCoord - 1, this.zCoord + 1, Library.NEG_Y),
+				new DirPos(this.xCoord + 1, this.yCoord - 1, this.zCoord - 1, Library.NEG_Y),
+				new DirPos(this.xCoord - 1, this.yCoord - 1, this.zCoord + 1, Library.NEG_Y),
+				new DirPos(this.xCoord - 1, this.yCoord - 1, this.zCoord - 1, Library.NEG_Y)
 		};
 	}
 	
 	public boolean canLaunch() {
 		
-		if(power >= maxPower * 0.75 && isMissileValid() && hasDesignator() && hasFuel())
+		if(this.power >= TileEntityCompactLauncher.maxPower * 0.75 && isMissileValid() && hasDesignator() && hasFuel())
 			return true;
 		
 		return false;
@@ -271,32 +272,32 @@ public class TileEntityCompactLauncher extends TileEntityLoadedBase implements I
 	
 	public void launch() {
 
-		worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:weapon.missileTakeOff", 10.0F, 1.0F);
+		this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:weapon.missileTakeOff", 10.0F, 1.0F);
 
-		int tX = slots[1].stackTagCompound.getInteger("xCoord");
-		int tZ = slots[1].stackTagCompound.getInteger("zCoord");
+		int tX = this.slots[1].stackTagCompound.getInteger("xCoord");
+		int tZ = this.slots[1].stackTagCompound.getInteger("zCoord");
 		
-		ItemMissile chip = (ItemMissile) Item.getItemById(ItemCustomMissile.readFromNBT(slots[0], "chip"));
+		ItemMissile chip = (ItemMissile) Item.getItemById(ItemCustomMissile.readFromNBT(this.slots[0], "chip"));
 		float c = (Float)chip.attributes[0];
 		float f = 1.0F;
 		
-		if(getStruct(slots[0]).fins != null) {
-			ItemMissile fins = (ItemMissile) Item.getItemById(ItemCustomMissile.readFromNBT(slots[0], "stability"));
+		if(TileEntityCompactLauncher.getStruct(this.slots[0]).fins != null) {
+			ItemMissile fins = (ItemMissile) Item.getItemById(ItemCustomMissile.readFromNBT(this.slots[0], "stability"));
 			f = (Float) fins.attributes[0];
 		}
 		
-		Vec3 target = Vec3.createVectorHelper(xCoord - tX, 0, zCoord - tZ);
+		Vec3 target = Vec3.createVectorHelper(this.xCoord - tX, 0, this.zCoord - tZ);
 		target.xCoord *= c * f;
 		target.zCoord *= c * f;
 		
-		target.rotateAroundY(worldObj.rand.nextFloat() * 360);
+		target.rotateAroundY(this.worldObj.rand.nextFloat() * 360);
 		
-		EntityMissileCustom missile = new EntityMissileCustom(worldObj, xCoord + 0.5F, yCoord + 2.5F, zCoord + 0.5F, tX + (int)target.xCoord, tZ + (int)target.zCoord, getStruct(slots[0]));
-		worldObj.spawnEntityInWorld(missile);
+		EntityMissileCustom missile = new EntityMissileCustom(this.worldObj, this.xCoord + 0.5F, this.yCoord + 2.5F, this.zCoord + 0.5F, tX + (int)target.xCoord, tZ + (int)target.zCoord, TileEntityCompactLauncher.getStruct(this.slots[0]));
+		this.worldObj.spawnEntityInWorld(missile);
 		
 		subtractFuel();
 		
-		slots[0] = null;
+		this.slots[0] = null;
 	}
 	
 	private boolean hasFuel() {
@@ -306,38 +307,38 @@ public class TileEntityCompactLauncher extends TileEntityLoadedBase implements I
 	
 	private void subtractFuel() {
 		
-		MissileStruct multipart = getStruct(slots[0]);
+		MissileStruct multipart = TileEntityCompactLauncher.getStruct(this.slots[0]);
 		
 		if(multipart == null || multipart.fuselage == null)
 			return;
 		
-		ItemMissile fuselage = (ItemMissile)multipart.fuselage;
+		ItemMissile fuselage = multipart.fuselage;
 		
 		float f = (Float)fuselage.attributes[1];
 		int fuel = (int)f;
 		
 		switch((FuelType)fuselage.attributes[0]) {
 			case KEROSENE:
-				tanks[0].setFill(tanks[0].getFill() - fuel);
-				tanks[1].setFill(tanks[1].getFill() - fuel);
+				this.tanks[0].setFill(this.tanks[0].getFill() - fuel);
+				this.tanks[1].setFill(this.tanks[1].getFill() - fuel);
 				break;
 			case HYDROGEN:
-				tanks[0].setFill(tanks[0].getFill() - fuel);
-				tanks[1].setFill(tanks[1].getFill() - fuel);
+				this.tanks[0].setFill(this.tanks[0].getFill() - fuel);
+				this.tanks[1].setFill(this.tanks[1].getFill() - fuel);
 				break;
 			case XENON:
-				tanks[0].setFill(tanks[0].getFill() - fuel);
+				this.tanks[0].setFill(this.tanks[0].getFill() - fuel);
 				break;
 			case BALEFIRE:
-				tanks[0].setFill(tanks[0].getFill() - fuel);
-				tanks[1].setFill(tanks[1].getFill() - fuel);
+				this.tanks[0].setFill(this.tanks[0].getFill() - fuel);
+				this.tanks[1].setFill(this.tanks[1].getFill() - fuel);
 				break;
 			case SOLID:
 				this.solid -= fuel; break;
 			default: break;
 		}
 		
-		this.power -= maxPower * 0.75;
+		this.power -= TileEntityCompactLauncher.maxPower * 0.75;
 	}
 	
 	public static MissileStruct getStruct(ItemStack stack) {
@@ -347,19 +348,19 @@ public class TileEntityCompactLauncher extends TileEntityLoadedBase implements I
 	
 	public boolean isMissileValid() {
 		
-		MissileStruct multipart = getStruct(slots[0]);
+		MissileStruct multipart = TileEntityCompactLauncher.getStruct(this.slots[0]);
 		
 		if(multipart == null || multipart.fuselage == null)
 			return false;
 		
-		ItemMissile fuselage = (ItemMissile)multipart.fuselage;
+		ItemMissile fuselage = multipart.fuselage;
 		
 		return fuselage.top == PartSize.SIZE_10;
 	}
 	
 	public boolean hasDesignator() {
 		
-		if(slots[1] != null && slots[1].getItem() instanceof IDesignatorItem && ((IDesignatorItem)slots[1].getItem()).isReady(worldObj, slots[1], xCoord, yCoord, zCoord)) {
+		if(this.slots[1] != null && this.slots[1].getItem() instanceof IDesignatorItem && ((IDesignatorItem)this.slots[1].getItem()).isReady(this.worldObj, this.slots[1], this.xCoord, this.yCoord, this.zCoord)) {
 			return true;
 		}
 		
@@ -368,16 +369,16 @@ public class TileEntityCompactLauncher extends TileEntityLoadedBase implements I
 	
 	public int solidState() {
 		
-		MissileStruct multipart = getStruct(slots[0]);
+		MissileStruct multipart = TileEntityCompactLauncher.getStruct(this.slots[0]);
 		
 		if(multipart == null || multipart.fuselage == null)
 			return -1;
 		
-		ItemMissile fuselage = (ItemMissile)multipart.fuselage;
+		ItemMissile fuselage = multipart.fuselage;
 		
 		if((FuelType)fuselage.attributes[0] == FuelType.SOLID) {
 			
-			if(solid >= (Float)fuselage.attributes[1])
+			if(this.solid >= (Float)fuselage.attributes[1])
 				return 1;
 			else
 				return 0;
@@ -388,12 +389,12 @@ public class TileEntityCompactLauncher extends TileEntityLoadedBase implements I
 	
 	public int liquidState() {
 		
-		MissileStruct multipart = getStruct(slots[0]);
+		MissileStruct multipart = TileEntityCompactLauncher.getStruct(this.slots[0]);
 		
 		if(multipart == null || multipart.fuselage == null)
 			return -1;
 		
-		ItemMissile fuselage = (ItemMissile)multipart.fuselage;
+		ItemMissile fuselage = multipart.fuselage;
 		
 		switch((FuelType)fuselage.attributes[0]) {
 			case KEROSENE:
@@ -401,7 +402,7 @@ public class TileEntityCompactLauncher extends TileEntityLoadedBase implements I
 			case XENON:
 			case BALEFIRE:
 				
-				if(tanks[0].getFill() >= (Float)fuselage.attributes[1])
+				if(this.tanks[0].getFill() >= (Float)fuselage.attributes[1])
 					return 1;
 				else
 					return 0;
@@ -413,19 +414,19 @@ public class TileEntityCompactLauncher extends TileEntityLoadedBase implements I
 	
 	public int oxidizerState() {
 		
-		MissileStruct multipart = getStruct(slots[0]);
+		MissileStruct multipart = TileEntityCompactLauncher.getStruct(this.slots[0]);
 		
 		if(multipart == null || multipart.fuselage == null)
 			return -1;
 		
-		ItemMissile fuselage = (ItemMissile)multipart.fuselage;
+		ItemMissile fuselage = multipart.fuselage;
 		
 		switch((FuelType)fuselage.attributes[0]) {
 			case KEROSENE:
 			case HYDROGEN:
 			case BALEFIRE:
 				
-				if(tanks[1].getFill() >= (Float)fuselage.attributes[1])
+				if(this.tanks[1].getFill() >= (Float)fuselage.attributes[1])
 					return 1;
 				else
 					return 0;
@@ -437,28 +438,28 @@ public class TileEntityCompactLauncher extends TileEntityLoadedBase implements I
 	
 	public void updateTypes() {
 		
-		MissileStruct multipart = getStruct(slots[0]);
+		MissileStruct multipart = TileEntityCompactLauncher.getStruct(this.slots[0]);
 		
 		if(multipart == null || multipart.fuselage == null)
 			return;
 		
-		ItemMissile fuselage = (ItemMissile)multipart.fuselage;
+		ItemMissile fuselage = multipart.fuselage;
 		
 		switch((FuelType)fuselage.attributes[0]) {
 			case KEROSENE:
-				tanks[0].setTankType(Fluids.KEROSENE);
-				tanks[1].setTankType(Fluids.ACID);
+				this.tanks[0].setTankType(Fluids.KEROSENE);
+				this.tanks[1].setTankType(Fluids.ACID);
 				break;
 			case HYDROGEN:
-				tanks[0].setTankType(Fluids.HYDROGEN);
-				tanks[1].setTankType(Fluids.OXYGEN);
+				this.tanks[0].setTankType(Fluids.HYDROGEN);
+				this.tanks[1].setTankType(Fluids.OXYGEN);
 				break;
 			case XENON:
-				tanks[0].setTankType(Fluids.XENON);
+				this.tanks[0].setTankType(Fluids.XENON);
 				break;
 			case BALEFIRE:
-				tanks[0].setTankType(Fluids.BALEFIRE);
-				tanks[1].setTankType(Fluids.ACID);
+				this.tanks[0].setTankType(Fluids.BALEFIRE);
+				this.tanks[1].setTankType(Fluids.ACID);
 				break;
 			default: break;
 		}
@@ -469,18 +470,18 @@ public class TileEntityCompactLauncher extends TileEntityLoadedBase implements I
 		super.readFromNBT(nbt);
 		NBTTagList list = nbt.getTagList("items", 10);
 
-		tanks[0].readFromNBT(nbt, "fuel");
-		tanks[1].readFromNBT(nbt, "oxidizer");
-		solid = nbt.getInteger("solidfuel");
-		power = nbt.getLong("power");
+		this.tanks[0].readFromNBT(nbt, "fuel");
+		this.tanks[1].readFromNBT(nbt, "oxidizer");
+		this.solid = nbt.getInteger("solidfuel");
+		this.power = nbt.getLong("power");
 
-		slots = new ItemStack[getSizeInventory()];
+		this.slots = new ItemStack[getSizeInventory()];
 
 		for (int i = 0; i < list.tagCount(); i++) {
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("slot");
-			if (b0 >= 0 && b0 < slots.length) {
-				slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
+			if (b0 >= 0 && b0 < this.slots.length) {
+				this.slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
 			}
 		}
 	}
@@ -491,16 +492,16 @@ public class TileEntityCompactLauncher extends TileEntityLoadedBase implements I
 		
 		NBTTagList list = new NBTTagList();
 
-		tanks[0].writeToNBT(nbt, "fuel");
-		tanks[1].writeToNBT(nbt, "oxidizer");
-		nbt.setInteger("solidfuel", solid);
-		nbt.setLong("power", power);
+		this.tanks[0].writeToNBT(nbt, "fuel");
+		this.tanks[1].writeToNBT(nbt, "oxidizer");
+		nbt.setInteger("solidfuel", this.solid);
+		nbt.setLong("power", this.power);
 
-		for (int i = 0; i < slots.length; i++) {
-			if (slots[i] != null) {
+		for (int i = 0; i < this.slots.length; i++) {
+			if (this.slots[i] != null) {
 				NBTTagCompound nbt1 = new NBTTagCompound();
 				nbt1.setByte("slot", (byte) i);
-				slots[i].writeToNBT(nbt1);
+				this.slots[i].writeToNBT(nbt1);
 				list.appendTag(nbt1);
 			}
 		}
@@ -509,12 +510,12 @@ public class TileEntityCompactLauncher extends TileEntityLoadedBase implements I
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(int p_94128_1_) {
-		return access;
+		return TileEntityCompactLauncher.access;
 	}
 
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemStack, int j) {
-		return this.isItemValidForSlot(i, itemStack);
+		return isItemValidForSlot(i, itemStack);
 	}
 
 	@Override
@@ -524,40 +525,40 @@ public class TileEntityCompactLauncher extends TileEntityLoadedBase implements I
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		if (type.name().equals(tanks[0].getTankType().name()))
-			return tanks[0].getMaxFill();
-		else if (type.name().equals(tanks[1].getTankType().name()))
-			return tanks[1].getMaxFill();
+		if (type.name().equals(this.tanks[0].getTankType().name()))
+			return this.tanks[0].getMaxFill();
+		else if (type.name().equals(this.tanks[1].getTankType().name()))
+			return this.tanks[1].getMaxFill();
 		else
 			return 0;
 	}
 
 	@Override
 	public void setFillForSync(int fill, int index) {
-		if (index < 2 && tanks[index] != null)
-			tanks[index].setFill(fill);
+		if (index < 2 && this.tanks[index] != null)
+			this.tanks[index].setFill(fill);
 	}
 
 	@Override
 	public void setFluidFill(int fill, FluidType type) {
-		if (type.name().equals(tanks[0].getTankType().name()))
-			tanks[0].setFill(fill);
-		else if (type.name().equals(tanks[1].getTankType().name()))
-			tanks[1].setFill(fill);
+		if (type.name().equals(this.tanks[0].getTankType().name()))
+			this.tanks[0].setFill(fill);
+		else if (type.name().equals(this.tanks[1].getTankType().name()))
+			this.tanks[1].setFill(fill);
 	}
 
 	@Override
 	public void setTypeForSync(FluidType type, int index) {
-		if (index < 2 && tanks[index] != null)
-			tanks[index].setTankType(type);
+		if (index < 2 && this.tanks[index] != null)
+			this.tanks[index].setTankType(type);
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		if (type.name().equals(tanks[0].getTankType().name()))
-			return tanks[0].getFill();
-		else if (type.name().equals(tanks[1].getTankType().name()))
-			return tanks[1].getFill();
+		if (type.name().equals(this.tanks[0].getTankType().name()))
+			return this.tanks[0].getFill();
+		else if (type.name().equals(this.tanks[1].getTankType().name()))
+			return this.tanks[1].getFill();
 		else
 			return 0;
 	}
@@ -586,7 +587,7 @@ public class TileEntityCompactLauncher extends TileEntityLoadedBase implements I
 
 	@Override
 	public long getMaxPower() {
-		return this.maxPower;
+		return TileEntityCompactLauncher.maxPower;
 	}
 
 	@Override
@@ -594,10 +595,10 @@ public class TileEntityCompactLauncher extends TileEntityLoadedBase implements I
 		
 		this.power += power;
 		
-		if(this.power > this.getMaxPower()) {
+		if(this.power > getMaxPower()) {
 			
-			long overshoot = this.power - this.getMaxPower();
-			this.power = this.getMaxPower();
+			long overshoot = this.power - getMaxPower();
+			this.power = getMaxPower();
 			return overshoot;
 		}
 		
@@ -616,12 +617,12 @@ public class TileEntityCompactLauncher extends TileEntityLoadedBase implements I
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return tanks;
+		return this.tanks;
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return tanks;
+		return this.tanks;
 	}
 
 	@Override

@@ -8,7 +8,6 @@ import com.hbm.saveddata.TomSaveData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
-
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockVine;
@@ -24,10 +23,7 @@ public class ImpactWorldHandler {
 
 	public static void impactEffects(World world) {
 
-		if(!(world instanceof WorldServer))
-			return;
-
-		if(world.provider.dimensionId != 0) {
+		if(!(world instanceof WorldServer) || (world.provider.dimensionId != 0)) {
 			return;
 		}
 
@@ -52,10 +48,10 @@ public class ImpactWorldHandler {
 						TomSaveData data = TomSaveData.forWorld(world);
 						
 						if(data.dust > 0) {
-							die(world, X, Y, Z);
+							ImpactWorldHandler.die(world, X, Y, Z);
 						}
 						if(data.fire > 0) {
-							burn(world, X, Y, Z);
+							ImpactWorldHandler.burn(world, X, Y, Z);
 						}
 					}
 				}
@@ -108,19 +104,19 @@ public class ImpactWorldHandler {
 
 	@SideOnly(Side.CLIENT)
 	public static float getFireForClient(World world) {
-		if(world != lastSyncWorld) return 0F;
-		return fire;
+		if(world != ImpactWorldHandler.lastSyncWorld) return 0F;
+		return ImpactWorldHandler.fire;
 	}
 
 	@SideOnly(Side.CLIENT)
 	public static float getDustForClient(World world) {
-		if(world != lastSyncWorld) return 0F;
-		return dust;
+		if(world != ImpactWorldHandler.lastSyncWorld) return 0F;
+		return ImpactWorldHandler.dust;
 	}
 
 	@SideOnly(Side.CLIENT)
 	public static boolean getImpactForClient(World world) {
-		if(world != lastSyncWorld) return false;
-		return impact;
+		if(world != ImpactWorldHandler.lastSyncWorld) return false;
+		return ImpactWorldHandler.impact;
 	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import com.hbm.config.WeaponConfig;
 import com.hbm.entity.effect.EntityCloudFleijaRainbow;
 import com.hbm.entity.logic.EntityNukeExplosionMK3;
+
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -13,6 +14,7 @@ import net.minecraft.world.World;
 
 public class WeaponizedCell extends Item {
 
+	@Override
 	public boolean onEntityItemUpdate(EntityItem item) {
 		World world = item.worldObj;
 
@@ -55,6 +57,7 @@ public class WeaponizedCell extends Item {
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 

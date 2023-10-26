@@ -54,15 +54,15 @@ public class MachineTowerLarge extends BlockDummyable implements ILookOverlay {
 		for(int i = 2; i <= 6; i++) {
 			ForgeDirection dr2 = ForgeDirection.getOrientation(i);
 			ForgeDirection rot = dr2.getRotation(ForgeDirection.UP);
-			this.makeExtra(world, x + dr2.offsetX * 4, y, z + dr2.offsetZ * 4);
-			this.makeExtra(world, x + dr2.offsetX * 4 + rot.offsetX * 3, y, z + dr2.offsetZ * 4 + rot.offsetZ * 3);
-			this.makeExtra(world, x + dr2.offsetX * 4 + rot.offsetX * -3, y, z + dr2.offsetZ * 4 + rot.offsetZ * -3);
+			makeExtra(world, x + dr2.offsetX * 4, y, z + dr2.offsetZ * 4);
+			makeExtra(world, x + dr2.offsetX * 4 + rot.offsetX * 3, y, z + dr2.offsetZ * 4 + rot.offsetZ * 3);
+			makeExtra(world, x + dr2.offsetX * 4 + rot.offsetX * -3, y, z + dr2.offsetZ * 4 + rot.offsetZ * -3);
 		}
 	}
 
 	@Override
 	public void printHook(Pre event, World world, int x, int y, int z) {
-		int[] pos = this.findCore(world, x, y, z);
+		int[] pos = findCore(world, x, y, z);
 
 		if(pos == null)
 			return;
@@ -74,7 +74,7 @@ public class MachineTowerLarge extends BlockDummyable implements ILookOverlay {
 
 		TileEntityTowerLarge tower = (TileEntityTowerLarge) te;
 
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 
 		for(int i = 0; i < tower.tanks.length; i++)
 			text.add((i < 1 ? (EnumChatFormatting.GREEN + "-> ") : (EnumChatFormatting.RED + "<- ")) + EnumChatFormatting.RESET + tower.tanks[i].getTankType().getLocalizedName() + ": " + tower.tanks[i].getFill() + "/" + tower.tanks[i].getMaxFill() + "mB");

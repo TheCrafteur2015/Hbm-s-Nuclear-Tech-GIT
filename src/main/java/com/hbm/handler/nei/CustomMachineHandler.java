@@ -26,15 +26,15 @@ import net.minecraft.util.EnumChatFormatting;
 
 public class CustomMachineHandler extends TemplateRecipeHandler {
 	
-	public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<RecipeTransferRect>();
-	public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<Class<? extends GuiContainer>>();
+	public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<>();
+	public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<>();
 	
 	public MachineConfiguration conf;
 
 	@Override
 	public TemplateRecipeHandler newInstance() { // brick by brick, suck my dick
 		try {
-			return new CustomMachineHandler(conf);
+			return new CustomMachineHandler(this.conf);
 		} catch(Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -44,22 +44,22 @@ public class CustomMachineHandler extends TemplateRecipeHandler {
 		super();
 		this.conf = conf;
 		loadTransferRects();
-		RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), transferRects);
+		RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), this.transferRects);
 	}
 	
 	public class RecipeSet extends TemplateRecipeHandler.CachedRecipe {
 
-		List<PositionedStack> inputs = new ArrayList();
+		List<PositionedStack> inputs = new ArrayList<>();
 		PositionedStack machine;
-		List<PositionedStack> outputs = new ArrayList();
+		List<PositionedStack> outputs = new ArrayList<>();
 		
 		public RecipeSet(CustomMachineRecipe recipe) {
 
-			for(int i = 0; i < 3; i++) if(recipe.inputFluids.length > i) inputs.add(new PositionedStack(ItemFluidIcon.make(recipe.inputFluids[i]), 12 + i * 18, 6));
-			for(int i = 0; i < 3; i++) if(recipe.inputItems.length > i) inputs.add(new PositionedStack(recipe.inputItems[i].extractForNEI(), 12 + i * 18, 24));
-			for(int i = 3; i < 6; i++) if(recipe.inputItems.length > i) inputs.add(new PositionedStack(recipe.inputItems[i].extractForNEI(), 12 + i * 18, 42));
+			for(int i = 0; i < 3; i++) if(recipe.inputFluids.length > i) this.inputs.add(new PositionedStack(ItemFluidIcon.make(recipe.inputFluids[i]), 12 + i * 18, 6));
+			for(int i = 0; i < 3; i++) if(recipe.inputItems.length > i) this.inputs.add(new PositionedStack(recipe.inputItems[i].extractForNEI(), 12 + i * 18, 24));
+			for(int i = 3; i < 6; i++) if(recipe.inputItems.length > i) this.inputs.add(new PositionedStack(recipe.inputItems[i].extractForNEI(), 12 + i * 18, 42));
 
-			for(int i = 0; i < 3; i++) if(recipe.outputFluids.length > i) outputs.add(new PositionedStack(ItemFluidIcon.make(recipe.outputFluids[i]), 102 + i * 18, 6));
+			for(int i = 0; i < 3; i++) if(recipe.outputFluids.length > i) this.outputs.add(new PositionedStack(ItemFluidIcon.make(recipe.outputFluids[i]), 102 + i * 18, 6));
 			
 			for(int i = 0; i < 3; i++) if(recipe.outputItems.length > i) {
 				Pair<ItemStack, Float> pair = recipe.outputItems[i];
@@ -67,7 +67,7 @@ public class CustomMachineHandler extends TemplateRecipeHandler {
 				if(pair.getValue() != 1) {
 					ItemStackUtil.addTooltipToStack(out, EnumChatFormatting.RED + "" + (((int)(pair.getValue() * 1000)) / 10D) + "%");
 				}
-				outputs.add(new PositionedStack(out, 102 + i * 18, 24));
+				this.outputs.add(new PositionedStack(out, 102 + i * 18, 24));
 			}
 			
 			for(int i = 3; i < 6; i++) if(recipe.outputItems.length > i) {
@@ -76,35 +76,35 @@ public class CustomMachineHandler extends TemplateRecipeHandler {
 				if(pair.getValue() != 1) {
 					ItemStackUtil.addTooltipToStack(out, EnumChatFormatting.RED + "" + (((int)(pair.getValue() * 1000)) / 10D) + "%");
 				}
-				outputs.add(new PositionedStack(out, 102 + i * 18, 42));
+				this.outputs.add(new PositionedStack(out, 102 + i * 18, 42));
 			}
 			
-			this.machine = new PositionedStack(new ItemStack(ModBlocks.custom_machine, 1, 100 + CustomMachineConfigJSON.niceList.indexOf(conf)), 75, 42);
+			this.machine = new PositionedStack(new ItemStack(ModBlocks.custom_machine, 1, 100 + CustomMachineConfigJSON.niceList.indexOf(CustomMachineHandler.this.conf)), 75, 42);
 		}
 
 		@Override
 		public List<PositionedStack> getIngredients() {
-			return getCycledIngredients(cycleticks / 20, inputs);
+			return getCycledIngredients(CustomMachineHandler.this.cycleticks / 20, this.inputs);
 		}
 
 		@Override
 		public PositionedStack getResult() {
-			return outputs.get(0);
+			return this.outputs.get(0);
 		}
 
 		@Override
 		public List<PositionedStack> getOtherStacks() {
-			List<PositionedStack> other = new ArrayList();
-			other.addAll(inputs);
-			other.add(machine);
-			other.addAll(outputs);
-			return getCycledIngredients(cycleticks / 20, other);
+			List<PositionedStack> other = new ArrayList<>();
+			other.addAll(this.inputs);
+			other.add(this.machine);
+			other.addAll(this.outputs);
+			return getCycledIngredients(CustomMachineHandler.this.cycleticks / 20, other);
 		}
 	}
 
 	@Override
 	public String getRecipeName() {
-		return conf.localizedName;
+		return this.conf.localizedName;
 	}
 
 	@Override
@@ -115,9 +115,9 @@ public class CustomMachineHandler extends TemplateRecipeHandler {
 	@Override
 	public void loadCraftingRecipes(String outputId, Object... results) {
 		
-		if(outputId.equals("ntm_" + conf.unlocalizedName)) {
+		if(outputId.equals("ntm_" + this.conf.unlocalizedName)) {
 			
-			List<CustomMachineRecipe> recipes = CustomMachineRecipes.recipes.get(conf.recipeKey);
+			List<CustomMachineRecipe> recipes = CustomMachineRecipes.recipes.get(this.conf.recipeKey);
 			
 			if(recipes != null) for(CustomMachineRecipe recipe : recipes) {
 				this.arecipes.add(new RecipeSet(recipe));
@@ -130,7 +130,7 @@ public class CustomMachineHandler extends TemplateRecipeHandler {
 	@Override
 	public void loadCraftingRecipes(ItemStack result) {
 		
-		List<CustomMachineRecipe> recipes = CustomMachineRecipes.recipes.get(conf.recipeKey);
+		List<CustomMachineRecipe> recipes = CustomMachineRecipes.recipes.get(this.conf.recipeKey);
 		
 		if(recipes != null) outer:for(CustomMachineRecipe recipe : recipes) {
 			
@@ -145,7 +145,7 @@ public class CustomMachineHandler extends TemplateRecipeHandler {
 			for(FluidStack fluid : recipe.outputFluids) {
 				ItemStack drop = ItemFluidIcon.make(fluid);
 				
-				if(compareFluidStacks(result, drop)) {
+				if(CustomMachineHandler.compareFluidStacks(result, drop)) {
 					this.arecipes.add(new RecipeSet(recipe));
 					continue outer;
 				}
@@ -156,8 +156,8 @@ public class CustomMachineHandler extends TemplateRecipeHandler {
 	@Override
 	public void loadUsageRecipes(String inputId, Object... ingredients) {
 		
-		if(inputId.equals("ntm_" + conf.unlocalizedName)) {
-			loadCraftingRecipes("ntm_" + conf.unlocalizedName, new Object[0]);
+		if(inputId.equals("ntm_" + this.conf.unlocalizedName)) {
+			loadCraftingRecipes("ntm_" + this.conf.unlocalizedName, new Object[0]);
 		} else {
 			super.loadUsageRecipes(inputId, ingredients);
 		}
@@ -166,7 +166,7 @@ public class CustomMachineHandler extends TemplateRecipeHandler {
 	@Override
 	public void loadUsageRecipes(ItemStack ingredient) {
 		
-		List<CustomMachineRecipe> recipes = CustomMachineRecipes.recipes.get(conf.recipeKey);
+		List<CustomMachineRecipe> recipes = CustomMachineRecipes.recipes.get(this.conf.recipeKey);
 
 		if(recipes != null) outer:for(CustomMachineRecipe recipe : recipes) {
 			
@@ -185,7 +185,7 @@ public class CustomMachineHandler extends TemplateRecipeHandler {
 			for(FluidStack fluid : recipe.inputFluids) {
 				ItemStack drop = ItemFluidIcon.make(fluid);
 				
-				if(compareFluidStacks(ingredient, drop)) {
+				if(CustomMachineHandler.compareFluidStacks(ingredient, drop)) {
 					this.arecipes.add(new RecipeSet(recipe));
 					continue outer;
 				}
@@ -200,7 +200,7 @@ public class CustomMachineHandler extends TemplateRecipeHandler {
 	@Override
 	public void loadTransferRects() {
 		if(this.conf == null) return;
-		transferRects.add(new RecipeTransferRect(new Rectangle(65, 23, 36, 18), "ntm_" + conf.unlocalizedName));
-		RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), transferRects);
+		this.transferRects.add(new RecipeTransferRect(new Rectangle(65, 23, 36, 18), "ntm_" + this.conf.unlocalizedName));
+		RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), this.transferRects);
 	}
 }

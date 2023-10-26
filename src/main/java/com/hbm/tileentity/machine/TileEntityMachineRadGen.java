@@ -51,25 +51,25 @@ public class TileEntityMachineRadGen extends TileEntityMachineBase implements IE
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 
-			ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
-			this.sendPower(worldObj, this.xCoord - dir.offsetX * 4, this.yCoord, this.zCoord - dir.offsetZ * 4, dir.getOpposite());
+			ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
+			sendPower(this.worldObj, this.xCoord - dir.offsetX * 4, this.yCoord, this.zCoord - dir.offsetZ * 4, dir.getOpposite());
 			
 			//check if reload necessary for any queues
 			for(int i = 0; i < 12; i++) {
 				
-				if(processing[i] == null && slots[i] != null && getDurationFromItem(slots[i]) > 0 &&
-						(getOutputFromItem(slots[i]) == null || slots[i + 12] == null ||
-						(getOutputFromItem(slots[i]).getItem() == slots[i + 12].getItem() && getOutputFromItem(slots[i]).getItemDamage() == slots[i + 12].getItemDamage() &&
-						getOutputFromItem(slots[i]).stackSize + slots[i + 12].stackSize <= slots[i + 12].getMaxStackSize()))) {
+				if(this.processing[i] == null && this.slots[i] != null && getDurationFromItem(this.slots[i]) > 0 &&
+						(getOutputFromItem(this.slots[i]) == null || this.slots[i + 12] == null ||
+						(getOutputFromItem(this.slots[i]).getItem() == this.slots[i + 12].getItem() && getOutputFromItem(this.slots[i]).getItemDamage() == this.slots[i + 12].getItemDamage() &&
+						getOutputFromItem(this.slots[i]).stackSize + this.slots[i + 12].stackSize <= this.slots[i + 12].getMaxStackSize()))) {
 					
-					progress[i] = 0;
-					maxProgress[i] = this.getDurationFromItem(slots[i]);
-					production[i] = this.getPowerFromItem(slots[i]);
-					processing[i] = new ItemStack(slots[i].getItem(), 1, slots[i].getItemDamage());
-					this.decrStackSize(i, 1);
-					this.markDirty();
+					this.progress[i] = 0;
+					this.maxProgress[i] = getDurationFromItem(this.slots[i]);
+					this.production[i] = getPowerFromItem(this.slots[i]);
+					this.processing[i] = new ItemStack(this.slots[i].getItem(), 1, this.slots[i].getItemDamage());
+					decrStackSize(i, 1);
+					markDirty();
 				}
 			}
 			
@@ -77,33 +77,33 @@ public class TileEntityMachineRadGen extends TileEntityMachineBase implements IE
 			
 			for(int i = 0; i < 12; i++) {
 				
-				if(processing[i] != null) {
+				if(this.processing[i] != null) {
 					
 					this.isOn = true;
-					this.power += production[i];
-					progress[i]++;
+					this.power += this.production[i];
+					this.progress[i]++;
 					
-					if(progress[i] >= maxProgress[i]) {
-						progress[i] = 0;
-						ItemStack out = getOutputFromItem(processing[i]);
+					if(this.progress[i] >= this.maxProgress[i]) {
+						this.progress[i] = 0;
+						ItemStack out = getOutputFromItem(this.processing[i]);
 						
 						if(out != null) {
 							
-							if(slots[i + 12] == null) {
-								slots[i + 12] = out;
+							if(this.slots[i + 12] == null) {
+								this.slots[i + 12] = out;
 							} else {
-								slots[i + 12].stackSize += out.stackSize;
+								this.slots[i + 12].stackSize += out.stackSize;
 							}
 						}
 						
-						processing[i] = null;
-						this.markDirty();
+						this.processing[i] = null;
+						markDirty();
 					}
 				}
 			}
 			
-			if(this.power > maxPower)
-				this.power = maxPower;
+			if(this.power > TileEntityMachineRadGen.maxPower)
+				this.power = TileEntityMachineRadGen.maxPower;
 			
 			NBTTagCompound data = new NBTTagCompound();
 			data.setIntArray("progress", this.progress);
@@ -111,7 +111,7 @@ public class TileEntityMachineRadGen extends TileEntityMachineBase implements IE
 			data.setIntArray("production", this.production);
 			data.setLong("power", this.power);
 			data.setBoolean("isOn", this.isOn);
-			this.networkPack(data, 50);
+			networkPack(data, 50);
 		}
 	}
 	
@@ -129,8 +129,8 @@ public class TileEntityMachineRadGen extends TileEntityMachineBase implements IE
 		super.readFromNBT(nbt);
 		this.progress = nbt.getIntArray("progress");
 		
-		if(progress.length != 12) {
-			progress = new int[12];
+		if(this.progress.length != 12) {
+			this.progress = new int[12];
 			return;
 		}
 		
@@ -143,8 +143,8 @@ public class TileEntityMachineRadGen extends TileEntityMachineBase implements IE
 		for(int i = 0; i < list.tagCount(); i++) {
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("slot");
-			if(b0 >= 0 && b0 < processing.length) {
-				processing[b0] = ItemStack.loadItemStackFromNBT(nbt1);
+			if(b0 >= 0 && b0 < this.processing.length) {
+				this.processing[b0] = ItemStack.loadItemStackFromNBT(nbt1);
 			}
 		}
 		
@@ -161,11 +161,11 @@ public class TileEntityMachineRadGen extends TileEntityMachineBase implements IE
 		nbt.setBoolean("isOn", this.isOn);
 		
 		NBTTagList list = new NBTTagList();
-		for(int i = 0; i < processing.length; i++) {
-			if(processing[i] != null) {
+		for(int i = 0; i < this.processing.length; i++) {
+			if(this.processing[i] != null) {
 				NBTTagCompound nbt1 = new NBTTagCompound();
 				nbt1.setByte("slot", (byte) i);
-				processing[i].writeToNBT(nbt1);
+				this.processing[i].writeToNBT(nbt1);
 				list.appendTag(nbt1);
 			}
 		}
@@ -180,16 +180,13 @@ public class TileEntityMachineRadGen extends TileEntityMachineBase implements IE
 		if(i >= 12 || getDurationFromItem(stack) <= 0)
 			return false;
 		
-		if(slots[i] == null)
+		if(this.slots[i] == null)
 			return true;
 		
-		int size = slots[i].stackSize;
+		int size = this.slots[i].stackSize;
 		
 		for(int j = 0; j < 12; j++) {
-			if(slots[j] == null)
-				return false;
-			
-			if(slots[j].getItem() == stack.getItem() && slots[j].getItemDamage() == stack.getItemDamage() && slots[j].stackSize < size)
+			if((this.slots[j] == null) || (this.slots[j].getItem() == stack.getItem() && this.slots[j].getItemDamage() == stack.getItemDamage() && this.slots[j].stackSize < size))
 				return false;
 		}
 		
@@ -207,24 +204,24 @@ public class TileEntityMachineRadGen extends TileEntityMachineBase implements IE
 		return i >= 12;
 	}
 	
-	public static final HashMap<ComparableStack, Triplet<Integer, Integer, ItemStack>> fuels = new HashMap();
+	public static final HashMap<ComparableStack, Triplet<Integer, Integer, ItemStack>> fuels = new HashMap<>();
 	
 	static {
 
 		for(int i = 0; i < ItemWasteShort.WasteClass.values().length; i++) {
-			fuels.put(	new ComparableStack(ModItems.nuclear_waste_short, 1, i),		new Triplet<Integer, Integer, ItemStack>(150,	30 * 60 * 20,		new ItemStack(ModItems.nuclear_waste_short_depleted, 1, i)));
-			fuels.put(	new ComparableStack(ModItems.nuclear_waste_short_tiny, 1, i),	new Triplet<Integer, Integer, ItemStack>(15,	3 * 60 * 20,		new ItemStack(ModItems.nuclear_waste_short_depleted_tiny, 1, i)));
+			TileEntityMachineRadGen.fuels.put(	new ComparableStack(ModItems.nuclear_waste_short, 1, i),		new Triplet<>(150,	30 * 60 * 20,		new ItemStack(ModItems.nuclear_waste_short_depleted, 1, i)));
+			TileEntityMachineRadGen.fuels.put(	new ComparableStack(ModItems.nuclear_waste_short_tiny, 1, i),	new Triplet<>(15,	3 * 60 * 20,		new ItemStack(ModItems.nuclear_waste_short_depleted_tiny, 1, i)));
 		}
 		for(int i = 0; i < ItemWasteLong.WasteClass.values().length; i++) {
-			fuels.put(	new ComparableStack(ModItems.nuclear_waste_long, 1, i),			new Triplet<Integer, Integer, ItemStack>(50,	2 * 60 * 60 * 20,	new ItemStack(ModItems.nuclear_waste_long_depleted, 1, i)));
-			fuels.put(	new ComparableStack(ModItems.nuclear_waste_long_tiny, 1, i),	new Triplet<Integer, Integer, ItemStack>(5,		12 * 60 * 20,		new ItemStack(ModItems.nuclear_waste_long_depleted_tiny, 1, i)));
+			TileEntityMachineRadGen.fuels.put(	new ComparableStack(ModItems.nuclear_waste_long, 1, i),			new Triplet<>(50,	2 * 60 * 60 * 20,	new ItemStack(ModItems.nuclear_waste_long_depleted, 1, i)));
+			TileEntityMachineRadGen.fuels.put(	new ComparableStack(ModItems.nuclear_waste_long_tiny, 1, i),	new Triplet<>(5,		12 * 60 * 20,		new ItemStack(ModItems.nuclear_waste_long_depleted_tiny, 1, i)));
 		}
 		
-		fuels.put(		new ComparableStack(ModItems.scrap_nuclear),					new Triplet<Integer, Integer, ItemStack>(5,		5 * 60 * 20,		null));
+		TileEntityMachineRadGen.fuels.put(		new ComparableStack(ModItems.scrap_nuclear),					new Triplet<Integer, Integer, ItemStack>(5,		5 * 60 * 20,		null));
 	}
 	
 	private Triplet<Integer, Integer, ItemStack> grabResult(ItemStack stack) {
-		return fuels.get(new ComparableStack(stack).makeSingular());
+		return TileEntityMachineRadGen.fuels.get(new ComparableStack(stack).makeSingular());
 	}
 	
 	private int getPowerFromItem(ItemStack stack) {
@@ -243,21 +240,19 @@ public class TileEntityMachineRadGen extends TileEntityMachineBase implements IE
 	
 	private ItemStack getOutputFromItem(ItemStack stack) {
 		Triplet<Integer, Integer, ItemStack> result = grabResult(stack);
-		if(result == null)
-			return null;
-		if(result.getZ() == null)
+		if((result == null) || (result.getZ() == null))
 			return null;
 		return result.getZ().copy();
 	}
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 
 	@Override
 	public long getMaxPower() {
-		return maxPower;
+		return TileEntityMachineRadGen.maxPower;
 	}
 
 	@Override

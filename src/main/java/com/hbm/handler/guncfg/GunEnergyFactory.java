@@ -56,7 +56,7 @@ public class GunEnergyFactory {
 		config.name = "Chemical Thrower";
 		config.manufacturer = EnumGunManufacturer.LANGFORD;
 		
-		config.config = new ArrayList<Integer>();
+		config.config = new ArrayList<>();
 		
 		return config;
 	}
@@ -81,7 +81,7 @@ public class GunEnergyFactory {
 		config.name = "EMP Orb Projector";
 		config.manufacturer = EnumGunManufacturer.MWT;
 		
-		config.config = new ArrayList<Integer>();
+		config.config = new ArrayList<>();
 		config.config.add(BulletConfigSyncingUtil.SPECIAL_EMP);
 		
 		return config;
@@ -114,7 +114,7 @@ public class GunEnergyFactory {
 		config.comment.add("");
 		config.comment.add("Hope that helps.");
 		
-		config.config = new ArrayList<Integer>();
+		config.config = new ArrayList<>();
 		config.config.add(BulletConfigSyncingUtil.FLAMER_NORMAL);
 		config.config.add(BulletConfigSyncingUtil.FLAMER_NAPALM);
 		config.config.add(BulletConfigSyncingUtil.FLAMER_WP);
@@ -148,7 +148,7 @@ public class GunEnergyFactory {
 
 		config.comment.add("Taste the rainbow!");
 		
-		config.config = new ArrayList<Integer>();
+		config.config = new ArrayList<>();
 		config.config.add(BulletConfigSyncingUtil.ZOMG_BOLT);
 		
 		return config;
@@ -176,7 +176,7 @@ public class GunEnergyFactory {
 		config.name = "PROTEX Fire Exinguisher 6kg";
 		config.manufacturer = EnumGunManufacturer.GLORIA;
 		
-		config.config = new ArrayList<Integer>();
+		config.config = new ArrayList<>();
 		config.config.add(BulletConfigSyncingUtil.FEXT_NORMAL);
 		config.config.add(BulletConfigSyncingUtil.FEXT_FOAM);
 		config.config.add(BulletConfigSyncingUtil.FEXT_SAND);
@@ -206,7 +206,7 @@ public class GunEnergyFactory {
 		config.name = "ArmsKore Coilgun";
 		config.manufacturer = EnumGunManufacturer.DRG;
 		
-		config.config = new ArrayList<Integer>();
+		config.config = new ArrayList<>();
 		config.config.add(BulletConfigSyncingUtil.COIL_NORMAL);
 		config.config.add(BulletConfigSyncingUtil.COIL_DU);
 		config.config.add(BulletConfigSyncingUtil.COIL_RUBBER);
@@ -232,7 +232,7 @@ public class GunEnergyFactory {
 		config.name = "Cryo Cannon";
 		config.manufacturer = EnumGunManufacturer.DRG;
 		
-		config.config = new ArrayList<Integer>();
+		config.config = new ArrayList<>();
 		config.config.add(BulletConfigSyncingUtil.CRYO_NORMAL);
 		
 		return config;
@@ -272,7 +272,7 @@ public class GunEnergyFactory {
 		bullet.dmgProj = false;
 		bullet.dmgBypass = true;
 		
-		bullet.effects = new ArrayList();
+		bullet.effects = new ArrayList<>();
 		bullet.effects.add(new PotionEffect(Potion.moveSlowdown.id, 10 * 20, 1));
 		bullet.effects.add(new PotionEffect(Potion.weakness.id, 10 * 20, 4));
 		
@@ -297,11 +297,11 @@ public class GunEnergyFactory {
 		bullet.doesPenetrate = true;
 		bullet.isSpectral = true;
 
-		bullet.style = bullet.STYLE_BOLT;
-		bullet.trail = bullet.BOLT_NIGHTMARE;
+		bullet.style = BulletConfiguration.STYLE_BOLT;
+		bullet.trail = BulletConfiguration.BOLT_NIGHTMARE;
 		bullet.vPFX = "fireworks";
 		
-		bullet.bntUpdate = (entity) -> breakInPath(entity, 1.25F);
+		bullet.bntUpdate = (entity) -> GunEnergyFactory.breakInPath(entity, 1.25F);
 		
 		return bullet;
 	}
@@ -324,11 +324,11 @@ public class GunEnergyFactory {
 		bullet.doesPenetrate = true;
 		bullet.isSpectral = true;
 
-		bullet.style = bullet.STYLE_BOLT;
-		bullet.trail = bullet.BOLT_NIGHTMARE;
+		bullet.style = BulletConfiguration.STYLE_BOLT;
+		bullet.trail = BulletConfiguration.BOLT_NIGHTMARE;
 		bullet.vPFX = "fireworks";
 		
-		bullet.bntUpdate = (entity) -> breakInPath(entity, 2.5F);
+		bullet.bntUpdate = (entity) -> GunEnergyFactory.breakInPath(entity, 2.5F);
 		
 		return bullet;
 	}
@@ -357,7 +357,7 @@ public class GunEnergyFactory {
 		bullet.bounceMod = 1;
 		bullet.selfDamageDelay = 2;
 
-		bullet.style = bullet.STYLE_PELLET;
+		bullet.style = BulletConfiguration.STYLE_PELLET;
 		
 		bullet.bntHurt = (entity, hit) -> {
 			Vec3 vec = Vec3.createVectorHelper(entity.motionX, entity.motionY, entity.motionZ);
@@ -450,7 +450,7 @@ public class GunEnergyFactory {
 	
 	public static BulletConfiguration getNapalmConfig() {
 		
-		BulletConfiguration bullet = getFlameConfig();
+		BulletConfiguration bullet = GunEnergyFactory.getFlameConfig();
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_fuel.stackFromEnum(AmmoFlamethrower.NAPALM));
 		bullet.wear = 2;
@@ -463,7 +463,7 @@ public class GunEnergyFactory {
 	
 	public static BulletConfiguration getPhosphorusConfig() {
 		
-		BulletConfiguration bullet = getFlameConfig();
+		BulletConfiguration bullet = GunEnergyFactory.getFlameConfig();
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_fuel.stackFromEnum(AmmoFlamethrower.PHOSPHORUS));
 		bullet.wear = 2;
@@ -482,7 +482,7 @@ public class GunEnergyFactory {
 	
 	public static BulletConfiguration getVaporizerConfig() {
 		
-		BulletConfiguration bullet = getFlameConfig();
+		BulletConfiguration bullet = GunEnergyFactory.getFlameConfig();
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_fuel.stackFromEnum(AmmoFlamethrower.VAPORIZER));
 		bullet.wear = 4;
@@ -499,7 +499,7 @@ public class GunEnergyFactory {
 		
 		PotionEffect eff = new PotionEffect(HbmPotion.phosphorus.id, 20 * 20, 0, true);
 		eff.getCurativeItems().clear();
-		bullet.effects = new ArrayList();
+		bullet.effects = new ArrayList<>();
 		bullet.effects.add(new PotionEffect(eff));
 		
 		return bullet;
@@ -507,7 +507,7 @@ public class GunEnergyFactory {
 	
 	public static BulletConfiguration getGasConfig() {
 		
-		BulletConfiguration bullet = getFlameConfig();
+		BulletConfiguration bullet = GunEnergyFactory.getFlameConfig();
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_fuel.stackFromEnum(AmmoFlamethrower.CHLORINE));
 		bullet.wear = 1;
@@ -624,7 +624,7 @@ public class GunEnergyFactory {
 	
 	public static BulletConfiguration getFextFoamConfig() {
 		
-		BulletConfiguration bullet = getFextConfig();
+		BulletConfiguration bullet = GunEnergyFactory.getFextConfig();
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_fireext.stackFromEnum(AmmoFireExt.FOAM));
 		bullet.spread = 0.05F;
@@ -711,7 +711,7 @@ public class GunEnergyFactory {
 	
 	public static BulletConfiguration getFextSandConfig() {
 		
-		BulletConfiguration bullet = getFextConfig();
+		BulletConfiguration bullet = GunEnergyFactory.getFextConfig();
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_fireext.stackFromEnum(AmmoFireExt.SAND));
 		bullet.spread = 0.1F;
@@ -803,10 +803,10 @@ public class GunEnergyFactory {
 		bullet.dmgProj = false;
 		bullet.dmgBypass = true;
 
-		bullet.style = bullet.STYLE_BOLT;
-		bullet.trail = bullet.BOLT_ZOMG;
+		bullet.style = BulletConfiguration.STYLE_BOLT;
+		bullet.trail = BulletConfiguration.BOLT_ZOMG;
 		
-		bullet.effects = new ArrayList();
+		bullet.effects = new ArrayList<>();
 		bullet.effects.add(new PotionEffect(HbmPotion.bang.id, 10 * 20, 0));
 		
 		bullet.bntImpact = new IBulletImpactBehaviorNT() {
@@ -844,7 +844,7 @@ public class GunEnergyFactory {
 		bullet.velocity = 1F;
 		bullet.gravity = 0.0;
 		bullet.maxAge = 200;
-		bullet.style = bullet.STYLE_BLADE;
+		bullet.style = BulletConfiguration.STYLE_BLADE;
 		bullet.destroysBlocks = true;
 		bullet.doesRicochet = false;
 		
@@ -852,7 +852,7 @@ public class GunEnergyFactory {
 	}
 
 	public static BulletConfiguration getTurretConfig() {
-		BulletConfiguration bullet = getFlameConfig();
+		BulletConfiguration bullet = GunEnergyFactory.getFlameConfig();
 		bullet.spread *= 2F;
 		bullet.gravity = 0.0025D;
 		return bullet;

@@ -14,7 +14,7 @@ public class RenderMiniNuke extends Render {
     private ModelMiniNuke miniNuke;
 	
 	public RenderMiniNuke() {
-		miniNuke = new ModelMiniNuke();
+		this.miniNuke = new ModelMiniNuke();
 	}
 
 	@Override
@@ -27,7 +27,7 @@ public class RenderMiniNuke extends Render {
         GL11.glScalef(1.5F, 1.5F, 1.5F);
         
         bindTexture(new ResourceLocation(RefStrings.MODID + ":textures/models/MiniNuke.png"));
-        miniNuke.renderAll(0.0625F);
+        this.miniNuke.renderAll(0.0625F);
 		GL11.glPopMatrix();
 	}
 

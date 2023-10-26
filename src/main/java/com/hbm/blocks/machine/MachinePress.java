@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.machine.TileEntityMachinePress;
+
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -46,7 +47,7 @@ public class MachinePress extends BlockContainer {
 	
 	@Override
 	public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_) {
-		if(!keepInventory) {
+		if(!MachinePress.keepInventory) {
 			TileEntityMachinePress tileentityfurnace = (TileEntityMachinePress) p_149749_1_.getTileEntity(p_149749_2_, p_149749_3_, p_149749_4_);
 
 			if(tileentityfurnace != null) {

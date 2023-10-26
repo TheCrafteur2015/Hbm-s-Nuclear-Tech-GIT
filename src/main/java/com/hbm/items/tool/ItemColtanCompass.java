@@ -3,6 +3,7 @@ package com.hbm.items.tool;
 import java.util.Random;
 
 import com.hbm.main.MainRegistry;
+import com.hbm.main.ServerProxy;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -29,17 +30,17 @@ public class ItemColtanCompass extends Item {
 		
 		if(world.isRemote) {
 			if(stack.hasTagCompound()) {
-				lastX = stack.stackTagCompound.getInteger("colX");
-				lastZ = stack.stackTagCompound.getInteger("colZ");
-				lease = System.currentTimeMillis() + 1000;
+				this.lastX = stack.stackTagCompound.getInteger("colX");
+				this.lastZ = stack.stackTagCompound.getInteger("colZ");
+				this.lease = System.currentTimeMillis() + 1000;
 				
-				Vec3 vec = Vec3.createVectorHelper(entity.posX - lastX, 0, entity.posZ - lastZ);
-				MainRegistry.proxy.displayTooltip(((int) vec.lengthVector()) + "m", MainRegistry.proxy.ID_COMPASS);
+				Vec3 vec = Vec3.createVectorHelper(entity.posX - this.lastX, 0, entity.posZ - this.lastZ);
+				MainRegistry.proxy.displayTooltip(((int) vec.lengthVector()) + "m", ServerProxy.ID_COMPASS);
 			}
 			
 			if(ItemColtanCompass.this.lease < System.currentTimeMillis()) {
-				lastX = 0;
-				lastZ = 0;
+				this.lastX = 0;
+				this.lastZ = 0;
 			}
 			
 		} else {
@@ -56,15 +57,16 @@ public class ItemColtanCompass extends Item {
 		}
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister register) {
 		if(register instanceof TextureMap) {
 			TextureMap map = (TextureMap) register;
-			TextureColtass cumpiss = new TextureColtass(this.getIconString());
-			map.setTextureEntry(this.getIconString(), cumpiss);
+			TextureColtass cumpiss = new TextureColtass(getIconString());
+			map.setTextureEntry(getIconString(), cumpiss);
 			this.itemIcon = cumpiss; //apparently i was quite pissed when i wrote this
 		} else {
-			this.itemIcon = register.registerIcon(this.getIconString());
+			this.itemIcon = register.registerIcon(getIconString());
 		}
 	}
 
@@ -75,16 +77,18 @@ public class ItemColtanCompass extends Item {
 			super(texture);
 		}
 
+		@Override
 		public void updateAnimation() {
 			Minecraft minecraft = Minecraft.getMinecraft();
 
 			if(minecraft.theWorld != null && minecraft.thePlayer != null && !(ItemColtanCompass.this.lastX == 0 && ItemColtanCompass.this.lastZ == 0)) {
-				this.updateCompass(minecraft.theWorld, minecraft.thePlayer.posX, minecraft.thePlayer.posZ, (double) minecraft.thePlayer.rotationYaw, false, false);
+				updateCompass(minecraft.theWorld, minecraft.thePlayer.posX, minecraft.thePlayer.posZ, minecraft.thePlayer.rotationYaw, false, false);
 			} else {
-				this.updateCompass((World) null, 0.0D, 0.0D, 0.0D, true, false);
+				updateCompass((World) null, 0.0D, 0.0D, 0.0D, true, false);
 			}
 		}
 
+		@Override
 		public void updateCompass(World world, double x, double z, double yaw, boolean ignoreDestination, boolean instantSnap) {
 
 			if(!this.framesTextureData.isEmpty()) {
@@ -92,8 +96,8 @@ public class ItemColtanCompass extends Item {
 
 				if(world != null && !ignoreDestination && world.provider.isSurfaceWorld() && ItemColtanCompass.this.lease > System.currentTimeMillis()) {
 
-					double d4 = (double) ItemColtanCompass.this.lastX - x;
-					double d5 = (double) ItemColtanCompass.this.lastZ - z;
+					double d4 = ItemColtanCompass.this.lastX - x;
+					double d5 = ItemColtanCompass.this.lastZ - z;
 					yaw %= 360.0D;
 					angle = -((yaw - 90.0D) * Math.PI / 180.0D - Math.atan2(d5, d4));
 					
@@ -130,7 +134,7 @@ public class ItemColtanCompass extends Item {
 
 				int i;
 
-				for(i = (int) ((this.currentAngle / (Math.PI * 2D) + 1.0D) * (double) this.framesTextureData.size()) % this.framesTextureData.size(); i < 0; i = (i + this.framesTextureData.size()) % this.framesTextureData.size()) {
+				for(i = (int) ((this.currentAngle / (Math.PI * 2D) + 1.0D) * this.framesTextureData.size()) % this.framesTextureData.size(); i < 0; i = (i + this.framesTextureData.size()) % this.framesTextureData.size()) {
 					;
 				}
 

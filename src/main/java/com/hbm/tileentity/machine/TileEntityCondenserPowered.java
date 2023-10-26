@@ -21,16 +21,16 @@ public class TileEntityCondenserPowered extends TileEntityCondenser implements I
 	public float lastSpin;
 	
 	public TileEntityCondenserPowered() {
-		tanks = new FluidTank[2];
-		tanks[0] = new FluidTank(Fluids.SPENTSTEAM, 100_000);
-		tanks[1] = new FluidTank(Fluids.WATER, 100_000);
+		this.tanks = new FluidTank[2];
+		this.tanks[0] = new FluidTank(Fluids.SPENTSTEAM, 100_000);
+		this.tanks[1] = new FluidTank(Fluids.WATER, 100_000);
 	}
 	
 	@Override
 	public void updateEntity() {
 		super.updateEntity();
 		
-		if(worldObj.isRemote) {
+		if(this.worldObj.isRemote) {
 			
 			this.lastSpin = this.spin;
 			
@@ -42,10 +42,10 @@ public class TileEntityCondenserPowered extends TileEntityCondenser implements I
 					this.lastSpin -= 360F;
 				}
 				
-				if(worldObj.getTotalWorldTime() % 4 == 0) {
-					ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - 10);
-					worldObj.spawnParticle("cloud", xCoord + 0.5 + dir.offsetX * 1.5, yCoord + 1.5, zCoord + 0.5 + dir.offsetZ * 1.5, dir.offsetX * 0.1, 0, dir.offsetZ * 0.1);
-					worldObj.spawnParticle("cloud", xCoord + 0.5 - dir.offsetX * 1.5, yCoord + 1.5, zCoord + 0.5 - dir.offsetZ * 1.5, dir.offsetX * -0.1, 0, dir.offsetZ * -0.1);
+				if(this.worldObj.getTotalWorldTime() % 4 == 0) {
+					ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - 10);
+					this.worldObj.spawnParticle("cloud", this.xCoord + 0.5 + dir.offsetX * 1.5, this.yCoord + 1.5, this.zCoord + 0.5 + dir.offsetZ * 1.5, dir.offsetX * 0.1, 0, dir.offsetZ * 0.1);
+					this.worldObj.spawnParticle("cloud", this.xCoord + 0.5 - dir.offsetX * 1.5, this.yCoord + 1.5, this.zCoord + 0.5 - dir.offsetZ * 1.5, dir.offsetX * -0.1, 0, dir.offsetZ * -0.1);
 				}
 			}
 		}
@@ -53,12 +53,12 @@ public class TileEntityCondenserPowered extends TileEntityCondenser implements I
 
 	@Override
 	public void packExtra(NBTTagCompound data) {
-		data.setLong("power", power);
+		data.setLong("power", this.power);
 	}
 	
 	@Override
 	public boolean extraCondition(int convert) {
-		return power >= convert * 10;
+		return this.power >= convert * 10;
 	}
 
 	@Override
@@ -79,16 +79,16 @@ public class TileEntityCondenserPowered extends TileEntityCondenser implements I
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		this.power = nbt.getLong("power");
-		tanks[0].readFromNBT(nbt, "water");
-		tanks[1].readFromNBT(nbt, "steam");
+		this.tanks[0].readFromNBT(nbt, "water");
+		this.tanks[1].readFromNBT(nbt, "steam");
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setLong("power", power);
-		tanks[0].writeToNBT(nbt, "water");
-		tanks[1].writeToNBT(nbt, "steam");
+		nbt.setLong("power", this.power);
+		this.tanks[0].writeToNBT(nbt, "water");
+		this.tanks[1].writeToNBT(nbt, "steam");
 	}
 
 	@Deprecated @Override public void fillFluidInit(FluidType type) { }
@@ -96,30 +96,30 @@ public class TileEntityCondenserPowered extends TileEntityCondenser implements I
 	@Override
 	public void subscribeToAllAround(FluidType type, TileEntity te) {
 		for(DirPos pos : getConPos()) {
-			this.trySubscribe(this.tanks[0].getTankType(), worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
-			this.trySubscribe(worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			this.trySubscribe(this.tanks[0].getTankType(), this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			this.trySubscribe(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 		}
 	}
 
 	@Override
 	public void sendFluidToAll(FluidTank tank, TileEntity te) {
 		for(DirPos pos : getConPos()) {
-			this.sendFluid(this.tanks[1], worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			this.sendFluid(this.tanks[1], this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 		}
 	}
 	
 	public DirPos[] getConPos() {
 		
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - 10);
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - 10);
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 		
 		return new DirPos[] {
-				new DirPos(xCoord + rot.offsetX * 4, yCoord + 1, zCoord + rot.offsetZ * 4, rot),
-				new DirPos(xCoord - rot.offsetX * 4, yCoord + 1, zCoord - rot.offsetZ * 4, rot.getOpposite()),
-				new DirPos(xCoord + dir.offsetX * 2 - rot.offsetX, yCoord + 1, zCoord + dir.offsetZ * 2 - rot.offsetZ, dir),
-				new DirPos(xCoord + dir.offsetX * 2 + rot.offsetX, yCoord + 1, zCoord + dir.offsetZ * 2 + rot.offsetZ, dir),
-				new DirPos(xCoord - dir.offsetX * 2 - rot.offsetX, yCoord + 1, zCoord - dir.offsetZ * 2 - rot.offsetZ, dir.getOpposite()),
-				new DirPos(xCoord - dir.offsetX * 2 + rot.offsetX, yCoord + 1, zCoord - dir.offsetZ * 2 + rot.offsetZ, dir.getOpposite())
+				new DirPos(this.xCoord + rot.offsetX * 4, this.yCoord + 1, this.zCoord + rot.offsetZ * 4, rot),
+				new DirPos(this.xCoord - rot.offsetX * 4, this.yCoord + 1, this.zCoord - rot.offsetZ * 4, rot.getOpposite()),
+				new DirPos(this.xCoord + dir.offsetX * 2 - rot.offsetX, this.yCoord + 1, this.zCoord + dir.offsetZ * 2 - rot.offsetZ, dir),
+				new DirPos(this.xCoord + dir.offsetX * 2 + rot.offsetX, this.yCoord + 1, this.zCoord + dir.offsetZ * 2 + rot.offsetZ, dir),
+				new DirPos(this.xCoord - dir.offsetX * 2 - rot.offsetX, this.yCoord + 1, this.zCoord - dir.offsetZ * 2 - rot.offsetZ, dir.getOpposite()),
+				new DirPos(this.xCoord - dir.offsetX * 2 + rot.offsetX, this.yCoord + 1, this.zCoord - dir.offsetZ * 2 + rot.offsetZ, dir.getOpposite())
 		};
 	}
 	
@@ -128,18 +128,18 @@ public class TileEntityCondenserPowered extends TileEntityCondenser implements I
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 3,
-					yCoord,
-					zCoord - 3,
-					xCoord + 4,
-					yCoord + 3,
-					zCoord + 4
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 3,
+					this.yCoord,
+					this.zCoord - 3,
+					this.xCoord + 4,
+					this.yCoord + 3,
+					this.zCoord + 4
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override
@@ -160,6 +160,6 @@ public class TileEntityCondenserPowered extends TileEntityCondenser implements I
 
 	@Override
 	public long getMaxPower() {
-		return this.maxPower;
+		return TileEntityCondenserPowered.maxPower;
 	}
 }

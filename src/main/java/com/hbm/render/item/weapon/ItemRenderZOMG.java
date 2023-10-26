@@ -16,7 +16,7 @@ public class ItemRenderZOMG implements IItemRenderer {
 	protected ModelZOMG swordModel;
 	
 	public ItemRenderZOMG() {
-		swordModel = new ModelZOMG();
+		this.swordModel = new ModelZOMG();
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class ItemRenderZOMG implements IItemRenderer {
 				GL11.glTranslatef(-0.5F, 0.0F, -0.2F);
 				GL11.glScalef(0.75F, 0.75F, 0.75F);
 				GL11.glTranslatef(-0.4F, -0.5F, -0.1F);
-				swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			GL11.glPopMatrix();
 			break;
 			
@@ -62,7 +62,7 @@ public class ItemRenderZOMG implements IItemRenderer {
 				GL11.glTranslatef(0.5F, -0.2F, 0.0F);
 				GL11.glScalef(1.5F, 1.5F, 1.5F);
 				GL11.glTranslatef(-0.4F, -0.1F, -0.1F);
-				swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			GL11.glPopMatrix();
 			break;
 			
@@ -73,7 +73,7 @@ public class ItemRenderZOMG implements IItemRenderer {
 				GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
 				GL11.glScalef(1.5F, 1.5F, 1.5F);
 				GL11.glTranslatef(0F, -0.5F, 0F);
-				swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			GL11.glPopMatrix();
 		default: break;
 		}

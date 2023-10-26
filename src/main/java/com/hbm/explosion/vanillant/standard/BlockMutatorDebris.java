@@ -27,8 +27,8 @@ public class BlockMutatorDebris implements IBlockMutator {
 		World world = explosion.world;
 		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 			Block b = world.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
-			if(b.isNormalCube() && (b != metaBlock.block || world.getBlockMetadata(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) != metaBlock.meta)) {
-				world.setBlock(x, y, z, metaBlock.block, metaBlock.meta, 3);
+			if(b.isNormalCube() && (b != this.metaBlock.block || world.getBlockMetadata(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) != this.metaBlock.meta)) {
+				world.setBlock(x, y, z, this.metaBlock.block, this.metaBlock.meta, 3);
 				return;
 			}
 		}

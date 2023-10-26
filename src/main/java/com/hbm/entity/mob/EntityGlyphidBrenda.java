@@ -12,7 +12,7 @@ public class EntityGlyphidBrenda extends EntityGlyphid {
 
 	public EntityGlyphidBrenda(World world) {
 		super(world);
-		this.setSize(2.5F, 1.75F);
+		setSize(2.5F, 1.75F);
 		this.isImmuneToFire = true;
 	}
 	
@@ -29,9 +29,9 @@ public class EntityGlyphidBrenda extends EntityGlyphid {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(250D);
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.8D);
-		this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(50D);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(250D);
+		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.8D);
+		getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(50D);
 	}
 
 	@Override
@@ -63,16 +63,16 @@ public class EntityGlyphidBrenda extends EntityGlyphid {
 
 	@Override
 	public void setDead() {
-		if(!this.worldObj.isRemote && this.getHealth() <= 0.0F) {
+		if(!this.worldObj.isRemote && getHealth() <= 0.0F) {
 			for(int i = 0; i < 12; ++i) {
-				EntityGlyphid glyphid = new EntityGlyphid(worldObj);
-				glyphid.setLocationAndAngles(this.posX, this.posY + 0.5D, this.posZ, rand.nextFloat() * 360.0F, 0.0F);
+				EntityGlyphid glyphid = new EntityGlyphid(this.worldObj);
+				glyphid.setLocationAndAngles(this.posX, this.posY + 0.5D, this.posZ, this.rand.nextFloat() * 360.0F, 0.0F);
 				glyphid.addPotionEffect(new PotionEffect(Potion.resistance.id, 5 * 60 * 20, 2));
 				glyphid.addPotionEffect(new PotionEffect(Potion.fireResistance.id, 5 * 60 * 20, 0));
 				glyphid.addPotionEffect(new PotionEffect(Potion.damageBoost.id, 5 * 60 * 20, 4));
 				glyphid.addPotionEffect(new PotionEffect(Potion.field_76444_x.id, 5 * 60 * 20, 19));
 				this.worldObj.spawnEntityInWorld(glyphid);
-				glyphid.moveEntity(rand.nextGaussian(), 0, rand.nextGaussian());
+				glyphid.moveEntity(this.rand.nextGaussian(), 0, this.rand.nextGaussian());
 			}
 		}
 

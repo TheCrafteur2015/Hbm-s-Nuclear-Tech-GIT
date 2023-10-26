@@ -18,7 +18,7 @@ public class GUIMachineCatalyticReformer extends GuiInfoContainer {
 
 	public GUIMachineCatalyticReformer(InventoryPlayer invPlayer, TileEntityMachineCatalyticReformer tedf) {
 		super(new ContainerMachineCatalyticReformer(invPlayer, tedf));
-		refinery = tedf;
+		this.refinery = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 238;
@@ -28,11 +28,11 @@ public class GUIMachineCatalyticReformer extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		refinery.tanks[0].renderTankInfo(this, mouseX, mouseY, guiLeft + 35, guiTop + 70 - 52, 16, 52);
-		refinery.tanks[1].renderTankInfo(this, mouseX, mouseY, guiLeft + 107, guiTop + 70 - 52, 16, 52);
-		refinery.tanks[2].renderTankInfo(this, mouseX, mouseY, guiLeft + 125, guiTop + 70 - 52, 16, 52);
-		refinery.tanks[3].renderTankInfo(this, mouseX, mouseY, guiLeft + 143, guiTop + 70 - 52, 16, 52);
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 17, guiTop + 70 - 52, 16, 52, refinery.power, refinery.maxPower);
+		this.refinery.tanks[0].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 35, this.guiTop + 70 - 52, 16, 52);
+		this.refinery.tanks[1].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 107, this.guiTop + 70 - 52, 16, 52);
+		this.refinery.tanks[2].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 125, this.guiTop + 70 - 52, 16, 52);
+		this.refinery.tanks[3].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 143, this.guiTop + 70 - 52, 16, 52);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 17, this.guiTop + 70 - 52, 16, 52, this.refinery.power, TileEntityMachineCatalyticReformer.maxPower);
 	}
 	
 	@Override
@@ -46,15 +46,15 @@ public class GUIMachineCatalyticReformer extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIMachineCatalyticReformer.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		int j = (int) (refinery.power * 54 / refinery.maxPower);
-		drawTexturedModalRect(guiLeft + 17, guiTop + 70 - j, 176, 52 - j, 16, j);
+		int j = (int) (this.refinery.power * 54 / TileEntityMachineCatalyticReformer.maxPower);
+		drawTexturedModalRect(this.guiLeft + 17, this.guiTop + 70 - j, 176, 52 - j, 16, j);
 		
-		refinery.tanks[0].renderTank(guiLeft + 35, guiTop + 70, this.zLevel, 16, 52);
-		refinery.tanks[1].renderTank(guiLeft + 107, guiTop + 70, this.zLevel, 16, 52);
-		refinery.tanks[2].renderTank(guiLeft + 125, guiTop + 70, this.zLevel, 16, 52);
-		refinery.tanks[3].renderTank(guiLeft + 143, guiTop + 70, this.zLevel, 16, 52);
+		this.refinery.tanks[0].renderTank(this.guiLeft + 35, this.guiTop + 70, this.zLevel, 16, 52);
+		this.refinery.tanks[1].renderTank(this.guiLeft + 107, this.guiTop + 70, this.zLevel, 16, 52);
+		this.refinery.tanks[2].renderTank(this.guiLeft + 125, this.guiTop + 70, this.zLevel, 16, 52);
+		this.refinery.tanks[3].renderTank(this.guiLeft + 143, this.guiTop + 70, this.zLevel, 16, 52);
 	}
 }

@@ -22,8 +22,8 @@ public class ItemGasTank extends Item {
 	IIcon labelIcon;
 
 	public ItemGasTank() {
-		this.setHasSubtypes(true);
-		this.setMaxDamage(0);
+		setHasSubtypes(true);
+		setMaxDamage(0);
 	}
 
 	@Override
@@ -40,6 +40,7 @@ public class ItemGasTank extends Item {
 		}
 	}
 
+	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
 		String s = ("" + StatCollector.translateToLocal(this.getUnlocalizedName() + ".name")).trim();
 		String s1 = ("" + StatCollector.translateToLocal(Fluids.fromID(stack.getItemDamage()).getConditionalName())).trim();

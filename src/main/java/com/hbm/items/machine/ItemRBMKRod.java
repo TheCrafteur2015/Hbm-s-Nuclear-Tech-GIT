@@ -61,9 +61,9 @@ public class ItemRBMKRod extends Item {
 	public ItemRBMKRod(String fullName) {
 		this.fullName = fullName;
 		
-		this.setContainerItem(ModItems.rbmk_fuel_empty);
-		this.setMaxStackSize(1);
-		this.setCreativeTab(MainRegistry.controlTab);
+		setContainerItem(ModItems.rbmk_fuel_empty);
+		setMaxStackSize(1);
+		setCreativeTab(MainRegistry.controlTab);
 	}
 
 	public ItemRBMKRod setYield(double yield) {
@@ -129,33 +129,33 @@ public class ItemRBMKRod extends Item {
 	 */
 	public double burn(World world, ItemStack stack, double inFlux) {
 		
-		inFlux += selfRate;
+		inFlux += this.selfRate;
 		
-		double xenon = getPoison(stack);
+		double xenon = ItemRBMKRod.getPoison(stack);
 		xenon -= xenonBurnFunc(inFlux);
 		
-		inFlux *= (1D - getPoisonLevel(stack));
+		inFlux *= (1D - ItemRBMKRod.getPoisonLevel(stack));
 
 		xenon += xenonGenFunc(inFlux);
 		
 		if(xenon < 0D) xenon = 0D;
 		if(xenon > 100D) xenon = 100D;
 		
-		setPoison(stack, xenon);
+		ItemRBMKRod.setPoison(stack, xenon);
 		
-		double outFlux = reactivityFunc(inFlux, getEnrichment(stack)) * RBMKDials.getReactivityMod(world);
+		double outFlux = reactivityFunc(inFlux, ItemRBMKRod.getEnrichment(stack)) * RBMKDials.getReactivityMod(world);
 		
-		double y = getYield(stack);
+		double y = ItemRBMKRod.getYield(stack);
 		y -= inFlux;
 		
 		if(y < 0D) y = 0D;
 		
-		setYield(stack, y);
+		ItemRBMKRod.setYield(stack, y);
 		
-		double coreHeat = this.getCoreHeat(stack);
-		coreHeat += outFlux * heat;
+		double coreHeat = getCoreHeat(stack);
+		coreHeat += outFlux * this.heat;
 		
-		this.setCoreHeat(stack, rectify(coreHeat));
+		setCoreHeat(stack, rectify(coreHeat));
 		
 		return outFlux;
 	}
@@ -174,8 +174,8 @@ public class ItemRBMKRod extends Item {
 	 */
 	public void updateHeat(World world, ItemStack stack, double mod) {
 		
-		double coreHeat = this.getCoreHeat(stack);
-		double hullHeat = this.getHullHeat(stack);
+		double coreHeat = getCoreHeat(stack);
+		double hullHeat = getHullHeat(stack);
 		
 		if(coreHeat > hullHeat) {
 			
@@ -184,8 +184,8 @@ public class ItemRBMKRod extends Item {
 			coreHeat -= mid * this.diffusion * RBMKDials.getFuelDiffusionMod(world) * mod;
 			hullHeat += mid * this.diffusion * RBMKDials.getFuelDiffusionMod(world) * mod;
 			
-			this.setCoreHeat(stack, rectify(coreHeat));
-			this.setHullHeat(stack, rectify(hullHeat));
+			setCoreHeat(stack, rectify(coreHeat));
+			setHullHeat(stack, rectify(hullHeat));
 		}
 	}
 	
@@ -196,16 +196,16 @@ public class ItemRBMKRod extends Item {
 	 */
 	public double provideHeat(World world, ItemStack stack, double heat, double mod) {
 		
-		double hullHeat = this.getHullHeat(stack);
+		double hullHeat = getHullHeat(stack);
 		
 		//metldown! the hull melts so the entire structure stops making sense
 		//hull and core heats are instantly equalized into 33% of their sum each,
 		//the rest is sent to the component which is always fatal
 		if(hullHeat > this.meltingPoint) {
-			double coreHeat = this.getCoreHeat(stack);
+			double coreHeat = getCoreHeat(stack);
 			double avg = (heat + hullHeat + coreHeat) / 3D;
-			this.setCoreHeat(stack, avg);
-			this.setHullHeat(stack, avg);
+			setCoreHeat(stack, avg);
+			setHullHeat(stack, avg);
 			return avg - heat;
 		}
 		
@@ -217,7 +217,7 @@ public class ItemRBMKRod extends Item {
 		ret *= RBMKDials.getFuelHeatProvision(world) * mod;
 		
 		hullHeat -= ret;
-		this.setHullHeat(stack, hullHeat);
+		setHullHeat(stack, hullHeat);
 		
 		return ret;
 	}
@@ -249,15 +249,15 @@ public class ItemRBMKRod extends Item {
 		double flux = in * reactivityModByEnrichment(enrichment);
 		
 		switch(this.function) {
-		case PASSIVE: return selfRate * enrichment;
-		case LOG_TEN: return Math.log10(flux + 1) * 0.5D * reactivity;
-		case PLATEU: return (1 - Math.pow(Math.E, -flux / 25D)) * reactivity;
-		case ARCH: return Math.max((flux - (flux * flux / 10000D)) / 100D * reactivity, 0D);
-		case SIGMOID: return reactivity / (1 + Math.pow(Math.E, -(flux - 50D) / 10D));
-		case SQUARE_ROOT: return Math.sqrt(flux) * reactivity / 10D;
-		case LINEAR: return flux / 100D * reactivity;
-		case QUADRATIC: return flux * flux / 10000D * reactivity;
-		case EXPERIMENTAL: return flux * (Math.sin(flux) + 1) * reactivity;
+		case PASSIVE: return this.selfRate * enrichment;
+		case LOG_TEN: return Math.log10(flux + 1) * 0.5D * this.reactivity;
+		case PLATEU: return (1 - Math.pow(Math.E, -flux / 25D)) * this.reactivity;
+		case ARCH: return Math.max((flux - (flux * flux / 10000D)) / 100D * this.reactivity, 0D);
+		case SIGMOID: return this.reactivity / (1 + Math.pow(Math.E, -(flux - 50D) / 10D));
+		case SQUARE_ROOT: return Math.sqrt(flux) * this.reactivity / 10D;
+		case LINEAR: return flux / 100D * this.reactivity;
+		case QUADRATIC: return flux * flux / 10000D * this.reactivity;
+		case EXPERIMENTAL: return flux * (Math.sin(flux) + 1) * this.reactivity;
 		}
 		
 		return 0;
@@ -268,7 +268,7 @@ public class ItemRBMKRod extends Item {
 		String function;
 		
 		switch(this.function) {
-		case PASSIVE: function = EnumChatFormatting.RED + "" + selfRate;
+		case PASSIVE: function = EnumChatFormatting.RED + "" + this.selfRate;
 			break;
 		case LOG_TEN: function = "log10(%1$s + 1) * 0.5 * %2$s";
 			break;
@@ -289,17 +289,17 @@ public class ItemRBMKRod extends Item {
 		default: function = "ERROR";
 		}
 		
-		double enrichment = getEnrichment(stack);
+		double enrichment = ItemRBMKRod.getEnrichment(stack);
 		
 		if(enrichment < 1) {
 			enrichment = reactivityModByEnrichment(enrichment);
 			String reactivity = EnumChatFormatting.YELLOW + "" + ((int)(this.reactivity * enrichment * 1000D) / 1000D) + EnumChatFormatting.WHITE;
 			String enrichmentPer = EnumChatFormatting.GOLD + " (" + ((int)(enrichment * 1000D) / 10D) + "%)";
 			
-			return String.format(Locale.US, function, selfRate > 0 ? "(x" + EnumChatFormatting.RED + " + " + selfRate + "" + EnumChatFormatting.WHITE + ")" : "x", reactivity).concat(enrichmentPer);
+			return String.format(Locale.US, function, this.selfRate > 0 ? "(x" + EnumChatFormatting.RED + " + " + this.selfRate + "" + EnumChatFormatting.WHITE + ")" : "x", reactivity).concat(enrichmentPer);
 		}
 		
-		return String.format(Locale.US, function, selfRate > 0 ? "(x" + EnumChatFormatting.RED + " + " + selfRate + "" + EnumChatFormatting.WHITE + ")" : "x", reactivity);
+		return String.format(Locale.US, function, this.selfRate > 0 ? "(x" + EnumChatFormatting.RED + " + " + this.selfRate + "" + EnumChatFormatting.WHITE + ")" : "x", this.reactivity);
 	}
 	
 	public static enum EnumDepleteFunc {
@@ -328,7 +328,7 @@ public class ItemRBMKRod extends Item {
 	 * @return
 	 */
 	public double xenonGenFunc(double flux) {
-		return flux * xGen;
+		return flux * this.xGen;
 	}
 	
 	/**
@@ -337,7 +337,7 @@ public class ItemRBMKRod extends Item {
 	 * @return
 	 */
 	public double xenonBurnFunc(double flux) {
-		return (flux * flux) / xBurn;
+		return (flux * flux) / this.xBurn;
 	}
 	
 	/**
@@ -345,7 +345,7 @@ public class ItemRBMKRod extends Item {
 	 * @return enrichment [0;1]
 	 */
 	public static double getEnrichment(ItemStack stack) {
-		return getYield(stack) / ((ItemRBMKRod) stack.getItem()).yield;
+		return ItemRBMKRod.getYield(stack) / ((ItemRBMKRod) stack.getItem()).yield;
 	}
 	
 	/**
@@ -353,7 +353,7 @@ public class ItemRBMKRod extends Item {
 	 * @return poison [0;1]
 	 */
 	public static double getPoisonLevel(ItemStack stack) {
-		return getPoison(stack) / 100D;
+		return ItemRBMKRod.getPoison(stack) / 100D;
 	}
 	
 	@Override
@@ -363,43 +363,43 @@ public class ItemRBMKRod extends Item {
 		
 		if(this == ModItems.rbmk_fuel_drx) {
 			
-			if(selfRate > 0 || this.function == EnumBurnFunc.SIGMOID) {
+			if(this.selfRate > 0 || this.function == EnumBurnFunc.SIGMOID) {
 				list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("trait.rbmx.source"));
 			}
 			
-			list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("trait.rbmx.depletion", ((int)(((yield - getYield(stack)) / yield) * 100000)) / 1000D + "%"));
-			list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("trait.rbmx.xenon", ((int)(getPoison(stack) * 1000D) / 1000D) + "%"));
-			list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("trait.rbmx.splitsWith", I18nUtil.resolveKey(nType.unlocalized + ".x")));
-			list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("trait.rbmx.splitsInto", I18nUtil.resolveKey(rType.unlocalized + ".x")));
+			list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("trait.rbmx.depletion", ((int)(((this.yield - ItemRBMKRod.getYield(stack)) / this.yield) * 100000)) / 1000D + "%"));
+			list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("trait.rbmx.xenon", ((int)(ItemRBMKRod.getPoison(stack) * 1000D) / 1000D) + "%"));
+			list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("trait.rbmx.splitsWith", I18nUtil.resolveKey(this.nType.unlocalized + ".x")));
+			list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("trait.rbmx.splitsInto", I18nUtil.resolveKey(this.rType.unlocalized + ".x")));
 			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("trait.rbmx.fluxFunc", EnumChatFormatting.WHITE + getFuncDescription(stack)));
 			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("trait.rbmx.funcType", this.function.title));
-			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("trait.rbmx.xenonGen", EnumChatFormatting.WHITE + "x * " + xGen));
-			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("trait.rbmx.xenonBurn", EnumChatFormatting.WHITE + "x² * " + xBurn));
-			list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("trait.rbmx.heat", heat + "°C"));
-			list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("trait.rbmx.diffusion", diffusion + "¹/²"));
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("trait.rbmx.skinTemp", ((int)(getHullHeat(stack) * 10D) / 10D) + "m"));
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("trait.rbmx.coreTemp", ((int)(getCoreHeat(stack) * 10D) / 10D) + "m"));
-			list.add(EnumChatFormatting.DARK_RED + I18nUtil.resolveKey("trait.rbmx.melt", meltingPoint + "m"));
+			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("trait.rbmx.xenonGen", EnumChatFormatting.WHITE + "x * " + this.xGen));
+			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("trait.rbmx.xenonBurn", EnumChatFormatting.WHITE + "x² * " + this.xBurn));
+			list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("trait.rbmx.heat", this.heat + "°C"));
+			list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("trait.rbmx.diffusion", this.diffusion + "¹/²"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("trait.rbmx.skinTemp", ((int)(ItemRBMKRod.getHullHeat(stack) * 10D) / 10D) + "m"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("trait.rbmx.coreTemp", ((int)(ItemRBMKRod.getCoreHeat(stack) * 10D) / 10D) + "m"));
+			list.add(EnumChatFormatting.DARK_RED + I18nUtil.resolveKey("trait.rbmx.melt", this.meltingPoint + "m"));
 			
 		} else {
 
-			if(selfRate > 0 || this.function == EnumBurnFunc.SIGMOID) {
+			if(this.selfRate > 0 || this.function == EnumBurnFunc.SIGMOID) {
 				list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("trait.rbmk.source"));
 			}
 			
-			list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("trait.rbmk.depletion", ((int)(((yield - getYield(stack)) / yield) * 100000D)) / 1000D + "%"));
-			list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("trait.rbmk.xenon", ((int)(getPoison(stack) * 1000D) / 1000D) + "%"));
-			list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("trait.rbmk.splitsWith", I18nUtil.resolveKey(nType.unlocalized)));
-			list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("trait.rbmk.splitsInto", I18nUtil.resolveKey(rType.unlocalized)));
+			list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("trait.rbmk.depletion", ((int)(((this.yield - ItemRBMKRod.getYield(stack)) / this.yield) * 100000D)) / 1000D + "%"));
+			list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("trait.rbmk.xenon", ((int)(ItemRBMKRod.getPoison(stack) * 1000D) / 1000D) + "%"));
+			list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("trait.rbmk.splitsWith", I18nUtil.resolveKey(this.nType.unlocalized)));
+			list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("trait.rbmk.splitsInto", I18nUtil.resolveKey(this.rType.unlocalized)));
 			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("trait.rbmk.fluxFunc", EnumChatFormatting.WHITE + getFuncDescription(stack)));
 			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("trait.rbmk.funcType", this.function.title));
-			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("trait.rbmk.xenonGen", EnumChatFormatting.WHITE + "x * " + xGen));
-			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("trait.rbmk.xenonBurn", EnumChatFormatting.WHITE + "x² * " + xBurn));
-			list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("trait.rbmk.heat", heat + "°C"));
-			list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("trait.rbmk.diffusion", diffusion + "¹/²"));
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("trait.rbmk.skinTemp", ((int)(getHullHeat(stack) * 10D) / 10D) + "°C"));
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("trait.rbmk.coreTemp", ((int)(getCoreHeat(stack) * 10D) / 10D) + "°C"));
-			list.add(EnumChatFormatting.DARK_RED + I18nUtil.resolveKey("trait.rbmk.melt", meltingPoint + "°C"));
+			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("trait.rbmk.xenonGen", EnumChatFormatting.WHITE + "x * " + this.xGen));
+			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("trait.rbmk.xenonBurn", EnumChatFormatting.WHITE + "x² * " + this.xBurn));
+			list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("trait.rbmk.heat", this.heat + "°C"));
+			list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("trait.rbmk.diffusion", this.diffusion + "¹/²"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("trait.rbmk.skinTemp", ((int)(ItemRBMKRod.getHullHeat(stack) * 10D) / 10D) + "°C"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("trait.rbmk.coreTemp", ((int)(ItemRBMKRod.getCoreHeat(stack) * 10D) / 10D) + "°C"));
+			list.add(EnumChatFormatting.DARK_RED + I18nUtil.resolveKey("trait.rbmk.melt", this.meltingPoint + "°C"));
 		}
 
 		/*list.add(EnumChatFormatting.GREEN + "Depletion: " + ((int)(((yield - getYield(stack)) / yield) * 10000)) / 10000D + "%");
@@ -427,40 +427,40 @@ public class ItemRBMKRod extends Item {
 	 */
 	
 	public static void setYield(ItemStack stack, double yield) {
-		setDouble(stack, "yield", yield);
+		ItemRBMKRod.setDouble(stack, "yield", yield);
 	}
 	
 	public static double getYield(ItemStack stack) {
 		
 		if(stack.getItem() instanceof ItemRBMKRod) {
-			return getDouble(stack, "yield");
+			return ItemRBMKRod.getDouble(stack, "yield");
 		}
 		
 		return 0;
 	}
 	
 	public static void setPoison(ItemStack stack, double xenon) {
-		setDouble(stack, "xenon", xenon);
+		ItemRBMKRod.setDouble(stack, "xenon", xenon);
 	}
 	
 	public static double getPoison(ItemStack stack) {
-		return getDouble(stack, "xenon");
+		return ItemRBMKRod.getDouble(stack, "xenon");
 	}
 	
 	public static void setCoreHeat(ItemStack stack, double heat) {
-		setDouble(stack, "core", heat);
+		ItemRBMKRod.setDouble(stack, "core", heat);
 	}
 	
 	public static double getCoreHeat(ItemStack stack) {
-		return getDouble(stack, "core");
+		return ItemRBMKRod.getDouble(stack, "core");
 	}
 	
 	public static void setHullHeat(ItemStack stack, double heat) {
-		setDouble(stack, "hull", heat);
+		ItemRBMKRod.setDouble(stack, "hull", heat);
 	}
 	
 	public static double getHullHeat(ItemStack stack) {
-		return getDouble(stack, "hull");
+		return ItemRBMKRod.getDouble(stack, "hull");
 	}
 
 	@Override
@@ -470,13 +470,13 @@ public class ItemRBMKRod extends Item {
 
 	@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
-		return 1D - getEnrichment(stack);
+		return 1D - ItemRBMKRod.getEnrichment(stack);
 	}
 	
 	public static void setDouble(ItemStack stack, String key, double yield) {
 		
 		if(!stack.hasTagCompound())
-			setNBTDefaults(stack);
+			ItemRBMKRod.setNBTDefaults(stack);
 		
 		stack.stackTagCompound.setDouble(key, yield);
 	}
@@ -484,7 +484,7 @@ public class ItemRBMKRod extends Item {
 	public static double getDouble(ItemStack stack, String key) {
 		
 		if(!stack.hasTagCompound())
-			setNBTDefaults(stack);
+			ItemRBMKRod.setNBTDefaults(stack);
 
 		return stack.stackTagCompound.getDouble(key);
 	}
@@ -496,13 +496,13 @@ public class ItemRBMKRod extends Item {
 	private static void setNBTDefaults(ItemStack stack) {
 
 		stack.stackTagCompound = new NBTTagCompound();
-		setYield(stack, ((ItemRBMKRod)stack.getItem()).yield);
-		setCoreHeat(stack, 20.0D);
-		setHullHeat(stack, 20.0D);
+		ItemRBMKRod.setYield(stack, ((ItemRBMKRod)stack.getItem()).yield);
+		ItemRBMKRod.setCoreHeat(stack, 20.0D);
+		ItemRBMKRod.setHullHeat(stack, 20.0D);
 	}
 	
 	@Override
 	public void onCreated(ItemStack stack, World world, EntityPlayer player) {
-		setNBTDefaults(stack); //minimize the window where NBT screwups can happen
+		ItemRBMKRod.setNBTDefaults(stack); //minimize the window where NBT screwups can happen
 	}
 }

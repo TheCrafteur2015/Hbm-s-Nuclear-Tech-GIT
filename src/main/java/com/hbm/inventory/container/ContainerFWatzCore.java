@@ -17,36 +17,36 @@ public class ContainerFWatzCore extends Container {
 	
 	public ContainerFWatzCore(InventoryPlayer invPlayer, TileEntityFWatzCore tedf) {
 		
-		diFurnace = tedf;
+		this.diFurnace = tedf;
 		
-		this.addSlotToContainer(new Slot(tedf, 0, 26, 108));
-		this.addSlotToContainer(new Slot(tedf, 1, 62, 90));
-		this.addSlotToContainer(new Slot(tedf, 2, 98, 90));
+		addSlotToContainer(new Slot(tedf, 0, 26, 108));
+		addSlotToContainer(new Slot(tedf, 1, 62, 90));
+		addSlotToContainer(new Slot(tedf, 2, 98, 90));
 		//Inputs
-		this.addSlotToContainer(new Slot(tedf, 3, 134, 108 - 18));
-		this.addSlotToContainer(new Slot(tedf, 4, 152, 108 - 18));
+		addSlotToContainer(new Slot(tedf, 3, 134, 108 - 18));
+		addSlotToContainer(new Slot(tedf, 4, 152, 108 - 18));
 		//Outputs
-		this.addSlotToContainer(new Slot(tedf, 5, 134, 108));
-		this.addSlotToContainer(new Slot(tedf, 6, 152, 108));
+		addSlotToContainer(new Slot(tedf, 5, 134, 108));
+		addSlotToContainer(new Slot(tedf, 6, 152, 108));
 		
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 56));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 56));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++)
 		{
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 56));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 56));
 		}
 	}
 	
 	@Override
 	public void addCraftingToCrafters(ICrafting crafting) {
 		super.addCraftingToCrafters(crafting);
-		crafting.sendProgressBarUpdate(this, 1, isRunning ? 1 : 0);
+		crafting.sendProgressBarUpdate(this, 1, this.isRunning ? 1 : 0);
 	}
 	
 	@Override
@@ -61,7 +61,7 @@ public class ContainerFWatzCore extends Container {
 			var3 = var5.copy();
 			
             if (par2 <= 6) {
-				if (!this.mergeItemStack(var5, 7, this.inventorySlots.size(), true))
+				if (!mergeItemStack(var5, 7, this.inventorySlots.size(), true))
 				{
 					return null;
 				}
@@ -84,16 +84,15 @@ public class ContainerFWatzCore extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return diFurnace.isUseableByPlayer(player);
+		return this.diFurnace.isUseableByPlayer(player);
 	}
 	
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 		
-		for(int i = 0; i < this.crafters.size(); i++)
-		{
-			ICrafting par1 = (ICrafting)this.crafters.get(i);
+		for (Object element : this.crafters) {
+			ICrafting par1 = (ICrafting)element;
 			
 			if(this.isRunning != this.diFurnace.isRunning())
 			{
@@ -110,9 +109,9 @@ public class ContainerFWatzCore extends Container {
 		{
 			if(j == 0)
 			{
-				diFurnace.emptyPlasma();
+				this.diFurnace.emptyPlasma();
 			} else {
-				diFurnace.fillPlasma();
+				this.diFurnace.fillPlasma();
 			}
 		}
 	}

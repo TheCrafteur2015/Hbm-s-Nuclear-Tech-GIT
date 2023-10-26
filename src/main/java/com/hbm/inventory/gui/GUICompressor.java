@@ -22,7 +22,7 @@ public class GUICompressor extends GuiInfoContainer {
 
 	public GUICompressor(InventoryPlayer invPlayer, TileEntityMachineCompressor tedf) {
 		super(new ContainerCompressor(invPlayer, tedf));
-		compressor = tedf;
+		this.compressor = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 204;
@@ -32,11 +32,11 @@ public class GUICompressor extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		compressor.tanks[0].renderTankInfo(this, mouseX, mouseY, guiLeft + 17, guiTop + 18, 16, 52);
-		compressor.tanks[1].renderTankInfo(this, mouseX, mouseY, guiLeft + 107, guiTop + 18, 16, 52);
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 152, guiTop + 18, 16, 52, compressor.power, compressor.maxPower);
+		this.compressor.tanks[0].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 17, this.guiTop + 18, 16, 52);
+		this.compressor.tanks[1].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 107, this.guiTop + 18, 16, 52);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 152, this.guiTop + 18, 16, 52, this.compressor.power, TileEntityMachineCompressor.maxPower);
 
-		for(int j = 0; j < 5; j++) drawCustomInfoStat(mouseX, mouseY, guiLeft + 43 + j * 11, guiTop + 46, 8, 14, mouseX, mouseY, j + " PU -> " + (j + 1) + " PU");
+		for(int j = 0; j < 5; j++) drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 43 + j * 11, this.guiTop + 46, 8, 14, mouseX, mouseY, j + " PU -> " + (j + 1) + " PU");
 	}
 
 	@Override
@@ -45,12 +45,12 @@ public class GUICompressor extends GuiInfoContainer {
 		
 		for(int j = 0; j < 5; j++) {
 	
-			if(guiLeft + 43 + j * 11 <= x && guiLeft + 43 + 8 + j * 11 > x && guiTop + 46 < y && guiTop + 46 + 14 >= y) {
+			if(this.guiLeft + 43 + j * 11 <= x && this.guiLeft + 43 + 8 + j * 11 > x && this.guiTop + 46 < y && this.guiTop + 46 + 14 >= y) {
 
-				mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+				this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 				NBTTagCompound data = new NBTTagCompound();
 				data.setInteger("compression", j);
-				PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, compressor.xCoord, compressor.yCoord, compressor.zCoord));
+				PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, this.compressor.xCoord, this.compressor.yCoord, this.compressor.zCoord));
 			}
 		}
 	}
@@ -67,22 +67,22 @@ public class GUICompressor extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUICompressor.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
-		if(compressor.power >= compressor.powerRequirement) {
-			drawTexturedModalRect(guiLeft + 156, guiTop + 4, 176, 52, 9, 12);
+		if(this.compressor.power >= this.compressor.powerRequirement) {
+			drawTexturedModalRect(this.guiLeft + 156, this.guiTop + 4, 176, 52, 9, 12);
 		}
 
-		drawTexturedModalRect(guiLeft + 43 + compressor.tanks[0].getPressure() * 11, guiTop + 46, 193, 18, 8, 124);
+		drawTexturedModalRect(this.guiLeft + 43 + this.compressor.tanks[0].getPressure() * 11, this.guiTop + 46, 193, 18, 8, 124);
 		
-		int i = compressor.progress * 55 / compressor.processTime;
-		drawTexturedModalRect(guiLeft + 42, guiTop + 26, 192, 0, i, 17);
+		int i = this.compressor.progress * 55 / this.compressor.processTime;
+		drawTexturedModalRect(this.guiLeft + 42, this.guiTop + 26, 192, 0, i, 17);
 		
-		int j = (int) (compressor.power * 52 / compressor.maxPower);
-		drawTexturedModalRect(guiLeft + 152, guiTop + 70 - j, 176, 52 - j, 16, j);
+		int j = (int) (this.compressor.power * 52 / TileEntityMachineCompressor.maxPower);
+		drawTexturedModalRect(this.guiLeft + 152, this.guiTop + 70 - j, 176, 52 - j, 16, j);
 		
-		compressor.tanks[0].renderTank(guiLeft + 17, guiTop + 70, this.zLevel, 16, 52);
-		compressor.tanks[1].renderTank(guiLeft + 107, guiTop + 70, this.zLevel, 16, 52);
+		this.compressor.tanks[0].renderTank(this.guiLeft + 17, this.guiTop + 70, this.zLevel, 16, 52);
+		this.compressor.tanks[1].renderTank(this.guiLeft + 107, this.guiTop + 70, this.zLevel, 16, 52);
 	}
 }

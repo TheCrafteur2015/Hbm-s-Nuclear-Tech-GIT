@@ -38,7 +38,7 @@ public class MachineDiFurnaceRTG extends BlockContainer {
 
 	public MachineDiFurnaceRTG(boolean blockState) {
 		super(Material.iron);
-		isActive = blockState;
+		this.isActive = blockState;
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class MachineDiFurnaceRTG extends BlockContainer {
 	@Override
 	public void onBlockAdded(World world, int x, int y, int z) {
 		super.onBlockAdded(world, x, y, z);
-		this.setDefaultDirection(world, x, y, z);
+		setDefaultDirection(world, x, y, z);
 	}
 
 	private void setDefaultDirection(World world, int x, int y, int z) {
@@ -138,7 +138,7 @@ public class MachineDiFurnaceRTG extends BlockContainer {
 	public static void updateBlockState(boolean isProcessing, World world, int x, int y, int z) {
 		int i = world.getBlockMetadata(x, y, z);
 		TileEntity entity = world.getTileEntity(x, y, z);
-		keepInventory = true;
+		MachineDiFurnaceRTG.keepInventory = true;
 
 		if(isProcessing) {
 			world.setBlock(x, y, z, ModBlocks.machine_difurnace_rtg_on);
@@ -146,7 +146,7 @@ public class MachineDiFurnaceRTG extends BlockContainer {
 			world.setBlock(x, y, z, ModBlocks.machine_difurnace_rtg_off);
 		}
 		
-		keepInventory = false;
+		MachineDiFurnaceRTG.keepInventory = false;
 		world.setBlockMetadataWithNotify(x, y, z, i, 2);
 
 		if(entity != null) {
@@ -158,7 +158,7 @@ public class MachineDiFurnaceRTG extends BlockContainer {
 	@Override
 	public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_,
 			int p_149749_6_) {
-		if(!keepInventory) {
+		if(!MachineDiFurnaceRTG.keepInventory) {
 			TileEntityDiFurnaceRTG tileentityfurnace = (TileEntityDiFurnaceRTG) p_149749_1_.getTileEntity(p_149749_2_,
 					p_149749_3_, p_149749_4_);
 
@@ -207,7 +207,7 @@ public class MachineDiFurnaceRTG extends BlockContainer {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(World p_149734_1_, int x, int y, int z, Random rand) {
-		if(isActive) {
+		if(this.isActive) {
 			int l = p_149734_1_.getBlockMetadata(x, y, z);
 			float f = x + 0.5F;
 			float f1 = y + 0.25F + rand.nextFloat() * 6.0F / 16.0F;

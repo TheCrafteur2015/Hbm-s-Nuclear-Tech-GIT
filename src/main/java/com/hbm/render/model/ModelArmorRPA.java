@@ -17,16 +17,16 @@ public class ModelArmorRPA extends ModelArmorBase {
 	public ModelArmorRPA(int type) {
 		super(type);
 
-		head = new ModelRendererObj(ResourceManager.armor_remnant, "Head");
-		body = new ModelRendererObj(ResourceManager.armor_remnant, "Body");
-		fan = new ModelRendererObj(ResourceManager.armor_remnant, "Fan");
-		glow = new ModelRendererObj(ResourceManager.armor_remnant, "Glow");
-		leftArm = new ModelRendererObj(ResourceManager.armor_remnant, "LeftArm").setRotationPoint(-5.0F, 2.0F, 0.0F);
-		rightArm = new ModelRendererObj(ResourceManager.armor_remnant, "RightArm").setRotationPoint(5.0F, 2.0F, 0.0F);
-		leftLeg = new ModelRendererObj(ResourceManager.armor_remnant, "LeftLeg").setRotationPoint(1.9F, 12.0F, 0.0F);
-		rightLeg = new ModelRendererObj(ResourceManager.armor_remnant, "RightLeg").setRotationPoint(-1.9F, 12.0F, 0.0F);
-		leftFoot = new ModelRendererObj(ResourceManager.armor_remnant, "LeftBoot").setRotationPoint(1.9F, 12.0F, 0.0F);
-		rightFoot = new ModelRendererObj(ResourceManager.armor_remnant, "RightBoot").setRotationPoint(-1.9F, 12.0F, 0.0F);
+		this.head = new ModelRendererObj(ResourceManager.armor_remnant, "Head");
+		this.body = new ModelRendererObj(ResourceManager.armor_remnant, "Body");
+		this.fan = new ModelRendererObj(ResourceManager.armor_remnant, "Fan");
+		this.glow = new ModelRendererObj(ResourceManager.armor_remnant, "Glow");
+		this.leftArm = new ModelRendererObj(ResourceManager.armor_remnant, "LeftArm").setRotationPoint(-5.0F, 2.0F, 0.0F);
+		this.rightArm = new ModelRendererObj(ResourceManager.armor_remnant, "RightArm").setRotationPoint(5.0F, 2.0F, 0.0F);
+		this.leftLeg = new ModelRendererObj(ResourceManager.armor_remnant, "LeftLeg").setRotationPoint(1.9F, 12.0F, 0.0F);
+		this.rightLeg = new ModelRendererObj(ResourceManager.armor_remnant, "RightLeg").setRotationPoint(-1.9F, 12.0F, 0.0F);
+		this.leftFoot = new ModelRendererObj(ResourceManager.armor_remnant, "LeftBoot").setRotationPoint(1.9F, 12.0F, 0.0F);
+		this.rightFoot = new ModelRendererObj(ResourceManager.armor_remnant, "RightBoot").setRotationPoint(-1.9F, 12.0F, 0.0F);
 	}
 
 	@Override
@@ -34,23 +34,23 @@ public class ModelArmorRPA extends ModelArmorBase {
 		
 		setRotationAngles(par2, par3, par4, par5, par6, par7, par1Entity);
 		//body.copyTo(fan);
-		body.copyTo(glow);
+		this.body.copyTo(this.glow);
 		
 		GL11.glPushMatrix();
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		
-		if(type == 0) {
+		if(this.type == 0) {
 			Minecraft.getMinecraft().renderEngine.bindTexture(ResourceManager.rpa_helmet);
-			head.render(par7);
+			this.head.render(par7);
 		}
-		if(type == 1) {
+		if(this.type == 1) {
 			
 			Minecraft.getMinecraft().renderEngine.bindTexture(ResourceManager.rpa_arm);
-			leftArm.render(par7);
-			rightArm.render(par7);
+			this.leftArm.render(par7);
+			this.rightArm.render(par7);
 			
 			Minecraft.getMinecraft().renderEngine.bindTexture(ResourceManager.rpa_chest);
-			body.render(par7);
+			this.body.render(par7);
 			
 			/// START GLOW ///
 			float lastX = OpenGlHelper.lastBrightnessX;
@@ -58,7 +58,7 @@ public class ModelArmorRPA extends ModelArmorBase {
 			GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
 			GL11.glDisable(GL11.GL_LIGHTING);
-			glow.render(par7);
+			this.glow.render(par7);
 			GL11.glEnable(GL11.GL_LIGHTING);
 			GL11.glPopAttrib();
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastX, lastY);
@@ -67,37 +67,37 @@ public class ModelArmorRPA extends ModelArmorBase {
 			/// START FAN ///
 			GL11.glPushMatrix();
 			double px = 0.0625D;
-			GL11.glTranslatef(body.offsetX * (float) px, body.offsetY * (float) px, body.offsetZ * (float) px);
-			GL11.glTranslatef(body.rotationPointX * (float) px, body.rotationPointY * (float) px, body.rotationPointZ * (float) px);
+			GL11.glTranslatef(this.body.offsetX * (float) px, this.body.offsetY * (float) px, this.body.offsetZ * (float) px);
+			GL11.glTranslatef(this.body.rotationPointX * (float) px, this.body.rotationPointY * (float) px, this.body.rotationPointZ * (float) px);
 
-			if(body.rotateAngleZ != 0.0F) {
-				GL11.glRotatef(body.rotateAngleZ * (180F / (float) Math.PI), 0.0F, 0.0F, 1.0F);
+			if(this.body.rotateAngleZ != 0.0F) {
+				GL11.glRotatef(this.body.rotateAngleZ * (180F / (float) Math.PI), 0.0F, 0.0F, 1.0F);
 			}
 
-			if(body.rotateAngleY != 0.0F) {
-				GL11.glRotatef(body.rotateAngleY * (180F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
+			if(this.body.rotateAngleY != 0.0F) {
+				GL11.glRotatef(this.body.rotateAngleY * (180F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
 			}
 
-			if(body.rotateAngleX != 0.0F) {
-				GL11.glRotatef(body.rotateAngleX * (180F / (float) Math.PI), 1.0F, 0.0F, 0.0F);
+			if(this.body.rotateAngleX != 0.0F) {
+				GL11.glRotatef(this.body.rotateAngleX * (180F / (float) Math.PI), 1.0F, 0.0F, 0.0F);
 			}
 			
 			GL11.glTranslated(0, 4.875 * px, 0);
 			GL11.glRotated(-System.currentTimeMillis() / 2 % 360, 0, 0, 1);
 			GL11.glTranslated(0, -4.875 * px, 0);
-			fan.render(par7);
+			this.fan.render(par7);
 			GL11.glPopMatrix();
 			/// END FAN ///
 		}
-		if(type == 2) {
+		if(this.type == 2) {
 			Minecraft.getMinecraft().renderEngine.bindTexture(ResourceManager.rpa_leg);
-			leftLeg.render(par7);
-			rightLeg.render(par7);
+			this.leftLeg.render(par7);
+			this.rightLeg.render(par7);
 		}
-		if(type == 3) {
+		if(this.type == 3) {
 			Minecraft.getMinecraft().renderEngine.bindTexture(ResourceManager.rpa_leg);
-			leftFoot.render(par7);
-			rightFoot.render(par7);
+			this.leftFoot.render(par7);
+			this.rightFoot.render(par7);
 		}
 		
 		GL11.glShadeModel(GL11.GL_FLAT);

@@ -13,7 +13,7 @@ import com.hbm.wiaj.actions.IJarAction;
  */
 public class JarScene {
 
-	public List<IJarAction> actions = new ArrayList();
+	public List<IJarAction> actions = new ArrayList<>();
 	public JarScript script;
 	
 	public int actionNumber = 0;
@@ -38,17 +38,17 @@ public class JarScene {
 		
 		if(this.currentAction == null) return;
 		
-		this.currentAction.act(script.world, this);
+		this.currentAction.act(this.script.world, this);
 		
 		int duration = this.currentAction.getDuration();
 		
-		if(this.currentActionStart + duration <= script.ticksElapsed) { //choose next action
+		if(this.currentActionStart + duration <= this.script.ticksElapsed) { //choose next action
 			
 			this.actionNumber++;
-			this.currentActionStart = script.ticksElapsed;
+			this.currentActionStart = this.script.ticksElapsed;
 			
-			if(actionNumber < this.actions.size()) {
-				this.currentAction = this.actions.get(actionNumber);
+			if(this.actionNumber < this.actions.size()) {
+				this.currentAction = this.actions.get(this.actionNumber);
 				tick();
 				
 			} else {
@@ -60,6 +60,6 @@ public class JarScene {
 	public void reset() {
 		this.currentAction = this.actions.get(0);
 		this.actionNumber = 0;
-		this.currentActionStart = script.ticksElapsed;
+		this.currentActionStart = this.script.ticksElapsed;
 	}
 }

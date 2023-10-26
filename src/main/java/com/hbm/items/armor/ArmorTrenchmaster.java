@@ -28,16 +28,17 @@ public class ArmorTrenchmaster extends ArmorFSB {
 	@SideOnly(Side.CLIENT)
 	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot) {
 
-		if(models == null) {
-			models = new ModelArmorTrenchmaster[4];
+		if(this.models == null) {
+			this.models = new ModelArmorTrenchmaster[4];
 
 			for(int i = 0; i < 4; i++)
-				models[i] = new ModelArmorTrenchmaster(i);
+				this.models[i] = new ModelArmorTrenchmaster(i);
 		}
 
-		return models[armorSlot];
+		return this.models[armorSlot];
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		super.addInformation(stack, player, list, ext);

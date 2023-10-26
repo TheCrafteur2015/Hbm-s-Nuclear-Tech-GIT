@@ -13,14 +13,14 @@ public class ModelGlasses extends ModelArmorBase {
 	public ModelGlasses(int type) {
 		super(type);
 
-		head = new ModelRendererObj(ResourceManager.armor_goggles);
-		body = new ModelRendererObj(ResourceManager.armor_bj, "Body");
-		leftArm = new ModelRendererObj(ResourceManager.armor_bj, "LeftArm").setRotationPoint(-5.0F, 2.0F, 0.0F);
-		rightArm = new ModelRendererObj(ResourceManager.armor_bj, "RightArm").setRotationPoint(5.0F, 2.0F, 0.0F);
-		leftLeg = new ModelRendererObj(ResourceManager.armor_bj, "LeftLeg").setRotationPoint(1.9F, 12.0F, 0.0F);
-		rightLeg = new ModelRendererObj(ResourceManager.armor_bj, "RightLeg").setRotationPoint(-1.9F, 12.0F, 0.0F);
-		leftFoot = new ModelRendererObj(ResourceManager.armor_bj, "LeftFoot").setRotationPoint(1.9F, 12.0F, 0.0F);
-		rightFoot = new ModelRendererObj(ResourceManager.armor_bj, "RightFoot").setRotationPoint(-1.9F, 12.0F, 0.0F);
+		this.head = new ModelRendererObj(ResourceManager.armor_goggles);
+		this.body = new ModelRendererObj(ResourceManager.armor_bj, "Body");
+		this.leftArm = new ModelRendererObj(ResourceManager.armor_bj, "LeftArm").setRotationPoint(-5.0F, 2.0F, 0.0F);
+		this.rightArm = new ModelRendererObj(ResourceManager.armor_bj, "RightArm").setRotationPoint(5.0F, 2.0F, 0.0F);
+		this.leftLeg = new ModelRendererObj(ResourceManager.armor_bj, "LeftLeg").setRotationPoint(1.9F, 12.0F, 0.0F);
+		this.rightLeg = new ModelRendererObj(ResourceManager.armor_bj, "RightLeg").setRotationPoint(-1.9F, 12.0F, 0.0F);
+		this.leftFoot = new ModelRendererObj(ResourceManager.armor_bj, "LeftFoot").setRotationPoint(1.9F, 12.0F, 0.0F);
+		this.rightFoot = new ModelRendererObj(ResourceManager.armor_bj, "RightFoot").setRotationPoint(-1.9F, 12.0F, 0.0F);
 	}
 
 	@Override
@@ -30,9 +30,9 @@ public class ModelGlasses extends ModelArmorBase {
 		
 		GL11.glPushMatrix();
 		
-		if(type == 0) {
+		if(this.type == 0) {
 			Minecraft.getMinecraft().renderEngine.bindTexture(ResourceManager.goggles);
-			head.render(par7);
+			this.head.render(par7);
 		}
 		
 		GL11.glPopMatrix();

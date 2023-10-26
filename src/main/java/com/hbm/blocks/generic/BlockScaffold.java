@@ -30,7 +30,7 @@ public class BlockScaffold extends BlockMulti {
 	
 	@Override
 	public int getRenderType(){
-		return renderIDScaffold;
+		return BlockScaffold.renderIDScaffold;
 	}
 	
 	@Override
@@ -47,17 +47,17 @@ public class BlockScaffold extends BlockMulti {
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister reg) {
 		this.blockIcon = ModBlocks.deco_steel.getIcon(0, 0);
-		this.icons = new IIcon[variants.length];
+		this.icons = new IIcon[this.variants.length];
 		
-		for(int i = 0; i < variants.length; i++) {
-			this.icons[i] = reg.registerIcon(RefStrings.MODID + ":" + variants[i]);
+		for(int i = 0; i < this.variants.length; i++) {
+			this.icons[i] = reg.registerIcon(RefStrings.MODID + ":" + this.variants[i]);
 		}
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
-		return this.icons[this.damageDropped(meta)];
+		return this.icons[damageDropped(meta)];
 	}
 	
 	@Override
@@ -79,7 +79,7 @@ public class BlockScaffold extends BlockMulti {
 
 	@Override
 	public int getSubCount() {
-		return variants.length;
+		return this.variants.length;
 	}
 	
 	@Override
@@ -88,9 +88,9 @@ public class BlockScaffold extends BlockMulti {
 		float f = 0.0625F;
 		
 		if((te & 8) != 0)
-			this.setBlockBounds(2 * f, 0.0F, 0.0F, 14 * f, 1.0F, 1.0F);
+			setBlockBounds(2 * f, 0.0F, 0.0F, 14 * f, 1.0F, 1.0F);
 		else
-			this.setBlockBounds(0.0F, 0.0F, 2 * f, 1.0F, 1.0F, 14 * f);
+			setBlockBounds(0.0F, 0.0F, 2 * f, 1.0F, 1.0F, 14 * f);
 	}
 	
 	@Override
@@ -100,9 +100,9 @@ public class BlockScaffold extends BlockMulti {
 		float f = 0.0625F;
 		
 		if((te & 8) != 0)
-			this.setBlockBounds(2 * f, 0.0F, 0.0F, 14 * f, 1.0F, 1.0F);
+			setBlockBounds(2 * f, 0.0F, 0.0F, 14 * f, 1.0F, 1.0F);
 		else
-			this.setBlockBounds(0.0F, 0.0F, 2 * f, 1.0F, 1.0F, 14 * f);
+			setBlockBounds(0.0F, 0.0F, 2 * f, 1.0F, 1.0F, 14 * f);
 
 		return AxisAlignedBB.getBoundingBox(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
 	}

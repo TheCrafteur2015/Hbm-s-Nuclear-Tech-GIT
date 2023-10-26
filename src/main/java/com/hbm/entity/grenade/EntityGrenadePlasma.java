@@ -25,7 +25,7 @@ public class EntityGrenadePlasma extends EntityGrenadeBouncyBase {
 	public void explode() {
 
 		if(!this.worldObj.isRemote) {
-			this.setDead();
+			setDead();
 			this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 2.0F, true);
 			ExplosionChaos.plasma(this.worldObj, (int) this.posX, (int) this.posY, (int) this.posZ, 7);
 		}

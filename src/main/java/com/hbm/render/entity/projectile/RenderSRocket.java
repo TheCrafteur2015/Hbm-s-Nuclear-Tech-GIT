@@ -15,7 +15,7 @@ public class RenderSRocket extends Render {
 	private ModelSRocket missile;
 
 	public RenderSRocket() {
-		missile = new ModelSRocket();
+		this.missile = new ModelSRocket();
 	}
 
 	public void doRender(EntityRocketHoming rocket, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_,
@@ -32,7 +32,7 @@ public class RenderSRocket extends Render {
 			bindTexture(new ResourceLocation(RefStrings.MODID + ":textures/models/ModelSVTRocket.png"));
 		else
 			bindTexture(new ResourceLocation(RefStrings.MODID + ":textures/models/ModelSRocket.png"));
-		missile.renderAll(0.0625F);
+		this.missile.renderAll(0.0625F);
 		GL11.glPopMatrix();
 	}
 	

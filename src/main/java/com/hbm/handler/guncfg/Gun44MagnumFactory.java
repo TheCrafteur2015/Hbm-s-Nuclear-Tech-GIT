@@ -11,11 +11,11 @@ import com.hbm.handler.BulletConfiguration;
 import com.hbm.handler.CasingEjector;
 import com.hbm.handler.GunConfiguration;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
-import com.hbm.items.ModItems;
 import com.hbm.items.ItemAmmoEnums.Ammo44Magnum;
+import com.hbm.items.ModItems;
 import com.hbm.lib.HbmCollection;
-import com.hbm.lib.RefStrings;
 import com.hbm.lib.HbmCollection.EnumGunManufacturer;
+import com.hbm.lib.RefStrings;
 import com.hbm.packet.AuxParticlePacketNT;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.particle.SpentCasing;
@@ -59,14 +59,14 @@ public class Gun44MagnumFactory {
 		
 		config.config.addAll(HbmCollection.m44Normal);
 		
-		config.ejector = EJECTOR_PIP;
+		config.ejector = Gun44MagnumFactory.EJECTOR_PIP;
 		
 		return config;
 	}
 	
 	public static GunConfiguration getNovacConfig() {
 		
-		GunConfiguration config = getBaseConfig();
+		GunConfiguration config = Gun44MagnumFactory.getBaseConfig();
 		
 		config.durability = 2500;
 		
@@ -81,7 +81,7 @@ public class Gun44MagnumFactory {
 	
 	public static GunConfiguration getMacintoshConfig() {
 		
-		GunConfiguration config = getBaseConfig();
+		GunConfiguration config = Gun44MagnumFactory.getBaseConfig();
 		
 		config.durability = 4000;
 		
@@ -93,9 +93,9 @@ public class Gun44MagnumFactory {
 		config.hasSights = true;
 		config.absoluteFOV = true;
 		config.zoomFOV = 0.25F;
-		config.scopeTexture = scope_lilmac;
+		config.scopeTexture = Gun44MagnumFactory.scope_lilmac;
 		
-		config.config = new ArrayList<Integer>();
+		config.config = new ArrayList<>();
 		config.config.add(BulletConfigSyncingUtil.M44_PIP);
 		config.config.addAll(HbmCollection.m44Normal);
 		
@@ -104,7 +104,7 @@ public class Gun44MagnumFactory {
 	
 	public static GunConfiguration getBlackjackConfig() {
 		
-		GunConfiguration config = getBaseConfig();
+		GunConfiguration config = Gun44MagnumFactory.getBaseConfig();
 		
 		config.durability = 4000;
 		config.ammoCap = 5;
@@ -114,18 +114,18 @@ public class Gun44MagnumFactory {
 		config.manufacturer = EnumGunManufacturer.IF;
 		config.comment.add("Alcoholism is cool!");
 		
-		config.config = new ArrayList<Integer>();
+		config.config = new ArrayList<>();
 		config.config.add(BulletConfigSyncingUtil.M44_BJ);
 		config.config.addAll(HbmCollection.m44Normal);
 		
-		config.ejector = EJECTOR_PIP.clone().setAmount(5);
+		config.ejector = Gun44MagnumFactory.EJECTOR_PIP.clone().setAmount(5);
 		
 		return config;
 	}
 	
 	public static GunConfiguration getSilverConfig() {
 		
-		GunConfiguration config = getBaseConfig();
+		GunConfiguration config = Gun44MagnumFactory.getBaseConfig();
 		
 		config.durability = 4000;
 		config.ammoCap = 6;
@@ -136,7 +136,7 @@ public class Gun44MagnumFactory {
 		config.comment.add("Our friendship is based on abusive behaviour");
 		config.comment.add("and mutual hate. It's not that complicated.");
 		
-		config.config = new ArrayList<Integer>();
+		config.config = new ArrayList<>();
 		config.config.add(BulletConfigSyncingUtil.M44_SILVER);
 		config.config.addAll(HbmCollection.m44Normal);
 		
@@ -145,7 +145,7 @@ public class Gun44MagnumFactory {
 	
 	public static GunConfiguration getRedConfig() {
 		
-		GunConfiguration config = getBaseConfig();
+		GunConfiguration config = Gun44MagnumFactory.getBaseConfig();
 		
 		config.durability = 4000;
 		config.ammoCap = 8;
@@ -156,10 +156,10 @@ public class Gun44MagnumFactory {
 		config.comment.add("Explore the other side");
 		config.comment.add("...from afar!");
 		
-		config.config = new ArrayList<Integer>();
+		config.config = new ArrayList<>();
 		config.config.addAll(HbmCollection.m44All);
 		
-		config.ejector = EJECTOR_PIP.clone().setAmount(64);
+		config.ejector = Gun44MagnumFactory.EJECTOR_PIP.clone().setAmount(64);
 		
 		return config;
 	}
@@ -172,7 +172,7 @@ public class Gun44MagnumFactory {
 		bullet.dmgMin = 18;
 		bullet.dmgMax = 26;
 		
-		bullet.spentCasing = CASING44.clone().register("44NoPip");
+		bullet.spentCasing = Gun44MagnumFactory.CASING44.clone().register("44NoPip");
 		
 		return bullet;
 	}
@@ -187,7 +187,7 @@ public class Gun44MagnumFactory {
 		bullet.wear = 15;
 		bullet.leadChance = 10;
 		
-		bullet.spentCasing = CASING44.clone().register("44AP");
+		bullet.spentCasing = Gun44MagnumFactory.CASING44.clone().register("44AP");
 		
 		return bullet;
 	}
@@ -202,7 +202,7 @@ public class Gun44MagnumFactory {
 		bullet.wear = 25;
 		bullet.leadChance = 50;
 		
-		bullet.spentCasing = CASING44.clone().register("44DU");
+		bullet.spentCasing = Gun44MagnumFactory.CASING44.clone().register("44DU");
 		
 		return bullet;
 	}
@@ -220,7 +220,7 @@ public class Gun44MagnumFactory {
 		
 		PotionEffect eff = new PotionEffect(HbmPotion.phosphorus.id, 20 * 20, 0, true);
 		eff.getCurativeItems().clear();
-		bullet.effects = new ArrayList();
+		bullet.effects = new ArrayList<>();
 		bullet.effects.add(new PotionEffect(eff));
 		
 		bullet.bntImpact = (bulletnt, x, y, z, sideHit) -> {
@@ -234,7 +234,7 @@ public class Gun44MagnumFactory {
 			PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, bulletnt.posX, bulletnt.posY, bulletnt.posZ), new TargetPoint(bulletnt.dimension, bulletnt.posX, bulletnt.posY, bulletnt.posZ, 50));
 		};
 		
-		bullet.spentCasing = CASING44.clone().register("44Phos");
+		bullet.spentCasing = Gun44MagnumFactory.CASING44.clone().register("44Phos");
 		
 		return bullet;
 	}
@@ -249,7 +249,7 @@ public class Gun44MagnumFactory {
 		bullet.wear = 25;
 		bullet.leadChance = 100;
 		
-		bullet.spentCasing = CASING44.clone().register("44Star");
+		bullet.spentCasing = Gun44MagnumFactory.CASING44.clone().register("44Star");
 		
 		return bullet;
 	}
@@ -282,7 +282,7 @@ public class Gun44MagnumFactory {
 			}
 		};
 		
-		bullet.spentCasing = CASING44.clone().register("44Pip").setColor(0x532C64);
+		bullet.spentCasing = Gun44MagnumFactory.CASING44.clone().register("44Pip").setColor(0x532C64);
 		
 		return bullet;
 	}
@@ -315,7 +315,7 @@ public class Gun44MagnumFactory {
 			}
 		};
 		
-		bullet.spentCasing = CASING44.clone().register("44BJ").setColor(0x632B2C);
+		bullet.spentCasing = Gun44MagnumFactory.CASING44.clone().register("44BJ").setColor(0x632B2C);
 		
 		return bullet;
 	}
@@ -348,7 +348,7 @@ public class Gun44MagnumFactory {
 			}
 		};
 		
-		bullet.spentCasing = CASING44.clone().register("44Silver").setColor(0x2B5963);
+		bullet.spentCasing = Gun44MagnumFactory.CASING44.clone().register("44Silver").setColor(0x2B5963);
 		
 		return bullet;
 	}
@@ -362,7 +362,7 @@ public class Gun44MagnumFactory {
 		bullet.explosive = 15F;
 		bullet.trail = 1;
 		
-		bullet.spentCasing = CASING44.clone().register("44Rocket");
+		bullet.spentCasing = Gun44MagnumFactory.CASING44.clone().register("44Rocket");
 		
 		return bullet;
 	}

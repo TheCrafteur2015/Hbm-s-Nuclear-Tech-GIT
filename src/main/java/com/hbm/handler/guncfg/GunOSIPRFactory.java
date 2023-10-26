@@ -41,7 +41,7 @@ public class GunOSIPRFactory {
 		config.name = "osipr";
 		config.manufacturer = EnumGunManufacturer.COMBINE;
 		
-		config.config = new ArrayList<Integer>();
+		config.config = new ArrayList<>();
 		config.config.add(BulletConfigSyncingUtil.SPECIAL_OSIPR);
 		
 		return config;
@@ -62,7 +62,7 @@ public class GunOSIPRFactory {
 		config.allowsInfinity = true;
 		config.firingSound = "hbm:weapon.singFlyby";
 		
-		config.config = new ArrayList<Integer>();
+		config.config = new ArrayList<>();
 		config.config.add(BulletConfigSyncingUtil.SPECIAL_OSIPR_CHARGED);
 		
 		return config;
@@ -76,7 +76,7 @@ public class GunOSIPRFactory {
 		bullet.ammo = new ComparableStack(ModItems.gun_osipr_ammo);
 		bullet.ammoCount = 30;
 		bullet.doesRicochet = false;
-		bullet.spread *= inaccuracy;
+		bullet.spread *= GunOSIPRFactory.inaccuracy;
 		bullet.dmgMin = 15;
 		bullet.dmgMax = 21;
 		bullet.trail = 2;

@@ -18,7 +18,8 @@ public class BlockStruct extends BlockContainer {
 		return new TileEntityMultiblock();
 	}
 	
-    public boolean isOpaqueCube() {
+    @Override
+	public boolean isOpaqueCube() {
     	
         return false;
     }

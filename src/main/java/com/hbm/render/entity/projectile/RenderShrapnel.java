@@ -15,7 +15,7 @@ public class RenderShrapnel extends Render {
 	ModelShrapnel mine;
 
 	public RenderShrapnel() {
-		mine = new ModelShrapnel();
+		this.mine = new ModelShrapnel();
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class RenderShrapnel extends Render {
 			}
 		}
 		
-		mine.renderAll(0.0625F);
+		this.mine.renderAll(0.0625F);
 		GL11.glPopMatrix();
 	}
 

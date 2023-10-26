@@ -10,6 +10,7 @@ import com.hbm.util.fauxpointtwelve.BlockPos;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
@@ -24,6 +25,7 @@ import net.minecraft.world.World;
  * @author hbm
  *
  */
+@SuppressWarnings("all")
 public abstract class TileEntityRequestNetwork extends TileEntity {
 
 	public HashedSet<PathNode> reachableNodes = new HashedSet();
@@ -33,32 +35,32 @@ public abstract class TileEntityRequestNetwork extends TileEntity {
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			if(worldObj.getTotalWorldTime() % 20 == 0) {
+			if(this.worldObj.getTotalWorldTime() % 20 == 0) {
 				BlockPos pos = getCoord();
 				// push new node
-				push(worldObj, createNode(pos));
+				TileEntityRequestNetwork.push(this.worldObj, createNode(pos));
 				
 				// remove known nodes that no longer exist
 				// since we can assume a sane number of nodes to exist at any given time, we can run this check in full every second
-				Iterator<PathNode> it = knownNodes.iterator();
-				HashedSet<PathNode> localNodes = this.getAllLocalNodes(worldObj, xCoord, zCoord, 2); // this bit may spiral into multiple nested hashtable lookups but it's limited to only a few chunks so it shouldn't be an issue
+				Iterator<PathNode> it = this.knownNodes.iterator();
+				HashedSet<PathNode> localNodes = getAllLocalNodes(this.worldObj, this.xCoord, this.zCoord, 2); // this bit may spiral into multiple nested hashtable lookups but it's limited to only a few chunks so it shouldn't be an issue
 				localNodes.remove(pos);
 				while(it.hasNext()) {
 					PathNode node = it.next();
 					if(!localNodes.contains(node)) {
-						reachableNodes.remove(node);
+						this.reachableNodes.remove(node);
 						it.remove();
 					}
 				}
 				
 				// draw debug crap
-				for(PathNode known : knownNodes) {
-					if(reachableNodes.contains(known)) ParticleUtil.spawnDroneLine(worldObj,
+				for(PathNode known : this.knownNodes) {
+					if(this.reachableNodes.contains(known)) ParticleUtil.spawnDroneLine(this.worldObj,
 							pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
 							(known.pos.getX()  - pos.getX()) / 2D, (known.pos.getY() - pos.getY()) / 2D, (known.pos.getZ() - pos.getZ()) / 2D,
-							reachableNodes.contains(known) ? 0x00ff00 : 0xff0000);
+							this.reachableNodes.contains(known) ? 0x00ff00 : 0xff0000);
 				}
 
 				/*NBTTagCompound data = new NBTTagCompound();
@@ -72,12 +74,12 @@ public abstract class TileEntityRequestNetwork extends TileEntity {
 				//both following checks run the `hasPath` function which is costly, so it only runs one op at a time
 				
 				//rescan known nodes
-				for(PathNode known : knownNodes) {
+				for(PathNode known : this.knownNodes) {
 					
-					if(!hasPath(worldObj, pos, known.pos)) {
-						reachableNodes.remove(known);
+					if(!TileEntityRequestNetwork.hasPath(this.worldObj, pos, known.pos)) {
+						this.reachableNodes.remove(known);
 					} else {
-						reachableNodes.add(known);
+						this.reachableNodes.add(known);
 					}
 				}
 					
@@ -85,10 +87,10 @@ public abstract class TileEntityRequestNetwork extends TileEntity {
 				int newNodeLimit = 5;
 				for(PathNode node : localNodes) {
 						
-					if(!knownNodes.contains(node) && !node.equals(pos)) {
+					if(!this.knownNodes.contains(node) && !node.equals(pos)) {
 						newNodeLimit--;
-						knownNodes.add(node);
-						if(hasPath(worldObj, pos, node.pos)) reachableNodes.add(node);
+						this.knownNodes.add(node);
+						if(TileEntityRequestNetwork.hasPath(this.worldObj, pos, node.pos)) this.reachableNodes.add(node);
 					}
 					
 					if(newNodeLimit <= 0) break;
@@ -100,7 +102,7 @@ public abstract class TileEntityRequestNetwork extends TileEntity {
 	public abstract PathNode createNode(BlockPos pos);
 	
 	public BlockPos getCoord() {
-		return new BlockPos(xCoord, yCoord + 1, zCoord);
+		return new BlockPos(this.xCoord, this.yCoord + 1, this.zCoord);
 	}
 	
 	/**
@@ -114,13 +116,13 @@ public abstract class TileEntityRequestNetwork extends TileEntity {
 		Vec3 vec1 = Vec3.createVectorHelper(pos1.getX() + 0.5, pos1.getY() + 0.5, pos1.getZ() + 0.5);
 		Vec3 vec2 = Vec3.createVectorHelper(pos2.getX() + 0.5, pos2.getY() + 0.5, pos2.getZ() + 0.5);
 		Vec3 vec3 = vec1.subtract(vec2);
-		if(vec3.lengthVector() > maxRange) return false;
+		if(vec3.lengthVector() > TileEntityRequestNetwork.maxRange) return false;
 		//for some fucking reason beyond any human comprehension, this function will randomly yield incorrect results but only from one side
 		//therefore we just run the stupid fucking thing twice and then compare the results
 		//thanks for this marvelous piece of programming, mojang
 		MovingObjectPosition mop0 = world.func_147447_a(vec1, vec2, false, true, false);
 		MovingObjectPosition mop2 = world.func_147447_a(vec2, vec1, false, true, false);
-		return (mop0 == null || mop0.typeOfHit == mop0.typeOfHit.MISS) && (mop2 == null || mop2.typeOfHit == mop2.typeOfHit.MISS);
+		return (mop0 == null || mop0.typeOfHit == MovingObjectType.MISS) && (mop2 == null || mop2.typeOfHit == MovingObjectType.MISS);
 	}
 	
 	/**

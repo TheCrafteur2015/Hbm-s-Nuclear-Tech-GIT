@@ -2,9 +2,9 @@ package com.hbm.tileentity.machine;
 
 import com.hbm.inventory.material.Mats;
 import com.hbm.inventory.material.Mats.MaterialStack;
+import com.hbm.inventory.material.NTMMaterial;
 import com.hbm.packet.AuxParticlePacketNT;
 import com.hbm.packet.PacketDispatcher;
-import com.hbm.inventory.material.NTMMaterial;
 import com.hbm.util.CrucibleUtil;
 
 import api.hbm.block.ICrucibleAcceptor;
@@ -27,19 +27,19 @@ public class TileEntityFoundryOutlet extends TileEntityFoundryBase {
 	
 	/** if TRUE, prevents all fluids from flowing through the outlet and renders a small barrier */
 	public boolean isClosed() {
-		return invertRedstone ^ this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
+		return this.invertRedstone ^ this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);
 	}
 	
 	@Override
 	public void updateEntity() {
 		super.updateEntity();
 		
-		if(worldObj.isRemote) {
+		if(this.worldObj.isRemote) {
 			boolean isClosed = isClosed();
 			if(this.lastClosed != isClosed || this.filter != this.lastFilter) {
 				this.lastFilter = this.filter;
 				this.lastClosed = isClosed;
-				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
 			}
 		}
 	}
@@ -50,9 +50,8 @@ public class TileEntityFoundryOutlet extends TileEntityFoundryBase {
 	@Override
 	public boolean canAcceptPartialFlow(World world, int x, int y, int z, ForgeDirection side, MaterialStack stack) {
 		
-		if(filter != null && (filter != stack.material ^ invertFilter)) return false;
-		if(isClosed()) return false;
-		if(side != ForgeDirection.getOrientation(this.getBlockMetadata()).getOpposite()) return false;
+		if((this.filter != null && (this.filter != stack.material ^ this.invertFilter)) || isClosed()) return false;
+		if(side != ForgeDirection.getOrientation(getBlockMetadata()).getOpposite()) return false;
 		
 		Vec3 start = Vec3.createVectorHelper(x + 0.5, y - 0.125, z + 0.5);
 		Vec3 end = Vec3.createVectorHelper(x + 0.5, y + 0.125 - 4, z + 0.5);
@@ -93,8 +92,8 @@ public class TileEntityFoundryOutlet extends TileEntityFoundryBase {
 			data.setByte("dir", (byte) dir.ordinal());
 			data.setFloat("off", 0.375F);
 			data.setFloat("base", 0F);
-			data.setFloat("len", Math.max(1F, yCoord - (float) (Math.ceil(hitY) - 0.875)));
-			PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, xCoord + 0.5D - dir.offsetX * 0.125, yCoord + 0.125, zCoord + 0.5D - dir.offsetZ * 0.125), new TargetPoint(worldObj.provider.dimensionId, xCoord + 0.5, yCoord, zCoord + 0.5, 50));
+			data.setFloat("len", Math.max(1F, this.yCoord - (float) (Math.ceil(hitY) - 0.875)));
+			PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, this.xCoord + 0.5D - dir.offsetX * 0.125, this.yCoord + 0.125, this.zCoord + 0.5D - dir.offsetZ * 0.125), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord + 0.5, this.yCoord, this.zCoord + 0.5, 50));
 		
 		}
 		

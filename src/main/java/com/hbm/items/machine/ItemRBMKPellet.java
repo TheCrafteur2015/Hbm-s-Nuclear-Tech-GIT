@@ -22,9 +22,9 @@ public class ItemRBMKPellet extends ItemNuclearWaste {
 
 	public ItemRBMKPellet(String fullName) {
 		this.fullName = fullName;
-		this.setHasSubtypes(true);
-		this.setMaxDamage(0);
-		this.setCreativeTab(MainRegistry.controlTab);
+		setHasSubtypes(true);
+		setMaxDamage(0);
+		setCreativeTab(MainRegistry.controlTab);
 	}
 	
 	public ItemRBMKPellet disableXenon() {
@@ -53,12 +53,12 @@ public class ItemRBMKPellet extends ItemNuclearWaste {
 		
 		this.enrichmentOverlays = new IIcon[5];
 		
-		for(int i = 0; i < enrichmentOverlays.length; i++) {
-			enrichmentOverlays[i] = iconRegister.registerIcon("hbm:rbmk_pellet_overlay_e" + i);
+		for(int i = 0; i < this.enrichmentOverlays.length; i++) {
+			this.enrichmentOverlays[i] = iconRegister.registerIcon("hbm:rbmk_pellet_overlay_e" + i);
 		}
 		
 		if(this.hasXenon)
-			xenonOverlay = iconRegister.registerIcon("hbm:rbmk_pellet_overlay_xenon");
+			this.xenonOverlay = iconRegister.registerIcon("hbm:rbmk_pellet_overlay_xenon");
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class ItemRBMKPellet extends ItemNuclearWaste {
 
 	@Override
 	public int getRenderPasses(int meta) {
-		return hasXenon(meta) ? 3 : 2;
+		return ItemRBMKPellet.hasXenon(meta) ? 3 : 2;
 	}
 	
 	@Override
@@ -79,7 +79,7 @@ public class ItemRBMKPellet extends ItemNuclearWaste {
 		list.add(EnumChatFormatting.ITALIC + this.fullName);
 		list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + "Pellet for recycling");
 		
-		int meta = rectify(stack.getItemDamage());
+		int meta = ItemRBMKPellet.rectify(stack.getItemDamage());
 		
 		switch(meta % 5) {
 		case 0: list.add(EnumChatFormatting.GOLD + "Brand New"); break;
@@ -89,7 +89,7 @@ public class ItemRBMKPellet extends ItemNuclearWaste {
 		case 4: list.add(EnumChatFormatting.DARK_GRAY + "Fully Depleted"); break;
 		}
 		
-		if(hasXenon(meta))
+		if(ItemRBMKPellet.hasXenon(meta))
 			list.add(EnumChatFormatting.DARK_PURPLE + "High Xenon Poison");
 	}
 
@@ -103,11 +103,11 @@ public class ItemRBMKPellet extends ItemNuclearWaste {
 		if(pass == 2)
 			return this.xenonOverlay;
 		
-		return this.enrichmentOverlays[rectify(meta) % 5];
+		return this.enrichmentOverlays[ItemRBMKPellet.rectify(meta) % 5];
 	}
 	
 	public static boolean hasXenon(int meta) {
-		return rectify(meta) >= 5;
+		return ItemRBMKPellet.rectify(meta) >= 5;
 	}
 	
 	public static int rectify(int meta) {

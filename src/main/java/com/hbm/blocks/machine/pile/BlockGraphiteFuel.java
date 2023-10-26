@@ -27,7 +27,7 @@ public class BlockGraphiteFuel extends BlockGraphiteDrilledTE implements IToolab
 	public TileEntity createNewTileEntity(World world, int meta) {
 		TileEntityPileFuel pile = new TileEntityPileFuel();
 		if((meta & 8) != 0)
-			pile.progress = pile.maxProgress - 1000; // pu239 rods cringe :(
+			pile.progress = TileEntityPileFuel.maxProgress - 1000; // pu239 rods cringe :(
 		
 		return pile;
 	}
@@ -47,7 +47,7 @@ public class BlockGraphiteFuel extends BlockGraphiteDrilledTE implements IToolab
 	@Override
 	public int getComparatorInputOverride(World world, int x, int y, int z, int side) {
 		TileEntityPileFuel pile = (TileEntityPileFuel)world.getTileEntity(x, y, z);
-		return MathHelper.clamp_int((pile.progress * 16) / pile.maxProgress, 0, 15); //potentially wip
+		return MathHelper.clamp_int((pile.progress * 16) / TileEntityPileFuel.maxProgress, 0, 15); //potentially wip
 	}
 	
 	@Override
@@ -63,15 +63,15 @@ public class BlockGraphiteFuel extends BlockGraphiteDrilledTE implements IToolab
 				
 				if(side == cfg * 2 || side == cfg * 2 + 1) {
 					world.setBlock(x, y, z, ModBlocks.block_graphite_drilled, meta & 7, 3);
-					this.ejectItem(world, x, y, z, ForgeDirection.getOrientation(side), new ItemStack(getInsertedItem(meta)));
+					ejectItem(world, x, y, z, ForgeDirection.getOrientation(side), new ItemStack(getInsertedItem(meta)));
 				}
 			}
 			
 			if(tool == ToolType.HAND_DRILL) {
 				TileEntityPileFuel pile = (TileEntityPileFuel) world.getTileEntity(x, y, z);
 				player.addChatComponentMessage(new ChatComponentText("CP1 FUEL ASSEMBLY " + x + " " + y + " " + z).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));
-				player.addChatComponentMessage(new ChatComponentText("HEAT: " + pile.heat + "/" + pile.maxHeat).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
-				player.addChatComponentMessage(new ChatComponentText("DEPLETION: " + pile.progress + "/" + pile.maxProgress).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+				player.addChatComponentMessage(new ChatComponentText("HEAT: " + pile.heat + "/" + TileEntityPileFuel.maxHeat).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+				player.addChatComponentMessage(new ChatComponentText("DEPLETION: " + pile.progress + "/" + TileEntityPileFuel.maxProgress).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
 				player.addChatComponentMessage(new ChatComponentText("FLUX: " + pile.lastNeutrons).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
 				if((meta & 8) == 8)
 					player.addChatComponentMessage(new ChatComponentText("PU-239 RICH").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_GREEN)));

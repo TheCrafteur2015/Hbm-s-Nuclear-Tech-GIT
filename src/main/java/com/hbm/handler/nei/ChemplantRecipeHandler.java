@@ -22,10 +22,10 @@ import net.minecraft.item.ItemStack;
 
 public class ChemplantRecipeHandler extends TemplateRecipeHandler {
 
-	public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<RecipeTransferRect>();
-	public LinkedList<RecipeTransferRect> transferRectsGui = new LinkedList<RecipeTransferRect>();
-	public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<Class<? extends GuiContainer>>();
-	public LinkedList<Class<? extends GuiContainer>> guiGui = new LinkedList<Class<? extends GuiContainer>>();
+	public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<>();
+	public LinkedList<RecipeTransferRect> transferRectsGui = new LinkedList<>();
+	public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<>();
+	public LinkedList<Class<? extends GuiContainer>> guiGui = new LinkedList<>();
 
 	public class RecipeSet extends TemplateRecipeHandler.CachedRecipe {
 		PositionedStack[] itemIn = new PositionedStack[4];
@@ -67,22 +67,22 @@ public class ChemplantRecipeHandler extends TemplateRecipeHandler {
 
 		@Override
 		public List<PositionedStack> getIngredients() {
-			List<PositionedStack> stacks = new ArrayList<PositionedStack>();
+			List<PositionedStack> stacks = new ArrayList<>();
 			
-			for(PositionedStack stack : itemIn) if(stack != null) stacks.add(stack);
-			for(PositionedStack stack : fluidIn) if(stack != null) stacks.add(stack);
-			stacks.add(template);
+			for(PositionedStack stack : this.itemIn) if(stack != null) stacks.add(stack);
+			for(PositionedStack stack : this.fluidIn) if(stack != null) stacks.add(stack);
+			stacks.add(this.template);
 			
-			return getCycledIngredients(cycleticks / 20, stacks);
+			return getCycledIngredients(ChemplantRecipeHandler.this.cycleticks / 20, stacks);
 		}
 
 		@Override
 		public List<PositionedStack> getOtherStacks() {
-			List<PositionedStack> stacks = new ArrayList<PositionedStack>();
+			List<PositionedStack> stacks = new ArrayList<>();
 			
-			for(PositionedStack stack : itemOut) if(stack != null) stacks.add(stack);
-			for(PositionedStack stack : fluidOut) if(stack != null) stacks.add(stack);
-			stacks.add(template);
+			for(PositionedStack stack : this.itemOut) if(stack != null) stacks.add(stack);
+			for(PositionedStack stack : this.fluidOut) if(stack != null) stacks.add(stack);
+			stacks.add(this.template);
 			
 			return stacks;
 		}
@@ -198,14 +198,14 @@ public class ChemplantRecipeHandler extends TemplateRecipeHandler {
 
 	@Override
 	public void loadTransferRects() {
-		transferRectsGui = new LinkedList<RecipeTransferRect>();
-		guiGui = new LinkedList<Class<? extends GuiContainer>>();
+		this.transferRectsGui = new LinkedList<>();
+		this.guiGui = new LinkedList<>();
 
-		transferRects.add(new RecipeTransferRect(new Rectangle(138 - 1 - 72, 23, 18 * 3, 18), "chemistry"));
-		transferRectsGui.add(new RecipeTransferRect(new Rectangle(18 * 2 + 2, 89 - 7 - 11, 18 * 5 - 4, 18 + 16), "chemistry"));
-		guiGui.add(GUIMachineChemplant.class);
-		RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), transferRects);
-		RecipeTransferRectHandler.registerRectsToGuis(guiGui, transferRectsGui);
+		this.transferRects.add(new RecipeTransferRect(new Rectangle(138 - 1 - 72, 23, 18 * 3, 18), "chemistry"));
+		this.transferRectsGui.add(new RecipeTransferRect(new Rectangle(18 * 2 + 2, 89 - 7 - 11, 18 * 5 - 4, 18 + 16), "chemistry"));
+		this.guiGui.add(GUIMachineChemplant.class);
+		RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), this.transferRects);
+		RecipeTransferRectHandler.registerRectsToGuis(this.guiGui, this.transferRectsGui);
 	}
 
 	@Override

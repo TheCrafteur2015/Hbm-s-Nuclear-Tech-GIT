@@ -20,46 +20,46 @@ public class TileEntityFireworks extends TileEntity {
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			if(worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) && !message.isEmpty() && charges > 0) {
+			if(this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord) && !this.message.isEmpty() && this.charges > 0) {
 				
-				delay--;
+				this.delay--;
 				
-				if(delay <= 0) {
-					delay = 30;
+				if(this.delay <= 0) {
+					this.delay = 30;
 					
-					int c = (int)(message.charAt(index));
+					int c = (int)(this.message.charAt(this.index));
 					
-					int mod = index % 9;
+					int mod = this.index % 9;
 
 					double offX = (mod / 3 - 1) * 0.3125;
 					double offZ = (mod % 3 - 1) * 0.3125;
 					
-					EntityFireworks fireworks = new EntityFireworks(worldObj, xCoord + 0.5 + offX, yCoord + 1.5, zCoord + 0.5 + offZ, color, c);
-					worldObj.spawnEntityInWorld(fireworks);
+					EntityFireworks fireworks = new EntityFireworks(this.worldObj, this.xCoord + 0.5 + offX, this.yCoord + 1.5, this.zCoord + 0.5 + offZ, this.color, c);
+					this.worldObj.spawnEntityInWorld(fireworks);
 					
-					worldObj.playSoundAtEntity(fireworks, "hbm:weapon.rocketFlame", 3.0F, 1.0F);
+					this.worldObj.playSoundAtEntity(fireworks, "hbm:weapon.rocketFlame", 3.0F, 1.0F);
 					
-					charges--;
-					this.markDirty();
+					this.charges--;
+					markDirty();
 					
 					NBTTagCompound data = new NBTTagCompound();
 					data.setString("type", "vanillaExt");
 					data.setString("mode", "flame");
-					PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, xCoord + 0.5 + offX, yCoord + 1.125, zCoord + 0.5 + offZ), new TargetPoint(this.worldObj.provider.dimensionId, xCoord + 0.5 + offX, yCoord + 1.125, zCoord + 0.5 + offZ, 100));
+					PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, this.xCoord + 0.5 + offX, this.yCoord + 1.125, this.zCoord + 0.5 + offZ), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord + 0.5 + offX, this.yCoord + 1.125, this.zCoord + 0.5 + offZ, 100));
 					
-					index++;
+					this.index++;
 					
-					if(index >= message.length()) {
-						index = 0;
-						delay = 100;
+					if(this.index >= this.message.length()) {
+						this.index = 0;
+						this.delay = 100;
 					}
 				}
 				
 			} else {
-				delay = 0;
-				index = 0;
+				this.delay = 0;
+				this.index = 0;
 			}
 		}
 	}
@@ -77,8 +77,8 @@ public class TileEntityFireworks extends TileEntity {
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		
-		nbt.setInteger("charges", charges);
-		nbt.setInteger("color", color);
-		nbt.setString("message", message);
+		nbt.setInteger("charges", this.charges);
+		nbt.setInteger("color", this.color);
+		nbt.setString("message", this.message);
 	}
 }

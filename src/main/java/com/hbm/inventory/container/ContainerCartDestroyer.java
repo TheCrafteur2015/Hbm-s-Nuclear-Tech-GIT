@@ -14,23 +14,23 @@ public class ContainerCartDestroyer extends Container {
 	private IInventory diFurnace;
 
 	public ContainerCartDestroyer(InventoryPlayer invPlayer, IInventory tedf) {
-		diFurnace = tedf;
+		this.diFurnace = tedf;
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 3; j++) {
-				this.addSlotToContainer(new SlotPattern(tedf, j + i * 3, 10 + j * 18, 17 + i * 18));
-				this.addSlotToContainer(new SlotPattern(tedf, j + i * 3 + 9, 114 + j * 18, 17 + i * 18));
+				addSlotToContainer(new SlotPattern(tedf, j + i * 3, 10 + j * 18, 17 + i * 18));
+				addSlotToContainer(new SlotPattern(tedf, j + i * 3 + 9, 114 + j * 18, 17 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
 		}
 	}
 
@@ -41,7 +41,7 @@ public class ContainerCartDestroyer extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return diFurnace.isUseableByPlayer(player);
+		return this.diFurnace.isUseableByPlayer(player);
 	}
 
 	@Override
@@ -54,11 +54,11 @@ public class ContainerCartDestroyer extends Container {
 		//System.out.println("Mode " + mode);
 		//System.out.println("Slot " + index);
 		
-		if(index < 0 || index >= diFurnace.getSizeInventory()) {
+		if(index < 0 || index >= this.diFurnace.getSizeInventory()) {
 			return super.slotClick(index, button, mode, player);
 		}
 
-		Slot slot = this.getSlot(index);
+		Slot slot = getSlot(index);
 		
 		ItemStack ret = null;
 		ItemStack held = player.inventory.getItemStack();

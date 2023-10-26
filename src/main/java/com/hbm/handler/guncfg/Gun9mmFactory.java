@@ -7,8 +7,8 @@ import com.hbm.handler.BulletConfiguration;
 import com.hbm.handler.CasingEjector;
 import com.hbm.handler.GunConfiguration;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
-import com.hbm.items.ModItems;
 import com.hbm.items.ItemAmmoEnums.Ammo9mm;
+import com.hbm.items.ModItems;
 import com.hbm.lib.HbmCollection.EnumGunManufacturer;
 import com.hbm.particle.SpentCasing;
 import com.hbm.particle.SpentCasing.CasingType;
@@ -46,14 +46,14 @@ public class Gun9mmFactory {
 		config.name = "mp40";
 		config.manufacturer = EnumGunManufacturer.ERFURT;
 		
-		config.config = new ArrayList<Integer>();
+		config.config = new ArrayList<>();
 		config.config.add(BulletConfigSyncingUtil.P9_NORMAL);
 		config.config.add(BulletConfigSyncingUtil.P9_AP);
 		config.config.add(BulletConfigSyncingUtil.P9_DU);
 		config.config.add(BulletConfigSyncingUtil.CHL_P9);
 		config.config.add(BulletConfigSyncingUtil.P9_ROCKET);
 		
-		config.ejector = EJECTOR_SMG;
+		config.ejector = Gun9mmFactory.EJECTOR_SMG;
 		
 		return config;
 	}
@@ -97,11 +97,11 @@ public class Gun9mmFactory {
 		BulletConfiguration bullet = BulletConfigFactory.standardPistolConfig();
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_9mm.stackFromEnum(Ammo9mm.STOCK));
-		bullet.spread *= inaccuracy;
+		bullet.spread *= Gun9mmFactory.inaccuracy;
 		bullet.dmgMin = 10;
 		bullet.dmgMax = 14;
 		
-		bullet.spentCasing = CASING9MM.clone().register("9MMStock");
+		bullet.spentCasing = Gun9mmFactory.CASING9MM.clone().register("9MMStock");
 		
 		return bullet;
 	}
@@ -111,13 +111,13 @@ public class Gun9mmFactory {
 		BulletConfiguration bullet = BulletConfigFactory.standardPistolConfig();
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_9mm.stackFromEnum(Ammo9mm.AP));
-		bullet.spread *= inaccuracy;
+		bullet.spread *= Gun9mmFactory.inaccuracy;
 		bullet.dmgMin = 18;
 		bullet.dmgMax = 20;
 		bullet.leadChance = 10;
 		bullet.wear = 15;
 		
-		bullet.spentCasing = CASING9MM.clone().register("9MMAP");
+		bullet.spentCasing = Gun9mmFactory.CASING9MM.clone().register("9MMAP");
 		
 		return bullet;
 	}
@@ -127,13 +127,13 @@ public class Gun9mmFactory {
 		BulletConfiguration bullet = BulletConfigFactory.standardPistolConfig();
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_9mm.stackFromEnum(Ammo9mm.DU));
-		bullet.spread *= inaccuracy;
+		bullet.spread *= Gun9mmFactory.inaccuracy;
 		bullet.dmgMin = 22;
 		bullet.dmgMax = 26;
 		bullet.leadChance = 50;
 		bullet.wear = 25;
 		
-		bullet.spentCasing = CASING9MM.clone().register("9MMDU");
+		bullet.spentCasing = Gun9mmFactory.CASING9MM.clone().register("9MMDU");
 		
 		return bullet;
 	}
@@ -147,7 +147,7 @@ public class Gun9mmFactory {
 		bullet.explosive = 7.5F;
 		bullet.trail = 5;
 		
-		bullet.spentCasing = CASING9MM.clone().register("9MMRocket");
+		bullet.spentCasing = Gun9mmFactory.CASING9MM.clone().register("9MMRocket");
 		
 		return bullet;
 	}

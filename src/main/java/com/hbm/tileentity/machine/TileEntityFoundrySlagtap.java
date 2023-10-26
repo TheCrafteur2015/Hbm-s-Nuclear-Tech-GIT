@@ -13,6 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -27,7 +28,7 @@ public class TileEntityFoundrySlagtap extends TileEntity implements ICrucibleAcc
 		
 		MovingObjectPosition mop = world.func_147447_a(start, end, true, true, true);
 		
-		if(mop == null || mop.typeOfHit != mop.typeOfHit.BLOCK) {
+		if(mop == null || mop.typeOfHit != MovingObjectType.BLOCK) {
 			return false;
 		}
 		
@@ -46,7 +47,7 @@ public class TileEntityFoundrySlagtap extends TileEntity implements ICrucibleAcc
 		
 		MovingObjectPosition mop = world.func_147447_a(start, end, true, true, true);
 		
-		if(mop == null || mop.typeOfHit != mop.typeOfHit.BLOCK) {
+		if(mop == null || mop.typeOfHit != MovingObjectType.BLOCK) {
 			return null;
 		}
 
@@ -58,7 +59,7 @@ public class TileEntityFoundrySlagtap extends TileEntity implements ICrucibleAcc
 		if(hit == ModBlocks.slag) {
 			TileEntitySlag tile = (TileEntitySlag) Compat.getTileStandard(world, mop.blockX, mop.blockY, mop.blockZ);
 			if(tile.mat == stack.material) {
-				int transfer = Math.min(tile.maxAmount - tile.amount, stack.amount);
+				int transfer = Math.min(TileEntitySlag.maxAmount - tile.amount, stack.amount);
 				tile.amount += transfer;
 				stack.amount -= transfer;
 				didFlow = didFlow || transfer > 0;
@@ -69,7 +70,7 @@ public class TileEntityFoundrySlagtap extends TileEntity implements ICrucibleAcc
 			world.setBlock(mop.blockX, mop.blockY, mop.blockZ, ModBlocks.slag);
 			TileEntitySlag tile = (TileEntitySlag) Compat.getTileStandard(world, mop.blockX, mop.blockY, mop.blockZ);
 			tile.mat = stack.material;
-			int transfer = Math.min(tile.maxAmount, stack.amount);
+			int transfer = Math.min(TileEntitySlag.maxAmount, stack.amount);
 			tile.amount += transfer;
 			stack.amount -= transfer;
 			didFlow = didFlow || transfer > 0;
@@ -81,7 +82,7 @@ public class TileEntityFoundrySlagtap extends TileEntity implements ICrucibleAcc
 			world.setBlock(mop.blockX, mop.blockY + 1, mop.blockZ, ModBlocks.slag);
 			TileEntitySlag tile = (TileEntitySlag) Compat.getTileStandard(world, mop.blockX, mop.blockY + 1, mop.blockZ);
 			tile.mat = stack.material;
-			int transfer = Math.min(tile.maxAmount, stack.amount);
+			int transfer = Math.min(TileEntitySlag.maxAmount, stack.amount);
 			tile.amount += transfer;
 			stack.amount -= transfer;
 			didFlow = didFlow || transfer > 0;
@@ -99,8 +100,8 @@ public class TileEntityFoundrySlagtap extends TileEntity implements ICrucibleAcc
 			data.setByte("dir", (byte) dir.ordinal());
 			data.setFloat("off", 0.375F);
 			data.setFloat("base", 0F);
-			data.setFloat("len", Math.max(1F, yCoord - (float) (Math.ceil(hitY))));
-			PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, xCoord + 0.5D - dir.offsetX * 0.125, yCoord + 0.125, zCoord + 0.5D - dir.offsetZ * 0.125), new TargetPoint(worldObj.provider.dimensionId, xCoord + 0.5, yCoord, zCoord + 0.5, 50));
+			data.setFloat("len", Math.max(1F, this.yCoord - (float) (Math.ceil(hitY))));
+			PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, this.xCoord + 0.5D - dir.offsetX * 0.125, this.yCoord + 0.125, this.zCoord + 0.5D - dir.offsetZ * 0.125), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord + 0.5, this.yCoord, this.zCoord + 0.5, 50));
 		}
 		
 		if(stack.amount <= 0) {

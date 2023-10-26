@@ -9,8 +9,12 @@ import java.util.Map.Entry;
 import org.lwjgl.input.Keyboard;
 
 import com.hbm.inventory.fluid.tank.FluidTank;
-import com.hbm.inventory.fluid.trait.*;
-import com.hbm.inventory.fluid.trait.FluidTraitSimple.*;
+import com.hbm.inventory.fluid.trait.FT_Corrosive;
+import com.hbm.inventory.fluid.trait.FluidTrait;
+import com.hbm.inventory.fluid.trait.FluidTraitSimple.FT_Amat;
+import com.hbm.inventory.fluid.trait.FluidTraitSimple.FT_LeadContainer;
+import com.hbm.inventory.fluid.trait.FluidTraitSimple.FT_NoContainer;
+import com.hbm.inventory.fluid.trait.FluidTraitSimple.FT_NoID;
 import com.hbm.lib.RefStrings;
 import com.hbm.render.util.EnumSymbol;
 import com.hbm.util.I18nUtil;
@@ -46,11 +50,11 @@ public class FluidType {
 	
 	// v v v this entire system is a pain in the ass to work with. i'd much rather define state transitions and heat values manually.
 	/** How hot this fluid is. Simple enough. */
-	public int temperature = ROOM_TEMPERATURE;
+	public int temperature = FluidType.ROOM_TEMPERATURE;
 	
-	public HashMap<Class, Object> containers = new HashMap();
-	public HashMap<Class<? extends FluidTrait>, FluidTrait> traits = new HashMap();
-	//public List<EnumFluidTrait> enumTraits = new ArrayList();
+	public HashMap<Class<?>, Object> containers = new HashMap<>();
+	public HashMap<Class<? extends FluidTrait>, FluidTrait> traits = new HashMap<>();
+	//public List<EnumFluidTrait> enumTraits = new ArrayList<>();
 	
 	private ResourceLocation texture;
 	
@@ -102,6 +106,7 @@ public class FluidType {
 		return this;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public <T> T getContainer(Class<? extends T> container) {
 		return (T) this.containers.get(container);
 	}
@@ -115,6 +120,7 @@ public class FluidType {
 		return this.traits.containsKey(trait);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public <T extends FluidTrait> T getTrait(Class<? extends T> trait) { //generics, yeah!
 		return (T) this.traits.get(trait);
 	}
@@ -200,12 +206,12 @@ public class FluidType {
 	@SideOnly(Side.CLIENT)
 	public void addInfo(List<String> info) {
 
-		if(temperature != ROOM_TEMPERATURE) {
-			if(temperature < 0) info.add(EnumChatFormatting.BLUE + "" + temperature + "°C");
-			if(temperature > 0) info.add(EnumChatFormatting.RED + "" + temperature + "°C");
+		if(this.temperature != FluidType.ROOM_TEMPERATURE) {
+			if(this.temperature < 0) info.add(EnumChatFormatting.BLUE + "" + this.temperature + "°C");
+			if(this.temperature > 0) info.add(EnumChatFormatting.RED + "" + this.temperature + "°C");
 		}
 		
-		List<String> hidden = new ArrayList();
+		List<String> hidden = new ArrayList<>();
 		
 		for(Entry<Class<? extends FluidTrait>, FluidTrait> entry : this.traits.entrySet()) {
 			entry.getValue().addInfo(info);
@@ -238,7 +244,7 @@ public class FluidType {
 	}
 	@Deprecated //reason: not an enum, again, fuck you
 	public int ordinal() {
-		return this.getID();
+		return getID();
 	}
 	@Deprecated
 	public int getMSAColor() {

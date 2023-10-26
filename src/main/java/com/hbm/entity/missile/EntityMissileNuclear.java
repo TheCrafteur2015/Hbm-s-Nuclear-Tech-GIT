@@ -24,13 +24,13 @@ public class EntityMissileNuclear extends EntityMissileBaseAdvanced {
 	@Override
 	public void onImpact() {
 
-		this.worldObj.spawnEntityInWorld(EntityNukeExplosionMK5.statFac(worldObj, BombConfig.missileRadius, posX, posY, posZ));
-		EntityNukeTorex.statFac(worldObj, posX, posY, posZ, BombConfig.missileRadius);
+		this.worldObj.spawnEntityInWorld(EntityNukeExplosionMK5.statFac(this.worldObj, BombConfig.missileRadius, this.posX, this.posY, this.posZ));
+		EntityNukeTorex.statFac(this.worldObj, this.posX, this.posY, this.posZ, BombConfig.missileRadius);
 	}
 
 	@Override
 	public List<ItemStack> getDebris() {
-		List<ItemStack> list = new ArrayList<ItemStack>();
+		List<ItemStack> list = new ArrayList<>();
 
 		list.add(new ItemStack(ModItems.plate_titanium, 16));
 		list.add(new ItemStack(ModItems.plate_steel, 20));

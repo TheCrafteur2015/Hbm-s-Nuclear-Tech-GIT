@@ -36,7 +36,7 @@ public class DummyBlockBlast extends BlockContainer implements IDummy, IBomb {
     @Override
 	public void breakBlock(World world, int x, int y, int z, Block block, int i)
     {
-    	if(!safeBreak) {
+    	if(!DummyBlockBlast.safeBreak) {
     		TileEntity te = world.getTileEntity(x, y, z);
     		if(te != null && te instanceof TileEntityDummy) {
     			int a = ((TileEntityDummy)te).targetX;

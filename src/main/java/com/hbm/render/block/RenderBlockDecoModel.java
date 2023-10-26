@@ -19,8 +19,8 @@ public class RenderBlockDecoModel implements ISimpleBlockRenderingHandler {
 	private IModelCustom model;
 	
 	public RenderBlockDecoModel(int renderType, IModelCustom IModelCustom) {
-		renderID = renderType;
-		model = IModelCustom;
+		this.renderID = renderType;
+		this.model = IModelCustom;
 	}
 	
 	@Override
@@ -38,7 +38,7 @@ public class RenderBlockDecoModel implements ISimpleBlockRenderingHandler {
 		GL11.glTranslated(0, 0.1D, 0);
 		GL11.glScaled(1.2D, 1.2D, 1.2D);
 		tessellator.startDrawingQuads();
-		ObjUtil.renderWithIcon((WavefrontObject) model, iicon, tessellator, modelId, false);
+		ObjUtil.renderWithIcon((WavefrontObject) this.model, iicon, tessellator, modelId, false);
 		
 		tessellator.draw();
 		
@@ -74,7 +74,7 @@ public class RenderBlockDecoModel implements ISimpleBlockRenderingHandler {
 		}
 		
 		tessellator.addTranslation(x + 0.5F, y + 0.5F, z + 0.5F);
-		ObjUtil.renderWithIcon((WavefrontObject) model, iicon, tessellator, rotation, true);
+		ObjUtil.renderWithIcon((WavefrontObject) this.model, iicon, tessellator, rotation, true);
 		tessellator.addTranslation(-x - 0.5F, -y - 0.5F, -z - 0.5F);
 		
 		return false;

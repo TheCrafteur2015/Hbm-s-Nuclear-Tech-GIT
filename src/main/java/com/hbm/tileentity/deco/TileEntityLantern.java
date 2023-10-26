@@ -13,12 +13,13 @@ import net.minecraft.util.AxisAlignedBB;
 
 public class TileEntityLantern extends TileEntity {
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote && worldObj.getTotalWorldTime() % 20 == 0) {
+		if(!this.worldObj.isRemote && this.worldObj.getTotalWorldTime() % 20 == 0) {
 			
-			List<EntityGlyphid> glyphids = worldObj.getEntitiesWithinAABB(EntityGlyphid.class, AxisAlignedBB.getBoundingBox(xCoord + 0.5, yCoord + 5.5, zCoord + 0.5, xCoord + 0.5, yCoord + 5.5, zCoord + 0.5).expand(7.5, 7.5, 7.5));
+			List<EntityGlyphid> glyphids = this.worldObj.getEntitiesWithinAABB(EntityGlyphid.class, AxisAlignedBB.getBoundingBox(this.xCoord + 0.5, this.yCoord + 5.5, this.zCoord + 0.5, this.xCoord + 0.5, this.yCoord + 5.5, this.zCoord + 0.5).expand(7.5, 7.5, 7.5));
 			
 			for(EntityGlyphid glyphid : glyphids) {
 				glyphid.addPotionEffect(new PotionEffect(Potion.blindness.id, 100, 0));
@@ -31,18 +32,18 @@ public class TileEntityLantern extends TileEntity {
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord,
-					yCoord,
-					zCoord,
-					xCoord + 1,
-					yCoord + 6,
-					zCoord + 1
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord,
+					this.yCoord,
+					this.zCoord,
+					this.xCoord + 1,
+					this.yCoord + 6,
+					this.zCoord + 1
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override

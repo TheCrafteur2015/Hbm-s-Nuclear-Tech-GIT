@@ -16,9 +16,9 @@ public class ThreeInts implements Comparable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + x;
-		result = prime * result + y;
-		result = prime * result + z;
+		result = prime * result + this.x;
+		result = prime * result + this.y;
+		result = prime * result + this.z;
 		return result;
 	}
 
@@ -26,16 +26,14 @@ public class ThreeInts implements Comparable {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if ((obj == null) || (getClass() != obj.getClass()))
 			return false;
 		ThreeInts other = (ThreeInts) obj;
-		if (x != other.x)
+		if (this.x != other.x)
 			return false;
-		if (y != other.y)
+		if (this.y != other.y)
 			return false;
-		if (z != other.z)
+		if (this.z != other.z)
 			return false;
 		return true;
 	}

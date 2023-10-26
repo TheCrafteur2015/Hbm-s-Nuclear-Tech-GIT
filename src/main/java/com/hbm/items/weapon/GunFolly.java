@@ -24,12 +24,12 @@ public class GunFolly extends Item implements IHoldableWeapon {
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
 		
-		int state = getState(stack);
+		int state = GunFolly.getState(stack);
 		
 		if(state == 0) {
 			
 			world.playSoundAtEntity(player, "hbm:weapon.follyOpen", 1.0F, 1.0F);
-			setState(stack, 1);
+			GunFolly.setState(stack, 1);
 			
 		} else if(state == 1) {
 			
@@ -37,23 +37,23 @@ public class GunFolly extends Item implements IHoldableWeapon {
 
 				world.playSoundAtEntity(player, "hbm:weapon.follyReload", 1.0F, 1.0F);
 				player.inventory.consumeInventoryItem(ModItems.ammo_folly);
-				setState(stack, 2);
+				GunFolly.setState(stack, 2);
 			} else {
 				
 				world.playSoundAtEntity(player, "hbm:weapon.follyClose", 1.0F, 1.0F);
-				setState(stack, 0);
+				GunFolly.setState(stack, 0);
 			}
 			
 		} else if(state == 2) {
 
 			world.playSoundAtEntity(player, "hbm:weapon.follyClose", 1.0F, 1.0F);
-			setState(stack, 3);
-			setTimer(stack, 100);
+			GunFolly.setState(stack, 3);
+			GunFolly.setTimer(stack, 100);
 		} else if(state == 3) {
 			
-			if(getTimer(stack) == 0) {
+			if(GunFolly.getTimer(stack) == 0) {
 				
-				setState(stack, 0);
+				GunFolly.setState(stack, 0);
 				world.playSoundAtEntity(player, "hbm:weapon.follyFire", 1.0F, 1.0F);
 
 				double mult = 1.75D;
@@ -89,10 +89,10 @@ public class GunFolly extends Item implements IHoldableWeapon {
 	@Override
     public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean isCurrentItem) {
 		
-		if(getState(stack) == 3) {
+		if(GunFolly.getState(stack) == 3) {
 			
 			if(isCurrentItem) {
-				int timer = getTimer(stack);
+				int timer = GunFolly.getTimer(stack);
 				
 				if(timer > 0) {
 					timer--;
@@ -103,10 +103,10 @@ public class GunFolly extends Item implements IHoldableWeapon {
 					if(timer == 0)
 						world.playSoundAtEntity(entity, "hbm:weapon.follyAquired", 1.0F, 1.0F);
 					
-					setTimer(stack, timer);
+					GunFolly.setTimer(stack, timer);
 				}
 			} else {
-				setTimer(stack, 100);
+				GunFolly.setTimer(stack, 100);
 			}
 		}
 	}
@@ -116,19 +116,19 @@ public class GunFolly extends Item implements IHoldableWeapon {
 	//2: open, full
 	//3: closed, full
 	public static void setState(ItemStack stack, int i) {
-		writeNBT(stack, "state", i);
+		GunFolly.writeNBT(stack, "state", i);
 	}
 	
 	public static int getState(ItemStack stack) {
-		return readNBT(stack, "state");
+		return GunFolly.readNBT(stack, "state");
 	}
 	
 	public static void setTimer(ItemStack stack, int i) {
-		writeNBT(stack, "timer", i);
+		GunFolly.writeNBT(stack, "timer", i);
 	}
 	
 	public static int getTimer(ItemStack stack) {
-		return readNBT(stack, "timer");
+		return GunFolly.readNBT(stack, "timer");
 	}
 	
 	private static void writeNBT(ItemStack stack, String key, int value) {

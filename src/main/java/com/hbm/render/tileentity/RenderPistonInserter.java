@@ -45,7 +45,7 @@ public class RenderPistonInserter extends TileEntitySpecialRenderer implements I
 			ResourceManager.piston_inserter.renderPart("Frame");
 			
 			TileEntityPistonInserter piston = (TileEntityPistonInserter)tile;
-			double e = (piston.lastExtend + (piston.renderExtend - piston.lastExtend) * interp) / (double) piston.maxExtend;
+			double e = (piston.lastExtend + (piston.renderExtend - piston.lastExtend) * interp) / (double) TileEntityPistonInserter.maxExtend;
 			GL11.glTranslated(0, e * 0.9375D, 0);
 			ResourceManager.piston_inserter.renderPart("Piston");
 			
@@ -86,11 +86,13 @@ public class RenderPistonInserter extends TileEntitySpecialRenderer implements I
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase() {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(0, -2.5, 0);
 				double scale = 5;
 				GL11.glScaled(scale, scale, scale);
 			}
+			@Override
 			public void renderCommon() {
 				GL11.glScaled(2, 2, 2);
 				bindTexture(ResourceManager.piston_inserter_tex);

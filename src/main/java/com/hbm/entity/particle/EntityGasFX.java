@@ -45,16 +45,16 @@ public class EntityGasFX extends EntityModFX
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
         
-        if(maxAge < 15)
+        if(this.maxAge < 15)
         {
-        	maxAge = rand.nextInt(4) + 15;
+        	this.maxAge = this.rand.nextInt(4) + 15;
         }
 
         this.particleAge++;
         
-        if (this.particleAge >= maxAge)
+        if (this.particleAge >= this.maxAge)
         {
-            this.setDead();
+            setDead();
         }
 
         this.motionX *= 0.7599999785423279D;
@@ -67,9 +67,9 @@ public class EntityGasFX extends EntityModFX
             this.motionX *= 0.699999988079071D;
             this.motionZ *= 0.699999988079071D;
         }
-        if(this.isBurning()) {
-			this.setDead();
-			worldObj.createExplosion(null, posX, posY, posZ, 3F, true);
+        if(isBurning()) {
+			setDead();
+			this.worldObj.createExplosion(null, this.posX, this.posY, this.posZ, 3F, true);
 		}
 
         this.posX += this.motionX;

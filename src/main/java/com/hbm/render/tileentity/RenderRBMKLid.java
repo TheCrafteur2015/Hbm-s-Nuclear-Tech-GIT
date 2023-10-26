@@ -2,6 +2,7 @@ package com.hbm.render.tileentity;
 
 import org.lwjgl.opengl.GL11;
 
+import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.machine.rbmk.RBMKBase;
 import com.hbm.lib.RefStrings;
 import com.hbm.main.ResourceManager;
@@ -66,16 +67,16 @@ public class RenderRBMKLid extends TileEntitySpecialRenderer {
 			GL11.glPushMatrix();
 			GL11.glTranslated(0, offset, 0);
 			
-			int meta = control.getBlockMetadata() - RBMKBase.offset;
+			int meta = control.getBlockMetadata() - BlockDummyable.offset;
 			
 			if(meta == RBMKBase.DIR_GLASS_LID.ordinal()) {
-				bindTexture(texture_glass);
+				bindTexture(this.texture_glass);
 			} else {
 				
 				if(control.getBlockType() instanceof RBMKBase) {
 					bindTexture(((RBMKBase)control.getBlockType()).coverTexture);
 				} else {
-					bindTexture(texture);
+					bindTexture(this.texture);
 				}
 				cherenkov = false;
 			}
@@ -89,7 +90,7 @@ public class RenderRBMKLid extends TileEntitySpecialRenderer {
 		if(hasRod) {
 
 			GL11.glPushMatrix();
-			bindTexture(texture_rods);
+			bindTexture(RenderRBMKLid.texture_rods);
 			
 			for(int j = 0; j <= offset; j++) {
 

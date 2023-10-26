@@ -39,38 +39,38 @@ public class GasRenderer extends Render {
 			EntityGasFX fx = (EntityGasFX) p_76986_1_;
 
 			if (fx.particleAge <= fx.maxAge && fx.particleAge >= fx.maxAge / 8 * 7) {
-				field_94151_a = ModItems.gas8;
+				this.field_94151_a = ModItems.gas8;
 			}
 
 			if (fx.particleAge < fx.maxAge / 8 * 7 && fx.particleAge >= fx.maxAge / 8 * 6) {
-				field_94151_a = ModItems.gas7;
+				this.field_94151_a = ModItems.gas7;
 			}
 
 			if (fx.particleAge < fx.maxAge / 8 * 6 && fx.particleAge >= fx.maxAge / 8 * 5) {
-				field_94151_a = ModItems.gas6;
+				this.field_94151_a = ModItems.gas6;
 			}
 
 			if (fx.particleAge < fx.maxAge / 8 * 5 && fx.particleAge >= fx.maxAge / 8 * 4) {
-				field_94151_a = ModItems.gas5;
+				this.field_94151_a = ModItems.gas5;
 			}
 
 			if (fx.particleAge < fx.maxAge / 8 * 4 && fx.particleAge >= fx.maxAge / 8 * 3) {
-				field_94151_a = ModItems.gas4;
+				this.field_94151_a = ModItems.gas4;
 			}
 
 			if (fx.particleAge < fx.maxAge / 8 * 3 && fx.particleAge >= fx.maxAge / 8 * 2) {
-				field_94151_a = ModItems.gas3;
+				this.field_94151_a = ModItems.gas3;
 			}
 
 			if (fx.particleAge < fx.maxAge / 8 * 2 && fx.particleAge >= fx.maxAge / 8 * 1) {
-				field_94151_a = ModItems.gas2;
+				this.field_94151_a = ModItems.gas2;
 			}
 
 			if (fx.particleAge < fx.maxAge / 8 && fx.particleAge >= 0) {
-				field_94151_a = ModItems.gas1;
+				this.field_94151_a = ModItems.gas1;
 			}
 
-			IIcon iicon = field_94151_a.getIconFromDamage(0);
+			IIcon iicon = this.field_94151_a.getIconFromDamage(0);
 
 			if (iicon != null) {
 				GL11.glPushMatrix();
@@ -81,10 +81,10 @@ public class GasRenderer extends Render {
 				//
 				GL11.glScalef(0.25F, 0.25F, 0.25F);
 				//
-				this.bindEntityTexture(p_76986_1_);
+				bindEntityTexture(p_76986_1_);
 				Tessellator tessellator = Tessellator.instance;
 
-				this.func_77026_a(tessellator, iicon);
+				func_77026_a(tessellator, iicon);
 				GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 				GL11.glPopMatrix();
 			}

@@ -99,7 +99,7 @@ public class BlockGraphiteNeutronDetector extends BlockGraphiteDrilledTE {
 				if(!player.isSneaking()) {
 					if(side == cfg * 2 || side == cfg * 2 + 1) {
 						world.setBlock(x, y, z, ModBlocks.block_graphite_drilled, meta & 7, 3);
-						this.ejectItem(world, x, y, z, ForgeDirection.getOrientation(side), new ItemStack(getInsertedItem()));
+						ejectItem(world, x, y, z, ForgeDirection.getOrientation(side), new ItemStack(getInsertedItem()));
 					}
 				} else {
 					TileEntityPileNeutronDetector pile = (TileEntityPileNeutronDetector) world.getTileEntity(x, y, z);

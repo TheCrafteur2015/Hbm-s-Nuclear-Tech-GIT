@@ -9,8 +9,8 @@ import com.hbm.config.GeneralConfig;
 import com.hbm.config.RadiationConfig;
 import com.hbm.explosion.ExplosionNukeSmall;
 import com.hbm.extprop.HbmLivingProps;
-import com.hbm.extprop.HbmPlayerProps;
 import com.hbm.extprop.HbmLivingProps.ContaminationEffect;
+import com.hbm.extprop.HbmPlayerProps;
 import com.hbm.handler.HbmKeybinds.EnumKeybind;
 import com.hbm.handler.pollution.PollutionHandler;
 import com.hbm.handler.pollution.PollutionHandler.PollutionType;
@@ -20,14 +20,14 @@ import com.hbm.items.armor.ArmorFSB;
 import com.hbm.lib.ModDamageSource;
 import com.hbm.main.MainRegistry;
 import com.hbm.packet.AuxParticlePacketNT;
+import com.hbm.packet.ExtPropPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.potion.HbmPotion;
-import com.hbm.packet.ExtPropPacket;
 import com.hbm.saveddata.AuxSavedData;
 import com.hbm.util.ArmorRegistry;
+import com.hbm.util.ArmorRegistry.HazardClass;
 import com.hbm.util.ArmorUtil;
 import com.hbm.util.ContaminationUtil;
-import com.hbm.util.ArmorRegistry.HazardClass;
 import com.hbm.util.ContaminationUtil.ContaminationType;
 import com.hbm.util.ContaminationUtil.HazardType;
 
@@ -91,17 +91,17 @@ public class EntityEffectHandler {
 			}
 		}
 
-		handleContamination(entity);
-		handleContagion(entity);
-		handleRadiation(entity);
-		handleDigamma(entity);
-		handleLungDisease(entity);
-		handleOil(entity);
-		handlePollution(entity);
-		handleTemperature(entity);
+		EntityEffectHandler.handleContamination(entity);
+		EntityEffectHandler.handleContagion(entity);
+		EntityEffectHandler.handleRadiation(entity);
+		EntityEffectHandler.handleDigamma(entity);
+		EntityEffectHandler.handleLungDisease(entity);
+		EntityEffectHandler.handleOil(entity);
+		EntityEffectHandler.handlePollution(entity);
+		EntityEffectHandler.handleTemperature(entity);
 
-		handleDashing(entity);
-		handlePlinking(entity);
+		EntityEffectHandler.handleDashing(entity);
+		EntityEffectHandler.handlePlinking(entity);
 	}
 	
 	private static void handleContamination(EntityLivingBase entity) {
@@ -110,7 +110,7 @@ public class EntityEffectHandler {
 			return;
 		
 		List<ContaminationEffect> contamination = HbmLivingProps.getCont(entity);
-		List<ContaminationEffect> rem = new ArrayList();
+		List<ContaminationEffect> rem = new ArrayList<>();
 		
 		for(ContaminationEffect con : contamination) {
 			ContaminationUtil.contaminate(entity, HazardType.RADIATION, con.ignoreArmor ? ContaminationType.RAD_BYPASS : ContaminationType.CREATIVE, con.getRad());
@@ -160,7 +160,7 @@ public class EntityEffectHandler {
 			
 			if(HbmLivingProps.getRadiation(entity) > 600) {
 				
-				if((world.getTotalWorldTime() + r600) % 600 < 20 && canVomit(entity)) {
+				if((world.getTotalWorldTime() + r600) % 600 < 20 && EntityEffectHandler.canVomit(entity)) {
 					NBTTagCompound nbt = new NBTTagCompound();
 					nbt.setString("type", "vomit");
 					nbt.setString("mode", "blood");
@@ -174,7 +174,7 @@ public class EntityEffectHandler {
 					}
 				}
 				
-			} else if(HbmLivingProps.getRadiation(entity) > 200 && (world.getTotalWorldTime() + r1200) % 1200 < 20 && canVomit(entity)) {
+			} else if(HbmLivingProps.getRadiation(entity) > 200 && (world.getTotalWorldTime() + r1200) % 1200 < 20 && EntityEffectHandler.canVomit(entity)) {
 				
 				NBTTagCompound nbt = new NBTTagCompound();
 				nbt.setString("type", "vomit");
@@ -330,7 +330,7 @@ public class EntityEffectHandler {
 					entity.attackEntityFrom(ModDamageSource.mku, 2F);
 				}
 				
-				if(contagion < 30 * minute && (contagion + entity.getEntityId()) % 200 < 20 && canVomit(entity)) {
+				if(contagion < 30 * minute && (contagion + entity.getEntityId()) % 200 < 20 && EntityEffectHandler.canVomit(entity)) {
 					NBTTagCompound nbt = new NBTTagCompound();
 					nbt.setString("type", "vomit");
 					nbt.setString("mode", "blood");
@@ -492,8 +492,7 @@ public class EntityEffectHandler {
 	
 	private static void handleTemperature(Entity entity) {
 		
-		if(!(entity instanceof EntityLivingBase)) return;
-		if(entity.worldObj.isRemote) return;
+		if(!(entity instanceof EntityLivingBase) || entity.worldObj.isRemote) return;
 		
 		EntityLivingBase living = (EntityLivingBase) entity;
 		int temp = HbmLivingProps.getTemperature(living);

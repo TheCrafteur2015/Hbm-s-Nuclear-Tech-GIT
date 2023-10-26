@@ -1,14 +1,13 @@
 package com.hbm.blocks.machine;
 
-import com.hbm.tileentity.TileEntityProxyCombo;
-import com.hbm.tileentity.machine.TileEntityMachineTurbineGas;
-import com.hbm.util.I18nUtil;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ILookOverlay;
+import com.hbm.tileentity.TileEntityProxyCombo;
+import com.hbm.tileentity.machine.TileEntityMachineTurbineGas;
+import com.hbm.util.I18nUtil;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -59,18 +58,18 @@ public class MachineTurbineGas extends BlockDummyable implements ILookOverlay {
 		
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 		
-		this.makeExtra(world, x - dir.offsetX * 1 + rot.offsetX, y, z - dir.offsetZ * 1 + rot.offsetZ);
-		this.makeExtra(world, x + dir.offsetX * 1 + rot.offsetX, y, z + dir.offsetZ * 1 + rot.offsetZ);
-		this.makeExtra(world, x - dir.offsetX * 1 + rot.offsetX * -4, y, z - dir.offsetZ * 1 + rot.offsetZ * -4);
-		this.makeExtra(world, x + dir.offsetX * 1 + rot.offsetX * -4, y, z + dir.offsetZ * 1 + rot.offsetZ * -4);
-		this.makeExtra(world, x + rot.offsetX * 4, y + 1, z + rot.offsetZ * 4);
-		this.makeExtra(world, x + rot.offsetX * -5, y + 1, z + rot.offsetZ * -5);
+		makeExtra(world, x - dir.offsetX * 1 + rot.offsetX, y, z - dir.offsetZ * 1 + rot.offsetZ);
+		makeExtra(world, x + dir.offsetX * 1 + rot.offsetX, y, z + dir.offsetZ * 1 + rot.offsetZ);
+		makeExtra(world, x - dir.offsetX * 1 + rot.offsetX * -4, y, z - dir.offsetZ * 1 + rot.offsetZ * -4);
+		makeExtra(world, x + dir.offsetX * 1 + rot.offsetX * -4, y, z + dir.offsetZ * 1 + rot.offsetZ * -4);
+		makeExtra(world, x + rot.offsetX * 4, y + 1, z + rot.offsetZ * 4);
+		makeExtra(world, x + rot.offsetX * -5, y + 1, z + rot.offsetZ * -5);
 	}
 
 	@Override
 	public void printHook(Pre event, World world, int x, int y, int z) {
 		
-		int[] pos = this.findCore(world, x, y, z);
+		int[] pos = findCore(world, x, y, z);
 
 		if(pos == null) return;
 		
@@ -80,9 +79,9 @@ public class MachineTurbineGas extends BlockDummyable implements ILookOverlay {
 		
 		TileEntityMachineTurbineGas turbine = (TileEntityMachineTurbineGas) te;
 		
-		ForgeDirection dir = ForgeDirection.getOrientation(turbine.getBlockMetadata() - this.offset);
+		ForgeDirection dir = ForgeDirection.getOrientation(turbine.getBlockMetadata() - BlockDummyable.offset);
 		
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		
 		if(hitCheck(dir, pos[0], pos[1], pos[2], -1, -1, 0, x, y, z) || hitCheck(dir, pos[0], pos[1], pos[2], 1, -1, 0, x, y, z)) {
 			text.add(EnumChatFormatting.GREEN + "-> " + EnumChatFormatting.RESET + turbine.tanks[0].getTankType().getLocalizedName());

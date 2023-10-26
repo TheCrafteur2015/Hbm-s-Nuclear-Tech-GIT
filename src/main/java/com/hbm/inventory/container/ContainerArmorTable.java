@@ -25,16 +25,16 @@ public class ContainerArmorTable extends Container {
 	public ContainerArmorTable(InventoryPlayer inventory) {
 		EntityPlayer player = inventory.player;
 		
-		this.addSlotToContainer(new UpgradeSlot(upgrades, ArmorModHandler.helmet_only, 26 + 22, 27));	// helmet only
-		this.addSlotToContainer(new UpgradeSlot(upgrades, ArmorModHandler.plate_only, 62 + 22, 27));		// chestplate only
-		this.addSlotToContainer(new UpgradeSlot(upgrades, ArmorModHandler.legs_only, 98 + 22, 27));		// leggins only
-		this.addSlotToContainer(new UpgradeSlot(upgrades, ArmorModHandler.boots_only, 134 + 22, 45));	// boots only
-		this.addSlotToContainer(new UpgradeSlot(upgrades, ArmorModHandler.servos, 134 + 22, 81));		//servos/frame
-		this.addSlotToContainer(new UpgradeSlot(upgrades, ArmorModHandler.cladding, 98 + 22, 99));		//radiation cladding
-		this.addSlotToContainer(new UpgradeSlot(upgrades, ArmorModHandler.kevlar, 62 + 22, 99));			//kevlar/sapi/(ERA? :) )
-		this.addSlotToContainer(new UpgradeSlot(upgrades, ArmorModHandler.extra, 26 + 22, 99));			//special parts
+		addSlotToContainer(new UpgradeSlot(this.upgrades, ArmorModHandler.helmet_only, 26 + 22, 27));	// helmet only
+		addSlotToContainer(new UpgradeSlot(this.upgrades, ArmorModHandler.plate_only, 62 + 22, 27));		// chestplate only
+		addSlotToContainer(new UpgradeSlot(this.upgrades, ArmorModHandler.legs_only, 98 + 22, 27));		// leggins only
+		addSlotToContainer(new UpgradeSlot(this.upgrades, ArmorModHandler.boots_only, 134 + 22, 45));	// boots only
+		addSlotToContainer(new UpgradeSlot(this.upgrades, ArmorModHandler.servos, 134 + 22, 81));		//servos/frame
+		addSlotToContainer(new UpgradeSlot(this.upgrades, ArmorModHandler.cladding, 98 + 22, 99));		//radiation cladding
+		addSlotToContainer(new UpgradeSlot(this.upgrades, ArmorModHandler.kevlar, 62 + 22, 99));			//kevlar/sapi/(ERA? :) )
+		addSlotToContainer(new UpgradeSlot(this.upgrades, ArmorModHandler.extra, 26 + 22, 99));			//special parts
 
-		this.addSlotToContainer(new Slot(armor, 0, 44 + 22, 63) {
+		addSlotToContainer(new Slot(this.armor, 0, 44 + 22, 63) {
 
 			@Override
 			public boolean isItemValid(ItemStack stack) {
@@ -51,7 +51,7 @@ public class ContainerArmorTable extends Container {
 					for(int i = 0; i < 8; i++) {
 						
 						if(mods != null)
-							upgrades.setInventorySlotContents(i, mods[i]);
+							ContainerArmorTable.this.upgrades.setInventorySlotContents(i, mods[i]);
 					}
 					
 				}
@@ -67,11 +67,11 @@ public class ContainerArmorTable extends Container {
 				
 				for(int i = 0; i < 8; i++) {
 					
-					ItemStack mod = upgrades.getStackInSlot(i);
+					ItemStack mod = ContainerArmorTable.this.upgrades.getStackInSlot(i);
 					
 					//ideally, this should always return true so long as the mod slot is not null due to the insert restriction
 					if(ArmorModHandler.isApplicable(stack, mod)) {
-						upgrades.setInventorySlotContents(i, null);
+						ContainerArmorTable.this.upgrades.setInventorySlotContents(i, null);
 					}
 				}
 			}
@@ -80,18 +80,21 @@ public class ContainerArmorTable extends Container {
 		//player armor slots for easy accessibility
 		for(int i = 0; i < 4; ++i) {
 			final int k = i;
-			this.addSlotToContainer(new Slot(inventory, inventory.getSizeInventory() - 1 - i, -17 + 22, 36 + i * 18) {
+			addSlotToContainer(new Slot(inventory, inventory.getSizeInventory() - 1 - i, -17 + 22, 36 + i * 18) {
 				
+				@Override
 				public int getSlotStackLimit() {
 					return 1;
 				}
 				
+				@Override
 				public boolean isItemValid(ItemStack stack) {
 					if(stack == null)
 						return false;
 					return stack.getItem().isValidArmor(stack, k, player);
 				}
 				
+				@Override
 				@SideOnly(Side.CLIENT)
 				public IIcon getBackgroundIconIndex() {
 					return ItemArmor.func_94602_b(k);
@@ -101,15 +104,15 @@ public class ContainerArmorTable extends Container {
 		
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(inventory, j + i * 9 + 9, 8 + j * 18 + 22, 84 + i * 18 + 56));
+				addSlotToContainer(new Slot(inventory, j + i * 9 + 9, 8 + j * 18 + 22, 84 + i * 18 + 56));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(inventory, i, 8 + i * 18 + 22, 142 + 56));
+			addSlotToContainer(new Slot(inventory, i, 8 + i * 18 + 22, 142 + 56));
 		}
 		
-		this.onCraftMatrixChanged(this.upgrades);
+		onCraftMatrixChanged(this.upgrades);
 	}
 
 	@Override
@@ -128,14 +131,14 @@ public class ContainerArmorTable extends Container {
 
 			if(par2 <= 8) {
 				if(par2 != 8 || !InventoryUtil.mergeItemStack(this.inventorySlots, var5, 9, 13, false))
-					if(!this.mergeItemStack(var5, 13, this.inventorySlots.size(), true))
+					if(!mergeItemStack(var5, 13, this.inventorySlots.size(), true))
 						return null;
 					
 				var4.onPickupFromSlot(p_82846_1_, var5);
 			} else {
 				
 				if(var5.getItem() instanceof ItemArmor) {
-					if(!this.mergeItemStack(var5, 8, 9, false))
+					if(!mergeItemStack(var5, 8, 9, false))
 						return null;
 					
 				} else if(this.inventorySlots.get(8) != null && var5.getItem() instanceof ItemArmorMod) {
@@ -144,7 +147,7 @@ public class ContainerArmorTable extends Container {
 					int slot = mod.type;
 					
 					if(((Slot) this.inventorySlots.get(slot)).isItemValid(var5)) {
-						if(!this.mergeItemStack(var5, slot, slot + 1, false))
+						if(!mergeItemStack(var5, slot, slot + 1, false))
 							return null;
 					} else {
 						return null;
@@ -174,7 +177,7 @@ public class ContainerArmorTable extends Container {
 
 				if(itemstack != null) {
 					player.dropPlayerItemWithRandomChoice(itemstack, false);
-					ArmorModHandler.removeMod(armor.getStackInSlot(0), i);
+					ArmorModHandler.removeMod(this.armor.getStackInSlot(0), i);
 				}
 			}
 			
@@ -194,7 +197,7 @@ public class ContainerArmorTable extends Container {
 
 		@Override
 		public boolean isItemValid(ItemStack stack) {
-			return armor.getStackInSlot(0) != null && ArmorModHandler.isApplicable(armor.getStackInSlot(0), stack) && ((ItemArmorMod)stack.getItem()).type == this.slotNumber;
+			return ContainerArmorTable.this.armor.getStackInSlot(0) != null && ArmorModHandler.isApplicable(ContainerArmorTable.this.armor.getStackInSlot(0), stack) && ((ItemArmorMod)stack.getItem()).type == this.slotNumber;
 		}
 		
 		@Override
@@ -202,15 +205,16 @@ public class ContainerArmorTable extends Container {
 			super.putStack(stack);
 			
 			if(stack != null) {
-				if(ArmorModHandler.isApplicable(armor.getStackInSlot(0), stack))
-					ArmorModHandler.applyMod(armor.getStackInSlot(0), stack);
+				if(ArmorModHandler.isApplicable(ContainerArmorTable.this.armor.getStackInSlot(0), stack))
+					ArmorModHandler.applyMod(ContainerArmorTable.this.armor.getStackInSlot(0), stack);
 			}
 		}
 
+		@Override
 		public void onPickupFromSlot(EntityPlayer player, ItemStack stack) {
 			super.onPickupFromSlot(player, stack);
 			
-			ArmorModHandler.removeMod(armor.getStackInSlot(0), this.slotNumber);
+			ArmorModHandler.removeMod(ContainerArmorTable.this.armor.getStackInSlot(0), this.slotNumber);
 		}
 	}
 }

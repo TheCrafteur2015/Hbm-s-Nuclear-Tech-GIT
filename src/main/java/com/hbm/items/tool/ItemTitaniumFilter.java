@@ -21,10 +21,11 @@ public class ItemTitaniumFilter extends Item {
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		if(this == ModItems.titanium_filter) {
 			list.add("[Needed for Watz Reaction]");
-			list.add((getDura(itemstack) / 20) + "/" + (dura / 20));
+			list.add((ItemTitaniumFilter.getDura(itemstack) / 20) + "/" + (this.dura / 20));
 		}
 	}
 
+	@Override
 	public boolean showDurabilityBar(ItemStack stack) {
 		return getDurabilityForDisplay(stack) > 0;
 	}
@@ -45,7 +46,8 @@ public class ItemTitaniumFilter extends Item {
 		stack.stackTagCompound.setInteger("dura", dura);
 	}
 
+	@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
-		return 1D - (double) getDura(stack) / (double) dura;
+		return 1D - (double) ItemTitaniumFilter.getDura(stack) / (double) this.dura;
 	}
 }

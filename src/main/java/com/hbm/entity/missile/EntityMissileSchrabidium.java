@@ -24,9 +24,9 @@ public class EntityMissileSchrabidium extends EntityMissileBaseAdvanced {
 	@Override
 	public void onImpact() {
 		if(!this.worldObj.isRemote) {
-			EntityNukeExplosionMK3 ex = EntityNukeExplosionMK3.statFacFleija(worldObj, posX, posY, posZ, BombConfig.aSchrabRadius);
+			EntityNukeExplosionMK3 ex = EntityNukeExplosionMK3.statFacFleija(this.worldObj, this.posX, this.posY, this.posZ, BombConfig.aSchrabRadius);
 			if(!ex.isDead) {
-				worldObj.spawnEntityInWorld(ex);
+				this.worldObj.spawnEntityInWorld(ex);
 	
 				EntityCloudFleija cloud = new EntityCloudFleija(this.worldObj, BombConfig.aSchrabRadius);
 				cloud.posX = this.posX;
@@ -39,7 +39,7 @@ public class EntityMissileSchrabidium extends EntityMissileBaseAdvanced {
 
 	@Override
 	public List<ItemStack> getDebris() {
-		List<ItemStack> list = new ArrayList<ItemStack>();
+		List<ItemStack> list = new ArrayList<>();
 
 		list.add(new ItemStack(ModItems.wire_aluminium, 4));
 		list.add(new ItemStack(ModItems.plate_titanium, 4));

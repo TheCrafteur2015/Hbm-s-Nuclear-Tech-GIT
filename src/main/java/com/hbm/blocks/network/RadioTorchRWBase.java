@@ -40,7 +40,7 @@ public abstract class RadioTorchRWBase extends RadioTorchBase {
 		
 		if(te instanceof TileEntityRadioTorchBase) {
 			TileEntityRadioTorchBase radio = (TileEntityRadioTorchBase) te;
-			List<String> text = new ArrayList();
+			List<String> text = new ArrayList<>();
 			if(radio.channel != null && !radio.channel.isEmpty()) text.add(EnumChatFormatting.AQUA + "Freq: " + radio.channel);
 			text.add(EnumChatFormatting.RED + "Signal: " + radio.lastState);
 			ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);

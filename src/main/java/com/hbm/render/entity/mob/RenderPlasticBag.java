@@ -28,14 +28,14 @@ public class RenderPlasticBag extends Render {
 		GL11.glRotatef(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * f1 + 90.0F, 0.0F, 1.0F, 0.0F);
 		GL11.glRotatef(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * f1 - 90, 0.0F, 0.0F, 1.0F);
 		
-		this.bindEntityTexture(entity);
-		model.renderAll();
+		bindEntityTexture(entity);
+		RenderPlasticBag.model.renderAll();
 		
 		GL11.glPopMatrix();
 	}
 
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity) {
-		return texture;
+		return RenderPlasticBag.texture;
 	}
 }

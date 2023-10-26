@@ -46,11 +46,11 @@ public class BlockCluster extends Block implements IDrillInteraction, ITooltipPr
 				return;
 			
 			float f = 0.7F;
-			double mX = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-			double mY = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-			double mZ = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
+			double mX = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+			double mY = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+			double mZ = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
 			
-			EntityItem entityitem = new EntityItem(world, (double) x + mX, (double) y + mY, (double) z + mZ, new ItemStack(drop));
+			EntityItem entityitem = new EntityItem(world, x + mX, y + mY, z + mZ, new ItemStack(drop));
 			entityitem.delayBeforeCanPickup = 10;
 			world.spawnEntityInWorld(entityitem);
 		}
@@ -79,9 +79,10 @@ public class BlockCluster extends Block implements IDrillInteraction, ITooltipPr
 
 	@Override
 	public float getRelativeHardness(World world, int x, int y, int z, int meta, IMiningDrill drill) {
-		return this.getBlockHardness(world, x, y, z);
+		return getBlockHardness(world, x, y, z);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("trait.tile.cluster"));

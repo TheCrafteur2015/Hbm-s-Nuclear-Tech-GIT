@@ -1,16 +1,18 @@
 package com.hbm.inventory.gui;
 
-import com.hbm.lib.RefStrings;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.util.ResourceLocation;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
-
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.Locale;
 import java.util.Stack;
+
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
+
+import com.hbm.lib.RefStrings;
+
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.util.ResourceLocation;
 
 public class GUICalculator extends GuiScreen {
 	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID, "textures/gui/calculator.png");
@@ -24,13 +26,13 @@ public class GUICalculator extends GuiScreen {
 	public void initGui() {
 		Keyboard.enableRepeatEvents(true);
 
-		int x = (width - xSize) / 2;
-		int y = (height - ySize) / 2;
-		inputField = new GuiTextField(fontRendererObj, x + 5, y + 8, 210, 13);
-		inputField.setTextColor(-1);
-		inputField.setCanLoseFocus(false);
-		inputField.setFocused(true);
-		inputField.setMaxStringLength(1000);
+		int x = (this.width - this.xSize) / 2;
+		int y = (this.height - this.ySize) / 2;
+		this.inputField = new GuiTextField(this.fontRendererObj, x + 5, y + 8, 210, 13);
+		this.inputField.setTextColor(-1);
+		this.inputField.setCanLoseFocus(false);
+		this.inputField.setFocused(true);
+		this.inputField.setMaxStringLength(1000);
 	}
 
 	@Override
@@ -40,31 +42,31 @@ public class GUICalculator extends GuiScreen {
 
 	@Override
 	protected void keyTyped(char p_73869_1_, int p_73869_2_) {
-		if (!inputField.textboxKeyTyped(p_73869_1_, p_73869_2_))
+		if (!this.inputField.textboxKeyTyped(p_73869_1_, p_73869_2_))
 			super.keyTyped(p_73869_1_, p_73869_2_);
 
-		String input = inputField.getText().replaceAll("[^\\d+\\-*/^!.()\\sA-Za-z]+", "");
+		String input = this.inputField.getText().replaceAll("[^\\d+\\-*/^!.()\\sA-Za-z]+", "");
 
 		if (p_73869_1_ == 13 || p_73869_1_ == 10) { // when pressing enter (CR or LF)
 			try {
-				double result = evaluateExpression(input);
+				double result = GUICalculator.evaluateExpression(input);
 				String plainStringRepresentation = (new BigDecimal(result, MathContext.DECIMAL64)).toPlainString();
 				GuiScreen.setClipboardString(plainStringRepresentation);
-				inputField.setText(plainStringRepresentation);
-				inputField.setCursorPositionEnd();
-				inputField.setSelectionPos(0);
+				this.inputField.setText(plainStringRepresentation);
+				this.inputField.setCursorPositionEnd();
+				this.inputField.setSelectionPos(0);
 			} catch (Exception ignored) {}
 			return;
 		}
 
 		if (input.isEmpty()) {
-			latestResult = "?";
+			this.latestResult = "?";
 			return;
 		}
 
 		try {
-			latestResult = Double.toString(evaluateExpression(input));
-		} catch (Exception e) { latestResult = e.toString(); }
+			this.latestResult = Double.toString(GUICalculator.evaluateExpression(input));
+		} catch (Exception e) { this.latestResult = e.toString(); }
 	}
 
 	@Override
@@ -72,14 +74,14 @@ public class GUICalculator extends GuiScreen {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
 		GL11.glColor4f(1F, 1F, 1F, 1F);
-		mc.getTextureManager().bindTexture(texture);
-		int x = (width - xSize) / 2;
-		int y = (height - ySize) / 2;
+		this.mc.getTextureManager().bindTexture(GUICalculator.texture);
+		int x = (this.width - this.xSize) / 2;
+		int y = (this.height - this.ySize) / 2;
 
-		drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
+		drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
 
-		inputField.drawTextBox();
-		fontRendererObj.drawString("=" + latestResult, x + 5, y + 30, -1);
+		this.inputField.drawTextBox();
+		this.fontRendererObj.drawString("=" + this.latestResult, x + 5, y + 30, -1);
 	}
 
 	/**
@@ -87,7 +89,7 @@ public class GUICalculator extends GuiScreen {
 	 * It is recommended to catch all exceptions when using this
 	 */
 	public static double evaluateExpression(String input) {
-		if (input.contains("^")) input = preEvaluatePower(input);
+		if (input.contains("^")) input = GUICalculator.preEvaluatePower(input);
 
 		char[] tokens = input.toCharArray();
 		Stack<Double> values = new Stack<>();
@@ -108,16 +110,16 @@ public class GUICalculator extends GuiScreen {
 			} else if (tokens[i] == '(') operators.push(Character.toString(tokens[i]));
 			else if (tokens[i] == ')') {
 				while (!operators.isEmpty() && operators.peek().charAt(0) != '(')
-					values.push(evaluateOperator(operators.pop().charAt(0), values.pop(), values.pop()));
+					values.push(GUICalculator.evaluateOperator(operators.pop().charAt(0), values.pop(), values.pop()));
 				operators.pop();
 				if (!operators.isEmpty() && operators.peek().length() > 1)
-					values.push(evaluateFunction(operators.pop(), values.pop()));
+					values.push(GUICalculator.evaluateFunction(operators.pop(), values.pop()));
 			} else if (tokens[i] == '+' || tokens[i] == '-' || tokens[i] == '*' || tokens[i] == '/' || tokens[i] == '^') {
-				while (!operators.isEmpty() && hasPrecedence(String.valueOf(tokens[i]), operators.peek()))
-					values.push(evaluateOperator(operators.pop().charAt(0), values.pop(), values.pop()));
+				while (!operators.isEmpty() && GUICalculator.hasPrecedence(String.valueOf(tokens[i]), operators.peek()))
+					values.push(GUICalculator.evaluateOperator(operators.pop().charAt(0), values.pop(), values.pop()));
 				operators.push(Character.toString(tokens[i]));
 			} else if (tokens[i] == '!') {
-				values.push((double) factorial((int) Math.round(values.pop())));
+				values.push((double) GUICalculator.factorial((int) Math.round(values.pop())));
 			}else if (tokens[i] >= 'A' && tokens[i] <= 'Z' || tokens[i] >= 'a' && tokens[i] <= 'z') {
 				StringBuilder charBuffer = new StringBuilder();
 				while (i < tokens.length && (tokens[i] >= 'A' && tokens[i] <= 'Z' || tokens[i] >= 'a' && tokens[i] <= 'z'))
@@ -131,7 +133,7 @@ public class GUICalculator extends GuiScreen {
 		}
 
 		// if the expression is correctly formatted, no function is remaining
-		while (!operators.empty()) values.push(evaluateOperator(operators.pop().charAt(0), values.pop(), values.pop()));
+		while (!operators.empty()) values.push(GUICalculator.evaluateOperator(operators.pop().charAt(0), values.pop(), values.pop()));
 
 		return values.pop();
 	}
@@ -228,8 +230,8 @@ public class GUICalculator extends GuiScreen {
 			}
 			if (parenthesesDepth > 0) throw new IllegalArgumentException("Incomplete parentheses");
 
-			double base = evaluateExpression(input.substring(baseExpressionStart, powerOperatorIndex));
-			double exponent = evaluateExpression(input.substring(powerOperatorIndex + 1, exponentExpressionEnd));
+			double base = GUICalculator.evaluateExpression(input.substring(baseExpressionStart, powerOperatorIndex));
+			double exponent = GUICalculator.evaluateExpression(input.substring(powerOperatorIndex + 1, exponentExpressionEnd));
 			double result = Math.pow(base, exponent);
 			// use big decimal to avoid scientific notation messing with the calculation
 			input = input.substring(0, baseExpressionStart) + (new BigDecimal(result, MathContext.DECIMAL64)).toPlainString() + input.substring(exponentExpressionEnd);
@@ -244,9 +246,9 @@ public class GUICalculator extends GuiScreen {
 		if (in < 0) throw new IllegalArgumentException("Factorial needs n >= 0");
 		if (in < 2) return 1;
 		int p = 1, r = 1;
-		factorialCurrentN = 1;
+		GUICalculator.factorialCurrentN = 1;
 		int h = 0, shift = 0, high = 1;
-		int log2n = log2(in);
+		int log2n = GUICalculator.log2(in);
 		while (h != in) {
 			shift += h;
 			h = in >> log2n--;
@@ -255,7 +257,7 @@ public class GUICalculator extends GuiScreen {
 			len = (high - len) / 2;
 
 			if (len > 0) {
-				p *= factorialProduct(len);
+				p *= GUICalculator.factorialProduct(len);
 				r *= p;
 			}
 		}
@@ -267,9 +269,9 @@ public class GUICalculator extends GuiScreen {
 
 	private static int factorialProduct(int in) {
 		int m = in / 2;
-		if (m == 0) return factorialCurrentN += 2;
-		if (in == 2) return (factorialCurrentN += 2) * (factorialCurrentN += 2);
-		return factorialProduct(in - m) * factorialProduct(m);
+		if (m == 0) return GUICalculator.factorialCurrentN += 2;
+		if (in == 2) return (GUICalculator.factorialCurrentN += 2) * (GUICalculator.factorialCurrentN += 2);
+		return GUICalculator.factorialProduct(in - m) * GUICalculator.factorialProduct(m);
 	}
 
 	private static int log2(int in) {

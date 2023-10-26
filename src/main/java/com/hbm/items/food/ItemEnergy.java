@@ -30,14 +30,14 @@ public class ItemEnergy extends Item {
 	private boolean requiresOpener = false;
 	
 	public ItemEnergy() {
-		this.setCreativeTab(MainRegistry.consumableTab);
+		setCreativeTab(MainRegistry.consumableTab);
 	}
 	
 	public ItemEnergy makeCan() {
 		this.container = ModItems.can_empty;
 		this.cap = ModItems.ring_pull;
 		this.requiresOpener = false;
-		this.setContainerItem(this.container);
+		setContainerItem(this.container);
 		return this;
 	}
 	
@@ -45,8 +45,8 @@ public class ItemEnergy extends Item {
 		this.container = bottle;
 		this.cap = cap;
 		this.requiresOpener = true;
-		this.setContainerItem(this.container);
-		this.setCreativeTab(MainRegistry.consumableTab);
+		setContainerItem(this.container);
+		setCreativeTab(MainRegistry.consumableTab);
 		return this;
 	}
 
@@ -226,13 +226,10 @@ public class ItemEnergy extends Item {
 	@Override
 	public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {
 
-		if(VersatileConfig.hasPotionSickness(p_77659_3_))
-			return p_77659_1_;
-		
-			if(this.requiresOpener && !p_77659_3_.inventory.hasItem(ModItems.bottle_opener))
+		if(VersatileConfig.hasPotionSickness(p_77659_3_) || (this.requiresOpener && !p_77659_3_.inventory.hasItem(ModItems.bottle_opener)))
 				return p_77659_1_;
 
-		p_77659_3_.setItemInUse(p_77659_1_, this.getMaxItemUseDuration(p_77659_1_));
+		p_77659_3_.setItemInUse(p_77659_1_, getMaxItemUseDuration(p_77659_1_));
 
 		return p_77659_1_;
 	}

@@ -15,6 +15,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.EnumChatFormatting;
@@ -25,7 +26,7 @@ public class ItemSwordAbility extends ItemSword implements IItemAbility {
 	// was there a reason for this to be private?
 	protected float damage;
 	protected double movement;
-	private List<WeaponAbility> hitAbility = new ArrayList();
+	private List<WeaponAbility> hitAbility = new ArrayList<>();
 
 	public ItemSwordAbility(float damage, double movement, ToolMaterial material) {
 		super(material);
@@ -44,10 +45,12 @@ public class ItemSwordAbility extends ItemSword implements IItemAbility {
 		return this;
 	}
 
+	@Override
 	public EnumRarity getRarity(ItemStack stack) {
 		return this.rarity != EnumRarity.common ? this.rarity : super.getRarity(stack);
 	}
 
+	@Override
 	public boolean hitEntity(ItemStack stack, EntityLivingBase victim, EntityLivingBase attacker) {
 
 		if(!attacker.worldObj.isRemote && !this.hitAbility.isEmpty() && attacker instanceof EntityPlayer && canOperate(stack)) {
@@ -70,11 +73,12 @@ public class ItemSwordAbility extends ItemSword implements IItemAbility {
 	public Multimap getItemAttributeModifiers() {
 
 		Multimap multimap = HashMultimap.create();
-		multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Tool modifier", (double) this.damage, 0));
-		multimap.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Tool modifier", movement, 1));
+		multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(Item.field_111210_e, "Tool modifier", (double) this.damage, 0));
+		multimap.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new AttributeModifier(Item.field_111210_e, "Tool modifier", this.movement, 1));
 		return multimap;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 

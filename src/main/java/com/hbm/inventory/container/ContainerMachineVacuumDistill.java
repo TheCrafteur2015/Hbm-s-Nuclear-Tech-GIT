@@ -16,39 +16,39 @@ public class ContainerMachineVacuumDistill extends Container {
 	
 	public ContainerMachineVacuumDistill(InventoryPlayer invPlayer, TileEntityMachineVacuumDistill tedf) {
 		
-		distill = tedf;
+		this.distill = tedf;
 		
 		//Battery
-		this.addSlotToContainer(new Slot(tedf, 0, 26, 90));
+		addSlotToContainer(new Slot(tedf, 0, 26, 90));
 		//Canister Input
-		this.addSlotToContainer(new Slot(tedf, 1, 44, 90));
+		addSlotToContainer(new Slot(tedf, 1, 44, 90));
 		//Canister Output
-		this.addSlotToContainer(new SlotTakeOnly(tedf, 2, 44, 108));
+		addSlotToContainer(new SlotTakeOnly(tedf, 2, 44, 108));
 		//Heavy Oil Input
-		this.addSlotToContainer(new Slot(tedf, 3, 80, 90));
+		addSlotToContainer(new Slot(tedf, 3, 80, 90));
 		//Heavy Oil Output
-		this.addSlotToContainer(new SlotTakeOnly(tedf, 4, 80, 108));
+		addSlotToContainer(new SlotTakeOnly(tedf, 4, 80, 108));
 		//Nahptha Input
-		this.addSlotToContainer(new Slot(tedf, 5, 98, 90));
+		addSlotToContainer(new Slot(tedf, 5, 98, 90));
 		//Nahptha Output
-		this.addSlotToContainer(new SlotTakeOnly(tedf, 6, 98, 108));
+		addSlotToContainer(new SlotTakeOnly(tedf, 6, 98, 108));
 		//Light Oil Input
-		this.addSlotToContainer(new Slot(tedf, 7, 116, 90));
+		addSlotToContainer(new Slot(tedf, 7, 116, 90));
 		//Light Oil Output
-		this.addSlotToContainer(new SlotTakeOnly(tedf, 8, 116, 108));
+		addSlotToContainer(new SlotTakeOnly(tedf, 8, 116, 108));
 		//Petroleum Input
-		this.addSlotToContainer(new Slot(tedf, 9, 134, 90));
+		addSlotToContainer(new Slot(tedf, 9, 134, 90));
 		//Petroleum Output
-		this.addSlotToContainer(new SlotTakeOnly(tedf, 10, 134, 108));
+		addSlotToContainer(new SlotTakeOnly(tedf, 10, 134, 108));
 		
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 156 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 156 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 214));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 214));
 		}
 	}
 	
@@ -67,15 +67,15 @@ public class ContainerMachineVacuumDistill extends Container {
 			var3 = var5.copy();
 
 			if(par2 <= 10) {
-				if(!this.mergeItemStack(var5, 11, this.inventorySlots.size(), true)) {
+				if(!mergeItemStack(var5, 11, this.inventorySlots.size(), true)) {
 					return null;
 				}
-			} else if(!this.mergeItemStack(var5, 0, 1, false))
-				if(!this.mergeItemStack(var5, 1, 2, false))
-					if(!this.mergeItemStack(var5, 3, 4, false))
-						if(!this.mergeItemStack(var5, 5, 6, false))
-							if(!this.mergeItemStack(var5, 7, 8, false))
-								if(!this.mergeItemStack(var5, 9, 10, false)) {
+			} else if(!mergeItemStack(var5, 0, 1, false))
+				if(!mergeItemStack(var5, 1, 2, false))
+					if(!mergeItemStack(var5, 3, 4, false))
+						if(!mergeItemStack(var5, 5, 6, false))
+							if(!mergeItemStack(var5, 7, 8, false))
+								if(!mergeItemStack(var5, 9, 10, false)) {
 									return null;
 								}
 
@@ -91,6 +91,6 @@ public class ContainerMachineVacuumDistill extends Container {
 	
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return distill.isUseableByPlayer(player);
+		return this.distill.isUseableByPlayer(player);
 	}
 }

@@ -15,11 +15,11 @@ public class TileEntityPileBreedingFuel extends TileEntityPileBase implements IP
 	
 	@Override
 	public void updateEntity() {
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			react();
 			
-			if(this.progress >= this.maxProgress) {
-				worldObj.setBlock(xCoord, yCoord, zCoord, ModBlocks.block_graphite_tritium, this.getBlockMetadata(), 3);
+			if(this.progress >= TileEntityPileBreedingFuel.maxProgress) {
+				this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, ModBlocks.block_graphite_tritium, getBlockMetadata(), 3);
 			}
 		}
 	}
@@ -31,11 +31,11 @@ public class TileEntityPileBreedingFuel extends TileEntityPileBase implements IP
 		
 		this.neutrons = 0;
 		
-		if(lastNeutrons <= 0)
+		if(this.lastNeutrons <= 0)
 			return;
 		
 		for(int i = 0; i < 2; i++)
-			this.castRay(1, 5);
+			castRay(1, 5);
 	}
 	
 	@Override

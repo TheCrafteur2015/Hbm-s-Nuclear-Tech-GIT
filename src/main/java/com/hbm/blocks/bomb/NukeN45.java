@@ -36,7 +36,7 @@ public class NukeN45 extends BlockContainer implements IBomb {
 
 	@Override
 	public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_) {
-		if(!keepInventory) {
+		if(!NukeN45.keepInventory) {
 			ISidedInventory tileentityfurnace = (ISidedInventory) p_149749_1_.getTileEntity(p_149749_2_, p_149749_3_, p_149749_4_);
 
 			if(tileentityfurnace != null) {
@@ -125,7 +125,7 @@ public class NukeN45 extends BlockContainer implements IBomb {
 			} else if(!entity.primed && entity.getType() > 0) {
 				int t = entity.getType();
 				entity.clearSlots();
-				entity.explode(world, x, y, z, t);
+				TileEntityNukeN45.explode(world, x, y, z, t);
 				return BombReturnCode.DETONATED;
 			}
 			

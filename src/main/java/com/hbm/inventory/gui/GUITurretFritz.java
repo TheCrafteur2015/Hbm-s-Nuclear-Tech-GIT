@@ -20,7 +20,7 @@ public class GUITurretFritz extends GUITurretBase {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		((TileEntityTurretFritz)this.turret).tank.renderTankInfo(this, mouseX, mouseY, guiLeft + 134, guiTop + 63, 7, 52);
+		((TileEntityTurretFritz)this.turret).tank.renderTankInfo(this, mouseX, mouseY, this.guiLeft + 134, this.guiTop + 63, 7, 52);
 	}
 	
 	@Override
@@ -28,10 +28,11 @@ public class GUITurretFritz extends GUITurretBase {
 		super.drawGuiContainerBackgroundLayer(p_146976_1_, mX, mY);
 		
 		FluidTank tank = ((TileEntityTurretFritz)this.turret).tank;
-		tank.renderTank(guiLeft + 134, guiTop + 115, this.zLevel, 7, 52);
+		tank.renderTank(this.guiLeft + 134, this.guiTop + 115, this.zLevel, 7, 52);
 	}
 	
+	@Override
 	protected ResourceLocation getTexture() {
-		return texture;
+		return GUITurretFritz.texture;
 	}
 }

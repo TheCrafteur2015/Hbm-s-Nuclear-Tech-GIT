@@ -77,42 +77,42 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 
 	@Override
 	public void readIfPresent(JsonObject obj) {
-		maxPower = IConfigurableMachine.grab(obj, "L:powerCap", maxPower);
-		waterCap = IConfigurableMachine.grab(obj, "I:waterCap", waterCap);
-		oilCap = IConfigurableMachine.grab(obj, "I:oilCap", oilCap);
-		lubeCap = IConfigurableMachine.grab(obj, "I:lubeCap", lubeCap);
-		coalGenRate = IConfigurableMachine.grab(obj, "I:solidFuelRate", coalGenRate);
-		rtgHeatMult = IConfigurableMachine.grab(obj, "D:rtgHeatMult", rtgHeatMult);
-		waterPowerMult = IConfigurableMachine.grab(obj, "D:waterPowerMult", waterPowerMult);
-		lubePowerMult = IConfigurableMachine.grab(obj, "D:lubePowerMult", lubePowerMult);
-		heatExponent = IConfigurableMachine.grab(obj, "D:heatExponent", heatExponent);
-		waterRate = IConfigurableMachine.grab(obj, "I:waterRate", waterRate);
-		lubeRate = IConfigurableMachine.grab(obj, "I:lubeRate", lubeRate);
-		fluidHeatDiv = IConfigurableMachine.grab(obj, "D:fluidHeatDiv", fluidHeatDiv);
+		TileEntityMachineIGenerator.maxPower = IConfigurableMachine.grab(obj, "L:powerCap", TileEntityMachineIGenerator.maxPower);
+		TileEntityMachineIGenerator.waterCap = IConfigurableMachine.grab(obj, "I:waterCap", TileEntityMachineIGenerator.waterCap);
+		TileEntityMachineIGenerator.oilCap = IConfigurableMachine.grab(obj, "I:oilCap", TileEntityMachineIGenerator.oilCap);
+		TileEntityMachineIGenerator.lubeCap = IConfigurableMachine.grab(obj, "I:lubeCap", TileEntityMachineIGenerator.lubeCap);
+		TileEntityMachineIGenerator.coalGenRate = IConfigurableMachine.grab(obj, "I:solidFuelRate", TileEntityMachineIGenerator.coalGenRate);
+		TileEntityMachineIGenerator.rtgHeatMult = IConfigurableMachine.grab(obj, "D:rtgHeatMult", TileEntityMachineIGenerator.rtgHeatMult);
+		TileEntityMachineIGenerator.waterPowerMult = IConfigurableMachine.grab(obj, "D:waterPowerMult", TileEntityMachineIGenerator.waterPowerMult);
+		TileEntityMachineIGenerator.lubePowerMult = IConfigurableMachine.grab(obj, "D:lubePowerMult", TileEntityMachineIGenerator.lubePowerMult);
+		TileEntityMachineIGenerator.heatExponent = IConfigurableMachine.grab(obj, "D:heatExponent", TileEntityMachineIGenerator.heatExponent);
+		TileEntityMachineIGenerator.waterRate = IConfigurableMachine.grab(obj, "I:waterRate", TileEntityMachineIGenerator.waterRate);
+		TileEntityMachineIGenerator.lubeRate = IConfigurableMachine.grab(obj, "I:lubeRate", TileEntityMachineIGenerator.lubeRate);
+		TileEntityMachineIGenerator.fluidHeatDiv = IConfigurableMachine.grab(obj, "D:fluidHeatDiv", TileEntityMachineIGenerator.fluidHeatDiv);
 	}
 
 	@Override
 	public void writeConfig(JsonWriter writer) throws IOException {
-		writer.name("L:powerCap").value(maxPower);
-		writer.name("I:waterCap").value(waterCap);
-		writer.name("I:oilCap").value(oilCap);
-		writer.name("I:lubeCap").value(lubeCap);
-		writer.name("I:solidFuelRate").value(coalGenRate);
-		writer.name("D:rtgHeatMult").value(rtgHeatMult);
-		writer.name("D:waterPowerMult").value(waterPowerMult);
-		writer.name("D:lubePowerMult").value(lubePowerMult);
-		writer.name("D:heatExponent").value(heatExponent);
-		writer.name("I:waterRate").value(waterRate);
-		writer.name("I:lubeRate").value(lubeRate);
-		writer.name("D:fluidHeatDiv").value(fluidHeatDiv);
+		writer.name("L:powerCap").value(TileEntityMachineIGenerator.maxPower);
+		writer.name("I:waterCap").value(TileEntityMachineIGenerator.waterCap);
+		writer.name("I:oilCap").value(TileEntityMachineIGenerator.oilCap);
+		writer.name("I:lubeCap").value(TileEntityMachineIGenerator.lubeCap);
+		writer.name("I:solidFuelRate").value(TileEntityMachineIGenerator.coalGenRate);
+		writer.name("D:rtgHeatMult").value(TileEntityMachineIGenerator.rtgHeatMult);
+		writer.name("D:waterPowerMult").value(TileEntityMachineIGenerator.waterPowerMult);
+		writer.name("D:lubePowerMult").value(TileEntityMachineIGenerator.lubePowerMult);
+		writer.name("D:heatExponent").value(TileEntityMachineIGenerator.heatExponent);
+		writer.name("I:waterRate").value(TileEntityMachineIGenerator.waterRate);
+		writer.name("I:lubeRate").value(TileEntityMachineIGenerator.lubeRate);
+		writer.name("D:fluidHeatDiv").value(TileEntityMachineIGenerator.fluidHeatDiv);
 	}
 
 	public TileEntityMachineIGenerator() {
 		super(21);
-		tanks = new FluidTank[3];
-		tanks[0] = new FluidTank(Fluids.WATER, waterCap, 0);
-		tanks[1] = new FluidTank(Fluids.HEATINGOIL, oilCap, 1);
-		tanks[2] = new FluidTank(Fluids.LUBRICANT, lubeCap, 2);
+		this.tanks = new FluidTank[3];
+		this.tanks[0] = new FluidTank(Fluids.WATER, TileEntityMachineIGenerator.waterCap, 0);
+		this.tanks[1] = new FluidTank(Fluids.HEATINGOIL, TileEntityMachineIGenerator.oilCap, 1);
+		this.tanks[2] = new FluidTank(Fluids.LUBRICANT, TileEntityMachineIGenerator.lubeCap, 2);
 	}
 
 	@Override
@@ -121,43 +121,43 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	}
 	
 	protected DirPos[] getConPos() {
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
 		return new DirPos[] {
-				new DirPos(xCoord + dir.offsetX * -4, yCoord, zCoord + dir.offsetZ * -4, dir.getOpposite()),
-				new DirPos(xCoord + dir.offsetX * 3, yCoord, zCoord + dir.offsetZ * 3, dir),
+				new DirPos(this.xCoord + dir.offsetX * -4, this.yCoord, this.zCoord + dir.offsetZ * -4, dir.getOpposite()),
+				new DirPos(this.xCoord + dir.offsetX * 3, this.yCoord, this.zCoord + dir.offsetZ * 3, dir),
 		};
 	}
 
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			boolean con = GeneralConfig.enableLBSM && GeneralConfig.enableLBSMIGen;
 			
-			power = Library.chargeItemsFromTE(slots, 0, power, maxPower);
+			this.power = Library.chargeItemsFromTE(this.slots, 0, this.power, TileEntityMachineIGenerator.maxPower);
 			
 			for(DirPos dir : getConPos()) {
-				this.sendPower(worldObj, dir.getX(), dir.getY(), dir.getZ(), dir.getDir());
+				sendPower(this.worldObj, dir.getX(), dir.getY(), dir.getZ(), dir.getDir());
 				
-				for(FluidTank tank : tanks) {
-					this.trySubscribe(tank.getTankType(), worldObj, dir.getX(), dir.getY(), dir.getZ(), dir.getDir());
+				for(FluidTank tank : this.tanks) {
+					this.trySubscribe(tank.getTankType(), this.worldObj, dir.getX(), dir.getY(), dir.getZ(), dir.getDir());
 				}
 			}
 			
-			tanks[1].setType(9, 10, slots);
-			tanks[0].loadTank(1, 2, slots);
-			tanks[1].loadTank(9, 10, slots);
-			tanks[2].loadTank(7, 8, slots);
+			this.tanks[1].setType(9, 10, this.slots);
+			this.tanks[0].loadTank(1, 2, this.slots);
+			this.tanks[1].loadTank(9, 10, this.slots);
+			this.tanks[2].loadTank(7, 8, this.slots);
 			
 			this.spin = 0;
 			
 			/// LIQUID FUEL ///
-			if(tanks[1].getFill() > 0) {
-				int pow = this.getPowerFromFuel(con);
+			if(this.tanks[1].getFill() > 0) {
+				int pow = getPowerFromFuel(con);
 				
 				if(pow > 0) {
-					tanks[1].setFill(tanks[1].getFill() - 1);
+					this.tanks[1].setFill(this.tanks[1].getFill() - 1);
 					this.spin += pow;
 				}
 			}
@@ -166,16 +166,16 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 			for(int i = 0; i < 4; i++) {
 				
 				// POWER GEN //
-				if(burn[i] > 0) {
-					burn[i]--;
-					this.spin += con ? coalConRate : coalGenRate;
+				if(this.burn[i] > 0) {
+					this.burn[i]--;
+					this.spin += con ? TileEntityMachineIGenerator.coalConRate : TileEntityMachineIGenerator.coalGenRate;
 					
 				// REFUELING //
 				} else {
 					int slot = i + 3;
 					
-					if(slots[slot] != null) {
-						ItemStack fuel = slots[slot];
+					if(this.slots[slot] != null) {
+						ItemStack fuel = this.slots[slot];
 						int burnTime = TileEntityFurnace.getItemBurnTime(fuel) / 2;
 						
 						if(burnTime > 0) {
@@ -189,16 +189,16 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 							if(fuel.getItem() == ModItems.solid_fuel_presto_triplet) //80000 (40000)
 								burnTime *= con ? 4 : 1.1;
 							
-							burn[i] = burnTime;
+							this.burn[i] = burnTime;
 							
-							slots[slot].stackSize--;
+							this.slots[slot].stackSize--;
 							
-							if(slots[slot].stackSize <= 0) {
+							if(this.slots[slot].stackSize <= 0) {
 								
-								if(slots[slot].getItem().hasContainerItem(slots[slot])) {
-									slots[slot] = slots[slot].getItem().getContainerItem(slots[slot]);
+								if(this.slots[slot].getItem().hasContainerItem(this.slots[slot])) {
+									this.slots[slot] = this.slots[slot].getItem().getContainerItem(this.slots[slot]);
 								} else {
-									slots[slot] = null;
+									this.slots[slot] = null;
 								}
 							}
 						}
@@ -207,38 +207,38 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 			}
 			
 			// RTG ///
-			this.hasRTG = RTGUtil.hasHeat(slots, RTGSlots);
-			this.spin += RTGUtil.updateRTGs(slots, RTGSlots) * (con ? 0.2 : rtgHeatMult);
+			this.hasRTG = RTGUtil.hasHeat(this.slots, this.RTGSlots);
+			this.spin += RTGUtil.updateRTGs(this.slots, this.RTGSlots) * (con ? 0.2 : TileEntityMachineIGenerator.rtgHeatMult);
 			
 			if(this.spin > 0) {
 				
 				int powerGen = this.spin;
 				
 				if(this.tanks[0].getFill() >= 10) {
-					powerGen += this.spin * waterPowerMult;
-					this.tanks[0].setFill(this.tanks[0].getFill() - waterRate);
+					powerGen += this.spin * TileEntityMachineIGenerator.waterPowerMult;
+					this.tanks[0].setFill(this.tanks[0].getFill() - TileEntityMachineIGenerator.waterRate);
 				}
 				
 				if(this.tanks[2].getFill() >= 1) {
-					powerGen += this.spin * lubePowerMult;
-					this.tanks[2].setFill(this.tanks[2].getFill() - lubeRate);
+					powerGen += this.spin * TileEntityMachineIGenerator.lubePowerMult;
+					this.tanks[2].setFill(this.tanks[2].getFill() - TileEntityMachineIGenerator.lubeRate);
 				}
 				
-				this.power += Math.pow(powerGen, heatExponent);
+				this.power += Math.pow(powerGen, TileEntityMachineIGenerator.heatExponent);
 				
-				if(this.power > this.maxPower)
-					this.power = this.maxPower;
+				if(this.power > TileEntityMachineIGenerator.maxPower)
+					this.power = TileEntityMachineIGenerator.maxPower;
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setLong("power", power);
-			data.setInteger("spin", spin);
-			data.setIntArray("burn", burn);
-			data.setBoolean("hasRTG", hasRTG);
-			this.networkPack(data, 150);
+			data.setLong("power", this.power);
+			data.setInteger("spin", this.spin);
+			data.setIntArray("burn", this.burn);
+			data.setBoolean("hasRTG", this.hasRTG);
+			networkPack(data, 150);
 			
 			for(int i = 0; i < 3; i++)
-				tanks[i].updateTank(xCoord, yCoord, zCoord, this.worldObj.provider.dimensionId);
+				this.tanks[i].updateTank(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId);
 			
 		} else {
 			
@@ -274,37 +274,37 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	}
 	
 	public int getPowerFromFuel(boolean con) {
-		FluidType type = tanks[1].getTankType();
-		return type.hasTrait(FT_Flammable.class) ? (int)(type.getTrait(FT_Flammable.class).getHeatEnergy() / (con ? 5000L : fluidHeatDiv)) : 0;
+		FluidType type = this.tanks[1].getTankType();
+		return type.hasTrait(FT_Flammable.class) ? (int)(type.getTrait(FT_Flammable.class).getHeatEnergy() / (con ? 5000L : TileEntityMachineIGenerator.fluidHeatDiv)) : 0;
 	}
 
 	@Override
 	public void setFillForSync(int fill, int index) {
-		tanks[index].setFill(fill);
+		this.tanks[index].setFill(fill);
 	}
 
 	@Override
 	public void setFluidFill(int fill, FluidType type) {
 		
 		if(type == Fluids.WATER)
-			tanks[0].setFill(fill);
+			this.tanks[0].setFill(fill);
 		else if(type == Fluids.LUBRICANT)
-			tanks[2].setFill(fill);
-		else if(tanks[1].getTankType() == type)
-			tanks[1].setFill(fill);
+			this.tanks[2].setFill(fill);
+		else if(this.tanks[1].getTankType() == type)
+			this.tanks[1].setFill(fill);
 	}
 
 	@Override
 	public void setTypeForSync(FluidType type, int index) {
-		tanks[index].setTankType(type);
+		this.tanks[index].setTankType(type);
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
 		
 		for(int i = 0; i < 3; i++)
-			if(tanks[i].getTankType() == type)
-				return tanks[i].getFill();
+			if(this.tanks[i].getTankType() == type)
+				return this.tanks[i].getFill();
 		
 		return 0;
 	}
@@ -313,8 +313,8 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	public int getMaxFluidFill(FluidType type) {
 		
 		for(int i = 0; i < 3; i++)
-			if(tanks[i].getTankType() == type)
-				return tanks[i].getMaxFill();
+			if(this.tanks[i].getTankType() == type)
+				return this.tanks[i].getMaxFill();
 		
 		return 0;
 	}
@@ -324,7 +324,7 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 		super.readFromNBT(nbt);
 		
 		for(int i = 0; i < 3; i++)
-			tanks[i].readFromNBT(nbt, "tank_" + i);
+			this.tanks[i].readFromNBT(nbt, "tank_" + i);
 		
 		this.power = nbt.getLong("power");
 		this.burn = nbt.getIntArray("burn");
@@ -335,10 +335,10 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 		super.writeToNBT(nbt);
 		
 		for(int i = 0; i < 3; i++)
-			tanks[i].writeToNBT(nbt, "tank_" + i);
+			this.tanks[i].writeToNBT(nbt, "tank_" + i);
 		
-		nbt.setLong("power", power);
-		nbt.setIntArray("burn", burn);
+		nbt.setLong("power", this.power);
+		nbt.setIntArray("burn", this.burn);
 	}
 	
 	@Override
@@ -365,17 +365,17 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 
 	@Override
 	public long getMaxPower() {
-		return this.maxPower;
+		return TileEntityMachineIGenerator.maxPower;
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] { tanks[0], tanks[1], tanks[2] };
+		return new FluidTank[] { this.tanks[0], this.tanks[1], this.tanks[2] };
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return tanks;
+		return this.tanks;
 	}
 
 	@Override

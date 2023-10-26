@@ -13,22 +13,22 @@ public class ContainerRBMKStorage extends Container {
 	private TileEntityRBMKStorage rbmk;
 
 	public ContainerRBMKStorage(InventoryPlayer invPlayer, TileEntityRBMKStorage tedf) {
-		rbmk = tedf;
+		this.rbmk = tedf;
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 4; j++) {
-				this.addSlotToContainer(new Slot(tedf, i + j * 3, 32 + 32 * j, 29 + 16 * i));
+				addSlotToContainer(new Slot(tedf, i + j * 3, 32 + 32 * j, 29 + 16 * i));
 			}
 		}
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 20));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 20));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 20));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 20));
 		}
 	}
 
@@ -42,10 +42,10 @@ public class ContainerRBMKStorage extends Container {
 			var3 = var5.copy();
 
 			if(par2 < 12) {
-				if(!this.mergeItemStack(var5, rbmk.getSizeInventory(), this.inventorySlots.size(), true)) {
+				if(!mergeItemStack(var5, this.rbmk.getSizeInventory(), this.inventorySlots.size(), true)) {
 					return null;
 				}
-			} else if(!this.mergeItemStack(var5, 0, 12, false)) {
+			} else if(!mergeItemStack(var5, 0, 12, false)) {
 				return null;
 			}
 

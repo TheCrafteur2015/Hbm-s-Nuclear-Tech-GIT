@@ -12,7 +12,7 @@ import net.minecraftforge.client.model.obj.WavefrontObject;
 public class ObjUtil {
 
 	public static void renderWithIcon(WavefrontObject model, IIcon icon, Tessellator tes, float rot, boolean shadow) {
-		renderWithIcon(model, icon, tes, rot, 0, shadow);
+		ObjUtil.renderWithIcon(model, icon, tes, rot, 0, shadow);
 	}
 
 	public static void renderWithIcon(WavefrontObject model, IIcon icon, Tessellator tes, float rot, float pitch, boolean shadow) {
@@ -61,7 +61,7 @@ public class ObjUtil {
 	}
 
 	public static void renderPartWithIcon(WavefrontObject model, String name, IIcon icon, Tessellator tes, float rot, boolean shadow) {
-		renderPartWithIcon(model, name, icon, tes, rot, 0, shadow);
+		ObjUtil.renderPartWithIcon(model, name, icon, tes, rot, 0, shadow);
 	}
 
 	public static void renderPartWithIcon(WavefrontObject model, String name, IIcon icon, Tessellator tes, float rot, float pitch, boolean shadow) {
@@ -85,7 +85,7 @@ public class ObjUtil {
 			normal.rotateAroundY(rot);
 			tes.setNormal((float)normal.xCoord, (float)normal.yCoord, (float)normal.zCoord);
 
-			if(shadow || hasColor) {
+			if(shadow || ObjUtil.hasColor) {
 				
 				float brightness = 1.0F;
 				
@@ -96,8 +96,8 @@ public class ObjUtil {
 						brightness = 0.45F;
 				}
 
-				if(hasColor) {
-					tes.setColorOpaque((int)(red * brightness), (int)(green * brightness), (int)(blue * brightness));
+				if(ObjUtil.hasColor) {
+					tes.setColorOpaque((int)(ObjUtil.red * brightness), (int)(ObjUtil.green * brightness), (int)(ObjUtil.blue * brightness));
 				} else {
 					tes.setColorOpaque_F(brightness, brightness, brightness);
 				}
@@ -132,20 +132,20 @@ public class ObjUtil {
 	private static boolean hasColor = false;
 	
 	public static void setColor(int color) {
-		red = (color & 0xff0000) >> 16;
-		green = (color & 0x00ff00) >> 8;
-		blue = color & 0x0000ff;
-		hasColor = true;
+		ObjUtil.red = (color & 0xff0000) >> 16;
+		ObjUtil.green = (color & 0x00ff00) >> 8;
+		ObjUtil.blue = color & 0x0000ff;
+		ObjUtil.hasColor = true;
 	}
 	
 	public static void setColor(int r, int g, int b) {
-		red = r;
-		green = g;
-		blue = b;
-		hasColor = true;
+		ObjUtil.red = r;
+		ObjUtil.green = g;
+		ObjUtil.blue = b;
+		ObjUtil.hasColor = true;
 	}
 	
 	public static void clearColor() {
-		hasColor = false;
+		ObjUtil.hasColor = false;
 	}
 }

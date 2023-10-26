@@ -30,29 +30,29 @@ public class EntityBooster extends EntityThrowable {
 		
 		this.motionY -= 0.015;
 		
-		if(motionY < -1.5F)
-			motionY = -1.5F;
+		if(this.motionY < -1.5F)
+			this.motionY = -1.5F;
         
-        this.rotation();
+        rotation();
         
         if(this.worldObj.getBlock((int)this.posX, (int)this.posY, (int)this.posZ) != Blocks.air)
         {
     		if(!this.worldObj.isRemote)
     		{
-    	    	ExplosionLarge.explodeFire(worldObj, posX, posY, posZ, 10F, true, false, true);
+    	    	ExplosionLarge.explodeFire(this.worldObj, this.posX, this.posY, this.posZ, 10F, true, false, true);
     		}
-    		this.setDead();
+    		setDead();
         }
         
-        if(!worldObj.isRemote) {
+        if(!this.worldObj.isRemote) {
 			for(int i = 0; i < 2; i++) {
-				EntityTSmokeFX fx1 = new EntityTSmokeFX(worldObj);
-				fx1.posY = posY - 0.25D;
-				fx1.posX = posX + rand.nextGaussian() * 0.25D;
-				fx1.posZ = posZ + rand.nextGaussian() * 0.25D;
+				EntityTSmokeFX fx1 = new EntityTSmokeFX(this.worldObj);
+				fx1.posY = this.posY - 0.25D;
+				fx1.posX = this.posX + this.rand.nextGaussian() * 0.25D;
+				fx1.posZ = this.posZ + this.rand.nextGaussian() * 0.25D;
 				fx1.motionY = -0.2D;
 				
-				worldObj.spawnEntityInWorld(fx1);
+				this.worldObj.spawnEntityInWorld(fx1);
 			}
         }
 

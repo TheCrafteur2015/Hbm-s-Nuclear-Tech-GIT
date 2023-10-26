@@ -29,8 +29,8 @@ public class SlotCraftingOutput extends Slot {
 	
 	@Override
 	public ItemStack decrStackSize(int amount) {
-		if(this.getHasStack()) {
-			this.craftBuffer += Math.min(amount, this.getStack().stackSize);
+		if(getHasStack()) {
+			this.craftBuffer += Math.min(amount, getStack().stackSize);
 		}
 		return super.decrStackSize(amount);
 	}
@@ -50,7 +50,7 @@ public class SlotCraftingOutput extends Slot {
 	@Override
 	protected void onCrafting(ItemStack stack) {
 		stack.onCrafting(this.player.worldObj, this.player, this.craftBuffer);
-		checkAchievements(this.player, stack);
+		SlotCraftingOutput.checkAchievements(this.player, stack);
 		this.craftBuffer = 0;
 	}
 }

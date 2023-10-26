@@ -36,7 +36,7 @@ public class VersatileConfig {
 			duration *= 12;
 		
 		PotionEffect eff = new PotionEffect(HbmPotion.potionsickness.id, duration * 20);
-		eff.setCurativeItems(new ArrayList());
+		eff.setCurativeItems(new ArrayList<>());
 		entity.addPotionEffect(eff);
 	}
 
@@ -53,13 +53,13 @@ public class VersatileConfig {
 	}
 
 	static int minute = 60 * 20;
-	static int hour = 60 * minute;
+	static int hour = 60 * VersatileConfig.minute;
 	
 	public static int getLongDecayChance() {
-		return GeneralConfig.enable528 ? 15 * hour : (GeneralConfig.enableLBSM && GeneralConfig.enableLBSMShorterDecay) ? 15 * minute : 3 * hour;
+		return GeneralConfig.enable528 ? 15 * VersatileConfig.hour : (GeneralConfig.enableLBSM && GeneralConfig.enableLBSMShorterDecay) ? 15 * VersatileConfig.minute : 3 * VersatileConfig.hour;
 	}
 
 	public static int getShortDecayChance() {
-		return GeneralConfig.enable528 ? 3 * hour : (GeneralConfig.enableLBSM && GeneralConfig.enableLBSMShorterDecay) ? 3 * minute : 15 * minute;
+		return GeneralConfig.enable528 ? 3 * VersatileConfig.hour : (GeneralConfig.enableLBSM && GeneralConfig.enableLBSMShorterDecay) ? 3 * VersatileConfig.minute : 15 * VersatileConfig.minute;
 	}
 }

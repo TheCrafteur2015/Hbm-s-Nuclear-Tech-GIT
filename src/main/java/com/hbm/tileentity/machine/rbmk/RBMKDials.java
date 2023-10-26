@@ -34,27 +34,27 @@ public class RBMKDials {
 	public static void createDials(World world) {
 		GameRules rules = world.getGameRules();
 		
-		if(!rules.getGameRuleBooleanValue(KEY_SAVE_DIALS)) {
-			rules.setOrCreateGameRule(KEY_PASSIVE_COOLING, "1.0");
-			rules.setOrCreateGameRule(KEY_COLUMN_HEAT_FLOW, "0.2");
-			rules.setOrCreateGameRule(KEY_FUEL_DIFFUSION_MOD, "1.0");
-			rules.setOrCreateGameRule(KEY_HEAT_PROVISION, "0.2");
-			rules.setOrCreateGameRule(KEY_COLUMN_HEIGHT, "4");
-			rules.setOrCreateGameRule(KEY_PERMANENT_SCRAP, "true");
-			rules.setOrCreateGameRule(KEY_BOILER_HEAT_CONSUMPTION, "0.1");
-			rules.setOrCreateGameRule(KEY_CONTROL_SPEED_MOD, "1.0");
-			rules.setOrCreateGameRule(KEY_REACTIVITY_MOD, "1.0");
-			rules.setOrCreateGameRule(KEY_SAVE_DIALS, "true");
-			rules.setOrCreateGameRule(KEY_OUTGASSER_MOD, "1.0");
-			rules.setOrCreateGameRule(KEY_SURGE_MOD, "1.0");
-			rules.setOrCreateGameRule(KEY_FLUX_RANGE, "5");
-			rules.setOrCreateGameRule(KEY_REASIM_RANGE, "10");
-			rules.setOrCreateGameRule(KEY_REASIM_COUNT, "6");
-			rules.setOrCreateGameRule(KEY_REASIM_MOD, "1.0");
-			rules.setOrCreateGameRule(KEY_REASIM_BOILERS, "false");
-			rules.setOrCreateGameRule(KEY_REASIM_BOILER_SPEED, "0.05");
-			rules.setOrCreateGameRule(KEY_DISABLE_MELTDOWNS, "false");
-			rules.setOrCreateGameRule(KEY_ENABLE_MELTDOWN_OVERPRESSURE, "false");
+		if(!rules.getGameRuleBooleanValue(RBMKDials.KEY_SAVE_DIALS)) {
+			rules.setOrCreateGameRule(RBMKDials.KEY_PASSIVE_COOLING, "1.0");
+			rules.setOrCreateGameRule(RBMKDials.KEY_COLUMN_HEAT_FLOW, "0.2");
+			rules.setOrCreateGameRule(RBMKDials.KEY_FUEL_DIFFUSION_MOD, "1.0");
+			rules.setOrCreateGameRule(RBMKDials.KEY_HEAT_PROVISION, "0.2");
+			rules.setOrCreateGameRule(RBMKDials.KEY_COLUMN_HEIGHT, "4");
+			rules.setOrCreateGameRule(RBMKDials.KEY_PERMANENT_SCRAP, "true");
+			rules.setOrCreateGameRule(RBMKDials.KEY_BOILER_HEAT_CONSUMPTION, "0.1");
+			rules.setOrCreateGameRule(RBMKDials.KEY_CONTROL_SPEED_MOD, "1.0");
+			rules.setOrCreateGameRule(RBMKDials.KEY_REACTIVITY_MOD, "1.0");
+			rules.setOrCreateGameRule(RBMKDials.KEY_SAVE_DIALS, "true");
+			rules.setOrCreateGameRule(RBMKDials.KEY_OUTGASSER_MOD, "1.0");
+			rules.setOrCreateGameRule(RBMKDials.KEY_SURGE_MOD, "1.0");
+			rules.setOrCreateGameRule(RBMKDials.KEY_FLUX_RANGE, "5");
+			rules.setOrCreateGameRule(RBMKDials.KEY_REASIM_RANGE, "10");
+			rules.setOrCreateGameRule(RBMKDials.KEY_REASIM_COUNT, "6");
+			rules.setOrCreateGameRule(RBMKDials.KEY_REASIM_MOD, "1.0");
+			rules.setOrCreateGameRule(RBMKDials.KEY_REASIM_BOILERS, "false");
+			rules.setOrCreateGameRule(RBMKDials.KEY_REASIM_BOILER_SPEED, "0.05");
+			rules.setOrCreateGameRule(RBMKDials.KEY_DISABLE_MELTDOWNS, "false");
+			rules.setOrCreateGameRule(RBMKDials.KEY_ENABLE_MELTDOWN_OVERPRESSURE, "false");
 		}
 	}
 	
@@ -64,7 +64,7 @@ public class RBMKDials {
 	 * @return >0
 	 */
 	public static double getPassiveCooling(World world) {
-		return Math.max(GameRuleHelper.parseDouble(world.getGameRules().getGameRuleStringValue(KEY_PASSIVE_COOLING), 1.0D), 0.0D);
+		return Math.max(GameRuleHelper.parseDouble(world.getGameRules().getGameRuleStringValue(RBMKDials.KEY_PASSIVE_COOLING), 1.0D), 0.0D);
 	}
 	
 	/**
@@ -73,7 +73,7 @@ public class RBMKDials {
 	 * @return [0;1]
 	 */
 	public static double getColumnHeatFlow(World world) {
-		return MathHelper.clamp_double(GameRuleHelper.parseDouble(world.getGameRules().getGameRuleStringValue(KEY_COLUMN_HEAT_FLOW), 0.2D), 0.0D, 1.0D);
+		return MathHelper.clamp_double(GameRuleHelper.parseDouble(world.getGameRules().getGameRuleStringValue(RBMKDials.KEY_COLUMN_HEAT_FLOW), 0.2D), 0.0D, 1.0D);
 	}
 	
 	/**
@@ -82,7 +82,7 @@ public class RBMKDials {
 	 * @return >0
 	 */
 	public static double getFuelDiffusionMod(World world) {
-		return Math.max(GameRuleHelper.parseDouble(world.getGameRules().getGameRuleStringValue(KEY_FUEL_DIFFUSION_MOD), 1.0D), 0.0D);
+		return Math.max(GameRuleHelper.parseDouble(world.getGameRules().getGameRuleStringValue(RBMKDials.KEY_FUEL_DIFFUSION_MOD), 1.0D), 0.0D);
 	}
 	
 	/**
@@ -91,7 +91,7 @@ public class RBMKDials {
 	 * @return [0;1]
 	 */
 	public static double getFuelHeatProvision(World world) {
-		return MathHelper.clamp_double(GameRuleHelper.parseDouble(world.getGameRules().getGameRuleStringValue(KEY_HEAT_PROVISION), 0.2D), 0.0D, 1.0D);
+		return MathHelper.clamp_double(GameRuleHelper.parseDouble(world.getGameRules().getGameRuleStringValue(RBMKDials.KEY_HEAT_PROVISION), 0.2D), 0.0D, 1.0D);
 	}
 	
 	/**
@@ -100,7 +100,7 @@ public class RBMKDials {
 	 * @return [0;15]
 	 */
 	public static int getColumnHeight(World world) {
-		return MathHelper.clamp_int(GameRuleHelper.parseInt(world.getGameRules().getGameRuleStringValue(KEY_COLUMN_HEIGHT), 4), 2, 16) - 1;
+		return MathHelper.clamp_int(GameRuleHelper.parseInt(world.getGameRules().getGameRuleStringValue(RBMKDials.KEY_COLUMN_HEIGHT), 4), 2, 16) - 1;
 	}
 	
 	/**
@@ -109,7 +109,7 @@ public class RBMKDials {
 	 * @return
 	 */
 	public static boolean getPermaScrap(World world) {
-		return world.getGameRules().getGameRuleBooleanValue(KEY_PERMANENT_SCRAP);
+		return world.getGameRules().getGameRuleBooleanValue(RBMKDials.KEY_PERMANENT_SCRAP);
 	}
 	
 	/**
@@ -118,7 +118,7 @@ public class RBMKDials {
 	 * @return >0
 	 */
 	public static double getBoilerHeatConsumption(World world) {
-		return Math.max(GameRuleHelper.parseDouble(world.getGameRules().getGameRuleStringValue(KEY_BOILER_HEAT_CONSUMPTION), 0.1D), 0D);
+		return Math.max(GameRuleHelper.parseDouble(world.getGameRules().getGameRuleStringValue(RBMKDials.KEY_BOILER_HEAT_CONSUMPTION), 0.1D), 0D);
 	}
 	
 	/**
@@ -127,7 +127,7 @@ public class RBMKDials {
 	 * @return >0
 	 */
 	public static double getControlSpeed(World world) {
-		return Math.max(GameRuleHelper.parseDouble(world.getGameRules().getGameRuleStringValue(KEY_CONTROL_SPEED_MOD), 1.0D), 0.0D);
+		return Math.max(GameRuleHelper.parseDouble(world.getGameRules().getGameRuleStringValue(RBMKDials.KEY_CONTROL_SPEED_MOD), 1.0D), 0.0D);
 	}
 	
 	/**
@@ -136,7 +136,7 @@ public class RBMKDials {
 	 * @return >0
 	 */
 	public static double getReactivityMod(World world) {
-		return Math.max(GameRuleHelper.parseDouble(world.getGameRules().getGameRuleStringValue(KEY_REACTIVITY_MOD), 1.0D), 0.0D);
+		return Math.max(GameRuleHelper.parseDouble(world.getGameRules().getGameRuleStringValue(RBMKDials.KEY_REACTIVITY_MOD), 1.0D), 0.0D);
 	}
 	
 	/**
@@ -145,7 +145,7 @@ public class RBMKDials {
 	 * @return >0
 	 */
 	public static double getOutgasserMod(World world) {
-		return Math.max(GameRuleHelper.parseDouble(world.getGameRules().getGameRuleStringValue(KEY_OUTGASSER_MOD), 1.0D), 0.0D);
+		return Math.max(GameRuleHelper.parseDouble(world.getGameRules().getGameRuleStringValue(RBMKDials.KEY_OUTGASSER_MOD), 1.0D), 0.0D);
 	}
 	
 	/**
@@ -154,7 +154,7 @@ public class RBMKDials {
 	 * @return >0
 	 */
 	public static double getSurgeMod(World world) {
-		return Math.max(GameRuleHelper.parseDouble(world.getGameRules().getGameRuleStringValue(KEY_SURGE_MOD), 1.0D), 0.0D);
+		return Math.max(GameRuleHelper.parseDouble(world.getGameRules().getGameRuleStringValue(RBMKDials.KEY_SURGE_MOD), 1.0D), 0.0D);
 	}
 	
 	/**
@@ -163,7 +163,7 @@ public class RBMKDials {
 	 * @return [1;100]
 	 */
 	public static int getFluxRange(World world) {
-		return MathHelper.clamp_int(GameRuleHelper.parseInt(world.getGameRules().getGameRuleStringValue(KEY_FLUX_RANGE), 5), 1, 100);
+		return MathHelper.clamp_int(GameRuleHelper.parseInt(world.getGameRules().getGameRuleStringValue(RBMKDials.KEY_FLUX_RANGE), 5), 1, 100);
 	}
 	
 	/**
@@ -172,7 +172,7 @@ public class RBMKDials {
 	 * @return [1;100]
 	 */
 	public static int getReaSimRange(World world) {
-		return MathHelper.clamp_int(GameRuleHelper.parseInt(world.getGameRules().getGameRuleStringValue(KEY_REASIM_RANGE), 10), 1, 100);
+		return MathHelper.clamp_int(GameRuleHelper.parseInt(world.getGameRules().getGameRuleStringValue(RBMKDials.KEY_REASIM_RANGE), 10), 1, 100);
 	}
 	
 	/**
@@ -181,7 +181,7 @@ public class RBMKDials {
 	 * @return [1;24]
 	 */
 	public static int getReaSimCount(World world) {
-		return MathHelper.clamp_int(GameRuleHelper.parseInt(world.getGameRules().getGameRuleStringValue(KEY_REASIM_COUNT), 6), 1, 24);
+		return MathHelper.clamp_int(GameRuleHelper.parseInt(world.getGameRules().getGameRuleStringValue(RBMKDials.KEY_REASIM_COUNT), 6), 1, 24);
 	}
 	
 	/**
@@ -190,7 +190,7 @@ public class RBMKDials {
 	 * @return >0
 	 */
 	public static double getReaSimOutputMod(World world) {
-		return Math.max(GameRuleHelper.parseDouble(world.getGameRules().getGameRuleStringValue(KEY_REASIM_MOD), 1.0D), 0.0D);
+		return Math.max(GameRuleHelper.parseDouble(world.getGameRules().getGameRuleStringValue(RBMKDials.KEY_REASIM_MOD), 1.0D), 0.0D);
 	}
 	
 	/**
@@ -199,7 +199,7 @@ public class RBMKDials {
 	 * @return
 	 */
 	public static boolean getReasimBoilers(World world) {
-		return world.getGameRules().getGameRuleBooleanValue(KEY_REASIM_BOILERS) || (GeneralConfig.enable528 && GeneralConfig.enable528ReasimBoilers);
+		return world.getGameRules().getGameRuleBooleanValue(RBMKDials.KEY_REASIM_BOILERS) || (GeneralConfig.enable528 && GeneralConfig.enable528ReasimBoilers);
 	}
 	
 	/**
@@ -208,7 +208,7 @@ public class RBMKDials {
 	 * @return [0;1]
 	 */
 	public static double getReaSimBoilerSpeed(World world) {
-		return MathHelper.clamp_double(GameRuleHelper.parseDouble(world.getGameRules().getGameRuleStringValue(KEY_REASIM_BOILER_SPEED), 0.05D), 0.0D, 1.0D);
+		return MathHelper.clamp_double(GameRuleHelper.parseDouble(world.getGameRules().getGameRuleStringValue(RBMKDials.KEY_REASIM_BOILER_SPEED), 0.05D), 0.0D, 1.0D);
 	}
 	
 	/**
@@ -218,7 +218,7 @@ public class RBMKDials {
 	 * @return
 	 */
 	public static boolean getMeltdownsDisabled(World world) {
-		return world.getGameRules().getGameRuleBooleanValue(KEY_DISABLE_MELTDOWNS);
+		return world.getGameRules().getGameRuleBooleanValue(RBMKDials.KEY_DISABLE_MELTDOWNS);
 	}
 	
 	/**
@@ -227,6 +227,6 @@ public class RBMKDials {
 	 * @return
 	 */
 	public static boolean getOverpressure(World world) {
-		return world.getGameRules().getGameRuleBooleanValue(KEY_ENABLE_MELTDOWN_OVERPRESSURE);
+		return world.getGameRules().getGameRuleBooleanValue(RBMKDials.KEY_ENABLE_MELTDOWN_OVERPRESSURE);
 	}
 }

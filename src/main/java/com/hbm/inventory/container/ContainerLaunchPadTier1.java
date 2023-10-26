@@ -15,23 +15,23 @@ public class ContainerLaunchPadTier1 extends Container {
 	
 	public ContainerLaunchPadTier1(InventoryPlayer invPlayer, TileEntityLaunchPad tedf) {
 		
-		diFurnace = tedf;
+		this.diFurnace = tedf;
 		
-		this.addSlotToContainer(new Slot(tedf, 0, 26, 17));
-		this.addSlotToContainer(new Slot(tedf, 1, 80, 17));
-		this.addSlotToContainer(new Slot(tedf, 2, 134, 17));
+		addSlotToContainer(new Slot(tedf, 0, 26, 17));
+		addSlotToContainer(new Slot(tedf, 1, 80, 17));
+		addSlotToContainer(new Slot(tedf, 2, 134, 17));
 		
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++)
 		{
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
 		}
 	}
 	
@@ -52,7 +52,7 @@ public class ContainerLaunchPadTier1 extends Container {
 			var3 = var5.copy();
 			
             if (par2 <= 2) {
-				if (!this.mergeItemStack(var5, 3, this.inventorySlots.size(), true))
+				if (!mergeItemStack(var5, 3, this.inventorySlots.size(), true))
 				{
 					return null;
 				}
@@ -75,6 +75,6 @@ public class ContainerLaunchPadTier1 extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return diFurnace.isUseableByPlayer(player);
+		return this.diFurnace.isUseableByPlayer(player);
 	}
 }

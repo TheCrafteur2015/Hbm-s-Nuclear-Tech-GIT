@@ -14,22 +14,22 @@ private TileEntityNukeBalefire balefireBomb;
 	
 	public ContainerNukeFstbmb(InventoryPlayer invPlayer, TileEntityNukeBalefire tedf) {
 		
-		balefireBomb = tedf;
+		this.balefireBomb = tedf;
 
-		this.addSlotToContainer(new Slot(tedf, 0, 17, 36));
-		this.addSlotToContainer(new Slot(tedf, 1, 53, 36));
+		addSlotToContainer(new Slot(tedf, 0, 17, 36));
+		addSlotToContainer(new Slot(tedf, 1, 53, 36));
 		
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 56));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 56));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++)
 		{
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 56));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 56));
 		}
 	}
 	
@@ -45,7 +45,7 @@ private TileEntityNukeBalefire balefireBomb;
 			var3 = var5.copy();
 			
             if (par2 <= 2) {
-				if (!this.mergeItemStack(var5, 2, this.inventorySlots.size(), true))
+				if (!mergeItemStack(var5, 2, this.inventorySlots.size(), true))
 				{
 					return null;
 				}
@@ -68,6 +68,6 @@ private TileEntityNukeBalefire balefireBomb;
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return balefireBomb.isUseableByPlayer(player);
+		return this.balefireBomb.isUseableByPlayer(player);
 	}
 }

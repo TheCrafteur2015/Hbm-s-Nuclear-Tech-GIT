@@ -46,17 +46,17 @@ public class EntityChlorineFX extends EntityModFX {
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
 
-		if (maxAge < 700) {
-			maxAge = rand.nextInt(101) + 700;
+		if (this.maxAge < 700) {
+			this.maxAge = this.rand.nextInt(101) + 700;
 		}
 
-		if (rand.nextInt(50) == 0)
-			ExplosionChaos.poison(worldObj, (int) posX, (int) posY, (int) posZ, 2);
+		if (this.rand.nextInt(50) == 0)
+			ExplosionChaos.poison(this.worldObj, (int) this.posX, (int) this.posY, (int) this.posZ, 2);
 
 		this.particleAge++;
 
-		if (this.particleAge >= maxAge) {
-			this.setDead();
+		if (this.particleAge >= this.maxAge) {
+			setDead();
 		}
 
 		this.motionX *= 0.7599999785423279D;
@@ -68,7 +68,7 @@ public class EntityChlorineFX extends EntityModFX {
 			this.motionZ *= 0.699999988079071D;
 		}
 		
-		if(worldObj.isRaining() && worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ))) {
+		if(this.worldObj.isRaining() && this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ))) {
 			this.motionY -= 0.01;
 		}
 		
@@ -80,10 +80,10 @@ public class EntityChlorineFX extends EntityModFX {
 			this.posY += this.motionY/subdivisions;
 			this.posZ += this.motionZ/subdivisions;
 			
-			if (worldObj.getBlock((int) posX, (int) posY, (int) posZ).isNormalCube()) {
+			if (this.worldObj.getBlock((int) this.posX, (int) this.posY, (int) this.posZ).isNormalCube()) {
 	
-				if(rand.nextInt(5) != 0)
-					this.setDead();
+				if(this.rand.nextInt(5) != 0)
+					setDead();
 				
 				this.posX -= this.motionX/subdivisions;
 				this.posY -= this.motionY/subdivisions;

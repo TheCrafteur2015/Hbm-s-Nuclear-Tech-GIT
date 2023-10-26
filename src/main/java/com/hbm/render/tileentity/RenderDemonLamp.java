@@ -38,8 +38,8 @@ public class RenderDemonLamp extends TileEntitySpecialRenderer {
 		GL11.glEnable(GL11.GL_CULL_FACE);
 
 		GL11.glShadeModel(GL11.GL_SMOOTH);
-		bindTexture(tex);
-		demon_lamp.renderAll();
+		bindTexture(RenderDemonLamp.tex);
+		RenderDemonLamp.demon_lamp.renderAll();
 		
 		Tessellator tess = Tessellator.instance;
 		tess.startDrawingQuads();

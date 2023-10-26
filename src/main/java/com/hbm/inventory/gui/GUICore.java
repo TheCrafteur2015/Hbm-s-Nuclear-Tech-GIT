@@ -18,7 +18,7 @@ public class GUICore extends GuiInfoContainer {
 	
 	public GUICore(InventoryPlayer invPlayer, TileEntityCore tedf) {
 		super(new ContainerCore(invPlayer, tedf));
-		core = tedf;
+		this.core = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 166;
@@ -28,13 +28,13 @@ public class GUICore extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		core.tanks[0].renderTankInfo(this, mouseX, mouseY, guiLeft + 26, guiTop + 17, 16, 52);
-		core.tanks[1].renderTankInfo(this, mouseX, mouseY, guiLeft + 134, guiTop + 17, 16, 52);
+		this.core.tanks[0].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 26, this.guiTop + 17, 16, 52);
+		this.core.tanks[1].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 134, this.guiTop + 17, 16, 52);
 
-		String[] text = new String[] { "Restriction Field: " + core.field + "%" };
-		String[] text1 = new String[] { "Heat Saturation: " + core.heat + "%" };
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 8, guiTop + 17, 16, 52, mouseX, mouseY, text);
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 152, guiTop + 17, 16, 52, mouseX, mouseY, text1);
+		String[] text = new String[] { "Restriction Field: " + this.core.field + "%" };
+		String[] text1 = new String[] { "Heat Saturation: " + this.core.heat + "%" };
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 8, this.guiTop + 17, 16, 52, mouseX, mouseY, text);
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 152, this.guiTop + 17, 16, 52, mouseX, mouseY, text1);
 	}
 
 	@Override
@@ -48,16 +48,16 @@ public class GUICore extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUICore.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		int i = core.getFieldScaled(52);
-		drawTexturedModalRect(guiLeft + 8, guiTop + 69 - i, 176, 52 - i, 16, i);
+		int i = this.core.getFieldScaled(52);
+		drawTexturedModalRect(this.guiLeft + 8, this.guiTop + 69 - i, 176, 52 - i, 16, i);
 		
-		int j = core.getHeatScaled(52);
-		drawTexturedModalRect(guiLeft + 152, guiTop + 69 - j, 192, 52 - j, 16, j);
+		int j = this.core.getHeatScaled(52);
+		drawTexturedModalRect(this.guiLeft + 152, this.guiTop + 69 - j, 192, 52 - j, 16, j);
 
-		core.tanks[0].renderTank(guiLeft + 26, guiTop + 69, this.zLevel, 16, 52);
-		core.tanks[1].renderTank(guiLeft + 134, guiTop + 69, this.zLevel, 16, 52);
+		this.core.tanks[0].renderTank(this.guiLeft + 26, this.guiTop + 69, this.zLevel, 16, 52);
+		this.core.tanks[1].renderTank(this.guiLeft + 134, this.guiTop + 69, this.zLevel, 16, 52);
 	}
 }

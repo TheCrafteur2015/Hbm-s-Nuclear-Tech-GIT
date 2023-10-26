@@ -6,8 +6,8 @@ public class UnionOfTileEntitiesAndBooleansForGas {
 	
 	public UnionOfTileEntitiesAndBooleansForGas(IGasSource tileentity, boolean bool)
 	{
-		source = tileentity;
-		ticked = bool;
+		this.source = tileentity;
+		this.ticked = bool;
 	}
 
 	public IGasSource source;

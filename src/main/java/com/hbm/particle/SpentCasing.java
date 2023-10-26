@@ -16,7 +16,7 @@ public class SpentCasing implements Cloneable {
 	public static final int COLOR_CASE_16INCH_PHOS = 0xC8C8C8;
 	public static final int COLOR_CASE_16INCH_NUKE = 0x495443;
 	
-	public static final HashMap<String, SpentCasing> casingMap = new HashMap();
+	public static final HashMap<String, SpentCasing> casingMap = new HashMap<>();
 	
 	public enum CasingType {
 		STRAIGHT("Straight"),
@@ -53,7 +53,7 @@ public class SpentCasing implements Cloneable {
 	/** Separated from the ctor to allow for easy creation of new casings from templates that don't need to be registered */
 	public SpentCasing register(String name) {
 		this.registryName = name;
-		casingMap.put(name, this);
+		SpentCasing.casingMap.put(name, this);
 		return this;
 	}
 	
@@ -91,7 +91,7 @@ public class SpentCasing implements Cloneable {
 	}
 	
 	public static SpentCasing fromName(String name) {
-		return casingMap.get(name);
+		return SpentCasing.casingMap.get(name);
 	}
 	
 	public SpentCasing setBounceMotion(float yaw, float pitch) {

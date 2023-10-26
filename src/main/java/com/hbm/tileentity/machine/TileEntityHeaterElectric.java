@@ -27,20 +27,20 @@ public class TileEntityHeaterElectric extends TileEntityLoadedBase implements IH
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			if(worldObj.getTotalWorldTime() % 20 == 0) { //doesn't have to happen constantly
-				ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
-				this.trySubscribe(worldObj, xCoord + dir.offsetX * 3, yCoord, zCoord + dir.offsetZ * 3, dir);
+			if(this.worldObj.getTotalWorldTime() % 20 == 0) { //doesn't have to happen constantly
+				ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
+				trySubscribe(this.worldObj, this.xCoord + dir.offsetX * 3, this.yCoord, this.zCoord + dir.offsetZ * 3, dir);
 			}
 			
 			this.heatEnergy *= 0.999;
 			
-			this.tryPullHeat();
+			tryPullHeat();
 
 			this.isOn = false;
-			if(setting > 0 && this.power >= this.getConsumption()) {
-				this.power -= this.getConsumption();
+			if(this.setting > 0 && this.power >= getConsumption()) {
+				this.power -= getConsumption();
 				this.heatEnergy += getHeatGen();
 				this.isOn = true;
 			}
@@ -48,26 +48,26 @@ public class TileEntityHeaterElectric extends TileEntityLoadedBase implements IH
 			NBTTagCompound data = new NBTTagCompound();
 			data.setByte("s", (byte) this.setting);
 			data.setInteger("h", this.heatEnergy);
-			data.setBoolean("o", isOn);
+			data.setBoolean("o", this.isOn);
 			INBTPacketReceiver.networkPack(this, data, 25);
 		} else {
 			
-			if(isOn) {
+			if(this.isOn) {
 				
-				if(audio == null) {
-					audio = createAudioLoop();
-					audio.startSound();
-				} else if(!audio.isPlaying()) {
-					audio = rebootAudio(audio);
+				if(this.audio == null) {
+					this.audio = createAudioLoop();
+					this.audio.startSound();
+				} else if(!this.audio.isPlaying()) {
+					this.audio = rebootAudio(this.audio);
 				}
 				
-				audio.keepAlive();
+				this.audio.keepAlive();
 				
 			} else {
 				
-				if(audio != null) {
-					audio.stopSound();
-					audio = null;
+				if(this.audio != null) {
+					this.audio.stopSound();
+					this.audio = null;
 				}
 			}
 		}
@@ -75,15 +75,15 @@ public class TileEntityHeaterElectric extends TileEntityLoadedBase implements IH
 	
 	@Override
 	public AudioWrapper createAudioLoop() {
-		return MainRegistry.proxy.getLoopedSound("hbm:block.electricHum", xCoord, yCoord, zCoord, 0.25F, 7.5F, 1.0F, 20);
+		return MainRegistry.proxy.getLoopedSound("hbm:block.electricHum", this.xCoord, this.yCoord, this.zCoord, 0.25F, 7.5F, 1.0F, 20);
 	}
 
 	@Override
 	public void onChunkUnload() {
 
-		if(audio != null) {
-			audio.stopSound();
-			audio = null;
+		if(this.audio != null) {
+			this.audio.stopSound();
+			this.audio = null;
 		}
 	}
 
@@ -92,9 +92,9 @@ public class TileEntityHeaterElectric extends TileEntityLoadedBase implements IH
 
 		super.invalidate();
 
-		if(audio != null) {
-			audio.stopSound();
-			audio = null;
+		if(this.audio != null) {
+			this.audio.stopSound();
+			this.audio = null;
 		}
 	}
 
@@ -118,13 +118,13 @@ public class TileEntityHeaterElectric extends TileEntityLoadedBase implements IH
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 
-		nbt.setLong("power", power);
-		nbt.setInteger("setting", setting);
-		nbt.setInteger("heatEnergy", heatEnergy);
+		nbt.setLong("power", this.power);
+		nbt.setInteger("setting", this.setting);
+		nbt.setInteger("heatEnergy", this.heatEnergy);
 	}
 	
 	protected void tryPullHeat() {
-		TileEntity con = worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
+		TileEntity con = this.worldObj.getTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
 		
 		if(con instanceof IHeatSource) {
 			IHeatSource source = (IHeatSource) con;
@@ -134,19 +134,19 @@ public class TileEntityHeaterElectric extends TileEntityLoadedBase implements IH
 	}
 	
 	public void toggleSetting() {
-		setting++;
+		this.setting++;
 		
-		if(setting > 10)
-			setting = 0;
+		if(this.setting > 10)
+			this.setting = 0;
 	}
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 	
 	public long getConsumption() {
-		return (long) (Math.pow(setting, 1.4D) * 200D);
+		return (long) (Math.pow(this.setting, 1.4D) * 200D);
 	}
 
 	@Override
@@ -165,7 +165,7 @@ public class TileEntityHeaterElectric extends TileEntityLoadedBase implements IH
 
 	@Override
 	public int getHeatStored() {
-		return heatEnergy;
+		return this.heatEnergy;
 	}
 
 	@Override
@@ -178,18 +178,18 @@ public class TileEntityHeaterElectric extends TileEntityLoadedBase implements IH
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 2,
-					yCoord,
-					zCoord - 2,
-					xCoord + 3,
-					yCoord + 1,
-					zCoord + 3
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 2,
+					this.yCoord,
+					this.zCoord - 2,
+					this.xCoord + 3,
+					this.yCoord + 1,
+					this.zCoord + 3
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override

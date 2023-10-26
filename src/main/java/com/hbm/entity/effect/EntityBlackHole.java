@@ -38,16 +38,17 @@ public class EntityBlackHole extends Entity {
 		this.dataWatcher.updateObject(16, size);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
 		
 		float size = this.dataWatcher.getWatchableObjectFloat(16);
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			for(int k = 0; k < size * 2; k++) {
-				double phi = rand.nextDouble() * (Math.PI * 2);
-				double costheta = rand.nextDouble() * 2 - 1;
+				double phi = this.rand.nextDouble() * (Math.PI * 2);
+				double costheta = this.rand.nextDouble() * 2 - 1;
 				double theta = Math.acos(costheta);
 				double x = Math.sin( theta) * Math.cos( phi );
 				double y = Math.sin( theta) * Math.sin( phi );
@@ -61,20 +62,20 @@ public class EntityBlackHole extends Entity {
 					int y0 = (int)(this.posY + (vec.yCoord * i));
 					int z0 = (int)(this.posZ + (vec.zCoord * i));
 					
-					if(worldObj.getBlock(x0, y0, z0).getMaterial().isLiquid()) {
-						worldObj.setBlock(x0, y0, z0, Blocks.air);
+					if(this.worldObj.getBlock(x0, y0, z0).getMaterial().isLiquid()) {
+						this.worldObj.setBlock(x0, y0, z0, Blocks.air);
 					}
 					
-					if(worldObj.getBlock(x0, y0, z0) != Blocks.air) {
-						EntityRubble rubble = new EntityRubble(worldObj);
+					if(this.worldObj.getBlock(x0, y0, z0) != Blocks.air) {
+						EntityRubble rubble = new EntityRubble(this.worldObj);
 						rubble.posX = x0 + 0.5F;
 						rubble.posY = y0;
 						rubble.posZ = z0 + 0.5F;
-						rubble.setMetaBasedOnBlock(worldObj.getBlock(x0, y0, z0), worldObj.getBlockMetadata(x0, y0, z0));
+						rubble.setMetaBasedOnBlock(this.worldObj.getBlock(x0, y0, z0), this.worldObj.getBlockMetadata(x0, y0, z0));
 						
-						worldObj.spawnEntityInWorld(rubble);
+						this.worldObj.spawnEntityInWorld(rubble);
 					
-						worldObj.setBlock(x0, y0, z0, Blocks.air);
+						this.worldObj.setBlock(x0, y0, z0, Blocks.air);
 						break;
 					}
 				}
@@ -83,15 +84,15 @@ public class EntityBlackHole extends Entity {
 		
 		double range = size * 15;
 		
-		List<Entity> entities = worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(
-				posX - range, posY - range, posZ - range, posX + range, posY + range, posZ + range));
+		List<Entity> entities = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(
+				this.posX - range, this.posY - range, this.posZ - range, this.posX + range, this.posY + range, this.posZ + range));
 		
 		for(Entity e : entities) {
 			
 			if(e instanceof EntityPlayer && ((EntityPlayer)e).capabilities.isCreativeMode)
 				continue;
 			
-			if(e instanceof EntityFallingBlock && !worldObj.isRemote && e.ticksExisted > 1) {
+			if(e instanceof EntityFallingBlock && !this.worldObj.isRemote && e.ticksExisted > 1) {
 				
 				double x = e.posX;
 				double y = e.posY;
@@ -101,16 +102,16 @@ public class EntityBlackHole extends Entity {
 				
 				e.setDead();
 				
-				EntityRubble rubble = new EntityRubble(worldObj);
+				EntityRubble rubble = new EntityRubble(this.worldObj);
 				rubble.setMetaBasedOnBlock(b, meta);
 				rubble.setPositionAndRotation(x, y, z, 0, 0);
 				rubble.motionX = e.motionX;
 				rubble.motionY = e.motionY;
 				rubble.motionZ = e.motionZ;
-				worldObj.spawnEntityInWorld(rubble);
+				this.worldObj.spawnEntityInWorld(rubble);
 			}
 			
-			Vec3 vec = Vec3.createVectorHelper(posX - e.posX, posY - e.posY, posZ - e.posZ);
+			Vec3 vec = Vec3.createVectorHelper(this.posX - e.posX, this.posY - e.posY, this.posZ - e.posZ);
 			
 			double dist = vec.lengthVector();
 			
@@ -136,20 +137,20 @@ public class EntityBlackHole extends Entity {
 				if(!(e instanceof EntityLivingBase))
 					e.setDead();
 				
-				if(!worldObj.isRemote && e instanceof EntityItem) {
+				if(!this.worldObj.isRemote && e instanceof EntityItem) {
 					EntityItem item = (EntityItem) e;
 					ItemStack stack = item.getEntityItem();
 					
 					if(stack.getItem() == ModItems.pellet_antimatter || stack.getItem() == ModItems.flame_pony) {
-						this.setDead();
-						worldObj.createExplosion(null, this.posX, this.posY, this.posZ, 5.0F, true);
+						setDead();
+						this.worldObj.createExplosion(null, this.posX, this.posY, this.posZ, 5.0F, true);
 						return;
 					}
 				}
 			}
 		}
 		
-		this.setPosition(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+		setPosition(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 		
 		this.motionX *= 0.99D;
 		this.motionY *= 0.99D;

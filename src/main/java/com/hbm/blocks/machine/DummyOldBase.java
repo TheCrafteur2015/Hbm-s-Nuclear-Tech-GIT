@@ -35,7 +35,7 @@ public abstract class DummyOldBase extends BlockContainer implements IDummy, IEn
 
 	@Override
 	public void breakBlock(World world, int x, int y, int z, Block block, int i) {
-		if(!safeBreak) {
+		if(!DummyOldBase.safeBreak) {
 			TileEntity te = world.getTileEntity(x, y, z);
 			if(te != null && te instanceof TileEntityDummy) {
 				int a = ((TileEntityDummy) te).targetX;
@@ -69,6 +69,6 @@ public abstract class DummyOldBase extends BlockContainer implements IDummy, IEn
 		return null;
 	}
 
-	@Override public boolean canConnect(IBlockAccess world, int x, int y, int z, ForgeDirection dir) { return port; }
-	@Override public boolean canConnect(FluidType type, IBlockAccess world, int x, int y, int z, ForgeDirection dir) { return port; }
+	@Override public boolean canConnect(IBlockAccess world, int x, int y, int z, ForgeDirection dir) { return this.port; }
+	@Override public boolean canConnect(FluidType type, IBlockAccess world, int x, int y, int z, ForgeDirection dir) { return this.port; }
 }

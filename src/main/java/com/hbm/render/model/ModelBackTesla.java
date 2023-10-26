@@ -12,7 +12,7 @@ public class ModelBackTesla extends ModelArmorBase {
 
 	public ModelBackTesla() {
 		super(1);
-		body = new ModelRendererObj(ResourceManager.armor_mod_tesla);
+		this.body = new ModelRendererObj(ResourceManager.armor_mod_tesla);
 	}
 
 	@Override
@@ -24,7 +24,7 @@ public class ModelBackTesla extends ModelArmorBase {
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		
 		Minecraft.getMinecraft().renderEngine.bindTexture(ResourceManager.mod_tesla);
-		body.render(par7);
+		this.body.render(par7);
 		
 		GL11.glShadeModel(GL11.GL_FLAT);
 		GL11.glPopMatrix();

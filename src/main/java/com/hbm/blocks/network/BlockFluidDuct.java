@@ -21,7 +21,7 @@ public class BlockFluidDuct extends BlockContainer implements ILookOverlay {
 	public BlockFluidDuct(Material p_i45386_1_) {
 		super(p_i45386_1_);
 		float p = 1F/16F;
-		this.setBlockBounds(11 * p / 2, 11 * p / 2, 11 * p / 2, 1 - 11 * p / 2, 1 - 11 * p / 2, 1 - 11 * p / 2);
+		setBlockBounds(11 * p / 2, 11 * p / 2, 11 * p / 2, 1 - 11 * p / 2, 1 - 11 * p / 2, 1 - 11 * p / 2);
 		this.useNeighborBrightness = true;
 	}
 	
@@ -40,7 +40,7 @@ public class BlockFluidDuct extends BlockContainer implements ILookOverlay {
 			float maxY = 1 - 11 * p / 2 + (cable.connections[0] != null ? (11 * p / 2) : 0);
 			float maxZ = 1 - 11 * p / 2 + (cable.connections[4] != null ? (11 * p / 2) : 0);
 			
-			this.setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
+			setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
 		}
 		}
 		return AxisAlignedBB.getBoundingBox(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
@@ -61,7 +61,7 @@ public class BlockFluidDuct extends BlockContainer implements ILookOverlay {
 			float maxY = 1 - 11 * p / 2 + (cable.connections[0] != null ? (11 * p / 2) : 0);
 			float maxZ = 1 - 11 * p / 2 + (cable.connections[4] != null ? (11 * p / 2) : 0);
 			
-			this.setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
+			setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
 		}
 		}
 	}
@@ -96,7 +96,7 @@ public class BlockFluidDuct extends BlockContainer implements ILookOverlay {
 		
 		TileEntityFluidDuctSimple duct = (TileEntityFluidDuctSimple) te;
 		
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		text.add("&[" + duct.getType().getColor() + "&]" + duct.getType().getLocalizedName());
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}

@@ -49,11 +49,11 @@ public class TextureAtlasSpriteMutatable extends TextureAtlasSprite {
 	@Override
 	public void loadSprite(BufferedImage[] frames, AnimationMetadataSection animMeta, boolean anisotropicFiltering) {
 		
-		if(mutator != null) {
+		if(this.mutator != null) {
 			for(int i = 0; i < frames.length; i++) {
 				BufferedImage frame = frames[i];
 				
-				if(frame != null) mutator.mutate(frame, i, frames.length);
+				if(frame != null) this.mutator.mutate(frame, i, frames.length);
 			}
 		}
 		
@@ -72,13 +72,13 @@ public class TextureAtlasSpriteMutatable extends TextureAtlasSprite {
 		String tunkatedPath = pathName.substring(0, pathName.indexOf('-')); //fuck regex
 		//so basically we remove the dash and everything trailing it (see ItemAutogen.java), this allows us to have unique icon names for what is actually the same icon file
 		resourcelocation = new ResourceLocation(resourcelocation.getResourceDomain(), tunkatedPath);
-		ResourceLocation resourcelocation1 = this.completeResourceLocation(resourcelocation, 0);
+		ResourceLocation resourcelocation1 = completeResourceLocation(resourcelocation, 0);
 		
 		//garbage vanilla code, copy pasted because there's no proper hooks for this
 		try {
 
 			IResource iresource = man.getResource(resourcelocation1);
-			BufferedImage[] abufferedimage = new BufferedImage[1 + mipmap];
+			BufferedImage[] abufferedimage = new BufferedImage[1 + this.mipmap];
 			abufferedimage[0] = ImageIO.read(iresource.getInputStream());
 			TextureMetadataSection texturemetadatasection = (TextureMetadataSection) iresource.getMetadata("texture");
 
@@ -101,7 +101,7 @@ public class TextureAtlasSpriteMutatable extends TextureAtlasSprite {
 					l = ((Integer) iterator3.next()).intValue();
 
 					if(l > 0 && l < abufferedimage.length - 1 && abufferedimage[l] == null) {
-						ResourceLocation resourcelocation2 = this.completeResourceLocation(resourcelocation, l);
+						ResourceLocation resourcelocation2 = completeResourceLocation(resourcelocation, l);
 
 						try {
 							abufferedimage[l] = ImageIO.read(man.getResource(resourcelocation2).getInputStream());
@@ -113,7 +113,7 @@ public class TextureAtlasSpriteMutatable extends TextureAtlasSprite {
 			}
 
 			AnimationMetadataSection animationmetadatasection = (AnimationMetadataSection) iresource.getMetadata("animation");
-			loadSprite(abufferedimage, animationmetadatasection, (float) anisotropic > 1.0F);
+			loadSprite(abufferedimage, animationmetadatasection, (float) this.anisotropic > 1.0F);
 		} catch(RuntimeException runtimeexception) {
 			cpw.mods.fml.client.FMLClientHandler.instance().trackBrokenTexture(resourcelocation1, runtimeexception.getMessage());
 			return true; //return TRUE to prevent stitching non-existent texture, vanilla loading will deal with that!

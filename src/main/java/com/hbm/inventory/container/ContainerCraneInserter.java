@@ -17,18 +17,18 @@ public class ContainerCraneInserter extends Container {
 		
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 7; j++) {
-				this.addSlotToContainer(new Slot(inserter, j + i * 7, 26 + j * 18, 17 + i * 18));
+				addSlotToContainer(new Slot(inserter, j + i * 7, 26 + j * 18, 17 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 103 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 103 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 161));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 161));
 		}
 	}
 
@@ -41,11 +41,11 @@ public class ContainerCraneInserter extends Container {
 			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 
-			if(par2 <= inserter.getSizeInventory() - 1) {
-				if(!this.mergeItemStack(var5, inserter.getSizeInventory(), this.inventorySlots.size(), true)) {
+			if(par2 <= this.inserter.getSizeInventory() - 1) {
+				if(!mergeItemStack(var5, this.inserter.getSizeInventory(), this.inventorySlots.size(), true)) {
 					return null;
 				}
-			} else if(!this.mergeItemStack(var5, 0, inserter.getSizeInventory(), false)) {
+			} else if(!mergeItemStack(var5, 0, this.inserter.getSizeInventory(), false)) {
 				return null;
 			}
 
@@ -63,6 +63,6 @@ public class ContainerCraneInserter extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return inserter.isUseableByPlayer(player);
+		return this.inserter.isUseableByPlayer(player);
 	}
 }

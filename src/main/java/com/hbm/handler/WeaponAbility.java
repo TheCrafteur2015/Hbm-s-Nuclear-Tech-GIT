@@ -2,20 +2,25 @@ package com.hbm.handler;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.generic.BlockBobble.BobbleType;
-import com.hbm.items.ItemAmmoEnums.*;
+import com.hbm.items.ItemAmmoEnums.Ammo12Gauge;
+import com.hbm.items.ItemAmmoEnums.Ammo20Gauge;
+import com.hbm.items.ItemAmmoEnums.Ammo50BMG;
+import com.hbm.items.ItemAmmoEnums.Ammo556mm;
+import com.hbm.items.ItemAmmoEnums.Ammo5mm;
+import com.hbm.items.ItemAmmoEnums.Ammo9mm;
+import com.hbm.items.ItemAmmoEnums.AmmoGrenade;
+import com.hbm.items.ItemAmmoEnums.AmmoRocket;
 import com.hbm.items.ModItems;
 import com.hbm.items.tool.IItemAbility;
 import com.hbm.packet.AuxParticlePacketNT;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.potion.HbmPotion;
 import com.hbm.util.ContaminationUtil;
+import com.hbm.util.ContaminationUtil.ContaminationType;
+import com.hbm.util.ContaminationUtil.HazardType;
 import com.hbm.util.WeightedRandomObject;
 
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
-
-import com.hbm.util.ContaminationUtil.ContaminationType;
-import com.hbm.util.ContaminationUtil.HazardType;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
@@ -57,7 +62,7 @@ public abstract class WeaponAbility {
 		public void onHit(World world, EntityPlayer player, Entity victim, IItemAbility tool) {
 			
 			if(victim instanceof EntityLivingBase)
-				ContaminationUtil.contaminate((EntityLivingBase)victim, HazardType.RADIATION, ContaminationType.CREATIVE, rad);
+				ContaminationUtil.contaminate((EntityLivingBase)victim, HazardType.RADIATION, ContaminationType.CREATIVE, this.rad);
 		}
 
 		@Override
@@ -67,7 +72,7 @@ public abstract class WeaponAbility {
 
 		@Override
 		public String getFullName() {
-			return I18n.format(getName()) + " (" + rad + ")";
+			return I18n.format(getName()) + " (" + this.rad + ")";
 		}
 	}
 	
@@ -86,9 +91,9 @@ public abstract class WeaponAbility {
 				
 				EntityLivingBase living = (EntityLivingBase) victim;
 				
-				living.setHealth(living.getHealth() - amount);
+				living.setHealth(living.getHealth() - this.amount);
 				if(living.getHealth() <= 0) living.onDeath(DamageSource.magic);
-				player.heal(amount);
+				player.heal(this.amount);
 			}
 		}
 
@@ -99,7 +104,7 @@ public abstract class WeaponAbility {
 
 		@Override
 		public String getFullName() {
-			return I18n.format(getName()) + " (" + amount + ")";
+			return I18n.format(getName()) + " (" + this.amount + ")";
 		}
 	}
 	
@@ -118,8 +123,8 @@ public abstract class WeaponAbility {
 				
 				EntityLivingBase living = (EntityLivingBase) victim;
 
-				living.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, duration * 20, 4));
-				living.addPotionEffect(new PotionEffect(Potion.weakness.id, duration * 20, 4));
+				living.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, this.duration * 20, 4));
+				living.addPotionEffect(new PotionEffect(Potion.weakness.id, this.duration * 20, 4));
 			}
 		}
 
@@ -130,7 +135,7 @@ public abstract class WeaponAbility {
 
 		@Override
 		public String getFullName() {
-			return I18n.format(getName()) + " (" + duration + ")";
+			return I18n.format(getName()) + " (" + this.duration + ")";
 		}
 	}
 	
@@ -149,7 +154,7 @@ public abstract class WeaponAbility {
 				
 				EntityLivingBase living = (EntityLivingBase) victim;
 
-				living.addPotionEffect(new PotionEffect(HbmPotion.phosphorus.id, duration * 20, 4));
+				living.addPotionEffect(new PotionEffect(HbmPotion.phosphorus.id, this.duration * 20, 4));
 			}
 		}
 
@@ -160,7 +165,7 @@ public abstract class WeaponAbility {
 
 		@Override
 		public String getFullName() {
-			return I18n.format(getName()) + " (" + duration + ")";
+			return I18n.format(getName()) + " (" + this.duration + ")";
 		}
 	}
 	
@@ -176,7 +181,7 @@ public abstract class WeaponAbility {
 		public void onHit(World world, EntityPlayer player, Entity victim, IItemAbility tool) {
 			
 			if(victim instanceof EntityLivingBase) {
-				victim.setFire(duration);
+				victim.setFire(this.duration);
 			}
 		}
 
@@ -187,7 +192,7 @@ public abstract class WeaponAbility {
 
 		@Override
 		public String getFullName() {
-			return I18n.format(getName()) + " (" + duration + ")";
+			return I18n.format(getName()) + " (" + this.duration + ")";
 		}
 	}
 	
@@ -225,7 +230,7 @@ public abstract class WeaponAbility {
 							new WeightedRandomObject(new ItemStack(ModItems.syringe_metal_stimpak), 20),
 					};
 					
-					int count = Math.min((int)Math.ceil(living.getMaxHealth() / divider), 250); //safeguard to prevent funnies from bosses with obscene health
+					int count = Math.min((int)Math.ceil(living.getMaxHealth() / this.divider), 250); //safeguard to prevent funnies from bosses with obscene health
 					
 					for(int i = 0; i < count; i++) {
 						
@@ -255,7 +260,7 @@ public abstract class WeaponAbility {
 
 		@Override
 		public String getFullName() {
-			return I18n.format(getName()) + " (1:" + divider + ")";
+			return I18n.format(getName()) + " (1:" + this.divider + ")";
 		}
 	}
 	

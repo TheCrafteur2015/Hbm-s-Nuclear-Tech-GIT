@@ -29,6 +29,7 @@ public class BlockNTMGlassCT extends BlockNTMGlass implements IBlockCT {
 	@SideOnly(Side.CLIENT)
 	public CTStitchReceiver rec;
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister reg) {
 		super.registerBlockIcons(reg);
@@ -37,6 +38,6 @@ public class BlockNTMGlassCT extends BlockNTMGlass implements IBlockCT {
 
 	@Override
 	public IIcon[] getFragments(IBlockAccess world, int x, int y, int z) {
-		return rec.fragCache;
+		return this.rec.fragCache;
 	}
 }

@@ -26,15 +26,12 @@ public interface IItemAbility {
 	public boolean isShears(ItemStack stack);
 	
 	public default boolean canShearBlock(Block block, ItemStack stack, World world, int x, int y, int z) {
-		return this.isShears(stack) && block instanceof IShearable && ((IShearable) block).isShearable(stack, world, x, y, z);
+		return isShears(stack) && block instanceof IShearable && ((IShearable) block).isShearable(stack, world, x, y, z);
 	}
 
 	public default void breakExtraBlock(World world, int x, int y, int z, EntityPlayer playerEntity, int refX, int refY, int refZ) {
 
-		if(world.isAirBlock(x, y, z))
-			return;
-
-		if(!(playerEntity instanceof EntityPlayerMP))
+		if(world.isAirBlock(x, y, z) || !(playerEntity instanceof EntityPlayerMP))
 			return;
 
 		EntityPlayerMP player = (EntityPlayerMP) playerEntity;
@@ -73,7 +70,7 @@ public interface IItemAbility {
 		if(!world.isRemote) {
 			
 			if(canShearBlock(block, stack, world, x, y, z)) {
-				shearBlock(world, x, y, z, block, player);
+				IItemAbility.shearBlock(world, x, y, z, block, player);
 			}
 
 			block.onBlockHarvested(world, x, y, z, meta, player);
@@ -137,7 +134,7 @@ public interface IItemAbility {
 		boolean flag = false;
 
 		if(player.capabilities.isCreativeMode) {
-			flag = removeBlock(world, x, y, z, false, player);
+			flag = IItemAbility.removeBlock(world, x, y, z, false, player);
 			player.playerNetServerHandler.sendPacket(new S23PacketBlockChange(x, y, z, world));
 		} else {
 			ItemStack itemstack = player.getCurrentEquippedItem();
@@ -151,7 +148,7 @@ public interface IItemAbility {
 				}
 			}
 
-			flag = removeBlock(world, x, y, z, flag1, player);
+			flag = IItemAbility.removeBlock(world, x, y, z, flag1, player);
 			if(flag && flag1) {
 				block.harvestBlock(world, player, x, y, z, l);
 			}

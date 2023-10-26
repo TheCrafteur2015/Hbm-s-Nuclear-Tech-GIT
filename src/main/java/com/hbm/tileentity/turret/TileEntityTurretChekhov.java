@@ -21,26 +21,26 @@ import net.minecraft.world.World;
 
 public class TileEntityTurretChekhov extends TileEntityTurretBaseNT {
 
-	static List<Integer> configs = new ArrayList();
+	static List<Integer> configs = new ArrayList<>();
 	
 	//because cramming it into the ArrayList's constructor with nested curly brackets and all that turned out to be not as pretty
 	//also having a floaty `static` like this looks fun
 	//idk if it's just me though
 	static {
-		configs.add(BulletConfigSyncingUtil.BMG50_NORMAL);
-		configs.add(BulletConfigSyncingUtil.BMG50_INCENDIARY);
-		configs.add(BulletConfigSyncingUtil.BMG50_EXPLOSIVE);
-		configs.add(BulletConfigSyncingUtil.BMG50_AP);
-		configs.add(BulletConfigSyncingUtil.BMG50_DU);
-		configs.add(BulletConfigSyncingUtil.BMG50_STAR);
-		configs.add(BulletConfigSyncingUtil.BMG50_PHOSPHORUS);
-		configs.add(BulletConfigSyncingUtil.BMG50_SLEEK);
-		configs.add(BulletConfigSyncingUtil.CHL_BMG50);
+		TileEntityTurretChekhov.configs.add(BulletConfigSyncingUtil.BMG50_NORMAL);
+		TileEntityTurretChekhov.configs.add(BulletConfigSyncingUtil.BMG50_INCENDIARY);
+		TileEntityTurretChekhov.configs.add(BulletConfigSyncingUtil.BMG50_EXPLOSIVE);
+		TileEntityTurretChekhov.configs.add(BulletConfigSyncingUtil.BMG50_AP);
+		TileEntityTurretChekhov.configs.add(BulletConfigSyncingUtil.BMG50_DU);
+		TileEntityTurretChekhov.configs.add(BulletConfigSyncingUtil.BMG50_STAR);
+		TileEntityTurretChekhov.configs.add(BulletConfigSyncingUtil.BMG50_PHOSPHORUS);
+		TileEntityTurretChekhov.configs.add(BulletConfigSyncingUtil.BMG50_SLEEK);
+		TileEntityTurretChekhov.configs.add(BulletConfigSyncingUtil.CHL_BMG50);
 	}
 	
 	@Override
 	protected List<Integer> getAmmoList() {
-		return configs;
+		return TileEntityTurretChekhov.configs;
 	}
 
 	@Override
@@ -73,20 +73,20 @@ public class TileEntityTurretChekhov extends TileEntityTurretBaseNT {
 	@Override
 	public void updateFiringTick() {
 		
-		timer++;
+		this.timer++;
 		
-		if(timer > 20 && timer % getDelay() == 0) {
+		if(this.timer > 20 && this.timer % getDelay() == 0) {
 			
-			BulletConfiguration conf = this.getFirstConfigLoaded();
+			BulletConfiguration conf = getFirstConfigLoaded();
 			
 			if(conf != null) {
 				this.cachedCasingConfig = conf.spentCasing;
-				this.spawnBullet(conf);
-				this.conusmeAmmo(conf.ammo);
-				this.worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:turret.chekhov_fire", 2.0F, 1.0F);
+				spawnBullet(conf);
+				conusmeAmmo(conf.ammo);
+				this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:turret.chekhov_fire", 2.0F, 1.0F);
 				
-				Vec3 pos = this.getTurretPos();
-				Vec3 vec = Vec3.createVectorHelper(this.getBarrelLength(), 0, 0);
+				Vec3 pos = getTurretPos();
+				Vec3 vec = Vec3.createVectorHelper(getBarrelLength(), 0, 0);
 				vec.rotateAroundZ((float) -this.rotationPitch);
 				vec.rotateAroundY((float) -(this.rotationYaw + Math.PI * 0.5));
 				
@@ -95,7 +95,7 @@ public class TileEntityTurretChekhov extends TileEntityTurretBaseNT {
 				data.setString("mode", "largeexplode");
 				data.setFloat("size", 1.5F);
 				data.setByte("count", (byte)1);
-				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, pos.xCoord + vec.xCoord, pos.yCoord + vec.yCoord, pos.zCoord + vec.zCoord), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 50));
+				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, pos.xCoord + vec.xCoord, pos.yCoord + vec.yCoord, pos.zCoord + vec.zCoord), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 50));
 			}
 		}
 	}
@@ -103,7 +103,7 @@ public class TileEntityTurretChekhov extends TileEntityTurretBaseNT {
 	@Override
 	protected Vec3 getCasingSpawnPos() {
 		
-		Vec3 pos = this.getTurretPos();
+		Vec3 pos = getTurretPos();
 		Vec3 vec = Vec3.createVectorHelper(-1.125, 0.125, 0.25);
 		vec.rotateAroundZ((float) -this.rotationPitch);
 		vec.rotateAroundY((float) -(this.rotationYaw + Math.PI * 0.5));
@@ -115,7 +115,7 @@ public class TileEntityTurretChekhov extends TileEntityTurretBaseNT {
 	
 	@Override
 	protected CasingEjector getEjector() {
-		return ejector;
+		return TileEntityTurretChekhov.ejector;
 	}
 	
 	public int getDelay() {
@@ -131,15 +131,15 @@ public class TileEntityTurretChekhov extends TileEntityTurretBaseNT {
 	public void updateEntity() {
 		super.updateEntity();
 		
-		if(worldObj.isRemote) {
+		if(this.worldObj.isRemote) {
 			
-			if(this.tPos != null || manual) {
+			if(this.tPos != null || this.manual) {
 				this.accel = Math.min(45F, this.accel += 2);
 			} else {
 				this.accel = Math.max(0F, this.accel -= 2);
 			}
 			
-			manual = false;
+			this.manual = false;
 			
 			this.lastSpin = this.spin;
 			this.spin += this.accel;
@@ -150,22 +150,22 @@ public class TileEntityTurretChekhov extends TileEntityTurretBaseNT {
 			}
 		} else {
 			
-			if(this.tPos == null && !manual) {
+			if(this.tPos == null && !this.manual) {
 				
 				this.timer--;
 				
-				if(timer > 20)
-					timer = 20;
+				if(this.timer > 20)
+					this.timer = 20;
 				
-				if(timer < 0)
-					timer = 0;
+				if(this.timer < 0)
+					this.timer = 0;
 			}
 		}
 	}
 	
 	@Override
 	public void manualSetup() {
-		manual = true;
+		this.manual = true;
 	}
 	
 	@Override

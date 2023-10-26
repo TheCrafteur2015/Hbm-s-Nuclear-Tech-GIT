@@ -27,8 +27,8 @@ public class ItemModRecord extends ItemRecord {
 
 	public ItemModRecord(String string) {
 		super(string);
-		recordName = string;
-		modRecords.put(string, this);
+		this.recordName = string;
+		ItemModRecord.modRecords.put(string, this);
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class ItemModRecord extends ItemRecord {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List p_77624_3_, boolean p_77624_4_) {
-		p_77624_3_.add(this.getRecordNameLocal());
+		p_77624_3_.add(getRecordNameLocal());
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class ItemModRecord extends ItemRecord {
 	 */
 	@SideOnly(Side.CLIENT)
 	public static ItemRecord getRecord(String p_150926_0_) {
-		return (ItemRecord) modRecords.get(p_150926_0_);
+		return (ItemRecord) ItemModRecord.modRecords.get(p_150926_0_);
 	}
 	
 	@Override

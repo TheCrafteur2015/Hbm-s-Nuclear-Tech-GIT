@@ -8,5 +8,5 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public interface IPersistentInfoProvider {
 
-	public void addInformation(ItemStack stack, NBTTagCompound persistentTag, EntityPlayer player, List list, boolean ext);
+	public void addInformation(ItemStack stack, NBTTagCompound persistentTag, EntityPlayer player, List<String> list, boolean ext);
 }

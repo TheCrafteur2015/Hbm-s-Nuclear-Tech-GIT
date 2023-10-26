@@ -19,7 +19,7 @@ public class GUIMachineLargeTurbine extends GuiInfoContainer {
 	
 	public GUIMachineLargeTurbine(InventoryPlayer invPlayer, TileEntityMachineLargeTurbine tedf) {
 		super(new ContainerMachineLargeTurbine(invPlayer, tedf));
-		turbine = tedf;
+		this.turbine = tedf;
 
 		this.xSize = 176;
 		this.ySize = 168;
@@ -29,16 +29,16 @@ public class GUIMachineLargeTurbine extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		turbine.tanks[0].renderTankInfo(this, mouseX, mouseY, guiLeft + 62, guiTop + 69 - 52, 16, 52);
-		turbine.tanks[1].renderTankInfo(this, mouseX, mouseY, guiLeft + 134, guiTop + 69 - 52, 16, 52);
+		this.turbine.tanks[0].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 62, this.guiTop + 69 - 52, 16, 52);
+		this.turbine.tanks[1].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 134, this.guiTop + 69 - 52, 16, 52);
 		
-		if(turbine.tanks[1].getTankType().name().equals(Fluids.NONE.name())) {
+		if(this.turbine.tanks[1].getTankType().name().equals(Fluids.NONE.name())) {
 			
 			String[] text2 = new String[] { "Error: Invalid fluid!" };
-			this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36 + 32, 16, 16, guiLeft - 8, guiTop + 36 + 16 + 32, text2);
+			this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft - 16, this.guiTop + 36 + 32, 16, 16, this.guiLeft - 8, this.guiTop + 36 + 16 + 32, text2);
 		}
 		
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 123, guiTop + 69 - 34, 7, 34, turbine.power, turbine.maxPower);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 123, this.guiTop + 69 - 34, 7, 34, this.turbine.power, TileEntityMachineLargeTurbine.maxPower);
 	}
 	
 	@Override
@@ -52,22 +52,22 @@ public class GUIMachineLargeTurbine extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIMachineLargeTurbine.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
-		if(turbine.tanks[0].getTankType() == Fluids.STEAM) drawTexturedModalRect(guiLeft + 99, guiTop + 18, 183, 0, 14, 14);
-		if(turbine.tanks[0].getTankType() == Fluids.HOTSTEAM) drawTexturedModalRect(guiLeft + 99, guiTop + 18, 183, 14, 14, 14);
-		if(turbine.tanks[0].getTankType() == Fluids.SUPERHOTSTEAM)drawTexturedModalRect(guiLeft + 99, guiTop + 18, 183, 28, 14, 14);
-		if(turbine.tanks[0].getTankType() == Fluids.ULTRAHOTSTEAM)drawTexturedModalRect(guiLeft + 99, guiTop + 18, 183, 42, 14, 14);
+		if(this.turbine.tanks[0].getTankType() == Fluids.STEAM) drawTexturedModalRect(this.guiLeft + 99, this.guiTop + 18, 183, 0, 14, 14);
+		if(this.turbine.tanks[0].getTankType() == Fluids.HOTSTEAM) drawTexturedModalRect(this.guiLeft + 99, this.guiTop + 18, 183, 14, 14, 14);
+		if(this.turbine.tanks[0].getTankType() == Fluids.SUPERHOTSTEAM)drawTexturedModalRect(this.guiLeft + 99, this.guiTop + 18, 183, 28, 14, 14);
+		if(this.turbine.tanks[0].getTankType() == Fluids.ULTRAHOTSTEAM)drawTexturedModalRect(this.guiLeft + 99, this.guiTop + 18, 183, 42, 14, 14);
 
-		int i = (int)turbine.getPowerScaled(34);
-		drawTexturedModalRect(guiLeft + 123, guiTop + 69 - i, 176, 34 - i, 7, i);
+		int i = (int)this.turbine.getPowerScaled(34);
+		drawTexturedModalRect(this.guiLeft + 123, this.guiTop + 69 - i, 176, 34 - i, 7, i);
 		
-		if(turbine.tanks[1].getTankType() == Fluids.NONE) {
-			this.drawInfoPanel(guiLeft - 16, guiTop + 36 + 32, 16, 16, 6);
+		if(this.turbine.tanks[1].getTankType() == Fluids.NONE) {
+			drawInfoPanel(this.guiLeft - 16, this.guiTop + 36 + 32, 16, 16, 6);
 		}
 		
-		turbine.tanks[0].renderTank(guiLeft + 62, guiTop + 69, this.zLevel, 16, 52);
-		turbine.tanks[1].renderTank(guiLeft + 134, guiTop + 69, this.zLevel, 16, 52);
+		this.turbine.tanks[0].renderTank(this.guiLeft + 62, this.guiTop + 69, this.zLevel, 16, 52);
+		this.turbine.tanks[1].renderTank(this.guiLeft + 134, this.guiTop + 69, this.zLevel, 16, 52);
 	}
 }

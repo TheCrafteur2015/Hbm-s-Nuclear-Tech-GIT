@@ -44,9 +44,9 @@ public class TileEntityCore extends TileEntityMachineBase implements IGUIProvide
 
 	public TileEntityCore() {
 		super(3);
-		tanks = new FluidTank[2];
-		tanks[0] = new FluidTank(Fluids.DEUTERIUM, 128000, 0);
-		tanks[1] = new FluidTank(Fluids.TRITIUM, 128000, 1);
+		this.tanks = new FluidTank[2];
+		this.tanks[0] = new FluidTank(Fluids.DEUTERIUM, 128000, 0);
+		this.tanks[1] = new FluidTank(Fluids.TRITIUM, 128000, 1);
 	}
 
 	@Override
@@ -57,24 +57,24 @@ public class TileEntityCore extends TileEntityMachineBase implements IGUIProvide
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			int chunkX = xCoord >> 4;
-			int chunkZ = zCoord >> 4;
+			int chunkX = this.xCoord >> 4;
+			int chunkZ = this.zCoord >> 4;
 			
-			meltdownTick = false;
+			this.meltdownTick = false;
 			
-			lastTickValid = worldObj.getChunkProvider().chunkExists(chunkX, chunkZ) &&
-					worldObj.getChunkProvider().chunkExists(chunkX + 1, chunkZ + 1) &&
-					worldObj.getChunkProvider().chunkExists(chunkX + 1, chunkZ - 1) &&
-					worldObj.getChunkProvider().chunkExists(chunkX - 1, chunkZ + 1) &&
-					worldObj.getChunkProvider().chunkExists(chunkX - 1, chunkZ - 1);
+			this.lastTickValid = this.worldObj.getChunkProvider().chunkExists(chunkX, chunkZ) &&
+					this.worldObj.getChunkProvider().chunkExists(chunkX + 1, chunkZ + 1) &&
+					this.worldObj.getChunkProvider().chunkExists(chunkX + 1, chunkZ - 1) &&
+					this.worldObj.getChunkProvider().chunkExists(chunkX - 1, chunkZ + 1) &&
+					this.worldObj.getChunkProvider().chunkExists(chunkX - 1, chunkZ - 1);
 			
-			if(lastTickValid && heat > 0 && heat >= field) {
+			if(this.lastTickValid && this.heat > 0 && this.heat >= this.field) {
 				
-				int fill = tanks[0].getFill() + tanks[1].getFill();
-				int max = tanks[0].getMaxFill() + tanks[1].getMaxFill();
-				int mod = heat * 10;
+				int fill = this.tanks[0].getFill() + this.tanks[1].getFill();
+				int max = this.tanks[0].getMaxFill() + this.tanks[1].getMaxFill();
+				int mod = this.heat * 10;
 				
 				int size = Math.max(Math.min(fill * mod / max, 1000), 50);
 				
@@ -82,13 +82,13 @@ public class TileEntityCore extends TileEntityMachineBase implements IGUIProvide
 				Iterator<Entry<ATEntry, Long>> it = EntityNukeExplosionMK3.at.entrySet().iterator();
 				while(it.hasNext()) {
 					Entry<ATEntry, Long> next = it.next();
-					if(next.getValue() < worldObj.getTotalWorldTime()) {
+					if(next.getValue() < this.worldObj.getTotalWorldTime()) {
 						it.remove();
 						continue;
 					}
 					ATEntry entry = next.getKey();
-					if(entry.dim != worldObj.provider.dimensionId)  continue;
-					Vec3 vec = Vec3.createVectorHelper(xCoord + 0.5 - entry.x, yCoord + 0.5 - entry.y, zCoord + 0.5 - entry.z);
+					if(entry.dim != this.worldObj.provider.dimensionId)  continue;
+					Vec3 vec = Vec3.createVectorHelper(this.xCoord + 0.5 - entry.x, this.yCoord + 0.5 - entry.y, this.zCoord + 0.5 - entry.z);
 					if(vec.lengthVector() < 300) {
 						canExplode = false;
 						break;
@@ -97,59 +97,59 @@ public class TileEntityCore extends TileEntityMachineBase implements IGUIProvide
 				
 				if(canExplode) {
 					
-					EntityNukeExplosionMK3 ex = new EntityNukeExplosionMK3(worldObj);
-					ex.posX = xCoord + 0.5;
-					ex.posY = yCoord + 0.5;
-					ex.posZ = zCoord + 0.5;
+					EntityNukeExplosionMK3 ex = new EntityNukeExplosionMK3(this.worldObj);
+					ex.posX = this.xCoord + 0.5;
+					ex.posY = this.yCoord + 0.5;
+					ex.posZ = this.zCoord + 0.5;
 					ex.destructionRange = size;
 					ex.speed = BombConfig.blastSpeed;
 					ex.coefficient = 1.0F;
 					ex.waste = false;
-					worldObj.spawnEntityInWorld(ex);
+					this.worldObj.spawnEntityInWorld(ex);
 					
-					worldObj.playSoundEffect(xCoord, yCoord, zCoord, "random.explode", 100000.0F, 1.0F);
+					this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "random.explode", 100000.0F, 1.0F);
 					
-					EntityCloudFleijaRainbow cloud = new EntityCloudFleijaRainbow(worldObj, size);
-					cloud.posX = xCoord;
-					cloud.posY = yCoord;
-					cloud.posZ = zCoord;
-					worldObj.spawnEntityInWorld(cloud);
+					EntityCloudFleijaRainbow cloud = new EntityCloudFleijaRainbow(this.worldObj, size);
+					cloud.posX = this.xCoord;
+					cloud.posY = this.yCoord;
+					cloud.posZ = this.zCoord;
+					this.worldObj.spawnEntityInWorld(cloud);
 					
 				} else {
-					meltdownTick = true;
-					ChunkRadiationManager.proxy.incrementRad(worldObj, xCoord, yCoord, zCoord, 100);
+					this.meltdownTick = true;
+					ChunkRadiationManager.proxy.incrementRad(this.worldObj, this.xCoord, this.yCoord, this.zCoord, 100);
 				}
 			}
 			
-			if(slots[0] != null && slots[2] != null && slots[0].getItem() instanceof ItemCatalyst && slots[2].getItem() instanceof ItemCatalyst)
-				color = calcAvgHex(
-						((ItemCatalyst)slots[0].getItem()).getColor(),
-						((ItemCatalyst)slots[2].getItem()).getColor()
+			if(this.slots[0] != null && this.slots[2] != null && this.slots[0].getItem() instanceof ItemCatalyst && this.slots[2].getItem() instanceof ItemCatalyst)
+				this.color = calcAvgHex(
+						((ItemCatalyst)this.slots[0].getItem()).getColor(),
+						((ItemCatalyst)this.slots[2].getItem()).getColor()
 				);
 			else
-				color = 0;
+				this.color = 0;
 			
-			if(heat > 0)
+			if(this.heat > 0)
 				radiation();
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setInteger("tank0", tanks[0].getTankType().ordinal());
-			data.setInteger("tank1", tanks[1].getTankType().ordinal());
-			data.setInteger("fill0", tanks[0].getFill());
-			data.setInteger("fill1", tanks[1].getFill());
-			data.setInteger("field", field);
-			data.setInteger("heat", heat);
-			data.setInteger("color", color);
-			data.setBoolean("melt", meltdownTick);
+			data.setInteger("tank0", this.tanks[0].getTankType().ordinal());
+			data.setInteger("tank1", this.tanks[1].getTankType().ordinal());
+			data.setInteger("fill0", this.tanks[0].getFill());
+			data.setInteger("fill1", this.tanks[1].getFill());
+			data.setInteger("field", this.field);
+			data.setInteger("heat", this.heat);
+			data.setInteger("color", this.color);
+			data.setBoolean("melt", this.meltdownTick);
 			networkPack(data, 250);
 			
-			heat = 0;
+			this.heat = 0;
 			
-			if(lastTickValid && field > 0) {
-				field -= 1;
+			if(this.lastTickValid && this.field > 0) {
+				this.field -= 1;
 			}
 			
-			this.markDirty();
+			markDirty();
 		} else {
 			
 			//TODO: sick particle effects
@@ -157,34 +157,36 @@ public class TileEntityCore extends TileEntityMachineBase implements IGUIProvide
 		
 	}
 	
+	@Override
 	public void networkUnpack(NBTTagCompound data) {
 
-		tanks[0].setTankType(Fluids.fromID(data.getInteger("tank0")));
-		tanks[1].setTankType(Fluids.fromID(data.getInteger("tank1")));
-		tanks[0].setFill(data.getInteger("fill0"));
-		tanks[1].setFill(data.getInteger("fill1"));
-		field = data.getInteger("field");
-		heat = data.getInteger("heat");
-		color = data.getInteger("color");
-		meltdownTick = data.getBoolean("melt");
+		this.tanks[0].setTankType(Fluids.fromID(data.getInteger("tank0")));
+		this.tanks[1].setTankType(Fluids.fromID(data.getInteger("tank1")));
+		this.tanks[0].setFill(data.getInteger("fill0"));
+		this.tanks[1].setFill(data.getInteger("fill1"));
+		this.field = data.getInteger("field");
+		this.heat = data.getInteger("heat");
+		this.color = data.getInteger("color");
+		this.meltdownTick = data.getBoolean("melt");
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void radiation() {
 		
 		double scale = this.meltdownTick ? 5 : 3;
 		double range = this.meltdownTick ? 50 : 10;
 		
-		List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBox(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5).expand(range, range, range));
+		List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBox(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5).expand(range, range, range));
 		
 		for(Entity e : list) {
 			if(!(e instanceof EntityPlayer && ArmorUtil.checkForHazmat((EntityPlayer)e)))
-				if(!Library.isObstructed(worldObj, xCoord + 0.5, yCoord + 0.5 + 6, zCoord + 0.5, e.posX, e.posY + e.getEyeHeight(), e.posZ)) {
+				if(!Library.isObstructed(this.worldObj, this.xCoord + 0.5, this.yCoord + 0.5 + 6, this.zCoord + 0.5, e.posX, e.posY + e.getEyeHeight(), e.posZ)) {
 					e.attackEntityFrom(ModDamageSource.ams, 1000);
 					e.setFire(3);
 				}
 		}
 
-		List<Entity> list2 =worldObj.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBox(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5).expand(scale, scale, scale));
+		List<Entity> list2 = this.worldObj.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBox(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5).expand(scale, scale, scale));
 		
 		for(Entity e : list2) {
 			if(!(e instanceof EntityPlayer && ArmorUtil.checkForHaz2((EntityPlayer)e)))
@@ -193,25 +195,19 @@ public class TileEntityCore extends TileEntityMachineBase implements IGUIProvide
 	}
 	
 	public int getFieldScaled(int i) {
-		return (field * i) / 100;
+		return (this.field * i) / 100;
 	}
 	
 	public int getHeatScaled(int i) {
-		return (heat * i) / 100;
+		return (this.heat * i) / 100;
 	}
 	
 	public boolean isReady() {
 		
-		if(!lastTickValid)
+		if(!this.lastTickValid || (getCore() == 0) || (this.color == 0))
 			return false;
 		
-		if(getCore() == 0)
-			return false;
-		
-		if(color == 0)
-			return false;
-		
-		if(getFuelEfficiency(tanks[0].getTankType()) <= 0 || getFuelEfficiency(tanks[1].getTankType()) <= 0)
+		if(getFuelEfficiency(this.tanks[0].getTankType()) <= 0 || getFuelEfficiency(this.tanks[1].getTankType()) <= 0)
 			return false;
 		
 		return true;
@@ -224,18 +220,18 @@ public class TileEntityCore extends TileEntityMachineBase implements IGUIProvide
 		if(!isReady())
 			return joules;
 		
-		int demand = (int)Math.ceil((double)joules / 1000D);
+		int demand = (int)Math.ceil(joules / 1000D);
 		
 		//check if the reaction has enough valid fuel
-		if(tanks[0].getFill() < demand || tanks[1].getFill() < demand)
+		if(this.tanks[0].getFill() < demand || this.tanks[1].getFill() < demand)
 			return joules;
 		
-		heat += (int)Math.ceil((double)joules / 10000D);
+		this.heat += (int)Math.ceil(joules / 10000D);
 
-		tanks[0].setFill(tanks[0].getFill() - demand);
-		tanks[1].setFill(tanks[1].getFill() - demand);
+		this.tanks[0].setFill(this.tanks[0].getFill() - demand);
+		this.tanks[1].setFill(this.tanks[1].getFill() - demand);
 		
-		return (long) (joules * getCore() * getFuelEfficiency(tanks[0].getTankType()) * getFuelEfficiency(tanks[1].getTankType()));
+		return (long) (joules * getCore() * getFuelEfficiency(this.tanks[0].getTankType()) * getFuelEfficiency(this.tanks[1].getTankType()));
 	}
 	
 	public float getFuelEfficiency(FluidType type) {
@@ -265,20 +261,20 @@ public class TileEntityCore extends TileEntityMachineBase implements IGUIProvide
 	//TODO: move stats to the AMSCORE class
 	public int getCore() {
 		
-		if(slots[1] == null) {
+		if(this.slots[1] == null) {
 			return 0;
 		}
 		
-		if(slots[1].getItem() == ModItems.ams_core_sing)
+		if(this.slots[1].getItem() == ModItems.ams_core_sing)
 			return 500;
 		
-		if(slots[1].getItem() == ModItems.ams_core_wormhole)
+		if(this.slots[1].getItem() == ModItems.ams_core_wormhole)
 			return 650;
 		
-		if(slots[1].getItem() == ModItems.ams_core_eyeofharmony)
+		if(this.slots[1].getItem() == ModItems.ams_core_eyeofharmony)
 			return 800;
 		
-		if(slots[1].getItem() == ModItems.ams_core_thingy)
+		if(this.slots[1].getItem() == ModItems.ams_core_thingy)
 			return 2500;
 		
 		return 0;
@@ -305,8 +301,8 @@ public class TileEntityCore extends TileEntityMachineBase implements IGUIProvide
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		
-		tanks[0].readFromNBT(nbt, "fuel1");
-		tanks[1].readFromNBT(nbt, "fuel2");
+		this.tanks[0].readFromNBT(nbt, "fuel1");
+		this.tanks[1].readFromNBT(nbt, "fuel2");
 		this.field = nbt.getInteger("field");
 	}
 	
@@ -314,8 +310,8 @@ public class TileEntityCore extends TileEntityMachineBase implements IGUIProvide
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 
-		tanks[0].writeToNBT(nbt, "fuel1");
-		tanks[1].writeToNBT(nbt, "fuel2");
+		this.tanks[0].writeToNBT(nbt, "fuel1");
+		this.tanks[1].writeToNBT(nbt, "fuel2");
 		nbt.setInteger("field", this.field);
 	}
 	
@@ -324,18 +320,18 @@ public class TileEntityCore extends TileEntityMachineBase implements IGUIProvide
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord + 0.5 - 4,
-					yCoord + 0.5 - 4,
-					zCoord + 0.5 - 4,
-					xCoord + 0.5 + 5,
-					yCoord + 0.5 + 5,
-					zCoord + 0.5 + 5
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord + 0.5 - 4,
+					this.yCoord + 0.5 - 4,
+					this.zCoord + 0.5 - 4,
+					this.xCoord + 0.5 + 5,
+					this.yCoord + 0.5 + 5,
+					this.zCoord + 0.5 + 5
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override

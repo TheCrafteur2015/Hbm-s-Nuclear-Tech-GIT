@@ -14,7 +14,7 @@ public class RenderChopperMine extends Render {
 	ModelChopperMine mine;
 
 	public RenderChopperMine() {
-		mine = new ModelChopperMine();
+		this.mine = new ModelChopperMine();
 	}
 
 	@Override
@@ -27,7 +27,7 @@ public class RenderChopperMine extends Render {
 		
 		bindTexture(new ResourceLocation(RefStrings.MODID + ":textures/models/chopperBomb.png"));
 		
-		mine.renderAll(0.0625F);
+		this.mine.renderAll(0.0625F);
 		GL11.glPopMatrix();
 	}
 

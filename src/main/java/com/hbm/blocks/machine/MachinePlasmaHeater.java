@@ -52,7 +52,7 @@ public class MachinePlasmaHeater extends BlockDummyable {
 			return true;
 		} else if(!player.isSneaking())
 		{
-			int[] pos = this.findCore(world, x, y, z);
+			int[] pos = findCore(world, x, y, z);
 			
 			if(pos == null)
 				return false;
@@ -80,12 +80,13 @@ public class MachinePlasmaHeater extends BlockDummyable {
 		for(int i = 1; i < 4; i++) {
 			for(int j = -1; j < 2; j++) {
 				
-				this.makeExtra(world, x + side.offsetX * j, y + i, z + side.offsetZ * j);
+				makeExtra(world, x + side.offsetX * j, y + i, z + side.offsetZ * j);
 			}
 		}
 	}
 	
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+    @Override
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
     	
         float f = 0.0625F;
         
@@ -98,28 +99,24 @@ public class MachinePlasmaHeater extends BlockDummyable {
     	}
     }
 	
-    public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
+    @Override
+	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
 
         float f = 0.0625F;
         
     	if(world.getBlockMetadata(x, y, z) == ForgeDirection.UP.ordinal() && world.getBlock(x, y + 1, z) != this) {
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, f * 8F, 1.0F);
+            setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, f * 8F, 1.0F);
     	} else if(world.getBlockMetadata(x, y, z) == ForgeDirection.DOWN.ordinal() && world.getBlock(x, y - 1, z) != this) {
-    		this.setBlockBounds(0.0F, f * 8F, 0.0F, 1, 1.0F, 1.0F);
+    		setBlockBounds(0.0F, f * 8F, 0.0F, 1, 1.0F, 1.0F);
     	} else  {
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+            setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     	}
     }
 	
+	@Override
 	protected boolean checkRequirement(World world, int x, int y, int z, ForgeDirection dir, int o) {
 
-		if(!MultiblockHandlerXR.checkSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, getDimensions(), x, y, z, dir))
-			return false;
-		
-		if(!MultiblockHandlerXR.checkSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, new int[] {4, -3, 1, 1, 1, 1}, x, y, z, dir))
-			return false;
-		
-		if(!MultiblockHandlerXR.checkSpace(world, x + dir.offsetX * o , y + 2, z + dir.offsetZ * o, new int[] {0, 1, 10, -8, 0, 0}, x, y, z, dir))
+		if(!MultiblockHandlerXR.checkSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, getDimensions(), x, y, z, dir) || !MultiblockHandlerXR.checkSpace(world, x + dir.offsetX * o , y + dir.offsetY * o, z + dir.offsetZ * o, new int[] {4, -3, 1, 1, 1, 1}, x, y, z, dir) || !MultiblockHandlerXR.checkSpace(world, x + dir.offsetX * o , y + 2, z + dir.offsetZ * o, new int[] {0, 1, 10, -8, 0, 0}, x, y, z, dir))
 			return false;
 		
 		return true;

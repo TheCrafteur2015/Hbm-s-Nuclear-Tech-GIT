@@ -59,33 +59,35 @@ public class Landmine extends BlockContainer implements IBomb {
 	public void setBlockBoundsBasedOnState(IBlockAccess p_149719_1_, int p_149719_2_, int p_149719_3_, int p_149719_4_) {
 		float f = 0.0625F;
 		if(this == ModBlocks.mine_ap)
-			this.setBlockBounds(6 * f, 0.0F, 6 * f, 10 * f, 2 * f, 10 * f);
+			setBlockBounds(6 * f, 0.0F, 6 * f, 10 * f, 2 * f, 10 * f);
 		if(this == ModBlocks.mine_he)
-			this.setBlockBounds(4 * f, 0.0F, 4 * f, 12 * f, 2 * f, 12 * f);
+			setBlockBounds(4 * f, 0.0F, 4 * f, 12 * f, 2 * f, 12 * f);
 		if(this == ModBlocks.mine_shrap)
-			this.setBlockBounds(4 * f, 0.0F, 4 * f, 12 * f, 2 * f, 12 * f);
+			setBlockBounds(4 * f, 0.0F, 4 * f, 12 * f, 2 * f, 12 * f);
 		if(this == ModBlocks.mine_fat)
-			this.setBlockBounds(5 * f, 0.0F, 4 * f, 11 * f, 6 * f, 12 * f);
+			setBlockBounds(5 * f, 0.0F, 4 * f, 11 * f, 6 * f, 12 * f);
 	}
 
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
 		float f = 0.0625F;
 		if(this == ModBlocks.mine_ap)
-			this.setBlockBounds(6 * f, 0.0F, 6 * f, 10 * f, 2 * f, 10 * f);
+			setBlockBounds(6 * f, 0.0F, 6 * f, 10 * f, 2 * f, 10 * f);
 		if(this == ModBlocks.mine_he)
-			this.setBlockBounds(4 * f, 0.0F, 4 * f, 12 * f, 2 * f, 12 * f);
+			setBlockBounds(4 * f, 0.0F, 4 * f, 12 * f, 2 * f, 12 * f);
 		if(this == ModBlocks.mine_shrap)
-			this.setBlockBounds(4 * f, 0.0F, 4 * f, 12 * f, 2 * f, 12 * f);
+			setBlockBounds(4 * f, 0.0F, 4 * f, 12 * f, 2 * f, 12 * f);
 		if(this == ModBlocks.mine_fat)
-			this.setBlockBounds(5 * f, 0.0F, 4 * f, 11 * f, 6 * f, 12 * f);
+			setBlockBounds(5 * f, 0.0F, 4 * f, 11 * f, 6 * f, 12 * f);
 		return AxisAlignedBB.getBoundingBox(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
 	}
 
+	@Override
 	public boolean canPlaceBlockAt(World world, int x, int y, int z) {
 		return World.doesBlockHaveSolidTopSurface(world, x, y - 1, z) || BlockFence.func_149825_a(world.getBlock(x, y - 1, z));
 	}
 
+	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
 
 		if(world.isBlockIndirectlyGettingPowered(x, y, z)) {
@@ -100,7 +102,7 @@ public class Landmine extends BlockContainer implements IBomb {
 
 		if(flag) {
 
-			if(!safeMode) {
+			if(!Landmine.safeMode) {
 				explode(world, x, y, z);
 			} else {
 				world.setBlockToAir(x, y, z);
@@ -111,17 +113,18 @@ public class Landmine extends BlockContainer implements IBomb {
 	@Override
 	public void onBlockDestroyedByPlayer(World world, int x, int y, int z, int meta) {
 
-		if(!safeMode) {
+		if(!Landmine.safeMode) {
 			explode(world, x, y, z);
 		}
 
 		super.onBlockDestroyedByPlayer(world, x, y, z, meta);
 	}
 
+	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int i, float fx, float fy, float fz) {
 		if(player.getHeldItem() != null && player.getHeldItem().getItem() == ModItems.defuser) {
 
-			safeMode = true;
+			Landmine.safeMode = true;
 			world.setBlockToAir(x, y, z);
 
 			ItemStack itemstack = new ItemStack(this, 1);
@@ -139,7 +142,7 @@ public class Landmine extends BlockContainer implements IBomb {
 			if(!world.isRemote)
 				world.spawnEntityInWorld(entityitem);
 
-			safeMode = false;
+			Landmine.safeMode = false;
 			return true;
 		}
 

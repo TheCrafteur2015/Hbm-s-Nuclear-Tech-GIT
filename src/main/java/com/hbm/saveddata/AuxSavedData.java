@@ -9,7 +9,7 @@ import net.minecraft.world.WorldSavedData;
 
 public class AuxSavedData extends WorldSavedData {
 	
-	public List<DataPair> data = new ArrayList();
+	public List<DataPair> data = new ArrayList<>();
 
 	public AuxSavedData(String p_i2141_1_) {
 		super(p_i2141_1_);
@@ -18,7 +18,7 @@ public class AuxSavedData extends WorldSavedData {
     public AuxSavedData()
     {
         super("hbmauxdata");
-        this.markDirty();
+        markDirty();
     }
     
     static class DataPair {
@@ -29,8 +29,8 @@ public class AuxSavedData extends WorldSavedData {
     	public DataPair() { }
     	
     	public DataPair(String s, int i) {
-    		key = s;
-    		value = i;
+    		this.key = s;
+    		this.value = i;
     	}
     	
     	void readFromNBT(NBTTagCompound nbt, int i) {
@@ -39,8 +39,8 @@ public class AuxSavedData extends WorldSavedData {
     	}
     	
     	void writeToNBT(NBTTagCompound nbt, int i) {
-    		nbt.setString("aux_key_" + i, key);
-    		nbt.setInteger("aux_val_" + i, value);
+    		nbt.setString("aux_key_" + i, this.key);
+    		nbt.setInteger("aux_val_" + i, this.value);
     	}
     	
     }
@@ -54,17 +54,17 @@ public class AuxSavedData extends WorldSavedData {
 			DataPair struct = new DataPair();
 			struct.readFromNBT(nbt, i);
 			
-			data.add(struct);
+			this.data.add(struct);
 		}
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		
-		nbt.setInteger("dCount", data.size());
+		nbt.setInteger("dCount", this.data.size());
 		
-		for(int i = 0; i < data.size(); i++) {
-			data.get(i).writeToNBT(nbt, i);
+		for(int i = 0; i < this.data.size(); i++) {
+			this.data.get(i).writeToNBT(nbt, i);
 		}
 	}
 	
@@ -81,10 +81,10 @@ public class AuxSavedData extends WorldSavedData {
 	}
 	
 	public static void setThunder(World world, int dura) {
-		AuxSavedData data = getData(world);
+		AuxSavedData data = AuxSavedData.getData(world);
 		
 		if(data.data == null) {
-			data.data = new ArrayList();
+			data.data = new ArrayList<>();
 			data.data.add(new DataPair("thunder", dura));
 			
 		} else {
@@ -110,7 +110,7 @@ public class AuxSavedData extends WorldSavedData {
 
 	public static int getThunder(World world) {
 
-		AuxSavedData data = getData(world);
+		AuxSavedData data = AuxSavedData.getData(world);
 		
 		if(data == null)
 			return 0;

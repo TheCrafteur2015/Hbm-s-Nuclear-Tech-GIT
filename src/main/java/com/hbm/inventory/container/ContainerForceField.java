@@ -1,6 +1,7 @@
 package com.hbm.inventory.container;
 
 import com.hbm.tileentity.machine.TileEntityForceField;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -14,26 +15,26 @@ public class ContainerForceField extends Container {
 	
 	public ContainerForceField(InventoryPlayer invPlayer, TileEntityForceField tedf) {
 		
-		diFurnace = tedf;
+		this.diFurnace = tedf;
 
 		//Battery
-		this.addSlotToContainer(new Slot(tedf, 0, 26, 53));
+		addSlotToContainer(new Slot(tedf, 0, 26, 53));
 		//Range up
-		this.addSlotToContainer(new Slot(tedf, 1, 89, 35));
+		addSlotToContainer(new Slot(tedf, 1, 89, 35));
 		//Health up
-		this.addSlotToContainer(new Slot(tedf, 2, 107, 35));
+		addSlotToContainer(new Slot(tedf, 2, 107, 35));
 		
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++)
 		{
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
 		}
 	}
 	
@@ -54,14 +55,14 @@ public class ContainerForceField extends Container {
 			var3 = var5.copy();
 			
             if (par2 <= 2) {
-				if (!this.mergeItemStack(var5, 3, this.inventorySlots.size(), true))
+				if (!mergeItemStack(var5, 3, this.inventorySlots.size(), true))
 				{
 					return null;
 				}
 			}
-			else if (!this.mergeItemStack(var5, 1, 3, false))
+			else if (!mergeItemStack(var5, 1, 3, false))
 			{
-				if (!this.mergeItemStack(var5, 0, 1, false))
+				if (!mergeItemStack(var5, 0, 1, false))
 					return null;
 			}
 			
@@ -80,6 +81,6 @@ public class ContainerForceField extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return diFurnace.isUseableByPlayer(player);
+		return this.diFurnace.isUseableByPlayer(player);
 	}
 }

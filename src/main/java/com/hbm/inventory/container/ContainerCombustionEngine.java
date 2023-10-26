@@ -20,20 +20,20 @@ public class ContainerCombustionEngine extends Container {
 		this.engine = tedf;
 		this.engine.openInventory();
 
-		this.addSlotToContainer(new Slot(tedf, 0, 17, 17));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 1, 17, 53));
-		this.addSlotToContainer(new Slot(tedf, 2, 88, 71));
-		this.addSlotToContainer(new Slot(tedf, 3, 143, 71));
-		this.addSlotToContainer(new Slot(tedf, 4, 35, 71));
+		addSlotToContainer(new Slot(tedf, 0, 17, 17));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 1, 17, 53));
+		addSlotToContainer(new Slot(tedf, 2, 88, 71));
+		addSlotToContainer(new Slot(tedf, 3, 143, 71));
+		addSlotToContainer(new Slot(tedf, 4, 35, 71));
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 121 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 121 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 179));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 179));
 		}
 	}
 
@@ -47,25 +47,25 @@ public class ContainerCombustionEngine extends Container {
 			var3 = var5.copy();
 
 			if(par2 <= 4) {
-				if(!this.mergeItemStack(var5, 5, this.inventorySlots.size(), true)) {
+				if(!mergeItemStack(var5, 5, this.inventorySlots.size(), true)) {
 					return null;
 				}
 			} else {
 				
 				if(var3.getItem() instanceof IBatteryItem) {
-					if(!this.mergeItemStack(var5, 3, 4, false)) {
+					if(!mergeItemStack(var5, 3, 4, false)) {
 						return null;
 					}
 				} else if(var3.getItem() instanceof IItemFluidIdentifier) {
-					if(!this.mergeItemStack(var5, 4, 5, false)) {
+					if(!mergeItemStack(var5, 4, 5, false)) {
 						return null;
 					}
 				} else if(var3.getItem() == ModItems.piston_set) {
-					if(!this.mergeItemStack(var5, 2, 3, false)) {
+					if(!mergeItemStack(var5, 2, 3, false)) {
 						return null;
 					}
 				} else {
-					if(!this.mergeItemStack(var5, 0, 1, false)) {
+					if(!mergeItemStack(var5, 0, 1, false)) {
 						return null;
 					}
 				}
@@ -83,7 +83,7 @@ public class ContainerCombustionEngine extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return engine.isUseableByPlayer(player);
+		return this.engine.isUseableByPlayer(player);
 	}
 
 	@Override

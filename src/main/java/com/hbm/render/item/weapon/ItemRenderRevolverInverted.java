@@ -16,7 +16,7 @@ public class ItemRenderRevolverInverted implements IItemRenderer {
 	protected ModelRevolver swordModel;
 	
 	public ItemRenderRevolverInverted() {
-		swordModel = new ModelRevolver();
+		this.swordModel = new ModelRevolver();
 	}
 
 	@Override

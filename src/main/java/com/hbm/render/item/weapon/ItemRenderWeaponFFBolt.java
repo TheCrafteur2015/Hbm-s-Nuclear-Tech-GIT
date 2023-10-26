@@ -47,7 +47,7 @@ public class ItemRenderWeaponFFBolt implements IItemRenderer {
 		GL11.glEnable(GL11.GL_CULL_FACE);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		boolean renderBolt = true;
-		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+		Minecraft.getMinecraft().renderEngine.bindTexture(this.texture);
 		
 		switch(type) {
 		
@@ -76,7 +76,7 @@ public class ItemRenderWeaponFFBolt implements IItemRenderer {
 			GL11.glTranslated(0, heightOffset, 0);
 			GL11.glRotated(rotate[0] * 35, -1, 0, 0);
 			GL11.glTranslated(0, -heightOffset, 0);
-			model.renderPart("Bolt");
+			this.model.renderPart("Bolt");
 			GL11.glPopMatrix();
 			
 			renderBolt = false;
@@ -135,9 +135,9 @@ public class ItemRenderWeaponFFBolt implements IItemRenderer {
 		default: break;
 		}
 		
-		model.renderPart("Gun");
+		this.model.renderPart("Gun");
 		if(renderBolt)
-			model.renderPart("Bolt");
+			this.model.renderPart("Bolt");
 		
 		GL11.glShadeModel(GL11.GL_FLAT);
 		

@@ -41,17 +41,17 @@ public class EntityOrangeFX extends EntityModFX {
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
 
-		if(maxAge < 900) {
-			maxAge = rand.nextInt(301) + 900;
+		if(this.maxAge < 900) {
+			this.maxAge = this.rand.nextInt(301) + 900;
 		}
 
-		if(!worldObj.isRemote && rand.nextInt(50) == 0)
-			ExplosionChaos.poison(worldObj, (int) posX, (int) posY, (int) posZ, 2);
+		if(!this.worldObj.isRemote && this.rand.nextInt(50) == 0)
+			ExplosionChaos.poison(this.worldObj, (int) this.posX, (int) this.posY, (int) this.posZ, 2);
 
 		this.particleAge++;
 
-		if(this.particleAge >= maxAge) {
-			this.setDead();
+		if(this.particleAge >= this.maxAge) {
+			setDead();
 		}
 
 		this.motionX *= 0.86D;
@@ -68,18 +68,18 @@ public class EntityOrangeFX extends EntityModFX {
 			this.posY += this.motionY / subdivisions;
 			this.posZ += this.motionZ / subdivisions;
 
-			if(worldObj.getBlock((int) posX, (int) posY, (int) posZ).getMaterial() != Material.air) {
-				this.setDead();
+			if(this.worldObj.getBlock((int) this.posX, (int) this.posY, (int) this.posZ).getMaterial() != Material.air) {
+				setDead();
 
 				for(int a = -1; a < 2; a++) {
 					for(int b = -1; b < 2; b++) {
 						for(int c = -1; c < 2; c++) {
 
-							Block bl = worldObj.getBlock((int) posX + a, (int) posY + b, (int) posZ + c);
+							Block bl = this.worldObj.getBlock((int) this.posX + a, (int) this.posY + b, (int) this.posZ + c);
 							if(bl == Blocks.grass) {
-								worldObj.setBlock((int) posX + a, (int) posY + b, (int) posZ + c, Blocks.dirt, 1, 3);
+								this.worldObj.setBlock((int) this.posX + a, (int) this.posY + b, (int) this.posZ + c, Blocks.dirt, 1, 3);
 							} else {
-								ExplosionNukeGeneric.solinium(worldObj, (int) posX + a, (int) posY + b, (int) posZ + c);
+								ExplosionNukeGeneric.solinium(this.worldObj, (int) this.posX + a, (int) this.posY + b, (int) this.posZ + c);
 							}
 						}
 					}
@@ -96,6 +96,6 @@ public class EntityOrangeFX extends EntityModFX {
 	@Override
 	public void readEntityFromNBT(NBTTagCompound nbt) {
 		super.readEntityFromNBT(nbt);
-		this.setDead();
+		setDead();
 	}
 }

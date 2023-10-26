@@ -17,12 +17,12 @@ public class TileEntityHatch extends TileEntity {
 	@Override
 	public void updateEntity() {
 		
-		Block b = worldObj.getBlock(x, y, z);
+		Block b = this.worldObj.getBlock(this.x, this.y, this.z);
 		
-		if(b != ModBlocks.seal_controller && !worldObj.isRemote) {
+		if(b != ModBlocks.seal_controller && !this.worldObj.isRemote) {
 			this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, Blocks.air);
 		} else {
-			if(BlockSeal.getFrameSize(worldObj, x, y, z) == 0 && !worldObj.isRemote)
+			if(BlockSeal.getFrameSize(this.worldObj, this.x, this.y, this.z) == 0 && !this.worldObj.isRemote)
 				this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, Blocks.air);
 		}
 	}

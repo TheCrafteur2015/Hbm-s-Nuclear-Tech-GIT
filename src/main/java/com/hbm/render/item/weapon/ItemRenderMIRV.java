@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.hbm.lib.RefStrings;
 import com.hbm.render.model.ModelMIRV;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
@@ -15,7 +16,7 @@ public class ItemRenderMIRV implements IItemRenderer {
 	protected ModelMIRV swordModel;
 	
 	public ItemRenderMIRV() {
-		swordModel = new ModelMIRV();
+		this.swordModel = new ModelMIRV();
 	}
 
 	@Override
@@ -45,7 +46,7 @@ public class ItemRenderMIRV implements IItemRenderer {
 				//GL11.glScalef(2.0F, 2.0F, 2.0F);
 				GL11.glScalef(0.5F, 0.5F, 0.5F);
 				GL11.glScalef(1.5F, 1.5F, 1.5F);
-				swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			GL11.glPopMatrix();
 			break;
 		case EQUIPPED:
@@ -58,7 +59,7 @@ public class ItemRenderMIRV implements IItemRenderer {
 				GL11.glTranslatef(0.0F, -0.2F, -0.5F);
 				//GL11.glScalef(2.0F, 2.0F, 2.0F);
 				GL11.glScalef(1.5F, 1.5F, 1.5F);
-				swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			GL11.glPopMatrix();
 		default: break;
 		}

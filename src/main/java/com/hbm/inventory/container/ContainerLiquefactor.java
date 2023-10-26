@@ -14,30 +14,30 @@ public class ContainerLiquefactor extends Container {
 	private TileEntityMachineLiquefactor liquefactor;
 
 	public ContainerLiquefactor(InventoryPlayer playerInv, TileEntityMachineLiquefactor tile) {
-		liquefactor = tile;
+		this.liquefactor = tile;
 		
 		//Input
-		this.addSlotToContainer(new Slot(tile, 0, 35, 54));
+		addSlotToContainer(new Slot(tile, 0, 35, 54));
 		//Battery
-		this.addSlotToContainer(new Slot(tile, 1, 134, 72));
+		addSlotToContainer(new Slot(tile, 1, 134, 72));
 		//Upgrades
-		this.addSlotToContainer(new SlotUpgrade(tile, 2, 98, 36));
-		this.addSlotToContainer(new SlotUpgrade(tile, 3, 98, 54));
+		addSlotToContainer(new SlotUpgrade(tile, 2, 98, 36));
+		addSlotToContainer(new SlotUpgrade(tile, 3, 98, 54));
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 122 + i * 18));
+				addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 122 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(playerInv, i, 8 + i * 18, 180));
+			addSlotToContainer(new Slot(playerInv, i, 8 + i * 18, 180));
 		}
 	}
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return liquefactor.isUseableByPlayer(player);
+		return this.liquefactor.isUseableByPlayer(player);
 	}
 
 	@Override
@@ -50,10 +50,10 @@ public class ContainerLiquefactor extends Container {
 			var3 = var5.copy();
 
 			if(index <= 3) {
-				if(!this.mergeItemStack(var5, 4, this.inventorySlots.size(), true)) {
+				if(!mergeItemStack(var5, 4, this.inventorySlots.size(), true)) {
 					return null;
 				}
-			} else if(!this.mergeItemStack(var5, 0, 3, false)) {
+			} else if(!mergeItemStack(var5, 0, 3, false)) {
 				return null;
 			}
 

@@ -36,7 +36,7 @@ public class TileEntityTesla extends TileEntityMachineBase implements IEnergyUse
 	public static int range = 10;
 	public static double offset = 1.75;
 	
-	public List<double[]> targets = new ArrayList();
+	public List<double[]> targets = new ArrayList<>();
 
 	public TileEntityTesla() {
 		super(0);
@@ -50,27 +50,27 @@ public class TileEntityTesla extends TileEntityMachineBase implements IEnergyUse
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			this.updateConnections();
+			updateConnections();
 			
 			this.targets.clear();
 			
-			if(worldObj.getBlock(xCoord, yCoord - 1, zCoord) == ModBlocks.meteor_battery)
-				power = maxPower;
+			if(this.worldObj.getBlock(this.xCoord, this.yCoord - 1, this.zCoord) == ModBlocks.meteor_battery)
+				this.power = TileEntityTesla.maxPower;
 			
-			if(power >= 5000) {
-				power -= 5000;
+			if(this.power >= 5000) {
+				this.power -= 5000;
 
-				double dx = xCoord + 0.5;
-				double dy = yCoord + offset;
-				double dz = zCoord + 0.5;
+				double dx = this.xCoord + 0.5;
+				double dy = this.yCoord + TileEntityTesla.offset;
+				double dz = this.zCoord + 0.5;
 				
-				this.targets = zap(worldObj, dx, dy, dz, range, null);
+				this.targets = TileEntityTesla.zap(this.worldObj, dx, dy, dz, TileEntityTesla.range, null);
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setShort("length", (short)targets.size());
+			data.setShort("length", (short)this.targets.size());
 			int i = 0;
 			for(double[] d : this.targets) {
 				data.setDouble("x" + i, d[0]);
@@ -79,19 +79,20 @@ public class TileEntityTesla extends TileEntityMachineBase implements IEnergyUse
 				i++;
 			}
 			
-			this.networkPack(data, 100);
+			networkPack(data, 100);
 		}
 	}
 	
 	private void updateConnections() {
 		
 		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-			this.trySubscribe(worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, dir);
+			trySubscribe(this.worldObj, this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ, dir);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static List<double[]> zap(World worldObj, double x, double y, double z, double radius, Entity source) {
 
-		List<double[]> ret = new ArrayList();
+		List<double[]> ret = new ArrayList<>();
 		
 		List<EntityLivingBase> targets = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius));
 		
@@ -102,10 +103,7 @@ public class TileEntityTesla extends TileEntityMachineBase implements IEnergyUse
 			
 			Vec3 vec = Vec3.createVectorHelper(e.posX - x, e.posY + e.height / 2 - y, e.posZ - z);
 			
-			if(vec.lengthVector() > range)
-				continue;
-
-			if(Library.isObstructed(worldObj, x, y, z, e.posX, e.posY + e.height / 2, e.posZ))
+			if((vec.lengthVector() > TileEntityTesla.range) || Library.isObstructed(worldObj, x, y, z, e.posX, e.posY + e.height / 2, e.posZ))
 				continue;
 			
 			if(e instanceof EntityTaintCrab) {
@@ -132,7 +130,7 @@ public class TileEntityTesla extends TileEntityMachineBase implements IEnergyUse
 			}
 			
 			if(!(e instanceof EntityPlayer && ArmorUtil.checkForFaraday((EntityPlayer)e)))
-				if(e.attackEntityFrom(ModDamageSource.electricity, MathHelper.clamp_float(e.getMaxHealth() * 0.5F, 3, 20) / (float)targets.size()))
+				if(e.attackEntityFrom(ModDamageSource.electricity, MathHelper.clamp_float(e.getMaxHealth() * 0.5F, 3, 20) / targets.size()))
 					worldObj.playSoundAtEntity(e, "hbm:weapon.tesla", 1.0F, 1.0F);
 			
 			double offset = 0;
@@ -146,6 +144,7 @@ public class TileEntityTesla extends TileEntityMachineBase implements IEnergyUse
 		return ret;
 	}
 	
+	@Override
 	public void networkUnpack(NBTTagCompound data) {
 		
 		int s = data.getShort("length");
@@ -162,17 +161,17 @@ public class TileEntityTesla extends TileEntityMachineBase implements IEnergyUse
 
 	@Override
 	public void setPower(long i) {
-		power = i;
+		this.power = i;
 	}
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 
 	@Override
 	public long getMaxPower() {
-		return maxPower;
+		return TileEntityTesla.maxPower;
 	}
 	
 	@Override

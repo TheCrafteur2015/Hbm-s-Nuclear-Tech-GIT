@@ -22,7 +22,7 @@ public class ItemPill extends ItemFood {
 
 	public ItemPill(int hunger) {
 		super(hunger, false);
-		this.setAlwaysEdible();
+		setAlwaysEdible();
 	}
 
 	Random rand = new Random();
@@ -47,7 +47,7 @@ public class ItemPill extends ItemFood {
 
 			if(this == ModItems.plan_c) {
 				for(int i = 0; i < 10; i++)
-					player.attackEntityFrom(rand.nextBoolean() ? ModDamageSource.euthanizedSelf : ModDamageSource.euthanizedSelf2, 1000);
+					player.attackEntityFrom(this.rand.nextBoolean() ? ModDamageSource.euthanizedSelf : ModDamageSource.euthanizedSelf2, 1000);
 			}
 
 			if(this == ModItems.pill_red) {
@@ -84,7 +84,7 @@ public class ItemPill extends ItemFood {
 			}
 			
 			if(this == ModItems.chocolate) {
-				if(rand.nextInt(25) == 0) {
+				if(this.rand.nextInt(25) == 0) {
 					player.attackEntityFrom(ModDamageSource.overdose, 1000);
 				}
 				player.addPotionEffect(new PotionEffect(Potion.digSpeed.id, 60 * 20, 3));
@@ -128,7 +128,7 @@ public class ItemPill extends ItemFood {
 	public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {
 
 		if(!VersatileConfig.hasPotionSickness(p_77659_3_))
-			p_77659_3_.setItemInUse(p_77659_1_, this.getMaxItemUseDuration(p_77659_1_));
+			p_77659_3_.setItemInUse(p_77659_1_, getMaxItemUseDuration(p_77659_1_));
 
 		return p_77659_1_;
 	}

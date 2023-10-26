@@ -22,6 +22,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
+@SuppressWarnings("deprecation")
 public class TileEntityMachineUF6Tank extends TileEntity implements ISidedInventory, IFluidContainer, IGUIProvider {
 
 	private ItemStack slots[];
@@ -36,26 +37,26 @@ public class TileEntityMachineUF6Tank extends TileEntity implements ISidedInvent
 	private String customName;
 	
 	public TileEntityMachineUF6Tank() {
-		slots = new ItemStack[4];
-		tank = new FluidTank(Fluids.UF6, 64000, 0);
+		this.slots = new ItemStack[4];
+		this.tank = new FluidTank(Fluids.UF6, 64000);
 	}
 
 	@Override
 	public int getSizeInventory() {
-		return slots.length;
+		return this.slots.length;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		return slots[i];
+		return this.slots[i];
 	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			ItemStack itemStack = slots[i];
-			slots[i] = null;
+			ItemStack itemStack = this.slots[i];
+			this.slots[i] = null;
 			return itemStack;
 		} else {
 		return null;
@@ -64,7 +65,7 @@ public class TileEntityMachineUF6Tank extends TileEntity implements ISidedInvent
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemStack) {
-		slots[i] = itemStack;
+		this.slots[i] = itemStack;
 		if(itemStack != null && itemStack.stackSize > getInventoryStackLimit())
 		{
 			itemStack.stackSize = getInventoryStackLimit();
@@ -73,7 +74,7 @@ public class TileEntityMachineUF6Tank extends TileEntity implements ISidedInvent
 
 	@Override
 	public String getInventoryName() {
-		return this.hasCustomInventoryName() ? this.customName : "container.uf6_tank";
+		return hasCustomInventoryName() ? this.customName : "container.uf6_tank";
 	}
 
 	@Override
@@ -92,11 +93,11 @@ public class TileEntityMachineUF6Tank extends TileEntity implements ISidedInvent
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		if(worldObj.getTileEntity(xCoord, yCoord, zCoord) != this)
+		if(this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this)
 		{
 			return false;
 		}else{
-			return player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <=64;
+			return player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <=64;
 		}
 	}
 	
@@ -107,9 +108,7 @@ public class TileEntityMachineUF6Tank extends TileEntity implements ISidedInvent
 
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack stack) {
-		if(i == 0 && stack.getItem() == ModItems.cell_uf6)
-			return true;
-		if(i == 2 && stack.getItem() == ModItems.cell_empty)
+		if((i == 0 && stack.getItem() == ModItems.cell_uf6) || (i == 2 && stack.getItem() == ModItems.cell_empty))
 			return true;
 		
 		return false;
@@ -117,18 +116,18 @@ public class TileEntityMachineUF6Tank extends TileEntity implements ISidedInvent
 	
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			if(slots[i].stackSize <= j)
+			if(this.slots[i].stackSize <= j)
 			{
-				ItemStack itemStack = slots[i];
-				slots[i] = null;
+				ItemStack itemStack = this.slots[i];
+				this.slots[i] = null;
 				return itemStack;
 			}
-			ItemStack itemStack1 = slots[i].splitStack(j);
-			if (slots[i].stackSize == 0)
+			ItemStack itemStack1 = this.slots[i].splitStack(j);
+			if (this.slots[i].stackSize == 0)
 			{
-				slots[i] = null;
+				this.slots[i] = null;
 			}
 			
 			return itemStack1;
@@ -142,17 +141,17 @@ public class TileEntityMachineUF6Tank extends TileEntity implements ISidedInvent
 		super.readFromNBT(nbt);
 		NBTTagList list = nbt.getTagList("items", 10);
 		
-		slots = new ItemStack[getSizeInventory()];
+		this.slots = new ItemStack[getSizeInventory()];
 		
-		tank.readFromNBT(nbt, "content");
+		this.tank.readFromNBT(nbt, "content");
 		
 		for(int i = 0; i < list.tagCount(); i++)
 		{
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("slot");
-			if(b0 >= 0 && b0 < slots.length)
+			if(b0 >= 0 && b0 < this.slots.length)
 			{
-				slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
+				this.slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
 			}
 		}
 	}
@@ -162,15 +161,15 @@ public class TileEntityMachineUF6Tank extends TileEntity implements ISidedInvent
 		super.writeToNBT(nbt);
 		NBTTagList list = new NBTTagList();
 		
-		tank.writeToNBT(nbt, "content");
+		this.tank.writeToNBT(nbt, "content");
 		
-		for(int i = 0; i < slots.length; i++)
+		for(int i = 0; i < this.slots.length; i++)
 		{
-			if(slots[i] != null)
+			if(this.slots[i] != null)
 			{
 				NBTTagCompound nbt1 = new NBTTagCompound();
 				nbt1.setByte("slot", (byte)i);
-				slots[i].writeToNBT(nbt1);
+				this.slots[i].writeToNBT(nbt1);
 				list.appendTag(nbt1);
 			}
 		}
@@ -180,12 +179,12 @@ public class TileEntityMachineUF6Tank extends TileEntity implements ISidedInvent
 	@Override
 	public int[] getAccessibleSlotsFromSide(int p_94128_1_)
     {
-        return p_94128_1_ == 0 ? slots_bottom : (p_94128_1_ == 1 ? slots_top : slots_side);
+        return p_94128_1_ == 0 ? TileEntityMachineUF6Tank.slots_bottom : (p_94128_1_ == 1 ? TileEntityMachineUF6Tank.slots_top : TileEntityMachineUF6Tank.slots_side);
     }
 
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemStack, int j) {
-		return this.isItemValidForSlot(i, itemStack);
+		return isItemValidForSlot(i, itemStack);
 	}
 
 	@Override
@@ -196,11 +195,11 @@ public class TileEntityMachineUF6Tank extends TileEntity implements ISidedInvent
 	@Override
 	public void updateEntity() {
 
-		if(!worldObj.isRemote)
+		if(!this.worldObj.isRemote)
 		{
-			tank.loadTank(0, 1, slots);
-			tank.unloadTank(2, 3, slots);
-			tank.updateTank(xCoord, yCoord, zCoord, worldObj.provider.dimensionId);
+			this.tank.loadTank(0, 1, this.slots);
+			this.tank.unloadTank(2, 3, this.slots);
+			this.tank.updateTank(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId);
 		}
 	}
 	
@@ -218,23 +217,23 @@ public class TileEntityMachineUF6Tank extends TileEntity implements ISidedInvent
 
 	@Override
 	public void setFillForSync(int fill, int index) {
-		tank.setFill(fill);
+		this.tank.setFill(fill);
 	}
 
 	@Override
 	public void setTypeForSync(FluidType type, int index) {
-		tank.setTankType(type);
+		this.tank.setTankType(type);
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		return type.name().equals(this.tank.getTankType().name()) ? tank.getFill() : 0;
+		return type.getName().equals(this.tank.getTankType().getName()) ? this.tank.getFill() : 0;
 	}
 
 	@Override
 	public void setFluidFill(int i, FluidType type) {
-		if(type.name().equals(tank.getTankType().name()))
-			tank.setFill(i);
+		if(type.getName().equals(this.tank.getTankType().getName()))
+			this.tank.setFill(i);
 	}
 
 	@Override

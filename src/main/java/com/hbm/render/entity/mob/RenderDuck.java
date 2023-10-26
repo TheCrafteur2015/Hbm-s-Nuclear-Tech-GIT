@@ -1,6 +1,5 @@
 package com.hbm.render.entity.mob;
 
-import com.hbm.entity.mob.EntityDuck;
 import com.hbm.lib.RefStrings;
 
 import net.minecraft.client.model.ModelBase;
@@ -15,12 +14,18 @@ public class RenderDuck extends RenderChicken {
 	public RenderDuck(ModelBase p_i1252_1_, float p_i1252_2_) {
 		super(p_i1252_1_, p_i1252_2_);
 	}
-
+	
+//	@Override
+//	protected ResourceLocation getEntityTexture(Entity entity) {
+//		return this.getEntityTexture((EntityDuck) entity);
+//	}
+//
+//	protected ResourceLocation getEntityTexture(EntityDuck entity) {
+//		return RenderDuck.ducc;
+//	}
+	
+	@Override
 	protected ResourceLocation getEntityTexture(Entity entity) {
-		return this.getEntityTexture((EntityDuck) entity);
-	}
-
-	protected ResourceLocation getEntityTexture(EntityDuck entity) {
-		return ducc;
+		return RenderDuck.ducc;
 	}
 }

@@ -42,6 +42,7 @@ public class RenderTorex extends Render {
 		GL11.glPopMatrix();
 	}
 	
+	@SuppressWarnings("rawtypes")
 	private Comparator cloudSorter = new Comparator() {
 
 		@Override
@@ -56,6 +57,7 @@ public class RenderTorex extends Render {
 		}
 	};
 
+	@SuppressWarnings("unchecked")
 	private void cloudletWrapper(EntityNukeTorex cloud, float interp) {
 
 		GL11.glPushMatrix();
@@ -67,13 +69,13 @@ public class RenderTorex extends Render {
 		GL11.glDepthMask(false);
 		RenderHelper.disableStandardItemLighting();
 
-		bindTexture(cloudlet);
+		bindTexture(RenderTorex.cloudlet);
 
 		Tessellator tess = Tessellator.instance;
 		tess.startDrawingQuads();
 		
-		ArrayList<Cloudlet> cloudlets = new ArrayList(cloud.cloudlets);
-		cloudlets.sort(cloudSorter);
+		ArrayList<Cloudlet> cloudlets = new ArrayList<>(cloud.cloudlets);
+		cloudlets.sort(this.cloudSorter);
 		
 		for(Cloudlet cloudlet : cloudlets) {
 			Vec3 vec = cloudlet.getInterpPos(interp);
@@ -100,7 +102,7 @@ public class RenderTorex extends Render {
 		GL11.glDepthMask(false);
 		RenderHelper.disableStandardItemLighting();
 
-		bindTexture(flash);
+		bindTexture(RenderTorex.flash);
 
 		Tessellator tess = Tessellator.instance;
 		tess.startDrawingQuads();
@@ -142,10 +144,10 @@ public class RenderTorex extends Render {
 		Vec3 color = cloud.getInterpColor(interp);
 		tess.setColorRGBA_F((float)color.xCoord * brightness, (float)color.yCoord * brightness, (float)color.zCoord * brightness, alpha);
 
-		tess.addVertexWithUV((double) (posX - f1 * scale - f3 * scale), (double) (posY - f5 * scale), (double) (posZ - f2 * scale - f4 * scale), 1, 1);
-		tess.addVertexWithUV((double) (posX - f1 * scale + f3 * scale), (double) (posY + f5 * scale), (double) (posZ - f2 * scale + f4 * scale), 1, 0);
-		tess.addVertexWithUV((double) (posX + f1 * scale + f3 * scale), (double) (posY + f5 * scale), (double) (posZ + f2 * scale + f4 * scale), 0, 0);
-		tess.addVertexWithUV((double) (posX + f1 * scale - f3 * scale), (double) (posY - f5 * scale), (double) (posZ + f2 * scale - f4 * scale), 0, 1);
+		tess.addVertexWithUV(posX - f1 * scale - f3 * scale, posY - f5 * scale, posZ - f2 * scale - f4 * scale, 1, 1);
+		tess.addVertexWithUV(posX - f1 * scale + f3 * scale, posY + f5 * scale, posZ - f2 * scale + f4 * scale, 1, 0);
+		tess.addVertexWithUV(posX + f1 * scale + f3 * scale, posY + f5 * scale, posZ + f2 * scale + f4 * scale, 0, 0);
+		tess.addVertexWithUV(posX + f1 * scale - f3 * scale, posY - f5 * scale, posZ + f2 * scale - f4 * scale, 0, 1);
 
 	}
 
@@ -159,10 +161,10 @@ public class RenderTorex extends Render {
 
 		tess.setColorRGBA_F(1F, 1F, 1F, alpha);
 
-		tess.addVertexWithUV((double) (posX - f1 * scale - f3 * scale), (double) (posY - f5 * scale), (double) (posZ - f2 * scale - f4 * scale), 1, 1);
-		tess.addVertexWithUV((double) (posX - f1 * scale + f3 * scale), (double) (posY + f5 * scale), (double) (posZ - f2 * scale + f4 * scale), 1, 0);
-		tess.addVertexWithUV((double) (posX + f1 * scale + f3 * scale), (double) (posY + f5 * scale), (double) (posZ + f2 * scale + f4 * scale), 0, 0);
-		tess.addVertexWithUV((double) (posX + f1 * scale - f3 * scale), (double) (posY - f5 * scale), (double) (posZ + f2 * scale - f4 * scale), 0, 1);
+		tess.addVertexWithUV(posX - f1 * scale - f3 * scale, posY - f5 * scale, posZ - f2 * scale - f4 * scale, 1, 1);
+		tess.addVertexWithUV(posX - f1 * scale + f3 * scale, posY + f5 * scale, posZ - f2 * scale + f4 * scale, 1, 0);
+		tess.addVertexWithUV(posX + f1 * scale + f3 * scale, posY + f5 * scale, posZ + f2 * scale + f4 * scale, 0, 0);
+		tess.addVertexWithUV(posX + f1 * scale - f3 * scale, posY - f5 * scale, posZ + f2 * scale - f4 * scale, 0, 1);
 
 	}
 

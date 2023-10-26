@@ -62,10 +62,10 @@ public class ItemModKnife extends ItemArmorMod {
 				float health = entity.getMaxHealth();
 				
 				try {
-					attributeinstance.removeModifier(attributeinstance.getModifier(trigamma_UUID));
+					attributeinstance.removeModifier(attributeinstance.getModifier(ItemModKnife.trigamma_UUID));
 				} catch(Exception ex) { }
 				
-				attributeinstance.applyModifier(new AttributeModifier(trigamma_UUID, "digamma", -(entity.getMaxHealth() - health + 2), 0));
+				attributeinstance.applyModifier(new AttributeModifier(ItemModKnife.trigamma_UUID, "digamma", -(entity.getMaxHealth() - health + 2), 0));
 				
 				if(entity instanceof EntityPlayerMP) {
 					NBTTagCompound data = new NBTTagCompound();

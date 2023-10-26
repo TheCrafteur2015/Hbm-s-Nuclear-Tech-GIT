@@ -17,18 +17,18 @@ public class ItemAmmoEnums {
 		private final String unloc;
 
 		private AmmoLunaticSniper(String unloc, AmmoItemTrait... traits) {
-			this.traits = safeAssign(traits);
+			this.traits = ItemAmmoEnums.safeAssign(traits);
 			this.unloc = unloc;
 		}
 
 		@Override
 		public Set<AmmoItemTrait> getTraits() {
-			return traits;
+			return this.traits;
 		}
 
 		@Override
 		public String getInternalName() {
-			return unloc;
+			return this.unloc;
 		}
 	}
 
@@ -41,18 +41,18 @@ public class ItemAmmoEnums {
 		private final String unloc;
 
 		private AmmoFireExt(String unloc, AmmoItemTrait... traits) {
-			this.traits = safeAssign(traits);
+			this.traits = ItemAmmoEnums.safeAssign(traits);
 			this.unloc = unloc;
 		}
 
 		@Override
 		public Set<AmmoItemTrait> getTraits() {
-			return traits;
+			return this.traits;
 		}
 
 		@Override
 		public String getInternalName() {
-			return unloc;
+			return this.unloc;
 		}
 	}
 
@@ -67,18 +67,18 @@ public class ItemAmmoEnums {
 		private final String unloc;
 
 		private AmmoFlamethrower(String unloc, AmmoItemTrait... traits) {
-			this.traits = safeAssign(traits);
+			this.traits = ItemAmmoEnums.safeAssign(traits);
 			this.unloc = unloc;
 		}
 
 		@Override
 		public Set<AmmoItemTrait> getTraits() {
-			return traits;
+			return this.traits;
 		}
 
 		@Override
 		public String getInternalName() {
-			return unloc;
+			return this.unloc;
 		}
 	}
 
@@ -90,18 +90,18 @@ public class ItemAmmoEnums {
 		private final String unloc;
 
 		private AmmoMisc(String unloc, AmmoItemTrait... traits) {
-			this.traits = safeAssign(traits);
+			this.traits = ItemAmmoEnums.safeAssign(traits);
 			this.unloc = unloc;
 		}
 
 		@Override
 		public Set<AmmoItemTrait> getTraits() {
-			return traits;
+			return this.traits;
 		}
 
 		@Override
 		public String getInternalName() {
-			return unloc;
+			return this.unloc;
 		}
 	}
 
@@ -116,7 +116,7 @@ public class ItemAmmoEnums {
 		private final String unloc;
 
 		private AmmoStinger(String unloc, AmmoItemTrait... traits) {
-			this.traits = safeAssign(traits);
+			this.traits = ItemAmmoEnums.safeAssign(traits);
 			this.unloc = unloc;
 		}
 
@@ -127,12 +127,12 @@ public class ItemAmmoEnums {
 
 		@Override
 		public Set<AmmoItemTrait> getTraits() {
-			return traits;
+			return this.traits;
 		}
 
 		@Override
 		public String getInternalName() {
-			return unloc;
+			return this.unloc;
 		}
 	}
 
@@ -155,7 +155,7 @@ public class ItemAmmoEnums {
 		private final String unloc;
 
 		private AmmoRocket(String unloc, AmmoItemTrait... traits) {
-			this.traits = safeAssign(traits);
+			this.traits = ItemAmmoEnums.safeAssign(traits);
 			this.unloc = unloc;
 		}
 
@@ -166,12 +166,12 @@ public class ItemAmmoEnums {
 
 		@Override
 		public Set<AmmoItemTrait> getTraits() {
-			return traits;
+			return this.traits;
 		}
 
 		@Override
 		public String getInternalName() {
-			return unloc;
+			return this.unloc;
 		}
 	}
 
@@ -193,18 +193,18 @@ public class ItemAmmoEnums {
 		private final String unloc;
 
 		private AmmoGrenade(String unloc, AmmoItemTrait... traits) {
-			this.traits = safeAssign(traits);
+			this.traits = ItemAmmoEnums.safeAssign(traits);
 			this.unloc = unloc;
 		}
 
 		@Override
 		public Set<AmmoItemTrait> getTraits() {
-			return traits;
+			return this.traits;
 		}
 
 		@Override
 		public String getInternalName() {
-			return unloc;
+			return this.unloc;
 		}
 	}
 
@@ -227,18 +227,18 @@ public class ItemAmmoEnums {
 		private final String unloc;
 
 		private AmmoFatman(String unloc, AmmoItemTrait... traits) {
-			this.traits = safeAssign(traits);
+			this.traits = ItemAmmoEnums.safeAssign(traits);
 			this.unloc = unloc;
 		}
 
 		@Override
 		public Set<AmmoItemTrait> getTraits() {
-			return traits;
+			return this.traits;
 		}
 
 		@Override
 		public String getInternalName() {
-			return unloc;
+			return this.unloc;
 		}
 	}
 
@@ -251,18 +251,18 @@ public class ItemAmmoEnums {
 		private final String unloc;
 
 		private AmmoDart(String unloc, AmmoItemTrait... traits) {
-			this.traits = safeAssign(traits);
+			this.traits = ItemAmmoEnums.safeAssign(traits);
 			this.unloc = unloc;
 		}
 
 		@Override
 		public Set<AmmoItemTrait> getTraits() {
-			return traits;
+			return this.traits;
 		}
 
 		@Override
 		public String getInternalName() {
-			return unloc;
+			return this.unloc;
 		}
 	}
 
@@ -277,18 +277,18 @@ public class ItemAmmoEnums {
 		private final String unloc;
 
 		private Ammo240Shell(String unloc, AmmoItemTrait... traits) {
-			this.traits = safeAssign(traits);
+			this.traits = ItemAmmoEnums.safeAssign(traits);
 			this.unloc = unloc;
 		}
 
 		@Override
 		public Set<AmmoItemTrait> getTraits() {
-			return traits;
+			return this.traits;
 		}
 
 		@Override
 		public String getInternalName() {
-			return unloc;
+			return this.unloc;
 		}
 	}
 
@@ -303,7 +303,7 @@ public class ItemAmmoEnums {
 		private final String unloc;
 
 		private Ammo9mm(String unloc, AmmoItemTrait... traits) {
-			this.traits = safeAssign(traits);
+			this.traits = ItemAmmoEnums.safeAssign(traits);
 			this.unloc = unloc;
 		}
 
@@ -314,12 +314,12 @@ public class ItemAmmoEnums {
 
 		@Override
 		public Set<AmmoItemTrait> getTraits() {
-			return traits;
+			return this.traits;
 		}
 
 		@Override
 		public String getInternalName() {
-			return unloc;
+			return this.unloc;
 		}
 	}
 
@@ -335,7 +335,7 @@ public class ItemAmmoEnums {
 		private final String unloc;
 
 		private Ammo762NATO(String unloc, AmmoItemTrait... traits) {
-			this.traits = safeAssign(traits);
+			this.traits = ItemAmmoEnums.safeAssign(traits);
 			this.unloc = unloc;
 		}
 
@@ -346,12 +346,12 @@ public class ItemAmmoEnums {
 
 		@Override
 		public Set<AmmoItemTrait> getTraits() {
-			return traits;
+			return this.traits;
 		}
 
 		@Override
 		public String getInternalName() {
-			return unloc;
+			return this.unloc;
 		}
 	}
 
@@ -364,18 +364,18 @@ public class ItemAmmoEnums {
 		private final String unloc;
 
 		private Ammo75Bolt(String unloc, AmmoItemTrait... traits) {
-			this.traits = safeAssign(traits);
+			this.traits = ItemAmmoEnums.safeAssign(traits);
 			this.unloc = unloc;
 		}
 
 		@Override
 		public Set<AmmoItemTrait> getTraits() {
-			return traits;
+			return this.traits;
 		}
 
 		@Override
 		public String getInternalName() {
-			return unloc;
+			return this.unloc;
 		}
 	}
 
@@ -390,7 +390,7 @@ public class ItemAmmoEnums {
 		private final String unloc;
 
 		private Ammo5mm(String unloc, AmmoItemTrait... traits) {
-			this.traits = safeAssign(traits);
+			this.traits = ItemAmmoEnums.safeAssign(traits);
 			this.unloc = unloc;
 		}
 
@@ -401,12 +401,12 @@ public class ItemAmmoEnums {
 
 		@Override
 		public Set<AmmoItemTrait> getTraits() {
-			return traits;
+			return this.traits;
 		}
 
 		@Override
 		public String getInternalName() {
-			return unloc;
+			return this.unloc;
 		}
 	}
 
@@ -432,7 +432,7 @@ public class ItemAmmoEnums {
 		private final String unloc;
 
 		private Ammo556mm(String unloc, AmmoItemTrait... traits) {
-			this.traits = safeAssign(traits);
+			this.traits = ItemAmmoEnums.safeAssign(traits);
 			this.unloc = unloc;
 		}
 
@@ -443,12 +443,12 @@ public class ItemAmmoEnums {
 
 		@Override
 		public Set<AmmoItemTrait> getTraits() {
-			return traits;
+			return this.traits;
 		}
 
 		@Override
 		public String getInternalName() {
-			return unloc;
+			return this.unloc;
 		}
 	}
 
@@ -470,7 +470,7 @@ public class ItemAmmoEnums {
 		private final String unloc;
 
 		private Ammo50BMG(String unloc, AmmoItemTrait... traits) {
-			this.traits = safeAssign(traits);
+			this.traits = ItemAmmoEnums.safeAssign(traits);
 			this.unloc = unloc;
 		}
 
@@ -481,12 +481,12 @@ public class ItemAmmoEnums {
 
 		@Override
 		public Set<AmmoItemTrait> getTraits() {
-			return traits;
+			return this.traits;
 		}
 
 		@Override
 		public String getInternalName() {
-			return unloc;
+			return this.unloc;
 		}
 	}
 
@@ -501,7 +501,7 @@ public class ItemAmmoEnums {
 		private final String unloc;
 
 		private Ammo50AE(String unloc, AmmoItemTrait... traits) {
-			this.traits = safeAssign(traits);
+			this.traits = ItemAmmoEnums.safeAssign(traits);
 			this.unloc = unloc;
 		}
 
@@ -512,12 +512,12 @@ public class ItemAmmoEnums {
 
 		@Override
 		public Set<AmmoItemTrait> getTraits() {
-			return traits;
+			return this.traits;
 		}
 
 		@Override
 		public String getInternalName() {
-			return unloc;
+			return this.unloc;
 		}
 	}
 
@@ -541,7 +541,7 @@ public class ItemAmmoEnums {
 		private final String unloc;
 
 		private Ammo4Gauge(String unloc, AmmoItemTrait... traits) {
-			this.traits = safeAssign(traits);
+			this.traits = ItemAmmoEnums.safeAssign(traits);
 			this.unloc = unloc;
 		}
 
@@ -552,12 +552,12 @@ public class ItemAmmoEnums {
 
 		@Override
 		public Set<AmmoItemTrait> getTraits() {
-			return traits;
+			return this.traits;
 		}
 
 		@Override
 		public String getInternalName() {
-			return unloc;
+			return this.unloc;
 		}
 	}
 
@@ -570,7 +570,7 @@ public class ItemAmmoEnums {
 		private final String unloc;
 
 		private Ammo45ACP(String unloc, AmmoItemTrait... traits) {
-			this.traits = safeAssign(traits);
+			this.traits = ItemAmmoEnums.safeAssign(traits);
 			this.unloc = unloc;
 		}
 
@@ -581,12 +581,12 @@ public class ItemAmmoEnums {
 
 		@Override
 		public Set<AmmoItemTrait> getTraits() {
-			return traits;
+			return this.traits;
 		}
 
 		@Override
 		public String getInternalName() {
-			return unloc;
+			return this.unloc;
 		}
 	}
 
@@ -606,7 +606,7 @@ public class ItemAmmoEnums {
 		private final String unloc;
 
 		private Ammo44Magnum(String unloc, AmmoItemTrait... traits) {
-			this.traits = safeAssign(traits);
+			this.traits = ItemAmmoEnums.safeAssign(traits);
 			this.unloc = unloc;
 		}
 
@@ -617,12 +617,12 @@ public class ItemAmmoEnums {
 
 		@Override
 		public Set<AmmoItemTrait> getTraits() {
-			return traits;
+			return this.traits;
 		}
 
 		@Override
 		public String getInternalName() {
-			return unloc;
+			return this.unloc;
 		}
 	}
 
@@ -641,18 +641,18 @@ public class ItemAmmoEnums {
 		private final String unloc;
 
 		private Ammo357Magnum(String unloc, AmmoItemTrait... traits) {
-			this.traits = safeAssign(traits);
+			this.traits = ItemAmmoEnums.safeAssign(traits);
 			this.unloc = unloc;
 		}
 
 		@Override
 		public Set<AmmoItemTrait> getTraits() {
-			return traits;
+			return this.traits;
 		}
 
 		@Override
 		public String getInternalName() {
-			return unloc;
+			return this.unloc;
 		}
 	}
 
@@ -665,7 +665,7 @@ public class ItemAmmoEnums {
 		private final String unloc;
 
 		private Ammo22LR(String unloc, AmmoItemTrait... traits) {
-			this.traits = safeAssign(traits);
+			this.traits = ItemAmmoEnums.safeAssign(traits);
 			this.unloc = unloc;
 		}
 
@@ -676,12 +676,12 @@ public class ItemAmmoEnums {
 
 		@Override
 		public Set<AmmoItemTrait> getTraits() {
-			return traits;
+			return this.traits;
 		}
 
 		@Override
 		public String getInternalName() {
-			return unloc;
+			return this.unloc;
 		}
 	}
 
@@ -701,7 +701,7 @@ public class ItemAmmoEnums {
 		private final String unloc;
 
 		private Ammo20Gauge(String unloc, AmmoItemTrait... traits) {
-			this.traits = safeAssign(traits);
+			this.traits = ItemAmmoEnums.safeAssign(traits);
 			this.unloc = unloc;
 		}
 
@@ -712,12 +712,12 @@ public class ItemAmmoEnums {
 
 		@Override
 		public Set<AmmoItemTrait> getTraits() {
-			return traits;
+			return this.traits;
 		}
 
 		@Override
 		public String getInternalName() {
-			return unloc;
+			return this.unloc;
 		}
 	}
 
@@ -734,18 +734,18 @@ public class ItemAmmoEnums {
 		private final String unloc;
 
 		private Ammo12Gauge(String unloc, AmmoItemTrait... traits) {
-			this.traits = safeAssign(traits);
+			this.traits = ItemAmmoEnums.safeAssign(traits);
 			this.unloc = unloc;
 		}
 
 		@Override
 		public Set<AmmoItemTrait> getTraits() {
-			return traits;
+			return this.traits;
 		}
 
 		@Override
 		public String getInternalName() {
-			return unloc;
+			return this.unloc;
 		}
 	}
 
@@ -758,12 +758,12 @@ public class ItemAmmoEnums {
 		private final String unloc;
 
 		private AmmoCoilgun(String unloc, AmmoItemTrait... traits) {
-			this.traits = safeAssign(traits);
+			this.traits = ItemAmmoEnums.safeAssign(traits);
 			this.unloc = unloc;
 		}
 
-		@Override public Set<AmmoItemTrait> getTraits() { return traits; }
-		@Override public String getInternalName() { return unloc; }
+		@Override public Set<AmmoItemTrait> getTraits() { return this.traits; }
+		@Override public String getInternalName() { return this.unloc; }
 	}
 
 	public interface IAmmoItemEnum {

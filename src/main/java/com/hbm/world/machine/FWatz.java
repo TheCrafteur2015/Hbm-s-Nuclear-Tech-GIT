@@ -420,7 +420,7 @@ public class FWatz {
 		for(int i = 0; i < 19; i++) {
 			for(int j = 0; j < 19; j++) {
 				for(int k = 0; k < 19; k++) {
-					String c = fwatz[j][i].substring(k, k + 1);
+					String c = FWatz.fwatz[j][i].substring(k, k + 1);
 					Block b = Blocks.air;
 
 					if(c.equals("X"))
@@ -460,7 +460,7 @@ public class FWatz {
 		for(int i = 0; i < 19; i++) {
 			for(int j = 0; j < 19; j++) {
 				for(int k = 0; k < 19; k++) {
-					String c = fwatz[j][i].substring(k, k + 1);
+					String c = FWatz.fwatz[j][i].substring(k, k + 1);
 					Block b = Blocks.air;
 					boolean flag2 = false;
 
@@ -511,7 +511,7 @@ public class FWatz {
 		for(int i = 0; i < 19; i++) {
 			for(int j = 0; j < 19; j++) {
 				for(int k = 0; k < 19; k++) {
-					String c = fwatz[j][i].substring(k, k + 1);
+					String c = FWatz.fwatz[j][i].substring(k, k + 1);
 
 					if(c.equals("P"))
 						world.setBlock(x + i, y + j, z + k, ModBlocks.fwatz_plasma);
@@ -528,7 +528,7 @@ public class FWatz {
 		for(int i = 0; i < 19; i++) {
 			for(int j = 0; j < 19; j++) {
 				for(int k = 0; k < 19; k++) {
-					String c = fwatz[j][i].substring(k, k + 1);
+					String c = FWatz.fwatz[j][i].substring(k, k + 1);
 
 					if(c.equals("P"))
 						if(world.getBlock(x + i, y + j, z + k) == ModBlocks.fwatz_plasma)
@@ -548,7 +548,7 @@ public class FWatz {
 		for(int i = 0; i < 19; i++) {
 			for(int j = 0; j < 19; j++) {
 				for(int k = 0; k < 19; k++) {
-					String c = fwatz[j][i].substring(k, k + 1);
+					String c = FWatz.fwatz[j][i].substring(k, k + 1);
 					
 					if(c.equals("P") && world.getBlock(x + i, y + j, z + k) == ModBlocks.fwatz_plasma)
 						flag = true;

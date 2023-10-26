@@ -23,6 +23,6 @@ public class OreNames {
 	public static final String HEAVY_COMPONENT = "componentHeavy";
 	
 	public static final String[] prefixes = new String[] {
-			ANY, NUGGET, TINY, INGOT, DUSTTINY, DUST, GEM, CRYSTAL, PLATE, PLATECAST, BILLET, BLOCK, ORE, ORENETHER, HEAVY_COMPONENT
+			OreNames.ANY, OreNames.NUGGET, OreNames.TINY, OreNames.INGOT, OreNames.DUSTTINY, OreNames.DUST, OreNames.GEM, OreNames.CRYSTAL, OreNames.PLATE, OreNames.PLATECAST, OreNames.BILLET, OreNames.BLOCK, OreNames.ORE, OreNames.ORENETHER, OreNames.HEAVY_COMPONENT
 	};
 }

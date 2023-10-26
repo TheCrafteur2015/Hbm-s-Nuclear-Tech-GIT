@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import com.hbm.inventory.container.ContainerAMSEmitter;
 import com.hbm.lib.RefStrings;
 import com.hbm.tileentity.machine.TileEntityAMSEmitter;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -17,7 +18,7 @@ public class GUIAMSEmitter extends GuiInfoContainer {
 	
 	public GUIAMSEmitter(InventoryPlayer invPlayer, TileEntityAMSEmitter tedf) {
 		super(new ContainerAMSEmitter(invPlayer, tedf));
-		emitter = tedf;
+		this.emitter = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 166;
@@ -27,10 +28,10 @@ public class GUIAMSEmitter extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		emitter.tank.renderTankInfo(this, mouseX, mouseY, guiLeft + 26, guiTop + 69 - 52, 16, 52);
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 134, guiTop + 69 - 52, 16, 52, emitter.power, emitter.maxPower);
-		this.drawCustomInfo(this, mouseX, mouseY, guiLeft + 152, guiTop + 69 - 52, 16, 52, new String[] { "Power:", emitter.efficiency + "%" });
-		this.drawCustomInfo(this, mouseX, mouseY, guiLeft + 8, guiTop + 69 - 52, 16, 52, new String[] { "Heat:", emitter.heat + "/" + emitter.maxHeat });
+		this.emitter.tank.renderTankInfo(this, mouseX, mouseY, this.guiLeft + 26, this.guiTop + 69 - 52, 16, 52);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 134, this.guiTop + 69 - 52, 16, 52, this.emitter.power, TileEntityAMSEmitter.maxPower);
+		drawCustomInfo(this, mouseX, mouseY, this.guiLeft + 152, this.guiTop + 69 - 52, 16, 52, new String[] { "Power:", this.emitter.efficiency + "%" });
+		drawCustomInfo(this, mouseX, mouseY, this.guiLeft + 8, this.guiTop + 69 - 52, 16, 52, new String[] { "Heat:", this.emitter.heat + "/" + TileEntityAMSEmitter.maxHeat });
 	}
 
 	@Override
@@ -44,22 +45,22 @@ public class GUIAMSEmitter extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIAMSEmitter.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		int i = (int) emitter.getPowerScaled(52);
-		drawTexturedModalRect(guiLeft + 134, guiTop + 69 - i, 192, 52 - i, 16, i);
+		int i = (int) this.emitter.getPowerScaled(52);
+		drawTexturedModalRect(this.guiLeft + 134, this.guiTop + 69 - i, 192, 52 - i, 16, i);
 		
-		int j = emitter.getEfficiencyScaled(52);
-		drawTexturedModalRect(guiLeft + 152, guiTop + 69 - j, 208, 52 - j, 16, j);
+		int j = this.emitter.getEfficiencyScaled(52);
+		drawTexturedModalRect(this.guiLeft + 152, this.guiTop + 69 - j, 208, 52 - j, 16, j);
 		
-		int k = emitter.getHeatScaled(52);
-		drawTexturedModalRect(guiLeft + 8, guiTop + 69 - k, 176, 52 - k, 16, k);
+		int k = this.emitter.getHeatScaled(52);
+		drawTexturedModalRect(this.guiLeft + 8, this.guiTop + 69 - k, 176, 52 - k, 16, k);
 		
-		int m = emitter.warning;
+		int m = this.emitter.warning;
 		if(m > 0)
-			drawTexturedModalRect(guiLeft + 80, guiTop + 17, 176, 36 + 16 * m, 16, 16);
+			drawTexturedModalRect(this.guiLeft + 80, this.guiTop + 17, 176, 36 + 16 * m, 16, 16);
 		
-		emitter.tank.renderTank(guiLeft + 26, guiTop + 69, this.zLevel, 16, 52);
+		this.emitter.tank.renderTank(this.guiLeft + 26, this.guiTop + 69, this.zLevel, 16, 52);
 	}
 }

@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL12;
 
 import com.hbm.entity.particle.EntitySSmokeFX;
 import com.hbm.items.ModItems;
+
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -38,38 +39,38 @@ public class SSmokeRenderer extends Render {
 			EntitySSmokeFX fx = (EntitySSmokeFX) p_76986_1_;
 
 			if (fx.particleAge <= fx.maxAge && fx.particleAge >= fx.maxAge / 8 * 7) {
-				field_94151_a = ModItems.smoke8;
+				this.field_94151_a = ModItems.smoke8;
 			}
 
 			if (fx.particleAge < fx.maxAge / 8 * 7 && fx.particleAge >= fx.maxAge / 8 * 6) {
-				field_94151_a = ModItems.smoke7;
+				this.field_94151_a = ModItems.smoke7;
 			}
 
 			if (fx.particleAge < fx.maxAge / 8 * 6 && fx.particleAge >= fx.maxAge / 8 * 5) {
-				field_94151_a = ModItems.smoke6;
+				this.field_94151_a = ModItems.smoke6;
 			}
 
 			if (fx.particleAge < fx.maxAge / 8 * 5 && fx.particleAge >= fx.maxAge / 8 * 4) {
-				field_94151_a = ModItems.smoke5;
+				this.field_94151_a = ModItems.smoke5;
 			}
 
 			if (fx.particleAge < fx.maxAge / 8 * 4 && fx.particleAge >= fx.maxAge / 8 * 3) {
-				field_94151_a = ModItems.smoke4;
+				this.field_94151_a = ModItems.smoke4;
 			}
 
 			if (fx.particleAge < fx.maxAge / 8 * 3 && fx.particleAge >= fx.maxAge / 8 * 2) {
-				field_94151_a = ModItems.smoke3;
+				this.field_94151_a = ModItems.smoke3;
 			}
 
 			if (fx.particleAge < fx.maxAge / 8 * 2 && fx.particleAge >= fx.maxAge / 8 * 1) {
-				field_94151_a = ModItems.smoke2;
+				this.field_94151_a = ModItems.smoke2;
 			}
 
 			if (fx.particleAge < fx.maxAge / 8 && fx.particleAge >= 0) {
-				field_94151_a = ModItems.smoke1;
+				this.field_94151_a = ModItems.smoke1;
 			}
 
-			IIcon iicon = field_94151_a.getIconFromDamage(0);
+			IIcon iicon = this.field_94151_a.getIconFromDamage(0);
 
 			if (iicon != null) {
 				GL11.glPushMatrix();
@@ -80,10 +81,10 @@ public class SSmokeRenderer extends Render {
 				//
 				GL11.glScalef(0.25F, 0.25F, 0.25F);
 				//
-				this.bindEntityTexture(p_76986_1_);
+				bindEntityTexture(p_76986_1_);
 				Tessellator tessellator = Tessellator.instance;
 
-				this.func_77026_a(tessellator, iicon);
+				func_77026_a(tessellator, iicon);
 				GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 				GL11.glPopMatrix();
 			}

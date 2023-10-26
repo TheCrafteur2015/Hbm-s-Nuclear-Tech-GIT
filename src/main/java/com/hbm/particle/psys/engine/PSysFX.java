@@ -38,19 +38,19 @@ public abstract class PSysFX {
 	}
 	
 	public void updateParticle() {
-		this.prevPosX = posX;
-		this.prevPosY = posY;
-		this.prevPosZ = posZ;
-		this.isUnloaded = !world.getChunkProvider().chunkExists((int) Math.floor(posX) >> 4, (int) Math.floor(posZ) >> 4);
+		this.prevPosX = this.posX;
+		this.prevPosY = this.posY;
+		this.prevPosZ = this.posZ;
+		this.isUnloaded = !this.world.getChunkProvider().chunkExists((int) Math.floor(this.posX) >> 4, (int) Math.floor(this.posZ) >> 4);
 		
 		this.particleAge++;
 		
 		if(this.particleAge >= this.particleMaxAge) {
-			this.expire();
+			expire();
 		}
 		
 		if(this.shouldExpireWhenUnloaded && this.isUnloaded) {
-			this.expire();
+			expire();
 		}
 	}
 	
@@ -65,7 +65,7 @@ public abstract class PSysFX {
 	}
 
 	protected void setPosToAABB() {
-		AxisAlignedBB aabb = this.getBoundingBox();
+		AxisAlignedBB aabb = getBoundingBox();
 		this.posX = (aabb.minX + aabb.maxX) / 2.0D;
 		this.posY = aabb.minY;
 		this.posZ = (aabb.minZ + aabb.maxZ) / 2.0D;

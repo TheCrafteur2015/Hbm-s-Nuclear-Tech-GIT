@@ -31,20 +31,20 @@ public class ParticleBurstPacket implements IMessage {
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		x = buf.readInt();
-		y = buf.readInt();
-		z = buf.readInt();
-		block = buf.readInt();
-		meta = buf.readInt();
+		this.x = buf.readInt();
+		this.y = buf.readInt();
+		this.z = buf.readInt();
+		this.block = buf.readInt();
+		this.meta = buf.readInt();
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeInt(x);
-		buf.writeInt(y);
-		buf.writeInt(z);
-		buf.writeInt(block);
-		buf.writeInt(meta);
+		buf.writeInt(this.x);
+		buf.writeInt(this.y);
+		buf.writeInt(this.z);
+		buf.writeInt(this.block);
+		buf.writeInt(this.meta);
 	}
 
 	public static class Handler implements IMessageHandler<ParticleBurstPacket, IMessage> {

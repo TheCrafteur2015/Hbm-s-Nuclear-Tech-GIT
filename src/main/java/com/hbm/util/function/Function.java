@@ -25,13 +25,13 @@ public abstract class Function {
 	public Function withDiv(double div) { this.div = div; return this; };
 	public Function withOff(double off) { this.off = off; return this; };
 	
-	public double getX(double x) { return x / div + off; }
+	public double getX(double x) { return x / this.div + this.off; }
 	public String getXName() { return getXName(true); }
 	public String getXName(boolean brackets) {
 		String x = "x";
 		boolean mod = false;
-		if(div != 1D) x += " / " + String.format(Locale.US, "%,.1f", div);
-		if(off != 0D) x += " + " + String.format(Locale.US, "%,.1f", off);
+		if(this.div != 1D) x += " / " + String.format(Locale.US, "%,.1f", this.div);
+		if(this.off != 0D) x += " + " + String.format(Locale.US, "%,.1f", this.off);
 		if(mod && brackets) x = "(" + x + ")";
 		return x;
 	}
@@ -47,8 +47,8 @@ public abstract class Function {
 	}
 	
 	public static class FunctionLogarithmic extends FunctionSingleArg {
-		public FunctionLogarithmic(double level) { super(level); this.withOff(1D); }
-		@Override public double effonix(double x) { return Math.log10(getX(x)) * level; }
+		public FunctionLogarithmic(double level) { super(level); withOff(1D); }
+		@Override public double effonix(double x) { return Math.log10(getX(x)) * this.level; }
 		@Override public String getLabelForFuel() { return "log10(" + getXName(false) + ") * " + String.format(Locale.US, "%,.1f", this.level); }
 		@Override public String getDangerFromFuel() { return EnumChatFormatting.YELLOW + "MEDIUM / LOGARITHMIC"; }
 	}
@@ -70,7 +70,7 @@ public abstract class Function {
 	public static class FunctionSqrtFalling extends FunctionSqrt {
 		public FunctionSqrtFalling(double fallFactor) {
 			super(1D / fallFactor);
-			this.withOff(fallFactor * fallFactor);
+			withOff(fallFactor * fallFactor);
 		}
 	}
 	
@@ -85,7 +85,7 @@ public abstract class Function {
 		public FunctionQuadratic(double level) { super(level, 0D); }
 		public FunctionQuadratic(double level, double vOff) { super(level, vOff); }
 		@Override public double effonix(double x) { return getX(x) * getX(x) * this.level + this.vOff; }
-		@Override public String getLabelForFuel() { return getXName(true) + "² * " + String.format(Locale.US, "%,.1f", this.level) + (vOff != 0 ? (" + " + String.format(Locale.US, "%,.1f", vOff)) : ""); }
+		@Override public String getLabelForFuel() { return getXName(true) + "² * " + String.format(Locale.US, "%,.1f", this.level) + (this.vOff != 0 ? (" + " + String.format(Locale.US, "%,.1f", this.vOff)) : ""); }
 		@Override public String getDangerFromFuel() { return EnumChatFormatting.RED + "DANGEROUS / QUADRATIC"; }
 	}
 }

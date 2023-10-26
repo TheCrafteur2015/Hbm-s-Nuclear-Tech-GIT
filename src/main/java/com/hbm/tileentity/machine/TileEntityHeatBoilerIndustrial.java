@@ -50,25 +50,25 @@ public class TileEntityHeatBoilerIndustrial extends TileEntityLoadedBase impleme
 	@Override
 	public void updateEntity() {
 
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			NBTTagCompound data = new NBTTagCompound();
-			this.setupTanks();
-			this.updateConnections();
-			this.tryPullHeat();
+			setupTanks();
+			updateConnections();
+			tryPullHeat();
 			int lastHeat = this.heat;
 			
 			int light = this.worldObj.getSavedLightValue(EnumSkyBlock.Sky, this.xCoord, this.yCoord, this.zCoord);
-			if(light > 7 && TomSaveData.forWorld(worldObj).fire > 1e-5) {
-				this.heat += ((maxHeat - heat) * 0.000005D); //constantly heat up 0.0005% of the remaining heat buffer for rampant but diminishing heating
+			if(light > 7 && TomSaveData.forWorld(this.worldObj).fire > 1e-5) {
+				this.heat += ((TileEntityHeatBoilerIndustrial.maxHeat - this.heat) * 0.000005D); //constantly heat up 0.0005% of the remaining heat buffer for rampant but diminishing heating
 			}
 			
 			data.setInteger("heat", lastHeat);
 
-			tanks[0].writeToNBT(data, "0");
+			this.tanks[0].writeToNBT(data, "0");
 			this.isOn = false;
-			this.tryConvert();
-			tanks[1].writeToNBT(data, "1");
+			tryConvert();
+			this.tanks[1].writeToNBT(data, "1");
 			
 			if(this.tanks[1].getFill() > 0) {
 				this.sendFluid();
@@ -78,26 +78,26 @@ public class TileEntityHeatBoilerIndustrial extends TileEntityLoadedBase impleme
 			INBTPacketReceiver.networkPack(this, data, 25);
 		} else {
 			
-			if(this.isOn) audioTime = 20;
+			if(this.isOn) this.audioTime = 20;
 			
-			if(audioTime > 0) {
+			if(this.audioTime > 0) {
 				
-				audioTime--;
+				this.audioTime--;
 				
-				if(audio == null) {
-					audio = createAudioLoop();
-					audio.startSound();
-				} else if(!audio.isPlaying()) {
-					audio = rebootAudio(audio);
+				if(this.audio == null) {
+					this.audio = createAudioLoop();
+					this.audio.startSound();
+				} else if(!this.audio.isPlaying()) {
+					this.audio = rebootAudio(this.audio);
 				}
 				
-				audio.keepAlive();
+				this.audio.keepAlive();
 				
 			} else {
 				
-				if(audio != null) {
-					audio.stopSound();
-					audio = null;
+				if(this.audio != null) {
+					this.audio.stopSound();
+					this.audio = null;
 				}
 			}
 		}
@@ -105,15 +105,15 @@ public class TileEntityHeatBoilerIndustrial extends TileEntityLoadedBase impleme
 	
 	@Override
 	public AudioWrapper createAudioLoop() {
-		return MainRegistry.proxy.getLoopedSound("hbm:block.boiler", xCoord, yCoord, zCoord, 0.125F, 10F, 1.0F, 20);
+		return MainRegistry.proxy.getLoopedSound("hbm:block.boiler", this.xCoord, this.yCoord, this.zCoord, 0.125F, 10F, 1.0F, 20);
 	}
 
 	@Override
 	public void onChunkUnload() {
 
-		if(audio != null) {
-			audio.stopSound();
-			audio = null;
+		if(this.audio != null) {
+			this.audio.stopSound();
+			this.audio = null;
 		}
 	}
 
@@ -122,9 +122,9 @@ public class TileEntityHeatBoilerIndustrial extends TileEntityLoadedBase impleme
 
 		super.invalidate();
 
-		if(audio != null) {
-			audio.stopSound();
-			audio = null;
+		if(this.audio != null) {
+			this.audio.stopSound();
+			this.audio = null;
 		}
 	}
 
@@ -137,7 +137,7 @@ public class TileEntityHeatBoilerIndustrial extends TileEntityLoadedBase impleme
 	}
 	
 	protected void tryPullHeat() {
-		TileEntity con = worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
+		TileEntity con = this.worldObj.getTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
 		
 		if(con instanceof IHeatSource) {
 			IHeatSource source = (IHeatSource) con;
@@ -148,11 +148,11 @@ public class TileEntityHeatBoilerIndustrial extends TileEntityLoadedBase impleme
 			}
 			
 			if(diff > 0) {
-				diff = (int) Math.ceil(diff * diffusion);
+				diff = (int) Math.ceil(diff * TileEntityHeatBoilerIndustrial.diffusion);
 				source.useUpHeat(diff);
 				this.heat += diff;
-				if(this.heat > this.maxHeat)
-					this.heat = this.maxHeat;
+				if(this.heat > TileEntityHeatBoilerIndustrial.maxHeat)
+					this.heat = TileEntityHeatBoilerIndustrial.maxHeat;
 				return;
 			}
 		}
@@ -162,24 +162,24 @@ public class TileEntityHeatBoilerIndustrial extends TileEntityLoadedBase impleme
 	
 	protected void setupTanks() {
 		
-		if(tanks[0].getTankType().hasTrait(FT_Heatable.class)) {
-			FT_Heatable trait = tanks[0].getTankType().getTrait(FT_Heatable.class);
+		if(this.tanks[0].getTankType().hasTrait(FT_Heatable.class)) {
+			FT_Heatable trait = this.tanks[0].getTankType().getTrait(FT_Heatable.class);
 			if(trait.getEfficiency(HeatingType.BOILER) > 0) {
 				HeatingStep entry = trait.getFirstStep();
-				tanks[1].setTankType(entry.typeProduced);
-				tanks[1].changeTankSize(tanks[0].getMaxFill() * entry.amountProduced / entry.amountReq);
+				this.tanks[1].setTankType(entry.typeProduced);
+				this.tanks[1].changeTankSize(this.tanks[0].getMaxFill() * entry.amountProduced / entry.amountReq);
 				return;
 			}
 		}
 
-		tanks[0].setTankType(Fluids.NONE);
-		tanks[1].setTankType(Fluids.NONE);
+		this.tanks[0].setTankType(Fluids.NONE);
+		this.tanks[1].setTankType(Fluids.NONE);
 	}
 	
 	protected void tryConvert() {
 		
-		if(tanks[0].getTankType().hasTrait(FT_Heatable.class)) {
-			FT_Heatable trait = tanks[0].getTankType().getTrait(FT_Heatable.class);
+		if(this.tanks[0].getTankType().hasTrait(FT_Heatable.class)) {
+			FT_Heatable trait = this.tanks[0].getTankType().getTrait(FT_Heatable.class);
 			if(trait.getEfficiency(HeatingType.BOILER) > 0) {
 				
 				HeatingStep entry = trait.getFirstStep();
@@ -193,8 +193,8 @@ public class TileEntityHeatBoilerIndustrial extends TileEntityLoadedBase impleme
 				this.tanks[1].setFill(this.tanks[1].getFill() + entry.amountProduced * ops);
 				this.heat -= entry.heatReq * ops;
 				
-				if(ops > 0 && worldObj.rand.nextInt(400) == 0) {
-					worldObj.playSoundEffect(xCoord + 0.5, yCoord + 2, zCoord + 0.5, "hbm:block.boilerGroan", 0.5F, 1.0F);
+				if(ops > 0 && this.worldObj.rand.nextInt(400) == 0) {
+					this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 2, this.zCoord + 0.5, "hbm:block.boilerGroan", 0.5F, 1.0F);
 				}
 				
 				if(ops > 0) {
@@ -207,56 +207,56 @@ public class TileEntityHeatBoilerIndustrial extends TileEntityLoadedBase impleme
 	private void updateConnections() {
 		
 		for(DirPos pos : getConPos()) {
-			this.trySubscribe(tanks[0].getTankType(), worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			trySubscribe(this.tanks[0].getTankType(), this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 		}
 	}
 	
 	private void sendFluid() {
 		
 		for(DirPos pos : getConPos()) {
-			this.sendFluid(tanks[1], worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir().getOpposite());
+			this.sendFluid(this.tanks[1], this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir().getOpposite());
 		}
 	}
 	
 	private DirPos[] getConPos() {
 		return new DirPos[] {
-				new DirPos(xCoord + 2, yCoord, zCoord, Library.POS_X),
-				new DirPos(xCoord - 2, yCoord, zCoord, Library.NEG_X),
-				new DirPos(xCoord, yCoord, zCoord + 2, Library.POS_Z),
-				new DirPos(xCoord, yCoord, zCoord - 2, Library.NEG_Z),
-				new DirPos(xCoord, yCoord + 5, zCoord, Library.POS_Y),
+				new DirPos(this.xCoord + 2, this.yCoord, this.zCoord, Library.POS_X),
+				new DirPos(this.xCoord - 2, this.yCoord, this.zCoord, Library.NEG_X),
+				new DirPos(this.xCoord, this.yCoord, this.zCoord + 2, Library.POS_Z),
+				new DirPos(this.xCoord, this.yCoord, this.zCoord - 2, Library.NEG_Z),
+				new DirPos(this.xCoord, this.yCoord + 5, this.zCoord, Library.POS_Y),
 		};
 	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
-		tanks[0].readFromNBT(nbt, "water");
-		tanks[1].readFromNBT(nbt, "steam");
-		heat = nbt.getInteger("heat");
+		this.tanks[0].readFromNBT(nbt, "water");
+		this.tanks[1].readFromNBT(nbt, "steam");
+		this.heat = nbt.getInteger("heat");
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		tanks[0].writeToNBT(nbt, "water");
-		tanks[1].writeToNBT(nbt, "steam");
-		nbt.setInteger("heat", heat);
+		this.tanks[0].writeToNBT(nbt, "water");
+		this.tanks[1].writeToNBT(nbt, "steam");
+		nbt.setInteger("heat", this.heat);
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return tanks;
+		return this.tanks;
 	}
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return new FluidTank[] {tanks[1]};
+		return new FluidTank[] {this.tanks[1]};
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] {tanks[0]};
+		return new FluidTank[] {this.tanks[0]};
 	}
 	
 	AxisAlignedBB bb = null;
@@ -264,18 +264,18 @@ public class TileEntityHeatBoilerIndustrial extends TileEntityLoadedBase impleme
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 1,
-					yCoord,
-					zCoord - 1,
-					xCoord + 2,
-					yCoord + 5,
-					zCoord + 2
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 1,
+					this.yCoord,
+					this.zCoord - 1,
+					this.xCoord + 2,
+					this.yCoord + 5,
+					this.zCoord + 2
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override
@@ -291,13 +291,13 @@ public class TileEntityHeatBoilerIndustrial extends TileEntityLoadedBase impleme
 
 	@Override
 	public void readIfPresent(JsonObject obj) {
-		maxHeat = IConfigurableMachine.grab(obj, "I:maxHeat", maxHeat);
-		diffusion = IConfigurableMachine.grab(obj, "D:diffusion", diffusion);
+		TileEntityHeatBoilerIndustrial.maxHeat = IConfigurableMachine.grab(obj, "I:maxHeat", TileEntityHeatBoilerIndustrial.maxHeat);
+		TileEntityHeatBoilerIndustrial.diffusion = IConfigurableMachine.grab(obj, "D:diffusion", TileEntityHeatBoilerIndustrial.diffusion);
 	}
 
 	@Override
 	public void writeConfig(JsonWriter writer) throws IOException {
-		writer.name("I:maxHeat").value(maxHeat);
-		writer.name("D:diffusion").value(diffusion);
+		writer.name("I:maxHeat").value(TileEntityHeatBoilerIndustrial.maxHeat);
+		writer.name("D:diffusion").value(TileEntityHeatBoilerIndustrial.diffusion);
 	}
 }

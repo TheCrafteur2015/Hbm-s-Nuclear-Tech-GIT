@@ -33,7 +33,7 @@ public class RailGeneric extends BlockRailBase implements ITooltipProvider {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
-		return (flexible && meta >= 6) ? this.turnedIcon : this.blockIcon;
+		return (this.flexible && meta >= 6) ? this.turnedIcon : this.blockIcon;
 	}
 
 	@Override
@@ -41,13 +41,13 @@ public class RailGeneric extends BlockRailBase implements ITooltipProvider {
 	public void registerBlockIcons(IIconRegister reg) {
 		super.registerBlockIcons(reg);
 		
-		if(flexible)
-			this.turnedIcon = reg.registerIcon(this.getTextureName() + "_turned");
+		if(this.flexible)
+			this.turnedIcon = reg.registerIcon(getTextureName() + "_turned");
 	}
 	
 	@Override
 	public float getRailMaxSpeed(World world, EntityMinecart cart, int y, int x, int z) {
-		return maxSpeed;
+		return this.maxSpeed;
 	}
 	
 	public RailGeneric setMaxSpeed(float speed) {
@@ -75,19 +75,20 @@ public class RailGeneric extends BlockRailBase implements ITooltipProvider {
 		return this;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		float speed = this.maxSpeed / this.baseSpeed;
+		float speed = this.maxSpeed / RailGeneric.baseSpeed;
 		
 		if(speed != 1F) {
 			list.add((speed > 1 ? EnumChatFormatting.BLUE : EnumChatFormatting.RED) + "Speed: " + ((int) (speed * 100)) + "%");
 		}
 		
-		if(!flexible) {
+		if(!this.flexible) {
 			list.add(EnumChatFormatting.RED + "Cannot be used for turns!");
 		}
 		
-		if(!slopable) {
+		if(!this.slopable) {
 			list.add(EnumChatFormatting.RED + "Cannot be used for slopes!");
 		}
 	}

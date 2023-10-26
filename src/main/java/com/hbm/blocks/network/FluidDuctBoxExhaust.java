@@ -40,23 +40,24 @@ public class FluidDuctBoxExhaust extends FluidDuctBox {
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		super.registerBlockIcons(iconRegister);
 
-		iconStraight = new IIcon[1];
-		iconEnd = new IIcon[1];
-		iconCurveTL = new IIcon[1];
-		iconCurveTR = new IIcon[1];
-		iconCurveBL = new IIcon[1];
-		iconCurveBR = new IIcon[1];
-		iconJunction = new IIcon[1];
+		this.iconStraight = new IIcon[1];
+		this.iconEnd = new IIcon[1];
+		this.iconCurveTL = new IIcon[1];
+		this.iconCurveTR = new IIcon[1];
+		this.iconCurveBL = new IIcon[1];
+		this.iconCurveBR = new IIcon[1];
+		this.iconJunction = new IIcon[1];
 
-		iconStraight[0] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_exhaust_straight");
-		iconEnd[0] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_exhaust_end");
-		iconCurveTL[0] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_exhaust_curve_tl");
-		iconCurveTR[0] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_exhaust_curve_tr");
-		iconCurveBL[0] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_exhaust_curve_bl");
-		iconCurveBR[0] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_exhaust_curve_br");
-		iconJunction[0] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_exhaust_junction");
+		this.iconStraight[0] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_exhaust_straight");
+		this.iconEnd[0] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_exhaust_end");
+		this.iconCurveTL[0] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_exhaust_curve_tl");
+		this.iconCurveTR[0] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_exhaust_curve_tr");
+		this.iconCurveBL[0] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_exhaust_curve_bl");
+		this.iconCurveBR[0] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_exhaust_curve_br");
+		this.iconJunction[0] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_exhaust_junction");
 	}
 	
+	@Override
 	public boolean canConnectTo(IBlockAccess world, int x, int y, int z, ForgeDirection dir, TileEntity tile) {
 		return Library.canConnectFluid(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, dir, Fluids.SMOKE) ||
 				Library.canConnectFluid(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, dir, Fluids.SMOKE_LEADED) ||
@@ -68,6 +69,8 @@ public class FluidDuctBoxExhaust extends FluidDuctBox {
 		return 1;
 	}
 	
+	@SuppressWarnings("unchecked")
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 		for(int i = 0; i < 15; i += 3) {
@@ -77,7 +80,7 @@ public class FluidDuctBoxExhaust extends FluidDuctBox {
 
 	@Override
 	public void printHook(Pre event, World world, int x, int y, int z) {
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		text.add(Fluids.SMOKE.getLocalizedName());
 		text.add(Fluids.SMOKE_LEADED.getLocalizedName());
 		text.add(Fluids.SMOKE_POISON.getLocalizedName());

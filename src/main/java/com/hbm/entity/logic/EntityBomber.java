@@ -42,20 +42,22 @@ public class EntityBomber extends Entity implements IChunkLoader {
     public EntityBomber(World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.ignoreFrustumCheck = true;
-    	this.setSize(8.0F, 4.0F);
+    	setSize(8.0F, 4.0F);
 	}
 	
-    public boolean canBeCollidedWith()
+    @Override
+	public boolean canBeCollidedWith()
     {
         return this.health > 0;
     }
     
-    public boolean attackEntityFrom(DamageSource p_70097_1_, float p_70097_2_)
+    @Override
+	public boolean attackEntityFrom(DamageSource p_70097_1_, float p_70097_2_)
     {
     	if(p_70097_1_ == ModDamageSource.nuclearBlast)
     		return false;
     	
-        if (this.isEntityInvulnerable())
+        if (isEntityInvulnerable())
         {
             return false;
         }
@@ -63,11 +65,11 @@ public class EntityBomber extends Entity implements IChunkLoader {
         {
             if (!this.isDead && !this.worldObj.isRemote && this.health > 0)
             {
-            	health -= p_70097_2_;
+            	this.health -= p_70097_2_;
             	
                 if (this.health <= 0)
                 {
-                    this.killBomber();
+                    killBomber();
                 }
             }
 
@@ -76,8 +78,8 @@ public class EntityBomber extends Entity implements IChunkLoader {
     }
     
     private void killBomber() {
-        ExplosionLarge.explode(worldObj, posX, posY, posZ, 5, true, false, true);
-    	worldObj.playSoundEffect((double)(posX + 0.5F), (double)(posY + 0.5F), (double)(posZ + 0.5F), "hbm:entity.planeShotDown", 25.0F, 1.0F);
+        ExplosionLarge.explode(this.worldObj, this.posX, this.posY, this.posZ, 5, true, false, true);
+    	this.worldObj.playSoundEffect((double)(this.posX + 0.5F), (double)(this.posY + 0.5F), (double)(this.posZ + 0.5F), "hbm:entity.planeShotDown", 25.0F, 1.0F);
     }
 	
 	@Override
@@ -85,32 +87,32 @@ public class EntityBomber extends Entity implements IChunkLoader {
 		
 		//super.onUpdate();
 
-		this.lastTickPosX = this.prevPosX = posX;
-		this.lastTickPosY = this.prevPosY = posY;
-		this.lastTickPosZ = this.prevPosZ = posZ;
+		this.lastTickPosX = this.prevPosX = this.posX;
+		this.lastTickPosY = this.prevPosY = this.posY;
+		this.lastTickPosZ = this.prevPosZ = this.posZ;
 
-		this.setPosition(posX + motionX, posY + motionY, posZ + motionZ);
+		setPosition(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			this.dataWatcher.updateObject(17, health);
+			this.dataWatcher.updateObject(17, this.health);
 			
-			if(health > 0)
-				PacketDispatcher.wrapper.sendToAllAround(new LoopedEntitySoundPacket(this.getEntityId()), new TargetPoint(worldObj.provider.dimensionId, posX, posY, posZ, 250));
+			if(this.health > 0)
+				PacketDispatcher.wrapper.sendToAllAround(new LoopedEntitySoundPacket(getEntityId()), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 250));
 		} else {
-			health = this.dataWatcher.getWatchableObjectInt(17);
+			this.health = this.dataWatcher.getWatchableObjectInt(17);
 		}
 		
-		this.rotation();
+		rotation();
 		
 		if(this.health <= 0) {
-			motionY -= 0.025;
+			this.motionY -= 0.025;
 			
 			for(int i = 0; i < 10; i++)
-				ParticleUtil.spawnGasFlame(this.worldObj, this.posX + rand.nextGaussian() * 0.5 - motionX * 2, this.posY + rand.nextGaussian() * 0.5 - motionY * 2, this.posZ + rand.nextGaussian() * 0.5 - motionZ * 2, 0.0, 0.1, 0.0);
+				ParticleUtil.spawnGasFlame(this.worldObj, this.posX + this.rand.nextGaussian() * 0.5 - this.motionX * 2, this.posY + this.rand.nextGaussian() * 0.5 - this.motionY * 2, this.posZ + this.rand.nextGaussian() * 0.5 - this.motionZ * 2, 0.0, 0.1, 0.0);
 			
-			if(worldObj.getBlock((int)posX, (int)posY, (int)posZ).isNormalCube() && !worldObj.isRemote) {
-				this.setDead();
+			if(this.worldObj.getBlock((int)this.posX, (int)this.posY, (int)this.posZ).isNormalCube() && !this.worldObj.isRemote) {
+				setDead();
 				
 				/*worldObj.setBlock((int)posX, (int)posY, (int)posZ, ModBlocks.bomber);
 				TileEntityBomber te = (TileEntityBomber)worldObj.getTileEntity((int)posX, (int)posY, (int)posZ);
@@ -122,27 +124,27 @@ public class EntityBomber extends Entity implements IChunkLoader {
 					te.type = this.getDataWatcher().getWatchableObjectByte(16);
 				}*/
 				
-				ExplosionLarge.explodeFire(worldObj, posX, posY, posZ, 25, true, false, true);
-		    	worldObj.playSoundEffect((double)(posX + 0.5F), (double)(posY + 0.5F), (double)(posZ + 0.5F), "hbm:entity.planeCrash", 10.0F, 1.0F);
+				ExplosionLarge.explodeFire(this.worldObj, this.posX, this.posY, this.posZ, 25, true, false, true);
+		    	this.worldObj.playSoundEffect((double)(this.posX + 0.5F), (double)(this.posY + 0.5F), (double)(this.posZ + 0.5F), "hbm:entity.planeCrash", 10.0F, 1.0F);
 				
 				return;
 			}
 		}
 		
-		if(this.ticksExisted > timer)
-			this.setDead();
+		if(this.ticksExisted > this.timer)
+			setDead();
 		
-		if(!worldObj.isRemote && this.health > 0 && this.ticksExisted > bombStart && this.ticksExisted < bombStop && this.ticksExisted % bombRate == 0) {
+		if(!this.worldObj.isRemote && this.health > 0 && this.ticksExisted > this.bombStart && this.ticksExisted < this.bombStop && this.ticksExisted % this.bombRate == 0) {
 			
-			if(type == 3) {
+			if(this.type == 3) {
 
-	        	worldObj.playSoundEffect((double)(posX + 0.5F), (double)(posY + 0.5F), (double)(posZ + 0.5F), "random.fizz", 5.0F, 2.6F + (rand.nextFloat() - rand.nextFloat()) * 0.8F);
-				ExplosionChaos.spawnChlorine(worldObj, this.posX, this.posY - 1F, this.posZ, 10, 0.5, 3);
+	        	this.worldObj.playSoundEffect((double)(this.posX + 0.5F), (double)(this.posY + 0.5F), (double)(this.posZ + 0.5F), "random.fizz", 5.0F, 2.6F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.8F);
+				ExplosionChaos.spawnChlorine(this.worldObj, this.posX, this.posY - 1F, this.posZ, 10, 0.5, 3);
 				
-			} else if(type == 5) {
+			} else if(this.type == 5) {
 				
-	        	worldObj.playSoundEffect((double)(posX + 0.5F), (double)(posY + 0.5F), (double)(posZ + 0.5F), "hbm:weapon.missileTakeOff", 10.0F, 0.9F + rand.nextFloat() * 0.2F);
-	        	EntityRocketHoming rocket = new EntityRocketHoming(worldObj);
+	        	this.worldObj.playSoundEffect((double)(this.posX + 0.5F), (double)(this.posY + 0.5F), (double)(this.posZ + 0.5F), "hbm:weapon.missileTakeOff", 10.0F, 0.9F + this.rand.nextFloat() * 0.2F);
+	        	EntityRocketHoming rocket = new EntityRocketHoming(this.worldObj);
 	        	rocket.setIsCritical(true);
 	        	//rocket.motionX = motionX;
 	        	//rocket.motionZ = motionZ;
@@ -151,58 +153,58 @@ public class EntityBomber extends Entity implements IChunkLoader {
 	        	rocket.homingRadius = 50;
 	        	rocket.homingMod = 5;
 				
-	        	rocket.posX = posX + rand.nextDouble() - 0.5;
-	        	rocket.posY = posY - rand.nextDouble();
-	        	rocket.posZ = posZ + rand.nextDouble() - 0.5;
+	        	rocket.posX = this.posX + this.rand.nextDouble() - 0.5;
+	        	rocket.posY = this.posY - this.rand.nextDouble();
+	        	rocket.posZ = this.posZ + this.rand.nextDouble() - 0.5;
 	        	
-				worldObj.spawnEntityInWorld(rocket);
+				this.worldObj.spawnEntityInWorld(rocket);
 	        	
-			} else if(type == 6) {
+			} else if(this.type == 6) {
 				
-	        	worldObj.playSoundEffect((double)(posX + 0.5F), (double)(posY + 0.5F), (double)(posZ + 0.5F), "hbm:weapon.missileTakeOff", 10.0F, 0.9F + rand.nextFloat() * 0.2F);
-	        	EntityBoxcar rocket = new EntityBoxcar(worldObj);
+	        	this.worldObj.playSoundEffect((double)(this.posX + 0.5F), (double)(this.posY + 0.5F), (double)(this.posZ + 0.5F), "hbm:weapon.missileTakeOff", 10.0F, 0.9F + this.rand.nextFloat() * 0.2F);
+	        	EntityBoxcar rocket = new EntityBoxcar(this.worldObj);
 				
-	        	rocket.posX = posX + rand.nextDouble() - 0.5;
-	        	rocket.posY = posY - rand.nextDouble();
-	        	rocket.posZ = posZ + rand.nextDouble() - 0.5;
+	        	rocket.posX = this.posX + this.rand.nextDouble() - 0.5;
+	        	rocket.posY = this.posY - this.rand.nextDouble();
+	        	rocket.posZ = this.posZ + this.rand.nextDouble() - 0.5;
 	        	
-				worldObj.spawnEntityInWorld(rocket);
+				this.worldObj.spawnEntityInWorld(rocket);
 	        	
-			} else if(type == 7) {
+			} else if(this.type == 7) {
 
-	        	worldObj.playSoundEffect((double)(posX + 0.5F), (double)(posY + 0.5F), (double)(posZ + 0.5F), "random.fizz", 5.0F, 2.6F + (rand.nextFloat() - rand.nextFloat()) * 0.8F);
-				ExplosionChaos.spawnChlorine(worldObj, this.posX, worldObj.getHeightValue((int)this.posX, (int)this.posZ) + 2, this.posZ, 10, 1, 2);
+	        	this.worldObj.playSoundEffect((double)(this.posX + 0.5F), (double)(this.posY + 0.5F), (double)(this.posZ + 0.5F), "random.fizz", 5.0F, 2.6F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.8F);
+				ExplosionChaos.spawnChlorine(this.worldObj, this.posX, this.worldObj.getHeightValue((int)this.posX, (int)this.posZ) + 2, this.posZ, 10, 1, 2);
 				
 			} else {
 				
-	        	worldObj.playSoundEffect((double)(posX + 0.5F), (double)(posY + 0.5F), (double)(posZ + 0.5F), "hbm:entity.bombWhistle", 10.0F, 0.9F + rand.nextFloat() * 0.2F);
+	        	this.worldObj.playSoundEffect((double)(this.posX + 0.5F), (double)(this.posY + 0.5F), (double)(this.posZ + 0.5F), "hbm:entity.bombWhistle", 10.0F, 0.9F + this.rand.nextFloat() * 0.2F);
 	        	
-				EntityBombletZeta zeta = new EntityBombletZeta(worldObj);
+				EntityBombletZeta zeta = new EntityBombletZeta(this.worldObj);
 				/*zeta.prevRotationYaw = zeta.rotationYaw = this.rotationYaw;
 				zeta.prevRotationPitch = zeta.rotationPitch = this.rotationPitch;*/
 				
 				zeta.rotation();
 				
-				zeta.type = type;
+				zeta.type = this.type;
 				
-				zeta.posX = posX + rand.nextDouble() - 0.5;
-				zeta.posY = posY - rand.nextDouble();
-				zeta.posZ = posZ + rand.nextDouble() - 0.5;
+				zeta.posX = this.posX + this.rand.nextDouble() - 0.5;
+				zeta.posY = this.posY - this.rand.nextDouble();
+				zeta.posZ = this.posZ + this.rand.nextDouble() - 0.5;
 				
-				if(type == 0) {
-					zeta.motionX = motionX + rand.nextGaussian() * 0.15;
-					zeta.motionZ = motionZ + rand.nextGaussian() * 0.15;
+				if(this.type == 0) {
+					zeta.motionX = this.motionX + this.rand.nextGaussian() * 0.15;
+					zeta.motionZ = this.motionZ + this.rand.nextGaussian() * 0.15;
 				} else {
-					zeta.motionX = motionX;
-					zeta.motionZ = motionZ;
+					zeta.motionX = this.motionX;
+					zeta.motionZ = this.motionZ;
 				}
 				
-				worldObj.spawnEntityInWorld(zeta);
+				this.worldObj.spawnEntityInWorld(zeta);
 			}
 		}
 
-        if(!worldObj.isRemote)
-        	loadNeighboringChunks((int)(posX / 16), (int)(posZ / 16));
+        if(!this.worldObj.isRemote)
+        	loadNeighboringChunks((int)(this.posX / 16), (int)(this.posZ / 16));
 		
 	}
     
@@ -213,14 +215,14 @@ public class EntityBomber extends Entity implements IChunkLoader {
     	vector.xCoord *= GeneralConfig.enableBomberShortMode ? 1 : 2;
     	vector.zCoord *= GeneralConfig.enableBomberShortMode ? 1 : 2;
     	
-    	this.setLocationAndAngles(x - vector.xCoord * 100, y + 50, z - vector.zCoord * 100, 0.0F, 0.0F);
-    	this.loadNeighboringChunks((int)(x / 16), (int)(z / 16));
+    	setLocationAndAngles(x - vector.xCoord * 100, y + 50, z - vector.zCoord * 100, 0.0F, 0.0F);
+    	loadNeighboringChunks((int)(x / 16), (int)(z / 16));
     	
     	this.motionX = vector.xCoord;
     	this.motionZ = vector.zCoord;
     	this.motionY = 0.0D;
     	
-    	this.rotation();
+    	rotation();
     	
     	int i = 1;
     	
@@ -247,8 +249,8 @@ public class EntityBomber extends Entity implements IChunkLoader {
         	}
     	}
     	
-    	this.getDataWatcher().updateObject(16, (byte)i);
-    	this.setSize(8.0F, 4.0F);
+    	getDataWatcher().updateObject(16, (byte)i);
+    	setSize(8.0F, 4.0F);
     }
     
     public static EntityBomber statFacCarpet(World world, double x, double y, double z) {
@@ -403,33 +405,33 @@ public class EntityBomber extends Entity implements IChunkLoader {
 
     @Override
 	public void entityInit() {
-		init(ForgeChunkManager.requestTicket(MainRegistry.instance, worldObj, Type.ENTITY));
+		init(ForgeChunkManager.requestTicket(MainRegistry.instance, this.worldObj, Type.ENTITY));
         this.dataWatcher.addObject(16, Byte.valueOf((byte)0));
         this.dataWatcher.addObject(17, Integer.valueOf((int)50));
     }
 
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound nbt) {
-		ticksExisted = nbt.getInteger("ticksExisted");
-		bombStart = nbt.getInteger("bombStart");
-		bombStop = nbt.getInteger("bombStop");
-		bombRate = nbt.getInteger("bombRate");
-		type = nbt.getInteger("type");
+		this.ticksExisted = nbt.getInteger("ticksExisted");
+		this.bombStart = nbt.getInteger("bombStart");
+		this.bombStop = nbt.getInteger("bombStop");
+		this.bombRate = nbt.getInteger("bombRate");
+		this.type = nbt.getInteger("type");
 
-    	this.getDataWatcher().updateObject(16, nbt.getByte("style"));
-    	this.getDataWatcher().updateObject(17, nbt.getInteger("health"));
-    	this.setSize(8.0F, 4.0F);
+    	getDataWatcher().updateObject(16, nbt.getByte("style"));
+    	getDataWatcher().updateObject(17, nbt.getInteger("health"));
+    	setSize(8.0F, 4.0F);
 	}
 
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound nbt) {
-		nbt.setInteger("ticksExisted", ticksExisted);
-		nbt.setInteger("bombStart", bombStart);
-		nbt.setInteger("bombStop", bombStop);
-		nbt.setInteger("bombRate", bombRate);
-		nbt.setInteger("type", type);
-		nbt.setByte("style", this.getDataWatcher().getWatchableObjectByte(16));
-		nbt.setInteger("health", this.getDataWatcher().getWatchableObjectInt(17));
+		nbt.setInteger("ticksExisted", this.ticksExisted);
+		nbt.setInteger("bombStart", this.bombStart);
+		nbt.setInteger("bombStop", this.bombStop);
+		nbt.setInteger("bombRate", this.bombRate);
+		nbt.setInteger("type", this.type);
+		nbt.setByte("style", getDataWatcher().getWatchableObjectByte(16));
+		nbt.setInteger("health", getDataWatcher().getWatchableObjectInt(17));
 	}
 	
 	protected void rotation() {
@@ -466,50 +468,51 @@ public class EntityBomber extends Entity implements IChunkLoader {
 	
     private Ticket loaderTicket;
     
+	@Override
 	public void init(Ticket ticket) {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
             if(ticket != null) {
             	
-                if(loaderTicket == null) {
+                if(this.loaderTicket == null) {
                 	
-                	loaderTicket = ticket;
-                	loaderTicket.bindEntity(this);
-                	loaderTicket.getModData();
+                	this.loaderTicket = ticket;
+                	this.loaderTicket.bindEntity(this);
+                	this.loaderTicket.getModData();
                 }
                 
         		
-                ForgeChunkManager.forceChunk(loaderTicket, new ChunkCoordIntPair(chunkCoordX, chunkCoordZ));
+                ForgeChunkManager.forceChunk(this.loaderTicket, new ChunkCoordIntPair(this.chunkCoordX, this.chunkCoordZ));
             }
         }
 	}
 
-	List<ChunkCoordIntPair> loadedChunks = new ArrayList<ChunkCoordIntPair>();
+	List<ChunkCoordIntPair> loadedChunks = new ArrayList<>();
 
     public void loadNeighboringChunks(int newChunkX, int newChunkZ)
     {
-        if(!worldObj.isRemote && loaderTicket != null)
+        if(!this.worldObj.isRemote && this.loaderTicket != null)
         {
-            for(ChunkCoordIntPair chunk : loadedChunks)
+            for(ChunkCoordIntPair chunk : this.loadedChunks)
             {
-                ForgeChunkManager.unforceChunk(loaderTicket, chunk);
+                ForgeChunkManager.unforceChunk(this.loaderTicket, chunk);
             }
 
-            loadedChunks.clear();
-            loadedChunks.add(new ChunkCoordIntPair(newChunkX, newChunkZ));
-            loadedChunks.add(new ChunkCoordIntPair(newChunkX + 1, newChunkZ + 1));
-            loadedChunks.add(new ChunkCoordIntPair(newChunkX - 1, newChunkZ - 1));
-            loadedChunks.add(new ChunkCoordIntPair(newChunkX + 1, newChunkZ - 1));
-            loadedChunks.add(new ChunkCoordIntPair(newChunkX - 1, newChunkZ + 1));
-            loadedChunks.add(new ChunkCoordIntPair(newChunkX + 1, newChunkZ));
-            loadedChunks.add(new ChunkCoordIntPair(newChunkX, newChunkZ + 1));
-            loadedChunks.add(new ChunkCoordIntPair(newChunkX - 1, newChunkZ));
-            loadedChunks.add(new ChunkCoordIntPair(newChunkX, newChunkZ - 1));
+            this.loadedChunks.clear();
+            this.loadedChunks.add(new ChunkCoordIntPair(newChunkX, newChunkZ));
+            this.loadedChunks.add(new ChunkCoordIntPair(newChunkX + 1, newChunkZ + 1));
+            this.loadedChunks.add(new ChunkCoordIntPair(newChunkX - 1, newChunkZ - 1));
+            this.loadedChunks.add(new ChunkCoordIntPair(newChunkX + 1, newChunkZ - 1));
+            this.loadedChunks.add(new ChunkCoordIntPair(newChunkX - 1, newChunkZ + 1));
+            this.loadedChunks.add(new ChunkCoordIntPair(newChunkX + 1, newChunkZ));
+            this.loadedChunks.add(new ChunkCoordIntPair(newChunkX, newChunkZ + 1));
+            this.loadedChunks.add(new ChunkCoordIntPair(newChunkX - 1, newChunkZ));
+            this.loadedChunks.add(new ChunkCoordIntPair(newChunkX, newChunkZ - 1));
 
-            for(ChunkCoordIntPair chunk : loadedChunks)
+            for(ChunkCoordIntPair chunk : this.loadedChunks)
             {
-                ForgeChunkManager.forceChunk(loaderTicket, chunk);
+                ForgeChunkManager.forceChunk(this.loaderTicket, chunk);
             }
         }
     }

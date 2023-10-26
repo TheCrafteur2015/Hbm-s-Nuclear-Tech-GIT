@@ -27,35 +27,35 @@ public abstract class TileEntityFoundryCastingBase extends TileEntityFoundryBase
 	public void updateEntity() {
 		super.updateEntity();
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			if(this.amount > this.getCapacity()) {
-				this.amount = this.getCapacity();
+			if(this.amount > getCapacity()) {
+				this.amount = getCapacity();
 			}
 			
 			if(this.amount == 0) {
 				this.type = null;
 			}
 			
-			Mold mold = this.getInstalledMold();
+			Mold mold = getInstalledMold();
 			
-			if(mold != null && this.amount == this.getCapacity() && slots[1] == null) {
-				cooloff--;
+			if(mold != null && this.amount == getCapacity() && this.slots[1] == null) {
+				this.cooloff--;
 				
-				if(cooloff <= 0) {
+				if(this.cooloff <= 0) {
 					this.amount = 0;
 					
-					ItemStack out = mold.getOutput(type);
+					ItemStack out = mold.getOutput(this.type);
 					
 					if(out != null) {
-						slots[1] = out.copy();
+						this.slots[1] = out.copy();
 					}
 					
-					cooloff = 200;
+					this.cooloff = 200;
 				}
 				
 			} else {
-				cooloff = 200;
+				this.cooloff = 200;
 			}
 		}
 	}
@@ -67,12 +67,12 @@ public abstract class TileEntityFoundryCastingBase extends TileEntityFoundryBase
 	
 	/** Checks slot 0 to see what mold type is installed. Returns null if no mold is found or an incorrect size was used. */
 	public Mold getInstalledMold() {
-		if(slots[0] == null) return null;
+		if(this.slots[0] == null) return null;
 		
-		if(slots[0].getItem() == ModItems.mold) {
-			Mold mold = ((ItemMold) slots[0].getItem()).getMold(slots[0]);
+		if(this.slots[0].getItem() == ModItems.mold) {
+			Mold mold = ((ItemMold) this.slots[0].getItem()).getMold(this.slots[0]);
 			
-			if(mold.size == this.getMoldSize())
+			if(mold.size == getMoldSize())
 				return mold;
 		}
 		
@@ -82,7 +82,7 @@ public abstract class TileEntityFoundryCastingBase extends TileEntityFoundryBase
 	/** Returns the amount of quanta this casting block can hold, depending on the installed mold or 0 if no mold is found. */
 	@Override
 	public int getCapacity() {
-		Mold mold = this.getInstalledMold();
+		Mold mold = getInstalledMold();
 		return mold == null ? 0 : mold.getCost();
 	}
 	
@@ -93,10 +93,11 @@ public abstract class TileEntityFoundryCastingBase extends TileEntityFoundryBase
 	 * - whether a mold is installed<br>
 	 * - whether the mold can accept this type
 	 */
+	@Override
 	public boolean standardCheck(World world, int x, int y, int z, ForgeDirection side, MaterialStack stack) {
-		if(!super.standardCheck(world, x, y, z, side, stack)) return false; //reject if base conditions are not met
-		if(this.slots[1] != null) return false; //reject if a freshly casted item is still present
-		Mold mold = this.getInstalledMold();
+		 //reject if base conditions are not met
+		if(!super.standardCheck(world, x, y, z, side, stack) || (this.slots[1] != null)) return false; //reject if a freshly casted item is still present
+		Mold mold = getInstalledMold();
 		if(mold == null) return false;
 		
 		return mold.getOutput(stack.material) != null; //no OD match -> no pouring
@@ -107,9 +108,9 @@ public abstract class TileEntityFoundryCastingBase extends TileEntityFoundryBase
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
-		if(slots[i] != null) {
-			ItemStack itemStack = slots[i];
-			slots[i] = null;
+		if(this.slots[i] != null) {
+			ItemStack itemStack = this.slots[i];
+			this.slots[i] = null;
 			return itemStack;
 		} else {
 			return null;
@@ -118,25 +119,25 @@ public abstract class TileEntityFoundryCastingBase extends TileEntityFoundryBase
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemStack) {
-		slots[i] = itemStack;
+		this.slots[i] = itemStack;
 		if(itemStack != null && itemStack.stackSize > getInventoryStackLimit()) {
 			itemStack.stackSize = getInventoryStackLimit();
 		}
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
 	}
 	
 	@Override
 	public ItemStack decrStackSize(int slot, int amount) {
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		if(slots[slot] != null) {
-			if(slots[slot].stackSize <= amount) {
-				ItemStack itemStack = slots[slot];
-				slots[slot] = null;
+		this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+		if(this.slots[slot] != null) {
+			if(this.slots[slot].stackSize <= amount) {
+				ItemStack itemStack = this.slots[slot];
+				this.slots[slot] = null;
 				return itemStack;
 			}
-			ItemStack itemStack1 = slots[slot].splitStack(amount);
-			if(slots[slot].stackSize == 0) {
-				slots[slot] = null;
+			ItemStack itemStack1 = this.slots[slot].splitStack(amount);
+			if(this.slots[slot].stackSize == 0) {
+				this.slots[slot] = null;
 			}
 			return itemStack1;
 		} else {
@@ -146,12 +147,12 @@ public abstract class TileEntityFoundryCastingBase extends TileEntityFoundryBase
 
 	@Override
 	public int getSizeInventory() {
-		return slots.length;
+		return this.slots.length;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		return slots[i];
+		return this.slots[i];
 	}
 
 	@Override
@@ -176,13 +177,13 @@ public abstract class TileEntityFoundryCastingBase extends TileEntityFoundryBase
 		super.readFromNBT(nbt);
 		
 		NBTTagList list = nbt.getTagList("items", 10);
-		slots = new ItemStack[getSizeInventory()];
+		this.slots = new ItemStack[getSizeInventory()];
 
 		for(int i = 0; i < list.tagCount(); i++) {
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("slot");
-			if(b0 >= 0 && b0 < slots.length) {
-				slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
+			if(b0 >= 0 && b0 < this.slots.length) {
+				this.slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
 			}
 		}
 	}
@@ -193,11 +194,11 @@ public abstract class TileEntityFoundryCastingBase extends TileEntityFoundryBase
 		
 		NBTTagList list = new NBTTagList();
 		
-		for(int i = 0; i < slots.length; i++) {
-			if(slots[i] != null) {
+		for(int i = 0; i < this.slots.length; i++) {
+			if(this.slots[i] != null) {
 				NBTTagCompound nbt1 = new NBTTagCompound();
 				nbt1.setByte("slot", (byte) i);
-				slots[i].writeToNBT(nbt1);
+				this.slots[i].writeToNBT(nbt1);
 				list.appendTag(nbt1);
 			}
 		}

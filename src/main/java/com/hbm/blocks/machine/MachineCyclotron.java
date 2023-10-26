@@ -37,7 +37,7 @@ public class MachineCyclotron extends BlockDummyable {
 			return true;
 		} else if(!player.isSneaking())
 		{
-			int[] pos = this.findCore(world, x, y, z);
+			int[] pos = findCore(world, x, y, z);
 			
 			if(pos == null)
 				return false;
@@ -89,20 +89,21 @@ public class MachineCyclotron extends BlockDummyable {
 		return 2;
 	}
 	
+	@Override
 	protected void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		super.fillSpace(world, x, y, z, dir, o);
 
-		this.makeExtra(world, x + dir.offsetX * o + 2, y, z + dir.offsetZ * o + 1);
-		this.makeExtra(world, x + dir.offsetX * o + 2, y, z + dir.offsetZ * o);
-		this.makeExtra(world, x + dir.offsetX * o + 2, y, z + dir.offsetZ * o - 1);
-		this.makeExtra(world, x + dir.offsetX * o - 2, y, z + dir.offsetZ * o + 1);
-		this.makeExtra(world, x + dir.offsetX * o - 2, y, z + dir.offsetZ * o);
-		this.makeExtra(world, x + dir.offsetX * o - 2, y, z + dir.offsetZ * o - 1);
-		this.makeExtra(world, x + dir.offsetX * o + 1, y, z + dir.offsetZ * o + 2);
-		this.makeExtra(world, x + dir.offsetX * o, y, z + dir.offsetZ * o + 2);
-		this.makeExtra(world, x + dir.offsetX * o - 1, y, z + dir.offsetZ * o + 2);
-		this.makeExtra(world, x + dir.offsetX * o + 1, y, z + dir.offsetZ * o - 2);
-		this.makeExtra(world, x + dir.offsetX * o, y, z + dir.offsetZ * o - 2);
-		this.makeExtra(world, x + dir.offsetX * o - 1, y, z + dir.offsetZ * o - 2);
+		makeExtra(world, x + dir.offsetX * o + 2, y, z + dir.offsetZ * o + 1);
+		makeExtra(world, x + dir.offsetX * o + 2, y, z + dir.offsetZ * o);
+		makeExtra(world, x + dir.offsetX * o + 2, y, z + dir.offsetZ * o - 1);
+		makeExtra(world, x + dir.offsetX * o - 2, y, z + dir.offsetZ * o + 1);
+		makeExtra(world, x + dir.offsetX * o - 2, y, z + dir.offsetZ * o);
+		makeExtra(world, x + dir.offsetX * o - 2, y, z + dir.offsetZ * o - 1);
+		makeExtra(world, x + dir.offsetX * o + 1, y, z + dir.offsetZ * o + 2);
+		makeExtra(world, x + dir.offsetX * o, y, z + dir.offsetZ * o + 2);
+		makeExtra(world, x + dir.offsetX * o - 1, y, z + dir.offsetZ * o + 2);
+		makeExtra(world, x + dir.offsetX * o + 1, y, z + dir.offsetZ * o - 2);
+		makeExtra(world, x + dir.offsetX * o, y, z + dir.offsetZ * o - 2);
+		makeExtra(world, x + dir.offsetX * o - 1, y, z + dir.offsetZ * o - 2);
 	}
 }

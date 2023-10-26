@@ -67,10 +67,12 @@ public class RenderCombustionEngine extends TileEntitySpecialRenderer implements
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase() {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(0, -1, 0);
 				GL11.glScaled(2.75, 2.75, 2.75);
 			}
+			@Override
 			public void renderCommon() {
 				GL11.glRotatef(90, 0F, 1F, 0F);
 				GL11.glTranslated(0, 0, 2.75);

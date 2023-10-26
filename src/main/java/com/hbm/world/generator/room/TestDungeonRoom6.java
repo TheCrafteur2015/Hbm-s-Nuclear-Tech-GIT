@@ -14,20 +14,22 @@ public class TestDungeonRoom6 extends CellularDungeonRoom {
 		super(parent);
 	}
 
+	@Override
 	public void generateMain(World world, int x, int y, int z) {
 		
 		super.generateMain(world, x, y, z);
-		DungeonToolbox.generateBox(world, x + 1, y, z + 1, parent.width - 2, 1, parent.width - 2, ModBlocks.toxic_block);
-		DungeonToolbox.generateBox(world, x + parent.width / 2 - 1, y, z + parent.width / 2 - 1, 3, 1, 3, ModBlocks.meteor_brick_chiseled);
-		world.setBlock(x + parent.width / 2, y, z + parent.width / 2, ModBlocks.meteor_polished);
+		DungeonToolbox.generateBox(world, x + 1, y, z + 1, this.parent.width - 2, 1, this.parent.width - 2, ModBlocks.toxic_block);
+		DungeonToolbox.generateBox(world, x + this.parent.width / 2 - 1, y, z + this.parent.width / 2 - 1, 3, 1, 3, ModBlocks.meteor_brick_chiseled);
+		world.setBlock(x + this.parent.width / 2, y, z + this.parent.width / 2, ModBlocks.meteor_polished);
 
-		world.setBlock(x + 1, y, z + parent.width / 2, ModBlocks.meteor_polished);
-		world.setBlock(x + parent.width / 2, y, z + 1, ModBlocks.meteor_polished);
+		world.setBlock(x + 1, y, z + this.parent.width / 2, ModBlocks.meteor_polished);
+		world.setBlock(x + this.parent.width / 2, y, z + 1, ModBlocks.meteor_polished);
 		
-		world.setBlock(x + parent.width - 2, y, z + parent.width / 2, ModBlocks.meteor_polished);
-		world.setBlock(x + parent.width / 2, y, z + parent.width - 2, ModBlocks.meteor_polished);
+		world.setBlock(x + this.parent.width - 2, y, z + this.parent.width / 2, ModBlocks.meteor_polished);
+		world.setBlock(x + this.parent.width / 2, y, z + this.parent.width - 2, ModBlocks.meteor_polished);
 	}
 	
+	@Override
 	public void generateWall(World world, int x, int y, int z, ForgeDirection wall, boolean door) {
 
 		super.generateWall(world, x, y, z, wall, door);
@@ -36,19 +38,19 @@ public class TestDungeonRoom6 extends CellularDungeonRoom {
 			return;
 		
 		if(wall == ForgeDirection.NORTH) {
-			DungeonToolbox.generateBox(world, x + parent.width / 2, y, z + 1, 1, 1, parent.width / 2 - 2, ModBlocks.meteor_polished);
+			DungeonToolbox.generateBox(world, x + this.parent.width / 2, y, z + 1, 1, 1, this.parent.width / 2 - 2, ModBlocks.meteor_polished);
 		}
 		
 		if(wall == ForgeDirection.SOUTH) {
-			DungeonToolbox.generateBox(world, x + parent.width / 2, y, z + parent.width / 2 + 2, 1, 1, parent.width / 2 - 2, ModBlocks.meteor_polished);
+			DungeonToolbox.generateBox(world, x + this.parent.width / 2, y, z + this.parent.width / 2 + 2, 1, 1, this.parent.width / 2 - 2, ModBlocks.meteor_polished);
 		}
 		
 		if(wall == ForgeDirection.WEST) {
-			DungeonToolbox.generateBox(world, x + 1, y, z + parent.width / 2, parent.width / 2 - 2, 1, 1, ModBlocks.meteor_polished);
+			DungeonToolbox.generateBox(world, x + 1, y, z + this.parent.width / 2, this.parent.width / 2 - 2, 1, 1, ModBlocks.meteor_polished);
 		}
 		
 		if(wall == ForgeDirection.EAST) {
-			DungeonToolbox.generateBox(world, x + parent.width / 2 + 2, y, z + parent.width / 2, parent.width / 2 - 2, 1, 1, ModBlocks.meteor_polished);
+			DungeonToolbox.generateBox(world, x + this.parent.width / 2 + 2, y, z + this.parent.width / 2, this.parent.width / 2 - 2, 1, 1, ModBlocks.meteor_polished);
 		}
 	}
 }

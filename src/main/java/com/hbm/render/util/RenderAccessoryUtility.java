@@ -51,83 +51,83 @@ public class RenderAccessoryUtility {
 		String name = player.getDisplayName();
 
 		if(uuid.equals(Library.HbMinecraft)) {
-			return (MainRegistry.polaroidID == 11 ? hbm : hbm2);
+			return (MainRegistry.polaroidID == 11 ? RenderAccessoryUtility.hbm : RenderAccessoryUtility.hbm2);
 		}
 
 		if(uuid.equals(Library.Drillgon)) {
-			return drillgon;
+			return RenderAccessoryUtility.drillgon;
 		}
 		if(uuid.equals(Library.Dafnik)) {
-			return dafnik;
+			return RenderAccessoryUtility.dafnik;
 		}
 		if(uuid.equals(Library.LPkukin)) {
-			return lpkukin;
+			return RenderAccessoryUtility.lpkukin;
 		}
 		if(uuid.equals(Library.LordVertice)) {
-			return vertice;
+			return RenderAccessoryUtility.vertice;
 		}
 		if(uuid.equals(Library.CodeRed_)) {
-			return red;
+			return RenderAccessoryUtility.red;
 		}
 		if(uuid.equals(Library.dxmaster769)) {
-			return ayy;
+			return RenderAccessoryUtility.ayy;
 		}
 		if(uuid.equals(Library.Dr_Nostalgia)) {
-			return (MainRegistry.polaroidID == 11 ? nostalgia2 : nostalgia);
+			return (MainRegistry.polaroidID == 11 ? RenderAccessoryUtility.nostalgia2 : RenderAccessoryUtility.nostalgia);
 		}
 		if(uuid.equals(Library.Samino2)) {
-			return sam;
+			return RenderAccessoryUtility.sam;
 		}
 		if(uuid.equals(Library.Hoboy03new)) {
-			return hoboy;
+			return RenderAccessoryUtility.hoboy;
 		}
 		if(uuid.equals(Library.Dragon59MC)) {
-			return master;
+			return RenderAccessoryUtility.master;
 		}
 		if(uuid.equals(Library.Steelcourage)) {
-			return mek;
+			return RenderAccessoryUtility.mek;
 		}
 		if(uuid.equals(Library.ZippySqrl)) {
-			return zippy;
+			return RenderAccessoryUtility.zippy;
 		}
 		if(uuid.equals(Library.Schrabby)) {
-			return schrabby;
+			return RenderAccessoryUtility.schrabby;
 		}
 		if(uuid.equals(Library.SweatySwiggs)) {
-			return swiggs;
+			return RenderAccessoryUtility.swiggs;
 		}
 		if(uuid.equals(Library.Doctor17) || uuid.equals(Library.Doctor17PH)) {
-			return doctor17;
+			return RenderAccessoryUtility.doctor17;
 		}
 		if(uuid.equals(Library.ShimmeringBlaze)) {
-			return (MainRegistry.polaroidID == 11 ? blaze2 : shimmeringblaze);
+			return (MainRegistry.polaroidID == 11 ? RenderAccessoryUtility.blaze2 : RenderAccessoryUtility.shimmeringblaze);
 		}
 		if(uuid.equals(Library.FifeMiner)) {
-			return leftnugget;
+			return RenderAccessoryUtility.leftnugget;
 		}
 		if(uuid.equals(Library.lag_add)) {
-			return rightnugget;
+			return RenderAccessoryUtility.rightnugget;
 		}
 		if(uuid.equals(Library.Tankish)) {
-			return tankish;
+			return RenderAccessoryUtility.tankish;
 		}
 		if(uuid.equals(Library.FrizzleFrazzle)) {
-			return frizzlefrazzle;
+			return RenderAccessoryUtility.frizzlefrazzle;
 		}
 		if(uuid.equals(Library.Barnaby99_x)) {
-			return pheo;
+			return RenderAccessoryUtility.pheo;
 		}
 		if(uuid.equals(Library.Ma118)) {
-			return vaer;
+			return RenderAccessoryUtility.vaer;
 		}
 		if(uuid.equals(Library.Adam29Adam29)) {
-			return adam;
+			return RenderAccessoryUtility.adam;
 		}
 		if(Library.contributors.contains(uuid)) {
-			return wiki;
+			return RenderAccessoryUtility.wiki;
 		}
 		if(name.startsWith("Player")) {
-			return test;
+			return RenderAccessoryUtility.test;
 		}
 		
 		return null;
@@ -136,14 +136,14 @@ public class RenderAccessoryUtility {
 	private static ModelBiped solModel;
 	public static void renderSol(RenderPlayerEvent.SetArmorModel event) {
 
-		if(solModel == null)
-			solModel = new ModelArmorSolstice();
+		if(RenderAccessoryUtility.solModel == null)
+			RenderAccessoryUtility.solModel = new ModelArmorSolstice();
 		
 		RenderPlayer renderer = event.renderer;
 		ModelBiped model = renderer.modelArmor;
 		EntityPlayer player = event.entityPlayer;
 
-		solModel.isSneak = model.isSneak;
+		RenderAccessoryUtility.solModel.isSneak = model.isSneak;
 		
 		float interp = event.partialRenderTick;
 		float yawHead = player.prevRotationYawHead + (player.rotationYawHead - player.prevRotationYawHead) * interp;
@@ -152,20 +152,20 @@ public class RenderAccessoryUtility {
 		float yawWrapped = MathHelper.wrapAngleTo180_float(yawHead - yawOffset);
 		float pitch = player.rotationPitch;
 		
-		solModel.render(event.entityPlayer, 0.0F, 0.0F, yawWrapped, yaw, pitch, 0.0625F);
+		RenderAccessoryUtility.solModel.render(event.entityPlayer, 0.0F, 0.0F, yawWrapped, yaw, pitch, 0.0625F);
 	}
 	
 	private static ModelBiped[] wingModels = new ModelBiped[10];
 	public static void renderWings(RenderPlayerEvent.SetArmorModel event, int mode) {
 
-		if(wingModels[mode] == null)
-			wingModels[mode] = new ModelArmorWings(mode);
+		if(RenderAccessoryUtility.wingModels[mode] == null)
+			RenderAccessoryUtility.wingModels[mode] = new ModelArmorWings(mode);
 		
 		RenderPlayer renderer = event.renderer;
 		ModelBiped model = renderer.modelArmor;
 		EntityPlayer player = event.entityPlayer;
 
-		wingModels[mode].isSneak = model.isSneak;
+		RenderAccessoryUtility.wingModels[mode].isSneak = model.isSneak;
 		
 		float interp = event.partialRenderTick;
 		float yawHead = player.prevRotationYawHead + (player.rotationYawHead - player.prevRotationYawHead) * interp;
@@ -174,6 +174,6 @@ public class RenderAccessoryUtility {
 		float yawWrapped = MathHelper.wrapAngleTo180_float(yawHead - yawOffset);
 		float pitch = player.rotationPitch;
 		
-		wingModels[mode].render(event.entityPlayer, 0.0F, 0.0F, yawWrapped, yaw, pitch, 0.0625F);
+		RenderAccessoryUtility.wingModels[mode].render(event.entityPlayer, 0.0F, 0.0F, yawWrapped, yaw, pitch, 0.0625F);
 	}
 }

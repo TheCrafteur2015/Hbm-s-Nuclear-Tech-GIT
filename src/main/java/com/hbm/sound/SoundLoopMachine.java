@@ -23,8 +23,8 @@ public class SoundLoopMachine extends PositionedSound implements ITickableSound 
 
 	@Override
 	public void update() {
-		if(te == null || (te != null && te.isInvalid()))
-			donePlaying = true;
+		if(this.te == null || (this.te != null && this.te.isInvalid()))
+			this.donePlaying = true;
 	}
 
 	@Override
@@ -33,14 +33,14 @@ public class SoundLoopMachine extends PositionedSound implements ITickableSound 
 	}
 	
 	public void setVolume(float f) {
-		volume = f;
+		this.volume = f;
 	}
 	
 	public void setPitch(float f) {
-		field_147663_c = f;
+		this.field_147663_c = f;
 	}
 	
 	public void stop() {
-		donePlaying = true;
+		this.donePlaying = true;
 	}
 }

@@ -18,7 +18,7 @@ public class GUIMachineVacuumDistill extends GuiInfoContainer {
 
 	public GUIMachineVacuumDistill(InventoryPlayer invPlayer, TileEntityMachineVacuumDistill tedf) {
 		super(new ContainerMachineVacuumDistill(invPlayer, tedf));
-		refinery = tedf;
+		this.refinery = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 238;
@@ -28,12 +28,12 @@ public class GUIMachineVacuumDistill extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		refinery.tanks[0].renderTankInfo(this, mouseX, mouseY, guiLeft + 44, guiTop + 70 - 52, 16, 52);
-		refinery.tanks[1].renderTankInfo(this, mouseX, mouseY, guiLeft + 80, guiTop + 70 - 52, 16, 52);
-		refinery.tanks[2].renderTankInfo(this, mouseX, mouseY, guiLeft + 98, guiTop + 70 - 52, 16, 52);
-		refinery.tanks[3].renderTankInfo(this, mouseX, mouseY, guiLeft + 116, guiTop + 70 - 52, 16, 52);
-		refinery.tanks[4].renderTankInfo(this, mouseX, mouseY, guiLeft + 134, guiTop + 70 - 52, 16, 52);
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 26, guiTop + 70 - 52, 16, 52, refinery.power, refinery.maxPower);
+		this.refinery.tanks[0].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 44, this.guiTop + 70 - 52, 16, 52);
+		this.refinery.tanks[1].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 80, this.guiTop + 70 - 52, 16, 52);
+		this.refinery.tanks[2].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 98, this.guiTop + 70 - 52, 16, 52);
+		this.refinery.tanks[3].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 116, this.guiTop + 70 - 52, 16, 52);
+		this.refinery.tanks[4].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 134, this.guiTop + 70 - 52, 16, 52);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 26, this.guiTop + 70 - 52, 16, 52, this.refinery.power, TileEntityMachineVacuumDistill.maxPower);
 	}
 	
 	@Override
@@ -47,16 +47,16 @@ public class GUIMachineVacuumDistill extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIMachineVacuumDistill.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		int j = (int) (refinery.power * 54 / refinery.maxPower);
-		drawTexturedModalRect(guiLeft + 26, guiTop + 70 - j, 176, 52 - j, 16, j);
+		int j = (int) (this.refinery.power * 54 / TileEntityMachineVacuumDistill.maxPower);
+		drawTexturedModalRect(this.guiLeft + 26, this.guiTop + 70 - j, 176, 52 - j, 16, j);
 		
-		refinery.tanks[0].renderTank(guiLeft + 44, guiTop + 70, this.zLevel, 16, 52);
-		refinery.tanks[1].renderTank(guiLeft + 80, guiTop + 70, this.zLevel, 16, 52);
-		refinery.tanks[2].renderTank(guiLeft + 98, guiTop + 70, this.zLevel, 16, 52);
-		refinery.tanks[3].renderTank(guiLeft + 116, guiTop + 70, this.zLevel, 16, 52);
-		refinery.tanks[4].renderTank(guiLeft + 134, guiTop + 70, this.zLevel, 16, 52);
+		this.refinery.tanks[0].renderTank(this.guiLeft + 44, this.guiTop + 70, this.zLevel, 16, 52);
+		this.refinery.tanks[1].renderTank(this.guiLeft + 80, this.guiTop + 70, this.zLevel, 16, 52);
+		this.refinery.tanks[2].renderTank(this.guiLeft + 98, this.guiTop + 70, this.zLevel, 16, 52);
+		this.refinery.tanks[3].renderTank(this.guiLeft + 116, this.guiTop + 70, this.zLevel, 16, 52);
+		this.refinery.tanks[4].renderTank(this.guiLeft + 134, this.guiTop + 70, this.zLevel, 16, 52);
 	}
 }

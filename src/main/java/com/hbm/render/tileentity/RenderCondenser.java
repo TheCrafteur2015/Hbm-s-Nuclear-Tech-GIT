@@ -65,10 +65,12 @@ public class RenderCondenser extends TileEntitySpecialRenderer implements IItemR
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase( ) {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(-1, -1, 0);
 				GL11.glScaled(2.75, 2.75, 2.75);
 			}
+			@Override
 			public void renderCommon() {
 				GL11.glScaled(0.75, 0.75, 0.75);
 				GL11.glTranslated(0.5, 0, 0);

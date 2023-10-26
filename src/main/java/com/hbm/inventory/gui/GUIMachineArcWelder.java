@@ -28,8 +28,8 @@ public class GUIMachineArcWelder extends GuiInfoContainer {
 	public void drawScreen(int x, int y, float interp) {
 		super.drawScreen(x, y, interp);
 
-		welder.tank.renderTankInfo(this, x, y, guiLeft + 35, guiTop + 63, 34, 16);
-		this.drawElectricityInfo(this, x, y, guiLeft + 152, guiTop + 18, 16, 52, welder.power, welder.maxPower);
+		this.welder.tank.renderTankInfo(this, x, y, this.guiLeft + 35, this.guiTop + 63, 34, 16);
+		drawElectricityInfo(this, x, y, this.guiLeft + 152, this.guiTop + 18, 16, 52, this.welder.power, this.welder.maxPower);
 	}
 	
 	@Override
@@ -42,19 +42,19 @@ public class GUIMachineArcWelder extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float interp, int x, int y) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIMachineArcWelder.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		int p = (int) (welder.power * 52 / welder.maxPower);
-		drawTexturedModalRect(guiLeft + 152, guiTop + 70 - p, 176, 52 - p, 16, p);
+		int p = (int) (this.welder.power * 52 / this.welder.maxPower);
+		drawTexturedModalRect(this.guiLeft + 152, this.guiTop + 70 - p, 176, 52 - p, 16, p);
 		
-		int i = welder.progress * 33 / welder.processTime;
-		drawTexturedModalRect(guiLeft + 72, guiTop + 37, 192, 0, i, 14);
+		int i = this.welder.progress * 33 / this.welder.processTime;
+		drawTexturedModalRect(this.guiLeft + 72, this.guiTop + 37, 192, 0, i, 14);
 		
-		if(welder.power >= welder.consumption) {
-			drawTexturedModalRect(guiLeft + 156, guiTop + 4, 176, 52, 9, 12);
+		if(this.welder.power >= this.welder.consumption) {
+			drawTexturedModalRect(this.guiLeft + 156, this.guiTop + 4, 176, 52, 9, 12);
 		}
 		
-		welder.tank.renderTank(guiLeft + 35, guiTop + 79, this.zLevel, 34, 16, 1);
+		this.welder.tank.renderTank(this.guiLeft + 35, this.guiTop + 79, this.zLevel, 34, 16, 1);
 	}
 }

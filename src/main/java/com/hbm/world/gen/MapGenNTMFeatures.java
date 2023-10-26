@@ -8,9 +8,17 @@ import java.util.Random;
 import com.hbm.config.GeneralConfig;
 import com.hbm.config.StructureConfig;
 import com.hbm.world.gen.component.BunkerComponents.BunkerStart;
-import com.hbm.world.gen.component.CivilianFeatures.*;
-import com.hbm.world.gen.component.OfficeFeatures.*;
-import com.hbm.world.gen.component.RuinFeatures.*;
+import com.hbm.world.gen.component.CivilianFeatures.NTMHouse1;
+import com.hbm.world.gen.component.CivilianFeatures.NTMHouse2;
+import com.hbm.world.gen.component.CivilianFeatures.NTMLab1;
+import com.hbm.world.gen.component.CivilianFeatures.NTMLab2;
+import com.hbm.world.gen.component.CivilianFeatures.NTMWorkshop1;
+import com.hbm.world.gen.component.OfficeFeatures.LargeOffice;
+import com.hbm.world.gen.component.OfficeFeatures.LargeOfficeCorner;
+import com.hbm.world.gen.component.RuinFeatures.NTMRuin1;
+import com.hbm.world.gen.component.RuinFeatures.NTMRuin2;
+import com.hbm.world.gen.component.RuinFeatures.NTMRuin3;
+import com.hbm.world.gen.component.RuinFeatures.NTMRuin4;
 
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -23,7 +31,7 @@ import net.minecraft.world.gen.structure.StructureStart;
 public class MapGenNTMFeatures extends MapGenStructure {
 	
 	//BiomeDictionary could be /very/ useful, since it automatically sorts *all* biomes into predefined categories
-	private static List biomelist;
+	private static List<BiomeGenBase> biomelist;
 	/** Maximum distance between structures */
 	private int maxDistanceBetweenScatteredFeatures;
 	/** Minimum distance between structures */
@@ -66,14 +74,14 @@ public class MapGenNTMFeatures extends MapGenStructure {
 		if(k == i1 && l == j1) {
 			BiomeGenBase biomegenbase = this.worldObj.getWorldChunkManager().getBiomeGenAt(k * 16 + 8, l * 16 + 8);
 			
-			if(biomelist == null) {
-				biomelist = Arrays.asList(new BiomeGenBase[] {BiomeGenBase.ocean, BiomeGenBase.river, BiomeGenBase.frozenOcean, BiomeGenBase.frozenRiver, BiomeGenBase.deepOcean});
+			if(MapGenNTMFeatures.biomelist == null) {
+				MapGenNTMFeatures.biomelist = Arrays.asList(new BiomeGenBase[] {BiomeGenBase.ocean, BiomeGenBase.river, BiomeGenBase.frozenOcean, BiomeGenBase.frozenRiver, BiomeGenBase.deepOcean});
 			}
 			
-			Iterator iterator = biomelist.iterator();
+			Iterator<BiomeGenBase> iterator = MapGenNTMFeatures.biomelist.iterator();
 			
 			while(iterator.hasNext()) {
-				BiomeGenBase biomegenbase1 = (BiomeGenBase)iterator.next();
+				BiomeGenBase biomegenbase1 = iterator.next();
 				
 				if(biomegenbase == biomegenbase1)
 					return false;
@@ -100,6 +108,7 @@ public class MapGenNTMFeatures extends MapGenStructure {
 		
 		public Start() {}
 		
+		@SuppressWarnings("unchecked")
 		public Start(World world, Random rand, int chunkX, int chunkZ) {
 			super(chunkX, chunkZ);
 			
@@ -169,7 +178,7 @@ public class MapGenNTMFeatures extends MapGenStructure {
 				System.out.print("\n");
 			}
 			
-			this.updateBoundingBox();
+			updateBoundingBox();
 		}
 	}
 }

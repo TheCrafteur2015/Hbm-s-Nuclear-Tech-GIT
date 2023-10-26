@@ -30,7 +30,7 @@ public class ItemPlateFuel extends ItemFuelRod {
 		
 		list.add(EnumChatFormatting.YELLOW + "[Research Reactor Plate Fuel]");
 		list.add(EnumChatFormatting.DARK_AQUA + "   " + getFunctionDesc());
-		list.add(EnumChatFormatting.DARK_AQUA + "   Yield of " + BobMathUtil.getShortNumber(lifeTime) + " events");
+		list.add(EnumChatFormatting.DARK_AQUA + "   Yield of " + BobMathUtil.getShortNumber(this.lifeTime) + " events");
 		
 		super.addInformation(itemstack, player, list, bool);
 	}
@@ -47,27 +47,27 @@ public class ItemPlateFuel extends ItemFuelRod {
 	
 	public String getFunctionDesc() {
 		switch(this.function) {
-		case LOGARITHM: return "f(x) = log10(x + 1) * 0.5 * " + reactivity;
-		case SQUARE_ROOT: return "f(x) = sqrt(x) * " + reactivity + " / 10";
-		case NEGATIVE_QUADRATIC: return "f(x) = [x - (x² / 10000)] / 100 * " + reactivity;
-		case LINEAR: return "f(x) = x / 100 * " + reactivity;
-		case PASSIVE: return "f(x) = " + reactivity;
+		case LOGARITHM: return "f(x) = log10(x + 1) * 0.5 * " + this.reactivity;
+		case SQUARE_ROOT: return "f(x) = sqrt(x) * " + this.reactivity + " / 10";
+		case NEGATIVE_QUADRATIC: return "f(x) = [x - (x² / 10000)] / 100 * " + this.reactivity;
+		case LINEAR: return "f(x) = x / 100 * " + this.reactivity;
+		case PASSIVE: return "f(x) = " + this.reactivity;
 		default: return "x";
 		}
 	}
 	
 	public int react(World world, ItemStack stack, int flux) {
 		if(this.function != FunctionEnum.PASSIVE)
-			setLifeTime(stack, getLifeTime(stack) + flux);
+			ItemFuelRod.setLifeTime(stack, ItemFuelRod.getLifeTime(stack) + flux);
 		
 		switch(this.function) {
-		case LOGARITHM: return (int) (Math.log10(flux + 1) * 0.5D * reactivity);
+		case LOGARITHM: return (int) (Math.log10(flux + 1) * 0.5D * this.reactivity);
 		case SQUARE_ROOT: return (int) (Math.sqrt(flux) * this.reactivity / 10D);
-		case NEGATIVE_QUADRATIC: return (int) (Math.max((flux - (flux * flux / 10000D)) / 100D * reactivity, 0));
-		case LINEAR: return (int) (flux / 100D * reactivity);
+		case NEGATIVE_QUADRATIC: return (int) (Math.max((flux - (flux * flux / 10000D)) / 100D * this.reactivity, 0));
+		case LINEAR: return (int) (flux / 100D * this.reactivity);
 		case PASSIVE:
-			setLifeTime(stack, getLifeTime(stack) + reactivity);
-			return reactivity;
+			ItemFuelRod.setLifeTime(stack, ItemFuelRod.getLifeTime(stack) + this.reactivity);
+			return this.reactivity;
 		default: return 0;
 		}
 	}

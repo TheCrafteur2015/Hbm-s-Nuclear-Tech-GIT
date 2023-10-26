@@ -14,32 +14,32 @@ public class ContainerWasteDrum extends Container {
 	private TileEntityWasteDrum drum;
 	
 	public ContainerWasteDrum(InventoryPlayer invPlayer, TileEntityWasteDrum tedf) {
-		drum = tedf;
+		this.drum = tedf;
 
-		this.addSlotToContainer(new Slot(tedf, 0, 71, 21));
-		this.addSlotToContainer(new Slot(tedf, 1, 89, 21));
-		this.addSlotToContainer(new Slot(tedf, 2, 53, 39));
-		this.addSlotToContainer(new Slot(tedf, 3, 71, 39));
-		this.addSlotToContainer(new Slot(tedf, 4, 89, 39));
-		this.addSlotToContainer(new Slot(tedf, 5, 107, 39));
-		this.addSlotToContainer(new Slot(tedf, 6, 53, 57));
-		this.addSlotToContainer(new Slot(tedf, 7, 71, 57));
-		this.addSlotToContainer(new Slot(tedf, 8, 89, 57));
-		this.addSlotToContainer(new Slot(tedf, 9, 107, 57));
-		this.addSlotToContainer(new Slot(tedf, 10, 71, 75));
-		this.addSlotToContainer(new Slot(tedf, 11, 89, 75));
+		addSlotToContainer(new Slot(tedf, 0, 71, 21));
+		addSlotToContainer(new Slot(tedf, 1, 89, 21));
+		addSlotToContainer(new Slot(tedf, 2, 53, 39));
+		addSlotToContainer(new Slot(tedf, 3, 71, 39));
+		addSlotToContainer(new Slot(tedf, 4, 89, 39));
+		addSlotToContainer(new Slot(tedf, 5, 107, 39));
+		addSlotToContainer(new Slot(tedf, 6, 53, 57));
+		addSlotToContainer(new Slot(tedf, 7, 71, 57));
+		addSlotToContainer(new Slot(tedf, 8, 89, 57));
+		addSlotToContainer(new Slot(tedf, 9, 107, 57));
+		addSlotToContainer(new Slot(tedf, 10, 71, 75));
+		addSlotToContainer(new Slot(tedf, 11, 89, 75));
 		
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 23));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 23));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++)
 		{
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 23));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 23));
 		}
 	}
 	
@@ -52,11 +52,11 @@ public class ContainerWasteDrum extends Container {
 			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 
-			if(par2 <= drum.getSizeInventory() - 1) {
-				if(!InventoryUtil.mergeItemStack(this.inventorySlots, var5, drum.getSizeInventory(), this.inventorySlots.size(), true)) {
+			if(par2 <= this.drum.getSizeInventory() - 1) {
+				if(!InventoryUtil.mergeItemStack(this.inventorySlots, var5, this.drum.getSizeInventory(), this.inventorySlots.size(), true)) {
 					return null;
 				}
-			} else if(!InventoryUtil.mergeItemStack(this.inventorySlots, var5, 0, drum.getSizeInventory(), false)) {
+			} else if(!InventoryUtil.mergeItemStack(this.inventorySlots, var5, 0, this.drum.getSizeInventory(), false)) {
 				return null;
 			}
 
@@ -74,6 +74,6 @@ public class ContainerWasteDrum extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return drum.isUseableByPlayer(player);
+		return this.drum.isUseableByPlayer(player);
 	}
 }

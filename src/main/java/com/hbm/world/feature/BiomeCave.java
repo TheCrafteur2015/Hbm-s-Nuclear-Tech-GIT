@@ -3,8 +3,8 @@ package com.hbm.world.feature;
 import java.util.Random;
 
 import com.hbm.blocks.BlockEnums.EnumBiomeType;
-import com.hbm.world.generator.DungeonToolbox;
 import com.hbm.blocks.ModBlocks;
+import com.hbm.world.generator.DungeonToolbox;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.block.Block;
@@ -60,7 +60,7 @@ public class BiomeCave {
 		if(world.provider == null || world.provider.dimensionId != 0) return;
 		
 		if(this.noise == null) {
-			this.noise = new NoiseGeneratorPerlin(new Random(event.world.getSeed() - 1916169 + yLevel), 2);
+			this.noise = new NoiseGeneratorPerlin(new Random(event.world.getSeed() - 1916169 + this.yLevel), 2);
 		}
 		
 		int cX = event.chunkX;
@@ -72,21 +72,21 @@ public class BiomeCave {
 			for(int z = cZ + 8; z < cZ + 24; z++) {
 				
 				BiomeGenBase biome = world.getBiomeGenForCoords(x, z);
-				EnumBiomeType type = getTypeFromBiome(biome);
+				EnumBiomeType type = BiomeCave.getTypeFromBiome(biome);
 				
-				double n = noise.func_151601_a(x * scale, z * scale);
+				double n = this.noise.func_151601_a(x * scale, z * scale);
 				
-				if(type != null && n > threshold) {
-					int range = (int)((n - threshold) * rangeMult);
+				if(type != null && n > this.threshold) {
+					int range = (int)((n - this.threshold) * this.rangeMult);
 					
-					if(range > maxRange)
-						range = (maxRange * 2) - range;
+					if(range > this.maxRange)
+						range = (this.maxRange * 2) - range;
 					
 					if(range < 0)
 						continue;
 					
-					for(int y = yLevel - range; y <= yLevel + range; y++) {
-						handleBiome(world, x, y, z, type);
+					for(int y = this.yLevel - range; y <= this.yLevel + range; y++) {
+						BiomeCave.handleBiome(world, x, y, z, type);
 					}
 				}
 			}
@@ -101,10 +101,7 @@ public class BiomeCave {
 			boolean shouldGen = false;
 			
 			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-				if(world.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ).isAir(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ)) {
-					shouldGen = true; break;
-				}
-				if(world.getBlock(x + dir.offsetX * 2, y + dir.offsetY * 2, z + dir.offsetZ * 2).isAir(world, x + dir.offsetX * 2, y + dir.offsetY * 2, z + dir.offsetZ * 2)) {
+				if(world.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ).isAir(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) || world.getBlock(x + dir.offsetX * 2, y + dir.offsetY * 2, z + dir.offsetZ * 2).isAir(world, x + dir.offsetX * 2, y + dir.offsetY * 2, z + dir.offsetZ * 2)) {
 					shouldGen = true; break;
 				}
 			}

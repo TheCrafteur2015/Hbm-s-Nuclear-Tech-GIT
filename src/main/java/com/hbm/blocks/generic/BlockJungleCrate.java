@@ -19,19 +19,20 @@ public class BlockJungleCrate extends Block {
 	
 	Random rand = new Random();
 	
-    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+    @Override
+	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
     	
-        ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+        ArrayList<ItemStack> ret = new ArrayList<>();
 
-        ret.add(new ItemStack(Items.gold_ingot, 4 + rand.nextInt(4)));
-        ret.add(new ItemStack(Items.gold_nugget, 8 + rand.nextInt(10)));
-        ret.add(new ItemStack(ModItems.powder_gold, 2 + rand.nextInt(3)));
-        ret.add(new ItemStack(ModItems.wire_gold, 2 + rand.nextInt(2)));
+        ret.add(new ItemStack(Items.gold_ingot, 4 + this.rand.nextInt(4)));
+        ret.add(new ItemStack(Items.gold_nugget, 8 + this.rand.nextInt(10)));
+        ret.add(new ItemStack(ModItems.powder_gold, 2 + this.rand.nextInt(3)));
+        ret.add(new ItemStack(ModItems.wire_gold, 2 + this.rand.nextInt(2)));
 
-        if(rand.nextInt(2) == 0)
-        	ret.add(new ItemStack(ModItems.plate_gold, 1 + rand.nextInt(2)));
+        if(this.rand.nextInt(2) == 0)
+        	ret.add(new ItemStack(ModItems.plate_gold, 1 + this.rand.nextInt(2)));
         
-        if(rand.nextInt(3) == 0)
+        if(this.rand.nextInt(3) == 0)
         	ret.add(new ItemStack(ModItems.crystal_gold));
         
         return ret;

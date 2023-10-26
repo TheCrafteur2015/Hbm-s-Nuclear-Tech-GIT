@@ -18,10 +18,10 @@ public class TomSaveData extends WorldSavedData {
 		TomSaveData result = (TomSaveData) world.perWorldStorage.loadData(TomSaveData.class, "impactData");
 
 		if(result == null) {
-			world.perWorldStorage.setData(key, new TomSaveData(key));
+			world.perWorldStorage.setData(TomSaveData.key, new TomSaveData(TomSaveData.key));
 			result = (TomSaveData) world.perWorldStorage.loadData(TomSaveData.class, "impactData");
 		}
-		lastCachedUnsafe = result;
+		TomSaveData.lastCachedUnsafe = result;
 		return result;
 	}
 	
@@ -30,11 +30,11 @@ public class TomSaveData extends WorldSavedData {
 	 * However, due to the world gen invoking TomSaveData.forWorld() quite a lot, it is safe to say that in most cases, we do end up with the correct result.
 	 */
 	public static TomSaveData getLastCachedOrNull() {
-		return lastCachedUnsafe;
+		return TomSaveData.lastCachedUnsafe;
 	}
 	
 	public static void resetLastCached() {
-		lastCachedUnsafe = null;
+		TomSaveData.lastCachedUnsafe = null;
 	}
 
 	public TomSaveData(String tagName) {
@@ -50,8 +50,8 @@ public class TomSaveData extends WorldSavedData {
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
-		nbt.setFloat("dust", dust);
-		nbt.setFloat("fire", fire);
-		nbt.setBoolean("impact", impact);
+		nbt.setFloat("dust", this.dust);
+		nbt.setFloat("fire", this.fire);
+		nbt.setBoolean("impact", this.impact);
 	}
 }

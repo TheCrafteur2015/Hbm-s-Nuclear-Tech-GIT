@@ -36,33 +36,34 @@ public class TileEntityTurretMaxwell extends TileEntityTurretBaseNT {
 		return null;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public List<ItemStack> getAmmoTypesForDisplay() {
 		
-		if(ammoStacks != null)
-			return ammoStacks;
+		if(this.ammoStacks != null)
+			return this.ammoStacks;
 		
-		ammoStacks = new ArrayList();
+		this.ammoStacks = new ArrayList<>();
 
-		ammoStacks.add(new ItemStack(ModItems.upgrade_speed_1));
-		ammoStacks.add(new ItemStack(ModItems.upgrade_speed_2));
-		ammoStacks.add(new ItemStack(ModItems.upgrade_speed_3));
-		ammoStacks.add(new ItemStack(ModItems.upgrade_effect_1));
-		ammoStacks.add(new ItemStack(ModItems.upgrade_effect_2));
-		ammoStacks.add(new ItemStack(ModItems.upgrade_effect_3));
-		ammoStacks.add(new ItemStack(ModItems.upgrade_power_1));
-		ammoStacks.add(new ItemStack(ModItems.upgrade_power_2));
-		ammoStacks.add(new ItemStack(ModItems.upgrade_power_3));
-		ammoStacks.add(new ItemStack(ModItems.upgrade_afterburn_1));
-		ammoStacks.add(new ItemStack(ModItems.upgrade_afterburn_2));
-		ammoStacks.add(new ItemStack(ModItems.upgrade_afterburn_3));
-		ammoStacks.add(new ItemStack(ModItems.upgrade_overdrive_1));
-		ammoStacks.add(new ItemStack(ModItems.upgrade_overdrive_2));
-		ammoStacks.add(new ItemStack(ModItems.upgrade_overdrive_3));
-		ammoStacks.add(new ItemStack(ModItems.upgrade_5g));
-		ammoStacks.add(new ItemStack(ModItems.upgrade_screm));
+		this.ammoStacks.add(new ItemStack(ModItems.upgrade_speed_1));
+		this.ammoStacks.add(new ItemStack(ModItems.upgrade_speed_2));
+		this.ammoStacks.add(new ItemStack(ModItems.upgrade_speed_3));
+		this.ammoStacks.add(new ItemStack(ModItems.upgrade_effect_1));
+		this.ammoStacks.add(new ItemStack(ModItems.upgrade_effect_2));
+		this.ammoStacks.add(new ItemStack(ModItems.upgrade_effect_3));
+		this.ammoStacks.add(new ItemStack(ModItems.upgrade_power_1));
+		this.ammoStacks.add(new ItemStack(ModItems.upgrade_power_2));
+		this.ammoStacks.add(new ItemStack(ModItems.upgrade_power_3));
+		this.ammoStacks.add(new ItemStack(ModItems.upgrade_afterburn_1));
+		this.ammoStacks.add(new ItemStack(ModItems.upgrade_afterburn_2));
+		this.ammoStacks.add(new ItemStack(ModItems.upgrade_afterburn_3));
+		this.ammoStacks.add(new ItemStack(ModItems.upgrade_overdrive_1));
+		this.ammoStacks.add(new ItemStack(ModItems.upgrade_overdrive_2));
+		this.ammoStacks.add(new ItemStack(ModItems.upgrade_overdrive_3));
+		this.ammoStacks.add(new ItemStack(ModItems.upgrade_5g));
+		this.ammoStacks.add(new ItemStack(ModItems.upgrade_screm));
 		
-		return ammoStacks;
+		return this.ammoStacks;
 	}
 	
 	@Override
@@ -107,7 +108,7 @@ public class TileEntityTurretMaxwell extends TileEntityTurretBaseNT {
 
 	@Override
 	public long getConsumption() {
-		return _5g ? 10 : 10000 - this.blueLevel * 300;
+		return this._5g ? 10 : 10000 - this.blueLevel * 300;
 	}
 
 	@Override
@@ -126,20 +127,20 @@ public class TileEntityTurretMaxwell extends TileEntityTurretBaseNT {
 	@Override
 	public void updateEntity() {
 		
-		if(worldObj.isRemote) {
+		if(this.worldObj.isRemote) {
 			
 			if(this.tPos != null) {
-				Vec3 pos = this.getTurretPos();
-				double length = Vec3.createVectorHelper(tPos.xCoord - pos.xCoord, tPos.yCoord - pos.yCoord, tPos.zCoord - pos.zCoord).lengthVector();
+				Vec3 pos = getTurretPos();
+				double length = Vec3.createVectorHelper(this.tPos.xCoord - pos.xCoord, this.tPos.yCoord - pos.yCoord, this.tPos.zCoord - pos.zCoord).lengthVector();
 				this.lastDist = length;
 			}
 			
-			if(beam > 0)
-				beam--;
+			if(this.beam > 0)
+				this.beam--;
 		} else {
 			
-			if(checkDelay <= 0) {
-				checkDelay = 20;
+			if(this.checkDelay <= 0) {
+				this.checkDelay = 20;
 				
 				this.redLevel = 0;
 				this.greenLevel = 0;
@@ -150,31 +151,31 @@ public class TileEntityTurretMaxwell extends TileEntityTurretBaseNT {
 				this.screm = false;
 				
 				for(int i = 1; i < 10; i++) {
-					if(slots[i] != null) {
-						Item item = slots[i].getItem();
+					if(this.slots[i] != null) {
+						Item item = this.slots[i].getItem();
 						
-						if(item == ModItems.upgrade_speed_1) redLevel += 1;
-						if(item == ModItems.upgrade_speed_2) redLevel += 2;
-						if(item == ModItems.upgrade_speed_3) redLevel += 3;
-						if(item == ModItems.upgrade_effect_1) greenLevel += 1;
-						if(item == ModItems.upgrade_effect_2) greenLevel += 2;
-						if(item == ModItems.upgrade_effect_3) greenLevel += 3;
-						if(item == ModItems.upgrade_power_1) blueLevel += 1;
-						if(item == ModItems.upgrade_power_2) blueLevel += 2;
-						if(item == ModItems.upgrade_power_3) blueLevel += 3;
-						if(item == ModItems.upgrade_afterburn_1) pinkLevel += 1;
-						if(item == ModItems.upgrade_afterburn_2) pinkLevel += 2;
-						if(item == ModItems.upgrade_afterburn_3) pinkLevel += 3;
-						if(item == ModItems.upgrade_overdrive_1) blackLevel += 1;
-						if(item == ModItems.upgrade_overdrive_2) blackLevel += 2;
-						if(item == ModItems.upgrade_overdrive_3) blackLevel += 3;
-						if(item == ModItems.upgrade_5g) _5g = true;
-						if(item == ModItems.upgrade_screm) screm = true;
+						if(item == ModItems.upgrade_speed_1) this.redLevel += 1;
+						if(item == ModItems.upgrade_speed_2) this.redLevel += 2;
+						if(item == ModItems.upgrade_speed_3) this.redLevel += 3;
+						if(item == ModItems.upgrade_effect_1) this.greenLevel += 1;
+						if(item == ModItems.upgrade_effect_2) this.greenLevel += 2;
+						if(item == ModItems.upgrade_effect_3) this.greenLevel += 3;
+						if(item == ModItems.upgrade_power_1) this.blueLevel += 1;
+						if(item == ModItems.upgrade_power_2) this.blueLevel += 2;
+						if(item == ModItems.upgrade_power_3) this.blueLevel += 3;
+						if(item == ModItems.upgrade_afterburn_1) this.pinkLevel += 1;
+						if(item == ModItems.upgrade_afterburn_2) this.pinkLevel += 2;
+						if(item == ModItems.upgrade_afterburn_3) this.pinkLevel += 3;
+						if(item == ModItems.upgrade_overdrive_1) this.blackLevel += 1;
+						if(item == ModItems.upgrade_overdrive_2) this.blackLevel += 2;
+						if(item == ModItems.upgrade_overdrive_3) this.blackLevel += 3;
+						if(item == ModItems.upgrade_5g) this._5g = true;
+						if(item == ModItems.upgrade_screm) this.screm = true;
 					}
 				}
 			}
 			
-			checkDelay--;
+			this.checkDelay--;
 		}
 		
 		super.updateEntity();
@@ -193,18 +194,18 @@ public class TileEntityTurretMaxwell extends TileEntityTurretBaseNT {
 	@Override
 	public void updateFiringTick() {
 		
-		long demand = this.getConsumption() * 10;
+		long demand = getConsumption() * 10;
 		
-		if(this.target != null && this.getPower() >= demand) {
+		if(this.target != null && getPower() >= demand) {
 
-			if(_5g && target instanceof EntityPlayer) {
-				EntityPlayer living = (EntityPlayer) target;
+			if(this._5g && this.target instanceof EntityPlayer) {
+				EntityPlayer living = (EntityPlayer) this.target;
 				living.addPotionEffect(new PotionEffect(HbmPotion.death.id, 30 * 60 * 20, 0, true));
 			} else {
 				EntityDamageUtil.attackEntityFromIgnoreIFrame(this.target, ModDamageSource.microwave, (this.blackLevel * 10 + this.redLevel + 1F) * 0.25F);
 			}
 			
-			if(pinkLevel > 0)
+			if(this.pinkLevel > 0)
 				this.target.setFire(this.pinkLevel * 3);
 			
 			if(!this.target.isEntityAlive() && this.target instanceof EntityLivingBase) {
@@ -214,16 +215,16 @@ public class TileEntityTurretMaxwell extends TileEntityTurretBaseNT {
 				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(vdat, this.target.posX, this.target.posY + this.target.height * 0.5, this.target.posZ), new TargetPoint(this.target.dimension, this.target.posX, this.target.posY + this.target.height * 0.5, this.target.posZ, 150));
 				
 				if(this.screm)
-					worldObj.playSoundEffect(this.target.posX, this.target.posY, this.target.posZ, "hbm:block.screm", 20.0F, 1.0F);
+					this.worldObj.playSoundEffect(this.target.posX, this.target.posY, this.target.posZ, "hbm:block.screm", 20.0F, 1.0F);
 				else
-					worldObj.playSoundEffect(this.target.posX, this.target.posY, this.target.posZ, "mob.zombie.woodbreak", 2.0F, 0.95F + worldObj.rand.nextFloat() * 0.2F);
+					this.worldObj.playSoundEffect(this.target.posX, this.target.posY, this.target.posZ, "mob.zombie.woodbreak", 2.0F, 0.95F + this.worldObj.rand.nextFloat() * 0.2F);
 			}
 			
 			this.power -= demand;
 			
 			NBTTagCompound data = new NBTTagCompound();
 			data.setBoolean("shot", true);
-			this.networkPack(data, 250);
+			networkPack(data, 250);
 		}
 	}
 
@@ -231,7 +232,7 @@ public class TileEntityTurretMaxwell extends TileEntityTurretBaseNT {
 	public void networkUnpack(NBTTagCompound nbt) {
 		
 		if(nbt.hasKey("shot"))
-			beam = 5;
+			this.beam = 5;
 		else
 			super.networkUnpack(nbt);
 	}

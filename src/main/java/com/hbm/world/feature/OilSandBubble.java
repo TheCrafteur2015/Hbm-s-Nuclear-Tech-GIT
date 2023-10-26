@@ -25,7 +25,7 @@ public class OilSandBubble {
 				for (int zz = -r; zz < r; zz++) {
 					int Z = zz + z;
 					int ZZ = YY + zz * zz;
-					if (ZZ < r22 + field_149933_a.nextInt(r22 / 3)) {
+					if (ZZ < r22 + OilSandBubble.field_149933_a.nextInt(r22 / 3)) {
 						if(world.getBlock(X, Y, Z) == Blocks.sand)
 							world.setBlock(X, Y, Z, ModBlocks.ore_oil_sand);
 					}

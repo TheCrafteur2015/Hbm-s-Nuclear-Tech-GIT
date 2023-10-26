@@ -21,7 +21,7 @@ public class ModuleRichTooltip {
 	
 	protected int colorBg = 0xF0100010;
 	protected int color0 = 0x505000FF;
-	protected int color1 = (color0 & 0xFEFEFE) >> 1 | color0 & 0xFF000000;
+	protected int color1 = (this.color0 & 0xFEFEFE) >> 1 | this.color0 & 0xFF000000;
 	
 	public ModuleRichTooltip(GuiInfoContainer gui) {
 		this.gui = gui;
@@ -80,27 +80,27 @@ public class ModuleRichTooltip {
 			int minX = x + 12;
 			int minY = y - 12;
 
-			if(minX + longestline > gui.width) {
+			if(minX + longestline > this.gui.width) {
 				minX -= 28 + longestline;
 			}
 
-			if(minY + height + 6 > gui.height) {
-				minY = gui.height - height - 6;
+			if(minY + height + 6 > this.gui.height) {
+				minY = this.gui.height - height - 6;
 			}
 
-			gui.setZLevel(300F);
-			gui.getItemRenderer().zLevel = 300.0F;
+			this.gui.setZLevel(300F);
+			this.gui.getItemRenderer().zLevel = 300.0F;
 			
-			this.drawGradientRect(minX - 3, minY - 4, minX + longestline + 3, minY - 3, colorBg, colorBg);
-			this.drawGradientRect(minX - 3, minY + height + 3, minX + longestline + 3, minY + height + 4, colorBg, colorBg);
-			this.drawGradientRect(minX - 3, minY - 3, minX + longestline + 3, minY + height + 3, colorBg, colorBg);
-			this.drawGradientRect(minX - 4, minY - 3, minX - 3, minY + height + 3, colorBg, colorBg);
-			this.drawGradientRect(minX + longestline + 3, minY - 3, minX + longestline + 4, minY + height + 3, colorBg, colorBg);
+			drawGradientRect(minX - 3, minY - 4, minX + longestline + 3, minY - 3, this.colorBg, this.colorBg);
+			drawGradientRect(minX - 3, minY + height + 3, minX + longestline + 3, minY + height + 4, this.colorBg, this.colorBg);
+			drawGradientRect(minX - 3, minY - 3, minX + longestline + 3, minY + height + 3, this.colorBg, this.colorBg);
+			drawGradientRect(minX - 4, minY - 3, minX - 3, minY + height + 3, this.colorBg, this.colorBg);
+			drawGradientRect(minX + longestline + 3, minY - 3, minX + longestline + 4, minY + height + 3, this.colorBg, this.colorBg);
 			
-			this.drawGradientRect(minX - 3, minY - 3 + 1, minX - 3 + 1, minY + height + 3 - 1, color0, color1);
-			this.drawGradientRect(minX + longestline + 2, minY - 3 + 1, minX + longestline + 3, minY + height + 3 - 1, color0, color1);
-			this.drawGradientRect(minX - 3, minY - 3, minX + longestline + 3, minY - 3 + 1, color0, color0);
-			this.drawGradientRect(minX - 3, minY + height + 2, minX + longestline + 3, minY + height + 3, color1, color1);
+			drawGradientRect(minX - 3, minY - 3 + 1, minX - 3 + 1, minY + height + 3 - 1, this.color0, this.color1);
+			drawGradientRect(minX + longestline + 2, minY - 3 + 1, minX + longestline + 3, minY + height + 3 - 1, this.color0, this.color1);
+			drawGradientRect(minX - 3, minY - 3, minX + longestline + 3, minY - 3 + 1, this.color0, this.color0);
+			drawGradientRect(minX - 3, minY + height + 2, minX + longestline + 3, minY + height + 3, this.color1, this.color1);
 
 			for(int index = 0; index < lines.size(); ++index) {
 				
@@ -122,8 +122,8 @@ public class ModuleRichTooltip {
 					} else {
 						ItemStack stack = (ItemStack) o;
 						GL11.glColor3f(1F, 1F, 1F);
-						gui.getItemRenderer().renderItemAndEffectIntoGUI(gui.getFontRenderer(), gui.mc.getTextureManager(), stack, minX + indent, minY);
-						gui.getItemRenderer().renderItemOverlayIntoGUI(gui.getFontRenderer(), gui.mc.getTextureManager(), stack, minX + indent, minY, stack.stackSize == 0 ? (EnumChatFormatting.RED + "_ _") : null);
+						this.gui.getItemRenderer().renderItemAndEffectIntoGUI(this.gui.getFontRenderer(), this.gui.mc.getTextureManager(), stack, minX + indent, minY);
+						this.gui.getItemRenderer().renderItemOverlayIntoGUI(this.gui.getFontRenderer(), this.gui.mc.getTextureManager(), stack, minX + indent, minY, stack.stackSize == 0 ? (EnumChatFormatting.RED + "_ _") : null);
 						RenderHelper.disableStandardItemLighting();
 						GL11.glDisable(GL11.GL_DEPTH_TEST);
 						indent += 18;
@@ -137,8 +137,8 @@ public class ModuleRichTooltip {
 				minY += hasStack ? 18 : 10;
 			}
 
-			gui.setZLevel(0F);
-			gui.getItemRenderer().zLevel = 0.0F;
+			this.gui.setZLevel(0F);
+			this.gui.getItemRenderer().zLevel = 0.0F;
 			GL11.glEnable(GL11.GL_LIGHTING);
 			GL11.glEnable(GL11.GL_DEPTH_TEST);
 			RenderHelper.enableStandardItemLighting();
@@ -147,7 +147,7 @@ public class ModuleRichTooltip {
 	}
 	
 	protected void drawGradientRect(int minX, int minY, int maxX, int maxY, int colorTop, int colorBottom) {
-		float zLevel = gui.getZLevel();
+		float zLevel = this.gui.getZLevel();
 		float topA = (float) (colorTop >> 24 & 255) / 255.0F;
 		float topR = (float) (colorTop >> 16 & 255) / 255.0F;
 		float topG = (float) (colorTop >> 8 & 255) / 255.0F;

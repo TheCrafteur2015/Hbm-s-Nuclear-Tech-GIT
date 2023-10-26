@@ -15,13 +15,15 @@ import net.minecraft.world.World;
 
 public class ItemMS extends Item {
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool)
 	{
 		list.add("Lost but not forgotten");
 	}
 	
-    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int i, float a, float b, float c)
+    @Override
+	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int i, float a, float b, float c)
     {
     	if(!world.isRemote) {
     		if(world.getBlock(x, y, z) == ModBlocks.ntm_dirt) {
@@ -29,7 +31,7 @@ public class ItemMS extends Item {
 				world.func_147480_a(x, y, z, false);
 
     	    	Random rand = new Random();
-    	    	List<ItemStack> list = new ArrayList<ItemStack>();
+    	    	List<ItemStack> list = new ArrayList<>();
 
     	    	list.add(new ItemStack(ModItems.ingot_u238m2, 1, 1));
     	    	list.add(new ItemStack(ModItems.ingot_u238m2, 1, 2));

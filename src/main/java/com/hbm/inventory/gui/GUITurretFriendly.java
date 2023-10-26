@@ -14,7 +14,8 @@ public class GUITurretFriendly extends GUITurretBase {
 		super(invPlayer, tedf);
 	}
 	
+	@Override
 	protected ResourceLocation getTexture() {
-		return texture;
+		return GUITurretFriendly.texture;
 	}
 }

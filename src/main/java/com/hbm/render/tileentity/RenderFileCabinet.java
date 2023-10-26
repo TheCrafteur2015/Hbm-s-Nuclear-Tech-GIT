@@ -72,11 +72,13 @@ public class RenderFileCabinet extends TileEntitySpecialRenderer implements IIte
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase() {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(-1D, 0.5D, -1D);
 				GL11.glRotatef(180F, 0, 1F, 0);
 				GL11.glScalef(4F, 4F, 4F);
 			}
+			@Override
 			public void renderCommonWithStack(ItemStack stack) {
 				GL11.glTranslated(0, -1.25D, 0);
 				GL11.glScaled(2.75D, 2.75D, 2.75D);

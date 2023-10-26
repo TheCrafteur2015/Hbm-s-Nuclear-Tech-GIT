@@ -69,6 +69,7 @@ abstract public class Component extends StructureComponent {
 	}
 	
 	/** Set to NBT */
+	@Override
 	protected void func_143012_a(NBTTagCompound nbt) {
 		nbt.setInteger("Width", this.sizeX);
 		nbt.setInteger("Height", this.sizeY);
@@ -77,6 +78,7 @@ abstract public class Component extends StructureComponent {
 	}
 	
 	/** Get from NBT */
+	@Override
 	protected void func_143011_b(NBTTagCompound nbt) {
 		this.sizeX = nbt.getInteger("Width");
 		this.sizeY = nbt.getInteger("Height");
@@ -252,9 +254,9 @@ abstract public class Component extends StructureComponent {
 	 * </li>
 	 */
 	protected void placeDoor(World world, StructureBoundingBox box, Block door, int dirMeta, boolean opensRight, boolean isOpen, int featureX, int featureY, int featureZ) { //isOpen for randomly opened doors
-		int posX = this.getXWithOffset(featureX, featureZ);
-		int posY = this.getYWithOffset(featureY);
-		int posZ = this.getZWithOffset(featureX, featureZ);
+		int posX = getXWithOffset(featureX, featureZ);
+		int posY = getYWithOffset(featureY);
+		int posZ = getZWithOffset(featureX, featureZ);
 		
 		if(!box.isVecInside(posX, posY, posZ)) return;
 		
@@ -273,16 +275,16 @@ abstract public class Component extends StructureComponent {
 		int metaTop = opensRight ? 0b1001 : 0b1000;
 		int metaBottom = dirMeta | (isOpen ? 0b100 : 0);
 		
-		if(world.doesBlockHaveSolidTopSurface(world, posX, posY - 1, posZ)) {
+		if(World.doesBlockHaveSolidTopSurface(world, posX, posY - 1, posZ)) {
 			world.setBlock(posX, posY, posZ, door, metaBottom, 2);
 			world.setBlock(posX, posY + 1, posZ, door, metaTop, 2);
 		}
 	}
 	/** 1 for west face, 2 for east face, 3 for north, 4 for south*/
 	protected void placeLever(World world, StructureBoundingBox box, int dirMeta, boolean on, int featureX, int featureY, int featureZ) {
-		int posX = this.getXWithOffset(featureX, featureZ);
-		int posY = this.getYWithOffset(featureY);
-		int posZ = this.getZWithOffset(featureX, featureZ);
+		int posX = getXWithOffset(featureX, featureZ);
+		int posY = getYWithOffset(featureY);
+		int posZ = getZWithOffset(featureX, featureZ);
 		
 		if(!box.isVecInside(posX, posY, posZ)) return;
 		
@@ -378,14 +380,14 @@ abstract public class Component extends StructureComponent {
 	}
 	
 	protected boolean generateInvContents(World world, StructureBoundingBox box, Random rand, Block block, int meta, int featureX, int featureY, int featureZ, WeightedRandomChestContent[] content, int amount) {
-		int posX = this.getXWithOffset(featureX, featureZ);
-		int posY = this.getYWithOffset(featureY);
-		int posZ = this.getZWithOffset(featureX, featureZ);
+		int posX = getXWithOffset(featureX, featureZ);
+		int posY = getYWithOffset(featureY);
+		int posZ = getZWithOffset(featureX, featureZ);
 		
 		if(!box.isVecInside(posX, posY, posZ) || world.getBlock(posX, posY, posZ) == block) //replacement for hasPlacedLoot checks
 			return true;
 		
-		this.placeBlockAtCurrentPosition(world, block, meta, featureX, featureY, featureZ, box);
+		placeBlockAtCurrentPosition(world, block, meta, featureX, featureY, featureZ, box);
 		IInventory inventory = (IInventory)world.getTileEntity(posX, posY, posZ);
 		
 		if(inventory != null) {
@@ -409,14 +411,14 @@ abstract public class Component extends StructureComponent {
 	
 	protected boolean generateLockableContents(World world, StructureBoundingBox box, Random rand, Block block, int meta, int featureX, int featureY, int featureZ,
 			WeightedRandomChestContent[] content, int amount, double mod) {
-		int posX = this.getXWithOffset(featureX, featureZ);
-		int posY = this.getYWithOffset(featureY);
-		int posZ = this.getZWithOffset(featureX, featureZ);
+		int posX = getXWithOffset(featureX, featureZ);
+		int posY = getYWithOffset(featureY);
+		int posZ = getZWithOffset(featureX, featureZ);
 		
 		if(!box.isVecInside(posX, posY, posZ) || world.getBlock(posX, posY, posZ) == block) //replacement for hasPlacedLoot checks
 			return false;
 		
-		this.placeBlockAtCurrentPosition(world, block, meta, featureX, featureY, featureZ, box);
+		placeBlockAtCurrentPosition(world, block, meta, featureX, featureY, featureZ, box);
 		TileEntity tile = world.getTileEntity(posX, posY, posZ);
 		TileEntityLockableBase lock = (TileEntityLockableBase) tile;
 		IInventory inventory = (IInventory) tile;
@@ -435,9 +437,9 @@ abstract public class Component extends StructureComponent {
 	}
 	
 	protected void generateLoreBook(World world, StructureBoundingBox box, int featureX, int featureY, int featureZ, int slot, ItemStack stack) { //kept for compat
-		int posX = this.getXWithOffset(featureX, featureZ);
-		int posY = this.getYWithOffset(featureY);
-		int posZ = this.getZWithOffset(featureX, featureZ);
+		int posX = getXWithOffset(featureX, featureZ);
+		int posY = getYWithOffset(featureY);
+		int posZ = getZWithOffset(featureX, featureZ);
 		
 		if(!box.isVecInside(posX, posY, posZ)) return;
 		
@@ -452,9 +454,9 @@ abstract public class Component extends StructureComponent {
 	 * Places random bobblehead with a randomized orientation at specified location
 	 */
 	protected void placeRandomBobble(World world, StructureBoundingBox box, Random rand, int featureX, int featureY, int featureZ) {
-		int posX = this.getXWithOffset(featureX, featureZ);
-		int posY = this.getYWithOffset(featureY);
-		int posZ = this.getZWithOffset(featureX, featureZ);
+		int posX = getXWithOffset(featureX, featureZ);
+		int posY = getYWithOffset(featureY);
+		int posZ = getZWithOffset(featureX, featureZ);
 		
 		placeBlockAtCurrentPosition(world, ModBlocks.bobblehead, rand.nextInt(16), featureX, featureY, featureZ, box);
 		TileEntityBobble bobble = (TileEntityBobble) world.getTileEntity(posX, posY, posZ);
@@ -474,9 +476,9 @@ abstract public class Component extends StructureComponent {
 		
 		for(int featureX = minX; featureX <= maxX; featureX++) {
 			for(int featureZ = minZ; featureZ <= maxZ; featureZ++) {
-				int posX = this.getXWithOffset(featureX, featureZ);
-				int posY = this.getYWithOffset(featureY);
-				int posZ = this.getZWithOffset(featureX, featureZ);
+				int posX = getXWithOffset(featureX, featureZ);
+				int posY = getYWithOffset(featureY);
+				int posZ = getZWithOffset(featureX, featureZ);
 				
 				if(box.isVecInside(posX, posY, posZ)) {
 					Block block = world.getBlock(posX, posY, posZ);
@@ -504,8 +506,8 @@ abstract public class Component extends StructureComponent {
 		
 		for(int x = minX; x <= maxX; x++) {
 			for(int z = minZ; z <= maxZ; z++) {
-				int posX = this.getXWithOffset(x, z);
-				int posZ = this.getZWithOffset(x, z);
+				int posX = getXWithOffset(x, z);
+				int posZ = getZWithOffset(x, z);
 				int topHeight = world.getTopSolidOrLiquidBlock(posX, posZ);
 				
 				if(!world.getBlock(posX, topHeight, posZ).getMaterial().isLiquid()) {
@@ -592,6 +594,7 @@ abstract public class Component extends StructureComponent {
 	}
 	
 	/** Methods that are actually optimized, including ones that cut out replaceBlock and onlyReplace functionality when it's redundant. */
+	@Override
 	protected void fillWithAir(World world, StructureBoundingBox box, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
 		
 		if(getYWithOffset(minY) < box.minY || getYWithOffset(maxY) > box.maxY)
@@ -839,7 +842,7 @@ abstract public class Component extends StructureComponent {
 	}
 	
 	protected ForgeDirection getDirection(ForgeDirection dir) {
-		switch(coordBaseMode) {
+		switch(this.coordBaseMode) {
 		default: //South
 			return dir;
 		case 1: //West
@@ -921,10 +924,7 @@ abstract public class Component extends StructureComponent {
 			int posZ = getZWithOffset(x, z);
 			int posY = getYWithOffset(y);
 			
-			if(!box.isVecInside(posX, posY, posZ))
-				return;
-			
-			if(world.getBlock(posX, posY, posZ) != block)
+			if(!box.isVecInside(posX, posY, posZ) || (world.getBlock(posX, posY, posZ) != block))
 				return;
 
 			int meta = world.getBlockMetadata(posX, posY, posZ);

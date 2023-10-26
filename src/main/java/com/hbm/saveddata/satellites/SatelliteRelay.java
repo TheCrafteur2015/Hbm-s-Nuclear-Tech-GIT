@@ -11,6 +11,7 @@ public class SatelliteRelay extends Satellite {
 		this.satIface = Interfaces.NONE;
 	}
 
+	@Override
 	public void onOrbit(World world, double x, double y, double z) {
 
 		for(Object p : world.playerEntities)

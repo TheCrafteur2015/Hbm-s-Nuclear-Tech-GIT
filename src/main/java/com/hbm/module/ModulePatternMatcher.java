@@ -27,22 +27,19 @@ public class ModulePatternMatcher {
 		if(world.isRemote) return;
 		
 		if(stack == null) {
-			modes[i] = null;
+			this.modes[i] = null;
 			return;
 		}
 		
 		List<String> names = ItemStackUtil.getOreDictNames(stack);
 
-		if(iterateAndCheck(names, i ,"ingot")) return;
-		if(iterateAndCheck(names, i ,"block")) return;
-		if(iterateAndCheck(names, i ,"dust")) return;
-		if(iterateAndCheck(names, i ,"nugget")) return;
+		if(iterateAndCheck(names, i ,"ingot") || iterateAndCheck(names, i ,"block") || iterateAndCheck(names, i ,"dust") || iterateAndCheck(names, i ,"nugget")) return;
 		if(iterateAndCheck(names, i ,"plate")) return;
 		
 		if(stack.getHasSubtypes()) {
-			modes[i] = MODE_EXACT;
+			this.modes[i] = ModulePatternMatcher.MODE_EXACT;
 		} else {
-			modes[i] = MODE_WILDCARD;
+			this.modes[i] = ModulePatternMatcher.MODE_WILDCARD;
 		}
 	}
 	
@@ -50,7 +47,7 @@ public class ModulePatternMatcher {
 		
 		for(String s : names) {
 			if(s.startsWith(prefix)) {
-				modes[i] = s;
+				this.modes[i] = s;
 				return true;
 			}
 		}
@@ -63,14 +60,14 @@ public class ModulePatternMatcher {
 		if(world.isRemote) return;
 		
 		if(stack == null) {
-			modes[i] = null;
+			this.modes[i] = null;
 			return;
 		}
 		
 		if(stack.getHasSubtypes()) {
-			modes[i] = MODE_EXACT;
+			this.modes[i] = ModulePatternMatcher.MODE_EXACT;
 		} else {
-			modes[i] = MODE_WILDCARD;
+			this.modes[i] = ModulePatternMatcher.MODE_WILDCARD;
 		}
 	}
 	
@@ -79,35 +76,35 @@ public class ModulePatternMatcher {
 		if(world.isRemote) return;
 		
 		if(pattern == null) {
-			modes[i] = null;
+			this.modes[i] = null;
 			return;
 		}
 		
-		if(modes[i] == null) {
-			modes[i] = MODE_EXACT;
-		} else if(MODE_EXACT.equals(modes[i])) {
-			modes[i] = MODE_WILDCARD;
-		} else if(MODE_WILDCARD.equals(modes[i])) {
+		if(this.modes[i] == null) {
+			this.modes[i] = ModulePatternMatcher.MODE_EXACT;
+		} else if(ModulePatternMatcher.MODE_EXACT.equals(this.modes[i])) {
+			this.modes[i] = ModulePatternMatcher.MODE_WILDCARD;
+		} else if(ModulePatternMatcher.MODE_WILDCARD.equals(this.modes[i])) {
 			
 			List<String> names = ItemStackUtil.getOreDictNames(pattern);
 			
 			if(names.isEmpty()) {
-				modes[i] = MODE_EXACT;
+				this.modes[i] = ModulePatternMatcher.MODE_EXACT;
 			} else {
-				modes[i] = names.get(0);
+				this.modes[i] = names.get(0);
 			}
 		} else {
 			
 			List<String> names = ItemStackUtil.getOreDictNames(pattern);
 			
-			if(names.size() < 2 || modes[i].equals(names.get(names.size() - 1))) {
-				modes[i] = MODE_EXACT;
+			if(names.size() < 2 || this.modes[i].equals(names.get(names.size() - 1))) {
+				this.modes[i] = ModulePatternMatcher.MODE_EXACT;
 			} else {
 				
 				for(int j = 0; j < names.size() - 1; j++) {
 					
-					if(modes[i].equals(names.get(j))) {
-						modes[i] = names.get(j + 1);
+					if(this.modes[i].equals(names.get(j))) {
+						this.modes[i] = names.get(j + 1);
 						return;
 					}
 				}
@@ -117,10 +114,10 @@ public class ModulePatternMatcher {
 	
 	public boolean isValidForFilter(ItemStack filter, int index, ItemStack input) {
 		
-		String mode = modes[index];
+		String mode = this.modes[index];
 		
 		if(mode == null) {
-			modes[index] = mode = MODE_EXACT;
+			this.modes[index] = mode = ModulePatternMatcher.MODE_EXACT;
 		}
 		
 		switch(mode) {
@@ -134,20 +131,20 @@ public class ModulePatternMatcher {
 	
 	public void readFromNBT(NBTTagCompound nbt) {
 		
-		for(int i = 0; i < modes.length; i++) {
+		for(int i = 0; i < this.modes.length; i++) {
 			if(nbt.hasKey("mode" + i)) {
-				modes[i] = nbt.getString("mode" + i);
+				this.modes[i] = nbt.getString("mode" + i);
 			} else {
-				modes[i] = null;
+				this.modes[i] = null;
 			}
 		}
 	}
 	
 	public void writeToNBT(NBTTagCompound nbt) {
 
-		for(int i = 0; i < modes.length; i++) {
-			if(modes[i] != null) {
-				nbt.setString("mode" + i, modes[i]);
+		for(int i = 0; i < this.modes.length; i++) {
+			if(this.modes[i] != null) {
+				nbt.setString("mode" + i, this.modes[i]);
 			}
 		}
 	}

@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.config.GeneralConfig;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -14,7 +15,7 @@ public class CheaterVirusSeed extends Block {
 	public CheaterVirusSeed(Material p_i45394_1_) {
 		
 		super(p_i45394_1_);
-		this.setTickRandomly(true);
+		setTickRandomly(true);
 	}
 
 	@Override

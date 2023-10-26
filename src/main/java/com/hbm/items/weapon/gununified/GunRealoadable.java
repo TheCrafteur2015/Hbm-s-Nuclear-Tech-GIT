@@ -25,6 +25,6 @@ public class GunRealoadable extends GunFrame implements IButtonReceiver {
 			this.reload.tryStartReload(stack, player);
 		}
 		
-		lastReload = reload;
+		GunRealoadable.lastReload = reload;
 	}
 }

@@ -11,7 +11,7 @@ public class ItemCottonCandy extends ItemFood {
 
 	public ItemCottonCandy(int p_i45340_1_, boolean p_i45340_2_) {
 		super(p_i45340_1_, p_i45340_2_);
-        this.setAlwaysEdible();
+        setAlwaysEdible();
 	}
 
     @Override

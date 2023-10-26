@@ -41,14 +41,14 @@ public class MachineChimneyBrick extends BlockDummyable implements ITooltipProvi
 	@Override
 	public void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		super.fillSpace(world, x, y, z, dir, o);
-		this.makeExtra(world, x + dir.offsetX * o + 1, y, z + dir.offsetZ * o);
-		this.makeExtra(world, x + dir.offsetX * o - 1, y, z + dir.offsetZ * o);
-		this.makeExtra(world, x + dir.offsetX * o, y, z + dir.offsetZ * o + 1);
-		this.makeExtra(world, x + dir.offsetX * o, y, z + dir.offsetZ * o - 1);
+		makeExtra(world, x + dir.offsetX * o + 1, y, z + dir.offsetZ * o);
+		makeExtra(world, x + dir.offsetX * o - 1, y, z + dir.offsetZ * o);
+		makeExtra(world, x + dir.offsetX * o, y, z + dir.offsetZ * o + 1);
+		makeExtra(world, x + dir.offsetX * o, y, z + dir.offsetZ * o - 1);
 	}
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		this.addStandardInfo(stack, player, list, ext);
+		addStandardInfo(stack, player, list, ext);
 	}
 }

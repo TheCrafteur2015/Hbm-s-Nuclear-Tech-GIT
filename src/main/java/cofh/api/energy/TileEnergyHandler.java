@@ -18,14 +18,14 @@ public class TileEnergyHandler extends TileEntity implements IEnergyHandler {
 	public void readFromNBT(NBTTagCompound nbt) {
 
 		super.readFromNBT(nbt);
-		storage.readFromNBT(nbt);
+		this.storage.readFromNBT(nbt);
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
-		storage.writeToNBT(nbt);
+		this.storage.writeToNBT(nbt);
 	}
 
 	/* IEnergyConnection */
@@ -39,27 +39,27 @@ public class TileEnergyHandler extends TileEntity implements IEnergyHandler {
 	@Override
 	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
 
-		return storage.receiveEnergy(maxReceive, simulate);
+		return this.storage.receiveEnergy(maxReceive, simulate);
 	}
 
 	/* IEnergyProvider */
 	@Override
 	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
 
-		return storage.extractEnergy(maxExtract, simulate);
+		return this.storage.extractEnergy(maxExtract, simulate);
 	}
 
 	/* IEnergyReceiver and IEnergyProvider */
 	@Override
 	public int getEnergyStored(ForgeDirection from) {
 
-		return storage.getEnergyStored();
+		return this.storage.getEnergyStored();
 	}
 
 	@Override
 	public int getMaxEnergyStored(ForgeDirection from) {
 
-		return storage.getMaxEnergyStored();
+		return this.storage.getMaxEnergyStored();
 	}
 
 }

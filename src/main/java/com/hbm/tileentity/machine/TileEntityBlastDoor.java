@@ -37,76 +37,76 @@ public class TileEntityBlastDoor extends TileEntityLockableBase {
 	@Override
     public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			if(!isLocked() && worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) || worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord + 6, zCoord)) {
+			if(!isLocked() && this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord) || this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord + 6, this.zCoord)) {
 				
-				if(!redstoned) {
-					this.tryToggle();
+				if(!this.redstoned) {
+					tryToggle();
 				}
-				redstoned = true;
+				this.redstoned = true;
 				
 			} else {
-				redstoned = false;
+				this.redstoned = false;
 			}
 	    			
-	    	if(state != 1) {
-	    		timer = 0;
+	    	if(this.state != 1) {
+	    		this.timer = 0;
 	    	} else {
-	    		timer++;
+	    		this.timer++;
     			
-    			if(isOpening) {
-    				if(timer >= 0) {
-    					removeDummy(xCoord, yCoord + 1, zCoord);
+    			if(this.isOpening) {
+    				if(this.timer >= 0) {
+    					removeDummy(this.xCoord, this.yCoord + 1, this.zCoord);
     				}
-    				if(timer >= 20) {
-    					removeDummy(xCoord, yCoord + 2, zCoord);
+    				if(this.timer >= 20) {
+    					removeDummy(this.xCoord, this.yCoord + 2, this.zCoord);
     				}
-    				if(timer >= 40) {
-    					removeDummy(xCoord, yCoord + 3, zCoord);
+    				if(this.timer >= 40) {
+    					removeDummy(this.xCoord, this.yCoord + 3, this.zCoord);
     				}
-    				if(timer >= 60) {
-    					removeDummy(xCoord, yCoord + 4, zCoord);
+    				if(this.timer >= 60) {
+    					removeDummy(this.xCoord, this.yCoord + 4, this.zCoord);
     				}
-    				if(timer >= 80) {
-    					removeDummy(xCoord, yCoord + 5, zCoord);
+    				if(this.timer >= 80) {
+    					removeDummy(this.xCoord, this.yCoord + 5, this.zCoord);
     				}
     			} else {
-    				if(timer >= 20) {
-    					placeDummy(xCoord, yCoord + 5, zCoord);
+    				if(this.timer >= 20) {
+    					placeDummy(this.xCoord, this.yCoord + 5, this.zCoord);
     				}
-    				if(timer >= 40) {
-    					placeDummy(xCoord, yCoord + 4, zCoord);
+    				if(this.timer >= 40) {
+    					placeDummy(this.xCoord, this.yCoord + 4, this.zCoord);
     				}
-    				if(timer >= 60) {
-    					placeDummy(xCoord, yCoord + 3, zCoord);
+    				if(this.timer >= 60) {
+    					placeDummy(this.xCoord, this.yCoord + 3, this.zCoord);
     				}
-    				if(timer >= 80) {
-    					placeDummy(xCoord, yCoord + 2, zCoord);
+    				if(this.timer >= 80) {
+    					placeDummy(this.xCoord, this.yCoord + 2, this.zCoord);
     				}
-    				if(timer >= 100) {
-    					placeDummy(xCoord, yCoord + 1, zCoord);
+    				if(this.timer >= 100) {
+    					placeDummy(this.xCoord, this.yCoord + 1, this.zCoord);
     				}
     			}
 	    		
-	    		if(timer >= 100) {
+	    		if(this.timer >= 100) {
 	    			
-	    			if(isOpening)
+	    			if(this.isOpening)
 	    				finishOpen();
 	    			else
 	    				finishClose();
 	    		}
 	    	}
 	    	
-	    	PacketDispatcher.wrapper.sendToAllAround(new TEVaultPacket(xCoord, yCoord, zCoord, isOpening, state, 0, 0), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 250));
+	    	PacketDispatcher.wrapper.sendToAllAround(new TEVaultPacket(this.xCoord, this.yCoord, this.zCoord, this.isOpening, this.state, 0, 0), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 250));
 		}
     }
 	
 	public void open() {
-		if(state == 0) {
-	    	PacketDispatcher.wrapper.sendToAllAround(new TEVaultPacket(xCoord, yCoord, zCoord, isOpening, state, 1, 0), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 250));
-			isOpening = true;
-			state = 1;
+		if(this.state == 0) {
+	    	PacketDispatcher.wrapper.sendToAllAround(new TEVaultPacket(this.xCoord, this.yCoord, this.zCoord, this.isOpening, this.state, 1, 0), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 250));
+			this.isOpening = true;
+			this.state = 1;
 
 			this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:block.reactorStart", 0.5F,
 					0.75F);
@@ -114,17 +114,17 @@ public class TileEntityBlastDoor extends TileEntityLockableBase {
 	}
 	
 	public void finishOpen() {
-		state = 2;
+		this.state = 2;
 
 		this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:block.reactorStop", 0.5F,
 				1.0F);
 	}
 	
 	public void close() {
-		if(state == 2) {
-	    	PacketDispatcher.wrapper.sendToAll(new TEVaultPacket(xCoord, yCoord, zCoord, isOpening, state, 1, 0));
-			isOpening = false;
-			state = 1;
+		if(this.state == 2) {
+	    	PacketDispatcher.wrapper.sendToAll(new TEVaultPacket(this.xCoord, this.yCoord, this.zCoord, this.isOpening, this.state, 1, 0));
+			this.isOpening = false;
+			this.state = 1;
 
 			this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:block.reactorStart", 0.5F,
 					0.75F);
@@ -132,7 +132,7 @@ public class TileEntityBlastDoor extends TileEntityLockableBase {
 	}
 	
 	public void finishClose() {
-		state = 0;
+		this.state = 0;
 
 		this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:block.reactorStop", 0.5F,
 				1.0F);
@@ -140,14 +140,14 @@ public class TileEntityBlastDoor extends TileEntityLockableBase {
 	
 	public void openNeigh() {
 
-		TileEntity te0 = worldObj.getTileEntity(xCoord + 1, yCoord, zCoord);
-		TileEntity te1 = worldObj.getTileEntity(xCoord - 1, yCoord, zCoord);
-		TileEntity te2 = worldObj.getTileEntity(xCoord, yCoord, zCoord + 1);
-		TileEntity te3 = worldObj.getTileEntity(xCoord, yCoord, zCoord - 1);
+		TileEntity te0 = this.worldObj.getTileEntity(this.xCoord + 1, this.yCoord, this.zCoord);
+		TileEntity te1 = this.worldObj.getTileEntity(this.xCoord - 1, this.yCoord, this.zCoord);
+		TileEntity te2 = this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord + 1);
+		TileEntity te3 = this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord - 1);
 		
 		if(te0 instanceof TileEntityBlastDoor) {
 			
-			if(((TileEntityBlastDoor)te0).canOpen() && (!((TileEntityBlastDoor)te0).isLocked() || ((TileEntityBlastDoor)te0).lock == lock)) {
+			if(((TileEntityBlastDoor)te0).canOpen() && (!((TileEntityBlastDoor)te0).isLocked() || ((TileEntityBlastDoor)te0).lock == this.lock)) {
 				((TileEntityBlastDoor)te0).open();
 				((TileEntityBlastDoor)te0).openNeigh();
 			}
@@ -155,7 +155,7 @@ public class TileEntityBlastDoor extends TileEntityLockableBase {
 		
 		if(te1 instanceof TileEntityBlastDoor) {
 			
-			if(((TileEntityBlastDoor)te1).canOpen() && (!((TileEntityBlastDoor)te1).isLocked() || ((TileEntityBlastDoor)te1).lock == lock)) {
+			if(((TileEntityBlastDoor)te1).canOpen() && (!((TileEntityBlastDoor)te1).isLocked() || ((TileEntityBlastDoor)te1).lock == this.lock)) {
 				((TileEntityBlastDoor)te1).open();
 				((TileEntityBlastDoor)te1).openNeigh();
 			}
@@ -163,7 +163,7 @@ public class TileEntityBlastDoor extends TileEntityLockableBase {
 		
 		if(te2 instanceof TileEntityBlastDoor) {
 			
-			if(((TileEntityBlastDoor)te2).canOpen() && (!((TileEntityBlastDoor)te2).isLocked() || ((TileEntityBlastDoor)te2).lock == lock)) {
+			if(((TileEntityBlastDoor)te2).canOpen() && (!((TileEntityBlastDoor)te2).isLocked() || ((TileEntityBlastDoor)te2).lock == this.lock)) {
 				((TileEntityBlastDoor)te2).open();
 				((TileEntityBlastDoor)te2).openNeigh();
 			}
@@ -171,7 +171,7 @@ public class TileEntityBlastDoor extends TileEntityLockableBase {
 		
 		if(te3 instanceof TileEntityBlastDoor) {
 			
-			if(((TileEntityBlastDoor)te3).canOpen() && (!((TileEntityBlastDoor)te3).isLocked() || ((TileEntityBlastDoor)te3).lock == lock)) {
+			if(((TileEntityBlastDoor)te3).canOpen() && (!((TileEntityBlastDoor)te3).isLocked() || ((TileEntityBlastDoor)te3).lock == this.lock)) {
 				((TileEntityBlastDoor)te3).open();
 				((TileEntityBlastDoor)te3).openNeigh();
 			}
@@ -186,14 +186,14 @@ public class TileEntityBlastDoor extends TileEntityLockableBase {
 	
 	public void closeNeigh() {
 
-		TileEntity te0 = worldObj.getTileEntity(xCoord + 1, yCoord, zCoord);
-		TileEntity te1 = worldObj.getTileEntity(xCoord - 1, yCoord, zCoord);
-		TileEntity te2 = worldObj.getTileEntity(xCoord, yCoord, zCoord + 1);
-		TileEntity te3 = worldObj.getTileEntity(xCoord, yCoord, zCoord - 1);
+		TileEntity te0 = this.worldObj.getTileEntity(this.xCoord + 1, this.yCoord, this.zCoord);
+		TileEntity te1 = this.worldObj.getTileEntity(this.xCoord - 1, this.yCoord, this.zCoord);
+		TileEntity te2 = this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord + 1);
+		TileEntity te3 = this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord - 1);
 		
 		if(te0 instanceof TileEntityBlastDoor) {
 			
-			if(((TileEntityBlastDoor)te0).canClose() && (!((TileEntityBlastDoor)te0).isLocked() || ((TileEntityBlastDoor)te0).lock == lock)) {
+			if(((TileEntityBlastDoor)te0).canClose() && (!((TileEntityBlastDoor)te0).isLocked() || ((TileEntityBlastDoor)te0).lock == this.lock)) {
 				((TileEntityBlastDoor)te0).close();
 				((TileEntityBlastDoor)te0).closeNeigh();
 			}
@@ -201,7 +201,7 @@ public class TileEntityBlastDoor extends TileEntityLockableBase {
 		
 		if(te1 instanceof TileEntityBlastDoor) {
 			
-			if(((TileEntityBlastDoor)te1).canClose() && (!((TileEntityBlastDoor)te1).isLocked() || ((TileEntityBlastDoor)te1).lock == lock)) {
+			if(((TileEntityBlastDoor)te1).canClose() && (!((TileEntityBlastDoor)te1).isLocked() || ((TileEntityBlastDoor)te1).lock == this.lock)) {
 				((TileEntityBlastDoor)te1).close();
 				((TileEntityBlastDoor)te1).closeNeigh();
 			}
@@ -209,7 +209,7 @@ public class TileEntityBlastDoor extends TileEntityLockableBase {
 		
 		if(te2 instanceof TileEntityBlastDoor) {
 			
-			if(((TileEntityBlastDoor)te2).canClose() && (!((TileEntityBlastDoor)te2).isLocked() || ((TileEntityBlastDoor)te2).lock == lock)) {
+			if(((TileEntityBlastDoor)te2).canClose() && (!((TileEntityBlastDoor)te2).isLocked() || ((TileEntityBlastDoor)te2).lock == this.lock)) {
 				((TileEntityBlastDoor)te2).close();
 				((TileEntityBlastDoor)te2).closeNeigh();
 			}
@@ -217,7 +217,7 @@ public class TileEntityBlastDoor extends TileEntityLockableBase {
 		
 		if(te3 instanceof TileEntityBlastDoor) {
 			
-			if(((TileEntityBlastDoor)te3).canClose() && (!((TileEntityBlastDoor)te3).isLocked() || ((TileEntityBlastDoor)te3).lock == lock)) {
+			if(((TileEntityBlastDoor)te3).canClose() && (!((TileEntityBlastDoor)te3).isLocked() || ((TileEntityBlastDoor)te3).lock == this.lock)) {
 				((TileEntityBlastDoor)te3).close();
 				((TileEntityBlastDoor)te3).closeNeigh();
 			}
@@ -226,17 +226,17 @@ public class TileEntityBlastDoor extends TileEntityLockableBase {
 	
 	public void lockNeigh() {
 
-		TileEntity te0 = worldObj.getTileEntity(xCoord + 1, yCoord, zCoord);
-		TileEntity te1 = worldObj.getTileEntity(xCoord - 1, yCoord, zCoord);
-		TileEntity te2 = worldObj.getTileEntity(xCoord, yCoord, zCoord + 1);
-		TileEntity te3 = worldObj.getTileEntity(xCoord, yCoord, zCoord - 1);
+		TileEntity te0 = this.worldObj.getTileEntity(this.xCoord + 1, this.yCoord, this.zCoord);
+		TileEntity te1 = this.worldObj.getTileEntity(this.xCoord - 1, this.yCoord, this.zCoord);
+		TileEntity te2 = this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord + 1);
+		TileEntity te3 = this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord - 1);
 		
 		if(te0 instanceof TileEntityBlastDoor) {
 			
 			if(!((TileEntityBlastDoor)te0).isLocked()) {
 				((TileEntityBlastDoor)te0).setPins(this.lock);
 				((TileEntityBlastDoor)te0).lock();
-				((TileEntityBlastDoor)te0).setMod(lockMod);
+				((TileEntityBlastDoor)te0).setMod(this.lockMod);
 			}
 		}
 		
@@ -245,7 +245,7 @@ public class TileEntityBlastDoor extends TileEntityLockableBase {
 			if(!((TileEntityBlastDoor)te1).isLocked()) {
 				((TileEntityBlastDoor)te1).setPins(this.lock);
 				((TileEntityBlastDoor)te1).lock();
-				((TileEntityBlastDoor)te1).setMod(lockMod);
+				((TileEntityBlastDoor)te1).setMod(this.lockMod);
 			}
 		}
 		
@@ -254,7 +254,7 @@ public class TileEntityBlastDoor extends TileEntityLockableBase {
 			if(!((TileEntityBlastDoor)te2).isLocked()) {
 				((TileEntityBlastDoor)te2).setPins(this.lock);
 				((TileEntityBlastDoor)te2).lock();
-				((TileEntityBlastDoor)te2).setMod(lockMod);
+				((TileEntityBlastDoor)te2).setMod(this.lockMod);
 			}
 		}
 		
@@ -263,17 +263,17 @@ public class TileEntityBlastDoor extends TileEntityLockableBase {
 			if(!((TileEntityBlastDoor)te3).isLocked()) {
 				((TileEntityBlastDoor)te3).setPins(this.lock);
 				((TileEntityBlastDoor)te3).lock();
-				((TileEntityBlastDoor)te3).setMod(lockMod);
+				((TileEntityBlastDoor)te3).setMod(this.lockMod);
 			}
 		}
 	}
 	
 	public boolean canOpen() {
-		return state == 0;
+		return this.state == 0;
 	}
 	
 	public boolean canClose() {
-		return state == 2;
+		return this.state == 2;
 	}
 	
 	public void tryToggle() {
@@ -289,18 +289,18 @@ public class TileEntityBlastDoor extends TileEntityLockableBase {
 	
 	public boolean placeDummy(int x, int y, int z) {
 		
-		if(!worldObj.getBlock(x, y, z).isReplaceable(worldObj, x, y, z))
+		if(!this.worldObj.getBlock(x, y, z).isReplaceable(this.worldObj, x, y, z))
 			return false;
 		
-		worldObj.setBlock(x, y, z, ModBlocks.dummy_block_blast);
+		this.worldObj.setBlock(x, y, z, ModBlocks.dummy_block_blast);
 		
-		TileEntity te = worldObj.getTileEntity(x, y, z);
+		TileEntity te = this.worldObj.getTileEntity(x, y, z);
 		
 		if(te instanceof TileEntityDummy) {
 			TileEntityDummy dummy = (TileEntityDummy)te;
-			dummy.targetX = xCoord;
-			dummy.targetY = yCoord;
-			dummy.targetZ = zCoord;
+			dummy.targetX = this.xCoord;
+			dummy.targetY = this.yCoord;
+			dummy.targetZ = this.zCoord;
 		}
 		
 		return true;
@@ -308,31 +308,33 @@ public class TileEntityBlastDoor extends TileEntityLockableBase {
 	
 	public void removeDummy(int x, int y, int z) {
 		
-		if(worldObj.getBlock(x, y, z) == ModBlocks.dummy_block_blast) {
+		if(this.worldObj.getBlock(x, y, z) == ModBlocks.dummy_block_blast) {
 			DummyBlockBlast.safeBreak = true;
-			worldObj.setBlock(x, y, z, Blocks.air);
+			this.worldObj.setBlock(x, y, z, Blocks.air);
 			DummyBlockBlast.safeBreak = false;
 		}
 	}
 
+	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		
-		isOpening = nbt.getBoolean("isOpening");
-		state = nbt.getInteger("state");
-		sysTime = nbt.getLong("sysTime");
-		timer = nbt.getInteger("timer");
-		redstoned = nbt.getBoolean("redstoned");
+		this.isOpening = nbt.getBoolean("isOpening");
+		this.state = nbt.getInteger("state");
+		this.sysTime = nbt.getLong("sysTime");
+		this.timer = nbt.getInteger("timer");
+		this.redstoned = nbt.getBoolean("redstoned");
 	}
 
+	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 
-		nbt.setBoolean("isOpening", isOpening);
-		nbt.setInteger("state", state);
-		nbt.setLong("sysTime", sysTime);
-		nbt.setInteger("timer", timer);
-		nbt.setBoolean("redstoned", redstoned);
+		nbt.setBoolean("isOpening", this.isOpening);
+		nbt.setInteger("state", this.state);
+		nbt.setLong("sysTime", this.sysTime);
+		nbt.setInteger("timer", this.timer);
+		nbt.setBoolean("redstoned", this.redstoned);
 	}
 
 }

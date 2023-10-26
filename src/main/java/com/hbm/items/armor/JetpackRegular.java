@@ -27,13 +27,14 @@ public class JetpackRegular extends JetpackBase {
 		return "hbm:textures/models/JetPackRed.png";
 	}
 
+	@Override
 	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
 
 		HbmPlayerProps props = HbmPlayerProps.getData(player);
 
 		if(!world.isRemote) {
 
-			if(getFuel(stack) > 0 && props.isJetpackActive()) {
+			if(JetpackBase.getFuel(stack) > 0 && props.isJetpackActive()) {
 
 				NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "jetpack");
@@ -42,17 +43,18 @@ public class JetpackRegular extends JetpackBase {
 			}
 		}
 
-		if(getFuel(stack) > 0 && props.isJetpackActive()) {
+		if(JetpackBase.getFuel(stack) > 0 && props.isJetpackActive()) {
 			player.fallDistance = 0;
 
 			if(player.motionY < 0.4D)
 				player.motionY += 0.1D;
 
 			world.playSoundEffect(player.posX, player.posY, player.posZ, "hbm:weapon.flamethrowerShoot", 0.25F, 1.5F);
-			this.useUpFuel(player, stack, 5);
+			useUpFuel(player, stack, 5);
 		}
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 

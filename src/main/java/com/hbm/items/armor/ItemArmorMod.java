@@ -32,25 +32,25 @@ public class ItemArmorMod extends Item {
 		this.leggings = leggings;
 		this.boots = boots;
 		
-		this.setMaxStackSize(1);
-		this.setCreativeTab(MainRegistry.consumableTab);
+		setMaxStackSize(1);
+		setCreativeTab(MainRegistry.consumableTab);
 	}
 	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("armorMod.applicableTo"));
 		
-		if(helmet && chestplate && leggings && boots) {
+		if(this.helmet && this.chestplate && this.leggings && this.boots) {
 			list.add("  " + I18nUtil.resolveKey("armorMod.all"));
 		} else {
 
-			if(helmet)
+			if(this.helmet)
 				list.add("  " + I18nUtil.resolveKey("armorMod.helmets"));
-			if(chestplate)
+			if(this.chestplate)
 				list.add("  " + I18nUtil.resolveKey("armorMod.chestplates"));
-			if(leggings)
+			if(this.leggings)
 				list.add("  " + I18nUtil.resolveKey("armorMod.leggings"));
-			if(boots)
+			if(this.boots)
 				list.add("  " + I18nUtil.resolveKey("armorMod.boots"));
 		}
 		list.add(EnumChatFormatting.DARK_PURPLE + "Slot:");

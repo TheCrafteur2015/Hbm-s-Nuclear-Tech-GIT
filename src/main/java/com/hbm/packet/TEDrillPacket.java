@@ -33,20 +33,20 @@ public class TEDrillPacket implements IMessage {
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		x = buf.readInt();
-		y = buf.readInt();
-		z = buf.readInt();
-		spin = buf.readFloat();
-		torque = buf.readFloat();
+		this.x = buf.readInt();
+		this.y = buf.readInt();
+		this.z = buf.readInt();
+		this.spin = buf.readFloat();
+		this.torque = buf.readFloat();
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeInt(x);
-		buf.writeInt(y);
-		buf.writeInt(z);
-		buf.writeFloat(spin);
-		buf.writeFloat(torque);
+		buf.writeInt(this.x);
+		buf.writeInt(this.y);
+		buf.writeInt(this.z);
+		buf.writeFloat(this.spin);
+		buf.writeFloat(this.torque);
 	}
 
 	public static class Handler implements IMessageHandler<TEDrillPacket, IMessage> {

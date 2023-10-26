@@ -39,10 +39,10 @@ public class TileEntityMachinePlasmaHeater extends TileEntityMachineBase impleme
 
 	public TileEntityMachinePlasmaHeater() {
 		super(5);
-		tanks = new FluidTank[2];
-		tanks[0] = new FluidTank(Fluids.DEUTERIUM, 16000, 0);
-		tanks[1] = new FluidTank(Fluids.TRITIUM, 16000, 1);
-		plasma = new FluidTank(Fluids.PLASMA_DT, 64000, 2);
+		this.tanks = new FluidTank[2];
+		this.tanks[0] = new FluidTank(Fluids.DEUTERIUM, 16000);
+		this.tanks[1] = new FluidTank(Fluids.TRITIUM, 16000);
+		this.plasma = new FluidTank(Fluids.PLASMA_DT, 64000);
 	}
 
 	@Override
@@ -53,49 +53,49 @@ public class TileEntityMachinePlasmaHeater extends TileEntityMachineBase impleme
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			if(this.worldObj.getTotalWorldTime() % 20 == 0)
-				this.updateConnections();
+				updateConnections();
 
 			/// START Managing all the internal stuff ///
-			power = Library.chargeTEFromItems(slots, 0, power, maxPower);
-			tanks[0].setType(1, 2, slots);
-			tanks[1].setType(3, 4, slots);
+			this.power = Library.chargeTEFromItems(this.slots, 0, this.power, TileEntityMachinePlasmaHeater.maxPower);
+			this.tanks[0].setType(1, 2, this.slots);
+			this.tanks[1].setType(3, 4, this.slots);
 			
 			updateType();
 			
 			int maxConv = 50;
 			int powerReq = 10000;
 			
-			int convert = Math.min(tanks[0].getFill(), tanks[1].getFill());
-			convert = Math.min(convert, (plasma.getMaxFill() - plasma.getFill()) / 2);
+			int convert = Math.min(this.tanks[0].getFill(), this.tanks[1].getFill());
+			convert = Math.min(convert, (this.plasma.getMaxFill() - this.plasma.getFill()) / 2);
 			convert = Math.min(convert, maxConv);
-			convert = (int) Math.min(convert, power / powerReq);
+			convert = (int) Math.min(convert, this.power / powerReq);
 			convert = Math.max(0, convert);
 			
-			if(convert > 0 && plasma.getTankType() != Fluids.NONE) {
+			if(convert > 0 && this.plasma.getTankType() != Fluids.NONE) {
 
-				tanks[0].setFill(tanks[0].getFill() - convert);
-				tanks[1].setFill(tanks[1].getFill() - convert);
+				this.tanks[0].setFill(this.tanks[0].getFill() - convert);
+				this.tanks[1].setFill(this.tanks[1].getFill() - convert);
 				
-				plasma.setFill(plasma.getFill() + convert * 2);
-				power -= convert * powerReq;
+				this.plasma.setFill(this.plasma.getFill() + convert * 2);
+				this.power -= convert * powerReq;
 				
-				this.markDirty();
+				markDirty();
 			}
 			/// END Managing all the internal stuff ///
 
 			/// START Loading plasma into the ITER ///
 			
-			ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset).getOpposite();
+			ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset).getOpposite();
 			int dist = 11;
 			
-			if(worldObj.getBlock(xCoord + dir.offsetX * dist, yCoord + 2, zCoord + dir.offsetZ * dist) == ModBlocks.iter) {
-				int[] pos = ((MachineITER)ModBlocks.iter).findCore(worldObj, xCoord + dir.offsetX * dist, yCoord + 2, zCoord + dir.offsetZ * dist);
+			if(this.worldObj.getBlock(this.xCoord + dir.offsetX * dist, this.yCoord + 2, this.zCoord + dir.offsetZ * dist) == ModBlocks.iter) {
+				int[] pos = ((MachineITER)ModBlocks.iter).findCore(this.worldObj, this.xCoord + dir.offsetX * dist, this.yCoord + 2, this.zCoord + dir.offsetZ * dist);
 				
 				if(pos != null) {
-					TileEntity te = worldObj.getTileEntity(pos[0], pos[1], pos[2]);
+					TileEntity te = this.worldObj.getTileEntity(pos[0], pos[1], pos[2]);
 					
 					if(te instanceof TileEntityITER) {
 						TileEntityITER iter = (TileEntityITER)te;
@@ -112,7 +112,7 @@ public class TileEntityMachinePlasmaHeater extends TileEntityMachineBase impleme
 								toLoad = Math.min(toLoad, 40);
 								this.plasma.setFill(this.plasma.getFill() - toLoad);
 								iter.plasma.setFill(iter.plasma.getFill() + toLoad);
-								this.markDirty();
+								markDirty();
 								iter.markDirty();
 							}
 						}
@@ -123,71 +123,73 @@ public class TileEntityMachinePlasmaHeater extends TileEntityMachineBase impleme
 			/// END Loading plasma into the ITER ///
 
 			/// START Notif packets ///
-			for(int i = 0; i < tanks.length; i++)
-				tanks[i].updateTank(xCoord, yCoord, zCoord, worldObj.provider.dimensionId);
-			plasma.updateTank(xCoord, yCoord, zCoord, worldObj.provider.dimensionId);
+			for (FluidTank tank : this.tanks)
+				tank.updateTank(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId);
+			this.plasma.updateTank(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId);
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setLong("power", power);
-			this.networkPack(data, 50);
+			data.setLong("power", this.power);
+			networkPack(data, 50);
 			/// END Notif packets ///
 		}
 	}
 	
 	private void updateConnections()  {
 		
-		this.getBlockMetadata();
+		getBlockMetadata();
 		
 		ForgeDirection dir = ForgeDirection.getOrientation(this.blockMetadata - BlockDummyable.offset);
 		ForgeDirection side = dir.getRotation(ForgeDirection.UP);
 		
 		for(int i = 1; i < 4; i++) {
 			for(int j = -1; j < 2; j++) {
-				this.trySubscribe(worldObj, xCoord + side.offsetX * j + dir.offsetX * 2, yCoord + i, zCoord + side.offsetZ * j + dir.offsetZ * 2, j < 0 ? ForgeDirection.DOWN : ForgeDirection.UP);
-				this.trySubscribe(tanks[0].getTankType(), worldObj, xCoord + side.offsetX * j + dir.offsetX * 2, yCoord + i, zCoord + side.offsetZ * j + dir.offsetZ * 2, j < 0 ? ForgeDirection.DOWN : ForgeDirection.UP);
-				this.trySubscribe(tanks[1].getTankType(), worldObj, xCoord + side.offsetX * j + dir.offsetX * 2, yCoord + i, zCoord + side.offsetZ * j + dir.offsetZ * 2, j < 0 ? ForgeDirection.DOWN : ForgeDirection.UP);
+				this.trySubscribe(this.worldObj, this.xCoord + side.offsetX * j + dir.offsetX * 2, this.yCoord + i, this.zCoord + side.offsetZ * j + dir.offsetZ * 2, j < 0 ? ForgeDirection.DOWN : ForgeDirection.UP);
+				this.trySubscribe(this.tanks[0].getTankType(), this.worldObj, this.xCoord + side.offsetX * j + dir.offsetX * 2, this.yCoord + i, this.zCoord + side.offsetZ * j + dir.offsetZ * 2, j < 0 ? ForgeDirection.DOWN : ForgeDirection.UP);
+				this.trySubscribe(this.tanks[1].getTankType(), this.worldObj, this.xCoord + side.offsetX * j + dir.offsetX * 2, this.yCoord + i, this.zCoord + side.offsetZ * j + dir.offsetZ * 2, j < 0 ? ForgeDirection.DOWN : ForgeDirection.UP);
 			}
 		}
 	}
 	
+	@Override
 	public void networkUnpack(NBTTagCompound nbt) {
 		this.power = nbt.getLong("power");
 	}
 	
+	@SuppressWarnings({ "unchecked", "serial", "rawtypes" })
 	private void updateType() {
 		
-		List<FluidType> types = new ArrayList() {{ add(tanks[0].getTankType()); add(tanks[1].getTankType()); }};
+		List<FluidType> types = new ArrayList() {{ add(TileEntityMachinePlasmaHeater.this.tanks[0].getTankType()); add(TileEntityMachinePlasmaHeater.this.tanks[1].getTankType()); }};
 
 		if(types.contains(Fluids.DEUTERIUM) && types.contains(Fluids.TRITIUM)) {
-			plasma.setTankType(Fluids.PLASMA_DT);
+			this.plasma.setTankType(Fluids.PLASMA_DT);
 			return;
 		}
 		if(types.contains(Fluids.DEUTERIUM) && types.contains(Fluids.HELIUM3)) {
-			plasma.setTankType(Fluids.PLASMA_DH3);
+			this.plasma.setTankType(Fluids.PLASMA_DH3);
 			return;
 		}
 		if(types.contains(Fluids.DEUTERIUM) && types.contains(Fluids.HYDROGEN)) {
-			plasma.setTankType(Fluids.PLASMA_HD);
+			this.plasma.setTankType(Fluids.PLASMA_HD);
 			return;
 		}
 		if(types.contains(Fluids.HYDROGEN) && types.contains(Fluids.TRITIUM)) {
-			plasma.setTankType(Fluids.PLASMA_HT);
+			this.plasma.setTankType(Fluids.PLASMA_HT);
 			return;
 		}
 		if(types.contains(Fluids.HELIUM4) && types.contains(Fluids.OXYGEN)) {
-			plasma.setTankType(Fluids.PLASMA_XM);
+			this.plasma.setTankType(Fluids.PLASMA_XM);
 			return;
 		}
 		if(types.contains(Fluids.BALEFIRE) && types.contains(Fluids.AMAT)) {
-			plasma.setTankType(Fluids.PLASMA_BF);
+			this.plasma.setTankType(Fluids.PLASMA_BF);
 			return;
 		}
 		
-		plasma.setTankType(Fluids.NONE);
+		this.plasma.setTankType(Fluids.NONE);
 	}
 	
 	public long getPowerScaled(int i) {
-		return (power * i) / maxPower;
+		return (this.power * i) / TileEntityMachinePlasmaHeater.maxPower;
 	}
 	
 	@Override
@@ -195,71 +197,71 @@ public class TileEntityMachinePlasmaHeater extends TileEntityMachineBase impleme
 		super.readFromNBT(nbt);
 
 		this.power = nbt.getLong("power");
-		tanks[0].readFromNBT(nbt, "fuel_1");
-		tanks[1].readFromNBT(nbt, "fuel_2");
-		plasma.readFromNBT(nbt, "plasma");
+		this.tanks[0].readFromNBT(nbt, "fuel_1");
+		this.tanks[1].readFromNBT(nbt, "fuel_2");
+		this.plasma.readFromNBT(nbt, "plasma");
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 
-		nbt.setLong("power", power);
-		tanks[0].writeToNBT(nbt, "fuel_1");
-		tanks[1].writeToNBT(nbt, "fuel_2");
-		plasma.writeToNBT(nbt, "plasma");
+		nbt.setLong("power", this.power);
+		this.tanks[0].writeToNBT(nbt, "fuel_1");
+		this.tanks[1].writeToNBT(nbt, "fuel_2");
+		this.plasma.writeToNBT(nbt, "plasma");
 	}
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		if (type.name().equals(tanks[0].getTankType().name()))
-			return tanks[0].getMaxFill();
-		else if (type.name().equals(tanks[1].getTankType().name()))
-			return tanks[1].getMaxFill();
-		else if (type.name().equals(plasma.getTankType().name()))
-			return plasma.getMaxFill();
+		if (type.name().equals(this.tanks[0].getTankType().name()))
+			return this.tanks[0].getMaxFill();
+		else if (type.name().equals(this.tanks[1].getTankType().name()))
+			return this.tanks[1].getMaxFill();
+		else if (type.name().equals(this.plasma.getTankType().name()))
+			return this.plasma.getMaxFill();
 		else
 			return 0;
 	}
 
 	@Override
 	public void setFluidFill(int i, FluidType type) {
-		if (type.name().equals(tanks[0].getTankType().name()))
-			tanks[0].setFill(i);
-		else if (type.name().equals(tanks[1].getTankType().name()))
-			tanks[1].setFill(i);
-		else if (type.name().equals(plasma.getTankType().name()))
-			plasma.setFill(i);
+		if (type.name().equals(this.tanks[0].getTankType().name()))
+			this.tanks[0].setFill(i);
+		else if (type.name().equals(this.tanks[1].getTankType().name()))
+			this.tanks[1].setFill(i);
+		else if (type.name().equals(this.plasma.getTankType().name()))
+			this.plasma.setFill(i);
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		if (type.name().equals(tanks[0].getTankType().name()))
-			return tanks[0].getFill();
-		else if (type.name().equals(tanks[1].getTankType().name()))
-			return tanks[1].getFill();
-		else if (type.name().equals(plasma.getTankType().name()))
-			return plasma.getFill();
+		if (type.name().equals(this.tanks[0].getTankType().name()))
+			return this.tanks[0].getFill();
+		else if (type.name().equals(this.tanks[1].getTankType().name()))
+			return this.tanks[1].getFill();
+		else if (type.name().equals(this.plasma.getTankType().name()))
+			return this.plasma.getFill();
 		else
 			return 0;
 	}
 
 	@Override
 	public void setFillForSync(int fill, int index) {
-		if (index < 2 && tanks[index] != null)
-			tanks[index].setFill(fill);
+		if (index < 2 && this.tanks[index] != null)
+			this.tanks[index].setFill(fill);
 		
 		if(index == 2)
-			plasma.setFill(fill);
+			this.plasma.setFill(fill);
 	}
 
 	@Override
 	public void setTypeForSync(FluidType type, int index) {
-		if (index < 2 && tanks[index] != null)
-			tanks[index].setTankType(type);
+		if (index < 2 && this.tanks[index] != null)
+			this.tanks[index].setTankType(type);
 		
 		if(index == 2)
-			plasma.setTankType(type);
+			this.plasma.setTankType(type);
 	}
 
 	@Override
@@ -269,12 +271,12 @@ public class TileEntityMachinePlasmaHeater extends TileEntityMachineBase impleme
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 
 	@Override
 	public long getMaxPower() {
-		return maxPower;
+		return TileEntityMachinePlasmaHeater.maxPower;
 	}
 	
 	@Override
@@ -290,12 +292,12 @@ public class TileEntityMachinePlasmaHeater extends TileEntityMachineBase impleme
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return new FluidTank[] {tanks[0], tanks[1], plasma};
+		return new FluidTank[] {this.tanks[0], this.tanks[1], this.plasma};
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return tanks;
+		return this.tanks;
 	}
 
 	@Override

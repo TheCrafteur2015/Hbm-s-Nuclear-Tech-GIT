@@ -26,7 +26,7 @@ public class BlockCanCrate extends Block {
 	
 	@Override
 	public int getRenderType(){
-		return renderID;
+		return BlockCanCrate.renderID;
 	}
 	
 	@Override
@@ -50,8 +50,9 @@ public class BlockCanCrate extends Block {
     	return true;
     }
     
-    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-    	ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+    @Override
+	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+    	ArrayList<ItemStack> ret = new ArrayList<>();
     	
     	int count = quantityDropped(metadata, fortune, world.rand);
     	for(int i = 0; i < count; i++) {
@@ -74,7 +75,7 @@ public class BlockCanCrate extends Block {
     @Override
 	public Item getItemDropped(int i, Random rand, int j) {
     	
-    	List<Item> items = new ArrayList();
+    	List<Item> items = new ArrayList<>();
     	for(int a = 0; a < EnumFoodType.values().length; a++)
     		items.add(ModItems.canned_conserve);
     	items.add(ModItems.can_smart);

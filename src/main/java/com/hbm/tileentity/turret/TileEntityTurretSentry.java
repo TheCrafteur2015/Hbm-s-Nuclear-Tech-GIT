@@ -35,19 +35,19 @@ public class TileEntityTurretSentry extends TileEntityTurretBaseNT implements IG
 	public double barrelRightPos = 0;
 	public double lastBarrelRightPos = 0;
 
-	static List<Integer> configs = new ArrayList();
+	static List<Integer> configs = new ArrayList<>();
 	
 	static {
-		configs.add(BulletConfigSyncingUtil.R5_NORMAL);
-		configs.add(BulletConfigSyncingUtil.R5_EXPLOSIVE);
-		configs.add(BulletConfigSyncingUtil.R5_DU);
-		configs.add(BulletConfigSyncingUtil.R5_STAR);
-		configs.add(BulletConfigSyncingUtil.CHL_R5);
+		TileEntityTurretSentry.configs.add(BulletConfigSyncingUtil.R5_NORMAL);
+		TileEntityTurretSentry.configs.add(BulletConfigSyncingUtil.R5_EXPLOSIVE);
+		TileEntityTurretSentry.configs.add(BulletConfigSyncingUtil.R5_DU);
+		TileEntityTurretSentry.configs.add(BulletConfigSyncingUtil.R5_STAR);
+		TileEntityTurretSentry.configs.add(BulletConfigSyncingUtil.CHL_R5);
 	}
 	
 	@Override
 	protected List<Integer> getAmmoList() {
-		return configs;
+		return TileEntityTurretSentry.configs;
 	}
 
 	@Override
@@ -113,7 +113,7 @@ public class TileEntityTurretSentry extends TileEntityTurretBaseNT implements IG
 	@Override
 	public void updateEntity() {
 		
-		if(worldObj.isRemote) {
+		if(this.worldObj.isRemote) {
 			this.lastBarrelLeftPos = this.barrelLeftPos;
 			this.lastBarrelRightPos = this.barrelRightPos;
 
@@ -158,24 +158,24 @@ public class TileEntityTurretSentry extends TileEntityTurretBaseNT implements IG
 	@Override
 	public void updateFiringTick() {
 		
-		timer++;
+		this.timer++;
 		
-		if(timer % 10 == 0) {
+		if(this.timer % 10 == 0) {
 			
-			BulletConfiguration conf = this.getFirstConfigLoaded();
+			BulletConfiguration conf = getFirstConfigLoaded();
 			
 			if(conf != null) {
 				this.cachedCasingConfig = conf.spentCasing;
-				this.spawnBullet(conf);
-				this.conusmeAmmo(conf.ammo);
-				this.worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:turret.sentry_fire", 2.0F, 1.0F);
+				spawnBullet(conf);
+				conusmeAmmo(conf.ammo);
+				this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:turret.sentry_fire", 2.0F, 1.0F);
 				
-				Vec3 pos = this.getTurretPos();
-				Vec3 vec = Vec3.createVectorHelper(this.getBarrelLength(), 0, 0);
+				Vec3 pos = getTurretPos();
+				Vec3 vec = Vec3.createVectorHelper(getBarrelLength(), 0, 0);
 				vec.rotateAroundZ((float) -this.rotationPitch);
 				vec.rotateAroundY((float) -(this.rotationYaw + Math.PI * 0.5));
 				
-				Vec3 side = Vec3.createVectorHelper(0.125 * (shotSide ? 1 : -1), 0, 0);
+				Vec3 side = Vec3.createVectorHelper(0.125 * (this.shotSide ? 1 : -1), 0, 0);
 				side.rotateAroundY((float) -(this.rotationYaw));
 				
 				NBTTagCompound data = new NBTTagCompound();
@@ -183,14 +183,14 @@ public class TileEntityTurretSentry extends TileEntityTurretBaseNT implements IG
 				data.setString("mode", "largeexplode");
 				data.setFloat("size", 1F);
 				data.setByte("count", (byte)1);
-				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, pos.xCoord + vec.xCoord + side.xCoord, pos.yCoord + vec.yCoord, pos.zCoord + vec.zCoord + side.zCoord), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 50));
+				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, pos.xCoord + vec.xCoord + side.xCoord, pos.yCoord + vec.yCoord, pos.zCoord + vec.zCoord + side.zCoord), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 50));
 				
-				if(shotSide) {
+				if(this.shotSide) {
 					this.didJustShootLeft = true;
 				} else {
 					this.didJustShootRight = true;
 				}
-				shotSide = !shotSide;
+				this.shotSide = !this.shotSide;
 			}
 		}
 	}
@@ -198,7 +198,7 @@ public class TileEntityTurretSentry extends TileEntityTurretBaseNT implements IG
 	@Override
 	protected Vec3 getCasingSpawnPos() {
 		
-		Vec3 pos = this.getTurretPos();
+		Vec3 pos = getTurretPos();
 		Vec3 vec = Vec3.createVectorHelper(0, 0.25,-0.125);
 		vec.rotateAroundZ((float) -this.rotationPitch);
 		vec.rotateAroundY((float) -(this.rotationYaw + Math.PI * 0.5));
@@ -210,7 +210,7 @@ public class TileEntityTurretSentry extends TileEntityTurretBaseNT implements IG
 	
 	@Override
 	protected CasingEjector getEjector() {
-		return ejector.setMotion(0.3, 0.6, 0);
+		return TileEntityTurretSentry.ejector.setMotion(0.3, 0.6, 0);
 	}
 	
 	@Override
@@ -224,17 +224,17 @@ public class TileEntityTurretSentry extends TileEntityTurretBaseNT implements IG
 		super.seekNewTarget();
 		
 		if(lastTarget != this.target && this.target != null) {
-			worldObj.playSoundAtEntity(target, "hbm:turret.sentry_lockon", 2.0F, 1.5F);
+			this.worldObj.playSoundAtEntity(this.target, "hbm:turret.sentry_lockon", 2.0F, 1.5F);
 		}
 	}
 
 	@Override
 	protected NBTTagCompound writePacket() {
 		NBTTagCompound data = super.writePacket();
-		if(didJustShootLeft) data.setBoolean("justShotLeft", didJustShootLeft);
-		if(didJustShootRight) data.setBoolean("justShotRight", didJustShootRight);
-		didJustShootLeft = false;
-		didJustShootRight = false;
+		if(this.didJustShootLeft) data.setBoolean("justShotLeft", this.didJustShootLeft);
+		if(this.didJustShootRight) data.setBoolean("justShotRight", this.didJustShootRight);
+		this.didJustShootLeft = false;
+		this.didJustShootRight = false;
 		return data;
 	}
 
@@ -245,8 +245,9 @@ public class TileEntityTurretSentry extends TileEntityTurretBaseNT implements IG
 		if(nbt.getBoolean("justShotRight")) this.retractingRight = true;
 	}
 	
+	@Override
 	protected void updateConnections() {
-		this.trySubscribe(worldObj, xCoord, yCoord - 1, zCoord, ForgeDirection.DOWN);
+		trySubscribe(this.worldObj, this.xCoord, this.yCoord - 1, this.zCoord, ForgeDirection.DOWN);
 	}
 
 	@Override

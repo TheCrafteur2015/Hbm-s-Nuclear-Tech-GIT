@@ -13,8 +13,8 @@ import com.hbm.handler.BulletConfiguration;
 import com.hbm.handler.CasingEjector;
 import com.hbm.handler.GunConfiguration;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
-import com.hbm.items.ModItems;
 import com.hbm.items.ItemAmmoEnums.Ammo4Gauge;
+import com.hbm.items.ModItems;
 import com.hbm.lib.HbmCollection;
 import com.hbm.lib.HbmCollection.EnumGunManufacturer;
 import com.hbm.lib.ModDamageSource;
@@ -67,14 +67,14 @@ public class Gun4GaugeFactory {
 		config.crosshair = Crosshair.L_CIRCLE;
 		config.reloadSound = GunConfiguration.RSOUND_SHOTGUN;
 		
-		config.ejector = EJECTOR_SHOTGUN;
+		config.ejector = Gun4GaugeFactory.EJECTOR_SHOTGUN;
 		
 		return config;
 	}
 	
 	public static GunConfiguration getKS23Config() {
 		
-		GunConfiguration config = getShotgunConfig();
+		GunConfiguration config = Gun4GaugeFactory.getShotgunConfig();
 		
 		config.durability = 3000;
 		config.reloadSound = GunConfiguration.RSOUND_SHOTGUN;
@@ -91,7 +91,7 @@ public class Gun4GaugeFactory {
 	
 	public static GunConfiguration getSauerConfig() {
 		
-		GunConfiguration config = getShotgunConfig();
+		GunConfiguration config = Gun4GaugeFactory.getShotgunConfig();
 
 		config.rateOfFire = 20;
 		config.ammoCap = 0;
@@ -102,7 +102,7 @@ public class Gun4GaugeFactory {
 		config.firingSound = "hbm:weapon.sauergun";
 		config.firingPitch = 1.0F;
 		
-		config.ejector = EJECTOR_SHOTGUN.clone().setDelay(12);
+		config.ejector = Gun4GaugeFactory.EJECTOR_SHOTGUN.clone().setDelay(12);
 		
 		config.name = "sauer";
 		config.manufacturer = EnumGunManufacturer.CUBE;
@@ -146,7 +146,7 @@ public class Gun4GaugeFactory {
 		bullet.bulletsMin *= 2;
 		bullet.bulletsMax *= 2;
 		
-		bullet.spentCasing = CASING4GAUGE.clone().register("4GaStock").setColor(0xFFD800, SpentCasing.COLOR_CASE_4GA);
+		bullet.spentCasing = Gun4GaugeFactory.CASING4GAUGE.clone().register("4GaStock").setColor(0xFFD800, SpentCasing.COLOR_CASE_4GA);
 		
 		return bullet;
 	}
@@ -161,7 +161,7 @@ public class Gun4GaugeFactory {
 		bullet.wear = 7;
 		bullet.style = BulletConfiguration.STYLE_NORMAL;
 		
-		bullet.spentCasing = CASING4GAUGE.clone().register("4GaSlug").setColor(0xE01A1A, SpentCasing.COLOR_CASE_4GA);
+		bullet.spentCasing = Gun4GaugeFactory.CASING4GAUGE.clone().register("4GaSlug").setColor(0xE01A1A, SpentCasing.COLOR_CASE_4GA);
 		
 		return bullet;
 	}
@@ -181,7 +181,7 @@ public class Gun4GaugeFactory {
 		bullet.LBRC = 95;
 		BulletConfigFactory.makeFlechette(bullet);
 		
-		bullet.spentCasing = CASING4GAUGE.clone().register("4GaFlech").setColor(0x1537FF, SpentCasing.COLOR_CASE_4GA);
+		bullet.spentCasing = Gun4GaugeFactory.CASING4GAUGE.clone().register("4GaFlech").setColor(0x1537FF, SpentCasing.COLOR_CASE_4GA);
 		
 		return bullet;
 	}
@@ -203,7 +203,7 @@ public class Gun4GaugeFactory {
 		
 		PotionEffect eff = new PotionEffect(HbmPotion.phosphorus.id, 20 * 20, 0, true);
 		eff.getCurativeItems().clear();
-		bullet.effects = new ArrayList();
+		bullet.effects = new ArrayList<>();
 		bullet.effects.add(new PotionEffect(eff));
 		
 		bullet.bntImpact = (bulletnt, x, y, z, sideHit) -> {
@@ -217,7 +217,7 @@ public class Gun4GaugeFactory {
 			PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, bulletnt.posX, bulletnt.posY, bulletnt.posZ), new TargetPoint(bulletnt.dimension, bulletnt.posX, bulletnt.posY, bulletnt.posZ, 50));
 		};
 		
-		bullet.spentCasing = CASING4GAUGE.clone().register("4GaPhos").setColor(0xF6871A, SpentCasing.COLOR_CASE_4GA);
+		bullet.spentCasing = Gun4GaugeFactory.CASING4GAUGE.clone().register("4GaPhos").setColor(0xF6871A, SpentCasing.COLOR_CASE_4GA);
 		
 		return bullet;
 	}
@@ -234,7 +234,7 @@ public class Gun4GaugeFactory {
 		bullet.wear = 25;
 		bullet.trail = 1;
 		
-		bullet.spentCasing = CASING4GAUGE.clone().register("4GaExp").setColor(0x3F8243, SpentCasing.COLOR_CASE_4GA);
+		bullet.spentCasing = Gun4GaugeFactory.CASING4GAUGE.clone().register("4GaExp").setColor(0x3F8243, SpentCasing.COLOR_CASE_4GA);
 		
 		return bullet;
 	}
@@ -266,7 +266,7 @@ public class Gun4GaugeFactory {
 			ExplosionLarge.spawnParticles(bulletnt.worldObj, bulletnt.posX, bulletnt.posY, bulletnt.posZ, 15);
 		};
 		
-		bullet.spentCasing = CASING4GAUGE.clone().register("4GaSem").setColor(0x5C5C5C, SpentCasing.COLOR_CASE_4GA);
+		bullet.spentCasing = Gun4GaugeFactory.CASING4GAUGE.clone().register("4GaSem").setColor(0x5C5C5C, SpentCasing.COLOR_CASE_4GA);
 		
 		return bullet;
 	}
@@ -297,7 +297,7 @@ public class Gun4GaugeFactory {
 			ExplosionLarge.spawnParticles(bulletnt.worldObj, bulletnt.posX, bulletnt.posY, bulletnt.posZ, 30);
 		};
 		
-		bullet.spentCasing = CASING4GAUGE.clone().register("4GaBale").setColor(0x7BFF44, SpentCasing.COLOR_CASE_4GA);
+		bullet.spentCasing = Gun4GaugeFactory.CASING4GAUGE.clone().register("4GaBale").setColor(0x7BFF44, SpentCasing.COLOR_CASE_4GA);
 		
 		return bullet;
 	}
@@ -315,7 +315,7 @@ public class Gun4GaugeFactory {
 		bullet.trail = 4;
 		bullet.vPFX = "smoke";
 		
-		bullet.spentCasing = CASING4GAUGE.clone().register("4GaKampf").setColor(0xE7BA48, SpentCasing.COLOR_CASE_4GA);
+		bullet.spentCasing = Gun4GaugeFactory.CASING4GAUGE.clone().register("4GaKampf").setColor(0xE7BA48, SpentCasing.COLOR_CASE_4GA);
 		
 		return bullet;
 	}
@@ -352,7 +352,7 @@ public class Gun4GaugeFactory {
 			}
 		};
 		
-		bullet.spentCasing = CASING4GAUGE.clone().register("4GaCan").setColor(0xCACACA, SpentCasing.COLOR_CASE_4GA);
+		bullet.spentCasing = Gun4GaugeFactory.CASING4GAUGE.clone().register("4GaCan").setColor(0xCACACA, SpentCasing.COLOR_CASE_4GA);
 		
 		return bullet;
 	}
@@ -363,7 +363,7 @@ public class Gun4GaugeFactory {
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_4gauge.stackFromEnum(Ammo4Gauge.SLEEK));
 		
-		bullet.spentCasing = CASING4GAUGE.clone().register("4GaIF").setColor(0x1D1D1D, SpentCasing.COLOR_CASE_4GA);
+		bullet.spentCasing = Gun4GaugeFactory.CASING4GAUGE.clone().register("4GaIF").setColor(0x1D1D1D, SpentCasing.COLOR_CASE_4GA);
 		
 		return bullet;
 	}
@@ -398,7 +398,7 @@ public class Gun4GaugeFactory {
 			}
 		};
 		
-		bullet.spentCasing = CASING4GAUGE.clone().register("4GaClaw").setColor(0x5E38CC, SpentCasing.COLOR_CASE_4GA);
+		bullet.spentCasing = Gun4GaugeFactory.CASING4GAUGE.clone().register("4GaClaw").setColor(0x5E38CC, SpentCasing.COLOR_CASE_4GA);
 		
 		return bullet;
 	}
@@ -434,7 +434,7 @@ public class Gun4GaugeFactory {
 			}
 		};
 		
-		bullet.spentCasing = CASING4GAUGE.clone().register("4GaVamp").setColor(0x278400, SpentCasing.COLOR_CASE_4GA);
+		bullet.spentCasing = Gun4GaugeFactory.CASING4GAUGE.clone().register("4GaVamp").setColor(0x278400, SpentCasing.COLOR_CASE_4GA);
 		
 		return bullet;
 	}
@@ -463,7 +463,7 @@ public class Gun4GaugeFactory {
 			}
 		};
 		
-		bullet.spentCasing = CASING4GAUGE.clone().register("4GaVoid").setColor(0x3F3F3F, SpentCasing.COLOR_CASE_4GA);
+		bullet.spentCasing = Gun4GaugeFactory.CASING4GAUGE.clone().register("4GaVoid").setColor(0x3F3F3F, SpentCasing.COLOR_CASE_4GA);
 		
 		return bullet;
 	}
@@ -501,7 +501,7 @@ public class Gun4GaugeFactory {
 			}
 		};
 		
-		bullet.spentCasing = CASING4GAUGE.clone().register("4GaDucc").setColor(0x1E1E1E, SpentCasing.COLOR_CASE_4GA);
+		bullet.spentCasing = Gun4GaugeFactory.CASING4GAUGE.clone().register("4GaDucc").setColor(0x1E1E1E, SpentCasing.COLOR_CASE_4GA);
 		
 		return bullet;
 	}

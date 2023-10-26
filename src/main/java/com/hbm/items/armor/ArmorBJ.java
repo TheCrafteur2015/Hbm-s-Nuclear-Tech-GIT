@@ -25,17 +25,18 @@ public class ArmorBJ extends ArmorFSBPowered {
 	@SideOnly(Side.CLIENT)
 	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot) {
 		
-		if(models == null) {
-			models = new ModelArmorBJ[4];
+		if(this.models == null) {
+			this.models = new ModelArmorBJ[4];
 			
 			for(int i = 0; i < 4; i++)
-				models[i] = new ModelArmorBJ(i);
+				this.models[i] = new ModelArmorBJ(i);
 		}
 		
-		return models[armorSlot];
+		return this.models[armorSlot];
 	}
 	
-    public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
+    @Override
+	public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
     	
     	super.onArmorTick(world, player, itemStack);
     	

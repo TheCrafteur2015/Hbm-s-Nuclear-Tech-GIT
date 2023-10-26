@@ -19,8 +19,8 @@ public class EntityGrenadeDynamite extends EntityGrenadeBouncyBase {
 
 	@Override
 	public void explode() {
-		worldObj.newExplosion(this, posX, posY + 0.25D, posZ, 3F, false, false);
-		this.setDead();
+		this.worldObj.newExplosion(this, this.posX, this.posY + 0.25D, this.posZ, 3F, false, false);
+		setDead();
 	}
 
 	@Override

@@ -10,9 +10,9 @@ import com.hbm.util.BobMathUtil;
 import com.hbm.util.I18nUtil;
 
 import api.hbm.block.IToolable;
-import api.hbm.energy.IEnergyUser;
 import api.hbm.energy.IEnergyConnector.ConnectionPriority;
 import api.hbm.energy.IEnergyConnectorBlock;
+import api.hbm.energy.IEnergyUser;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -43,7 +43,7 @@ public class CableDiode extends BlockContainer implements IEnergyConnectorBlock,
 
 	@Override
 	public int getRenderType() {
-		return renderID;
+		return CableDiode.renderID;
 	}
 	
 	@Override
@@ -62,6 +62,7 @@ public class CableDiode extends BlockContainer implements IEnergyConnectorBlock,
 		return true;
 	}
 	
+	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
 		int l = BlockPistonBase.determineOrientation(world, x, y, z, player);
 		world.setBlockMetadataWithNotify(x, y, z, l, 2);
@@ -108,6 +109,7 @@ public class CableDiode extends BlockContainer implements IEnergyConnectorBlock,
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		list.add(EnumChatFormatting.GOLD + "Limits throughput and restricts flow direction");
@@ -126,7 +128,7 @@ public class CableDiode extends BlockContainer implements IEnergyConnectorBlock,
 		
 		TileEntityDiode diode = (TileEntityDiode) te;
 		
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		text.add("Max.: " + BobMathUtil.getShortNumber(diode.getMaxPower()) + "HE/t");
 		text.add("Priority: " + diode.priority.name());
 		
@@ -143,45 +145,45 @@ public class CableDiode extends BlockContainer implements IEnergyConnectorBlock,
 		@Override
 		public void readFromNBT(NBTTagCompound nbt) {
 			super.readFromNBT(nbt);
-			level = nbt.getInteger("level");
-			priority = ConnectionPriority.values()[nbt.getByte("p")];
+			this.level = nbt.getInteger("level");
+			this.priority = ConnectionPriority.values()[nbt.getByte("p")];
 		}
 		
 		@Override
 		public void writeToNBT(NBTTagCompound nbt) {
 			super.writeToNBT(nbt);
-			nbt.setInteger("level", level);
+			nbt.setInteger("level", this.level);
 			nbt.setByte("p", (byte) this.priority.ordinal());
 		}
 
 		@Override
 		public Packet getDescriptionPacket() {
 			NBTTagCompound nbt = new NBTTagCompound();
-			this.writeToNBT(nbt);
+			writeToNBT(nbt);
 			return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, nbt);
 		}
 		
 		@Override
 		public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-			this.readFromNBT(pkt.func_148857_g());
+			readFromNBT(pkt.func_148857_g());
 		}
 		
 		int level = 1;
 		
 		private ForgeDirection getDir() {
-			return ForgeDirection.getOrientation(this.getBlockMetadata()).getOpposite();
+			return ForgeDirection.getOrientation(getBlockMetadata()).getOpposite();
 		}
 
 		@Override
 		public void updateEntity() {
 			
-			if(!worldObj.isRemote) {
+			if(!this.worldObj.isRemote) {
 				for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 					
 					if(dir == getDir())
 						continue;
 					
-					this.trySubscribe(worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, dir);
+					trySubscribe(this.worldObj, this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ, dir);
 				}
 			}
 		}
@@ -201,36 +203,36 @@ public class CableDiode extends BlockContainer implements IEnergyConnectorBlock,
 		@Override
 		public long transferPower(long power) {
 
-			if(recursionBrake)
+			if(this.recursionBrake)
 				return power;
 			
-			pulses++;
+			this.pulses++;
 			
-			if(lastTransfer != worldObj.getTotalWorldTime()) {
-				lastTransfer = worldObj.getTotalWorldTime();
-				contingent = getMaxPower();
-				pulses = 0;
+			if(this.lastTransfer != this.worldObj.getTotalWorldTime()) {
+				this.lastTransfer = this.worldObj.getTotalWorldTime();
+				this.contingent = getMaxPower();
+				this.pulses = 0;
 			}
 			
-			if(contingent <= 0 || pulses > 10)
+			if(this.contingent <= 0 || this.pulses > 10)
 				return power;
 			
 			//this part turns "maxPower" from a glorified transfer weight into an actual transfer cap
-			long overShoot = Math.max(0, power - contingent);
-			power = Math.min(power, contingent);
+			long overShoot = Math.max(0, power - this.contingent);
+			power = Math.min(power, this.contingent);
 			
-			recursionBrake = true;
+			this.recursionBrake = true;
 			this.subBuffer = power;
 			
 			ForgeDirection dir = getDir();
-			this.sendPower(worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, dir);
+			sendPower(this.worldObj, this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ, dir);
 			long ret = this.subBuffer;
 			
 			long sent = power - ret;
-			contingent -= sent;
+			this.contingent -= sent;
 			
 			this.subBuffer = 0;
-			recursionBrake = false;
+			this.recursionBrake = false;
 			
 			return ret + overShoot;
 		}
@@ -238,12 +240,12 @@ public class CableDiode extends BlockContainer implements IEnergyConnectorBlock,
 
 		@Override
 		public long getMaxPower() {
-			return (long) Math.pow(10, level);
+			return (long) Math.pow(10, this.level);
 		}
 
 		@Override
 		public long getPower() {
-			return subBuffer;
+			return this.subBuffer;
 		}
 		
 		@Override

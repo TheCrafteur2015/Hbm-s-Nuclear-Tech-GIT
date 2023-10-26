@@ -36,7 +36,7 @@ public class RenderFallout extends Render {
 			float p_76986_9_) {
 
 		if (p_76986_1_ instanceof EntityFalloutRain)
-			this.render((EntityFalloutRain) p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
+			render((EntityFalloutRain) p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
 
 	}
 
@@ -52,15 +52,15 @@ public class RenderFallout extends Render {
 		double d = vector.lengthVector();
 		
 		if (d <= p_76986_1_.getScale()) {
-			rendererUpdateCount++;
+			this.rendererUpdateCount++;
 			long time = System.nanoTime();
-			float t = (time - lastTime) / 50000000;
+			float t = (time - this.lastTime) / 50000000;
 			if (t <= 1.0F)
 				renderRainSnow(t);
 			else
 				renderRainSnow(1.0F);
 
-			lastTime = time;
+			this.lastTime = time;
 		}
 	}
 
@@ -73,7 +73,7 @@ public class RenderFallout extends Render {
 
 		IRenderHandler renderer = null;
 		if ((renderer = this.mc.theWorld.provider.getWeatherRenderer()) != null) {
-			renderer.render(p_78474_1_, this.mc.theWorld, mc);
+			renderer.render(p_78474_1_, this.mc.theWorld, this.mc);
 			return;
 		}
 

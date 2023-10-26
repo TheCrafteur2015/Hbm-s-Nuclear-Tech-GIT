@@ -23,7 +23,7 @@ public class GUIScreenHolotape extends GuiScreen {
 
 	@Override
 	public void initGui() {
-		mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("hbm:block.bobble"), 1.0F));
+		this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("hbm:block.bobble"), 1.0F));
 		
 		ItemStack stack = Minecraft.getMinecraft().thePlayer.getHeldItem();
 		
@@ -40,7 +40,7 @@ public class GUIScreenHolotape extends GuiScreen {
 		if(this.holo == null)
 			return;
 		
-		this.drawDefaultBackground();
+		drawDefaultBackground();
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glDisable(GL11.GL_ALPHA_TEST);

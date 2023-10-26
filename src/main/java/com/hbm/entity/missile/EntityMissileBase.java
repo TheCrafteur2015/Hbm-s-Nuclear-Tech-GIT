@@ -46,36 +46,36 @@ public class EntityMissileBase extends EntityThrowable {
 		
 		this.motionY = 0.1;
 		
-		lengthX = (int) (x - this.posX);
-		lengthZ = (int) (z - this.posZ);
-		lengthFlight = Math.sqrt(Math.pow(lengthX, 2) + Math.pow(lengthZ, 2));
+		this.lengthX = (int) (x - this.posX);
+		this.lengthZ = (int) (z - this.posZ);
+		this.lengthFlight = Math.sqrt(Math.pow(this.lengthX, 2) + Math.pow(this.lengthZ, 2));
 		
 		
-		origin = new EasyLocation(this.posX, this.posY, this.posZ);
+		this.origin = new EasyLocation(this.posX, this.posY, this.posZ);
 		
-		loc0 = new EasyLocation(this.posX, this.posY + baseHeight, this.posZ);
-		loc1 = new EasyLocation(this.posX + lengthX/lengthFlight * 10, this.posY + baseHeight + 20, this.posZ + lengthZ/lengthFlight * 10);
-		loc2 = new EasyLocation(this.posX + lengthX/lengthFlight * 30, this.posY + baseHeight + 40, this.posZ + lengthZ/lengthFlight * 30);
-		loc3 = new EasyLocation(this.posX + lengthX/lengthFlight * 50, this.posY + baseHeight + 50, this.posZ + lengthZ/lengthFlight * 50);
+		this.loc0 = new EasyLocation(this.posX, this.posY + this.baseHeight, this.posZ);
+		this.loc1 = new EasyLocation(this.posX + this.lengthX/this.lengthFlight * 10, this.posY + this.baseHeight + 20, this.posZ + this.lengthZ/this.lengthFlight * 10);
+		this.loc2 = new EasyLocation(this.posX + this.lengthX/this.lengthFlight * 30, this.posY + this.baseHeight + 40, this.posZ + this.lengthZ/this.lengthFlight * 30);
+		this.loc3 = new EasyLocation(this.posX + this.lengthX/this.lengthFlight * 50, this.posY + this.baseHeight + 50, this.posZ + this.lengthZ/this.lengthFlight * 50);
 			
-		loc4 = new EasyLocation(x - (lengthX/lengthFlight * 50), this.posY + baseHeight + 50, z - (lengthZ/lengthFlight * 50));
-		loc5 = new EasyLocation(x - (lengthX/lengthFlight * 30), this.posY + baseHeight + 40, z - (lengthZ/lengthFlight * 30));
-		loc6 = new EasyLocation(x - (lengthX/lengthFlight * 10), this.posY + baseHeight + 20, z - (lengthZ/lengthFlight * 10));
-		loc7 = new EasyLocation(x, this.posY + baseHeight, z);
+		this.loc4 = new EasyLocation(x - (this.lengthX/this.lengthFlight * 50), this.posY + this.baseHeight + 50, z - (this.lengthZ/this.lengthFlight * 50));
+		this.loc5 = new EasyLocation(x - (this.lengthX/this.lengthFlight * 30), this.posY + this.baseHeight + 40, z - (this.lengthZ/this.lengthFlight * 30));
+		this.loc6 = new EasyLocation(x - (this.lengthX/this.lengthFlight * 10), this.posY + this.baseHeight + 20, z - (this.lengthZ/this.lengthFlight * 10));
+		this.loc7 = new EasyLocation(x, this.posY + this.baseHeight, z);
 
 		
-		target = new EasyLocation(x, 0, z);
+		this.target = new EasyLocation(x, 0, z);
 	}
 	
 	protected void freePizzaGoddammit(EasyLocation loc) {
 		double x = loc.posX - this.posX;
 		double y = loc.posY - this.posY;
 		double z = loc.posZ - this.posZ;
-		lengthFlight = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
+		this.lengthFlight = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
 		
-		this.motionX = x / this.lengthFlight * missileSpeed;
-		this.motionY = y / this.lengthFlight * missileSpeed;
-		this.motionZ = z / this.lengthFlight * missileSpeed;
+		this.motionX = x / this.lengthFlight * this.missileSpeed;
+		this.motionY = y / this.lengthFlight * this.missileSpeed;
+		this.motionZ = z / this.lengthFlight * this.missileSpeed;
 	}
 	
 	protected void rotation() {
@@ -111,113 +111,113 @@ public class EntityMissileBase extends EntityThrowable {
         this.posY += this.motionY;
         this.posZ += this.motionZ;
         
-        this.rotation();
+        rotation();
         
-        switch(phase)
+        switch(this.phase)
         {
         case 0:
-        	if(loc0 != null)
+        	if(this.loc0 != null)
         	{
-        		freePizzaGoddammit(loc0);
-        		if(loc0.posX + 2 > this.posX && loc0.posX - 2 < this.posX &&
-        			loc0.posY + 2 > this.posY && loc0.posY - 2 < this.posY &&
-        			loc0.posZ + 2 > this.posZ && loc0.posZ - 2 < this.posZ)
+        		freePizzaGoddammit(this.loc0);
+        		if(this.loc0.posX + 2 > this.posX && this.loc0.posX - 2 < this.posX &&
+        			this.loc0.posY + 2 > this.posY && this.loc0.posY - 2 < this.posY &&
+        			this.loc0.posZ + 2 > this.posZ && this.loc0.posZ - 2 < this.posZ)
         		{
         			this.phase = 1;
         		}
         	}
         	break;
         case 1:
-        	if(loc1 != null)
+        	if(this.loc1 != null)
         	{
-        		freePizzaGoddammit(loc1);
-        		if(loc1.posX + 2 > this.posX && loc1.posX - 2 < this.posX &&
-        				loc1.posY + 2 > this.posY && loc1.posY - 2 < this.posY &&
-        				loc1.posZ + 2 > this.posZ && loc1.posZ - 2 < this.posZ)
+        		freePizzaGoddammit(this.loc1);
+        		if(this.loc1.posX + 2 > this.posX && this.loc1.posX - 2 < this.posX &&
+        				this.loc1.posY + 2 > this.posY && this.loc1.posY - 2 < this.posY &&
+        				this.loc1.posZ + 2 > this.posZ && this.loc1.posZ - 2 < this.posZ)
         		{
         			this.phase = 2;
         		}
         	}
         	break;
         case 2:
-        	if(loc2 != null)
+        	if(this.loc2 != null)
         	{
-        		freePizzaGoddammit(loc2);
-        		if(loc2.posX + 2 > this.posX && loc2.posX - 2 < this.posX &&
-        				loc2.posY + 2 > this.posY && loc2.posY - 2 < this.posY &&
-        				loc2.posZ + 2 > this.posZ && loc2.posZ - 2 < this.posZ)
+        		freePizzaGoddammit(this.loc2);
+        		if(this.loc2.posX + 2 > this.posX && this.loc2.posX - 2 < this.posX &&
+        				this.loc2.posY + 2 > this.posY && this.loc2.posY - 2 < this.posY &&
+        				this.loc2.posZ + 2 > this.posZ && this.loc2.posZ - 2 < this.posZ)
         		{
         			this.phase = 3;
         		}
         	}
         	break;
         case 3:
-        	if(loc3 != null)
+        	if(this.loc3 != null)
         	{
-        		freePizzaGoddammit(loc3);
-        		if(loc3.posX + 2 > this.posX && loc3.posX - 2 < this.posX &&
-        				loc3.posY + 2 > this.posY && loc3.posY - 2 < this.posY &&
-        				loc3.posZ + 2 > this.posZ && loc3.posZ - 2 < this.posZ)
+        		freePizzaGoddammit(this.loc3);
+        		if(this.loc3.posX + 2 > this.posX && this.loc3.posX - 2 < this.posX &&
+        				this.loc3.posY + 2 > this.posY && this.loc3.posY - 2 < this.posY &&
+        				this.loc3.posZ + 2 > this.posZ && this.loc3.posZ - 2 < this.posZ)
         		{
         			this.phase = 4;
         		}
         	}
         	break;
         case 4:
-        	if(loc4 != null)
+        	if(this.loc4 != null)
         	{
-        		freePizzaGoddammit(loc4);
-        		if(loc4.posX + 2 > this.posX && loc4.posX - 2 < this.posX &&
-        				loc4.posY + 2 > this.posY && loc4.posY - 2 < this.posY &&
-        				loc4.posZ + 2 > this.posZ && loc4.posZ - 2 < this.posZ)
+        		freePizzaGoddammit(this.loc4);
+        		if(this.loc4.posX + 2 > this.posX && this.loc4.posX - 2 < this.posX &&
+        				this.loc4.posY + 2 > this.posY && this.loc4.posY - 2 < this.posY &&
+        				this.loc4.posZ + 2 > this.posZ && this.loc4.posZ - 2 < this.posZ)
         		{
         			this.phase = 5;
         		}
         	}
         	break;
         case 5:
-        	if(loc5 != null)
+        	if(this.loc5 != null)
         	{
-        		freePizzaGoddammit(loc5);
-        		if(loc5.posX + 2 > this.posX && loc5.posX - 2 < this.posX &&
-        				loc5.posY + 2 > this.posY && loc5.posY - 2 < this.posY &&
-        				loc5.posZ + 2 > this.posZ && loc5.posZ - 2 < this.posZ)
+        		freePizzaGoddammit(this.loc5);
+        		if(this.loc5.posX + 2 > this.posX && this.loc5.posX - 2 < this.posX &&
+        				this.loc5.posY + 2 > this.posY && this.loc5.posY - 2 < this.posY &&
+        				this.loc5.posZ + 2 > this.posZ && this.loc5.posZ - 2 < this.posZ)
         		{
         			this.phase = 6;
         		}
         	}
         	break;
         case 6:
-        	if(loc6 != null)
+        	if(this.loc6 != null)
         	{
-        		freePizzaGoddammit(loc6);
-        		if(loc6.posX + 2 > this.posX && loc6.posX - 2 < this.posX &&
-        				loc6.posY + 2 > this.posY && loc6.posY - 2 < this.posY &&
-        				loc6.posZ + 2 > this.posZ && loc6.posZ - 2 < this.posZ)
+        		freePizzaGoddammit(this.loc6);
+        		if(this.loc6.posX + 2 > this.posX && this.loc6.posX - 2 < this.posX &&
+        				this.loc6.posY + 2 > this.posY && this.loc6.posY - 2 < this.posY &&
+        				this.loc6.posZ + 2 > this.posZ && this.loc6.posZ - 2 < this.posZ)
         		{
         			this.phase = 7;
         		}
         	}
         	break;
         case 7:
-        	if(loc7 != null)
+        	if(this.loc7 != null)
         	{
-        		freePizzaGoddammit(loc7);
-        		if(loc7.posX + 2 > this.posX && loc7.posX - 2 < this.posX &&
-        				loc7.posY + 2 > this.posY && loc7.posY - 2 < this.posY &&
-        				loc7.posZ + 2 > this.posZ && loc7.posZ - 2 < this.posZ)
+        		freePizzaGoddammit(this.loc7);
+        		if(this.loc7.posX + 2 > this.posX && this.loc7.posX - 2 < this.posX &&
+        				this.loc7.posY + 2 > this.posY && this.loc7.posY - 2 < this.posY &&
+        				this.loc7.posZ + 2 > this.posZ && this.loc7.posZ - 2 < this.posZ)
         		{
         			this.phase = 8;
         		}
         	}
         	break;
         case 8:
-        	if(target != null)
+        	if(this.target != null)
         	{
-        		freePizzaGoddammit(target);
-        		if(target.posX + 2 > this.posX && target.posX - 2 < this.posX &&
-        				target.posY + 2 > this.posY && target.posY - 2 < this.posY &&
-        				target.posZ + 2 > this.posZ && target.posZ - 2 < this.posZ)
+        		freePizzaGoddammit(this.target);
+        		if(this.target.posX + 2 > this.posX && this.target.posX - 2 < this.posX &&
+        				this.target.posY + 2 > this.posY && this.target.posY - 2 < this.posY &&
+        				this.target.posZ + 2 > this.posZ && this.target.posZ - 2 < this.posZ)
         		{
         			this.phase = -1;
         		}
@@ -231,7 +231,7 @@ public class EntityMissileBase extends EntityThrowable {
     		{
     			this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 5.0F, true);
     		}
-    		this.setDead();
+    		setDead();
         }
     }
 

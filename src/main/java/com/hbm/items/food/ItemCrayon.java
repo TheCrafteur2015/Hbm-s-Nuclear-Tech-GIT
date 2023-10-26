@@ -22,8 +22,8 @@ public class ItemCrayon extends ItemFood {
 
 	public ItemCrayon() {
 		super(3, false);
-		this.setHasSubtypes(true);
-		this.setAlwaysEdible();
+		setHasSubtypes(true);
+		setAlwaysEdible();
 	}
 
 	@Override
@@ -36,6 +36,7 @@ public class ItemCrayon extends ItemFood {
 	
 	protected IIcon[] icons;
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister reg) {
 		super.registerIcons(reg);

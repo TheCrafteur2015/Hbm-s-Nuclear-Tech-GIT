@@ -17,7 +17,7 @@ import net.minecraft.world.World;
  */
 public abstract class EntityMinecartContainerBase extends EntityMinecartNTM implements IInventory {
 	
-	protected ItemStack[] slots = new ItemStack[this.getSizeInventory()];
+	protected ItemStack[] slots = new ItemStack[getSizeInventory()];
 
 	public EntityMinecartContainerBase(World world) {
 		super(world);
@@ -29,7 +29,7 @@ public abstract class EntityMinecartContainerBase extends EntityMinecartNTM impl
 
 	@Override
 	public ItemStack getStackInSlot(int slot) {
-		return slots[slot];
+		return this.slots[slot];
 	}
 	
 	@Override
@@ -70,14 +70,14 @@ public abstract class EntityMinecartContainerBase extends EntityMinecartNTM impl
 	public void setInventorySlotContents(int slot, ItemStack stack) {
 		this.slots[slot] = stack;
 
-		if(stack != null && stack.stackSize > this.getInventoryStackLimit()) {
-			stack.stackSize = this.getInventoryStackLimit();
+		if(stack != null && stack.stackSize > getInventoryStackLimit()) {
+			stack.stackSize = getInventoryStackLimit();
 		}
 	}
 
 	@Override
 	public String getInventoryName() {
-		return this.hasCustomInventoryName() ? this.func_95999_t() : "container.minecart";
+		return hasCustomInventoryName() ? func_95999_t() : "container.minecart";
 	}
 
 	@Override
@@ -125,7 +125,7 @@ public abstract class EntityMinecartContainerBase extends EntityMinecartNTM impl
 	protected void readEntityFromNBT(NBTTagCompound nbt) {
 		super.readEntityFromNBT(nbt);
 		NBTTagList nbttaglist = nbt.getTagList("Items", 10);
-		this.slots = new ItemStack[this.getSizeInventory()];
+		this.slots = new ItemStack[getSizeInventory()];
 
 		for(int i = 0; i < nbttaglist.tagCount(); ++i) {
 			NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);

@@ -21,13 +21,13 @@ public class ArmorDigamma extends ArmorFSBPowered {
 	@SideOnly(Side.CLIENT)
 	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot) {
 		
-		if(models == null) {
-			models = new ModelArmorDigamma[4];
+		if(this.models == null) {
+			this.models = new ModelArmorDigamma[4];
 			
 			for(int i = 0; i < 4; i++)
-				models[i] = new ModelArmorDigamma(i);
+				this.models[i] = new ModelArmorDigamma(i);
 		}
 		
-		return models[armorSlot];
+		return this.models[armorSlot];
 	}
 }

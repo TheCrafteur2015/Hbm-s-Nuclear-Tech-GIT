@@ -14,6 +14,7 @@ import net.minecraft.util.AxisAlignedBB;
 
 public class TileEntityDecon extends TileEntity {
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void updateEntity() {
 
@@ -30,14 +31,14 @@ public class TileEntityDecon extends TileEntity {
 			}
 		} else {
 			
-			Random rand = worldObj.rand;
+			Random rand = this.worldObj.rand;
 			
 			NBTTagCompound nbt = new NBTTagCompound();
 			nbt.setString("type", "vanillaExt");
 			nbt.setString("mode", "townaura");
-			nbt.setDouble("posX", xCoord + 0.125 + rand.nextDouble() * 0.75);
-			nbt.setDouble("posY", yCoord + 1.1);
-			nbt.setDouble("posZ", zCoord + 0.125 + rand.nextDouble() * 0.75);
+			nbt.setDouble("posX", this.xCoord + 0.125 + rand.nextDouble() * 0.75);
+			nbt.setDouble("posY", this.yCoord + 1.1);
+			nbt.setDouble("posZ", this.zCoord + 0.125 + rand.nextDouble() * 0.75);
 			nbt.setDouble("mX", 0.0);
 			nbt.setDouble("mY", 0.04);
 			nbt.setDouble("mZ", 0.0);

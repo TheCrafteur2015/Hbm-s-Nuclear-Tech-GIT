@@ -34,15 +34,15 @@ public abstract class TileEntityRequestNetworkContainer extends TileEntityReques
 	private String customName;
 	
 	public TileEntityRequestNetworkContainer(int scount) {
-		slots = new ItemStack[scount];
+		this.slots = new ItemStack[scount];
 	}
 
-	@Override public int getSizeInventory() { return slots.length; }
-	@Override public ItemStack getStackInSlot(int i) { return slots[i]; }
+	@Override public int getSizeInventory() { return this.slots.length; }
+	@Override public ItemStack getStackInSlot(int i) { return this.slots[i]; }
 	@Override public void openInventory() { }
 	@Override public void closeInventory() { }
 	@Override public boolean isItemValidForSlot(int slot, ItemStack itemStack) { return false; }
-	@Override public boolean canInsertItem(int slot, ItemStack itemStack, int side) { return this.isItemValidForSlot(slot, itemStack); }
+	@Override public boolean canInsertItem(int slot, ItemStack itemStack, int side) { return isItemValidForSlot(slot, itemStack); }
 	@Override public boolean canExtractItem(int slot, ItemStack itemStack, int side) { return false; }
 	@Override public int[] getAccessibleSlotsFromSide(int side) { return new int[] { }; }
 	
@@ -52,10 +52,10 @@ public abstract class TileEntityRequestNetworkContainer extends TileEntityReques
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			ItemStack itemStack = slots[i];
-			slots[i] = null;
+			ItemStack itemStack = this.slots[i];
+			this.slots[i] = null;
 			return itemStack;
 		} else {
 		return null;
@@ -64,14 +64,14 @@ public abstract class TileEntityRequestNetworkContainer extends TileEntityReques
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemStack) {
-		slots[i] = itemStack;
+		this.slots[i] = itemStack;
 		if(itemStack != null && itemStack.stackSize > getInventoryStackLimit())
 		{
 			itemStack.stackSize = getInventoryStackLimit();
 		}
 	}
 
-	@Override public String getInventoryName() { return this.hasCustomInventoryName() ? this.customName : getName(); }
+	@Override public String getInventoryName() { return hasCustomInventoryName() ? this.customName : getName(); }
 	public abstract String getName();
 	@Override public boolean hasCustomInventoryName() { return this.customName != null && this.customName.length() > 0; }
 	public void setCustomName(String name) { this.customName = name; }
@@ -79,26 +79,26 @@ public abstract class TileEntityRequestNetworkContainer extends TileEntityReques
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		if(worldObj.getTileEntity(xCoord, yCoord, zCoord) != this) {
+		if(this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this) {
 			return false;
 		} else {
-			return player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 128;
+			return player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 128;
 		}
 	}
 	
 	@Override
 	public ItemStack decrStackSize(int slot, int amount) {
-		if(slots[slot] != null) {
+		if(this.slots[slot] != null) {
 			
-			if(slots[slot].stackSize <= amount) {
-				ItemStack itemStack = slots[slot];
-				slots[slot] = null;
+			if(this.slots[slot].stackSize <= amount) {
+				ItemStack itemStack = this.slots[slot];
+				this.slots[slot] = null;
 				return itemStack;
 			}
 			
-			ItemStack itemStack1 = slots[slot].splitStack(amount);
-			if(slots[slot].stackSize == 0) {
-				slots[slot] = null;
+			ItemStack itemStack1 = this.slots[slot].splitStack(amount);
+			if(this.slots[slot].stackSize == 0) {
+				this.slots[slot] = null;
 			}
 			
 			return itemStack1;
@@ -108,7 +108,7 @@ public abstract class TileEntityRequestNetworkContainer extends TileEntityReques
 	}
 	
 	public void networkPack(NBTTagCompound nbt, int range) {
-		if(!worldObj.isRemote) PacketDispatcher.wrapper.sendToAllAround(new NBTPacket(nbt, xCoord, yCoord, zCoord), new TargetPoint(this.worldObj.provider.dimensionId, xCoord, yCoord, zCoord, range));
+		if(!this.worldObj.isRemote) PacketDispatcher.wrapper.sendToAllAround(new NBTPacket(nbt, this.xCoord, this.yCoord, this.zCoord), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, range));
 	}
 	
 	@Override
@@ -120,9 +120,9 @@ public abstract class TileEntityRequestNetworkContainer extends TileEntityReques
 		{
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("slot");
-			if(b0 >= 0 && b0 < slots.length)
+			if(b0 >= 0 && b0 < this.slots.length)
 			{
-				slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
+				this.slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
 			}
 		}
 	}
@@ -132,13 +132,13 @@ public abstract class TileEntityRequestNetworkContainer extends TileEntityReques
 		super.writeToNBT(nbt);
 		NBTTagList list = new NBTTagList();
 		
-		for(int i = 0; i < slots.length; i++)
+		for(int i = 0; i < this.slots.length; i++)
 		{
-			if(slots[i] != null)
+			if(this.slots[i] != null)
 			{
 				NBTTagCompound nbt1 = new NBTTagCompound();
 				nbt1.setByte("slot", (byte)i);
-				slots[i].writeToNBT(nbt1);
+				this.slots[i].writeToNBT(nbt1);
 				list.appendTag(nbt1);
 			}
 		}

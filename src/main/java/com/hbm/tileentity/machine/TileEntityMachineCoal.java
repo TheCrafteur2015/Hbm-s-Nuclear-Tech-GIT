@@ -52,7 +52,7 @@ public class TileEntityMachineCoal extends TileEntityMachinePolluting implements
 	
 	public TileEntityMachineCoal() {
 		super(4, 50);
-		tank = new FluidTank(Fluids.WATER, waterCap, 0);
+		this.tank = new FluidTank(Fluids.WATER, TileEntityMachineCoal.waterCap, 0);
 	}
 
 	@Override
@@ -80,24 +80,24 @@ public class TileEntityMachineCoal extends TileEntityMachinePolluting implements
 		super.readFromNBT(nbt);
 		
 		this.power = nbt.getLong("powerTime");
-		tank.readFromNBT(nbt, "water");
+		this.tank.readFromNBT(nbt, "water");
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setLong("powerTime", power);
-		tank.writeToNBT(nbt, "water");
+		nbt.setLong("powerTime", this.power);
+		this.tank.writeToNBT(nbt, "water");
 	}
 	
 	@Override
 	public int[] getAccessibleSlotsFromSide(int p_94128_1_) {
-		return p_94128_1_ == 0 ? slots_bottom : (p_94128_1_ == 1 ? slots_top : slots_side);
+		return p_94128_1_ == 0 ? TileEntityMachineCoal.slots_bottom : (p_94128_1_ == 1 ? TileEntityMachineCoal.slots_top : TileEntityMachineCoal.slots_side);
 	}
 
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemStack, int j) {
-		return this.isItemValidForSlot(i, itemStack);
+		return isItemValidForSlot(i, itemStack);
 	}
 
 	@Override
@@ -113,28 +113,28 @@ public class TileEntityMachineCoal extends TileEntityMachinePolluting implements
 	}
 	
 	public long getPowerScaled(long i) {
-		return (power * i) / maxPower;
+		return (this.power * i) / TileEntityMachineCoal.maxPower;
 	}
 	
 	@Override
 	public void updateEntity() {
 
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-				this.sendPower(worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, dir);
-				this.sendSmoke(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, dir);
+				sendPower(this.worldObj, this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ, dir);
+				sendSmoke(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ, dir);
 			}
 			
 			this.subscribeToAllAround(Fluids.WATER, this);
 		
 			//Water
-			tank.loadTank(0, 3, slots);
+			this.tank.loadTank(0, 3, this.slots);
 			
-			tank.updateTank(xCoord, yCoord, zCoord, worldObj.provider.dimensionId);
+			this.tank.updateTank(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId);
 
 			//Battery Item
-			power = Library.chargeItemsFromTE(slots, 2, power, maxPower);
+			this.power = Library.chargeItemsFromTE(this.slots, 2, this.power, TileEntityMachineCoal.maxPower);
 			
 			boolean trigger = true;
 			
@@ -149,10 +149,10 @@ public class TileEntityMachineCoal extends TileEntityMachinePolluting implements
 			generate();
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setLong("power", power);
-			data.setInteger("burnTime", burnTime);
-			tank.writeToNBT(data, "tank");
-			this.networkPack(data, 15);
+			data.setLong("power", this.power);
+			data.setInteger("burnTime", this.burnTime);
+			this.tank.writeToNBT(data, "tank");
+			networkPack(data, 15);
 		}
 	}
 	
@@ -165,38 +165,38 @@ public class TileEntityMachineCoal extends TileEntityMachinePolluting implements
 	
 	public void generate() {
 		
-		if(slots[1] != null && TileEntityFurnace.getItemBurnTime(slots[1]) > 0 && burnTime <= 0)
+		if(this.slots[1] != null && TileEntityFurnace.getItemBurnTime(this.slots[1]) > 0 && this.burnTime <= 0)
 		{
-			burnTime = (int) (TileEntityFurnace.getItemBurnTime(slots[1]) * fuelMod);
-			slots[1].stackSize -= 1;
-			if(slots[1].stackSize == 0)
+			this.burnTime = (int) (TileEntityFurnace.getItemBurnTime(this.slots[1]) * TileEntityMachineCoal.fuelMod);
+			this.slots[1].stackSize -= 1;
+			if(this.slots[1].stackSize == 0)
 			{
-				if(slots[1].getItem().getContainerItem() != null)
-					slots[1] = new ItemStack(slots[1].getItem().getContainerItem());
+				if(this.slots[1].getItem().getContainerItem() != null)
+					this.slots[1] = new ItemStack(this.slots[1].getItem().getContainerItem());
 				else
-					slots[1] = null;
+					this.slots[1] = null;
 			}
 		}
 		
-		if(burnTime > 0) {
-			burnTime--;
+		if(this.burnTime > 0) {
+			this.burnTime--;
 
-			if(worldObj.getTotalWorldTime() % 20 == 0) this.pollute(PollutionType.SOOT, PollutionHandler.SOOT_PER_SECOND);
+			if(this.worldObj.getTotalWorldTime() % 20 == 0) pollute(PollutionType.SOOT, PollutionHandler.SOOT_PER_SECOND);
 
-			if(tank.getFill() > 0) {
-				tank.setFill(tank.getFill() - 1);
+			if(this.tank.getFill() > 0) {
+				this.tank.setFill(this.tank.getFill() - 1);
 
-				power += genRate;
+				this.power += TileEntityMachineCoal.genRate;
 
-				if(power > maxPower)
-					power = maxPower;
+				if(this.power > TileEntityMachineCoal.maxPower)
+					this.power = TileEntityMachineCoal.maxPower;
 			}
 		}
 	}
 	
 	public boolean isItemValid() {
 
-		if(slots[1] != null && TileEntityFurnace.getItemBurnTime(slots[1]) > 0) {
+		if(this.slots[1] != null && TileEntityFurnace.getItemBurnTime(this.slots[1]) > 0) {
 			return true;
 		}
 		
@@ -205,7 +205,7 @@ public class TileEntityMachineCoal extends TileEntityMachinePolluting implements
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 
 	@Override
@@ -215,22 +215,22 @@ public class TileEntityMachineCoal extends TileEntityMachinePolluting implements
 
 	@Override
 	public long getMaxPower() {
-		return this.maxPower;
+		return TileEntityMachineCoal.maxPower;
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] {tank};
+		return new FluidTank[] {this.tank};
 	}
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return this.getSmokeTanks();
+		return getSmokeTanks();
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return new FluidTank[] { tank };
+		return new FluidTank[] { this.tank };
 	}
 
 	@Override
@@ -240,16 +240,16 @@ public class TileEntityMachineCoal extends TileEntityMachinePolluting implements
 
 	@Override
 	public void readIfPresent(JsonObject obj) {
-		waterCap = IConfigurableMachine.grab(obj, "I:waterCapacity", waterCap);
-		genRate = IConfigurableMachine.grab(obj, "I:powerGen", genRate);
-		fuelMod = IConfigurableMachine.grab(obj, "D:burnTimeMod", fuelMod);
+		TileEntityMachineCoal.waterCap = IConfigurableMachine.grab(obj, "I:waterCapacity", TileEntityMachineCoal.waterCap);
+		TileEntityMachineCoal.genRate = IConfigurableMachine.grab(obj, "I:powerGen", TileEntityMachineCoal.genRate);
+		TileEntityMachineCoal.fuelMod = IConfigurableMachine.grab(obj, "D:burnTimeMod", TileEntityMachineCoal.fuelMod);
 	}
 
 	@Override
 	public void writeConfig(JsonWriter writer) throws IOException {
-		writer.name("I:waterCapacity").value(waterCap);
-		writer.name("I:powerGen").value(genRate);
-		writer.name("D:burnTimeMod").value(fuelMod);
+		writer.name("I:waterCapacity").value(TileEntityMachineCoal.waterCap);
+		writer.name("I:powerGen").value(TileEntityMachineCoal.genRate);
+		writer.name("D:burnTimeMod").value(TileEntityMachineCoal.fuelMod);
 	}
 
 	@Override

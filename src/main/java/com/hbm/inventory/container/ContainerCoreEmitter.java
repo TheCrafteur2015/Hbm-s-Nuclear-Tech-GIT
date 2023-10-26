@@ -14,25 +14,25 @@ public class ContainerCoreEmitter extends Container {
 	
 	public ContainerCoreEmitter(InventoryPlayer invPlayer, TileEntityCoreEmitter tedf) {
 		
-		nukeBoy = tedf;
+		this.nukeBoy = tedf;
 		
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++)
 		{
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
 		}
 	}
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return nukeBoy.isUseableByPlayer(player);
+		return this.nukeBoy.isUseableByPlayer(player);
 	}
 	
 	@Override

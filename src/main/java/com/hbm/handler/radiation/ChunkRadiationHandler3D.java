@@ -15,13 +15,14 @@ import net.minecraftforge.event.world.WorldEvent;
  * The bottom and topmost values extend up to infinity, preventing people from escaping radiation when leaving the build height.
  * @author hbm
  */
+@SuppressWarnings("all")
 public class ChunkRadiationHandler3D extends ChunkRadiationHandler {
 	
 	private HashMap<World, ThreeDimRadiationPerWorld> perWorld = new HashMap();
 
 	@Override
 	public float getRadiation(World world, int x, int y, int z) {
-		ThreeDimRadiationPerWorld radWorld = perWorld.get(world);
+		ThreeDimRadiationPerWorld radWorld = this.perWorld.get(world);
 		
 		if(radWorld != null) {
 			ChunkCoordIntPair coords = new ChunkCoordIntPair(x >> 4, z >> 4);
@@ -37,7 +38,7 @@ public class ChunkRadiationHandler3D extends ChunkRadiationHandler {
 
 	@Override
 	public void setRadiation(World world, int x, int y, int z, float rad) {
-		ThreeDimRadiationPerWorld radWorld = perWorld.get(world);
+		ThreeDimRadiationPerWorld radWorld = this.perWorld.get(world);
 		
 		if(radWorld != null) {
 			
@@ -69,7 +70,7 @@ public class ChunkRadiationHandler3D extends ChunkRadiationHandler {
 	@Override
 	public void updateSystem() {
 		
-		for(Entry<World, ThreeDimRadiationPerWorld> entry : perWorld.entrySet()) {
+		for(Entry<World, ThreeDimRadiationPerWorld> entry : this.perWorld.entrySet()) {
 			
 			HashMap<ChunkCoordIntPair, Float[]> radiation = entry.getValue().radiation;
 			HashMap<ChunkCoordIntPair, Float[]> buff = new HashMap(radiation);
@@ -112,13 +113,13 @@ public class ChunkRadiationHandler3D extends ChunkRadiationHandler {
 	@Override
 	public void receiveWorldLoad(WorldEvent.Load event) {
 		if(!event.world.isRemote)
-			perWorld.put(event.world, new ThreeDimRadiationPerWorld());
+			this.perWorld.put(event.world, new ThreeDimRadiationPerWorld());
 	}
 
 	@Override
 	public void receiveWorldUnload(WorldEvent.Unload event) {
 		if(!event.world.isRemote)
-			perWorld.remove(event.world);
+			this.perWorld.remove(event.world);
 	}
 	
 	private static final String NBT_KEY_CHUNK_RADIATION = "hfr_3d_radiation_";
@@ -127,14 +128,14 @@ public class ChunkRadiationHandler3D extends ChunkRadiationHandler {
 	public void receiveChunkLoad(ChunkDataEvent.Load event) {
 		
 		if(!event.world.isRemote) {
-			ThreeDimRadiationPerWorld radWorld = perWorld.get(event.world);
+			ThreeDimRadiationPerWorld radWorld = this.perWorld.get(event.world);
 			
 			if(radWorld != null) {
 				
 				Float[] vals = new Float[16];
 				
 				for(int i = 0; i < 16; i++) {
-					vals[i] = event.getData().getFloat(NBT_KEY_CHUNK_RADIATION + i);
+					vals[i] = event.getData().getFloat(ChunkRadiationHandler3D.NBT_KEY_CHUNK_RADIATION + i);
 				}
 				
 				radWorld.radiation.put(event.getChunk().getChunkCoordIntPair(), vals);
@@ -146,14 +147,14 @@ public class ChunkRadiationHandler3D extends ChunkRadiationHandler {
 	public void receiveChunkSave(ChunkDataEvent.Save event) {
 		
 		if(!event.world.isRemote) {
-			ThreeDimRadiationPerWorld radWorld = perWorld.get(event.world);
+			ThreeDimRadiationPerWorld radWorld = this.perWorld.get(event.world);
 			
 			if(radWorld != null) {
 				Float[] vals = radWorld.radiation.get(event.getChunk().getChunkCoordIntPair());
 				
 				for(int i = 0; i < 16; i++) {
 					float rad = vals[i] == null ? 0F : vals[i];
-					event.getData().setFloat(NBT_KEY_CHUNK_RADIATION + i, rad);
+					event.getData().setFloat(ChunkRadiationHandler3D.NBT_KEY_CHUNK_RADIATION + i, rad);
 				}
 			}
 		}
@@ -163,7 +164,7 @@ public class ChunkRadiationHandler3D extends ChunkRadiationHandler {
 	public void receiveChunkUnload(ChunkEvent.Unload event) {
 		
 		if(!event.world.isRemote) {
-			ThreeDimRadiationPerWorld radWorld = perWorld.get(event.world);
+			ThreeDimRadiationPerWorld radWorld = this.perWorld.get(event.world);
 			
 			if(radWorld != null) {
 				radWorld.radiation.remove(event.getChunk());

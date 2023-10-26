@@ -32,11 +32,11 @@ public abstract class ItemStructureTool extends Item implements ILookOverlay {
 			return;
 		
 		try {
-			if(!file.exists()) file.createNewFile();
-			if(writer == null) writer = new FileWriter(file, true);
+			if(!this.file.exists()) this.file.createNewFile();
+			if(this.writer == null) this.writer = new FileWriter(this.file, true);
 			
-			writer.write(message);
-			writer.flush();
+			this.writer.write(message);
+			this.writer.flush();
 		} catch(IOException e) {
 			System.out.print("ItemStructureWand encountered an IOException!");
 		}
@@ -44,7 +44,7 @@ public abstract class ItemStructureTool extends Item implements ILookOverlay {
 	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		BlockPos anchor = this.getAnchor(stack);
+		BlockPos anchor = getAnchor(stack);
 		
 		if(anchor == null)
 			list.add(EnumChatFormatting.RED + "No anchor set! Right click an anchor to get started.");
@@ -79,16 +79,16 @@ public abstract class ItemStructureTool extends Item implements ILookOverlay {
 		Block b = world.getBlock(x, y, z);
 		
 		if(b == ModBlocks.structure_anchor) {
-			this.setAnchor(stack, x, y, z);
+			setAnchor(stack, x, y, z);
 			return true;
 		}
 		
-		if(this.getAnchor(stack) == null) {
+		if(getAnchor(stack) == null) {
 			return false;
 		}
 		
-		if(!this.dualUse() && world.isRemote) {
-			this.doTheThing(stack, world, x, y, z);
+		if(!dualUse() && world.isRemote) {
+			doTheThing(stack, world, x, y, z);
 		} else {
 			
 			if(!stack.stackTagCompound.hasKey("x")) {
@@ -97,7 +97,7 @@ public abstract class ItemStructureTool extends Item implements ILookOverlay {
 				stack.stackTagCompound.setInteger("z", z);
 			} else {
 				if(world.isRemote)
-					this.doTheThing(stack, world, x, y, z);
+					doTheThing(stack, world, x, y, z);
 				stack.stackTagCompound.removeTag("x");
 				stack.stackTagCompound.removeTag("y");
 				stack.stackTagCompound.removeTag("z");
@@ -116,9 +116,9 @@ public abstract class ItemStructureTool extends Item implements ILookOverlay {
 	@Override
 	public void printHook(Pre event, World world, int x, int y, int z) {
 		ItemStack stack = Minecraft.getMinecraft().thePlayer.getHeldItem();
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		
-		BlockPos anchor = getAnchor(stack);
+		BlockPos anchor = ItemStructureTool.getAnchor(stack);
 		
 		if(anchor == null) {
 			text.add(EnumChatFormatting.RED + "No Anchor");
@@ -129,7 +129,7 @@ public abstract class ItemStructureTool extends Item implements ILookOverlay {
 			int dZ = z - anchor.getZ();
 			text.add(EnumChatFormatting.YELLOW + "Position: " + dX + " / " + dY + " / " + dZ);
 			
-			if(this.dualUse() && stack.stackTagCompound.hasKey("x")) {
+			if(dualUse() && stack.stackTagCompound.hasKey("x")) {
 				int sX = Math.abs(x - stack.stackTagCompound.getInteger("x")) + 1;
 				int sY = Math.abs(y - stack.stackTagCompound.getInteger("y")) + 1;
 				int sZ = Math.abs(z - stack.stackTagCompound.getInteger("z")) + 1;
@@ -137,6 +137,6 @@ public abstract class ItemStructureTool extends Item implements ILookOverlay {
 			}
 		}
 		
-		ILookOverlay.printGeneric(event, this.getItemStackDisplayName(stack), 0xffff00, 0x404000, text);
+		ILookOverlay.printGeneric(event, getItemStackDisplayName(stack), 0xffff00, 0x404000, text);
 	}
 }

@@ -24,7 +24,7 @@ public abstract class EntityDroneBase extends Entity {
 
 	public EntityDroneBase(World world) {
 		super(world);
-		this.setSize(1.5F, 2.0F);
+		setSize(1.5F, 2.0F);
 	}
 	
 	public void setTarget(double x, double y, double z) {
@@ -47,7 +47,7 @@ public abstract class EntityDroneBase extends Entity {
 	public boolean hitByEntity(Entity attacker) {
 
 		if(attacker instanceof EntityPlayer) {
-			this.setDead();
+			setDead();
 		}
 		
 		return false;
@@ -79,21 +79,21 @@ public abstract class EntityDroneBase extends Entity {
 	@Override
 	public void onUpdate() {
 		
-		if(worldObj.isRemote) {
+		if(this.worldObj.isRemote) {
 			if(this.turnProgress > 0) {
 				double interpX = this.posX + (this.syncPosX - this.posX) / (double) this.turnProgress;
 				double interpY = this.posY + (this.syncPosY - this.posY) / (double) this.turnProgress;
 				double interpZ = this.posZ + (this.syncPosZ - this.posZ) / (double) this.turnProgress;
 				--this.turnProgress;
-				this.setPosition(interpX, interpY, interpZ);
+				setPosition(interpX, interpY, interpZ);
 			} else {
-				this.setPosition(this.posX, this.posY, this.posZ);
+				setPosition(this.posX, this.posY, this.posZ);
 			}
 
-			worldObj.spawnParticle("smoke", posX + 1.125, posY + 0.75, posZ, 0, -0.2, 0);
-			worldObj.spawnParticle("smoke", posX - 1.125, posY + 0.75, posZ, 0, -0.2, 0);
-			worldObj.spawnParticle("smoke", posX, posY + 0.75, posZ + 1.125, 0, -0.2, 0);
-			worldObj.spawnParticle("smoke", posX, posY + 0.75, posZ - 1.125, 0, -0.2, 0);
+			this.worldObj.spawnParticle("smoke", this.posX + 1.125, this.posY + 0.75, this.posZ, 0, -0.2, 0);
+			this.worldObj.spawnParticle("smoke", this.posX - 1.125, this.posY + 0.75, this.posZ, 0, -0.2, 0);
+			this.worldObj.spawnParticle("smoke", this.posX, this.posY + 0.75, this.posZ + 1.125, 0, -0.2, 0);
+			this.worldObj.spawnParticle("smoke", this.posX, this.posY + 0.75, this.posZ - 1.125, 0, -0.2, 0);
 		} else {
 
 			this.motionX = 0;
@@ -102,7 +102,7 @@ public abstract class EntityDroneBase extends Entity {
 			
 			if(this.targetY != -1) {
 				
-				Vec3 dist = Vec3.createVectorHelper(targetX - posX, targetY - posY, targetZ - posZ);
+				Vec3 dist = Vec3.createVectorHelper(this.targetX - this.posX, this.targetY - this.posY, this.targetZ - this.posZ);
 				double speed = getSpeed();
 				
 				if(dist.lengthVector() >= speed) {
@@ -113,7 +113,7 @@ public abstract class EntityDroneBase extends Entity {
 				}
 			}
 			
-			this.moveEntity(motionX, motionY, motionZ);
+			moveEntity(this.motionX, this.motionY, this.motionZ);
 		}
 	}
 	
@@ -121,6 +121,7 @@ public abstract class EntityDroneBase extends Entity {
 		return 0.125D;
 	}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void setVelocity(double motionX, double motionY, double motionZ) {
 		this.velocityX = this.motionX = motionX;
@@ -128,6 +129,7 @@ public abstract class EntityDroneBase extends Entity {
 		this.velocityZ = this.motionZ = motionZ;
 	}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int theNumberThree) {
 		this.syncPosX = x;
@@ -142,9 +144,9 @@ public abstract class EntityDroneBase extends Entity {
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound nbt) {
 
-		nbt.setDouble("tX", targetX);
-		nbt.setDouble("tY", targetY);
-		nbt.setDouble("tZ", targetZ);
+		nbt.setDouble("tX", this.targetX);
+		nbt.setDouble("tY", this.targetY);
+		nbt.setDouble("tZ", this.targetZ);
 
 		nbt.setByte("app", this.dataWatcher.getWatchableObjectByte(10));
 	}

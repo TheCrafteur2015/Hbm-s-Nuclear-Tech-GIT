@@ -16,9 +16,9 @@ public class TileEntityConverterHeRf extends TileEntityLoadedBase implements IEn
 	@Override
 	public void updateEntity() {
 		
-		if (!worldObj.isRemote) {
+		if (!this.worldObj.isRemote) {
 			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-				this.trySubscribe(worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, dir);
+				trySubscribe(this.worldObj, this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ, dir);
 		}
 	}
 	
@@ -57,8 +57,8 @@ public class TileEntityConverterHeRf extends TileEntityLoadedBase implements IEn
 	@Override
 	public long getTransferWeight() {
 		
-		if(lastTransfer > 0) {
-			return lastTransfer * 2;
+		if(this.lastTransfer > 0) {
+			return this.lastTransfer * 2;
 		} else {
 			return getMaxPower();
 		}
@@ -74,10 +74,10 @@ public class TileEntityConverterHeRf extends TileEntityLoadedBase implements IEn
 	@Override
 	public long transferPower(long power) {
 		
-		if(recursionBrake)
+		if(this.recursionBrake)
 			return power;
 		
-		recursionBrake = true;
+		this.recursionBrake = true;
 		
 		// we have to limit the transfer amount because otherwise FEnSUs would overflow the RF output, twice
 		long out = Math.min(power, Long.MAX_VALUE / 4);
@@ -87,7 +87,7 @@ public class TileEntityConverterHeRf extends TileEntityLoadedBase implements IEn
 
 		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 
-			Location loc = new Location(worldObj, xCoord, yCoord, zCoord).add(dir);
+			Location loc = new Location(this.worldObj, this.xCoord, this.yCoord, this.zCoord).add(dir);
 			TileEntity entity = loc.getTileEntity();
 
 			if(entity != null && entity instanceof IEnergyReceiver) {
@@ -100,8 +100,8 @@ public class TileEntityConverterHeRf extends TileEntityLoadedBase implements IEn
 			}
 		}
 
-		recursionBrake = false;
-		lastTransfer = totalTransferred / 4;
+		this.recursionBrake = false;
+		this.lastTransfer = totalTransferred / 4;
 		
 		return power - (totalTransferred / 4);
 	}

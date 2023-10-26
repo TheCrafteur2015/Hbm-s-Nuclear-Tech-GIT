@@ -18,7 +18,7 @@ public class GUIMachineCentrifuge extends GuiInfoContainer {
 	
 	public GUIMachineCentrifuge(InventoryPlayer invPlayer, TileEntityMachineCentrifuge tedf) {
 		super(new ContainerCentrifuge(invPlayer, tedf));
-		centrifuge = tedf;
+		this.centrifuge = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 186;
@@ -28,7 +28,7 @@ public class GUIMachineCentrifuge extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 9, guiTop + 13, 16, 34, centrifuge.power, centrifuge.maxPower);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 9, this.guiTop + 13, 16, 34, this.centrifuge.power, TileEntityMachineCentrifuge.maxPower);
 	}
 
 	@Override
@@ -42,20 +42,20 @@ public class GUIMachineCentrifuge extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIMachineCentrifuge.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		if(centrifuge.hasPower()) {
-			int i1 = (int) centrifuge.getPowerRemainingScaled(35);
-			drawTexturedModalRect(guiLeft + 9, guiTop + 48 - i1, 176, 35 - i1, 16, i1);
+		if(this.centrifuge.hasPower()) {
+			int i1 = (int) this.centrifuge.getPowerRemainingScaled(35);
+			drawTexturedModalRect(this.guiLeft + 9, this.guiTop + 48 - i1, 176, 35 - i1, 16, i1);
 		}
 
-		if(centrifuge.isProcessing()) {
-			int p = centrifuge.getCentrifugeProgressScaled(145);
+		if(this.centrifuge.isProcessing()) {
+			int p = this.centrifuge.getCentrifugeProgressScaled(145);
 			
 			for(int i = 0; i < 4; i++) {
 				int h = Math.min(p, 36);
-				drawTexturedModalRect(guiLeft + 65 + i * 20, guiTop + 50 - h, 176, 71 - h, 12, h);
+				drawTexturedModalRect(this.guiLeft + 65 + i * 20, this.guiTop + 50 - h, 176, 71 - h, 12, h);
 				p -= h;
 				if(p <= 0)
 					break;

@@ -45,7 +45,7 @@ public class PollutionHandler {
 		
 		if(!RadiationConfig.enablePollution) return;
 		
-		PollutionPerWorld ppw = perWorld.get(world);
+		PollutionPerWorld ppw = PollutionHandler.perWorld.get(world);
 		if(ppw == null) return;
 		ChunkCoordIntPair pos = new ChunkCoordIntPair(x >> 6, z >> 6);
 		PollutionData data = ppw.pollution.get(pos);
@@ -57,14 +57,14 @@ public class PollutionHandler {
 	}
 	
 	public static void decrementPollution(World world, int x, int y, int z, PollutionType type, float amount) {
-		incrementPollution(world, x, y, z, type, -amount);
+		PollutionHandler.incrementPollution(world, x, y, z, type, -amount);
 	}
 	
 	public static void setPollution(World world, int x, int y, int z, PollutionType type, float amount) {
 		
 		if(!RadiationConfig.enablePollution) return;
 		
-		PollutionPerWorld ppw = perWorld.get(world);
+		PollutionPerWorld ppw = PollutionHandler.perWorld.get(world);
 		if(ppw == null) return;
 		ChunkCoordIntPair pos = new ChunkCoordIntPair(x >> 6, z >> 6);
 		PollutionData data = ppw.pollution.get(pos);
@@ -79,7 +79,7 @@ public class PollutionHandler {
 		
 		if(!RadiationConfig.enablePollution) return 0;
 		
-		PollutionPerWorld ppw = perWorld.get(world);
+		PollutionPerWorld ppw = PollutionHandler.perWorld.get(world);
 		if(ppw == null) return 0F;
 		ChunkCoordIntPair pos = new ChunkCoordIntPair(x >> 6, z >> 6);
 		PollutionData data = ppw.pollution.get(pos);
@@ -91,7 +91,7 @@ public class PollutionHandler {
 		
 		if(!RadiationConfig.enablePollution) return null;
 		
-		PollutionPerWorld ppw = perWorld.get(world);
+		PollutionPerWorld ppw = PollutionHandler.perWorld.get(world);
 		if(ppw == null) return null;
 		ChunkCoordIntPair pos = new ChunkCoordIntPair(x >> 6, z >> 6);
 		PollutionData data = ppw.pollution.get(pos);
@@ -108,7 +108,7 @@ public class PollutionHandler {
 			String dirPath = getDataDir(world);
 
 			try {
-				File pollutionFile = new File(dirPath, fileName);
+				File pollutionFile = new File(dirPath, PollutionHandler.fileName);
 
 				if(pollutionFile != null) {
 					
@@ -116,9 +116,9 @@ public class PollutionHandler {
 						FileInputStream io = new FileInputStream(pollutionFile);
 						NBTTagCompound data = CompressedStreamTools.readCompressed(io);
 						io.close();
-						perWorld.put(event.world, new PollutionPerWorld(data));
+						PollutionHandler.perWorld.put(event.world, new PollutionPerWorld(data));
 					} else {
-						perWorld.put(event.world, new PollutionPerWorld());
+						PollutionHandler.perWorld.put(event.world, new PollutionPerWorld());
 					}
 				}
 			} catch(Exception ex) {
@@ -129,7 +129,7 @@ public class PollutionHandler {
 	
 	@SubscribeEvent
 	public void onWorldUnload(WorldEvent.Unload event) {
-		if(!event.world.isRemote) perWorld.remove(event.world);
+		if(!event.world.isRemote) PollutionHandler.perWorld.remove(event.world);
 	}
 
 	@SubscribeEvent
@@ -137,12 +137,12 @@ public class PollutionHandler {
 		if(!event.world.isRemote) {
 			WorldServer world = (WorldServer) event.world;
 			String dirPath = getDataDir(world);
-			File pollutionFile = new File(dirPath, fileName);
+			File pollutionFile = new File(dirPath, PollutionHandler.fileName);
 
 			try {
 				if(!pollutionFile.getParentFile().exists()) pollutionFile.getParentFile().mkdirs();
 				if(!pollutionFile.exists()) pollutionFile.createNewFile();
-				PollutionPerWorld ppw = perWorld.get(world);
+				PollutionPerWorld ppw = PollutionHandler.perWorld.get(world);
 				if(ppw != null) {
 					NBTTagCompound data = ppw.writeToNBT();
 					CompressedStreamTools.writeCompressed(data, new FileOutputStream(pollutionFile));
@@ -174,12 +174,12 @@ public class PollutionHandler {
 		
 		if(event.side == Side.SERVER && event.phase == Phase.END) {
 			
-			eggTimer++;
-			if(eggTimer < 60) return;
-			eggTimer = 0;
+			this.eggTimer++;
+			if(this.eggTimer < 60) return;
+			this.eggTimer = 0;
 			
-			for(Entry<World, PollutionPerWorld> entry : perWorld.entrySet()) {
-				HashMap<ChunkCoordIntPair, PollutionData> newPollution = new HashMap();
+			for(Entry<World, PollutionPerWorld> entry : PollutionHandler.perWorld.entrySet()) {
+				HashMap<ChunkCoordIntPair, PollutionData> newPollution = new HashMap<>();
 				
 				for(Entry<ChunkCoordIntPair, PollutionData> chunk : entry.getValue().pollution.entrySet()) {
 					int x = chunk.getKey().chunkXPos;
@@ -246,7 +246,7 @@ public class PollutionHandler {
 	/// DATA STRUCTURE ///
 	//////////////////////
 	public static class PollutionPerWorld {
-		public HashMap<ChunkCoordIntPair, PollutionData> pollution = new HashMap();
+		public HashMap<ChunkCoordIntPair, PollutionData> pollution = new HashMap<>();
 		
 		public PollutionPerWorld() { }
 		
@@ -258,7 +258,7 @@ public class PollutionHandler {
 				NBTTagCompound nbt = list.getCompoundTagAt(i);
 				int chunkX = nbt.getInteger("chunkX");
 				int chunkZ = nbt.getInteger("chunkZ");
-				pollution.put(new ChunkCoordIntPair(chunkX, chunkZ), PollutionData.fromNBT(nbt));
+				this.pollution.put(new ChunkCoordIntPair(chunkX, chunkZ), PollutionData.fromNBT(nbt));
 			}
 		}
 		
@@ -268,7 +268,7 @@ public class PollutionHandler {
 			
 			NBTTagList list = new NBTTagList();
 			
-			for(Entry<ChunkCoordIntPair, PollutionData> entry : pollution.entrySet()) {
+			for(Entry<ChunkCoordIntPair, PollutionData> entry : this.pollution.entrySet()) {
 				NBTTagCompound nbt = new NBTTagCompound();
 				nbt.setInteger("chunkX", entry.getKey().chunkXPos);
 				nbt.setInteger("chunkZ", entry.getKey().chunkZPos);
@@ -297,7 +297,7 @@ public class PollutionHandler {
 		
 		public void toNBT(NBTTagCompound nbt) {
 			for(int i = 0; i < PollutionType.values().length; i++) {
-				nbt.setFloat(PollutionType.values()[i].name().toLowerCase(Locale.US), pollution[i]);
+				nbt.setFloat(PollutionType.values()[i].name().toLowerCase(Locale.US), this.pollution[i]);
 			}
 		}
 	}
@@ -322,14 +322,14 @@ public class PollutionHandler {
 		if(world.isRemote) return;
 		EntityLivingBase living = event.entityLiving;
 		
-		PollutionData data = getPollutionData(world, (int) Math.floor(event.x), (int) Math.floor(event.y), (int) Math.floor(event.z));
+		PollutionData data = PollutionHandler.getPollutionData(world, (int) Math.floor(event.x), (int) Math.floor(event.y), (int) Math.floor(event.z));
 		if(data == null) return;
 		
 		if(living instanceof IMob) {
 			
 			if(data.pollution[PollutionType.SOOT.ordinal()] > RadiationConfig.buffMobThreshold) {
-				if(living.getEntityAttribute(SharedMonsterAttributes.maxHealth) != null && living.getEntityAttribute(SharedMonsterAttributes.maxHealth).getModifier(maxHealth) == null) living.getEntityAttribute(SharedMonsterAttributes.maxHealth).applyModifier(new AttributeModifier(maxHealth, "Soot Anger Health Increase", 1D, 1));
-				if(living.getEntityAttribute(SharedMonsterAttributes.attackDamage) != null && living.getEntityAttribute(SharedMonsterAttributes.attackDamage).getModifier(attackDamage) == null) living.getEntityAttribute(SharedMonsterAttributes.attackDamage).applyModifier(new AttributeModifier(attackDamage, "Soot Anger Damage Increase", 1.5D, 1));
+				if(living.getEntityAttribute(SharedMonsterAttributes.maxHealth) != null && living.getEntityAttribute(SharedMonsterAttributes.maxHealth).getModifier(PollutionHandler.maxHealth) == null) living.getEntityAttribute(SharedMonsterAttributes.maxHealth).applyModifier(new AttributeModifier(PollutionHandler.maxHealth, "Soot Anger Health Increase", 1D, 1));
+				if(living.getEntityAttribute(SharedMonsterAttributes.attackDamage) != null && living.getEntityAttribute(SharedMonsterAttributes.attackDamage).getModifier(PollutionHandler.attackDamage) == null) living.getEntityAttribute(SharedMonsterAttributes.attackDamage).applyModifier(new AttributeModifier(PollutionHandler.attackDamage, "Soot Anger Damage Increase", 1.5D, 1));
 				living.heal(living.getMaxHealth());
 			}
 		}

@@ -42,7 +42,7 @@ public class EntityMaskMan extends EntityMob implements IBossDisplayData, IRadia
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
 
-		this.setSize(2F, 5F);
+		setSize(2F, 5F);
 		this.isImmuneToFire = true;
 		this.experienceValue = 100;
 	}
@@ -50,19 +50,19 @@ public class EntityMaskMan extends EntityMob implements IBossDisplayData, IRadia
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.25D);
-		this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(100.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(15.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(1.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(1000.0D);
+		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.25D);
+		getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(100.0D);
+		getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(15.0D);
+		getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(1.0D);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(1000.0D);
 	}
 
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
 		
-		if(source instanceof EntityDamageSourceIndirect && ((EntityDamageSourceIndirect) source).getSourceOfDamage() instanceof EntityEgg && rand.nextInt(10) == 0) {
+		if(source instanceof EntityDamageSourceIndirect && ((EntityDamageSourceIndirect) source).getSourceOfDamage() instanceof EntityEgg && this.rand.nextInt(10) == 0) {
 			this.experienceValue = 0;
-			this.setHealth(0);
+			setHealth(0);
 			return true;
 		}
 
@@ -86,12 +86,12 @@ public class EntityMaskMan extends EntityMob implements IBossDisplayData, IRadia
 	public void onUpdate() {
 		super.onUpdate();
 
-		if(this.prevHealth >= this.getMaxHealth() / 2 && this.getHealth() < this.getMaxHealth() / 2 && this.isEntityAlive()) {
+		if(this.prevHealth >= getMaxHealth() / 2 && getHealth() < getMaxHealth() / 2 && isEntityAlive()) {
 
-			prevHealth = this.getHealth();
+			this.prevHealth = getHealth();
 
-			if(!worldObj.isRemote)
-				worldObj.createExplosion(this, posX, posY + 4, posZ, 2.5F, true);
+			if(!this.worldObj.isRemote)
+				this.worldObj.createExplosion(this, this.posX, this.posY + 4, this.posZ, 2.5F, true);
 		}
 	}
 
@@ -99,7 +99,7 @@ public class EntityMaskMan extends EntityMob implements IBossDisplayData, IRadia
 	public void onDeath(DamageSource p_70645_1_) {
 		super.onDeath(p_70645_1_);
 
-		List<EntityPlayer> players = worldObj.getEntitiesWithinAABB(EntityPlayer.class, this.boundingBox.expand(50, 50, 50));
+		List<EntityPlayer> players = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, this.boundingBox.expand(50, 50, 50));
 
 		for(EntityPlayer player : players) {
 			player.triggerAchievement(MainRegistry.bossMaskman);
@@ -119,15 +119,15 @@ public class EntityMaskMan extends EntityMob implements IBossDisplayData, IRadia
 	@Override
 	protected void dropFewItems(boolean bool, int i) {
 
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			ItemStack mask = new ItemStack(ModItems.gas_mask_m65);
 			ArmorUtil.installGasMaskFilter(mask, new ItemStack(ModItems.gas_mask_filter_combo));
 			
-			this.entityDropItem(mask, 0F);
-			this.dropItem(ModItems.coin_maskman, 1);
-			this.dropItem(ModItems.v1, 1);
-			this.dropItem(Items.skull, 1);
+			entityDropItem(mask, 0F);
+			dropItem(ModItems.coin_maskman, 1);
+			dropItem(ModItems.v1, 1);
+			dropItem(Items.skull, 1);
 		}
 	}
 }

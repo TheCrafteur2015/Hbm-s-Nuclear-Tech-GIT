@@ -46,9 +46,9 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 	protected int guiLeft;
 	protected int guiTop;
 	int currentPage = 0;
-	List<ItemStack> allStacks = new ArrayList<ItemStack>();
-	List<ItemStack> stacks = new ArrayList<ItemStack>();
-	List<FolderButton> buttons = new ArrayList<FolderButton>();
+	List<ItemStack> allStacks = new ArrayList<>();
+	List<ItemStack> stacks = new ArrayList<>();
+	List<FolderButton> buttons = new ArrayList<>();
 	private GuiTextField search;
 
 	public GUIScreenTemplateFolder(EntityPlayer player) {
@@ -60,21 +60,21 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 
 			// Stamps
 			for(ItemStack i : ItemStamp.stamps.get(StampType.PLATE))
-				allStacks.add(i.copy());
+				this.allStacks.add(i.copy());
 			for(ItemStack i : ItemStamp.stamps.get(StampType.WIRE))
-				allStacks.add(i.copy());
+				this.allStacks.add(i.copy());
 			for(ItemStack i : ItemStamp.stamps.get(StampType.CIRCUIT))
-				allStacks.add(i.copy());
+				this.allStacks.add(i.copy());
 			
 			// Tracks
 			for(int i = 1; i < ItemCassette.TrackType.values().length; i++) {
-				allStacks.add(new ItemStack(ModItems.siren_track, 1, i));
+				this.allStacks.add(new ItemStack(ModItems.siren_track, 1, i));
 			}
 			// Fluid IDs
 			FluidType[] fluids = Fluids.getInNiceOrder();
 			for(int i = 1; i < fluids.length; i++) {
 				if(!fluids[i].hasNoID()) {
-					allStacks.add(new ItemStack(ModItems.fluid_identifier, 1, fluids[i].getID()));
+					this.allStacks.add(new ItemStack(ModItems.fluid_identifier, 1, fluids[i].getID()));
 				}
 			}
 			// Assembly Templates
@@ -82,18 +82,18 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 
 				ComparableStack comp = AssemblerRecipes.recipeList.get(i);
 				if(AssemblerRecipes.hidden.get(comp) == null) {
-					allStacks.add(ItemAssemblyTemplate.writeType(new ItemStack(ModItems.assembly_template, 1, i), comp));
+					this.allStacks.add(ItemAssemblyTemplate.writeType(new ItemStack(ModItems.assembly_template, 1, i), comp));
 				}
 			}
 			// Chemistry Templates
 			for(int i = 0; i < ChemplantRecipes.recipes.size(); i++) {
 				ChemRecipe chem = ChemplantRecipes.recipes.get(i);
-				allStacks.add(new ItemStack(ModItems.chemistry_template, 1, chem.getId()));
+				this.allStacks.add(new ItemStack(ModItems.chemistry_template, 1, chem.getId()));
 			}
 			
 			// Crucible Templates
 			for(int i = 0; i < CrucibleRecipes.recipes.size(); i++) {
-				allStacks.add(new ItemStack(ModItems.crucible_template, 1, CrucibleRecipes.recipes.get(i).getId()));
+				this.allStacks.add(new ItemStack(ModItems.crucible_template, 1, CrucibleRecipes.recipes.get(i).getId()));
 			}
 		} else {
 
@@ -103,11 +103,11 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 						AssemblerRecipes.hidden.get(AssemblerRecipes.recipeList.get(i)).contains(player.getHeldItem().getItem())) {
 					
 					ComparableStack comp = AssemblerRecipes.recipeList.get(i);
-					allStacks.add(ItemAssemblyTemplate.writeType(new ItemStack(ModItems.assembly_template, 1, i), comp));
+					this.allStacks.add(ItemAssemblyTemplate.writeType(new ItemStack(ModItems.assembly_template, 1, i), comp));
 				}
 			}
 			
-			isJournal = true;
+			this.isJournal = true;
 		}
 		
 		search(null);
@@ -115,12 +115,12 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 	
 	private void search(String sub) {
 		
-		stacks.clear();
+		this.stacks.clear();
 		
 		this.currentPage = 0;
 		
 		if(sub == null || sub.isEmpty()) {
-			stacks.addAll(allStacks);
+			this.stacks.addAll(this.allStacks);
 			updateButtons();
 			return;
 		}
@@ -128,7 +128,7 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 		sub = sub.toLowerCase(Locale.US);
 		
 		outer:
-		for(ItemStack stack : allStacks) {
+		for(ItemStack stack : this.allStacks) {
 			
 			for(Object o : stack.getTooltip(MainRegistry.proxy.me(), true)) {
 				
@@ -136,7 +136,7 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 					String text = (String) o;
 					
 					if(text.toLowerCase(Locale.US).contains(sub)) {
-						stacks.add(stack);
+						this.stacks.add(stack);
 						continue outer;
 					}
 				}
@@ -146,7 +146,7 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 				FluidType fluid = Fluids.fromID(stack.getItemDamage());
 				
 				if(fluid.getLocalizedName().contains(sub)) {
-					stacks.add(stack);
+					this.stacks.add(stack);
 				}
 			}
 		}
@@ -155,24 +155,27 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 	}
 
 	int getPageCount() {
-		return (int) Math.ceil((stacks.size() - 1) / (5 * 7));
+		return (int) Math.ceil((this.stacks.size() - 1) / (5 * 7));
 	}
 
+	@Override
 	public void updateScreen() {
-		if(currentPage < 0)
-			currentPage = 0;
-		if(currentPage > getPageCount())
-			currentPage = getPageCount();
+		if(this.currentPage < 0)
+			this.currentPage = 0;
+		if(this.currentPage > getPageCount())
+			this.currentPage = getPageCount();
 	}
 
+	@Override
 	public void drawScreen(int mouseX, int mouseY, float f) {
-		this.drawDefaultBackground();
-		this.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
+		drawDefaultBackground();
+		drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
 		GL11.glDisable(GL11.GL_LIGHTING);
-		this.drawGuiContainerForegroundLayer(mouseX, mouseY);
+		drawGuiContainerForegroundLayer(mouseX, mouseY);
 		GL11.glEnable(GL11.GL_LIGHTING);
 	}
 
+	@Override
 	public void initGui() {
 		super.initGui();
 		this.guiLeft = (this.width - this.xSize) / 2;
@@ -181,7 +184,7 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 		updateButtons();
 
 		Keyboard.enableRepeatEvents(true);
-		this.search = new GuiTextField(this.fontRendererObj, guiLeft + 61, guiTop + 213, 48, 12);
+		this.search = new GuiTextField(this.fontRendererObj, this.guiLeft + 61, this.guiTop + 213, 48, 12);
 		this.search.setTextColor(0xffffff);
 		this.search.setDisabledTextColour(0xffffff);
 		this.search.setEnableBackgroundDrawing(false);
@@ -195,29 +198,30 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 
 	protected void updateButtons() {
 
-		if(!buttons.isEmpty())
-			buttons.clear();
+		if(!this.buttons.isEmpty())
+			this.buttons.clear();
 
-		for(int i = currentPage * 35; i < Math.min(currentPage * 35 + 35, stacks.size()); i++) {
-			buttons.add(new FolderButton(guiLeft + 25 + (27 * (i % 5)), guiTop + 26 + (27 * (int) Math.floor((i / 5D))) - currentPage * 27 * 7, stacks.get(i)));
+		for(int i = this.currentPage * 35; i < Math.min(this.currentPage * 35 + 35, this.stacks.size()); i++) {
+			this.buttons.add(new FolderButton(this.guiLeft + 25 + (27 * (i % 5)), this.guiTop + 26 + (27 * (int) Math.floor((i / 5D))) - this.currentPage * 27 * 7, this.stacks.get(i)));
 		}
 
-		if(currentPage != 0)
-			buttons.add(new FolderButton(guiLeft + 25 - 18, guiTop + 26 + (27 * 3), 1, "Previous"));
-		if(currentPage != getPageCount())
-			buttons.add(new FolderButton(guiLeft + 25 + (27 * 4) + 18, guiTop + 26 + (27 * 3), 2, "Next"));
+		if(this.currentPage != 0)
+			this.buttons.add(new FolderButton(this.guiLeft + 25 - 18, this.guiTop + 26 + (27 * 3), 1, "Previous"));
+		if(this.currentPage != getPageCount())
+			this.buttons.add(new FolderButton(this.guiLeft + 25 + (27 * 4) + 18, this.guiTop + 26 + (27 * 3), 2, "Next"));
 	}
 
+	@Override
 	protected void mouseClicked(int i, int j, int k) {
 		
-		if(i >= guiLeft + 45 && i < guiLeft + 117 && j >= guiTop + 211 && j < guiTop + 223) {
+		if(i >= this.guiLeft + 45 && i < this.guiLeft + 117 && j >= this.guiTop + 211 && j < this.guiTop + 223) {
 			this.search.setFocused(true);
 		} else  {
 			this.search.setFocused(false);
 		}
 
 		try {
-			for(FolderButton b : buttons)
+			for(FolderButton b : this.buttons)
 				if(b.isMouseOnButton(i, j))
 					b.executeAction();
 		} catch(Exception ex) {
@@ -227,9 +231,9 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 
 	protected void drawGuiContainerForegroundLayer(int i, int j) {
 
-		this.fontRendererObj.drawString(I18n.format((currentPage + 1) + "/" + (getPageCount() + 1)), guiLeft + this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.format((currentPage + 1) + "/" + (getPageCount() + 1))) / 2, guiTop + 10, isJournal ? 4210752 : 0xffffff);
+		this.fontRendererObj.drawString(I18n.format((this.currentPage + 1) + "/" + (getPageCount() + 1)), this.guiLeft + this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.format((this.currentPage + 1) + "/" + (getPageCount() + 1))) / 2, this.guiTop + 10, this.isJournal ? 4210752 : 0xffffff);
 
-		for(FolderButton b : buttons)
+		for(FolderButton b : this.buttons)
 			if(b.isMouseOnButton(i, j))
 				b.drawString(i, j);
 	}
@@ -237,28 +241,29 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
-		if(!isJournal)
-			Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
+		if(!this.isJournal)
+			Minecraft.getMinecraft().getTextureManager().bindTexture(GUIScreenTemplateFolder.texture);
 		else
-			Minecraft.getMinecraft().getTextureManager().bindTexture(texture_journal);
+			Minecraft.getMinecraft().getTextureManager().bindTexture(GUIScreenTemplateFolder.texture_journal);
 		
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
-		if(search.isFocused())
-			drawTexturedModalRect(guiLeft + 45, guiTop + 211, 176, 54, 72, 12);
+		if(this.search.isFocused())
+			drawTexturedModalRect(this.guiLeft + 45, this.guiTop + 211, 176, 54, 72, 12);
 
-		for(FolderButton b : buttons)
+		for(FolderButton b : this.buttons)
 			b.drawButton(b.isMouseOnButton(i, j));
-		for(FolderButton b : buttons)
+		for(FolderButton b : this.buttons)
 			b.drawIcon(b.isMouseOnButton(i, j));
 		
-		search.drawTextBox();
+		this.search.drawTextBox();
 	}
 
+	@Override
 	protected void keyTyped(char p_73869_1_, int p_73869_2_) {
 		
 		if (this.search.textboxKeyTyped(p_73869_1_, p_73869_2_)) {
-			this.search(this.search.getText());
+			search(this.search.getText());
 			return;
 		}
 		
@@ -278,17 +283,17 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 		ItemStack stack;
 
 		public FolderButton(int x, int y, int t, String i) {
-			xPos = x;
-			yPos = y;
-			type = t;
-			info = i;
+			this.xPos = x;
+			this.yPos = y;
+			this.type = t;
+			this.info = i;
 		}
 
 		public FolderButton(int x, int y, ItemStack stack) {
-			xPos = x;
-			yPos = y;
-			type = 0;
-			info = stack.getDisplayName();
+			this.xPos = x;
+			this.yPos = y;
+			this.type = 0;
+			this.info = stack.getDisplayName();
 			this.stack = stack.copy();
 		}
 
@@ -296,17 +301,17 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 		}
 
 		public boolean isMouseOnButton(int mouseX, int mouseY) {
-			return xPos <= mouseX && xPos + 18 > mouseX && yPos < mouseY && yPos + 18 >= mouseY;
+			return this.xPos <= mouseX && this.xPos + 18 > mouseX && this.yPos < mouseY && this.yPos + 18 >= mouseY;
 		}
 
 		public void drawButton(boolean b) {
 			
-			if(!isJournal)
-				Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
+			if(!GUIScreenTemplateFolder.this.isJournal)
+				Minecraft.getMinecraft().getTextureManager().bindTexture(GUIScreenTemplateFolder.texture);
 			else
-				Minecraft.getMinecraft().getTextureManager().bindTexture(texture_journal);
+				Minecraft.getMinecraft().getTextureManager().bindTexture(GUIScreenTemplateFolder.texture_journal);
 			
-			drawTexturedModalRect(xPos, yPos, b ? 176 + 18 : 176, type == 1 ? 18 : (type == 2 ? 36 : 0), 18, 18);
+			drawTexturedModalRect(this.xPos, this.yPos, b ? 176 + 18 : 176, this.type == 1 ? 18 : (this.type == 2 ? 36 : 0), 18, 18);
 		}
 
 		public void drawIcon(boolean b) {
@@ -315,15 +320,15 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 				GL11.glDisable(GL11.GL_LIGHTING);
 				OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) 240 / 1.0F, (float) 240 / 1.0F);
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-				if(stack != null) {
-					if(stack.getItem() == ModItems.assembly_template)
-						itemRender.renderItemAndEffectIntoGUI(fontRendererObj, mc.getTextureManager(), AssemblerRecipes.getOutputFromTempate(stack), xPos + 1, yPos + 1);
-					else if(stack.getItem() == ModItems.chemistry_template)
-						itemRender.renderItemAndEffectIntoGUI(fontRendererObj, mc.getTextureManager(), new ItemStack(ModItems.chemistry_icon, 1, stack.getItemDamage()), xPos + 1, yPos + 1);
-					else if(stack.getItem() == ModItems.crucible_template)
-						itemRender.renderItemAndEffectIntoGUI(fontRendererObj, mc.getTextureManager(), CrucibleRecipes.indexMapping.get(stack.getItemDamage()).icon, xPos + 1, yPos + 1);
+				if(this.stack != null) {
+					if(this.stack.getItem() == ModItems.assembly_template)
+						GuiScreen.itemRender.renderItemAndEffectIntoGUI(GUIScreenTemplateFolder.this.fontRendererObj, GUIScreenTemplateFolder.this.mc.getTextureManager(), AssemblerRecipes.getOutputFromTempate(this.stack), this.xPos + 1, this.yPos + 1);
+					else if(this.stack.getItem() == ModItems.chemistry_template)
+						GuiScreen.itemRender.renderItemAndEffectIntoGUI(GUIScreenTemplateFolder.this.fontRendererObj, GUIScreenTemplateFolder.this.mc.getTextureManager(), new ItemStack(ModItems.chemistry_icon, 1, this.stack.getItemDamage()), this.xPos + 1, this.yPos + 1);
+					else if(this.stack.getItem() == ModItems.crucible_template)
+						GuiScreen.itemRender.renderItemAndEffectIntoGUI(GUIScreenTemplateFolder.this.fontRendererObj, GUIScreenTemplateFolder.this.mc.getTextureManager(), CrucibleRecipes.indexMapping.get(this.stack.getItemDamage()).icon, this.xPos + 1, this.yPos + 1);
 					else
-						itemRender.renderItemAndEffectIntoGUI(fontRendererObj, mc.getTextureManager(), stack, xPos + 1, yPos + 1);
+						GuiScreen.itemRender.renderItemAndEffectIntoGUI(GUIScreenTemplateFolder.this.fontRendererObj, GUIScreenTemplateFolder.this.mc.getTextureManager(), this.stack, this.xPos + 1, this.yPos + 1);
 				}
 				GL11.glEnable(GL11.GL_LIGHTING);
 			} catch(Exception x) {
@@ -331,27 +336,27 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 		}
 
 		public void drawString(int x, int y) {
-			if(info == null || info.isEmpty())
+			if(this.info == null || this.info.isEmpty())
 				return;
 			
-			if(stack != null) {
-				GUIScreenTemplateFolder.this.renderToolTip(stack, x, y);
+			if(this.stack != null) {
+				renderToolTip(this.stack, x, y);
 			} else {
-				func_146283_a(Arrays.asList(new String[] { info }), x, y);
+				func_146283_a(Arrays.asList(new String[] { this.info }), x, y);
 			}
 		}
 
 		public void executeAction() {
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
-			if(type == 0) {
-				PacketDispatcher.wrapper.sendToServer(new ItemFolderPacket(stack.copy()));
-			} else if(type == 1) {
-				if(currentPage > 0)
-					currentPage--;
+			GUIScreenTemplateFolder.this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+			if(this.type == 0) {
+				PacketDispatcher.wrapper.sendToServer(new ItemFolderPacket(this.stack.copy()));
+			} else if(this.type == 1) {
+				if(GUIScreenTemplateFolder.this.currentPage > 0)
+					GUIScreenTemplateFolder.this.currentPage--;
 				updateButtons();
-			} else if(type == 2) {
-				if(currentPage < getPageCount())
-					currentPage++;
+			} else if(this.type == 2) {
+				if(GUIScreenTemplateFolder.this.currentPage < getPageCount())
+					GUIScreenTemplateFolder.this.currentPage++;
 				updateButtons();
 			}
 		}

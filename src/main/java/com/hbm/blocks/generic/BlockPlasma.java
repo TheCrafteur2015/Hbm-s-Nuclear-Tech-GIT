@@ -14,7 +14,7 @@ public class BlockPlasma extends Block {
 
 	public BlockPlasma(Material p_i45394_1_) {
 		super(p_i45394_1_);
-        this.setTickRandomly(true);
+        setTickRandomly(true);
 	}
 	
     @Override

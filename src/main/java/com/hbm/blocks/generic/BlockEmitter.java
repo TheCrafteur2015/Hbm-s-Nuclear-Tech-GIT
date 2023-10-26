@@ -95,7 +95,7 @@ public class BlockEmitter extends BlockContainer implements IToolable, ITooltipP
 		}
 		
 		if(tool == ToolType.HAND_DRILL) {
-			te.effect = (te.effect + 1) % te.effectCount;
+			te.effect = (te.effect + 1) % TileEntityEmitter.effectCount;
 			te.markDirty();
 			return true;
 		}
@@ -115,64 +115,64 @@ public class BlockEmitter extends BlockContainer implements IToolable, ITooltipP
 		@Override
 		public void updateEntity() {
 			
-			if(!worldObj.isRemote) {
+			if(!this.worldObj.isRemote) {
 				
-				ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata());
+				ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata());
 				
-				if(worldObj.getTotalWorldTime() % 20 == 0) {
-					for(int i = 1; i <= range; i++) {
+				if(this.worldObj.getTotalWorldTime() % 20 == 0) {
+					for(int i = 1; i <= TileEntityEmitter.range; i++) {
 						
-						beam = i;
+						this.beam = i;
 		
-						int x = xCoord + dir.offsetX * i;
-						int y = yCoord + dir.offsetY * i;
-						int z = zCoord + dir.offsetZ * i;
+						int x = this.xCoord + dir.offsetX * i;
+						int y = this.yCoord + dir.offsetY * i;
+						int z = this.zCoord + dir.offsetZ * i;
 						
-						Block b = worldObj.getBlock(x, y, z);
-						if(b.isBlockSolid(worldObj, x, y, z, dir.ordinal())) {
+						Block b = this.worldObj.getBlock(x, y, z);
+						if(b.isBlockSolid(this.worldObj, x, y, z, dir.ordinal())) {
 							break;
 						}
 					}
 				}
 				
-				if(effect == 4 && beam > 0) {
+				if(this.effect == 4 && this.beam > 0) {
 
-					if(worldObj.getTotalWorldTime() % 5 == 0) {
-						double x = (int) (xCoord + dir.offsetX * (worldObj.getTotalWorldTime() / 5L) % beam) + 0.5;
-						double y = (int) (yCoord + dir.offsetY * (worldObj.getTotalWorldTime() / 5L) % beam) + 0.5;
-						double z = (int) (zCoord + dir.offsetZ * (worldObj.getTotalWorldTime() / 5L) % beam) + 0.5;
+					if(this.worldObj.getTotalWorldTime() % 5 == 0) {
+						double x = (int) (this.xCoord + dir.offsetX * (this.worldObj.getTotalWorldTime() / 5L) % this.beam) + 0.5;
+						double y = (int) (this.yCoord + dir.offsetY * (this.worldObj.getTotalWorldTime() / 5L) % this.beam) + 0.5;
+						double z = (int) (this.zCoord + dir.offsetZ * (this.worldObj.getTotalWorldTime() / 5L) % this.beam) + 0.5;
 						
-						int prevColor = color;
-						if(color == 0) {
-							color = Color.HSBtoRGB(worldObj.getTotalWorldTime() / 50.0F, 0.5F, 0.25F) & 16777215;
+						int prevColor = this.color;
+						if(this.color == 0) {
+							this.color = Color.HSBtoRGB(this.worldObj.getTotalWorldTime() / 50.0F, 0.5F, 0.25F) & 16777215;
 						}
 						
 						NBTTagCompound data = new NBTTagCompound();
 						data.setString("type", "plasmablast");
-						data.setFloat("r", ((float)((color & 0xff0000) >> 16)) / 256F);
-						data.setFloat("g", ((float)((color & 0x00ff00) >> 8)) / 256F);
-						data.setFloat("b", ((float)((color & 0x0000ff))) / 256F);
-						data.setFloat("scale", girth * 5);
+						data.setFloat("r", ((this.color & 0xff0000) >> 16) / 256F);
+						data.setFloat("g", ((this.color & 0x00ff00) >> 8) / 256F);
+						data.setFloat("b", (((this.color & 0x0000ff))) / 256F);
+						data.setFloat("scale", this.girth * 5);
 
-						if(this.getBlockMetadata() == 2) {
+						if(getBlockMetadata() == 2) {
 							data.setFloat("pitch", 90);
 						}
-						if(this.getBlockMetadata() == 3) {
+						if(getBlockMetadata() == 3) {
 							data.setFloat("pitch", -90);
 						}
-						if(this.getBlockMetadata() == 4) {
+						if(getBlockMetadata() == 4) {
 							data.setFloat("pitch", 90);
 							data.setFloat("yaw", 90);
 						}
-						if(this.getBlockMetadata() == 5) {
+						if(getBlockMetadata() == 5) {
 							data.setFloat("pitch", -90);
 							data.setFloat("yaw", 90);
 						}
 						
 						PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, x, y, z),
-								new TargetPoint(worldObj.provider.dimensionId, x, y, z, 100));
+								new TargetPoint(this.worldObj.provider.dimensionId, x, y, z, 100));
 						
-						color = prevColor;
+						this.color = prevColor;
 					}
 				}
 				
@@ -181,20 +181,20 @@ public class BlockEmitter extends BlockContainer implements IToolable, ITooltipP
 				data.setInteger("color", this.color);
 				data.setFloat("girth", this.girth);
 				data.setInteger("effect", this.effect);
-				PacketDispatcher.wrapper.sendToAllAround(new NBTPacket(data, xCoord, yCoord, zCoord), new TargetPoint(this.worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 150));
+				PacketDispatcher.wrapper.sendToAllAround(new NBTPacket(data, this.xCoord, this.yCoord, this.zCoord), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 150));
 			}
 		}
 
 		@Override
 		public Packet getDescriptionPacket() {
 			NBTTagCompound nbt = new NBTTagCompound();
-			this.writeToNBT(nbt);
+			writeToNBT(nbt);
 			return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, nbt);
 		}
 		
 		@Override
 		public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-			this.readFromNBT(pkt.func_148857_g());
+			readFromNBT(pkt.func_148857_g());
 		}
 
 		@Override
@@ -233,6 +233,7 @@ public class BlockEmitter extends BlockContainer implements IToolable, ITooltipP
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		list.add(EnumChatFormatting.GOLD + "Use screwdriver to widen beam");

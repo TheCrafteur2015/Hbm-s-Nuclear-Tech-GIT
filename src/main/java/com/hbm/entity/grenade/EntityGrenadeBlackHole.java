@@ -1,11 +1,11 @@
 package com.hbm.entity.grenade;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.world.World;
-
 import com.hbm.entity.effect.EntityBlackHole;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.ItemGrenade;
+
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.World;
 
 public class EntityGrenadeBlackHole extends EntityGrenadeBouncyBase
 {
@@ -29,7 +29,7 @@ public class EntityGrenadeBlackHole extends EntityGrenadeBouncyBase
     	
         if (!this.worldObj.isRemote)
         {
-            this.setDead();
+            setDead();
             this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 1.5F, true);
 
         	EntityBlackHole bl = new EntityBlackHole(this.worldObj, 1.5F);

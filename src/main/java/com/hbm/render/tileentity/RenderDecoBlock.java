@@ -61,7 +61,7 @@ public class RenderDecoBlock extends TileEntitySpecialRenderer {
 			
 			if(tileentity.getWorldObj().getBlock(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord) == ModBlocks.steel_wall)
 			{
-				this.bindTexture(texture1);
+				bindTexture(RenderDecoBlock.texture1);
 				switch(tileentity.getBlockMetadata())
 				{
 				case 4:
@@ -76,7 +76,7 @@ public class RenderDecoBlock extends TileEntitySpecialRenderer {
 			}
 			if(tileentity.getWorldObj().getBlock(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord) == ModBlocks.steel_corner)
 			{
-				this.bindTexture(texture2);
+				bindTexture(RenderDecoBlock.texture2);
 				switch(tileentity.getBlockMetadata())
 				{
 				case 4:
@@ -91,15 +91,15 @@ public class RenderDecoBlock extends TileEntitySpecialRenderer {
 			}
 			if(tileentity.getWorldObj().getBlock(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord) == ModBlocks.steel_roof)
 			{
-				this.bindTexture(texture3);
+				bindTexture(RenderDecoBlock.texture3);
 			}
 			if(tileentity.getWorldObj().getBlock(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord) == ModBlocks.steel_beam)
 			{
-				this.bindTexture(texture4);
+				bindTexture(RenderDecoBlock.texture4);
 			}
 			if(tileentity.getWorldObj().getBlock(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord) == ModBlocks.steel_scaffold)
 			{
-				this.bindTexture(texture5);
+				bindTexture(RenderDecoBlock.texture5);
 				switch(tileentity.getBlockMetadata())
 				{
 				case 4:
@@ -114,7 +114,7 @@ public class RenderDecoBlock extends TileEntitySpecialRenderer {
 			}
 			if(tileentity.getWorldObj().getBlock(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord) == ModBlocks.broadcaster_pc)
 			{
-				this.bindTexture(texture6);
+				bindTexture(RenderDecoBlock.texture6);
 				switch(tileentity.getBlockMetadata())
 				{
 				case 4:
@@ -129,7 +129,7 @@ public class RenderDecoBlock extends TileEntitySpecialRenderer {
 			}
 			if(tileentity.getWorldObj().getBlock(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord) == ModBlocks.geiger)
 			{
-				this.bindTexture(texture9);
+				bindTexture(RenderDecoBlock.texture9);
 				switch(tileentity.getBlockMetadata())
 				{
 				case 4:
@@ -144,7 +144,7 @@ public class RenderDecoBlock extends TileEntitySpecialRenderer {
 			}
 			if(tileentity.getWorldObj().getBlock(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord) == ModBlocks.radiorec)
 			{
-				this.bindTexture(texture8);
+				bindTexture(RenderDecoBlock.texture8);
 				switch(tileentity.getBlockMetadata())
 				{
 				case 4:
@@ -159,7 +159,7 @@ public class RenderDecoBlock extends TileEntitySpecialRenderer {
 			}
 			if(tileentity.getWorldObj().getBlock(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord) == ModBlocks.radiobox)
 			{
-				this.bindTexture(texture7);
+				bindTexture(RenderDecoBlock.texture7);
 				switch(tileentity.getBlockMetadata())
 				{
 				case 4:

@@ -34,16 +34,16 @@ public class SatLaserPacket implements IMessage {
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		x = buf.readInt();
-		z = buf.readInt();
-		freq = buf.readInt();
+		this.x = buf.readInt();
+		this.z = buf.readInt();
+		this.freq = buf.readInt();
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeInt(x);
-		buf.writeInt(z);
-		buf.writeInt(freq);
+		buf.writeInt(this.x);
+		buf.writeInt(this.z);
+		buf.writeInt(this.freq);
 	}
 
 	public static class Handler implements IMessageHandler<SatLaserPacket, IMessage> {

@@ -8,9 +8,9 @@ import com.hbm.handler.ArmorModHandler;
 import com.hbm.items.ModItems;
 import com.hbm.main.MainRegistry;
 import com.hbm.render.model.ModelM65;
+import com.hbm.util.ArmorRegistry.HazardClass;
 import com.hbm.util.ArmorUtil;
 import com.hbm.util.I18nUtil;
-import com.hbm.util.ArmorRegistry.HazardClass;
 
 import api.hbm.item.IGasMask;
 import cpw.mods.fml.relauncher.Side;
@@ -77,8 +77,8 @@ public class ItemModGasmask extends ItemArmorMod implements IGasMask {
 		ModelBiped model = renderer.modelArmor;
 		EntityPlayer player = event.entityPlayer;
 
-		modelM65.isSneak = model.isSneak;
-		modelM65.isChild = renderer.modelBipedMain.isChild;
+		this.modelM65.isSneak = model.isSneak;
+		this.modelM65.isChild = renderer.modelBipedMain.isChild;
 		
 		float interp = event.partialRenderTick;
 		float yawHead = player.prevRotationYawHead + (player.rotationYawHead - player.prevRotationYawHead) * interp;
@@ -88,20 +88,20 @@ public class ItemModGasmask extends ItemArmorMod implements IGasMask {
 		float pitch = player.rotationPitch;
 
 		if(this == ModItems.attachment_mask)
-			Minecraft.getMinecraft().renderEngine.bindTexture(tex);
+			Minecraft.getMinecraft().renderEngine.bindTexture(this.tex);
 		if(this == ModItems.attachment_mask_mono)
-			Minecraft.getMinecraft().renderEngine.bindTexture(tex_mono);
+			Minecraft.getMinecraft().renderEngine.bindTexture(this.tex_mono);
 		
-		modelM65.render(event.entityPlayer, 0.0F, 0.0F, yawWrapped, yaw, pitch, 0.0625F);
+		this.modelM65.render(event.entityPlayer, 0.0F, 0.0F, yawWrapped, yaw, pitch, 0.0625F);
 	}
 
 	@Override
 	public ArrayList<HazardClass> getBlacklist(ItemStack stack, EntityLivingBase entity) {
 		
 		if(this == ModItems.attachment_mask_mono) {
-			return new ArrayList<HazardClass>(Arrays.asList(new HazardClass[] {HazardClass.GAS_CHLORINE, HazardClass.GAS_CORROSIVE, HazardClass.NERVE_AGENT, HazardClass.BACTERIA}));
+			return new ArrayList<>(Arrays.asList(new HazardClass[] {HazardClass.GAS_CHLORINE, HazardClass.GAS_CORROSIVE, HazardClass.NERVE_AGENT, HazardClass.BACTERIA}));
 		} else {
-			return new ArrayList<HazardClass>(Arrays.asList(new HazardClass[] {HazardClass.GAS_CORROSIVE, HazardClass.NERVE_AGENT}));
+			return new ArrayList<>(Arrays.asList(new HazardClass[] {HazardClass.GAS_CORROSIVE, HazardClass.NERVE_AGENT}));
 		}
 	}
 
@@ -130,7 +130,7 @@ public class ItemModGasmask extends ItemArmorMod implements IGasMask {
 		
 		if(player.isSneaking()) {
 			
-			ItemStack filter = this.getFilter(stack, player);
+			ItemStack filter = getFilter(stack, player);
 			
 			if(filter != null) {
 				ArmorUtil.removeFilter(stack);

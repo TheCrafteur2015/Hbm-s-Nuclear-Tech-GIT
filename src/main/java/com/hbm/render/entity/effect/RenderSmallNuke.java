@@ -28,16 +28,16 @@ public class RenderSmallNuke extends Render {
     public int alpha = 0;
     
     public RenderSmallNuke() {
-    	blastModel = AdvancedModelLoader.loadModel(objTesterModelRL);
-    	blastTexture = new ResourceLocation(RefStrings.MODID, "textures/models/NukeCloudFire.png");
-    	ringModel = AdvancedModelLoader.loadModel(ringModelRL);
-    	ringTexture = new ResourceLocation(RefStrings.MODID, "textures/models/Ring2.png");
-    	ringBigModel = AdvancedModelLoader.loadModel(ringBigModelRL);
-    	ringBigTexture = new ResourceLocation(RefStrings.MODID, "textures/models/Ring2.png");
-    	scale = 0;
-    	ring = 0;
-        color = 0;
-        alpha = 0;
+    	this.blastModel = AdvancedModelLoader.loadModel(RenderSmallNuke.objTesterModelRL);
+    	this.blastTexture = new ResourceLocation(RefStrings.MODID, "textures/models/NukeCloudFire.png");
+    	this.ringModel = AdvancedModelLoader.loadModel(RenderSmallNuke.ringModelRL);
+    	this.ringTexture = new ResourceLocation(RefStrings.MODID, "textures/models/Ring2.png");
+    	this.ringBigModel = AdvancedModelLoader.loadModel(RenderSmallNuke.ringBigModelRL);
+    	this.ringBigTexture = new ResourceLocation(RefStrings.MODID, "textures/models/Ring2.png");
+    	this.scale = 0;
+    	this.ring = 0;
+        this.color = 0;
+        this.alpha = 0;
     }
 
 	@Override
@@ -48,51 +48,51 @@ public class RenderSmallNuke extends Render {
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glScalef(4.0F, 4.0F, 4.0F);
-        if(scale < 1)
-        	scale += 0.01F;
+        if(this.scale < 1)
+        	this.scale += 0.01F;
         {
-            GL11.glScalef(scale, scale, scale);
+            GL11.glScalef(this.scale, this.scale, this.scale);
         }
         
         if(((EntityNukeCloudSmall)p_76986_1_).age > ((EntityNukeCloudSmall)p_76986_1_).maxAge - 150)
         {
-        	if(color < 0.75)
-        	color += 0.005;
+        	if(this.color < 0.75)
+        	this.color += 0.005;
         }
         
-        GL11.glColor4f(1.0f - color, 1.0f - color, 1.0f - color, 1.0F - alpha);
+        GL11.glColor4f(1.0f - this.color, 1.0f - this.color, 1.0f - this.color, 1.0F - this.alpha);
         
         //GL11.glTranslatef(0.0F, -2.5F, 0.0F);
         //GL11.glTranslatef(0.0F, 11F, 0.0F);
 
-        bindTexture(blastTexture);
-        blastModel.renderAll();
+        bindTexture(this.blastTexture);
+        this.blastModel.renderAll();
         
         GL11.glTranslatef(0, 15F, 0);
         GL11.glScalef(20.0F, 5.0F, 20.0F);
         
-        bindTexture(ringBigTexture);
-        ringBigModel.renderAll();
+        bindTexture(this.ringBigTexture);
+        this.ringBigModel.renderAll();
 
-        GL11.glScalef(1/scale, 1/scale, 1/scale);
+        GL11.glScalef(1/this.scale, 1/this.scale, 1/this.scale);
         GL11.glTranslatef(0, -4.75F, 0);
         //GL11.glScalef(1/20.0F, 1/5.0F, 1/20.0F);
-    	ring += 0.1F;
+    	this.ring += 0.1F;
         {
-            GL11.glScalef(ring, 5, ring);
+            GL11.glScalef(this.ring, 5, this.ring);
         }
 
         GL11.glTranslatef(0, 1F, 0);
-        bindTexture(ringTexture);
-        ringModel.renderAll();
+        bindTexture(this.ringTexture);
+        this.ringModel.renderAll();
         
 		GL11.glPopMatrix();
 		
 		if(((EntityNukeCloudSmall)p_76986_1_).age >= ((EntityNukeCloudSmall)p_76986_1_).maxAge - 1)
 		{
-			scale = 0;
-			ring = 0;
-			color = 0;
+			this.scale = 0;
+			this.ring = 0;
+			this.color = 0;
 		}
 	}
 

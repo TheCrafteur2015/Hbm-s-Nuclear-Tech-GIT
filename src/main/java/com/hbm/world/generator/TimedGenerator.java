@@ -7,11 +7,11 @@ import net.minecraft.world.World;
 
 public class TimedGenerator {
 	
-	private static final HashMap<Integer, ArrayList<ITimedJob>> operations = new HashMap();
+	private static final HashMap<Integer, ArrayList<ITimedJob>> operations = new HashMap<>();
 	
 	public static void automaton(World world, int amount) {
 
-		ArrayList<ITimedJob> list = operations.get(world.provider.dimensionId);
+		ArrayList<ITimedJob> list = TimedGenerator.operations.get(world.provider.dimensionId);
 		
 		if(list == null)
 			return;
@@ -32,11 +32,11 @@ public class TimedGenerator {
 	
 	public static void addOp(World world, ITimedJob job) {
 		
-		ArrayList<ITimedJob> list = operations.get(world.provider.dimensionId);
+		ArrayList<ITimedJob> list = TimedGenerator.operations.get(world.provider.dimensionId);
 		
 		if(list == null) {
-			list = new ArrayList();
-			operations.put(world.provider.dimensionId, list);
+			list = new ArrayList<>();
+			TimedGenerator.operations.put(world.provider.dimensionId, list);
 		}
 		
 		list.add(job);

@@ -41,7 +41,7 @@ public class TileEntityMachineSolidifier extends TileEntityMachineBase implement
 
 	public TileEntityMachineSolidifier() {
 		super(5);
-		tank = new FluidTank(Fluids.NONE, 24000, 0);
+		this.tank = new FluidTank(Fluids.NONE, 24000, 0);
 	}
 
 	@Override
@@ -52,22 +52,22 @@ public class TileEntityMachineSolidifier extends TileEntityMachineBase implement
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
-			this.power = Library.chargeTEFromItems(slots, 1, power, maxPower);
-			tank.setType(4, slots);
-			tank.updateTank(this);
+		if(!this.worldObj.isRemote) {
+			this.power = Library.chargeTEFromItems(this.slots, 1, this.power, TileEntityMachineSolidifier.maxPower);
+			this.tank.setType(4, this.slots);
+			this.tank.updateTank(this);
 
-			this.updateConnections();
+			updateConnections();
 
-			UpgradeManager.eval(slots, 2, 3);
+			UpgradeManager.eval(this.slots, 2, 3);
 			int speed = Math.min(UpgradeManager.getLevel(UpgradeType.SPEED), 3);
 			int power = Math.min(UpgradeManager.getLevel(UpgradeType.POWER), 3);
 
-			this.processTime = processTimeBase - (processTimeBase / 4) * speed;
-			this.usage = (usageBase + (usageBase * speed))  / (power + 1);
+			this.processTime = TileEntityMachineSolidifier.processTimeBase - (TileEntityMachineSolidifier.processTimeBase / 4) * speed;
+			this.usage = (TileEntityMachineSolidifier.usageBase + (TileEntityMachineSolidifier.usageBase * speed))  / (power + 1);
 			
-			if(this.canProcess())
-				this.process();
+			if(canProcess())
+				process();
 			else
 				this.progress = 0;
 			
@@ -76,25 +76,25 @@ public class TileEntityMachineSolidifier extends TileEntityMachineBase implement
 			data.setInteger("progress", this.progress);
 			data.setInteger("usage", this.usage);
 			data.setInteger("processTime", this.processTime);
-			this.networkPack(data, 50);
+			networkPack(data, 50);
 		}
 	}
 	
 	private void updateConnections() {
 		for(DirPos pos : getConPos()) {
-			this.trySubscribe(worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
-			this.trySubscribe(tank.getTankType(), worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			this.trySubscribe(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			this.trySubscribe(this.tank.getTankType(), this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 		}
 	}
 	
 	private DirPos[] getConPos() {
 		return new DirPos[] {
-			new DirPos(xCoord, yCoord + 4, zCoord, Library.POS_Y),
-			new DirPos(xCoord, yCoord - 1, zCoord, Library.NEG_Y),
-			new DirPos(xCoord + 2, yCoord + 1, zCoord, Library.POS_X),
-			new DirPos(xCoord - 2, yCoord + 1, zCoord, Library.NEG_X),
-			new DirPos(xCoord, yCoord + 1, zCoord + 2, Library.POS_Z),
-			new DirPos(xCoord, yCoord + 1, zCoord - 2, Library.NEG_Z)
+			new DirPos(this.xCoord, this.yCoord + 4, this.zCoord, Library.POS_Y),
+			new DirPos(this.xCoord, this.yCoord - 1, this.zCoord, Library.NEG_Y),
+			new DirPos(this.xCoord + 2, this.yCoord + 1, this.zCoord, Library.POS_X),
+			new DirPos(this.xCoord - 2, this.yCoord + 1, this.zCoord, Library.NEG_X),
+			new DirPos(this.xCoord, this.yCoord + 1, this.zCoord + 2, Library.POS_Z),
+			new DirPos(this.xCoord, this.yCoord + 1, this.zCoord - 2, Library.NEG_Z)
 		};
 	}
 
@@ -110,10 +110,10 @@ public class TileEntityMachineSolidifier extends TileEntityMachineBase implement
 	
 	public boolean canProcess() {
 		
-		if(this.power < usage)
+		if(this.power < this.usage)
 			return false;
 		
-		Pair<Integer, ItemStack> out = SolidificationRecipes.getOutput(tank.getTankType());
+		Pair<Integer, ItemStack> out = SolidificationRecipes.getOutput(this.tank.getTankType());
 		
 		if(out == null)
 			return false;
@@ -121,18 +121,12 @@ public class TileEntityMachineSolidifier extends TileEntityMachineBase implement
 		int req = out.getKey();
 		ItemStack stack = out.getValue();
 		
-		if(req > tank.getFill())
+		if(req > this.tank.getFill())
 			return false;
 		
-		if(slots[0] != null) {
+		if(this.slots[0] != null) {
 			
-			if(slots[0].getItem() != stack.getItem())
-				return false;
-			
-			if(slots[0].getItemDamage() != stack.getItemDamage())
-				return false;
-			
-			if(slots[0].stackSize + stack.stackSize > slots[0].getMaxStackSize())
+			if((this.slots[0].getItem() != stack.getItem()) || (this.slots[0].getItemDamage() != stack.getItemDamage()) || (this.slots[0].stackSize + stack.stackSize > this.slots[0].getMaxStackSize()))
 				return false;
 		}
 		
@@ -141,26 +135,26 @@ public class TileEntityMachineSolidifier extends TileEntityMachineBase implement
 	
 	public void process() {
 		
-		this.power -= usage;
+		this.power -= this.usage;
 		
-		progress++;
+		this.progress++;
 		
-		if(progress >= processTime) {
+		if(this.progress >= this.processTime) {
 			
-			Pair<Integer, ItemStack> out = SolidificationRecipes.getOutput(tank.getTankType());
+			Pair<Integer, ItemStack> out = SolidificationRecipes.getOutput(this.tank.getTankType());
 			int req = out.getKey();
 			ItemStack stack = out.getValue();
-			tank.setFill(tank.getFill() - req);
+			this.tank.setFill(this.tank.getFill() - req);
 			
-			if(slots[0] == null) {
-				slots[0] = stack.copy();
+			if(this.slots[0] == null) {
+				this.slots[0] = stack.copy();
 			} else {
-				slots[0].stackSize += stack.stackSize;
+				this.slots[0].stackSize += stack.stackSize;
 			}
 			
-			progress = 0;
+			this.progress = 0;
 			
-			this.markDirty();
+			markDirty();
 		}
 	}
 
@@ -175,13 +169,13 @@ public class TileEntityMachineSolidifier extends TileEntityMachineBase implement
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
-		tank.readFromNBT(nbt, "tank");
+		this.tank.readFromNBT(nbt, "tank");
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		tank.writeToNBT(nbt, "tank");
+		this.tank.writeToNBT(nbt, "tank");
 	}
 
 	@Override
@@ -191,38 +185,38 @@ public class TileEntityMachineSolidifier extends TileEntityMachineBase implement
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 
 	@Override
 	public long getMaxPower() {
-		return maxPower;
+		return TileEntityMachineSolidifier.maxPower;
 	}
 
 	@Override
 	public void setFillForSync(int fill, int index) {
-		tank.setFill(fill);
+		this.tank.setFill(fill);
 	}
 
 	@Override
 	public void setFluidFill(int fill, FluidType type) {
-		if(type == tank.getTankType())
-			tank.setFill(fill);
+		if(type == this.tank.getTankType())
+			this.tank.setFill(fill);
 	}
 
 	@Override
 	public void setTypeForSync(FluidType type, int index) {
-		tank.setTankType(type);
+		this.tank.setTankType(type);
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		return tank.getTankType() == type ? tank.getFill() : 0;
+		return this.tank.getTankType() == type ? this.tank.getFill() : 0;
 	}
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		return tank.getTankType() == type ? tank.getMaxFill() : 0;
+		return this.tank.getTankType() == type ? this.tank.getMaxFill() : 0;
 	}
 	
 	AxisAlignedBB bb = null;
@@ -230,18 +224,18 @@ public class TileEntityMachineSolidifier extends TileEntityMachineBase implement
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 1,
-					yCoord,
-					zCoord - 1,
-					xCoord + 2,
-					yCoord + 4,
-					zCoord + 2
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 1,
+					this.yCoord,
+					this.zCoord - 1,
+					this.xCoord + 2,
+					this.yCoord + 4,
+					this.zCoord + 2
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override
@@ -252,12 +246,12 @@ public class TileEntityMachineSolidifier extends TileEntityMachineBase implement
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] { tank };
+		return new FluidTank[] { this.tank };
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return new FluidTank[] { tank };
+		return new FluidTank[] { this.tank };
 	}
 
 	@Override

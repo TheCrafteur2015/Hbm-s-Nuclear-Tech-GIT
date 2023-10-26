@@ -42,7 +42,7 @@ public class MachineHeatBoiler extends BlockDummyable implements ILookOverlay, I
 	public TileEntity createNewTileEntity(World world, int meta) {
 		
 		if(meta >= 12) return new TileEntityHeatBoiler();
-		if(meta >= extra) return new TileEntityProxyCombo().fluid();
+		if(meta >= BlockDummyable.extra) return new TileEntityProxyCombo().fluid();
 		return null;
 	}
 	
@@ -52,7 +52,7 @@ public class MachineHeatBoiler extends BlockDummyable implements ILookOverlay, I
 		if(!world.isRemote && !player.isSneaking()) {
 				
 			if(player.getHeldItem() != null && player.getHeldItem().getItem() instanceof IItemFluidIdentifier) {
-				int[] pos = this.findCore(world, x, y, z);
+				int[] pos = findCore(world, x, y, z);
 					
 				if(pos == null)
 					return false;
@@ -107,12 +107,12 @@ public class MachineHeatBoiler extends BlockDummyable implements ILookOverlay, I
 	
 	@Override
 	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+		ArrayList<ItemStack> ret = new ArrayList<>();
 
 		int count = quantityDropped(metadata, fortune, world.rand);
 		int dmg = 0;
 
-		int[] pos = this.findCore(world, x, y, z);
+		int[] pos = findCore(world, x, y, z);
 		
 		if(pos != null) {
 			TileEntityHeatBoiler boiler = (TileEntityHeatBoiler)world.getTileEntity(pos[0], pos[1], pos[2]);
@@ -152,15 +152,15 @@ public class MachineHeatBoiler extends BlockDummyable implements ILookOverlay, I
 		
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 
-		this.makeExtra(world, x + rot.offsetX, y, z + rot.offsetZ);
-		this.makeExtra(world, x - rot.offsetX, y, z - rot.offsetZ);
-		this.makeExtra(world, x, y + 3, z);
+		makeExtra(world, x + rot.offsetX, y, z + rot.offsetZ);
+		makeExtra(world, x - rot.offsetX, y, z - rot.offsetZ);
+		makeExtra(world, x, y + 3, z);
 	}
 
 	@Override
 	public void printHook(Pre event, World world, int x, int y, int z) {
 		
-		int[] pos = this.findCore(world, x, y, z);
+		int[] pos = findCore(world, x, y, z);
 		
 		if(pos == null)
 			return;
@@ -174,7 +174,7 @@ public class MachineHeatBoiler extends BlockDummyable implements ILookOverlay, I
 		
 		if(boiler.hasExploded) return;
 
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		text.add(String.format(Locale.US, "%,d", boiler.heat) + "TU");
 		text.add(EnumChatFormatting.GREEN + "-> " + EnumChatFormatting.RESET + boiler.tanks[0].getTankType().getLocalizedName() + ": " + String.format(Locale.US, "%,d", boiler.tanks[0].getFill()) + " / " + String.format(Locale.US, "%,d", boiler.tanks[0].getMaxFill()) + "mB");
 		text.add(EnumChatFormatting.RED + "<- " + EnumChatFormatting.RESET + boiler.tanks[1].getTankType().getLocalizedName() + ": " + String.format(Locale.US, "%,d", boiler.tanks[1].getFill()) + " / " + String.format(Locale.US, "%,d", boiler.tanks[1].getMaxFill()) + "mB");
@@ -189,6 +189,6 @@ public class MachineHeatBoiler extends BlockDummyable implements ILookOverlay, I
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		this.addStandardInfo(stack, player, list, ext);
+		addStandardInfo(stack, player, list, ext);
 	}
 }

@@ -6,6 +6,7 @@ import com.hbm.items.ModItems;
 import com.hbm.lib.RefStrings;
 import com.hbm.render.model.ModelNightmare;
 import com.hbm.render.model.ModelNightmare2;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
@@ -20,8 +21,8 @@ public class ItemRenderRevolverNightmare implements IItemRenderer {
 	protected Item item;
 	
 	public ItemRenderRevolverNightmare(Item item) {
-		n1 = new ModelNightmare();
-		n2 = new ModelNightmare2();
+		this.n1 = new ModelNightmare();
+		this.n2 = new ModelNightmare2();
 		this.item = item;
 	}
 
@@ -58,9 +59,9 @@ public class ItemRenderRevolverNightmare implements IItemRenderer {
 				GL11.glRotatef(5.0F, 0.0F, 1.0F, 0.0F);
 				GL11.glTranslatef(-0.2F, 0.0F, -0.2F);
 				if(this.item == ModItems.gun_revolver_nightmare)
-					n1.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, item);
+					this.n1.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, item);
 				if(this.item == ModItems.gun_revolver_nightmare2)
-					n2.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, item);
+					this.n2.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, item);
 			GL11.glPopMatrix();
 			break;
 		case EQUIPPED:
@@ -76,9 +77,9 @@ public class ItemRenderRevolverNightmare implements IItemRenderer {
 				GL11.glTranslatef(0.0F, -0.2F, -0.5F);
 				//GL11.glScalef(2.0F, 2.0F, 2.0F);
 				if(this.item == ModItems.gun_revolver_nightmare)
-					n1.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, item);
+					this.n1.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, item);
 				if(this.item == ModItems.gun_revolver_nightmare2)
-					n2.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, item);
+					this.n2.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, item);
 			GL11.glPopMatrix();
 		default: break;
 		}

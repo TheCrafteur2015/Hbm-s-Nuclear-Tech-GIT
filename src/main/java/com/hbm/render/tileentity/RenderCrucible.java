@@ -45,7 +45,7 @@ public class RenderCrucible extends TileEntitySpecialRenderer implements IItemRe
 		TileEntityCrucible crucible = (TileEntityCrucible) tile;
 		
 		if(!crucible.recipeStack.isEmpty() || !crucible.wasteStack.isEmpty()) {
-			int totalCap = crucible.recipeZCapacity + crucible.wasteZCapacity;
+			int totalCap = TileEntityCrucible.recipeZCapacity + TileEntityCrucible.wasteZCapacity;
 			int totalMass = 0;
 
 			for(MaterialStack stack : crucible.recipeStack) totalMass += stack.amount;
@@ -59,7 +59,7 @@ public class RenderCrucible extends TileEntitySpecialRenderer implements IItemRe
 			GL11.glDisable(GL11.GL_CULL_FACE);
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
 
-			ITileActorRenderer.bindTexture(lava);
+			ITileActorRenderer.bindTexture(RenderCrucible.lava);
 			Tessellator tess = Tessellator.instance;
 			tess.setNormal(0F, 1F, 0F);
 			tess.startDrawingQuads();
@@ -85,10 +85,12 @@ public class RenderCrucible extends TileEntitySpecialRenderer implements IItemRe
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase( ) {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(0, -1.5, 0);
 				GL11.glScaled(3.25, 3.25, 3.25);
 			}
+			@Override
 			public void renderCommon() {
 				bindTexture(ResourceManager.crucible_tex);
 				ResourceManager.crucible_heat.renderAll();

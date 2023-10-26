@@ -38,31 +38,32 @@ public class GUIElectrolyserMetal extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 		
-		electrolyser.tanks[3].renderTankInfo(this, mouseX, mouseY, guiLeft + 36, guiTop + 18, 16, 52);
+		this.electrolyser.tanks[3].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 36, this.guiTop + 18, 16, 52);
 		
-		if(electrolyser.leftStack != null) {
-			this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 58, guiTop + 18, 34, 42, mouseX, mouseY, EnumChatFormatting.YELLOW + I18nUtil.resolveKey(electrolyser.leftStack.material.getUnlocalizedName()) + ": " + Mats.formatAmount(electrolyser.leftStack.amount, Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)));
+		if(this.electrolyser.leftStack != null) {
+			this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 58, this.guiTop + 18, 34, 42, mouseX, mouseY, EnumChatFormatting.YELLOW + I18nUtil.resolveKey(this.electrolyser.leftStack.material.getUnlocalizedName()) + ": " + Mats.formatAmount(this.electrolyser.leftStack.amount, Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)));
 		} else {
-			this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 58, guiTop + 18, 34, 42, mouseX, mouseY, EnumChatFormatting.RED + "Empty");
+			this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 58, this.guiTop + 18, 34, 42, mouseX, mouseY, EnumChatFormatting.RED + "Empty");
 		}
 		
-		if(electrolyser.rightStack != null) {
-			this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 96, guiTop + 18, 34, 42, mouseX, mouseY, EnumChatFormatting.YELLOW + I18nUtil.resolveKey(electrolyser.rightStack.material.getUnlocalizedName()) + ": " + Mats.formatAmount(electrolyser.rightStack.amount, Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)));
+		if(this.electrolyser.rightStack != null) {
+			this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 96, this.guiTop + 18, 34, 42, mouseX, mouseY, EnumChatFormatting.YELLOW + I18nUtil.resolveKey(this.electrolyser.rightStack.material.getUnlocalizedName()) + ": " + Mats.formatAmount(this.electrolyser.rightStack.amount, Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)));
 		} else {
-			this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 96, guiTop + 18, 34, 42, mouseX, mouseY, EnumChatFormatting.RED + "Empty");
+			this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 96, this.guiTop + 18, 34, 42, mouseX, mouseY, EnumChatFormatting.RED + "Empty");
 		}
 		
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 186, guiTop + 18, 16, 89, electrolyser.power, electrolyser.maxPower);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 186, this.guiTop + 18, 16, 89, this.electrolyser.power, TileEntityElectrolyser.maxPower);
 	}
 	
+	@Override
 	protected void mouseClicked(int x, int y, int i) {
 		super.mouseClicked(x, y, i);
 
-		if(guiLeft + 8 <= x && guiLeft + 8 + 54 > x && guiTop + 82 < y && guiTop + 82 + 12 >= y) {
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+		if(this.guiLeft + 8 <= x && this.guiLeft + 8 + 54 > x && this.guiTop + 82 < y && this.guiTop + 82 + 12 >= y) {
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 			NBTTagCompound data = new NBTTagCompound();
 			data.setBoolean("sgf", true);
-			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, electrolyser.xCoord, electrolyser.yCoord, electrolyser.zCoord));
+			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, this.electrolyser.xCoord, this.electrolyser.yCoord, this.electrolyser.zCoord));
 		}
 	}
 	
@@ -77,34 +78,34 @@ public class GUIElectrolyserMetal extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIElectrolyserMetal.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		if(electrolyser.leftStack != null) {
-			int p = electrolyser.leftStack.amount * 42 / electrolyser.maxMaterial;
-			Color color = new Color(electrolyser.leftStack.material.moltenColor);
+		if(this.electrolyser.leftStack != null) {
+			int p = this.electrolyser.leftStack.amount * 42 / this.electrolyser.maxMaterial;
+			Color color = new Color(this.electrolyser.leftStack.material.moltenColor);
 			GL11.glColor3f(color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F);
-			drawTexturedModalRect(guiLeft + 58, guiTop + 60 - p, 210, 131 - p, 34, p);
+			drawTexturedModalRect(this.guiLeft + 58, this.guiTop + 60 - p, 210, 131 - p, 34, p);
 		}
 		
-		if(electrolyser.rightStack != null) {
-			int p = electrolyser.rightStack.amount * 42 / electrolyser.maxMaterial;
-			Color color = new Color(electrolyser.rightStack.material.moltenColor);
+		if(this.electrolyser.rightStack != null) {
+			int p = this.electrolyser.rightStack.amount * 42 / this.electrolyser.maxMaterial;
+			Color color = new Color(this.electrolyser.rightStack.material.moltenColor);
 			GL11.glColor3f(color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F);
-			drawTexturedModalRect(guiLeft + 96, guiTop + 60 - p, 210, 131 - p, 34, p);
+			drawTexturedModalRect(this.guiLeft + 96, this.guiTop + 60 - p, 210, 131 - p, 34, p);
 		}
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
-		int p = (int) (electrolyser.power * 89 / electrolyser.maxPower);
-		drawTexturedModalRect(guiLeft + 186, guiTop + 107 - p, 210, 89 - p, 16, p);
+		int p = (int) (this.electrolyser.power * 89 / TileEntityElectrolyser.maxPower);
+		drawTexturedModalRect(this.guiLeft + 186, this.guiTop + 107 - p, 210, 89 - p, 16, p);
 		
-		if(electrolyser.power >= electrolyser.usage)
-			drawTexturedModalRect(guiLeft + 190, guiTop + 4, 226, 25, 9, 12);
+		if(this.electrolyser.power >= this.electrolyser.usage)
+			drawTexturedModalRect(this.guiLeft + 190, this.guiTop + 4, 226, 25, 9, 12);
 		
-		int o = electrolyser.progressOre * 26 / electrolyser.processOreTime;
-		drawTexturedModalRect(guiLeft + 7, guiTop + 71 - o, 226, 25 - o, 22, o);
+		int o = this.electrolyser.progressOre * 26 / this.electrolyser.processOreTime;
+		drawTexturedModalRect(this.guiLeft + 7, this.guiTop + 71 - o, 226, 25 - o, 22, o);
 		
-		electrolyser.tanks[3].renderTank(guiLeft + 36, guiTop + 70, this.zLevel, 16, 52);
+		this.electrolyser.tanks[3].renderTank(this.guiLeft + 36, this.guiTop + 70, this.zLevel, 16, 52);
 	}
 }

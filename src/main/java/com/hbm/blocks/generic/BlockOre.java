@@ -7,6 +7,7 @@ import com.hbm.handler.radiation.ChunkRadiationManager;
 import com.hbm.interfaces.Spaghetti;
 import com.hbm.items.ModItems;
 import com.hbm.potion.HbmPotion;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -30,13 +31,13 @@ public class BlockOre extends Block {
 
 	public BlockOre(Material mat, boolean tick) {
 		super(mat);
-		this.setTickRandomly(tick);
+		setTickRandomly(tick);
 	}
 
 	@Deprecated() //use hazard module for this
 	public BlockOre(Material mat, float rad, float max) {
 		super(mat);
-		this.setTickRandomly(true);
+		setTickRandomly(true);
 		this.rad = rad;
 	}
 
@@ -58,10 +59,7 @@ public class BlockOre extends Block {
 		if(this == ModBlocks.waste_planks) {
 			return Items.coal;
 		}
-		if(this == ModBlocks.frozen_dirt) {
-			return Items.snowball;
-		}
-		if(this == ModBlocks.frozen_planks) {
+		if((this == ModBlocks.frozen_dirt) || (this == ModBlocks.frozen_planks)) {
 			return Items.snowball;
 		}
 		if(this == ModBlocks.ore_nether_fire) {
@@ -211,10 +209,7 @@ public class BlockOre extends Block {
 
 	@Override
 	public int quantityDropped(Random rand) {
-		if(this == ModBlocks.ore_fluorite || this == ModBlocks.basalt_fluorite) {
-			return 2 + rand.nextInt(3);
-		}
-		if(this == ModBlocks.ore_niter) {
+		if(this == ModBlocks.ore_fluorite || this == ModBlocks.basalt_fluorite || (this == ModBlocks.ore_niter)) {
 			return 2 + rand.nextInt(3);
 		}
 		if(this == ModBlocks.ore_sulfur || this == ModBlocks.ore_nether_sulfur || this == ModBlocks.ore_meteor_sulfur || this == ModBlocks.basalt_sulfur) {
@@ -249,7 +244,7 @@ public class BlockOre extends Block {
 	@Override
 	public int quantityDroppedWithBonus(int fortune, Random rand) {
 		
-		if(fortune > 0 && Item.getItemFromBlock(this) != this.getItemDropped(0, rand, fortune) && allowFortune) {
+		if(fortune > 0 && Item.getItemFromBlock(this) != getItemDropped(0, rand, fortune) && this.allowFortune) {
 			int mult = rand.nextInt(fortune + 2) - 1;
 
 			if(mult < 0) {
@@ -320,8 +315,8 @@ public class BlockOre extends Block {
 		}
 
 		if(this.rad > 0) {
-			ChunkRadiationManager.proxy.incrementRad(world, x, y, z, rad);
-			world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
+			ChunkRadiationManager.proxy.incrementRad(world, x, y, z, this.rad);
+			world.scheduleBlockUpdate(x, y, z, this, tickRate(world));
 		}
 	}
 
@@ -334,11 +329,12 @@ public class BlockOre extends Block {
 		return 100;
 	}
 
+	@Override
 	public void onBlockAdded(World world, int x, int y, int z) {
 		super.onBlockAdded(world, x, y, z);
 
 		if(this.rad > 0)
-			world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
+			world.scheduleBlockUpdate(x, y, z, this, tickRate(world));
 	}
 
 	@Override

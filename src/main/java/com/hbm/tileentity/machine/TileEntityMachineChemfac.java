@@ -38,8 +38,8 @@ public class TileEntityMachineChemfac extends TileEntityMachineChemplantBase {
 	public TileEntityMachineChemfac() {
 		super(77);
 
-		water = new FluidTank(Fluids.WATER, 64_000, tanks.length);
-		steam = new FluidTank(Fluids.SPENTSTEAM, 64_000, tanks.length + 1);
+		this.water = new FluidTank(Fluids.WATER, 64_000, this.tanks.length);
+		this.steam = new FluidTank(Fluids.SPENTSTEAM, 64_000, this.tanks.length + 1);
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class TileEntityMachineChemfac extends TileEntityMachineChemplantBase {
 		super.setInventorySlotContents(i, stack);
 		
 		if(stack != null && i >= 1 && i <= 4 && stack.getItem() instanceof ItemMachineUpgrade) {
-			worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "hbm:item.upgradePlug", 1.0F, 1.0F);
+			this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, "hbm:item.upgradePlug", 1.0F, 1.0F);
 		}
 	}
 
@@ -55,16 +55,16 @@ public class TileEntityMachineChemfac extends TileEntityMachineChemplantBase {
 	public void updateEntity() {
 		super.updateEntity();
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			if(worldObj.getTotalWorldTime() % 60 == 0) {
+			if(this.worldObj.getTotalWorldTime() % 60 == 0) {
 				
 				for(DirPos pos : getConPos()) {
-					this.trySubscribe(worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+					this.trySubscribe(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 					
 					for(FluidTank tank : inTanks()) {
 						if(tank.getTankType() != Fluids.NONE) {
-							this.trySubscribe(tank.getTankType(), worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+							this.trySubscribe(tank.getTankType(), this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 						}
 					}
 				}
@@ -72,14 +72,14 @@ public class TileEntityMachineChemfac extends TileEntityMachineChemplantBase {
 			
 			for(DirPos pos : getConPos()) for(FluidTank tank : outTanks()) {
 				if(tank.getTankType() != Fluids.NONE && tank.getFill() > 0) {
-					this.sendFluid(tank, worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+					this.sendFluid(tank, this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 				}
 			}
 			
 			this.speed = 100;
 			this.consumption = 100;
 			
-			UpgradeManager.eval(slots, 1, 4);
+			UpgradeManager.eval(this.slots, 1, 4);
 
 			int speedLevel = Math.min(UpgradeManager.getLevel(UpgradeType.SPEED), 6);
 			int powerLevel = Math.min(UpgradeManager.getLevel(UpgradeType.POWER), 3);
@@ -100,54 +100,54 @@ public class TileEntityMachineChemfac extends TileEntityMachineChemplantBase {
 			data.setLong("power", this.power);
 			data.setIntArray("progress", this.progress);
 			data.setIntArray("maxProgress", this.maxProgress);
-			data.setBoolean("isProgressing", isProgressing);
+			data.setBoolean("isProgressing", this.isProgressing);
 			
-			for(int i = 0; i < tanks.length; i++) {
-				tanks[i].writeToNBT(data, "t" + i);
+			for(int i = 0; i < this.tanks.length; i++) {
+				this.tanks[i].writeToNBT(data, "t" + i);
 			}
-			water.writeToNBT(data, "w");
-			steam.writeToNBT(data, "s");
+			this.water.writeToNBT(data, "w");
+			this.steam.writeToNBT(data, "s");
 			
-			this.networkPack(data, 150);
+			networkPack(data, 150);
 		} else {
 			
 			float maxSpeed = 30F;
 			
-			if(isProgressing) {
+			if(this.isProgressing) {
 				
-				rotSpeed += 0.1;
+				this.rotSpeed += 0.1;
 				
-				if(rotSpeed > maxSpeed)
-					rotSpeed = maxSpeed;
+				if(this.rotSpeed > maxSpeed)
+					this.rotSpeed = maxSpeed;
 				
-				if(rotSpeed == maxSpeed && this.worldObj.getTotalWorldTime() % 5 == 0) {
+				if(this.rotSpeed == maxSpeed && this.worldObj.getTotalWorldTime() % 5 == 0) {
 					
-					ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset).getOpposite();
+					ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset).getOpposite();
 					ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
-					Random rand = worldObj.rand;
+					Random rand = this.worldObj.rand;
 					
-					double x = xCoord + 0.5 - rot.offsetX * 0.5;
-					double y = yCoord + 3;
-					double z = zCoord + 0.5 - rot.offsetZ * 0.5;
+					double x = this.xCoord + 0.5 - rot.offsetX * 0.5;
+					double y = this.yCoord + 3;
+					double z = this.zCoord + 0.5 - rot.offsetZ * 0.5;
 	
-					worldObj.spawnParticle("cloud", x + dir.offsetX * 1.5 + rand.nextGaussian() * 0.15, y, z + dir.offsetZ * 1.5 + rand.nextGaussian() * 0.15, 0.0, 0.15, 0.0);
-					worldObj.spawnParticle("cloud", x - dir.offsetX * 0.5 + rand.nextGaussian() * 0.15, y, z - dir.offsetZ * 0.5 + rand.nextGaussian() * 0.15, 0.0, 0.15, 0.0);
+					this.worldObj.spawnParticle("cloud", x + dir.offsetX * 1.5 + rand.nextGaussian() * 0.15, y, z + dir.offsetZ * 1.5 + rand.nextGaussian() * 0.15, 0.0, 0.15, 0.0);
+					this.worldObj.spawnParticle("cloud", x - dir.offsetX * 0.5 + rand.nextGaussian() * 0.15, y, z - dir.offsetZ * 0.5 + rand.nextGaussian() * 0.15, 0.0, 0.15, 0.0);
 				}
 			} else {
 				
-				rotSpeed -= 0.1;
+				this.rotSpeed -= 0.1;
 				
-				if(rotSpeed < 0)
-					rotSpeed = 0;
+				if(this.rotSpeed < 0)
+					this.rotSpeed = 0;
 			}
 			
-			prevRot = rot;
+			this.prevRot = this.rot;
 			
-			rot += rotSpeed;
+			this.rot += this.rotSpeed;
 			
-			if(rot >= 360) {
-				rot -= 360;
-				prevRot -= 360;
+			if(this.rot >= 360) {
+				this.rot -= 360;
+				this.prevRot -= 360;
 			}
 		}
 	}
@@ -159,11 +159,11 @@ public class TileEntityMachineChemfac extends TileEntityMachineChemplantBase {
 		this.maxProgress = nbt.getIntArray("maxProgress");
 		this.isProgressing = nbt.getBoolean("isProgressing");
 
-		for(int i = 0; i < tanks.length; i++) {
-			tanks[i].readFromNBT(nbt, "t" + i);
+		for(int i = 0; i < this.tanks.length; i++) {
+			this.tanks[i].readFromNBT(nbt, "t" + i);
 		}
-		water.readFromNBT(nbt, "w");
-		steam.readFromNBT(nbt, "s");
+		this.water.readFromNBT(nbt, "w");
+		this.steam.readFromNBT(nbt, "s");
 	}
 	
 	private int getWaterRequired() {
@@ -192,25 +192,25 @@ public class TileEntityMachineChemfac extends TileEntityMachineChemplantBase {
 	
 	protected List<DirPos> getConPos() {
 		
-		if(conPos != null && !conPos.isEmpty())
-			return conPos;
+		if(this.conPos != null && !this.conPos.isEmpty())
+			return this.conPos;
 		
-		conPos = new ArrayList();
+		this.conPos = new ArrayList<>();
 
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset).getOpposite();
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset).getOpposite();
 		ForgeDirection rot = dir.getRotation(ForgeDirection.DOWN);
 		
 		for(int i = 0; i < 6; i++) {
-			conPos.add(new DirPos(xCoord + dir.offsetX * (3 - i) + rot.offsetX * 3, yCoord + 4, zCoord + dir.offsetZ * (3 - i) + rot.offsetZ * 3, Library.POS_Y));
-			conPos.add(new DirPos(xCoord + dir.offsetX * (3 - i) - rot.offsetX * 2, yCoord + 4, zCoord + dir.offsetZ * (3 - i) - rot.offsetZ * 2, Library.POS_Y));
+			this.conPos.add(new DirPos(this.xCoord + dir.offsetX * (3 - i) + rot.offsetX * 3, this.yCoord + 4, this.zCoord + dir.offsetZ * (3 - i) + rot.offsetZ * 3, Library.POS_Y));
+			this.conPos.add(new DirPos(this.xCoord + dir.offsetX * (3 - i) - rot.offsetX * 2, this.yCoord + 4, this.zCoord + dir.offsetZ * (3 - i) - rot.offsetZ * 2, Library.POS_Y));
 
 			for(int j = 0; j < 2; j++) {
-				conPos.add(new DirPos(xCoord + dir.offsetX * (3 - i) + rot.offsetX * 5, yCoord + 1 + j, zCoord + dir.offsetZ * (3 - i) + rot.offsetZ * 5, rot));
-				conPos.add(new DirPos(xCoord + dir.offsetX * (3 - i) - rot.offsetX * 4, yCoord + 1 + j, zCoord + dir.offsetZ * (3 - i) - rot.offsetZ * 4, rot.getOpposite()));
+				this.conPos.add(new DirPos(this.xCoord + dir.offsetX * (3 - i) + rot.offsetX * 5, this.yCoord + 1 + j, this.zCoord + dir.offsetZ * (3 - i) + rot.offsetZ * 5, rot));
+				this.conPos.add(new DirPos(this.xCoord + dir.offsetX * (3 - i) - rot.offsetX * 4, this.yCoord + 1 + j, this.zCoord + dir.offsetZ * (3 - i) - rot.offsetZ * 4, rot.getOpposite()));
 			}
 		}
 		
-		return conPos;
+		return this.conPos;
 	}
 
 	@Override
@@ -239,53 +239,53 @@ public class TileEntityMachineChemfac extends TileEntityMachineChemplantBase {
 	@Override
 	public DirPos[] getInputPositions() {
 		
-		if(inpos != null)
-			return inpos;
+		if(this.inpos != null)
+			return this.inpos;
 		
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 		
-		inpos = new DirPos[] {
-				new DirPos(xCoord + dir.offsetX * 4 - rot.offsetX * 1, yCoord, zCoord + dir.offsetZ * 4 - rot.offsetZ * 1, dir),
-				new DirPos(xCoord - dir.offsetX * 5 + rot.offsetX * 2, yCoord, zCoord - dir.offsetZ * 5 + rot.offsetZ * 2, dir.getOpposite()),
-				new DirPos(xCoord - dir.offsetX * 2 - rot.offsetX * 4, yCoord, zCoord - dir.offsetZ * 2 - rot.offsetZ * 4, rot.getOpposite()),
-				new DirPos(xCoord + dir.offsetX * 1 + rot.offsetX * 5, yCoord, zCoord + dir.offsetZ * 1 + rot.offsetZ * 5, rot)
+		this.inpos = new DirPos[] {
+				new DirPos(this.xCoord + dir.offsetX * 4 - rot.offsetX * 1, this.yCoord, this.zCoord + dir.offsetZ * 4 - rot.offsetZ * 1, dir),
+				new DirPos(this.xCoord - dir.offsetX * 5 + rot.offsetX * 2, this.yCoord, this.zCoord - dir.offsetZ * 5 + rot.offsetZ * 2, dir.getOpposite()),
+				new DirPos(this.xCoord - dir.offsetX * 2 - rot.offsetX * 4, this.yCoord, this.zCoord - dir.offsetZ * 2 - rot.offsetZ * 4, rot.getOpposite()),
+				new DirPos(this.xCoord + dir.offsetX * 1 + rot.offsetX * 5, this.yCoord, this.zCoord + dir.offsetZ * 1 + rot.offsetZ * 5, rot)
 		};
 		
-		return inpos;
+		return this.inpos;
 	}
 
 	@Override
 	public DirPos[] getOutputPositions() {
 		
-		if(outpos != null)
-			return outpos;
+		if(this.outpos != null)
+			return this.outpos;
 		
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 		
-		outpos = new DirPos[] {
-				new DirPos(xCoord + dir.offsetX * 4 + rot.offsetX * 2, yCoord, zCoord + dir.offsetZ * 4 + rot.offsetZ * 2, dir),
-				new DirPos(xCoord - dir.offsetX * 5 - rot.offsetX * 1, yCoord, zCoord - dir.offsetZ * 5 - rot.offsetZ * 1, dir.getOpposite()),
-				new DirPos(xCoord + dir.offsetX * 1 - rot.offsetX * 4, yCoord, zCoord + dir.offsetZ * 1 - rot.offsetZ * 4, rot.getOpposite()),
-				new DirPos(xCoord - dir.offsetX * 2 + rot.offsetX * 5, yCoord, zCoord - dir.offsetZ * 2 + rot.offsetZ * 5, rot)
+		this.outpos = new DirPos[] {
+				new DirPos(this.xCoord + dir.offsetX * 4 + rot.offsetX * 2, this.yCoord, this.zCoord + dir.offsetZ * 4 + rot.offsetZ * 2, dir),
+				new DirPos(this.xCoord - dir.offsetX * 5 - rot.offsetX * 1, this.yCoord, this.zCoord - dir.offsetZ * 5 - rot.offsetZ * 1, dir.getOpposite()),
+				new DirPos(this.xCoord + dir.offsetX * 1 - rot.offsetX * 4, this.yCoord, this.zCoord + dir.offsetZ * 1 - rot.offsetZ * 4, rot.getOpposite()),
+				new DirPos(this.xCoord - dir.offsetX * 2 + rot.offsetX * 5, this.yCoord, this.zCoord - dir.offsetZ * 2 + rot.offsetZ * 5, rot)
 		};
 		
-		return outpos;
+		return this.outpos;
 	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
-		water.readFromNBT(nbt, "w");
-		steam.readFromNBT(nbt, "s");
+		this.water.readFromNBT(nbt, "w");
+		this.steam.readFromNBT(nbt, "s");
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		water.writeToNBT(nbt, "w");
-		steam.writeToNBT(nbt, "s");
+		this.water.writeToNBT(nbt, "w");
+		this.steam.writeToNBT(nbt, "s");
 	}
 
 	@Override
@@ -297,7 +297,7 @@ public class TileEntityMachineChemfac extends TileEntityMachineChemplantBase {
 	protected List<FluidTank> inTanks() {
 		
 		List<FluidTank> inTanks = super.inTanks();
-		inTanks.add(water);
+		inTanks.add(this.water);
 		
 		return inTanks;
 	}
@@ -306,7 +306,7 @@ public class TileEntityMachineChemfac extends TileEntityMachineChemplantBase {
 	protected List<FluidTank> outTanks() {
 		
 		List<FluidTank> outTanks = super.outTanks();
-		outTanks.add(steam);
+		outTanks.add(this.steam);
 		
 		return outTanks;
 	}
@@ -316,18 +316,18 @@ public class TileEntityMachineChemfac extends TileEntityMachineChemplantBase {
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 5,
-					yCoord,
-					zCoord - 5,
-					xCoord + 5,
-					yCoord + 4,
-					zCoord + 5
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 5,
+					this.yCoord,
+					this.zCoord - 5,
+					this.xCoord + 5,
+					this.yCoord + 4,
+					this.zCoord + 5
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override

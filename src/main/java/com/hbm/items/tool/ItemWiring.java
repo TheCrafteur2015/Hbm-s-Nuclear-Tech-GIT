@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.main.MainRegistry;
+import com.hbm.main.ServerProxy;
 import com.hbm.tileentity.network.TileEntityPylonBase;
 
 import net.minecraft.block.Block;
@@ -97,6 +98,7 @@ public class ItemWiring extends Item {
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		if(itemstack.stackTagCompound != null) {
@@ -118,7 +120,7 @@ public class ItemWiring extends Item {
 						entity.posY - stack.stackTagCompound.getInteger("y"),
 						entity.posZ - stack.stackTagCompound.getInteger("z"));
 				
-				MainRegistry.proxy.displayTooltip(((int) vec.lengthVector()) + "m", MainRegistry.proxy.ID_CABLE);
+				MainRegistry.proxy.displayTooltip(((int) vec.lengthVector()) + "m", ServerProxy.ID_CABLE);
 			}
 		}
 	}

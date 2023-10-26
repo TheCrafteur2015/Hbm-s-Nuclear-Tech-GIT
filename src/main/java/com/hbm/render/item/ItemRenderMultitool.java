@@ -8,6 +8,7 @@ import com.hbm.render.model.ModelMultitoolClaw;
 import com.hbm.render.model.ModelMultitoolFist;
 import com.hbm.render.model.ModelMultitoolOpen;
 import com.hbm.render.model.ModelMultitoolPointer;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.Entity;
@@ -24,11 +25,11 @@ public class ItemRenderMultitool implements IItemRenderer {
     public RenderPlayer renderPlayer;
 	
 	public ItemRenderMultitool() {
-		open = new ModelMultitoolOpen();
-		claw = new ModelMultitoolClaw();
-		fist = new ModelMultitoolFist();
-		pointer = new ModelMultitoolPointer();
-		renderPlayer = new RenderPlayer();
+		this.open = new ModelMultitoolOpen();
+		this.claw = new ModelMultitoolClaw();
+		this.fist = new ModelMultitoolFist();
+		this.pointer = new ModelMultitoolPointer();
+		this.renderPlayer = new RenderPlayer();
 	}
 
 	@Override
@@ -62,31 +63,31 @@ public class ItemRenderMultitool implements IItemRenderer {
 				//GL11.glTranslatef(-0.4F, -0.1F, 0.1F);
 				GL11.glTranslatef(-0.2F, -0.1F, -0.1F);
 				if(item != null && item.getItem() == ModItems.multitool_dig)
-					claw.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.claw.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item != null && item.getItem() == ModItems.multitool_silk)
-					claw.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.claw.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item != null && item.getItem() == ModItems.multitool_ext)
-					open.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.open.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item != null && item.getItem() == ModItems.multitool_miner)
-					pointer.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.pointer.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item != null && item.getItem() == ModItems.multitool_hit)
-					fist.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.fist.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item != null && item.getItem() == ModItems.multitool_beam)
-					pointer.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.pointer.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item != null && item.getItem() == ModItems.multitool_sky)
-					open.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.open.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item != null && item.getItem() == ModItems.multitool_mega)
-					fist.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.fist.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item != null && item.getItem() == ModItems.multitool_joule)
-					fist.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.fist.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item != null && item.getItem() == ModItems.multitool_decon)
-					open.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.open.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				
 				GL11.glScalef(2.0F, 2.0F, 2.0F);
 				GL11.glRotatef(90.0F, 0.0F, 0.0F, 1.0F);
 				GL11.glTranslatef(6 * 0.0625F, -12 * 0.0625F, 0 * 0.0625F);
 				Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("textures/entity/steve.png"));
-		        renderPlayer.modelBipedMain.bipedRightArm.render(0.0625F);
+		        this.renderPlayer.modelBipedMain.bipedRightArm.render(0.0625F);
 
 			GL11.glPopMatrix();
 			break;
@@ -105,25 +106,25 @@ public class ItemRenderMultitool implements IItemRenderer {
 				GL11.glTranslatef(-4 * 0.0625F, 2 * 0.0625F, -9 * 0.0625F);
 				
 				if(item != null && item.getItem() == ModItems.multitool_dig)
-					claw.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.claw.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item != null && item.getItem() == ModItems.multitool_silk)
-					claw.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.claw.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item != null && item.getItem() == ModItems.multitool_ext)
-					open.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.open.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item != null && item.getItem() == ModItems.multitool_miner)
-					pointer.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.pointer.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item != null && item.getItem() == ModItems.multitool_hit)
-					fist.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.fist.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item != null && item.getItem() == ModItems.multitool_beam)
-					pointer.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.pointer.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item != null && item.getItem() == ModItems.multitool_sky)
-					open.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.open.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item != null && item.getItem() == ModItems.multitool_mega)
-					fist.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.fist.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item != null && item.getItem() == ModItems.multitool_joule)
-					fist.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.fist.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				if(item != null && item.getItem() == ModItems.multitool_decon)
-					open.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.open.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				
 			GL11.glPopMatrix();
 		default: break;

@@ -34,22 +34,22 @@ public abstract class TileEntityMachineAssemblerBase extends TileEntityMachineBa
 	public TileEntityMachineAssemblerBase(int scount) {
 		super(scount);
 		
-		int count = this.getRecipeCount();
+		int count = getRecipeCount();
 
-		progress = new int[count];
-		maxProgress = new int[count];
-		needsTemplateSwitch = new boolean[count];
+		this.progress = new int[count];
+		this.maxProgress = new int[count];
+		this.needsTemplateSwitch = new boolean[count];
 	}
 
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			int count = this.getRecipeCount();
+			int count = getRecipeCount();
 			
 			this.isProgressing = false;
-			this.power = Library.chargeTEFromItems(slots, getPowerSlot(), power, this.getMaxPower());
+			this.power = Library.chargeTEFromItems(this.slots, getPowerSlot(), this.power, getMaxPower());
 			
 			for(int i = 0; i < count; i++) {
 				unloadItems(i);
@@ -61,7 +61,7 @@ public abstract class TileEntityMachineAssemblerBase extends TileEntityMachineBa
 				if(!canProcess(i)) {
 					this.progress[i] = 0;
 				} else {
-					isProgressing = true;
+					this.isProgressing = true;
 					process(i);
 				}
 			}
@@ -72,30 +72,25 @@ public abstract class TileEntityMachineAssemblerBase extends TileEntityMachineBa
 		
 		int template = getTemplateIndex(index);
 		
-		if(slots[template] == null || slots[template].getItem() != ModItems.assembly_template)
+		if(this.slots[template] == null || this.slots[template].getItem() != ModItems.assembly_template)
 			return false;
 
-		List<AStack> recipe = AssemblerRecipes.getRecipeFromTempate(slots[template]);
-		ItemStack output = AssemblerRecipes.getOutputFromTempate(slots[template]);
+		List<AStack> recipe = AssemblerRecipes.getRecipeFromTempate(this.slots[template]);
+		ItemStack output = AssemblerRecipes.getOutputFromTempate(this.slots[template]);
 		
-		if(recipe == null)
-			return false;
-		
-		if(this.power < this.consumption) return false;
-		if(!hasRequiredItems(recipe, index)) return false;
-		if(!hasSpaceForItems(output, index)) return false;
+		if((recipe == null) || (this.power < this.consumption) || !hasRequiredItems(recipe, index) || !hasSpaceForItems(output, index)) return false;
 		
 		return true;
 	}
 	
 	private boolean hasRequiredItems(List<AStack> recipe, int index) {
 		int[] indices = getSlotIndicesFromIndex(index);
-		return InventoryUtil.doesArrayHaveIngredients(slots, indices[0], indices[1], recipe.toArray(new AStack[0]));
+		return InventoryUtil.doesArrayHaveIngredients(this.slots, indices[0], indices[1], recipe.toArray(new AStack[0]));
 	}
 	
 	private boolean hasSpaceForItems(ItemStack recipe, int index) {
 		int[] indices = getSlotIndicesFromIndex(index);
-		return InventoryUtil.doesArrayHaveSpace(slots, indices[2], indices[2], new ItemStack[] { recipe });
+		return InventoryUtil.doesArrayHaveSpace(this.slots, indices[2], indices[2], new ItemStack[] { recipe });
 	}
 	
 	protected void process(int index) {
@@ -103,14 +98,14 @@ public abstract class TileEntityMachineAssemblerBase extends TileEntityMachineBa
 		this.power -= this.consumption;
 		this.progress[index]++;
 		
-		if(slots[0] != null && slots[0].getItem() == ModItems.meteorite_sword_alloyed)
-			slots[0] = new ItemStack(ModItems.meteorite_sword_machined); //fisfndmoivndlmgindgifgjfdnblfm
+		if(this.slots[0] != null && this.slots[0].getItem() == ModItems.meteorite_sword_alloyed)
+			this.slots[0] = new ItemStack(ModItems.meteorite_sword_machined); //fisfndmoivndlmgindgifgjfdnblfm
 		
 		int template = getTemplateIndex(index);
 
-		List<AStack> recipe = AssemblerRecipes.getRecipeFromTempate(slots[template]);
-		ItemStack output = AssemblerRecipes.getOutputFromTempate(slots[template]);
-		int time = ItemAssemblyTemplate.getProcessTime(slots[template]);
+		List<AStack> recipe = AssemblerRecipes.getRecipeFromTempate(this.slots[template]);
+		ItemStack output = AssemblerRecipes.getOutputFromTempate(this.slots[template]);
+		int time = ItemAssemblyTemplate.getProcessTime(this.slots[template]);
 		
 		this.maxProgress[index] = time * this.speed / 100;
 		
@@ -119,7 +114,7 @@ public abstract class TileEntityMachineAssemblerBase extends TileEntityMachineBa
 			produceItems(output, index);
 			this.progress[index] = 0;
 			this.needsTemplateSwitch[index] = true;
-			this.markDirty();
+			markDirty();
 		}
 	}
 	
@@ -129,7 +124,7 @@ public abstract class TileEntityMachineAssemblerBase extends TileEntityMachineBa
 		
 		for(AStack in : recipe) {
 			if(in != null)
-				InventoryUtil.tryConsumeAStack(slots, indices[0], indices[1], in);
+				InventoryUtil.tryConsumeAStack(this.slots, indices[0], indices[1], in);
 		}
 	}
 	
@@ -138,7 +133,7 @@ public abstract class TileEntityMachineAssemblerBase extends TileEntityMachineBa
 		int[] indices = getSlotIndicesFromIndex(index);
 		
 		if(out != null) {
-			InventoryUtil.tryAddItemToInventory(slots, indices[2], indices[2], out.copy());
+			InventoryUtil.tryAddItemToInventory(this.slots, indices[2], indices[2], out.copy());
 		}
 	}
 	
@@ -151,7 +146,7 @@ public abstract class TileEntityMachineAssemblerBase extends TileEntityMachineBa
 
 		for(DirPos coord : positions) {
 
-			TileEntity te = worldObj.getTileEntity(coord.getX(), coord.getY(), coord.getZ());
+			TileEntity te = this.worldObj.getTileEntity(coord.getX(), coord.getY(), coord.getZ());
 				
 			if(te instanceof IInventory) {
 
@@ -160,14 +155,14 @@ public abstract class TileEntityMachineAssemblerBase extends TileEntityMachineBa
 				int[] access = sided != null ? sided.getAccessibleSlotsFromSide(coord.getDir().ordinal()) : null;
 				boolean templateCrate = te instanceof TileEntityCrateTemplate;
 
-				if(templateCrate && slots[template] == null) {
+				if(templateCrate && this.slots[template] == null) {
 
 					for(int i = 0; i < (access != null ? access.length : inv.getSizeInventory()); i++) {
 						int slot = access != null ? access[i] : i;
 						ItemStack stack = inv.getStackInSlot(slot);
 
 						if(stack != null && stack.getItem() == ModItems.assembly_template && (sided == null || sided.canExtractItem(slot, stack, 0))) {
-							slots[template] = stack.copy();
+							this.slots[template] = stack.copy();
 							sided.setInventorySlotContents(slot, null);
 							this.needsTemplateSwitch[index] = false;
 							break;
@@ -175,17 +170,17 @@ public abstract class TileEntityMachineAssemblerBase extends TileEntityMachineBa
 					}
 				}
 					
-				boolean noTemplate = slots[template] == null || slots[template].getItem() != ModItems.assembly_template;
+				boolean noTemplate = this.slots[template] == null || this.slots[template].getItem() != ModItems.assembly_template;
 
 				if(!noTemplate) {
 
-					List<AStack> recipe = AssemblerRecipes.getRecipeFromTempate(slots[template]);
+					List<AStack> recipe = AssemblerRecipes.getRecipeFromTempate(this.slots[template]);
 
 					if(recipe != null) {
 
 						for(AStack ingredient : recipe) {
 
-							outer: while(!InventoryUtil.doesArrayHaveIngredients(slots, indices[0], indices[1], ingredient)) {
+							outer: while(!InventoryUtil.doesArrayHaveIngredients(this.slots, indices[0], indices[1], ingredient)) {
 
 								boolean found = false;
 
@@ -198,18 +193,18 @@ public abstract class TileEntityMachineAssemblerBase extends TileEntityMachineBa
 
 										for(int j = indices[0]; j <= indices[1]; j++) {
 
-											if(slots[j] != null && slots[j].stackSize < slots[j].getMaxStackSize() & InventoryUtil.doesStackDataMatch(slots[j], stack)) {
+											if(this.slots[j] != null && this.slots[j].stackSize < this.slots[j].getMaxStackSize() & InventoryUtil.doesStackDataMatch(this.slots[j], stack)) {
 												inv.decrStackSize(slot, 1);
-												slots[j].stackSize++;
+												this.slots[j].stackSize++;
 												continue outer;
 											}
 										}
 
 										for(int j = indices[0]; j <= indices[1]; j++) {
 
-											if(slots[j] == null) {
-												slots[j] = stack.copy();
-												slots[j].stackSize = 1;
+											if(this.slots[j] == null) {
+												this.slots[j] = stack.copy();
+												this.slots[j].stackSize = 1;
 												inv.decrStackSize(slot, 1);
 												continue outer;
 											}
@@ -233,7 +228,7 @@ public abstract class TileEntityMachineAssemblerBase extends TileEntityMachineBa
 		
 		for(DirPos coord : positions) {
 			
-			TileEntity te = worldObj.getTileEntity(coord.getX(), coord.getY(), coord.getZ());
+			TileEntity te = this.worldObj.getTileEntity(coord.getX(), coord.getY(), coord.getZ());
 			
 			if(te instanceof IInventory) {
 				
@@ -242,11 +237,11 @@ public abstract class TileEntityMachineAssemblerBase extends TileEntityMachineBa
 				int[] access = sided != null ? sided.getAccessibleSlotsFromSide(coord.getDir().ordinal()) : null;
 				
 				int i = indices[2];
-				ItemStack out = slots[i];
+				ItemStack out = this.slots[i];
 				
 				int template = getTemplateIndex(index);
-				if(this.needsTemplateSwitch[index] && te instanceof TileEntityCrateTemplate && slots[template] != null) {
-					out = slots[template];
+				if(this.needsTemplateSwitch[index] && te instanceof TileEntityCrateTemplate && this.slots[template] != null) {
+					out = this.slots[template];
 					i = template;
 				}
 
@@ -262,7 +257,7 @@ public abstract class TileEntityMachineAssemblerBase extends TileEntityMachineBa
 						ItemStack target = inv.getStackInSlot(slot);
 
 						if(InventoryUtil.doesStackDataMatch(out, target) && target.stackSize < target.getMaxStackSize() && target.stackSize < inv.getInventoryStackLimit()) {
-							this.decrStackSize(i, 1);
+							decrStackSize(i, 1);
 							target.stackSize++;
 							return;
 						}
@@ -279,7 +274,7 @@ public abstract class TileEntityMachineAssemblerBase extends TileEntityMachineBa
 							ItemStack copy = out.copy();
 							copy.stackSize = 1;
 							inv.setInventorySlotContents(slot, copy);
-							this.decrStackSize(i, 1);
+							decrStackSize(i, 1);
 							return;
 						}
 					}
@@ -301,9 +296,9 @@ public abstract class TileEntityMachineAssemblerBase extends TileEntityMachineBa
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		
-		nbt.setLong("power", power);
-		nbt.setIntArray("progress", progress);
-		nbt.setIntArray("maxProgress", maxProgress);
+		nbt.setLong("power", this.power);
+		nbt.setIntArray("progress", this.progress);
+		nbt.setIntArray("maxProgress", this.maxProgress);
 	}
 
 	@Override

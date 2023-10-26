@@ -51,6 +51,7 @@ public class GUIRBMKConsole extends GuiScreen {
 		this.ySize = 172;
 	}
 	
+	@Override
 	public void initGui() {
 		super.initGui();
 		
@@ -59,7 +60,7 @@ public class GUIRBMKConsole extends GuiScreen {
 		
 		Keyboard.enableRepeatEvents(true);
 		
-		this.field = new GuiTextField(this.fontRendererObj, guiLeft + 9, guiTop + 84, 35, 9);
+		this.field = new GuiTextField(this.fontRendererObj, this.guiLeft + 9, this.guiTop + 84, 35, 9);
 		this.field.setTextColor(0x00ff00);
 		this.field.setDisabledTextColour(0x008000);
 		this.field.setEnableBackgroundDrawing(false);
@@ -68,51 +69,51 @@ public class GUIRBMKConsole extends GuiScreen {
 	
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float f) {
-		this.drawDefaultBackground();
-		this.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
+		drawDefaultBackground();
+		drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
 		
 		int bX = 86;
 		int bY = 11;
 		int size = 10;
 
-		if(guiLeft + 86 <= mouseX && guiLeft + 86 + 150 > mouseX && guiTop + 11 < mouseY && guiTop + 11 + 10150 >= mouseY) {
-			int index = ((mouseX - bX - guiLeft) / size + (mouseY - bY - guiTop) / size * 15);
+		if(this.guiLeft + 86 <= mouseX && this.guiLeft + 86 + 150 > mouseX && this.guiTop + 11 < mouseY && this.guiTop + 11 + 10150 >= mouseY) {
+			int index = ((mouseX - bX - this.guiLeft) / size + (mouseY - bY - this.guiTop) / size * 15);
 			
-			if(index > 0 && index < console.columns.length) {
-				RBMKColumn col = console.columns[index];
+			if(index > 0 && index < this.console.columns.length) {
+				RBMKColumn col = this.console.columns[index];
 				
 				if(col != null) {
 					
-					List<String> list = new ArrayList();
+					List<String> list = new ArrayList<>();
 					list.add(col.type.toString());
 					list.addAll(col.getFancyStats());
-					this.func_146283_a(list, mouseX, mouseY);
+					func_146283_a(list, mouseX, mouseY);
 				}
 			}
 		}
 
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 61, guiTop + 70, 10, 10, mouseX, mouseY, new String[]{ "Select all control rods" } );
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 72, guiTop + 70, 10, 10, mouseX, mouseY, new String[]{ "Deselect all" } );
+		drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 61, this.guiTop + 70, 10, 10, mouseX, mouseY, new String[]{ "Select all control rods" } );
+		drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 72, this.guiTop + 70, 10, 10, mouseX, mouseY, new String[]{ "Deselect all" } );
 		
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 2; j++) {
 				int id = i * 2 + j + 1;
-				this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 6 + 40 * j, guiTop + 8 + 21 * i, 18, 18, mouseX, mouseY, new String[]{ EnumChatFormatting.YELLOW + I18nUtil.resolveKey("rbmk.console." + console.screens[id - 1].type.name().toLowerCase(Locale.US), id) } );
-				this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 24 + 40 * j, guiTop + 8 + 21 * i, 18, 18, mouseX, mouseY, new String[]{ I18nUtil.resolveKey("rbmk.console.assign", id) } );
+				drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 6 + 40 * j, this.guiTop + 8 + 21 * i, 18, 18, mouseX, mouseY, new String[]{ EnumChatFormatting.YELLOW + I18nUtil.resolveKey("rbmk.console." + this.console.screens[id - 1].type.name().toLowerCase(Locale.US), id) } );
+				drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 24 + 40 * j, this.guiTop + 8 + 21 * i, 18, 18, mouseX, mouseY, new String[]{ I18nUtil.resolveKey("rbmk.console.assign", id) } );
 			}
 		}
 		
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 6, guiTop + 70, 10, 10, mouseX, mouseY, new String[]{ "Select red group" } );
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 17, guiTop + 70, 10, 10, mouseX, mouseY, new String[]{ "Select yellow group" } );
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 28, guiTop + 70, 10, 10, mouseX, mouseY, new String[]{ "Select green group" } );
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 39, guiTop + 70, 10, 10, mouseX, mouseY, new String[]{ "Select blue group" } );
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 50, guiTop + 70, 10, 10, mouseX, mouseY, new String[]{ "Select purple group" } );
+		drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 6, this.guiTop + 70, 10, 10, mouseX, mouseY, new String[]{ "Select red group" } );
+		drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 17, this.guiTop + 70, 10, 10, mouseX, mouseY, new String[]{ "Select yellow group" } );
+		drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 28, this.guiTop + 70, 10, 10, mouseX, mouseY, new String[]{ "Select green group" } );
+		drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 39, this.guiTop + 70, 10, 10, mouseX, mouseY, new String[]{ "Select blue group" } );
+		drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 50, this.guiTop + 70, 10, 10, mouseX, mouseY, new String[]{ "Select purple group" } );
 	}
 	
 	public void drawCustomInfoStat(int mouseX, int mouseY, int x, int y, int width, int height, int tPosX, int tPosY, String[] text) {
 		
 		if(x <= mouseX && x + width > mouseX && y < mouseY && y + height >= mouseY)
-			this.func_146283_a(Arrays.asList(text), tPosX, tPosY);
+			func_146283_a(Arrays.asList(text), tPosX, tPosY);
 	}
 
 	@Override
@@ -125,89 +126,89 @@ public class GUIRBMKConsole extends GuiScreen {
 		int size = 10;
 
 		//toggle column selection
-		if(guiLeft + 86 <= mouseX && guiLeft + 86 + 150 > mouseX && guiTop + 11 < mouseY && guiTop + 11 + 150 >= mouseY) {
+		if(this.guiLeft + 86 <= mouseX && this.guiLeft + 86 + 150 > mouseX && this.guiTop + 11 < mouseY && this.guiTop + 11 + 150 >= mouseY) {
 			
-			int index = ((mouseX - bX - guiLeft) / size + (mouseY - bY - guiTop) / size * 15);
+			int index = ((mouseX - bX - this.guiLeft) / size + (mouseY - bY - this.guiTop) / size * 15);
 			
-			if(index > 0 && index < selection.length && console.columns[index] != null) {
+			if(index > 0 && index < this.selection.length && this.console.columns[index] != null) {
 				this.selection[index] = !this.selection[index];
 				
-				mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 0.75F + (this.selection[index] ? 0.25F : 0.0F)));
+				this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 0.75F + (this.selection[index] ? 0.25F : 0.0F)));
 				return;
 			}
 		}
 		
 		//clear selection
-		if(guiLeft + 72 <= mouseX && guiLeft + 72 + 10 > mouseX && guiTop + 70 < mouseY && guiTop + 70 + 10 >= mouseY) {
+		if(this.guiLeft + 72 <= mouseX && this.guiLeft + 72 + 10 > mouseX && this.guiTop + 70 < mouseY && this.guiTop + 70 + 10 >= mouseY) {
 			this.selection = new boolean[15 * 15];
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 0.5F));
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 0.5F));
 			return;
 		}
 		
 		//select all control rods
-		if(guiLeft + 61 <= mouseX && guiLeft + 61 + 10 > mouseX && guiTop + 70 < mouseY && guiTop + 70 + 10 >= mouseY) {
+		if(this.guiLeft + 61 <= mouseX && this.guiLeft + 61 + 10 > mouseX && this.guiTop + 70 < mouseY && this.guiTop + 70 + 10 >= mouseY) {
 			this.selection = new boolean[15 * 15];
 
-			for(int j = 0; j < console.columns.length; j++) {
+			for(int j = 0; j < this.console.columns.length; j++) {
 				
-				if(console.columns[j] != null && console.columns[j].type == ColumnType.CONTROL) {
+				if(this.console.columns[j] != null && this.console.columns[j].type == ColumnType.CONTROL) {
 					this.selection[j] = true;
 				}
 			}
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.5F));
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.5F));
 			return;
 		}
 		
 		//select color groups
 		for(int k = 0; k < 5; k++) {
 			
-			if(guiLeft + 6 + k * 11 <= mouseX && guiLeft + 6 + k * 11 + 10 > mouseX && guiTop + 70 < mouseY && guiTop + 70 + 10 >= mouseY) {
+			if(this.guiLeft + 6 + k * 11 <= mouseX && this.guiLeft + 6 + k * 11 + 10 > mouseX && this.guiTop + 70 < mouseY && this.guiTop + 70 + 10 >= mouseY) {
 				this.selection = new boolean[15 * 15];
 
-				for(int j = 0; j < console.columns.length; j++) {
+				for(int j = 0; j < this.console.columns.length; j++) {
 					
-					if(console.columns[j] != null && console.columns[j].type == ColumnType.CONTROL && console.columns[j].data.getShort("color") == k) {
+					if(this.console.columns[j] != null && this.console.columns[j].type == ColumnType.CONTROL && this.console.columns[j].data.getShort("color") == k) {
 						this.selection[j] = true;
 					}
 				}
 				
-				mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 0.8F + k * 0.1F));
+				this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 0.8F + k * 0.1F));
 				return;
 			}
 		}
 
 		//AZ-5
-		if(guiLeft + 30 <= mouseX && guiLeft + 30 + 28 > mouseX && guiTop + 138 < mouseY && guiTop + 138 + 28 >= mouseY) {
+		if(this.guiLeft + 30 <= mouseX && this.guiLeft + 30 + 28 > mouseX && this.guiTop + 138 < mouseY && this.guiTop + 138 + 28 >= mouseY) {
 			
-			if(az5Lid) {
-				az5Lid = false;
-				mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("hbm:block.rbmk_az5_cover"), 0.5F));
-			} else if(lastPress + 3000 < System.currentTimeMillis()) {
-				mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("hbm:block.shutdown"), 1));
-				lastPress = System.currentTimeMillis();
+			if(this.az5Lid) {
+				this.az5Lid = false;
+				this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("hbm:block.rbmk_az5_cover"), 0.5F));
+			} else if(this.lastPress + 3000 < System.currentTimeMillis()) {
+				this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("hbm:block.shutdown"), 1));
+				this.lastPress = System.currentTimeMillis();
 				
 				NBTTagCompound control = new NBTTagCompound();
 				control.setDouble("level", 0);
 
-				for(int j = 0; j < console.columns.length; j++) {
-					if(console.columns[j] != null && console.columns[j].type == ColumnType.CONTROL)
+				for(int j = 0; j < this.console.columns.length; j++) {
+					if(this.console.columns[j] != null && this.console.columns[j].type == ColumnType.CONTROL)
 						control.setInteger("sel_" + j, j);
 				}
 				
-				PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(control, console.xCoord, console.yCoord, console.zCoord));
-				mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1F));
+				PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(control, this.console.xCoord, this.console.yCoord, this.console.zCoord));
+				this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1F));
 			}
 			return;
 		}
 
 		//save control rod setting
-		if(guiLeft + 48 <= mouseX && guiLeft + 48 + 12 > mouseX && guiTop + 82 < mouseY && guiTop + 82 + 12 >= mouseY) {
+		if(this.guiLeft + 48 <= mouseX && this.guiLeft + 48 + 12 > mouseX && this.guiTop + 82 < mouseY && this.guiTop + 82 + 12 >= mouseY) {
 			
 			double level;
 			
-			if(NumberUtils.isNumber(field.getText())) {
-				int j = (int)MathHelper.clamp_double(Double.parseDouble(field.getText()), 0, 100);
-				field.setText(j + "");
+			if(NumberUtils.isNumber(this.field.getText())) {
+				int j = (int)MathHelper.clamp_double(Double.parseDouble(this.field.getText()), 0, 100);
+				this.field.setText(j + "");
 				level = j * 0.01D;
 			} else {
 				return;
@@ -216,13 +217,13 @@ public class GUIRBMKConsole extends GuiScreen {
 			NBTTagCompound control = new NBTTagCompound();
 			control.setDouble("level", level);
 
-			for(int j = 0; j < selection.length; j++) {
-				if(selection[j])
+			for(int j = 0; j < this.selection.length; j++) {
+				if(this.selection[j])
 					control.setInteger("sel_" + j, j);
 			}
 			
-			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(control, console.xCoord, console.yCoord, console.zCoord));
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1F));
+			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(control, this.console.xCoord, this.console.yCoord, this.console.zCoord));
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1F));
 		}
 		
 		//submit selection for status screen
@@ -232,27 +233,27 @@ public class GUIRBMKConsole extends GuiScreen {
 				
 				int id = j * 2 + k;
 				
-				if(guiLeft + 6 + 40 * k <= mouseX && guiLeft + 6 + 40 * k + 18 > mouseX && guiTop + 8 + 21 * j < mouseY && guiTop + 8 + 21 * j + 18 >= mouseY) {
+				if(this.guiLeft + 6 + 40 * k <= mouseX && this.guiLeft + 6 + 40 * k + 18 > mouseX && this.guiTop + 8 + 21 * j < mouseY && this.guiTop + 8 + 21 * j + 18 >= mouseY) {
 					NBTTagCompound control = new NBTTagCompound();
 					control.setByte("toggle", (byte) id);
-					PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(control, console.xCoord, console.yCoord, console.zCoord));
-					mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 0.5F));
+					PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(control, this.console.xCoord, this.console.yCoord, this.console.zCoord));
+					this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 0.5F));
 					return;
 				}
 				
-				if(guiLeft + 24 + 40 * k <= mouseX && guiLeft + 24 + 40 * k + 18 > mouseX && guiTop + 8 + 21 * j < mouseY && guiTop + 8 + 21 * j + 18 >= mouseY) {
+				if(this.guiLeft + 24 + 40 * k <= mouseX && this.guiLeft + 24 + 40 * k + 18 > mouseX && this.guiTop + 8 + 21 * j < mouseY && this.guiTop + 8 + 21 * j + 18 >= mouseY) {
 
 					NBTTagCompound control = new NBTTagCompound();
 					control.setByte("id", (byte) id);
 
-					for(int s = 0; s < selection.length; s++) {
-						if(selection[s]) {
+					for(int s = 0; s < this.selection.length; s++) {
+						if(this.selection[s]) {
 							control.setBoolean("s" + s, true);
 						}
 					}
 
-					PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(control, console.xCoord, console.yCoord, console.zCoord));
-					mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 0.75F));
+					PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(control, this.console.xCoord, this.console.yCoord, this.console.zCoord));
+					this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 0.75F));
 					return;
 				}
 			}
@@ -262,17 +263,17 @@ public class GUIRBMKConsole extends GuiScreen {
 	@SuppressWarnings("incomplete-switch") //shut up
 	protected void drawGuiContainerBackgroundLayer(float interp, int mX, int mY) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIRBMKConsole.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		if(az5Lid) {
-			drawTexturedModalRect(guiLeft + 30, guiTop + 138, 228, 172, 28, 28);
+		if(this.az5Lid) {
+			drawTexturedModalRect(this.guiLeft + 30, this.guiTop + 138, 228, 172, 28, 28);
 		}
 		
 		for(int j = 0; j < 3; j++) {
 			for(int k = 0; k < 2; k++) {
 				int id = j * 2 + k;
-				drawTexturedModalRect(guiLeft + 6 + 40 * k, guiTop + 8 + 21 * j, this.console.screens[id].type.offset, 238, 18, 18);
+				drawTexturedModalRect(this.guiLeft + 6 + 40 * k, this.guiTop + 8 + 21 * j, this.console.screens[id].type.offset, 238, 18, 18);
 			}
 		}
 		
@@ -280,9 +281,9 @@ public class GUIRBMKConsole extends GuiScreen {
 		int bY = 11;
 		int size = 10;
 		
-		for(int i = 0; i < console.columns.length; i++) {
+		for(int i = 0; i < this.console.columns.length; i++) {
 			
-			RBMKColumn col = console.columns[i];
+			RBMKColumn col = this.console.columns[i];
 			
 			if(col == null)
 				continue;
@@ -293,10 +294,10 @@ public class GUIRBMKConsole extends GuiScreen {
 			int tX = col.type.offset;
 			int tY = 172;
 			
-			drawTexturedModalRect(guiLeft + x, guiTop + y, tX, tY, size, size);
+			drawTexturedModalRect(this.guiLeft + x, this.guiTop + y, tX, tY, size, size);
 			
 			int h = Math.min((int)Math.ceil((col.data.getDouble("heat") - 20) * 10 / col.data.getDouble("maxHeat")), 10);
-			drawTexturedModalRect(guiLeft + x, guiTop + y + size - h, 0, 192 - h, 10, h);
+			drawTexturedModalRect(this.guiLeft + x, this.guiTop + y + size - h, 0, 192 - h, 10, h);
 			
 			switch(col.type) {
 			case ABSORBER: break;
@@ -309,11 +310,11 @@ public class GUIRBMKConsole extends GuiScreen {
 			case CONTROL:
 				int color = col.data.getShort("color");
 				if(color > -1)
-					drawTexturedModalRect(guiLeft + x, guiTop + y, color * size, 202, 10, 10);
+					drawTexturedModalRect(this.guiLeft + x, this.guiTop + y, color * size, 202, 10, 10);
 				
 			case CONTROL_AUTO:
 				int fr = 8 - (int)Math.ceil((col.data.getDouble("level") * 8));
-				drawTexturedModalRect(guiLeft + x + 4, guiTop + y + 1, 24, 183, 2, fr);
+				drawTexturedModalRect(this.guiLeft + x + 4, this.guiTop + y + 1, 24, 183, 2, fr);
 				break;
 
 			case FUEL:
@@ -321,41 +322,41 @@ public class GUIRBMKConsole extends GuiScreen {
 				if(col.data.hasKey("c_heat")) {
 					int fh = (int)Math.ceil((col.data.getDouble("c_heat") - 20) * 8 / col.data.getDouble("c_maxHeat"));
 					if(fh > 8) fh = 8;
-					drawTexturedModalRect(guiLeft + x + 1, guiTop + y + size - fh - 1, 11, 191 - fh, 2, fh);
+					drawTexturedModalRect(this.guiLeft + x + 1, this.guiTop + y + size - fh - 1, 11, 191 - fh, 2, fh);
 					
 					int fe = (int)Math.ceil((col.data.getDouble("enrichment")) * 8);
 					if(fe > 8) fe = 8;
-					drawTexturedModalRect(guiLeft + x + 4, guiTop + y + size - fe - 1, 14, 191 - fe, 2, fe);
+					drawTexturedModalRect(this.guiLeft + x + 4, this.guiTop + y + size - fe - 1, 14, 191 - fe, 2, fe);
 				}
 				break;
 				
 			case BOILER:
 				int fw = (int)Math.ceil((col.data.getInteger("water")) * 8 / col.data.getDouble("maxWater"));
-				drawTexturedModalRect(guiLeft + x + 1, guiTop + y + size - fw - 1, 41, 191 - fw, 3, fw);
+				drawTexturedModalRect(this.guiLeft + x + 1, this.guiTop + y + size - fw - 1, 41, 191 - fw, 3, fw);
 				int fs = (int)Math.ceil((col.data.getInteger("steam")) * 8 / col.data.getDouble("maxSteam"));
-				drawTexturedModalRect(guiLeft + x + 6, guiTop + y + size - fs - 1, 46, 191 - fs, 3, fs);
+				drawTexturedModalRect(this.guiLeft + x + 6, this.guiTop + y + size - fs - 1, 46, 191 - fs, 3, fs);
 
 				if(col.data.getShort("type") == Fluids.STEAM.ordinal())
-					drawTexturedModalRect(guiLeft + x + 4, guiTop + y + 1, 44, 183, 2, 2);
+					drawTexturedModalRect(this.guiLeft + x + 4, this.guiTop + y + 1, 44, 183, 2, 2);
 				if(col.data.getShort("type") == Fluids.HOTSTEAM.ordinal())
-					drawTexturedModalRect(guiLeft + x + 4, guiTop + y + 3, 44, 185, 2, 2);
+					drawTexturedModalRect(this.guiLeft + x + 4, this.guiTop + y + 3, 44, 185, 2, 2);
 				if(col.data.getShort("type") == Fluids.SUPERHOTSTEAM.ordinal())
-					drawTexturedModalRect(guiLeft + x + 4, guiTop + y + 5, 44, 187, 2, 2);
+					drawTexturedModalRect(this.guiLeft + x + 4, this.guiTop + y + 5, 44, 187, 2, 2);
 				if(col.data.getShort("type") == Fluids.ULTRAHOTSTEAM.ordinal())
-					drawTexturedModalRect(guiLeft + x + 4, guiTop + y + 7, 44, 189, 2, 2);
+					drawTexturedModalRect(this.guiLeft + x + 4, this.guiTop + y + 7, 44, 189, 2, 2);
 				
 				break;
 				
 			case HEATEX:
 				int cc = (int)Math.ceil((col.data.getInteger("water")) * 8 / col.data.getDouble("maxWater"));
-				drawTexturedModalRect(guiLeft + x + 1, guiTop + y + size - cc - 1, 131, 191 - cc, 3, cc);
+				drawTexturedModalRect(this.guiLeft + x + 1, this.guiTop + y + size - cc - 1, 131, 191 - cc, 3, cc);
 				int hc = (int)Math.ceil((col.data.getInteger("steam")) * 8 / col.data.getDouble("maxSteam"));
-				drawTexturedModalRect(guiLeft + x + 6, guiTop + y + size - hc - 1, 136, 191 - hc, 3, hc);
+				drawTexturedModalRect(this.guiLeft + x + 6, this.guiTop + y + size - hc - 1, 136, 191 - hc, 3, hc);
 				break;
 			}
 			
 			if(this.selection[i])
-				drawTexturedModalRect(guiLeft + x, guiTop + y, 0, 192, 10, 10);
+				drawTexturedModalRect(this.guiLeft + x, this.guiTop + y, 0, 192, 10, 10);
 		}
 		
 		this.field.drawTextBox();

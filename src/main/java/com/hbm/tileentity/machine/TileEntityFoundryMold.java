@@ -21,7 +21,7 @@ public class TileEntityFoundryMold extends TileEntityFoundryCastingBase implemen
 
 	@Override
 	public double getLevel() {
-		return 0.125 + this.amount * 0.25D / this.getCapacity();
+		return 0.125 + this.amount * 0.25D / getCapacity();
 	}
 
 	@Override

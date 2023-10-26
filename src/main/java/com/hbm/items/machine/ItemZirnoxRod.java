@@ -17,11 +17,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 
+@SuppressWarnings("all")
 public class ItemZirnoxRod extends ItemEnumMulti {
 
 	public ItemZirnoxRod() {
 		super(EnumZirnoxType.class, true, true);
-		this.setMaxStackSize(1);
+		setMaxStackSize(1);
 		this.canRepair = false;
 	}
 	
@@ -53,21 +54,23 @@ public class ItemZirnoxRod extends ItemEnumMulti {
 		return stack.stackTagCompound.getInteger("life");
 	}
 
+	@Override
 	public boolean showDurabilityBar(ItemStack stack) {
 		return getDurabilityForDisplay(stack) > 0D;
 	}
 
+	@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
-		EnumZirnoxType num = EnumUtil.grabEnumSafely(theEnum, stack.getItemDamage());
-		return (double) getLifeTime(stack) / (double) num.maxLife;
+		EnumZirnoxType num = EnumUtil.grabEnumSafely(this.theEnum, stack.getItemDamage());
+		return (double) ItemZirnoxRod.getLifeTime(stack) / (double) num.maxLife;
 	}
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		
 		
-		EnumZirnoxType num = EnumUtil.grabEnumSafely(theEnum, stack.getItemDamage());
-		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("trait.rbmk.depletion", ((int)((((double)getLifeTime(stack)) / (double)num.maxLife) * 100000)) / 1000D + "%"));
+		EnumZirnoxType num = EnumUtil.grabEnumSafely(this.theEnum, stack.getItemDamage());
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("trait.rbmk.depletion", ((int)((((double)ItemZirnoxRod.getLifeTime(stack)) / (double)num.maxLife) * 100000)) / 1000D + "%"));
 		String[] loc = I18nUtil.resolveKeyArray("desc.item.zirnox" + (num.breeding ? "BreedingRod" : "Rod"), BobMathUtil.getShortNumber(num.maxLife));
 
 		if(num.breeding)
@@ -83,18 +86,18 @@ public class ItemZirnoxRod extends ItemEnumMulti {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister reg) {
-		Enum[] enums = theEnum.getEnumConstants();
+		Enum<?>[] enums = this.theEnum.getEnumConstants();
 		this.icons = new IIcon[enums.length];
 		
-		for(int i = 0; i < icons.length; i++) {
-			Enum num = enums[i];
-			this.icons[i] = reg.registerIcon(this.getIconString() + "_" + num.name().toLowerCase(Locale.US));
+		for(int i = 0; i < this.icons.length; i++) {
+			Enum<?> num = enums[i];
+			this.icons[i] = reg.registerIcon(getIconString() + "_" + num.name().toLowerCase(Locale.US));
 		}
 	}
 
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
-		Enum num = EnumUtil.grabEnumSafely(theEnum, stack.getItemDamage());
+		Enum<?> num = EnumUtil.grabEnumSafely(this.theEnum, stack.getItemDamage());
 		return super.getUnlocalizedName() + "_" + num.name().toLowerCase(Locale.US);
 	}
 

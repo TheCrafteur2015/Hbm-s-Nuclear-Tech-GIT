@@ -15,21 +15,22 @@ public class ModelUziBarrel extends ModelBase {
 	ModelRenderer Barrel;
 
 	public ModelUziBarrel() {
-		textureWidth = 32;
-		textureHeight = 32;
+		this.textureWidth = 32;
+		this.textureHeight = 32;
 
-		Barrel = new ModelRenderer(this, 0, 0);
-		Barrel.addBox(0F, 0F, 0F, 12, 2, 2);
-		Barrel.setRotationPoint(-40F, 2F, 1F);
-		Barrel.setTextureSize(32, 32);
-		Barrel.mirror = true;
-		setRotation(Barrel, 0F, 0F, 0F);
+		this.Barrel = new ModelRenderer(this, 0, 0);
+		this.Barrel.addBox(0F, 0F, 0F, 12, 2, 2);
+		this.Barrel.setRotationPoint(-40F, 2F, 1F);
+		this.Barrel.setTextureSize(32, 32);
+		this.Barrel.mirror = true;
+		setRotation(this.Barrel, 0F, 0F, 0F);
 	}
 
+	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-		Barrel.render(f5);
+		this.Barrel.render(f5);
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -38,6 +39,7 @@ public class ModelUziBarrel extends ModelBase {
 		model.rotateAngleZ = z;
 	}
 
+	@Override
 	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
 		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 	}

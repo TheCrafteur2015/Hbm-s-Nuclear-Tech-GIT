@@ -11,7 +11,7 @@ public class TileEntityLoadedBase extends TileEntity implements ILoadedTile {
 	
 	@Override
 	public boolean isLoaded() {
-		return isLoaded;
+		return this.isLoaded;
 	}
 
 	@Override

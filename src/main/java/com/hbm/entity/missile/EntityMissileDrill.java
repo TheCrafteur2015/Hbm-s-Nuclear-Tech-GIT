@@ -25,18 +25,18 @@ public class EntityMissileDrill extends EntityMissileBaseAdvanced {
 	public void onImpact() {
 		for(int i = 0; i < 30; i++)
 		{
-			ExplosionNT explosion = new ExplosionNT(worldObj, this, this.posX, this.posY - i, this.posZ, 10F);
+			ExplosionNT explosion = new ExplosionNT(this.worldObj, this, this.posX, this.posY - i, this.posZ, 10F);
 			explosion.addAllAttrib(ExAttrib.ERRODE);
 			explosion.explode(); //an explosion exploded!
 		}
-		ExplosionLarge.spawnParticles(worldObj, this.posX, this.posY, this.posZ, 25);
-		ExplosionLarge.spawnShrapnels(worldObj, this.posX, this.posY, this.posZ, 12);
-		ExplosionLarge.jolt(worldObj, this.posX, this.posY, this.posZ, 10, 50, 1);
+		ExplosionLarge.spawnParticles(this.worldObj, this.posX, this.posY, this.posZ, 25);
+		ExplosionLarge.spawnShrapnels(this.worldObj, this.posX, this.posY, this.posZ, 12);
+		ExplosionLarge.jolt(this.worldObj, this.posX, this.posY, this.posZ, 10, 50, 1);
 	}
 
 	@Override
 	public List<ItemStack> getDebris() {
-		List<ItemStack> list = new ArrayList<ItemStack>();
+		List<ItemStack> list = new ArrayList<>();
 
 		list.add(new ItemStack(ModItems.plate_steel, 16));
 		list.add(new ItemStack(ModItems.plate_titanium, 10));

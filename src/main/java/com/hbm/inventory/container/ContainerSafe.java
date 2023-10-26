@@ -14,22 +14,22 @@ public class ContainerSafe extends Container {
 	private TileEntitySafe diFurnace;
 
 	public ContainerSafe(InventoryPlayer invPlayer, TileEntitySafe tedf) {
-		diFurnace = tedf;
+		this.diFurnace = tedf;
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 5; j++) {
-				this.addSlotToContainer(new Slot(tedf, j + i * 5, 8 + j * 18 + 18 * 2, 18 + i * 18));
+				addSlotToContainer(new Slot(tedf, j + i * 5, 8 + j * 18 + 18 * 2, 18 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 2));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 2));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 2));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 2));
 		}
 	}
 
@@ -42,11 +42,11 @@ public class ContainerSafe extends Container {
 			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 
-			if(par2 <= diFurnace.getSizeInventory() - 1) {
-				if(!this.mergeItemStack(var5, diFurnace.getSizeInventory(), this.inventorySlots.size(), true)) {
+			if(par2 <= this.diFurnace.getSizeInventory() - 1) {
+				if(!mergeItemStack(var5, this.diFurnace.getSizeInventory(), this.inventorySlots.size(), true)) {
 					return null;
 				}
-			} else if(!this.mergeItemStack(var5, 0, diFurnace.getSizeInventory(), false)) {
+			} else if(!mergeItemStack(var5, 0, this.diFurnace.getSizeInventory(), false)) {
 				return null;
 			}
 
@@ -62,6 +62,6 @@ public class ContainerSafe extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return diFurnace.isUseableByPlayer(player);
+		return this.diFurnace.isUseableByPlayer(player);
 	}
 }

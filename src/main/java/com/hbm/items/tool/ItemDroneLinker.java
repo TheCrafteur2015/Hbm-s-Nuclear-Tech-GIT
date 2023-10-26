@@ -1,6 +1,7 @@
 package com.hbm.items.tool;
 
 import com.hbm.main.MainRegistry;
+import com.hbm.main.ServerProxy;
 import com.hbm.tileentity.network.IDroneLinkable;
 import com.hbm.util.ChatBuilder;
 import com.hbm.util.fauxpointtwelve.BlockPos;
@@ -79,7 +80,7 @@ public class ItemDroneLinker extends Item {
 				int x = stack.stackTagCompound.getInteger("x");
 				int y = stack.stackTagCompound.getInteger("y");
 				int z = stack.stackTagCompound.getInteger("z");
-				MainRegistry.proxy.displayTooltip("Prev pos: " + x + " / " + y + " / " + z, MainRegistry.proxy.ID_DRONE);
+				MainRegistry.proxy.displayTooltip("Prev pos: " + x + " / " + y + " / " + z, ServerProxy.ID_DRONE);
 			}
 		}
 	}

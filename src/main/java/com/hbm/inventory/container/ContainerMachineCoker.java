@@ -16,19 +16,19 @@ public class ContainerMachineCoker extends Container {
 	
 	public ContainerMachineCoker(InventoryPlayer invPlayer, TileEntityMachineCoker tedf) {
 		
-		coker = tedf;
+		this.coker = tedf;
 		
-		this.addSlotToContainer(new Slot(tedf, 0, 35, 72));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 1, 97, 27));
+		addSlotToContainer(new Slot(tedf, 0, 35, 72));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 1, 97, 27));
 		
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 122 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 122 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 180));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 180));
 		}
 	}
 	
@@ -42,13 +42,13 @@ public class ContainerMachineCoker extends Container {
 			var3 = var5.copy();
 
 			if(par2 <= 1) {
-				if(!this.mergeItemStack(var5, 2, this.inventorySlots.size(), true)) {
+				if(!mergeItemStack(var5, 2, this.inventorySlots.size(), true)) {
 					return null;
 				}
 			} else {
 				
 				if(var3.getItem() instanceof IItemFluidIdentifier) {
-					if(!this.mergeItemStack(var5, 0, 1, false)) {
+					if(!mergeItemStack(var5, 0, 1, false)) {
 						return null;
 					}
 				} else {
@@ -68,6 +68,6 @@ public class ContainerMachineCoker extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return coker.isUseableByPlayer(player);
+		return this.coker.isUseableByPlayer(player);
 	}
 }

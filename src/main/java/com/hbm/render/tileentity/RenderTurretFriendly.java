@@ -23,7 +23,7 @@ public class RenderTurretFriendly extends RenderTurretBase {
 		GL11.glEnable(GL11.GL_CULL_FACE);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		
-		this.renderConnectors(turret, true, false, Fluids.NONE);
+		renderConnectors(turret, true, false, Fluids.NONE);
 
 		bindTexture(ResourceManager.turret_base_friendly_tex);
 		ResourceManager.turret_chekhov.renderPart("Base");

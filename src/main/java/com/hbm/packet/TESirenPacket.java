@@ -4,6 +4,7 @@ import com.hbm.items.machine.ItemCassette.SoundType;
 import com.hbm.items.machine.ItemCassette.TrackType;
 import com.hbm.sound.SoundLoopSiren;
 import com.hbm.tileentity.machine.TileEntityMachineSiren;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -38,20 +39,20 @@ public class TESirenPacket implements IMessage {
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		x = buf.readInt();
-		y = buf.readInt();
-		z = buf.readInt();
-		id = buf.readInt();
-		active = buf.readBoolean();
+		this.x = buf.readInt();
+		this.y = buf.readInt();
+		this.z = buf.readInt();
+		this.id = buf.readInt();
+		this.active = buf.readBoolean();
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeInt(x);
-		buf.writeInt(y);
-		buf.writeInt(z);
-		buf.writeInt(id);
-		buf.writeBoolean(active);
+		buf.writeInt(this.x);
+		buf.writeInt(this.y);
+		buf.writeInt(this.z);
+		buf.writeInt(this.id);
+		buf.writeBoolean(this.active);
 	}
 
 	public static class Handler implements IMessageHandler<TESirenPacket, IMessage> {
@@ -64,9 +65,9 @@ public class TESirenPacket implements IMessage {
 			if (te != null && te instanceof TileEntityMachineSiren) {
 				
 				SoundLoopSiren sound = null;
-				for(int i = 0; i < SoundLoopSiren.list.size(); i++)  {
-					if(SoundLoopSiren.list.get(i).getTE() == te)
-						sound = SoundLoopSiren.list.get(i);
+				for (SoundLoopSiren element : SoundLoopSiren.list) {
+					if(element.getTE() == te)
+						sound = element;
 				}
 				
 				if(m.active) {

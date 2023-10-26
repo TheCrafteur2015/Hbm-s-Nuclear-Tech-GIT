@@ -23,7 +23,7 @@ public class BlockDecoContainer extends BlockDecoModel implements ITileEntityPro
 	
 	Class<? extends TileEntity> tile;
 	
-	public BlockDecoContainer(Material mat, Class<? extends Enum> theEnum, boolean multiName, boolean multiTexture, Class<? extends TileEntity> tile) {
+	public BlockDecoContainer(Material mat, Class<? extends Enum<?>> theEnum, boolean multiName, boolean multiTexture, Class<? extends TileEntity> tile) {
 		super(mat, theEnum, multiName, multiTexture);
 		this.tile = tile;
 	}
@@ -33,10 +33,11 @@ public class BlockDecoContainer extends BlockDecoModel implements ITileEntityPro
 		return -1;
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
 		try {
-			return tile.newInstance();
+			return this.tile.newInstance();
 		} catch (Exception e) {
 			MainRegistry.logger.error("BlockDecoContainer attempted to create a TE, but couldn't. How does that even happen?");
 			return null;

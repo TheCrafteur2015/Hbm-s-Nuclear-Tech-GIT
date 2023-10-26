@@ -29,57 +29,57 @@ public class ModelTestBombAdvanced extends ModelBase
   
   public ModelTestBombAdvanced()
   {
-    textureWidth = 128;
-    textureHeight = 128;
+    this.textureWidth = 128;
+    this.textureHeight = 128;
     
-      FinEnd = new ModelRenderer(this, 0, 0);
-      FinEnd.addBox(0F, 0F, 0F, 8, 8, 4);
-      FinEnd.setRotationPoint(-4F, 16F, 20F);
-      FinEnd.setTextureSize(128, 128);
-      FinEnd.mirror = true;
-      setRotation(FinEnd, 0F, 0F, 0F);
-      BombTip = new ModelRenderer(this, 55, 0);
-      BombTip.addBox(0F, 0F, 0F, 6, 6, 2);
-      BombTip.setRotationPoint(-3F, 17F, -24F);
-      BombTip.setTextureSize(128, 128);
-      BombTip.mirror = true;
-      setRotation(BombTip, 0F, 0F, 0F);
-      FinBase = new ModelRenderer(this, 74, 0);
-      FinBase.addBox(0F, 0F, 0F, 6, 6, 2);
-      FinBase.setRotationPoint(-3F, 17F, 14F);
-      FinBase.setTextureSize(128, 128);
-      FinBase.mirror = true;
-      setRotation(FinBase, 0F, 0F, 0F);
-      FinTop = new ModelRenderer(this, 0, 74);
-      FinTop.addBox(0F, 0F, -6F, 8, 0, 6);
-      FinTop.setRotationPoint(-4F, 16F, 20F);
-      FinTop.setTextureSize(128, 128);
-      FinTop.mirror = true;
-      setRotation(FinTop, 0.4363323F, 0F, 0F);
-      FinBottom = new ModelRenderer(this, 0, 74);
-      FinBottom.addBox(0F, 0F, -6F, 8, 0, 6);
-      FinBottom.setRotationPoint(-4F, 24F, 20F);
-      FinBottom.setTextureSize(128, 128);
-      FinBottom.mirror = true;
-      setRotation(FinBottom, -0.4363323F, 0F, 0F);
-      FinLeft = new ModelRenderer(this, 0, 51);
-      FinLeft.addBox(0F, 0F, -6F, 0, 8, 6);
-      FinLeft.setRotationPoint(4F, 16F, 20F);
-      FinLeft.setTextureSize(128, 128);
-      FinLeft.mirror = true;
-      setRotation(FinLeft, 0F, 0.4363323F, 0F);
-      FinRight = new ModelRenderer(this, 0, 51);
-      FinRight.addBox(0F, 0F, -6F, 0, 8, 6);
-      FinRight.setRotationPoint(-4F, 16F, 20F);
-      FinRight.setTextureSize(128, 128);
-      FinRight.mirror = true;
-      setRotation(FinRight, 0F, -0.4363323F, 0F);
-      BombBody = new ModelRenderer(this, 0, 0);
-      BombBody.addBox(0F, 0F, 0F, 8, 8, 36);
-      BombBody.setRotationPoint(-4F, 16F, -22F);
-      BombBody.setTextureSize(128, 128);
-      BombBody.mirror = true;
-      setRotation(BombBody, 0F, 0F, 0F);
+      this.FinEnd = new ModelRenderer(this, 0, 0);
+      this.FinEnd.addBox(0F, 0F, 0F, 8, 8, 4);
+      this.FinEnd.setRotationPoint(-4F, 16F, 20F);
+      this.FinEnd.setTextureSize(128, 128);
+      this.FinEnd.mirror = true;
+      setRotation(this.FinEnd, 0F, 0F, 0F);
+      this.BombTip = new ModelRenderer(this, 55, 0);
+      this.BombTip.addBox(0F, 0F, 0F, 6, 6, 2);
+      this.BombTip.setRotationPoint(-3F, 17F, -24F);
+      this.BombTip.setTextureSize(128, 128);
+      this.BombTip.mirror = true;
+      setRotation(this.BombTip, 0F, 0F, 0F);
+      this.FinBase = new ModelRenderer(this, 74, 0);
+      this.FinBase.addBox(0F, 0F, 0F, 6, 6, 2);
+      this.FinBase.setRotationPoint(-3F, 17F, 14F);
+      this.FinBase.setTextureSize(128, 128);
+      this.FinBase.mirror = true;
+      setRotation(this.FinBase, 0F, 0F, 0F);
+      this.FinTop = new ModelRenderer(this, 0, 74);
+      this.FinTop.addBox(0F, 0F, -6F, 8, 0, 6);
+      this.FinTop.setRotationPoint(-4F, 16F, 20F);
+      this.FinTop.setTextureSize(128, 128);
+      this.FinTop.mirror = true;
+      setRotation(this.FinTop, 0.4363323F, 0F, 0F);
+      this.FinBottom = new ModelRenderer(this, 0, 74);
+      this.FinBottom.addBox(0F, 0F, -6F, 8, 0, 6);
+      this.FinBottom.setRotationPoint(-4F, 24F, 20F);
+      this.FinBottom.setTextureSize(128, 128);
+      this.FinBottom.mirror = true;
+      setRotation(this.FinBottom, -0.4363323F, 0F, 0F);
+      this.FinLeft = new ModelRenderer(this, 0, 51);
+      this.FinLeft.addBox(0F, 0F, -6F, 0, 8, 6);
+      this.FinLeft.setRotationPoint(4F, 16F, 20F);
+      this.FinLeft.setTextureSize(128, 128);
+      this.FinLeft.mirror = true;
+      setRotation(this.FinLeft, 0F, 0.4363323F, 0F);
+      this.FinRight = new ModelRenderer(this, 0, 51);
+      this.FinRight.addBox(0F, 0F, -6F, 0, 8, 6);
+      this.FinRight.setRotationPoint(-4F, 16F, 20F);
+      this.FinRight.setTextureSize(128, 128);
+      this.FinRight.mirror = true;
+      setRotation(this.FinRight, 0F, -0.4363323F, 0F);
+      this.BombBody = new ModelRenderer(this, 0, 0);
+      this.BombBody.addBox(0F, 0F, 0F, 8, 8, 36);
+      this.BombBody.setRotationPoint(-4F, 16F, -22F);
+      this.BombBody.setTextureSize(128, 128);
+      this.BombBody.mirror = true;
+      setRotation(this.BombBody, 0F, 0F, 0F);
   }
   
   @Override
@@ -87,26 +87,26 @@ public void render(Entity entity, float f, float f1, float f2, float f3, float f
   {
     super.render(entity, f, f1, f2, f3, f4, f5);
     setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-    FinEnd.render(f5);
-    BombTip.render(f5);
-    FinBase.render(f5);
-    FinTop.render(f5);
-    FinBottom.render(f5);
-    FinLeft.render(f5);
-    FinRight.render(f5);
-    BombBody.render(f5);
+    this.FinEnd.render(f5);
+    this.BombTip.render(f5);
+    this.FinBase.render(f5);
+    this.FinTop.render(f5);
+    this.FinBottom.render(f5);
+    this.FinLeft.render(f5);
+    this.FinRight.render(f5);
+    this.BombBody.render(f5);
   }
   
   public void renderModel(float f)
   {
-    FinEnd.render(f);
-    BombTip.render(f);
-    FinBase.render(f);
-    FinTop.render(f);
-    FinBottom.render(f);
-    FinLeft.render(f);
-    FinRight.render(f);
-    BombBody.render(f);
+    this.FinEnd.render(f);
+    this.BombTip.render(f);
+    this.FinBase.render(f);
+    this.FinTop.render(f);
+    this.FinBottom.render(f);
+    this.FinLeft.render(f);
+    this.FinRight.render(f);
+    this.BombBody.render(f);
   }
   
   private void setRotation(ModelRenderer model, float x, float y, float z)

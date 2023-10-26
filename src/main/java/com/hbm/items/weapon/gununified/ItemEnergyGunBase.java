@@ -45,10 +45,11 @@ public class ItemEnergyGunBase extends ItemGunBase implements IBatteryItem {
 		super(config, alt);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-		list.add("Energy Stored: " + BobMathUtil.getShortNumber(getCharge(stack)) + "/" + BobMathUtil.getShortNumber(mainConfig.maxCharge) + "HE");
-		list.add("Charge rate: " + BobMathUtil.getShortNumber(mainConfig.chargeRate) + "HE/t");
+		list.add("Energy Stored: " + BobMathUtil.getShortNumber(getCharge(stack)) + "/" + BobMathUtil.getShortNumber(this.mainConfig.maxCharge) + "HE");
+		list.add("Charge rate: " + BobMathUtil.getShortNumber(this.mainConfig.chargeRate) + "HE/t");
 		
 		addAdditionalInformation(stack, list);
 	}
@@ -62,68 +63,71 @@ public class ItemEnergyGunBase extends ItemGunBase implements IBatteryItem {
 		
 		boolean clickLeft = Mouse.isButtonDown(0);
 		boolean clickRight = Mouse.isButtonDown(1);
-		boolean left = m1;
-		boolean right = m2;
+		boolean left = this.m1;
+		boolean right = this.m2;
 		
 		if(isCurrentItem) {
 			if(left && right) {
 				PacketDispatcher.wrapper.sendToServer(new GunButtonPacket(false, (byte) 0));
 				PacketDispatcher.wrapper.sendToServer(new GunButtonPacket(false, (byte) 1));
-				m1 = false;
-				m2 = false;
+				this.m1 = false;
+				this.m2 = false;
 			}
 			
 			if(left && !clickLeft) {
 				PacketDispatcher.wrapper.sendToServer(new GunButtonPacket(false, (byte) 0));
-				m1 = false;
+				this.m1 = false;
 				endActionClient(stack, world, entity, true);
 			}
 			
 			if(right && !clickRight) {
 				PacketDispatcher.wrapper.sendToServer(new GunButtonPacket(false, (byte) 1));
-				m2 = false;
+				this.m2 = false;
 				endActionClient(stack, world, entity, false);
 			}
 		}
 	}
 	
+	@Override
 	protected void updateServer(ItemStack stack, World world, EntityPlayer player, int slot, boolean isCurrentItem) {
 		
-		if(getDelay(stack) > 0 && isCurrentItem)
-			setDelay(stack, getDelay(stack) - 1);
+		if(ItemGunBase.getDelay(stack) > 0 && isCurrentItem)
+			ItemGunBase.setDelay(stack, ItemGunBase.getDelay(stack) - 1);
 		
-		if(getIsMouseDown(stack) && !(player.getHeldItem() == stack)) {
-			setIsMouseDown(stack, false);
+		if(ItemGunBase.getIsMouseDown(stack) && !(player.getHeldItem() == stack)) {
+			ItemGunBase.setIsMouseDown(stack, false);
 		}
 		
-		if(getIsAltDown(stack) && !isCurrentItem) {
-			setIsAltDown(stack, false);
+		if(ItemGunBase.getIsAltDown(stack) && !isCurrentItem) {
+			ItemGunBase.setIsAltDown(stack, false);
 		}
 			
-		if(GeneralConfig.enableGuns && mainConfig.firingMode == 1 && getIsMouseDown(stack) && tryShoot(stack, world, player, isCurrentItem)) {
+		if(GeneralConfig.enableGuns && this.mainConfig.firingMode == 1 && ItemGunBase.getIsMouseDown(stack) && tryShoot(stack, world, player, isCurrentItem)) {
 			
 			fire(stack, world, player);
-			setDelay(stack, getConfig(stack).firingRate);
+			ItemGunBase.setDelay(stack, getConfig(stack).firingRate);
 		}
 	}
 	
+	@Override
 	protected boolean tryShoot(ItemStack stack, World world, EntityPlayer player, boolean main) {
 	
 		
-		if(main && getDelay(stack) == 0) {
+		if(main && ItemGunBase.getDelay(stack) == 0) {
 			return getConfig(stack).dischargePerShot <= getCharge(stack);
 		}
 	
 		return false;
 	}
 	
+	@Override
 	protected void fire(ItemStack stack, World world, EntityPlayer player) {
 		
 		BulletConfiguration config = getConfig(stack);
 		
 		int bullets = config.bulletsMin;
 		
-		for(int k = 0; k < mainConfig.roundsPerCycle; k++) {
+		for(int k = 0; k < this.mainConfig.roundsPerCycle; k++) {
 			
 			if(config.bulletsMax > config.bulletsMin)
 				bullets += world.rand.nextInt(config.bulletsMax - config.bulletsMin);
@@ -135,9 +139,10 @@ public class ItemEnergyGunBase extends ItemGunBase implements IBatteryItem {
 			setCharge(stack, getCharge(stack) - config.dischargePerShot);;
 		}
 		
-		world.playSoundAtEntity(player, mainConfig.firingSound, 1.0F, mainConfig.firingPitch);
+		world.playSoundAtEntity(player, this.mainConfig.firingSound, 1.0F, this.mainConfig.firingPitch);
 	}
 	
+	@Override
 	protected void spawnProjectile(World world, EntityPlayer player, ItemStack stack, int config) {
 		
 		EntityBulletBaseNT bullet = new EntityBulletBaseNT(world, config, player);
@@ -148,11 +153,12 @@ public class ItemEnergyGunBase extends ItemGunBase implements IBatteryItem {
 			
 	}
 	
+	@Override
 	public void startAction(ItemStack stack, World world, EntityPlayer player, boolean main) {
 		
-		if(mainConfig.firingMode == mainConfig.FIRE_MANUAL && main && tryShoot(stack, world, player, main)) {
+		if(this.mainConfig.firingMode == GunConfiguration.FIRE_MANUAL && main && tryShoot(stack, world, player, main)) {
 			fire(stack, world, player);
-			setDelay(stack, mainConfig.rateOfFire);
+			ItemGunBase.setDelay(stack, this.mainConfig.rateOfFire);
 			
 		}
 		
@@ -164,14 +170,14 @@ public class ItemEnergyGunBase extends ItemGunBase implements IBatteryItem {
 				stack.stackTagCompound = new NBTTagCompound();
 			
 			mode++;
-			if(mode >= mainConfig.config.size()) {
+			if(mode >= this.mainConfig.config.size()) {
 				mode = 0;
 			}
 			
 			stack.getTagCompound().setByte("mode", mode);
 			
 			if(!world.isRemote) {
-				BulletConfiguration config = BulletConfigSyncingUtil.pullConfig(mainConfig.config.get(mode));
+				BulletConfiguration config = BulletConfigSyncingUtil.pullConfig(this.mainConfig.config.get(mode));
 				//PacketDispatcher.wrapper.sendTo(new PlayerInformPacket("" + config.chatColour + config.modeName, MainRegistry.proxy.ID_GUN_MODE), (EntityPlayerMP)player);
 				
 				player.addChatMessage(ChatBuilder.start("")
@@ -184,10 +190,12 @@ public class ItemEnergyGunBase extends ItemGunBase implements IBatteryItem {
 	
 	// yummy boilerplate
 	
+	@Override
 	public boolean showDurabilityBar(ItemStack stack) {
 		return true;
 	}
 
+	@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
 		return 1D - (double) getCharge(stack) / (double) getMaxCharge();
 	}
@@ -245,12 +253,12 @@ public class ItemEnergyGunBase extends ItemGunBase implements IBatteryItem {
 
 	@Override
 	public long getMaxCharge() {
-		return mainConfig.maxCharge;
+		return this.mainConfig.maxCharge;
 	}
 
 	@Override
 	public long getChargeRate() {
-		return mainConfig.chargeRate;
+		return this.mainConfig.chargeRate;
 	}
 
 	@Override
@@ -265,9 +273,10 @@ public class ItemEnergyGunBase extends ItemGunBase implements IBatteryItem {
 		if(stack.hasTagCompound())
 			mode = stack.getTagCompound().getByte("mode");
 		
-		return BulletConfigSyncingUtil.pullConfig(mainConfig.config.get(mode));
+		return BulletConfigSyncingUtil.pullConfig(this.mainConfig.config.get(mode));
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tab, List list) {
@@ -287,7 +296,7 @@ public class ItemEnergyGunBase extends ItemGunBase implements IBatteryItem {
 
 			event.setCanceled(true);
 			
-			if(!(mainConfig.hasSights && player.isSneaking()))
+			if(!(this.mainConfig.hasSights && player.isSneaking()))
 				RenderScreenOverlay.renderCustomCrosshairs(event.resolution, Minecraft.getMinecraft().ingameGUI, ((IHoldableWeapon)player.getHeldItem().getItem()).getCrosshair());
 			else
 				RenderScreenOverlay.renderCustomCrosshairs(event.resolution, Minecraft.getMinecraft().ingameGUI, Crosshair.NONE);

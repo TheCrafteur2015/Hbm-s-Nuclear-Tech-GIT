@@ -1,15 +1,16 @@
 package com.hbm.saveddata.satellites;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import com.hbm.items.ModItems;
 import com.hbm.saveddata.SatelliteSavedData;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public abstract class Satellite {
 	
@@ -39,15 +40,15 @@ public abstract class Satellite {
 	public Interfaces satIface = Interfaces.NONE;
 	
 	public static void register() {
-		registerSatellite(SatelliteMapper.class, ModItems.sat_mapper);
-		registerSatellite(SatelliteScanner.class, ModItems.sat_scanner);
-		registerSatellite(SatelliteRadar.class, ModItems.sat_radar);
-		registerSatellite(SatelliteLaser.class, ModItems.sat_laser);
-		registerSatellite(SatelliteResonator.class, ModItems.sat_resonator);
-		registerSatellite(SatelliteRelay.class, ModItems.sat_foeq);
-		registerSatellite(SatelliteMiner.class, ModItems.sat_miner);
-		registerSatellite(SatelliteLunarMiner.class, ModItems.sat_lunar_miner);
-		registerSatellite(SatelliteHorizons.class, ModItems.sat_gerald);
+		Satellite.registerSatellite(SatelliteMapper.class, ModItems.sat_mapper);
+		Satellite.registerSatellite(SatelliteScanner.class, ModItems.sat_scanner);
+		Satellite.registerSatellite(SatelliteRadar.class, ModItems.sat_radar);
+		Satellite.registerSatellite(SatelliteLaser.class, ModItems.sat_laser);
+		Satellite.registerSatellite(SatelliteResonator.class, ModItems.sat_resonator);
+		Satellite.registerSatellite(SatelliteRelay.class, ModItems.sat_foeq);
+		Satellite.registerSatellite(SatelliteMiner.class, ModItems.sat_miner);
+		Satellite.registerSatellite(SatelliteLunarMiner.class, ModItems.sat_lunar_miner);
+		Satellite.registerSatellite(SatelliteHorizons.class, ModItems.sat_gerald);
 	}
 
 	/**
@@ -56,9 +57,9 @@ public abstract class Satellite {
 	 * @param item - Satellite item (which will be placed in a rocket)
 	 */
 	public static void registerSatellite(Class<? extends Satellite> sat, Item item) {
-		if(!itemToClass.containsKey(item) && !itemToClass.containsValue(sat)) {
-			satellites.add(sat);
-			itemToClass.put(item, sat);
+		if(!Satellite.itemToClass.containsKey(item) && !Satellite.itemToClass.containsValue(sat)) {
+			Satellite.satellites.add(sat);
+			Satellite.itemToClass.put(item, sat);
 		}
 	}
 	
@@ -67,7 +68,7 @@ public abstract class Satellite {
 			return;
 		}
 
-		Satellite sat = create(id);
+		Satellite sat = Satellite.create(id);
 		
 		if(sat != null) {
 			SatelliteSavedData data = SatelliteSavedData.getData(world);
@@ -81,7 +82,7 @@ public abstract class Satellite {
 		Satellite sat = null;
 		
 		try {
-			Class<? extends Satellite> c = satellites.get(id);
+			Class<? extends Satellite> c = Satellite.satellites.get(id);
 			sat = c.newInstance();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -91,13 +92,13 @@ public abstract class Satellite {
 	}
 	
 	public static int getIDFromItem(Item item) {
-		Class<? extends Satellite> sat = itemToClass.get(item);
+		Class<? extends Satellite> sat = Satellite.itemToClass.get(item);
 
-		return satellites.indexOf(sat);
+		return Satellite.satellites.indexOf(sat);
 	}
 	
 	public int getID() {
-		return satellites.indexOf(this.getClass());
+		return Satellite.satellites.indexOf(this.getClass());
 	}
 	
 	public void writeToNBT(NBTTagCompound nbt) { }

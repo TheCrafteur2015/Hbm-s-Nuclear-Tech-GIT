@@ -15,7 +15,8 @@ public class RenderQuackos extends RenderChicken {
 		super(p_i1252_1_, p_i1252_2_);
 	}
 	
-    protected ResourceLocation getEntityTexture(EntityChicken p_110775_1_) {
-        return ducc;
+    @Override
+	protected ResourceLocation getEntityTexture(EntityChicken p_110775_1_) {
+        return RenderQuackos.ducc;
     }
 }

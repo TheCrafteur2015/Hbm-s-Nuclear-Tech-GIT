@@ -30,25 +30,25 @@ public class TileEntityWasteDrum extends TileEntity implements ISidedInventory, 
 	private String customName;
 	
 	public TileEntityWasteDrum() {
-		slots = new ItemStack[12];
+		this.slots = new ItemStack[12];
 	}
 
 	@Override
 	public int getSizeInventory() {
-		return slots.length;
+		return this.slots.length;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		return slots[i];
+		return this.slots[i];
 	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			ItemStack itemStack = slots[i];
-			slots[i] = null;
+			ItemStack itemStack = this.slots[i];
+			this.slots[i] = null;
 			return itemStack;
 		} else {
 		return null;
@@ -57,7 +57,7 @@ public class TileEntityWasteDrum extends TileEntity implements ISidedInventory, 
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemStack) {
-		slots[i] = itemStack;
+		this.slots[i] = itemStack;
 		if(itemStack != null && itemStack.stackSize > getInventoryStackLimit())
 		{
 			itemStack.stackSize = getInventoryStackLimit();
@@ -66,7 +66,7 @@ public class TileEntityWasteDrum extends TileEntity implements ISidedInventory, 
 
 	@Override
 	public String getInventoryName() {
-		return this.hasCustomInventoryName() ? this.customName : "container.wasteDrum";
+		return hasCustomInventoryName() ? this.customName : "container.wasteDrum";
 	}
 
 	@Override
@@ -85,11 +85,11 @@ public class TileEntityWasteDrum extends TileEntity implements ISidedInventory, 
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		if(worldObj.getTileEntity(xCoord, yCoord, zCoord) != this)
+		if(this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this)
 		{
 			return false;
 		}else{
-			return player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <=64;
+			return player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <=64;
 		}
 	}
 	
@@ -106,18 +106,18 @@ public class TileEntityWasteDrum extends TileEntity implements ISidedInventory, 
 	
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			if(slots[i].stackSize <= j)
+			if(this.slots[i].stackSize <= j)
 			{
-				ItemStack itemStack = slots[i];
-				slots[i] = null;
+				ItemStack itemStack = this.slots[i];
+				this.slots[i] = null;
 				return itemStack;
 			}
-			ItemStack itemStack1 = slots[i].splitStack(j);
-			if (slots[i].stackSize == 0)
+			ItemStack itemStack1 = this.slots[i].splitStack(j);
+			if (this.slots[i].stackSize == 0)
 			{
-				slots[i] = null;
+				this.slots[i] = null;
 			}
 			
 			return itemStack1;
@@ -131,15 +131,15 @@ public class TileEntityWasteDrum extends TileEntity implements ISidedInventory, 
 		super.readFromNBT(nbt);
 		NBTTagList list = nbt.getTagList("items", 10);
 
-		slots = new ItemStack[getSizeInventory()];
+		this.slots = new ItemStack[getSizeInventory()];
 		
 		for(int i = 0; i < list.tagCount(); i++)
 		{
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("slot");
-			if(b0 >= 0 && b0 < slots.length)
+			if(b0 >= 0 && b0 < this.slots.length)
 			{
-				slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
+				this.slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
 			}
 		}
 	}
@@ -150,13 +150,13 @@ public class TileEntityWasteDrum extends TileEntity implements ISidedInventory, 
 
 		NBTTagList list = new NBTTagList();
 		
-		for(int i = 0; i < slots.length; i++)
+		for(int i = 0; i < this.slots.length; i++)
 		{
-			if(slots[i] != null)
+			if(this.slots[i] != null)
 			{
 				NBTTagCompound nbt1 = new NBTTagCompound();
 				nbt1.setByte("slot", (byte)i);
-				slots[i].writeToNBT(nbt1);
+				this.slots[i].writeToNBT(nbt1);
 				list.appendTag(nbt1);
 			}
 		}
@@ -165,12 +165,12 @@ public class TileEntityWasteDrum extends TileEntity implements ISidedInventory, 
 	
 	@Override
 	public int[] getAccessibleSlotsFromSide(int p_94128_1_) {
-		return slots_arr;
+		return TileEntityWasteDrum.slots_arr;
 	}
 
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemStack, int j) {
-		return this.isItemValidForSlot(i, itemStack);
+		return isItemValidForSlot(i, itemStack);
 	}
 
 	@Override
@@ -185,12 +185,12 @@ public class TileEntityWasteDrum extends TileEntity implements ISidedInventory, 
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			int water = 0;
 
 			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-				if(worldObj.getBlock(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ) == Blocks.water || worldObj.getBlock(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ) == Blocks.flowing_water) {
+				if(this.worldObj.getBlock(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ) == Blocks.water || this.worldObj.getBlock(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ) == Blocks.flowing_water) {
 					water++;
 				}
 			}
@@ -201,19 +201,19 @@ public class TileEntityWasteDrum extends TileEntity implements ISidedInventory, 
 				
 				for(int i = 0; i < 12; i++) {
 					
-					if(slots[i] != null) {
+					if(this.slots[i] != null) {
 						
-						if(slots[i].getItem() instanceof ItemRBMKRod) {
+						if(this.slots[i].getItem() instanceof ItemRBMKRod) {
 							
-							ItemRBMKRod rod = (ItemRBMKRod) slots[i].getItem();
-							rod.updateHeat(worldObj, slots[i], 0.025D);
-							rod.provideHeat(worldObj, slots[i], 20D, 0.025D);
+							ItemRBMKRod rod = (ItemRBMKRod) this.slots[i].getItem();
+							rod.updateHeat(this.worldObj, this.slots[i], 0.025D);
+							rod.provideHeat(this.worldObj, this.slots[i], 20D, 0.025D);
 							
-						} else if(worldObj.rand.nextInt(r) == 0) {
+						} else if(this.worldObj.rand.nextInt(r) == 0) {
 
 							ComparableStack comp = new ComparableStack(getStackInSlot(i));
 							if(FuelPoolRecipes.recipes.containsKey(comp)) {
-								slots[i] = FuelPoolRecipes.recipes.get(comp).copy();
+								this.slots[i] = FuelPoolRecipes.recipes.get(comp).copy();
 							}
 						}
 					}

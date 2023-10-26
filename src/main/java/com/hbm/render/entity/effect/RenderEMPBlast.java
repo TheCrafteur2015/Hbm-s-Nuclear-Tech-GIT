@@ -1,6 +1,7 @@
 package com.hbm.render.entity.effect;
 
 import org.lwjgl.opengl.GL11;
+
 import com.hbm.entity.effect.EntityEMPBlast;
 import com.hbm.lib.RefStrings;
 
@@ -17,13 +18,13 @@ public class RenderEMPBlast extends Render {
     private ResourceLocation ringTexture;
     
     public RenderEMPBlast() {
-    	ringModel = AdvancedModelLoader.loadModel(ringModelRL);
-    	ringTexture = new ResourceLocation(RefStrings.MODID, "textures/models/EMPBlast.png");
+    	this.ringModel = AdvancedModelLoader.loadModel(RenderEMPBlast.ringModelRL);
+    	this.ringTexture = new ResourceLocation(RefStrings.MODID, "textures/models/EMPBlast.png");
     }
 
 	@Override
 	public void doRender(Entity p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_) {
-		this.renderRing((EntityEMPBlast)p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
+		renderRing((EntityEMPBlast)p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
 	}
 	
 	public void renderRing(EntityEMPBlast p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_) {
@@ -34,8 +35,8 @@ public class RenderEMPBlast extends Render {
         GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glScalef(p_76986_1_.scale, 1F, p_76986_1_.scale);
         
-        bindTexture(ringTexture);
-        ringModel.renderAll();
+        bindTexture(this.ringTexture);
+        this.ringModel.renderAll();
         GL11.glPopMatrix();
 	}
 

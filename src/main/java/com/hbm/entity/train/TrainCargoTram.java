@@ -40,7 +40,7 @@ public class TrainCargoTram extends EntityRailCarElectric implements IGUIProvide
 
 	public TrainCargoTram(World world) {
 		super(world);
-		this.setSize(5F, 2F);
+		setSize(5F, 2F);
 	}
 
 	@Override public double getPoweredAcceleration() { return 0.01; }
@@ -55,11 +55,11 @@ public class TrainCargoTram extends EntityRailCarElectric implements IGUIProvide
 	@Override public Vec3 getRiderSeatPosition() { return Vec3.createVectorHelper(0.375, 2.375, 0.5); }
 	@Override public boolean shouldRiderSit() { return false; }
 	@Override public int getSizeInventory() { return 29; }
-	@Override public String getInventoryName() { return this.hasCustomInventoryName() ? this.getEntityName() : "container.trainTram"; }
+	@Override public String getInventoryName() { return hasCustomInventoryName() ? getEntityName() : "container.trainTram"; }
 	//@Override public AxisAlignedBB getCollisionBox() { return AxisAlignedBB.getBoundingBox(renderX, renderY, renderZ, renderX, renderY + 1, renderZ).expand(4, 0, 4); }
 	@Override public double getCouplingDist(TrainCoupling coupling) { return coupling != null ? 2.75 : 0; }
 
-	@Override public int getMaxPower() { return this.getPowerConsumption() * 100; }
+	@Override public int getMaxPower() { return getPowerConsumption() * 100; }
 	@Override public int getPowerConsumption() { return 10; }
 	@Override public boolean hasChargeSlot() { return true; }
 	@Override public int getChargeSlot() { return 28; }
@@ -76,7 +76,7 @@ public class TrainCargoTram extends EntityRailCarElectric implements IGUIProvide
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
 		if(!this.worldObj.isRemote && !this.isDead) {
-			this.setDead();
+			setDead();
 		}
 		
 		return true;
@@ -114,17 +114,17 @@ public class TrainCargoTram extends EntityRailCarElectric implements IGUIProvide
 			this.train = train;
 			for(int i = 0; i < 4; i++) {
 				for(int j = 0; j < 7; j++) {
-					this.addSlotToContainer(new Slot(train, i * 7 + j, 8 + j * 18, 18 + i * 18));
+					addSlotToContainer(new Slot(train, i * 7 + j, 8 + j * 18, 18 + i * 18));
 				}
 			}
-			this.addSlotToContainer(new Slot(train, 28, 152, 72));
+			addSlotToContainer(new Slot(train, 28, 152, 72));
 			for(int i = 0; i < 3; i++) {
 				for(int j = 0; j < 9; j++) {
-					this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 122 + i * 18));
+					addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 122 + i * 18));
 				}
 			}
 			for(int i = 0; i < 9; i++) {
-				this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 180));
+				addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 180));
 			}
 		}
 		
@@ -135,18 +135,18 @@ public class TrainCargoTram extends EntityRailCarElectric implements IGUIProvide
 			if(slot != null && slot.getHasStack()) {
 				ItemStack stack = slot.getStack();
 				stackCopy = stack.copy();
-				if(slotIndex < train.getSizeInventory()) {
-					if(!this.mergeItemStack(stack, train.getSizeInventory(), this.inventorySlots.size(), true)) {
+				if(slotIndex < this.train.getSizeInventory()) {
+					if(!mergeItemStack(stack, this.train.getSizeInventory(), this.inventorySlots.size(), true)) {
 						return null;
 					}
 				} else {
 					
 					if(stackCopy.getItem() instanceof IBatteryItem) {
-						if(!this.mergeItemStack(stack, 28, 29, false)) {
+						if(!mergeItemStack(stack, 28, 29, false)) {
 							return null;
 						}
 					} else {
-						if(!this.mergeItemStack(stack, 0, 28, false)) {
+						if(!mergeItemStack(stack, 0, 28, false)) {
 							return null;
 						}
 					}
@@ -162,7 +162,7 @@ public class TrainCargoTram extends EntityRailCarElectric implements IGUIProvide
 
 		@Override
 		public boolean canInteractWith(EntityPlayer player) {
-			return train.isUseableByPlayer(player);
+			return this.train.isUseableByPlayer(player);
 		}
 	}
 	
@@ -187,7 +187,7 @@ public class TrainCargoTram extends EntityRailCarElectric implements IGUIProvide
 		@Override
 		public void drawScreen(int x, int y, float interp) {
 			super.drawScreen(x, y, interp);
-			this.drawElectricityInfo(this, x, y, guiLeft + 152, guiTop + 18, 16, 52, train.getPower(), train.getMaxPower());
+			drawElectricityInfo(this, x, y, this.guiLeft + 152, this.guiTop + 18, 16, 52, this.train.getPower(), this.train.getMaxPower());
 		}
 		
 		@Override
@@ -200,14 +200,14 @@ public class TrainCargoTram extends EntityRailCarElectric implements IGUIProvide
 		@Override
 		protected void drawGuiContainerBackgroundLayer(float intero, int x, int y) {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-			drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+			Minecraft.getMinecraft().getTextureManager().bindTexture(GUITrainCargoTram.texture);
+			drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 			
-			int i = train.getPower() * 53 / train.getMaxPower();
-			drawTexturedModalRect(guiLeft + 152, guiTop + 70 - i, 176, 52 - i, 16, i);
+			int i = this.train.getPower() * 53 / this.train.getMaxPower();
+			drawTexturedModalRect(this.guiLeft + 152, this.guiTop + 70 - i, 176, 52 - i, 16, i);
 			
-			if(train.getPower() > train.getPowerConsumption()) {
-				drawTexturedModalRect(guiLeft + 156, guiTop + 4, 176, 52, 9, 12);
+			if(this.train.getPower() > this.train.getPowerConsumption()) {
+				drawTexturedModalRect(this.guiLeft + 156, this.guiTop + 4, 176, 52, 9, 12);
 			}
 		}
 	}

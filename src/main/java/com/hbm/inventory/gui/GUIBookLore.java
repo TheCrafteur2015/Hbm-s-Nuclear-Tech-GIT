@@ -10,6 +10,7 @@ import com.hbm.util.I18nUtil;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -38,72 +39,72 @@ public class GUIBookLore extends GuiScreen {
 		ItemStack stack = player.getHeldItem();
 		if(!stack.hasTagCompound()) return;
 		this.tag = stack.getTagCompound();
-		this.key = tag.getString("k");
-		if(key.isEmpty()) return;
+		this.key = this.tag.getString("k");
+		if(this.key.isEmpty()) return;
 		
-		this.color = tag.getInteger("cov_col");
-		if(color <= 0)
-			color = 0x303030;
-		this.maxPage = (int)Math.ceil(tag.getInteger("p") / 2D) - 1;
+		this.color = this.tag.getInteger("cov_col");
+		if(this.color <= 0)
+			this.color = 0x303030;
+		this.maxPage = (int)Math.ceil(this.tag.getInteger("p") / 2D) - 1;
 	}
 	
 	@Override
 	public void initGui() {
-		if(key == null || key.isEmpty()) this.mc.thePlayer.closeScreen();
-		this.guiLeft = (this.width - this.sizeX) / 2;
-		this.guiTop = (this.height - this.sizeY) / 2;
+		if(this.key == null || this.key.isEmpty()) this.mc.thePlayer.closeScreen();
+		this.guiLeft = (this.width - GUIBookLore.sizeX) / 2;
+		this.guiTop = (this.height - GUIBookLore.sizeY) / 2;
 	}
 	
 	@Override
 	public void drawScreen(int i, int j, float f) {
-		this.drawDefaultBackground();
-		this.drawGuiContainerBackgroundLayer(f, i, j);
+		drawDefaultBackground();
+		drawGuiContainerBackgroundLayer(f, i, j);
 		GL11.glDisable(GL11.GL_LIGHTING);
-		this.drawGuiContainerForegroundLayer(i, j);
+		drawGuiContainerForegroundLayer(i, j);
 		GL11.glEnable(GL11.GL_LIGHTING);
 	}
 	
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIBookLore.texture);
 		
-		float r = (float)(color >> 16 & 255) / 255F;
-		float g = (float)(color >> 8 & 255) / 255F;
-		float b = (float)(color & 255) / 255F;
+		float r = (float)(this.color >> 16 & 255) / 255F;
+		float g = (float)(this.color >> 8 & 255) / 255F;
+		float b = (float)(this.color & 255) / 255F;
 		GL11.glColor4f(r, g, b, 1.0F);
-		func_146110_a(guiLeft, guiTop, 0, 0, sizeX, sizeY, 512, 512);
+		Gui.func_146110_a(this.guiLeft, this.guiTop, 0, 0, GUIBookLore.sizeX, GUIBookLore.sizeY, 512, 512);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		func_146110_a(guiLeft + 7, guiTop + 7, 0, 182, 258, 165, 512, 512);
+		Gui.func_146110_a(this.guiLeft + 7, this.guiTop + 7, 0, 182, 258, 165, 512, 512);
 		
-		final boolean overY = j >= guiTop + 155 && j < guiTop + 165;
-		if(page > 0) {
-			if(overY && i >= guiLeft + 24 && i <= guiLeft + 42)
-				func_146110_a(guiLeft + 24, guiTop + 155, 295, 13, 18, 10, 512, 512);
+		final boolean overY = j >= this.guiTop + 155 && j < this.guiTop + 165;
+		if(this.page > 0) {
+			if(overY && i >= this.guiLeft + 24 && i <= this.guiLeft + 42)
+				Gui.func_146110_a(this.guiLeft + 24, this.guiTop + 155, 295, 13, 18, 10, 512, 512);
 			else
-				func_146110_a(guiLeft + 24, guiTop + 155, 272, 13, 18, 10, 512, 512);
+				Gui.func_146110_a(this.guiLeft + 24, this.guiTop + 155, 272, 13, 18, 10, 512, 512);
 		}
 		
-		if(page < maxPage) {
-			if(overY && i >= guiLeft + 230 && i <= guiLeft + 248)
-				func_146110_a(guiLeft + 230, guiTop + 155, 295, 0, 18, 10, 512, 512);
+		if(this.page < this.maxPage) {
+			if(overY && i >= this.guiLeft + 230 && i <= this.guiLeft + 248)
+				Gui.func_146110_a(this.guiLeft + 230, this.guiTop + 155, 295, 0, 18, 10, 512, 512);
 			else
-				func_146110_a(guiLeft + 230, guiTop + 155, 272, 0, 18, 10, 512, 512);
+				Gui.func_146110_a(this.guiLeft + 230, this.guiTop + 155, 272, 0, 18, 10, 512, 512);
 		}
 	}
 	
 	protected void drawGuiContainerForegroundLayer(int x, int y) {
-		String k = "book_lore." + key + ".page.";
+		String k = "book_lore." + this.key + ".page.";
 		
 		for(int i = 0; i < 2; i++) {
 			int defacto = this.page * 2 + i;
 			
-			if(defacto < tag.getInteger("p")) {
+			if(defacto < this.tag.getInteger("p")) {
 				String text;
-				NBTTagCompound argTag = tag.getCompoundTag("p" + defacto);
+				NBTTagCompound argTag = this.tag.getCompoundTag("p" + defacto);
 				
 				if(argTag.hasNoTags())
 					text = I18nUtil.resolveKey(k + defacto);
 				else {
-					List<String> args = new ArrayList();
+					List<String> args = new ArrayList<>();
 					int index = 1;
 					String arg = argTag.getString("a1");
 					
@@ -120,7 +121,7 @@ public class GUIBookLore extends GuiScreen {
 				int width = 100;
 				int widthScaled = (int) (width * scale);
 				
-				List<String> lines = new ArrayList();
+				List<String> lines = new ArrayList<>();
 				String[] words = text.split(" ");
 				
 				lines.add(words[0]);
@@ -153,8 +154,8 @@ public class GUIBookLore extends GuiScreen {
 				
 				for(int l = 0; l < lines.size(); l++) {
 					this.fontRendererObj.drawString(lines.get(l),
-							(int)((guiLeft + 20 + i * 130) * scale),
-							(int)((guiTop + 20) * scale + (9 * l)),
+							(int)((this.guiLeft + 20 + i * 130) * scale),
+							(int)((this.guiTop + 20) * scale + (9 * l)),
 							0x0F0F0F);
 				}
 				
@@ -166,16 +167,16 @@ public class GUIBookLore extends GuiScreen {
 	
 	@Override
 	protected void mouseClicked(int i, int j, int k) {
-		if(j < guiTop + 155 || j >= guiTop + 165) return;
+		if(j < this.guiTop + 155 || j >= this.guiTop + 165) return;
 		
-		if(page > 0 && i >= guiLeft + 24 && i <= guiLeft + 42) {
-			page--;
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+		if(this.page > 0 && i >= this.guiLeft + 24 && i <= this.guiLeft + 42) {
+			this.page--;
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 		}
 		
-		if(page < maxPage && i >= guiLeft + 230 && i <= guiLeft + 248) {
-			page++;
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+		if(this.page < this.maxPage && i >= this.guiLeft + 230 && i <= this.guiLeft + 248) {
+			this.page++;
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 		}
 	}
 	

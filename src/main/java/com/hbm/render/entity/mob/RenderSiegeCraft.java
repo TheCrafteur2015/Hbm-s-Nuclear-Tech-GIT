@@ -9,9 +9,9 @@ import com.hbm.entity.mob.siege.SiegeTier;
 import com.hbm.lib.RefStrings;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.util.BeamPronter;
-import com.hbm.render.util.RenderMiscEffects;
 import com.hbm.render.util.BeamPronter.EnumBeamType;
 import com.hbm.render.util.BeamPronter.EnumWaveType;
+import com.hbm.render.util.RenderMiscEffects;
 
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.Render;
@@ -31,7 +31,7 @@ public class RenderSiegeCraft extends Render {
 		EntitySiegeCraft ufo = (EntitySiegeCraft) entity;
 		//BossStatus.setBossStatus(ufo, false);
 		
-		this.bindTexture(getEntityTexture(entity));
+		bindTexture(getEntityTexture(entity));
 		
 		double rot = (entity.ticksExisted + f1) * 5 % 360D;
 		GL11.glRotated(rot, 0, 1, 0);

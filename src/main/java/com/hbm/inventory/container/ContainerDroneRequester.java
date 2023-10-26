@@ -15,24 +15,24 @@ public class ContainerDroneRequester extends ContainerCrateBase {
 		
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 3; j++) {
-				this.addSlotToContainer(new SlotPattern(tedf, j + i * 3, 98 + j * 18, 17 + i * 18));
+				addSlotToContainer(new SlotPattern(tedf, j + i * 3, 98 + j * 18, 17 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 3; j++) {
-				this.addSlotToContainer(new Slot(tedf, j + i * 3 + 9, 26 + j * 18, 17 + i * 18));
+				addSlotToContainer(new Slot(tedf, j + i * 3 + 9, 26 + j * 18, 17 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 103 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 103 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 161));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 161));
 		}
 	}
 
@@ -47,11 +47,11 @@ public class ContainerDroneRequester extends ContainerCrateBase {
 			
 			if(par2 < 9) return null; //ignore filters
 
-			if(par2 <= crate.getSizeInventory() - 1) {
-				if(!this.mergeItemStack(var5, crate.getSizeInventory(), this.inventorySlots.size(), true)) {
+			if(par2 <= this.crate.getSizeInventory() - 1) {
+				if(!mergeItemStack(var5, this.crate.getSizeInventory(), this.inventorySlots.size(), true)) {
 					return null;
 				}
-			} else if(!this.mergeItemStack(var5, 9, crate.getSizeInventory(), false)) {
+			} else if(!mergeItemStack(var5, 9, this.crate.getSizeInventory(), false)) {
 				return null;
 			}
 
@@ -79,11 +79,11 @@ public class ContainerDroneRequester extends ContainerCrateBase {
 			return super.slotClick(index, button, mode, player);
 		}
 
-		Slot slot = this.getSlot(index);
+		Slot slot = getSlot(index);
 		
 		ItemStack ret = null;
 		ItemStack held = player.inventory.getItemStack();
-		TileEntityDroneRequester requester = (TileEntityDroneRequester) crate;
+		TileEntityDroneRequester requester = (TileEntityDroneRequester) this.crate;
 		
 		if(slot.getHasStack())
 			ret = slot.getStack().copy();

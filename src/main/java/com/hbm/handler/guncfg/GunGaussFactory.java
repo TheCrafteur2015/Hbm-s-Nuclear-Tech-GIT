@@ -37,7 +37,7 @@ public class GunGaussFactory {
 		config.name = "tau";
 		config.manufacturer = EnumGunManufacturer.BLACK_MESA;
 		
-		config.config = new ArrayList<Integer>();
+		config.config = new ArrayList<>();
 		config.config.add(BulletConfigSyncingUtil.SPECIAL_GAUSS);
 		
 		config.animations.put(AnimType.CYCLE, new BusAnimation()
@@ -64,7 +64,7 @@ public class GunGaussFactory {
 		config.allowsInfinity = true;
 		config.crosshair = Crosshair.L_ARROWS;
 		
-		config.config = new ArrayList<Integer>();
+		config.config = new ArrayList<>();
 		config.config.add(BulletConfigSyncingUtil.SPECIAL_GAUSS_CHARGED);
 		
 		return config;
@@ -77,7 +77,7 @@ public class GunGaussFactory {
 		bullet.ammo = new ComparableStack(ModItems.gun_xvl1456_ammo);
 		bullet.dmgMin = 18;
 		bullet.dmgMax = 27;
-		bullet.style = bullet.STYLE_TAU;
+		bullet.style = BulletConfiguration.STYLE_TAU;
 		bullet.LBRC = 80;
 		bullet.HBRC = 5;
 		
@@ -86,7 +86,7 @@ public class GunGaussFactory {
 	
 	public static BulletConfiguration getAltConfig() {
 		
-		BulletConfiguration bullet = getGaussConfig();
+		BulletConfiguration bullet = GunGaussFactory.getGaussConfig();
 		
 		bullet.trail = 1;
 		

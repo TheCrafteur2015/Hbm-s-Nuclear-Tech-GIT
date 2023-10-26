@@ -14,11 +14,11 @@ public class EntityEMPBlast extends Entity {
 
 	public EntityEMPBlast(World p_i1582_1_) {
 		super(p_i1582_1_);
-        this.setSize(1.5F, 1.5F);
+        setSize(1.5F, 1.5F);
 		this.ignoreFrustumCheck = true;
 		this.isImmuneToFire = true;
 		this.age = 0;
-    	scale = 0;
+    	this.scale = 0;
 	}
 
 	@Override
@@ -41,19 +41,19 @@ public class EntityEMPBlast extends Entity {
 
 	public EntityEMPBlast(World p_i1582_1_, int maxAge) {
 		super(p_i1582_1_);
-        this.setSize(1.5F, 1.5F);
+        setSize(1.5F, 1.5F);
 		this.isImmuneToFire = true;
-		this.setMaxAge(maxAge);
+		setMaxAge(maxAge);
 	}
 
     @Override
 	public void onUpdate() {
         this.age++;
         
-        if(this.age >= this.getMaxAge())
+        if(this.age >= getMaxAge())
         {
     		this.age = 0;
-        	this.setDead();
+        	setDead();
         }
         
         this.scale++;
@@ -61,14 +61,14 @@ public class EntityEMPBlast extends Entity {
 
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound p_70037_1_) {
-		age = p_70037_1_.getShort("age");
-		scale = p_70037_1_.getShort("scale");
+		this.age = p_70037_1_.getShort("age");
+		this.scale = p_70037_1_.getShort("scale");
 	}
 
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound p_70014_1_) {
-		p_70014_1_.setShort("age", (short)age);
-		p_70014_1_.setShort("scale", (short)scale);
+		p_70014_1_.setShort("age", (short)this.age);
+		p_70014_1_.setShort("scale", (short)this.scale);
 		
 	}
 	

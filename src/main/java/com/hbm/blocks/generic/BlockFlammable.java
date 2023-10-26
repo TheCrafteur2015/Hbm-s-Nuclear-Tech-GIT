@@ -19,11 +19,11 @@ public class BlockFlammable extends BlockBase {
 	
 	@Override
 	public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
-		return flammability;
+		return this.flammability;
 	}
 	
 	@Override
 	public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
-		return encouragement;
+		return this.encouragement;
 	}
 }

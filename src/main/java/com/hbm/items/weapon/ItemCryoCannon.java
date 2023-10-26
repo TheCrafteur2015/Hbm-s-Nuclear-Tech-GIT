@@ -26,20 +26,19 @@ public class ItemCryoCannon extends ItemGunBase {
 	@Override
 	protected void fire(ItemStack stack, World world, EntityPlayer player) {
 		
-		if(this.getPressure(stack) >= 1000) return;
-		if(this.getTurbine(stack) < 100) return;
+		if((getPressure(stack) >= 1000) || (getTurbine(stack) < 100)) return;
 
 		BulletConfiguration config = null;
 		
-		if(mainConfig.reloadType == mainConfig.RELOAD_NONE) {
-			config = getBeltCfg(player, stack, true);
+		if(this.mainConfig.reloadType == GunConfiguration.RELOAD_NONE) {
+			config = ItemGunBase.getBeltCfg(player, stack, true);
 		} else {
-			config = BulletConfigSyncingUtil.pullConfig(mainConfig.config.get(getMagType(stack)));
+			config = BulletConfigSyncingUtil.pullConfig(this.mainConfig.config.get(ItemGunBase.getMagType(stack)));
 		}
 		
 		int bullets = config.bulletsMin;
 		
-		for(int k = 0; k < mainConfig.roundsPerCycle; k++) {
+		for(int k = 0; k < this.mainConfig.roundsPerCycle; k++) {
 			
 			if(!hasAmmo(stack, player, true))
 				break;
@@ -55,13 +54,13 @@ public class ItemCryoCannon extends ItemGunBase {
 			player.inventoryContainer.detectAndSendChanges();
 			
 			int wear = (int) Math.ceil(config.wear / (1F + EnchantmentHelper.getEnchantmentLevel(Enchantment.unbreaking.effectId, stack)));
-			setItemWear(stack, getItemWear(stack) + wear);
+			ItemGunBase.setItemWear(stack, ItemGunBase.getItemWear(stack) + wear);
 		}
 		
-		world.playSoundAtEntity(player, mainConfig.firingSound, mainConfig.firingVolume, mainConfig.firingPitch);
+		world.playSoundAtEntity(player, this.mainConfig.firingSound, this.mainConfig.firingVolume, this.mainConfig.firingPitch);
 		
-		if(mainConfig.ejector != null && !mainConfig.ejector.getAfterReload())
-			queueCasing(player, mainConfig.ejector, config, stack);
+		if(this.mainConfig.ejector != null && !this.mainConfig.ejector.getAfterReload())
+			ItemGunBase.queueCasing(player, this.mainConfig.ejector, config, stack);
 	}
 
 	@Override
@@ -71,10 +70,10 @@ public class ItemCryoCannon extends ItemGunBase {
 		chem.setFluid(Fluids.OXYGEN);
 		world.spawnEntityInWorld(chem);
 
-		int pressure = this.getPressure(stack);
+		int pressure = getPressure(stack);
 		pressure += 5;
 		pressure = MathHelper.clamp_int(pressure, 0, 1000);
-		this.setPressure(stack, pressure);
+		setPressure(stack, pressure);
 		
 		if(player instanceof EntityPlayerMP) PacketDispatcher.wrapper.sendTo(new GunAnimationPacket(AnimType.CYCLE.ordinal()), (EntityPlayerMP) player);
 	}
@@ -82,10 +81,10 @@ public class ItemCryoCannon extends ItemGunBase {
 	@Override
 	protected void updateServer(ItemStack stack, World world, EntityPlayer player, int slot, boolean isCurrentItem) {
 		
-		int turbine = this.getTurbine(stack);
-		int pressure = this.getPressure(stack);
+		int turbine = getTurbine(stack);
+		int pressure = getPressure(stack);
 		
-		if(this.getIsMouseDown(stack)) {
+		if(getIsMouseDown(stack)) {
 			turbine += 10;
 		} else {
 			turbine -= 5;
@@ -94,25 +93,25 @@ public class ItemCryoCannon extends ItemGunBase {
 
 		turbine = MathHelper.clamp_int(turbine, 0, 100);
 		pressure = MathHelper.clamp_int(pressure, 0, 1000);
-		this.setTurbine(stack, turbine);
-		this.setPressure(stack, pressure);
+		setTurbine(stack, turbine);
+		setPressure(stack, pressure);
 		
 		super.updateServer(stack, world, player, slot, isCurrentItem);
 	}
 	
 	public static void setTurbine(ItemStack stack, int i) {
-		writeNBT(stack, "turbine", i);
+		ItemGunBase.writeNBT(stack, "turbine", i);
 	}
 	
 	public static int getTurbine(ItemStack stack) {
-		return readNBT(stack, "turbine");
+		return ItemGunBase.readNBT(stack, "turbine");
 	}
 	
 	public static void setPressure(ItemStack stack, int i) {
-		writeNBT(stack, "pressure", i);
+		ItemGunBase.writeNBT(stack, "pressure", i);
 	}
 	
 	public static int getPressure(ItemStack stack) {
-		return readNBT(stack, "pressure");
+		return ItemGunBase.readNBT(stack, "pressure");
 	}
 }

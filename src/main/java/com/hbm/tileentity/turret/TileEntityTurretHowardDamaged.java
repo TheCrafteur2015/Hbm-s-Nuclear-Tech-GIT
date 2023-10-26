@@ -68,22 +68,22 @@ public class TileEntityTurretHowardDamaged extends TileEntityTurretHoward {
 	@Override
 	public void updateFiringTick() {
 		
-		timer++;
+		this.timer++;
 		
 		if(this.tPos != null) {
 			
-			if(timer % 4 == 0) {
+			if(this.timer % 4 == 0) {
 				
-				this.worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:turret.howard_fire", 4.0F, 0.7F + worldObj.rand.nextFloat() * 0.3F);
+				this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:turret.howard_fire", 4.0F, 0.7F + this.worldObj.rand.nextFloat() * 0.3F);
 				
 				this.cachedCasingConfig = GunDGKFactory.CASINGDGK;
-				this.spawnCasing();
+				spawnCasing();
 				
-				if(worldObj.rand.nextInt(100) + 1 <= WeaponConfig.ciwsHitrate * 0.5)
-					EntityDamageUtil.attackEntityFromIgnoreIFrame(this.target, ModDamageSource.shrapnel, 2F + worldObj.rand.nextInt(2));
+				if(this.worldObj.rand.nextInt(100) + 1 <= WeaponConfig.ciwsHitrate * 0.5)
+					EntityDamageUtil.attackEntityFromIgnoreIFrame(this.target, ModDamageSource.shrapnel, 2F + this.worldObj.rand.nextInt(2));
 					
-				Vec3 pos = this.getTurretPos();
-				Vec3 vec = Vec3.createVectorHelper(this.getBarrelLength(), 0, 0);
+				Vec3 pos = getTurretPos();
+				Vec3 vec = Vec3.createVectorHelper(getBarrelLength(), 0, 0);
 				vec.rotateAroundZ((float) -this.rotationPitch);
 				vec.rotateAroundY((float) -(this.rotationYaw + Math.PI * 0.5));
 				
@@ -96,7 +96,7 @@ public class TileEntityTurretHowardDamaged extends TileEntityTurretHoward {
 				data.setString("mode", "largeexplode");
 				data.setFloat("size", 1.5F);
 				data.setByte("count", (byte)1);
-				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, pos.xCoord + vec.xCoord + hOff.xCoord, pos.yCoord + vec.yCoord + hOff.yCoord, pos.zCoord + vec.zCoord + hOff.zCoord), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 50));
+				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, pos.xCoord + vec.xCoord + hOff.xCoord, pos.yCoord + vec.yCoord + hOff.yCoord, pos.zCoord + vec.zCoord + hOff.zCoord), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 50));
 			}
 		}
 	}

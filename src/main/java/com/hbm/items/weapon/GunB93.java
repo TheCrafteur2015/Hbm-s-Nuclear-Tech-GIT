@@ -7,6 +7,7 @@ import com.google.common.collect.Multimap;
 import com.hbm.entity.effect.EntityCloudFleijaRainbow;
 import com.hbm.entity.logic.EntityNukeExplosionMK3;
 import com.hbm.entity.projectile.EntityModBeam;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -36,7 +37,7 @@ public class GunB93 extends Item {
 	@Override
 	public void onPlayerStoppedUsing(ItemStack p_77615_1_, World p_77615_2_, EntityPlayer p_77615_3_, int p_77615_4_) {
 		if (!p_77615_3_.isSneaking()) {
-			int j = this.getMaxItemUseDuration(p_77615_1_) - p_77615_4_;
+			int j = getMaxItemUseDuration(p_77615_1_) - p_77615_4_;
 
 			ArrowLooseEvent event = new ArrowLooseEvent(p_77615_3_, p_77615_1_, j);
 			MinecraftForge.EVENT_BUS.post(event);
@@ -60,7 +61,7 @@ public class GunB93 extends Item {
 					
 					EntityModBeam entityarrow1;
 					entityarrow1 = new EntityModBeam(p_77615_2_, p_77615_3_, 3.0F);
-					entityarrow1.mode = getPower(p_77615_1_) - 1;
+					entityarrow1.mode = GunB93.getPower(p_77615_1_) - 1;
 					p_77615_1_.damageItem(1, p_77615_3_);
 
 					p_77615_2_.spawnEntityInWorld(entityarrow1);
@@ -68,8 +69,8 @@ public class GunB93 extends Item {
 					p_77615_2_.playSoundAtEntity(p_77615_3_, "hbm:weapon.sparkShoot", 5.0F, 1.0F);
 				}
 
-				setAnim(p_77615_1_, 1);
-				setPower(p_77615_1_, 0);
+				GunB93.setAnim(p_77615_1_, 1);
+				GunB93.setPower(p_77615_1_, 0);
 			}
 		} else {
 		}
@@ -77,21 +78,21 @@ public class GunB93 extends Item {
 
 	@Override
 	public void onUpdate(ItemStack stack, World world, Entity entity, int i, boolean b) {
-		int j = getAnim(stack);
+		int j = GunB93.getAnim(stack);
 
 		if (j > 0) {
 			if (j < 30)
-				setAnim(stack, j + 1);
+				GunB93.setAnim(stack, j + 1);
 			else
-				setAnim(stack, 0);
+				GunB93.setAnim(stack, 0);
 
 			if (j == 15) {
 				world.playSoundAtEntity(entity, "hbm:weapon.b92Reload", 2F, 0.9F);
-				setPower(stack, getPower(stack) + 1);
+				GunB93.setPower(stack, GunB93.getPower(stack) + 1);
 				
-				if(getPower(stack) > 10) {
+				if(GunB93.getPower(stack) > 10) {
 					
-					setPower(stack, 0);
+					GunB93.setPower(stack, 0);
 					
 			    	if(!world.isRemote) {
 			    		EntityNukeExplosionMK3 ex = EntityNukeExplosionMK3.statFacFleija(world, entity.posX, entity.posY, entity.posZ, 50);
@@ -141,15 +142,15 @@ public class GunB93 extends Item {
 	 */
 	@Override
 	public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {
-		if (!p_77659_3_.isSneaking() && getPower(p_77659_1_) > 0) {
+		if (!p_77659_3_.isSneaking() && GunB93.getPower(p_77659_1_) > 0) {
 			ArrowNockEvent event = new ArrowNockEvent(p_77659_3_, p_77659_1_);
 			MinecraftForge.EVENT_BUS.post(event);
 
-			if (this.getAnim(p_77659_1_) == 0)
-				p_77659_3_.setItemInUse(p_77659_1_, this.getMaxItemUseDuration(p_77659_1_));
+			if (getAnim(p_77659_1_) == 0)
+				p_77659_3_.setItemInUse(p_77659_1_, getMaxItemUseDuration(p_77659_1_));
 		} else {
-			if (getAnim(p_77659_1_) == 0) {
-				setAnim(p_77659_1_, 1);
+			if (GunB93.getAnim(p_77659_1_) == 0) {
+				GunB93.setAnim(p_77659_1_, 1);
 			}
 		}
 
@@ -165,17 +166,19 @@ public class GunB93 extends Item {
 		return 1;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
 		list.add("[LEGENDARY WEAPON]");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Multimap getItemAttributeModifiers() {
 		Multimap multimap = super.getItemAttributeModifiers();
 		multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
-				new AttributeModifier(field_111210_e, "Weapon modifier", 3.5, 0));
+				new AttributeModifier(Item.field_111210_e, "Weapon modifier", 3.5, 0));
 		return multimap;
 	}
 
@@ -220,7 +223,7 @@ public class GunB93 extends Item {
 	public static float getRotationFromAnim(ItemStack stack) {
 		float rad = 0.0174533F;
 		rad *= 7.5F;
-		int i = getAnim(stack);
+		int i = GunB93.getAnim(stack);
 
 		if (i < 10)
 			return 0;
@@ -234,7 +237,7 @@ public class GunB93 extends Item {
 	}
 
 	public static float getOffsetFromAnim(ItemStack stack) {
-		float i = getAnim(stack);
+		float i = GunB93.getAnim(stack);
 
 		if (i < 10)
 			return 0;
@@ -247,7 +250,7 @@ public class GunB93 extends Item {
 	}
 
 	public static float getTransFromAnim(ItemStack stack) {
-		float i = getAnim(stack);
+		float i = GunB93.getAnim(stack);
 
 		if (i < 10)
 			return 0;

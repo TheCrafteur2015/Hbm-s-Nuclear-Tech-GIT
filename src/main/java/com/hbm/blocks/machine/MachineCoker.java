@@ -25,7 +25,7 @@ public class MachineCoker extends BlockDummyable implements ITooltipProvider {
 	public TileEntity createNewTileEntity(World world, int meta) {
 		
 		if(meta >= 12) return new TileEntityMachineCoker();
-		if(meta >= extra) return new TileEntityProxyCombo().inventory().fluid();
+		if(meta >= BlockDummyable.extra) return new TileEntityProxyCombo().inventory().fluid();
 		return null;
 	}
 	
@@ -74,14 +74,14 @@ public class MachineCoker extends BlockDummyable implements ITooltipProvider {
 		MultiblockHandlerXR.fillSpace(world, x - 2, y + 1, z + 2, new int[] {0, 1, 0, 0, 0, 0}, this, ForgeDirection.NORTH);
 		MultiblockHandlerXR.fillSpace(world, x - 2, y + 1, z - 2, new int[] {0, 1, 0, 0, 0, 0}, this, ForgeDirection.NORTH);
 
-		this.makeExtra(world, x + 1, y, z + 1);
-		this.makeExtra(world, x + 1, y, z - 1);
-		this.makeExtra(world, x - 1, y, z + 1);
-		this.makeExtra(world, x - 1, y, z - 1);
+		makeExtra(world, x + 1, y, z + 1);
+		makeExtra(world, x + 1, y, z - 1);
+		makeExtra(world, x - 1, y, z + 1);
+		makeExtra(world, x - 1, y, z - 1);
 	}
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		this.addStandardInfo(stack, player, list, ext);
+		addStandardInfo(stack, player, list, ext);
 	}
 }

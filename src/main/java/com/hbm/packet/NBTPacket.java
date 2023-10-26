@@ -31,7 +31,7 @@ public class NBTPacket implements IMessage {
 		this.z = z;
 		
 		try {
-			buffer.writeNBTTagCompoundToBuffer(nbt);
+			this.buffer.writeNBTTagCompoundToBuffer(nbt);
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -41,27 +41,27 @@ public class NBTPacket implements IMessage {
 	@Override
 	public void fromBytes(ByteBuf buf) {
 		
-		x = buf.readInt();
-		y = buf.readInt();
-		z = buf.readInt();
+		this.x = buf.readInt();
+		this.y = buf.readInt();
+		this.z = buf.readInt();
 		
-		if (buffer == null) {
-			buffer = new PacketBuffer(Unpooled.buffer());
+		if (this.buffer == null) {
+			this.buffer = new PacketBuffer(Unpooled.buffer());
 		}
-		buffer.writeBytes(buf);
+		this.buffer.writeBytes(buf);
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
 		
-		buf.writeInt(x);
-		buf.writeInt(y);
-		buf.writeInt(z);
+		buf.writeInt(this.x);
+		buf.writeInt(this.y);
+		buf.writeInt(this.z);
 		
-		if (buffer == null) {
-			buffer = new PacketBuffer(Unpooled.buffer());
+		if (this.buffer == null) {
+			this.buffer = new PacketBuffer(Unpooled.buffer());
 		}
-		buf.writeBytes(buffer);
+		buf.writeBytes(this.buffer);
 	}
 
 	public static class Handler implements IMessageHandler<NBTPacket, IMessage> {

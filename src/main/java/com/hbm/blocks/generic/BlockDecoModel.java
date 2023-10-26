@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 
 public class BlockDecoModel extends BlockEnumMulti {
 	
-	public BlockDecoModel(Material mat, Class<? extends Enum> theEnum, boolean multiName, boolean multiTexture) {
+	public BlockDecoModel(Material mat, Class<? extends Enum<?>> theEnum, boolean multiName, boolean multiTexture) {
 		super(mat, theEnum, multiName, multiTexture);
 	}
 	
@@ -21,7 +21,7 @@ public class BlockDecoModel extends BlockEnumMulti {
 	
 	@Override
 	public int getRenderType() {
-		return renderID;
+		return BlockDecoModel.renderID;
 	}
 
 	@Override
@@ -71,12 +71,12 @@ public class BlockDecoModel extends BlockEnumMulti {
 	private float mxZ = 1.0F;
 	
 	public BlockDecoModel setBlockBoundsTo(float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
-		mnX = minX;
-		mnY = minY;
-		mnZ = minZ;
-		mxX = maxX;
-		mxY = maxY;
-		mxZ = maxZ;
+		this.mnX = minX;
+		this.mnY = minY;
+		this.mnZ = minZ;
+		this.mxX = maxX;
+		this.mxY = maxY;
+		this.mxZ = maxZ;
 		
 		return this;
 	}
@@ -85,23 +85,23 @@ public class BlockDecoModel extends BlockEnumMulti {
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
 		switch(world.getBlockMetadata(x, y, z) >> 2) {
 		case 0://North
-			this.setBlockBounds(1 - mxX, mnY, 1 - mxZ, 1 - mnX, mxY, 1 - mnZ);
+			setBlockBounds(1 - this.mxX, this.mnY, 1 - this.mxZ, 1 - this.mnX, this.mxY, 1 - this.mnZ);
 			break;
 		case 1://South
-			this.setBlockBounds(mnX, mnY, mnZ, mxX, mxY, mxZ);
+			setBlockBounds(this.mnX, this.mnY, this.mnZ, this.mxX, this.mxY, this.mxZ);
 			break;
 		case 2://West
-			this.setBlockBounds(1 - mxZ, mnY, mnX, 1 - mnZ, mxY, mxX);
+			setBlockBounds(1 - this.mxZ, this.mnY, this.mnX, 1 - this.mnZ, this.mxY, this.mxX);
 			break;
 		case 3://East
-			this.setBlockBounds(mnZ, mnY, 1 - mxX, mxZ, mxY, 1 - mnX);
+			setBlockBounds(this.mnZ, this.mnY, 1 - this.mxX, this.mxZ, this.mxY, 1 - this.mnX);
 			break;
 		}
 	}
 	
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
-		this.setBlockBoundsBasedOnState(world, x, y, z);
+		setBlockBoundsBasedOnState(world, x, y, z);
 		return AxisAlignedBB.getBoundingBox(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
 	}
 }

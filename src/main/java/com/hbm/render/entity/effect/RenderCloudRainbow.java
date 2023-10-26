@@ -19,8 +19,8 @@ public class RenderCloudRainbow extends Render {
     public float ring = 0;
     
     public RenderCloudRainbow() {
-    	blastModel = AdvancedModelLoader.loadModel(objTesterModelRL);
-    	scale = 0;
+    	this.blastModel = AdvancedModelLoader.loadModel(RenderCloudRainbow.objTesterModelRL);
+    	this.scale = 0;
     }
 
 	@Override
@@ -40,7 +40,7 @@ public class RenderCloudRainbow extends Render {
 		GL11.glColor3ub((byte)cloud.worldObj.rand.nextInt(0x100), (byte)cloud.worldObj.rand.nextInt(0x100), (byte)cloud.worldObj.rand.nextInt(0x100));
 
         GL11.glScalef(0.5F, 0.5F, 0.5F);
-        blastModel.renderAll();
+        this.blastModel.renderAll();
         GL11.glScalef(1/0.5F, 1/0.5F, 1/0.5F);
 
 		GL11.glEnable(GL11.GL_BLEND);
@@ -51,7 +51,7 @@ public class RenderCloudRainbow extends Render {
     		GL11.glColor3ub((byte)cloud.worldObj.rand.nextInt(0x100), (byte)cloud.worldObj.rand.nextInt(0x100), (byte)cloud.worldObj.rand.nextInt(0x100));
     		
             GL11.glScalef(i, i, i);
-            blastModel.renderAll();
+            this.blastModel.renderAll();
             GL11.glScalef(1/i, 1/i, 1/i);
         }
         

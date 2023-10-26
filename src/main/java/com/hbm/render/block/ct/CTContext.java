@@ -5,8 +5,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import static com.hbm.render.block.ct.CT.*;
-
 public class CTContext {
 	
 	public static CTFace[] faces;
@@ -15,12 +13,12 @@ public class CTContext {
 	//dim 2: 8x neighbors (TL, TC, TR, CL, CR, BL, BC, BR)
 	//dim 3: 3x coord (x/y/z, [-1;1])
 	public static int[][][] access = new int[][][] {
-		lcfs(ForgeDirection.SOUTH, ForgeDirection.WEST),	//DOWN guess
-		lcfs(ForgeDirection.NORTH, ForgeDirection.WEST),	//UP guess
-		lcfs(ForgeDirection.UP, ForgeDirection.EAST),		//NORTH
-		lcfs(ForgeDirection.UP, ForgeDirection.WEST),		//SOUTH
-		lcfs(ForgeDirection.UP, ForgeDirection.NORTH),		//WEST
-		lcfs(ForgeDirection.UP, ForgeDirection.SOUTH)		//EAST
+		CTContext.lcfs(ForgeDirection.SOUTH, ForgeDirection.WEST),	//DOWN guess
+		CTContext.lcfs(ForgeDirection.NORTH, ForgeDirection.WEST),	//UP guess
+		CTContext.lcfs(ForgeDirection.UP, ForgeDirection.EAST),		//NORTH
+		CTContext.lcfs(ForgeDirection.UP, ForgeDirection.WEST),		//SOUTH
+		CTContext.lcfs(ForgeDirection.UP, ForgeDirection.NORTH),		//WEST
+		CTContext.lcfs(ForgeDirection.UP, ForgeDirection.SOUTH)		//EAST
 	};
 	
 	//lexical coordinates from side
@@ -30,14 +28,14 @@ public class CTContext {
 		ForgeDirection right = left.getOpposite();
 		
 		int[][] lexicalCoordinates = new int[][] {
-			cfs(up, left),
-			cfs(up),
-			cfs(up, right),
-			cfs(left),
-			cfs(right),
-			cfs(down, left),
-			cfs(down),
-			cfs(down, right),
+			CTContext.cfs(up, left),
+			CTContext.cfs(up),
+			CTContext.cfs(up, right),
+			CTContext.cfs(left),
+			CTContext.cfs(right),
+			CTContext.cfs(down, left),
+			CTContext.cfs(down),
+			CTContext.cfs(down, right),
 		};
 		
 		return lexicalCoordinates;
@@ -68,12 +66,12 @@ public class CTContext {
 	 */
 	public static void loadContext(IBlockAccess world, int x, int y, int z, Block block) {
 		
-		faces = new CTFace[6];
+		CTContext.faces = new CTFace[6];
 		
 		for(int i = 0; i < 6; i++) {
 			
 			boolean[] cons = new boolean[8];
-			int[][] dirs = access[i];
+			int[][] dirs = CTContext.access[i];
 			
 			for(int j = 0; j < 8; j++) {
 				
@@ -91,12 +89,12 @@ public class CTContext {
 			 * 5 6 7
 			 */
 			
-			int itl = t | l | cornerType(cons[3], cons[0], cons[1]);
-			int itr = t | r | cornerType(cons[4], cons[2], cons[1]);
-			int ibl = b | l | cornerType(cons[3], cons[5], cons[6]);
-			int ibr = b | r | cornerType(cons[4], cons[7], cons[6]);
+			int itl = CT.t | CT.l | CTContext.cornerType(cons[3], cons[0], cons[1]);
+			int itr = CT.t | CT.r | CTContext.cornerType(cons[4], cons[2], cons[1]);
+			int ibl = CT.b | CT.l | CTContext.cornerType(cons[3], cons[5], cons[6]);
+			int ibr = CT.b | CT.r | CTContext.cornerType(cons[4], cons[7], cons[6]);
 			
-			faces[i] = new CTFace(world, x, y, z, (IBlockCT)block, itl, itr, ibl, ibr);
+			CTContext.faces[i] = new CTFace(world, x, y, z, (IBlockCT)block, itl, itr, ibl, ibr);
 		}
 	}
 	
@@ -116,29 +114,29 @@ public class CTContext {
 		 */
 		
 		if(vert && hor && corner)
-			return c;
+			return CT.c;
 		else if(vert && hor)
-			return j;
+			return CT.j;
 		else if(vert)
-			return v;
+			return CT.v;
 		else if(hor)
-			return h;
+			return CT.h;
 		else
-			return f;
+			return CT.f;
 	}
 	
 	/**
 	 * @return whether there's currently a context available
 	 */
 	public static boolean isContextLoaded() {
-		return faces != null;
+		return CTContext.faces != null;
 	}
 	
 	/**
 	 * Gets rid of the current context
 	 */
 	public static void dropContext() {
-		faces = null;
+		CTContext.faces = null;
 	}
 	
 	/**
@@ -172,9 +170,9 @@ public class CTContext {
 			this.index_br = l;
 		}
 		
-		public IIcon getTopLeft() { return ct.getFragments(world, x, y, z)[index_tl]; }
-		public IIcon getTopRight() { return ct.getFragments(world, x, y, z)[index_tr]; }
-		public IIcon getBottomLeft() { return ct.getFragments(world, x, y, z)[index_bl]; }
-		public IIcon getBottomRight() { return ct.getFragments(world, x, y, z)[index_br]; }
+		public IIcon getTopLeft() { return this.ct.getFragments(this.world, this.x, this.y, this.z)[this.index_tl]; }
+		public IIcon getTopRight() { return this.ct.getFragments(this.world, this.x, this.y, this.z)[this.index_tr]; }
+		public IIcon getBottomLeft() { return this.ct.getFragments(this.world, this.x, this.y, this.z)[this.index_bl]; }
+		public IIcon getBottomRight() { return this.ct.getFragments(this.world, this.x, this.y, this.z)[this.index_br]; }
 	}
 }

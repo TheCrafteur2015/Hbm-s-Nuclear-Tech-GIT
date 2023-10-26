@@ -16,7 +16,7 @@ public class BlockCoalBurning extends BlockOutgas {
 
 	public BlockCoalBurning(Material mat) {
 		super(mat, false, 1, false);
-		this.setTickRandomly(true);
+		setTickRandomly(true);
 	}
 
 	@Override
@@ -54,6 +54,7 @@ public class BlockCoalBurning extends BlockOutgas {
 		return null;
 	}
 
+	@Override
 	public void breakBlock(World world, int x, int y, int z, Block block, int i) {
 		super.breakBlock(world, x, y, z, block, i);
 
@@ -64,7 +65,7 @@ public class BlockCoalBurning extends BlockOutgas {
 				for(int iz = -2; iz <= 2; iz++) {
 					
 					if(Math.abs(ix + iy + iz) < 5 && world.getBlock(x + ix, y + iy, z + iz) == Blocks.air) {
-						world.setBlock(x + ix, y + iy, z + iz, this.getGas());
+						world.setBlock(x + ix, y + iy, z + iz, getGas());
 					}
 				}
 			}

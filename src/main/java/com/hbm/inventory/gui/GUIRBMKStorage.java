@@ -18,7 +18,7 @@ public class GUIRBMKStorage extends GuiInfoContainer {
 
 	public GUIRBMKStorage(InventoryPlayer invPlayer, TileEntityRBMKStorage tedf) {
 		super(new ContainerRBMKStorage(invPlayer, tedf));
-		rod = tedf;
+		this.rod = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 186;
@@ -35,7 +35,7 @@ public class GUIRBMKStorage extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIRBMKStorage.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 	}
 }

@@ -42,9 +42,9 @@ public class TileEntityMachineCoker extends TileEntityMachineBase implements IFl
 
 	public TileEntityMachineCoker() {
 		super(2);
-		tanks = new FluidTank[2];
-		tanks[0] = new FluidTank(Fluids.HEAVYOIL, 16_000);
-		tanks[1] = new FluidTank(Fluids.OIL_COKER, 8_000);
+		this.tanks = new FluidTank[2];
+		this.tanks[0] = new FluidTank(Fluids.HEAVYOIL, 16_000);
+		this.tanks[1] = new FluidTank(Fluids.OIL_COKER, 8_000);
 	}
 
 	@Override
@@ -55,81 +55,81 @@ public class TileEntityMachineCoker extends TileEntityMachineBase implements IFl
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 
-			this.tryPullHeat();
-			this.tanks[0].setType(0, slots);
+			tryPullHeat();
+			this.tanks[0].setType(0, this.slots);
 
-			if(worldObj.getTotalWorldTime() % 20 == 0) {
+			if(this.worldObj.getTotalWorldTime() % 20 == 0) {
 				for(DirPos pos : getConPos()) {
-					this.trySubscribe(tanks[0].getTankType(), worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+					trySubscribe(this.tanks[0].getTankType(), this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 				}
 			}
 			
 			this.wasOn = false;
 			
 			if(canProcess()) {
-				int burn = heat / 100;
+				int burn = this.heat / 100;
 						
 				if(burn > 0) {
 					this.wasOn = true;
 					this.progress += burn;
 					this.heat -= burn;
 					
-					if(progress >= processTime) {
-						this.markChanged();
-						progress -= this.processTime;
+					if(this.progress >= TileEntityMachineCoker.processTime) {
+						markChanged();
+						this.progress -= TileEntityMachineCoker.processTime;
 						
-						Triplet<Integer, ItemStack, FluidStack> recipe = CokerRecipes.getOutput(tanks[0].getTankType());
+						Triplet<Integer, ItemStack, FluidStack> recipe = CokerRecipes.getOutput(this.tanks[0].getTankType());
 						int fillReq = recipe.getX();
 						ItemStack output = recipe.getY();
 						FluidStack byproduct = recipe.getZ();
 						
 						if(output != null) {
-							if(slots[1] == null) {
-								slots[1] = output.copy();
+							if(this.slots[1] == null) {
+								this.slots[1] = output.copy();
 							} else {
-								slots[1].stackSize += output.stackSize;
+								this.slots[1].stackSize += output.stackSize;
 							}
 						}
 						
 						if(byproduct != null) {
-							tanks[1].setFill(tanks[1].getFill() + byproduct.fill);
+							this.tanks[1].setFill(this.tanks[1].getFill() + byproduct.fill);
 						}
 						
-						tanks[0].setFill(tanks[0].getFill() - fillReq);
+						this.tanks[0].setFill(this.tanks[0].getFill() - fillReq);
 					}
 				}
 
-				if(worldObj.getTotalWorldTime() % 20 == 0) PollutionHandler.incrementPollution(worldObj, xCoord, yCoord, zCoord, PollutionType.SOOT, PollutionHandler.SOOT_PER_SECOND * 20);
+				if(this.worldObj.getTotalWorldTime() % 20 == 0) PollutionHandler.incrementPollution(this.worldObj, this.xCoord, this.yCoord, this.zCoord, PollutionType.SOOT, PollutionHandler.SOOT_PER_SECOND * 20);
 			}
 			
 			for(DirPos pos : getConPos()) {
-				if(this.tanks[1].getFill() > 0) this.sendFluid(tanks[1], worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+				if(this.tanks[1].getFill() > 0) this.sendFluid(this.tanks[1], this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
 			data.setBoolean("wasOn", this.wasOn);
 			data.setInteger("heat", this.heat);
 			data.setInteger("progress", this.progress);
-			tanks[0].writeToNBT(data, "t0");
-			tanks[1].writeToNBT(data, "t1");
-			this.networkPack(data, 25);
+			this.tanks[0].writeToNBT(data, "t0");
+			this.tanks[1].writeToNBT(data, "t1");
+			networkPack(data, 25);
 		} else {
 			
 			if(this.wasOn) {
 
-				if(worldObj.getTotalWorldTime() % 2 == 0) {
+				if(this.worldObj.getTotalWorldTime() % 2 == 0) {
 					NBTTagCompound fx = new NBTTagCompound();
 					fx.setString("type", "tower");
 					fx.setFloat("lift", 10F);
 					fx.setFloat("base", 0.75F);
 					fx.setFloat("max", 3F);
-					fx.setInteger("life", 200 + worldObj.rand.nextInt(50));
+					fx.setInteger("life", 200 + this.worldObj.rand.nextInt(50));
 					fx.setInteger("color",0x404040);
-					fx.setDouble("posX", xCoord + 0.5);
-					fx.setDouble("posY", yCoord + 22);
-					fx.setDouble("posZ", zCoord + 0.5);
+					fx.setDouble("posX", this.xCoord + 0.5);
+					fx.setDouble("posY", this.yCoord + 22);
+					fx.setDouble("posZ", this.zCoord + 0.5);
 					MainRegistry.proxy.effectNT(fx);
 				}
 			}
@@ -139,19 +139,19 @@ public class TileEntityMachineCoker extends TileEntityMachineBase implements IFl
 	public DirPos[] getConPos() {
 		
 		return new DirPos[] {
-				new DirPos(xCoord + 2, yCoord, zCoord + 1, Library.POS_X),
-				new DirPos(xCoord + 2, yCoord, zCoord - 1, Library.POS_X),
-				new DirPos(xCoord - 2, yCoord, zCoord + 1, Library.NEG_X),
-				new DirPos(xCoord - 2, yCoord, zCoord - 1, Library.NEG_X),
-				new DirPos(xCoord + 1, yCoord, zCoord + 2, Library.POS_Z),
-				new DirPos(xCoord - 1, yCoord, zCoord + 2, Library.POS_Z),
-				new DirPos(xCoord + 1, yCoord, zCoord - 2, Library.NEG_Z),
-				new DirPos(xCoord - 1, yCoord, zCoord - 2, Library.NEG_Z)
+				new DirPos(this.xCoord + 2, this.yCoord, this.zCoord + 1, Library.POS_X),
+				new DirPos(this.xCoord + 2, this.yCoord, this.zCoord - 1, Library.POS_X),
+				new DirPos(this.xCoord - 2, this.yCoord, this.zCoord + 1, Library.NEG_X),
+				new DirPos(this.xCoord - 2, this.yCoord, this.zCoord - 1, Library.NEG_X),
+				new DirPos(this.xCoord + 1, this.yCoord, this.zCoord + 2, Library.POS_Z),
+				new DirPos(this.xCoord - 1, this.yCoord, this.zCoord + 2, Library.POS_Z),
+				new DirPos(this.xCoord + 1, this.yCoord, this.zCoord - 2, Library.NEG_Z),
+				new DirPos(this.xCoord - 1, this.yCoord, this.zCoord - 2, Library.NEG_Z)
 		};
 	}
 	
 	public boolean canProcess() {
-		Triplet<Integer, ItemStack, FluidStack> recipe = CokerRecipes.getOutput(tanks[0].getTankType());
+		Triplet<Integer, ItemStack, FluidStack> recipe = CokerRecipes.getOutput(this.tanks[0].getTankType());
 		
 		if(recipe == null) return false;
 		
@@ -159,15 +159,14 @@ public class TileEntityMachineCoker extends TileEntityMachineBase implements IFl
 		ItemStack output = recipe.getY();
 		FluidStack byproduct = recipe.getZ();
 		
-		if(byproduct != null) tanks[1].setTankType(byproduct.type);
+		if(byproduct != null) this.tanks[1].setTankType(byproduct.type);
 		
-		if(tanks[0].getFill() < fillReq) return false;
-		if(byproduct != null && byproduct.fill + tanks[1].getFill() > tanks[1].getMaxFill()) return false;
+		if((this.tanks[0].getFill() < fillReq) || (byproduct != null && byproduct.fill + this.tanks[1].getFill() > this.tanks[1].getMaxFill())) return false;
 		
-		if(output != null && slots[1] != null) {
-			if(output.getItem() != slots[1].getItem()) return false;
-			if(output.getItemDamage() != slots[1].getItemDamage()) return false;
-			if(output.stackSize + slots[1].stackSize > output.getMaxStackSize()) return false;
+		if(output != null && this.slots[1] != null) {
+			if(output.getItem() != this.slots[1].getItem()) return false;
+			if(output.getItemDamage() != this.slots[1].getItemDamage()) return false;
+			if(output.stackSize + this.slots[1].stackSize > output.getMaxStackSize()) return false;
 		}
 		
 		return true;
@@ -178,15 +177,15 @@ public class TileEntityMachineCoker extends TileEntityMachineBase implements IFl
 		this.wasOn = nbt.getBoolean("wasOn");
 		this.heat = nbt.getInteger("heat");
 		this.progress = nbt.getInteger("progress");
-		tanks[0].readFromNBT(nbt, "t0");
-		tanks[1].readFromNBT(nbt, "t1");
+		this.tanks[0].readFromNBT(nbt, "t0");
+		this.tanks[1].readFromNBT(nbt, "t1");
 	}
 	
 	protected void tryPullHeat() {
 		
-		if(this.heat >= this.maxHeat) return;
+		if(this.heat >= TileEntityMachineCoker.maxHeat) return;
 		
-		TileEntity con = worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
+		TileEntity con = this.worldObj.getTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
 		
 		if(con instanceof IHeatSource) {
 			IHeatSource source = (IHeatSource) con;
@@ -197,11 +196,11 @@ public class TileEntityMachineCoker extends TileEntityMachineBase implements IFl
 			}
 			
 			if(diff > 0) {
-				diff = (int) Math.ceil(diff * diffusion);
+				diff = (int) Math.ceil(diff * TileEntityMachineCoker.diffusion);
 				source.useUpHeat(diff);
 				this.heat += diff;
-				if(this.heat > this.maxHeat)
-					this.heat = this.maxHeat;
+				if(this.heat > TileEntityMachineCoker.maxHeat)
+					this.heat = TileEntityMachineCoker.maxHeat;
 				return;
 			}
 		}
@@ -233,23 +232,23 @@ public class TileEntityMachineCoker extends TileEntityMachineBase implements IFl
 		super.writeToNBT(nbt);
 		this.tanks[0].writeToNBT(nbt, "t0");
 		this.tanks[1].writeToNBT(nbt, "t1");
-		nbt.setInteger("prog", progress);
-		nbt.setInteger("heat", heat);
+		nbt.setInteger("prog", this.progress);
+		nbt.setInteger("heat", this.heat);
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return tanks;
+		return this.tanks;
 	}
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return new FluidTank[] { tanks[1] };
+		return new FluidTank[] { this.tanks[1] };
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] { tanks[0] };
+		return new FluidTank[] { this.tanks[0] };
 	}
 	
 	AxisAlignedBB bb = null;
@@ -257,18 +256,18 @@ public class TileEntityMachineCoker extends TileEntityMachineBase implements IFl
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 2,
-					yCoord,
-					zCoord - 2,
-					xCoord + 3,
-					yCoord + 23,
-					zCoord + 3
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 2,
+					this.yCoord,
+					this.zCoord - 2,
+					this.xCoord + 3,
+					this.yCoord + 23,
+					this.zCoord + 3
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override

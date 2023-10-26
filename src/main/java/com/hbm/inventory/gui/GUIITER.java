@@ -31,24 +31,25 @@ public class GUIITER extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 		
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 71, guiTop + 108, 34, 16, iter.power, iter.maxPower);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 71, this.guiTop + 108, 34, 16, this.iter.power, TileEntityITER.maxPower);
 
-		iter.tanks[0].renderTankInfo(this, mouseX, mouseY, guiLeft + 26, guiTop + 54, 16, 52);	//Water
-		iter.tanks[1].renderTankInfo(this, mouseX, mouseY, guiLeft + 134, guiTop + 54, 16, 52);	//Steam
-		iter.plasma.renderTankInfo(this, mouseX, mouseY, guiLeft + 71, guiTop + 54, 34, 34);	//Plasma
+		this.iter.tanks[0].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 26, this.guiTop + 54, 16, 52);	//Water
+		this.iter.tanks[1].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 134, this.guiTop + 54, 16, 52);	//Steam
+		this.iter.plasma.renderTankInfo(this, mouseX, mouseY, this.guiLeft + 71, this.guiTop + 54, 34, 34);	//Plasma
 
-		String text = "Magnets are " + ((iter.isOn && iter.power >= iter.powerReq) ? "ON" : "OFF");
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 76, guiTop + 94, 24, 12, mouseX, mouseY, new String[] { text });
+		String text = "Magnets are " + ((this.iter.isOn && this.iter.power >= TileEntityITER.powerReq) ? "ON" : "OFF");
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 76, this.guiTop + 94, 24, 12, mouseX, mouseY, new String[] { text });
 	}
 
+	@Override
 	protected void mouseClicked(int x, int y, int i) {
     	super.mouseClicked(x, y, i);
 		
-    	if(guiLeft + 52 <= x && guiLeft + 52 + 18 > x && guiTop + 107 < y && guiTop + 107 + 18 >= y) {
+    	if(this.guiLeft + 52 <= x && this.guiLeft + 52 + 18 > x && this.guiTop + 107 < y && this.guiTop + 107 + 18 >= y) {
     		
     		//toggle the magnets
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
-    		PacketDispatcher.wrapper.sendToServer(new AuxButtonPacket(iter.xCoord, iter.yCoord, iter.zCoord, 0, 0));
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+    		PacketDispatcher.wrapper.sendToServer(new AuxButtonPacket(this.iter.xCoord, this.iter.yCoord, this.iter.zCoord, 0, 0));
     	}
     }
 	
@@ -63,28 +64,28 @@ public class GUIITER extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIITER.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
-		if(iter.isOn)
-			drawTexturedModalRect(guiLeft + 52, guiTop + 107, 176, 0, 18, 18);
+		if(this.iter.isOn)
+			drawTexturedModalRect(this.guiLeft + 52, this.guiTop + 107, 176, 0, 18, 18);
 		
-		if(iter.isOn && iter.power >= iter.powerReq)
-			drawTexturedModalRect(guiLeft + 76, guiTop + 94, 194, 0, 24, 12);
+		if(this.iter.isOn && this.iter.power >= TileEntityITER.powerReq)
+			drawTexturedModalRect(this.guiLeft + 76, this.guiTop + 94, 194, 0, 24, 12);
 		
-		if(iter.getShield() >= iter.plasma.getTankType().temperature)
-			drawTexturedModalRect(guiLeft + 97, guiTop + 17, 218, 0, 18, 18);
+		if(this.iter.getShield() >= this.iter.plasma.getTankType().temperature)
+			drawTexturedModalRect(this.guiLeft + 97, this.guiTop + 17, 218, 0, 18, 18);
 		
-		int i = (int)iter.getPowerScaled(34);
-		drawTexturedModalRect(guiLeft + 71, guiTop + 108, 176, 25, i, 16);
+		int i = (int)this.iter.getPowerScaled(34);
+		drawTexturedModalRect(this.guiLeft + 71, this.guiTop + 108, 176, 25, i, 16);
 		
-		int j = (int)iter.getProgressScaled(17);
-		drawTexturedModalRect(guiLeft + 44, guiTop + 22, 176, 18, j, 7);
+		int j = (int)this.iter.getProgressScaled(17);
+		drawTexturedModalRect(this.guiLeft + 44, this.guiTop + 22, 176, 18, j, 7);
 
 		for(int t = 0; t < 2; t++) {
-			iter.tanks[t].renderTank(guiLeft + 26 + 108 * t, guiTop + 106, this.zLevel, 16, 52);
+			this.iter.tanks[t].renderTank(this.guiLeft + 26 + 108 * t, this.guiTop + 106, this.zLevel, 16, 52);
 		}
 		
-		iter.plasma.renderTank(guiLeft + 71, guiTop + 88, this.zLevel, 34, 34);
+		this.iter.plasma.renderTank(this.guiLeft + 71, this.guiTop + 88, this.zLevel, 34, 34);
 	}
 }

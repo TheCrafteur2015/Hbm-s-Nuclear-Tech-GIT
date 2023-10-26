@@ -27,23 +27,20 @@ public class EntitySiegeTunneler extends EntityBurrowingSwingingBase {
 	public EntitySiegeTunneler(World world) {
 		super(world);
 		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.setSize(1F, 1F);
+		setSize(1F, 1F);
 		this.yOffset = 0.5F;
 	}
 
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float damage) {
 		
-		if(this.isEntityInvulnerable())
+		if(isEntityInvulnerable() || SiegeOrchestrator.isSiegeMob(source.getEntity()))
 			return false;
 		
-		if(SiegeOrchestrator.isSiegeMob(source.getEntity()))
-			return false;
-		
-		SiegeTier tier = this.getTier();
+		SiegeTier tier = getTier();
 		
 		if(tier.fireProof && source.isFireDamage()) {
-			this.extinguish();
+			extinguish();
 			return false;
 		}
 		
@@ -66,46 +63,46 @@ public class EntitySiegeTunneler extends EntityBurrowingSwingingBase {
 	@Override
 	protected void entityInit() {
 		super.entityInit();
-		this.getDataWatcher().addObject(12, (int) 0);
+		getDataWatcher().addObject(12, (int) 0);
 	}
 
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
-		this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.15D);
-		this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(1.0D);
+		getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
+		getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D);
+		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.15D);
+		getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(1.0D);
 	}
 	
 	public void setTier(SiegeTier tier) {
-		this.getDataWatcher().updateObject(12, tier.id);
+		getDataWatcher().updateObject(12, tier.id);
 
-		this.getEntityAttribute(SharedMonsterAttributes.attackDamage).applyModifier(new AttributeModifier("Tier Damage Mod", tier.damageMod, 1));
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(tier.health * 0.5);
-		this.setHealth(this.getMaxHealth());
+		getEntityAttribute(SharedMonsterAttributes.attackDamage).applyModifier(new AttributeModifier("Tier Damage Mod", tier.damageMod, 1));
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(tier.health * 0.5);
+		setHealth(getMaxHealth());
 	}
 	
 	public SiegeTier getTier() {
-		SiegeTier tier = SiegeTier.tiers[this.getDataWatcher().getWatchableObjectInt(12)];
+		SiegeTier tier = SiegeTier.tiers[getDataWatcher().getWatchableObjectInt(12)];
 		return tier != null ? tier : SiegeTier.CLAY;
 	}
 
 	@Override
 	public void writeEntityToNBT(NBTTagCompound nbt) {
 		super.writeEntityToNBT(nbt);
-		nbt.setInteger("siegeTier", this.getTier().id);
+		nbt.setInteger("siegeTier", getTier().id);
 	}
 
 	@Override
 	public void readEntityFromNBT(NBTTagCompound nbt) {
 		super.readEntityFromNBT(nbt);
-		this.setTier(SiegeTier.tiers[nbt.getInteger("siegeTier")]);
+		setTier(SiegeTier.tiers[nbt.getInteger("siegeTier")]);
 	}
 
 	@Override
 	public IEntityLivingData onSpawnWithEgg(IEntityLivingData data) {
-		this.setTier(SiegeTier.tiers[rand.nextInt(SiegeTier.getLength())]);
+		setTier(SiegeTier.tiers[this.rand.nextInt(SiegeTier.getLength())]);
 		return super.onSpawnWithEgg(data);
 	}
 }

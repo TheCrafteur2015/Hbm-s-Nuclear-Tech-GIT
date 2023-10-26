@@ -91,10 +91,12 @@ public class RenderPump extends TileEntitySpecialRenderer implements IItemRender
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase( ) {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(0, -3, 0);
 				GL11.glScaled(2.5, 2.5, 2.5);
 			}
+			@Override
 			public void renderCommonWithStack(ItemStack item) {
 				RenderPump.this.renderCommon(System.currentTimeMillis() % 3600 * 0.1F, item.getItem() == Item.getItemFromBlock(ModBlocks.pump_steam) ? 0 : 1);
 			}};

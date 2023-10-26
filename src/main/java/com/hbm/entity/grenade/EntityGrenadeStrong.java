@@ -25,8 +25,8 @@ public class EntityGrenadeStrong extends EntityGrenadeBouncyBase {
 	public void explode() {
 
 		if(!this.worldObj.isRemote) {
-			this.setDead();
-			ExplosionLarge.explode(worldObj, posX, posY, posZ, 5.0F, true, false, false);
+			setDead();
+			ExplosionLarge.explode(this.worldObj, this.posX, this.posY, this.posZ, 5.0F, true, false, false);
 		}
 	}
 

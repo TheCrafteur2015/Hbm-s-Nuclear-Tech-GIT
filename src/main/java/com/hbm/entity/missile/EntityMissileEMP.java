@@ -25,18 +25,18 @@ public class EntityMissileEMP extends EntityMissileBaseAdvanced {
 	public void onImpact() {
         if (!this.worldObj.isRemote)
         {
-			ExplosionNukeGeneric.empBlast(worldObj, (int)posX, (int)posY, (int)posZ, 50);
-			EntityEMPBlast wave = new EntityEMPBlast(worldObj, 50);
-			wave.posX = posX;
-			wave.posY = posY;
-			wave.posZ = posZ;
-			worldObj.spawnEntityInWorld(wave);
+			ExplosionNukeGeneric.empBlast(this.worldObj, (int)this.posX, (int)this.posY, (int)this.posZ, 50);
+			EntityEMPBlast wave = new EntityEMPBlast(this.worldObj, 50);
+			wave.posX = this.posX;
+			wave.posY = this.posY;
+			wave.posZ = this.posZ;
+			this.worldObj.spawnEntityInWorld(wave);
         }
 	}
 
 	@Override
 	public List<ItemStack> getDebris() {
-		List<ItemStack> list = new ArrayList<ItemStack>();
+		List<ItemStack> list = new ArrayList<>();
 
 		list.add(new ItemStack(ModItems.wire_aluminium, 4));
 		list.add(new ItemStack(ModItems.plate_titanium, 4));

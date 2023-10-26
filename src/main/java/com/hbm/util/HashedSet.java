@@ -21,9 +21,10 @@ import org.apache.commons.lang3.NotImplementedException;
  *
  * @param <T>
  */
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class HashedSet<T> implements Set<T> {
 	
-	HashMap<Integer, T> map = new HashMap();
+	HashMap<Integer, T> map = new HashMap<>();
 	
 	public static class HashedIterator<T> implements Iterator {
 		

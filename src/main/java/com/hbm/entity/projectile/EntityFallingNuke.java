@@ -23,7 +23,7 @@ public class EntityFallingNuke extends EntityThrowable {
 	public EntityFallingNuke(World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.ignoreFrustumCheck = true;
-        this.setSize(0.98F, 0.98F);
+        setSize(0.98F, 0.98F);
 	}
 
 	public EntityFallingNuke(World p_i1582_1_, float tnt, float nuke, float hydro, float amat, float dirty, float schrab, float euph) {
@@ -40,10 +40,11 @@ public class EntityFallingNuke extends EntityThrowable {
         this.prevRotationYaw = this.rotationYaw = 90;
         this.prevRotationPitch = this.rotationPitch = 90;
         
-        this.setSize(0.98F, 0.98F);
+        setSize(0.98F, 0.98F);
 	}
 
-    protected void entityInit() {
+    @Override
+	protected void entityInit() {
     	this.dataWatcher.addObject(20, Byte.valueOf((byte)0));
     }
 	
@@ -51,10 +52,10 @@ public class EntityFallingNuke extends EntityThrowable {
 	public void onUpdate() {
 
 
-		this.lastTickPosX = this.prevPosX = posX;
-		this.lastTickPosY = this.prevPosY = posY;
-		this.lastTickPosZ = this.prevPosZ = posZ;
-		this.setPosition(posX + this.motionX, posY + this.motionY, posZ + this.motionZ);
+		this.lastTickPosX = this.prevPosX = this.posX;
+		this.lastTickPosY = this.prevPosY = this.posY;
+		this.lastTickPosZ = this.prevPosZ = this.posZ;
+		setPosition(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 		
 		/*this.prevPosX = this.posX;
 		this.prevPosY = this.posY;
@@ -68,26 +69,26 @@ public class EntityFallingNuke extends EntityThrowable {
 		this.motionZ *= 0.99;
 		this.motionY -= 0.05D;
 		
-		if(motionY < -1)
-			motionY = -1;
+		if(this.motionY < -1)
+			this.motionY = -1;
         
-        this.rotation();
+        rotation();
         
         if(this.worldObj.getBlock((int)Math.floor(this.posX), (int)Math.floor(this.posY), (int)Math.floor(this.posZ)) != Blocks.air)
         {
     		if(!this.worldObj.isRemote)
     		{
-				NukeCustom.explodeCustom(worldObj, posX, posY, posZ, tnt, nuke, hydro, amat, dirty, schrab, euph);
-	    		this.setDead();
+				NukeCustom.explodeCustom(this.worldObj, this.posX, this.posY, this.posZ, this.tnt, this.nuke, this.hydro, this.amat, this.dirty, this.schrab, this.euph);
+	    		setDead();
     		}
         }
 	}
 	
 	public void rotation() {
 
-		this.prevRotationPitch = rotationPitch;
+		this.prevRotationPitch = this.rotationPitch;
 
-		if(rotationPitch > -75)
+		if(this.rotationPitch > -75)
 			this.rotationPitch -= 2;
 	}
 
@@ -97,25 +98,25 @@ public class EntityFallingNuke extends EntityThrowable {
 	@Override
 	public void writeEntityToNBT(NBTTagCompound tag) {
 		super.writeEntityToNBT(tag);
-		tag.setFloat("tnt", tnt);
-		tag.setFloat("nuke", nuke);
-		tag.setFloat("hydro", hydro);
-		tag.setFloat("amat", amat);
-		tag.setFloat("dirty", dirty);
-		tag.setFloat("schrab", schrab);
-		tag.setFloat("euph", euph);
+		tag.setFloat("tnt", this.tnt);
+		tag.setFloat("nuke", this.nuke);
+		tag.setFloat("hydro", this.hydro);
+		tag.setFloat("amat", this.amat);
+		tag.setFloat("dirty", this.dirty);
+		tag.setFloat("schrab", this.schrab);
+		tag.setFloat("euph", this.euph);
 	}
 
 	@Override
 	public void readEntityFromNBT(NBTTagCompound tag) {
 		super.readEntityFromNBT(tag);
-		tnt = tag.getFloat("tnt");
-		nuke = tag.getFloat("nuke");
-		hydro = tag.getFloat("hydro");
-		amat = tag.getFloat("amat");
-		dirty = tag.getFloat("dirty");
-		schrab = tag.getFloat("schrab");
-		euph = tag.getFloat("euph");
+		this.tnt = tag.getFloat("tnt");
+		this.nuke = tag.getFloat("nuke");
+		this.hydro = tag.getFloat("hydro");
+		this.amat = tag.getFloat("amat");
+		this.dirty = tag.getFloat("dirty");
+		this.schrab = tag.getFloat("schrab");
+		this.euph = tag.getFloat("euph");
 	}
 
 	@Override

@@ -32,7 +32,7 @@ public class EntityChopperMine extends Entity implements IProjectile {
 		
 		this.shooter = shooter;
 		
-		this.setSize(12, 12);
+		setSize(12, 12);
 		
 		this.isImmuneToFire = true;
 	}
@@ -109,8 +109,8 @@ public class EntityChopperMine extends Entity implements IProjectile {
 		if (movingobjectposition != null && movingobjectposition.entityHit != null
 				&& movingobjectposition.entityHit instanceof EntityPlayer) {
 
-			worldObj.createExplosion(shooter, this.posX, this.posY, this.posZ, 5F, false);
-			this.setDead();
+			this.worldObj.createExplosion(this.shooter, this.posX, this.posY, this.posZ, 5F, false);
+			setDead();
 		}
 		
 		//if(timer % 10 == 0 && timer % 20 != 0)
@@ -118,15 +118,15 @@ public class EntityChopperMine extends Entity implements IProjectile {
 		//if(timer % 20 == 0)
 		//	worldObj.playSoundAtEntity(this, "random.click", 10.0F, 1.5F);
 		
-		worldObj.playSoundAtEntity(this, "hbm:misc.nullMine", 10.0F, 1F);
+		this.worldObj.playSoundAtEntity(this, "hbm:misc.nullMine", 10.0F, 1F);
 		
-		if(timer >= 100 || worldObj.getBlock((int)this.posX, (int)this.posY, (int)this.posZ).getMaterial() != Material.air)
+		if(this.timer >= 100 || this.worldObj.getBlock((int)this.posX, (int)this.posY, (int)this.posZ).getMaterial() != Material.air)
 		{
-			worldObj.createExplosion(shooter, this.posX, this.posY, this.posZ, 5F, false);
-			this.setDead();
+			this.worldObj.createExplosion(this.shooter, this.posX, this.posY, this.posZ, 5F, false);
+			setDead();
 		}
 
-		if(motionY > -0.85)
+		if(this.motionY > -0.85)
 			this.motionY -= 0.05;
 		
 		this.motionX *= 0.9;
@@ -136,7 +136,7 @@ public class EntityChopperMine extends Entity implements IProjectile {
 		this.posY += this.motionY;
 		this.posZ += this.motionZ;
 		
-		timer++;
+		this.timer++;
 	}
 
 }

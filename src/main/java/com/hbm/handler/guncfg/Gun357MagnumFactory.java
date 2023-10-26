@@ -7,12 +7,12 @@ import com.hbm.handler.BulletConfiguration;
 import com.hbm.handler.CasingEjector;
 import com.hbm.handler.GunConfiguration;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
-import com.hbm.items.ModItems;
 import com.hbm.items.ItemAmmoEnums.Ammo357Magnum;
+import com.hbm.items.ModItems;
 import com.hbm.lib.HbmCollection.EnumGunManufacturer;
+import com.hbm.lib.ModDamageSource;
 import com.hbm.particle.SpentCasing;
 import com.hbm.particle.SpentCasing.CasingType;
-import com.hbm.lib.ModDamageSource;
 import com.hbm.potion.HbmPotion;
 import com.hbm.render.util.RenderScreenOverlay.Crosshair;
 
@@ -49,21 +49,21 @@ public class Gun357MagnumFactory {
 		config.firingSound = "hbm:weapon.revolverShoot";
 		config.reloadSoundEnd = false;
 		
-		config.ejector = EJECTOR_REVOLVER;
+		config.ejector = Gun357MagnumFactory.EJECTOR_REVOLVER;
 		
 		return config;
 	}
 	
 	public static GunConfiguration getRevolverConfig() {
 		
-		GunConfiguration config = getBaseConfig();
+		GunConfiguration config = Gun357MagnumFactory.getBaseConfig();
 		
 		config.durability = 3500;
 		
 		config.name = "ffiVInox";
 		config.manufacturer = EnumGunManufacturer.FLIMFLAM;
 		
-		config.config = new ArrayList<Integer>();
+		config.config = new ArrayList<>();
 		config.config.add(BulletConfigSyncingUtil.STEEL_REVOLVER);
 		config.config.add(BulletConfigSyncingUtil.IRON_REVOLVER);
 		config.config.add(BulletConfigSyncingUtil.LEAD_REVOLVER);
@@ -74,14 +74,14 @@ public class Gun357MagnumFactory {
 	
 	public static GunConfiguration getRevolverSaturniteConfig() {
 		
-		GunConfiguration config = getBaseConfig();
+		GunConfiguration config = Gun357MagnumFactory.getBaseConfig();
 		
 		config.durability = 3500;
 		
 		config.name = "ffivSatur";
 		config.manufacturer = EnumGunManufacturer.FLIMFLAM;
 		
-		config.config = new ArrayList<Integer>();
+		config.config = new ArrayList<>();
 		config.config.add(BulletConfigSyncingUtil.SATURNITE_REVOLVER);
 		config.config.add(BulletConfigSyncingUtil.DESH_REVOLVER);
 		
@@ -90,14 +90,14 @@ public class Gun357MagnumFactory {
 	
 	public static GunConfiguration getRevolverGoldConfig() {
 		
-		GunConfiguration config = getBaseConfig();
+		GunConfiguration config = Gun357MagnumFactory.getBaseConfig();
 		
 		config.durability = 2500;
 		
 		config.name = "ffivBling";
 		config.manufacturer = EnumGunManufacturer.FLIMFLAM;
 		
-		config.config = new ArrayList<Integer>();
+		config.config = new ArrayList<>();
 		config.config.add(BulletConfigSyncingUtil.GOLD_REVOLVER);
 		config.config.add(BulletConfigSyncingUtil.STEEL_REVOLVER);
 		config.config.add(BulletConfigSyncingUtil.IRON_REVOLVER);
@@ -109,7 +109,7 @@ public class Gun357MagnumFactory {
 	
 	public static GunConfiguration getRevolverCursedConfig() {
 		
-		GunConfiguration config = getBaseConfig();
+		GunConfiguration config = Gun357MagnumFactory.getBaseConfig();
 		
 		config.rateOfFire = 7;
 		config.ammoCap = 17;
@@ -119,7 +119,7 @@ public class Gun357MagnumFactory {
 		config.name = "revolverCursed";
 		config.manufacturer = EnumGunManufacturer.BAE;
 		
-		config.config = new ArrayList<Integer>();
+		config.config = new ArrayList<>();
 		config.config.add(BulletConfigSyncingUtil.CURSED_REVOLVER);
 		config.config.add(BulletConfigSyncingUtil.DESH_REVOLVER);
 		
@@ -128,7 +128,7 @@ public class Gun357MagnumFactory {
 	
 	public static GunConfiguration getRevolverSchrabidiumConfig() {
 		
-		GunConfiguration config = getBaseConfig();
+		GunConfiguration config = Gun357MagnumFactory.getBaseConfig();
 		
 		config.durability = 7500;
 		config.firingSound = "hbm:weapon.schrabidiumShoot";
@@ -136,7 +136,7 @@ public class Gun357MagnumFactory {
 		config.name = "ffiVUltra";
 		config.manufacturer = EnumGunManufacturer.FLIMFLAM;
 		
-		config.config = new ArrayList<Integer>();
+		config.config = new ArrayList<>();
 		config.config.add(BulletConfigSyncingUtil.SCHRABIDIUM_REVOLVER);
 		config.config.add(BulletConfigSyncingUtil.GOLD_REVOLVER);
 		config.config.add(BulletConfigSyncingUtil.STEEL_REVOLVER);
@@ -149,7 +149,7 @@ public class Gun357MagnumFactory {
 	
 	public static GunConfiguration getRevolverNightmareConfig() {
 		
-		GunConfiguration config = getBaseConfig();
+		GunConfiguration config = Gun357MagnumFactory.getBaseConfig();
 		
 		config.durability = 4000;
 		config.firingSound = "hbm:weapon.schrabidiumShoot";
@@ -157,7 +157,7 @@ public class Gun357MagnumFactory {
 		config.name = "ffiVN1";
 		config.manufacturer = EnumGunManufacturer.FLIMFLAM;
 		
-		config.config = new ArrayList<Integer>();
+		config.config = new ArrayList<>();
 		config.config.add(BulletConfigSyncingUtil.NIGHT_REVOLVER);
 		config.config.add(BulletConfigSyncingUtil.DESH_REVOLVER);
 		
@@ -166,7 +166,7 @@ public class Gun357MagnumFactory {
 	
 	public static GunConfiguration getRevolverNightmare2Config() {
 		
-		GunConfiguration config = getBaseConfig();
+		GunConfiguration config = Gun357MagnumFactory.getBaseConfig();
 		
 		config.durability = 4000;
 		config.firingSound = "hbm:weapon.schrabidiumShoot";
@@ -175,7 +175,7 @@ public class Gun357MagnumFactory {
 		config.name = "ffiVN2";
 		config.manufacturer = EnumGunManufacturer.FLIMFLAM;
 		
-		config.config = new ArrayList<Integer>();
+		config.config = new ArrayList<>();
 		config.config.add(BulletConfigSyncingUtil.NIGHT2_REVOLVER);
 		
 		return config;
@@ -183,7 +183,7 @@ public class Gun357MagnumFactory {
 	
 	public static GunConfiguration getRevolverBioConfig() {
 		
-		GunConfiguration config = getBaseConfig();
+		GunConfiguration config = Gun357MagnumFactory.getBaseConfig();
 		
 		config.durability = 100000;
 		config.firingSound = "hbm:weapon.deagleShoot";
@@ -216,7 +216,7 @@ public class Gun357MagnumFactory {
 		bullet.dmgMin = 8;
 		bullet.dmgMax = 10;
 		
-		bullet.spentCasing = CASING357.clone().register("357Iron").setColor(0xA8A8A8);
+		bullet.spentCasing = Gun357MagnumFactory.CASING357.clone().register("357Iron").setColor(0xA8A8A8);
 		
 		return bullet;
 	}
@@ -229,7 +229,7 @@ public class Gun357MagnumFactory {
 		bullet.dmgMin = 18;
 		bullet.dmgMax = 22;
 		
-		bullet.spentCasing = CASING357.clone().register("357Lead").setColor(0x646470);
+		bullet.spentCasing = Gun357MagnumFactory.CASING357.clone().register("357Lead").setColor(0x646470);
 		
 		return bullet;
 	}
@@ -242,10 +242,10 @@ public class Gun357MagnumFactory {
 		bullet.dmgMin = 10;
 		bullet.dmgMax = 15;
 		
-		bullet.effects = new ArrayList();
+		bullet.effects = new ArrayList<>();
 		bullet.effects.add(new PotionEffect(HbmPotion.radiation.id, 10 * 20, 4));
 		
-		bullet.spentCasing = CASING357.clone().register("357Nuc").setColor(0xFEFEFE);
+		bullet.spentCasing = Gun357MagnumFactory.CASING357.clone().register("357Nuc").setColor(0xFEFEFE);
 		
 		return bullet;
 	}
@@ -258,7 +258,7 @@ public class Gun357MagnumFactory {
 		bullet.dmgMin = 25;
 		bullet.dmgMax = 28;
 		
-		bullet.spentCasing = CASING357.clone().register("357Gold").setColor(0xF9FF3E);
+		bullet.spentCasing = Gun357MagnumFactory.CASING357.clone().register("357Gold").setColor(0xF9FF3E);
 		
 		return bullet;
 	}
@@ -271,7 +271,7 @@ public class Gun357MagnumFactory {
 		bullet.dmgMin = 30;
 		bullet.dmgMax = 33;
 		
-		bullet.spentCasing = CASING357.clone().register("357Desh").setColor(0xF22929);
+		bullet.spentCasing = Gun357MagnumFactory.CASING357.clone().register("357Desh").setColor(0xF22929);
 		
 		return bullet;
 	}
@@ -285,7 +285,7 @@ public class Gun357MagnumFactory {
 		bullet.dmgMax = 100000;
 		bullet.instakill = true;
 		
-		bullet.spentCasing = CASING357.clone().register("357Schrab").setColor(0x32FFFF);
+		bullet.spentCasing = Gun357MagnumFactory.CASING357.clone().register("357Schrab").setColor(0x32FFFF);
 		
 		return bullet;
 	}
@@ -298,7 +298,7 @@ public class Gun357MagnumFactory {
 		bullet.dmgMin = 18;
 		bullet.dmgMax = 25;
 		
-		bullet.spentCasing = CASING357.clone().register("357Cursed").setColor(0x565656);
+		bullet.spentCasing = Gun357MagnumFactory.CASING357.clone().register("357Cursed").setColor(0x565656);
 		
 		return bullet;
 	}
@@ -311,7 +311,7 @@ public class Gun357MagnumFactory {
 		bullet.dmgMin = 1;
 		bullet.dmgMax = 100;
 		
-		bullet.spentCasing = CASING357.clone().register("357N1").setColor(0x3A3A3A);
+		bullet.spentCasing = Gun357MagnumFactory.CASING357.clone().register("357N1").setColor(0x3A3A3A);
 		
 		return bullet;
 	}
@@ -328,12 +328,12 @@ public class Gun357MagnumFactory {
 		bullet.dmgMax = 100;
 		bullet.doesRicochet = false;
 		bullet.destroysBlocks = true;
-		bullet.style = bullet.STYLE_BOLT;
-		bullet.trail = bullet.BOLT_NIGHTMARE;
+		bullet.style = BulletConfiguration.STYLE_BOLT;
+		bullet.trail = BulletConfiguration.BOLT_NIGHTMARE;
 		
 		bullet.damageType = ModDamageSource.s_laser;
 		
-		bullet.spentCasing = CASINGNM;
+		bullet.spentCasing = Gun357MagnumFactory.CASINGNM;
 		
 		return bullet;
 	}

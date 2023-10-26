@@ -20,8 +20,8 @@ public class CombinationHandler extends NEIUniversalHandler {
 	@Override
 	public void loadTransferRects() {
 		super.loadTransferRects();
-		transferRectsGui.add(new RecipeTransferRect(new Rectangle(49, 44, 18, 18), "ntmCombination"));
-		guiGui.add(GUIFurnaceCombo.class);
-		RecipeTransferRectHandler.registerRectsToGuis(guiGui, transferRectsGui);
+		this.transferRectsGui.add(new RecipeTransferRect(new Rectangle(49, 44, 18, 18), "ntmCombination"));
+		this.guiGui.add(GUIFurnaceCombo.class);
+		RecipeTransferRectHandler.registerRectsToGuis(this.guiGui, this.transferRectsGui);
 	}
 }

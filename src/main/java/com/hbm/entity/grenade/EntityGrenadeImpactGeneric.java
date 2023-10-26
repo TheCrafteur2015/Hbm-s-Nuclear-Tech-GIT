@@ -42,8 +42,8 @@ public class EntityGrenadeImpactGeneric extends EntityGrenadeBase implements IGe
 	public void explode() {
 
 		if(!this.worldObj.isRemote && getGrenade() != null) {
-			getGrenade().explode(this, this.getThrower(), worldObj, posX, posY, posZ);
-			this.setDead();
+			getGrenade().explode(this, getThrower(), this.worldObj, this.posX, this.posY, this.posZ);
+			setDead();
 		}
 	}
 

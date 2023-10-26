@@ -26,8 +26,8 @@ public class ParticleRadiationFog extends EntityFX {
 
 	public ParticleRadiationFog(TextureManager p_i1213_1_, World p_i1218_1_, double p_i1218_2_, double p_i1218_4_, double p_i1218_6_) {
 		super(p_i1218_1_, p_i1218_2_, p_i1218_4_, p_i1218_6_);
-		theRenderEngine = p_i1213_1_;
-		maxAge = 100 + rand.nextInt(40);
+		this.theRenderEngine = p_i1213_1_;
+		this.maxAge = 100 + this.rand.nextInt(40);
 		
         this.particleRed = this.particleGreen = this.particleBlue = 0;
         this.particleScale = 7.5F;
@@ -35,8 +35,8 @@ public class ParticleRadiationFog extends EntityFX {
 
 	public ParticleRadiationFog(TextureManager p_i1213_1_, World p_i1218_1_, double p_i1218_2_, double p_i1218_4_, double p_i1218_6_, float red, float green, float blue, float scale) {
 		super(p_i1218_1_, p_i1218_2_, p_i1218_4_, p_i1218_6_);
-		theRenderEngine = p_i1213_1_;
-		maxAge = 100 + rand.nextInt(40);
+		this.theRenderEngine = p_i1213_1_;
+		this.maxAge = 100 + this.rand.nextInt(40);
 
         this.particleRed = red;
         this.particleGreen = green;
@@ -45,21 +45,22 @@ public class ParticleRadiationFog extends EntityFX {
         this.particleScale = scale;
 	}
 
+	@Override
 	public void onUpdate() {
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
         
-        if(maxAge < 400)
+        if(this.maxAge < 400)
         {
-        	maxAge = 400;
+        	this.maxAge = 400;
         }
 
         this.particleAge++;
         
-        if (this.particleAge >= maxAge)
+        if (this.particleAge >= this.maxAge)
         {
-            this.setDead();
+            setDead();
         }
 
         this.motionX *= 0.9599999785423279D;
@@ -73,17 +74,19 @@ public class ParticleRadiationFog extends EntityFX {
         }
 	}
 
+	@Override
 	public int getFXLayer() {
 		return 3;
 	}
 
+	@Override
 	public void renderParticle(Tessellator tess, float p_70539_2_, float p_70539_3_, float p_70539_4_, float p_70539_5_, float p_70539_6_, float p_70539_7_) {
 		
-		this.theRenderEngine.bindTexture(texture);
+		this.theRenderEngine.bindTexture(ParticleRadiationFog.texture);
 		
 		float alpha = 0;
 		
-		alpha = (float) Math.sin(particleAge * Math.PI / (400F)) * 0.125F;
+		alpha = (float) Math.sin(this.particleAge * Math.PI / (400F)) * 0.125F;
 
         GL11.glColor4f(0.85F, 0.9F, 0.5F, alpha);
 		GL11.glDisable(GL11.GL_LIGHTING);
@@ -100,13 +103,13 @@ public class ParticleRadiationFog extends EntityFX {
 			double dX = (rand.nextGaussian() - 1D) * 2.5D;
 			double dY = (rand.nextGaussian() - 1D) * 0.15D;
 			double dZ = (rand.nextGaussian() - 1D) * 2.5D;
-			double size = rand.nextDouble() * particleScale;
+			double size = rand.nextDouble() * this.particleScale;
 	        
 			GL11.glTranslatef((float) dX, (float) dY, (float) dZ);
 			
-	        float pX = (float) ((this.prevPosX + (this.posX - this.prevPosX) * (double)p_70539_2_ - interpPosX) + rand.nextGaussian() * 0.5);
-	        float pY = (float) ((this.prevPosY + (this.posY - this.prevPosY) * (double)p_70539_2_ - interpPosY) + rand.nextGaussian() * 0.5);
-	        float pZ = (float) ((this.prevPosZ + (this.posZ - this.prevPosZ) * (double)p_70539_2_ - interpPosZ) + rand.nextGaussian() * 0.5);
+	        float pX = (float) ((this.prevPosX + (this.posX - this.prevPosX) * (double)p_70539_2_ - EntityFX.interpPosX) + rand.nextGaussian() * 0.5);
+	        float pY = (float) ((this.prevPosY + (this.posY - this.prevPosY) * (double)p_70539_2_ - EntityFX.interpPosY) + rand.nextGaussian() * 0.5);
+	        float pZ = (float) ((this.prevPosZ + (this.posZ - this.prevPosZ) * (double)p_70539_2_ - EntityFX.interpPosZ) + rand.nextGaussian() * 0.5);
 			
 			tess.startDrawingQuads();
 			tess.setNormal(0.0F, 1.0F, 0.0F);

@@ -8,7 +8,7 @@ public interface IItemRendererProvider {
 	public Item getItemForRenderer();
 	
 	public default Item[] getItemsForRenderer() {
-		return new Item[] { this.getItemForRenderer() };
+		return new Item[] { getItemForRenderer() };
 	}
 	
 	public IItemRenderer getRenderer();

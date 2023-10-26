@@ -15,14 +15,14 @@ public class ContainerWatz extends Container {
 	protected TileEntityWatz watz;
 	
 	public ContainerWatz(InventoryPlayer invPlayer, TileEntityWatz tedf) {
-		watz = tedf;
+		this.watz = tedf;
 
 		int index = 0;
 		for(int j = 0; j < 6; j++) {
 			for(int i = 0; i < 6; i++) {
 
 				if(i + j > 1 && i + j < 9 && 5 - i + j > 1 && i + 5 - j > 1) {
-					this.addSlotToContainer(new SlotNonRetarded(watz, index, 17 + i * 18, 8 + j * 18));
+					addSlotToContainer(new SlotNonRetarded(this.watz, index, 17 + i * 18, 8 + j * 18));
 					index++;
 				}
 			}
@@ -30,12 +30,12 @@ public class ContainerWatz extends Container {
 		
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 147 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 147 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 205));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 205));
 		}
 	}
 
@@ -48,11 +48,11 @@ public class ContainerWatz extends Container {
 			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 			
-			if(par2 <= watz.getSizeInventory() - 1) {
-				if(!InventoryUtil.mergeItemStack(this.inventorySlots, var5, watz.getSizeInventory(), this.inventorySlots.size(), true)) {
+			if(par2 <= this.watz.getSizeInventory() - 1) {
+				if(!InventoryUtil.mergeItemStack(this.inventorySlots, var5, this.watz.getSizeInventory(), this.inventorySlots.size(), true)) {
 					return null;
 				}
-			} else if(!InventoryUtil.mergeItemStack(this.inventorySlots, var5, 0, watz.getSizeInventory(), false)) {
+			} else if(!InventoryUtil.mergeItemStack(this.inventorySlots, var5, 0, this.watz.getSizeInventory(), false)) {
 				return null;
 			}
 
@@ -70,6 +70,6 @@ public class ContainerWatz extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return watz.isUseableByPlayer(player);
+		return this.watz.isUseableByPlayer(player);
 	}
 }

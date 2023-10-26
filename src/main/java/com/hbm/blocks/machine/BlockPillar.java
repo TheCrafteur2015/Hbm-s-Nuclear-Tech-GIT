@@ -29,21 +29,22 @@ public class BlockPillar extends Block implements IFluidConnectorBlock {
 
 	public BlockPillar(Material mat, String top) {
 		super(mat);
-		textureTop = top;
+		this.textureTop = top;
 	}
 
 	public BlockPillar(Material mat, String top, String bottom) {
 		this(mat, top);
-		textureAlt = bottom;
+		this.textureAlt = bottom;
 	}
 
-    public Block setBlockTextureName(String name) {
+    @Override
+	public Block setBlockTextureName(String name) {
     	
-    	if(textureTop.isEmpty())
-    		textureTop = name;
+    	if(this.textureTop.isEmpty())
+    		this.textureTop = name;
     	
-    	if(textureAlt.isEmpty())
-    		textureAlt = name;
+    	if(this.textureAlt.isEmpty())
+    		this.textureAlt = name;
     	
         this.textureName = name;
         
@@ -54,8 +55,8 @@ public class BlockPillar extends Block implements IFluidConnectorBlock {
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		
-		this.iconAlt = iconRegister.registerIcon(textureAlt.isEmpty() ? RefStrings.MODID + ":code" : textureAlt);
-		this.iconTop = iconRegister.registerIcon(textureTop);
+		this.iconAlt = iconRegister.registerIcon(this.textureAlt.isEmpty() ? RefStrings.MODID + ":code" : this.textureAlt);
+		this.iconTop = iconRegister.registerIcon(this.textureTop);
 		this.blockIcon = iconRegister.registerIcon(this.textureName);
 	}
 

@@ -29,16 +29,17 @@ public class ItemAutogen extends Item {
 	private HashMap<NTMMaterial, IIcon> iconMap = new HashMap();
 	
 	public ItemAutogen(MaterialShapes shape) {
-		this.setHasSubtypes(true);
+		setHasSubtypes(true);
 		this.shape = shape;
 	}
 	
 	/** add override texture */
 	public ItemAutogen aot(NTMMaterial mat, String tex) {
-		textureOverrides.put(mat, tex);
+		this.textureOverrides.put(mat, tex);
 		return this;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister reg) {
 		super.registerIcons(reg);
@@ -47,17 +48,17 @@ public class ItemAutogen extends Item {
 			TextureMap map = (TextureMap) reg;
 			
 			for(NTMMaterial mat : Mats.orderedList) {
-				if(!textureOverrides.containsKey(mat) && mat.solidColorLight != mat.solidColorDark && (shape == null || mat.shapes.contains(shape))) { //only generate icons if there is no override, color variation is available and if the icon will actually be used
-					String placeholderName = this.getIconString() + "-" + mat.names[0]; //the part after the dash is discarded - the name only has to be unique so that the hashmap which holds all the icon definitions can hold multiple references
+				if(!this.textureOverrides.containsKey(mat) && mat.solidColorLight != mat.solidColorDark && (this.shape == null || mat.shapes.contains(this.shape))) { //only generate icons if there is no override, color variation is available and if the icon will actually be used
+					String placeholderName = getIconString() + "-" + mat.names[0]; //the part after the dash is discarded - the name only has to be unique so that the hashmap which holds all the icon definitions can hold multiple references
 					TextureAtlasSpriteMutatable mutableIcon = new TextureAtlasSpriteMutatable(placeholderName, new RGBMutatorInterpolatedComponentRemap(0xFFFFFF, 0x505050, mat.solidColorLight, mat.solidColorDark));
 					map.setTextureEntry(placeholderName, mutableIcon);
-					iconMap.put(mat, mutableIcon);
+					this.iconMap.put(mat, mutableIcon);
 				}
 			}
 		}
 		
-		for(Entry<NTMMaterial, String> tex : textureOverrides.entrySet()) {
-			iconMap.put(tex.getKey(), reg.registerIcon(RefStrings.MODID + ":" + tex.getValue()));
+		for(Entry<NTMMaterial, String> tex : this.textureOverrides.entrySet()) {
+			this.iconMap.put(tex.getKey(), reg.registerIcon(RefStrings.MODID + ":" + tex.getValue()));
 		}
 	}
 
@@ -79,7 +80,7 @@ public class ItemAutogen extends Item {
 		NTMMaterial mat = Mats.matById.get(meta);
 		
 		if(mat != null) {
-			IIcon override = iconMap.get(mat);
+			IIcon override = this.iconMap.get(mat);
 			if(override != null) {
 				return override;
 			}
@@ -92,7 +93,7 @@ public class ItemAutogen extends Item {
 	@SideOnly(Side.CLIENT)
 	public int getColorFromItemStack(ItemStack stack, int layer) {
 		
-		if(this.getIconFromDamage(stack.getItemDamage()) != this.itemIcon) {
+		if(getIconFromDamage(stack.getItemDamage()) != this.itemIcon) {
 			return 0xffffff; //custom textures don't need tints
 		}
 		
@@ -115,6 +116,6 @@ public class ItemAutogen extends Item {
 		}
 		
 		String matName = StatCollector.translateToLocal(mat.getUnlocalizedName());
-		return StatCollector.translateToLocalFormatted(this.getUnlocalizedNameInefficiently(stack) + ".name", matName);
+		return StatCollector.translateToLocalFormatted(getUnlocalizedNameInefficiently(stack) + ".name", matName);
 	}
 }

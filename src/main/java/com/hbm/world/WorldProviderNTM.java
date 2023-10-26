@@ -28,7 +28,7 @@ public class WorldProviderNTM extends WorldProviderSurface {
 		float f2 = 0.4F;
 		float f3 = MathHelper.cos(par1 * (float) Math.PI * 2.0F) - 0.0F;
 		float f4 = -0.0F;
-		float dust = MainRegistry.proxy.getImpactDust(worldObj);
+		float dust = MainRegistry.proxy.getImpactDust(this.worldObj);
 
 		if(f3 >= f4 - f2 && f3 <= f4 + f2) {
 			float f5 = (f3 - f4) / f2 * 0.5F + 0.5F;
@@ -47,9 +47,9 @@ public class WorldProviderNTM extends WorldProviderSurface {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public float getStarBrightness(float par1) {
-		float starBr = worldObj.getStarBrightnessBody(par1);
-		float dust = MainRegistry.proxy.getImpactDust(worldObj);
-		float f1 = worldObj.getCelestialAngle(par1);
+		float starBr = this.worldObj.getStarBrightnessBody(par1);
+		float dust = MainRegistry.proxy.getImpactDust(this.worldObj);
+		float f1 = this.worldObj.getCelestialAngle(par1);
 		float f2 = 1.0F - (MathHelper.cos(f1 * (float) Math.PI * 2.0F) * 2.0F + 0.25F);
 
 		if(f2 < 0.0F) {
@@ -66,13 +66,13 @@ public class WorldProviderNTM extends WorldProviderSurface {
 	@SideOnly(Side.CLIENT)
 	public float getSunBrightness(float par1) {
 		float dust = ImpactWorldHandler.getDustForClient(MainRegistry.proxy.me().worldObj);
-		float sunBr = worldObj.getSunBrightnessFactor(par1);
+		float sunBr = this.worldObj.getSunBrightnessFactor(par1);
 		return (sunBr * 0.8F + 0.2F) * (1 - dust);
 	}
 
 	@Override
 	public boolean isDaytime() {
-		float dust = MainRegistry.proxy.getImpactDust(worldObj);
+		float dust = MainRegistry.proxy.getImpactDust(this.worldObj);
 
 		if(dust >= 0.75F) {
 			return false;
@@ -82,8 +82,8 @@ public class WorldProviderNTM extends WorldProviderSurface {
 
 	@Override
 	public float getSunBrightnessFactor(float par1) {
-		float dust = MainRegistry.proxy.getImpactDust(worldObj);
-		float sunBr = worldObj.getSunBrightnessFactor(par1);
+		float dust = MainRegistry.proxy.getImpactDust(this.worldObj);
+		float sunBr = this.worldObj.getSunBrightnessFactor(par1);
 		float dimSun = sunBr * (1 - dust);
 		return dimSun;
 	}
@@ -95,8 +95,8 @@ public class WorldProviderNTM extends WorldProviderSurface {
 	@Override
 	public Vec3 getFogColor(float p_76562_1_, float p_76562_2_) {
 		Vec3 fog = super.getFogColor(p_76562_1_, p_76562_2_);
-		float dust = MainRegistry.proxy.getImpactDust(worldObj);
-		float fire = MainRegistry.proxy.getImpactFire(worldObj);
+		float dust = MainRegistry.proxy.getImpactDust(this.worldObj);
+		float fire = MainRegistry.proxy.getImpactFire(this.worldObj);
 
 		float f3 = (float) fog.xCoord;
 		float f4 = (float) fog.yCoord * (1 - (dust * 0.5F));
@@ -112,8 +112,8 @@ public class WorldProviderNTM extends WorldProviderSurface {
 	@SideOnly(Side.CLIENT)
 	public Vec3 getSkyColor(Entity cameraEntity, float partialTicks) {
 		Vec3 sky = super.getSkyColor(cameraEntity, partialTicks);
-		float dust = MainRegistry.proxy.getImpactDust(worldObj);
-		float fire = MainRegistry.proxy.getImpactFire(worldObj);
+		float dust = MainRegistry.proxy.getImpactDust(this.worldObj);
+		float fire = MainRegistry.proxy.getImpactFire(this.worldObj);
 
 		float f4;
 		float f5;
@@ -132,10 +132,11 @@ public class WorldProviderNTM extends WorldProviderSurface {
 		return Vec3.createVectorHelper((double) f4 * (fire + (1 - dust)), (double) f5 * (fire + (1 - dust)), (double) f6 * (fire + (1 - dust)));
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public Vec3 drawClouds(float partialTicks) {
 		Vec3 clouds = super.drawClouds(partialTicks);
-		float dust = MainRegistry.proxy.getImpactDust(worldObj);;
+		float dust = MainRegistry.proxy.getImpactDust(this.worldObj);;
 		float f3 = (float) clouds.xCoord;
 		float f4 = (float) clouds.yCoord;
 		float f5 = (float) clouds.zCoord;

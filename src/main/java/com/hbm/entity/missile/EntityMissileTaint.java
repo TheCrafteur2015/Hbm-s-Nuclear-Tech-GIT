@@ -25,17 +25,17 @@ public class EntityMissileTaint extends EntityMissileBaseAdvanced {
 		this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 10.0F, true);
         
 	    for(int i = 0; i < 100; i++) {
-	    	int a = rand.nextInt(11) + (int)this.posX - 5;
-	    	int b = rand.nextInt(11) + (int)this.posY - 5;
-	    	int c = rand.nextInt(11) + (int)this.posZ - 5;
-	           if(worldObj.getBlock(a, b, c).isReplaceable(worldObj, a, b, c) && BlockTaint.hasPosNeightbour(worldObj, a, b, c))
-	        	   worldObj.setBlock(a, b, c, ModBlocks.taint);
+	    	int a = this.rand.nextInt(11) + (int)this.posX - 5;
+	    	int b = this.rand.nextInt(11) + (int)this.posY - 5;
+	    	int c = this.rand.nextInt(11) + (int)this.posZ - 5;
+	           if(this.worldObj.getBlock(a, b, c).isReplaceable(this.worldObj, a, b, c) && BlockTaint.hasPosNeightbour(this.worldObj, a, b, c))
+	        	   this.worldObj.setBlock(a, b, c, ModBlocks.taint);
 	    }
 	}
 
 	@Override
 	public List<ItemStack> getDebris() {
-		List<ItemStack> list = new ArrayList<ItemStack>();
+		List<ItemStack> list = new ArrayList<>();
 
 		list.add(new ItemStack(ModItems.wire_aluminium, 4));
 		list.add(new ItemStack(ModItems.plate_titanium, 4));

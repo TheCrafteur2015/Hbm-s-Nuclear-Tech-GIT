@@ -9,9 +9,9 @@ import com.hbm.lib.RefStrings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class ArmorAustralium extends ItemArmor {
@@ -26,21 +26,21 @@ public class ArmorAustralium extends ItemArmor {
 	public void onArmorTick(World world, EntityPlayer player, ItemStack armor) {
 		if(armor.getItemDamage() < armor.getMaxDamage()) {
 			if (armor.getItem() == ModItems.australium_iii) {
-				if(rand.nextInt(3) == 0) {
+				if(this.rand.nextInt(3) == 0) {
 					armor.damageItem(1, player);
 				}
 				if(!player.isPotionActive(Potion.field_76444_x.id))
 					player.addPotionEffect(new PotionEffect(Potion.field_76444_x.id, 80, 2, true));
 			}
 			if (armor.getItem() == ModItems.australium_iv) {
-				if(rand.nextInt(5) == 0) {
+				if(this.rand.nextInt(5) == 0) {
 					armor.damageItem(1, player);
 				}
 				if(!player.isPotionActive(Potion.field_76444_x.id))
 					player.addPotionEffect(new PotionEffect(Potion.field_76444_x.id, 80, 4, true));
 			}
 			if (armor.getItem() == ModItems.australium_v) {
-				if(rand.nextInt(7) == 0) {
+				if(this.rand.nextInt(7) == 0) {
 					armor.damageItem(1, player);
 				}
 				if(!player.isPotionActive(Potion.field_76444_x.id))

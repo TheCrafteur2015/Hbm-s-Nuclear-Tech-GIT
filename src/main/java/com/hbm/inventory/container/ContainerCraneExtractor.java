@@ -21,29 +21,29 @@ public class ContainerCraneExtractor extends Container {
 		//filter
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 3; j++) {
-				this.addSlotToContainer(new SlotPattern(extractor, j + i * 3, 71 + j * 18, 17 + i * 18));
+				addSlotToContainer(new SlotPattern(extractor, j + i * 3, 71 + j * 18, 17 + i * 18));
 			}
 		}
 		
 		//buffer
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 3; j++) {
-				this.addSlotToContainer(new Slot(extractor, 9 + j + i * 3, 8 + j * 18, 17 + i * 18));
+				addSlotToContainer(new Slot(extractor, 9 + j + i * 3, 8 + j * 18, 17 + i * 18));
 			}
 		}
 		
 		//upgrades
-		this.addSlotToContainer(new SlotUpgrade(extractor, 18, 152, 23));
-		this.addSlotToContainer(new SlotUpgrade(extractor, 19, 152, 47));
+		addSlotToContainer(new SlotUpgrade(extractor, 18, 152, 23));
+		addSlotToContainer(new SlotUpgrade(extractor, 19, 152, 47));
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 103 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 103 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 161));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 161));
 		}
 	}
 
@@ -60,19 +60,19 @@ public class ContainerCraneExtractor extends Container {
 				return null;
 			}
 
-			if(slot <= extractor.getSizeInventory() - 1) {
-				if(!this.mergeItemStack(var5, extractor.getSizeInventory(), this.inventorySlots.size(), true)) {
+			if(slot <= this.extractor.getSizeInventory() - 1) {
+				if(!mergeItemStack(var5, this.extractor.getSizeInventory(), this.inventorySlots.size(), true)) {
 					return null;
 				}
 			} else {
 				
 				if(var3.getItem() == ModItems.upgrade_stack) {
-					 if(!this.mergeItemStack(var5, 18, 19, false))
+					 if(!mergeItemStack(var5, 18, 19, false))
 						 return null;
 				} else if(var3.getItem() == ModItems.upgrade_ejector) {
-					 if(!this.mergeItemStack(var5, 19, 20, false))
+					 if(!mergeItemStack(var5, 19, 20, false))
 						 return null;
-				} else if(!this.mergeItemStack(var5, 9, extractor.getSizeInventory(), false)) {
+				} else if(!mergeItemStack(var5, 9, this.extractor.getSizeInventory(), false)) {
 					 return null;
 				}
 				
@@ -93,7 +93,7 @@ public class ContainerCraneExtractor extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return extractor.isUseableByPlayer(player);
+		return this.extractor.isUseableByPlayer(player);
 	}
 
 	@Override
@@ -108,7 +108,7 @@ public class ContainerCraneExtractor extends Container {
 			return super.slotClick(index, button, mode, player);
 		}
 
-		Slot slot = this.getSlot(index);
+		Slot slot = getSlot(index);
 		
 		ItemStack ret = null;
 		ItemStack held = player.inventory.getItemStack();
@@ -117,7 +117,7 @@ public class ContainerCraneExtractor extends Container {
 			ret = slot.getStack().copy();
 		
 		if(button == 1 && mode == 0 && slot.getHasStack()) {
-			extractor.nextMode(index);
+			this.extractor.nextMode(index);
 			return ret;
 			
 		} else {
@@ -128,7 +128,7 @@ public class ContainerCraneExtractor extends Container {
 			}
 			
 			slot.onSlotChanged();
-			extractor.matcher.initPatternStandard(extractor.getWorldObj(), slot.getStack(), index);
+			this.extractor.matcher.initPatternStandard(this.extractor.getWorldObj(), slot.getStack(), index);
 			
 			return ret;
 		}

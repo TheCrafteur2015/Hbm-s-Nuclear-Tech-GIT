@@ -30,25 +30,25 @@ public class TileEntityMachineKeyForge extends TileEntity implements ISidedInven
 	private String customName;
 	
 	public TileEntityMachineKeyForge() {
-		slots = new ItemStack[3];
+		this.slots = new ItemStack[3];
 	}
 
 	@Override
 	public int getSizeInventory() {
-		return slots.length;
+		return this.slots.length;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		return slots[i];
+		return this.slots[i];
 	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			ItemStack itemStack = slots[i];
-			slots[i] = null;
+			ItemStack itemStack = this.slots[i];
+			this.slots[i] = null;
 			return itemStack;
 		} else {
 		return null;
@@ -57,7 +57,7 @@ public class TileEntityMachineKeyForge extends TileEntity implements ISidedInven
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemStack) {
-		slots[i] = itemStack;
+		this.slots[i] = itemStack;
 		if(itemStack != null && itemStack.stackSize > getInventoryStackLimit())
 		{
 			itemStack.stackSize = getInventoryStackLimit();
@@ -66,7 +66,7 @@ public class TileEntityMachineKeyForge extends TileEntity implements ISidedInven
 
 	@Override
 	public String getInventoryName() {
-		return this.hasCustomInventoryName() ? this.customName : "container.keyForge";
+		return hasCustomInventoryName() ? this.customName : "container.keyForge";
 	}
 
 	@Override
@@ -85,11 +85,11 @@ public class TileEntityMachineKeyForge extends TileEntity implements ISidedInven
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		if(worldObj.getTileEntity(xCoord, yCoord, zCoord) != this)
+		if(this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this)
 		{
 			return false;
 		}else{
-			return player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <=64;
+			return player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <=64;
 		}
 	}
 	
@@ -105,18 +105,18 @@ public class TileEntityMachineKeyForge extends TileEntity implements ISidedInven
 	
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		if(slots[i] != null)
+		if(this.slots[i] != null)
 		{
-			if(slots[i].stackSize <= j)
+			if(this.slots[i].stackSize <= j)
 			{
-				ItemStack itemStack = slots[i];
-				slots[i] = null;
+				ItemStack itemStack = this.slots[i];
+				this.slots[i] = null;
 				return itemStack;
 			}
-			ItemStack itemStack1 = slots[i].splitStack(j);
-			if (slots[i].stackSize == 0)
+			ItemStack itemStack1 = this.slots[i].splitStack(j);
+			if (this.slots[i].stackSize == 0)
 			{
-				slots[i] = null;
+				this.slots[i] = null;
 			}
 			
 			return itemStack1;
@@ -130,15 +130,15 @@ public class TileEntityMachineKeyForge extends TileEntity implements ISidedInven
 		super.readFromNBT(nbt);
 		NBTTagList list = nbt.getTagList("items", 10);
 		
-		slots = new ItemStack[getSizeInventory()];
+		this.slots = new ItemStack[getSizeInventory()];
 		
 		for(int i = 0; i < list.tagCount(); i++)
 		{
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("slot");
-			if(b0 >= 0 && b0 < slots.length)
+			if(b0 >= 0 && b0 < this.slots.length)
 			{
-				slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
+				this.slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
 			}
 		}
 	}
@@ -148,13 +148,13 @@ public class TileEntityMachineKeyForge extends TileEntity implements ISidedInven
 		super.writeToNBT(nbt);
 		NBTTagList list = new NBTTagList();
 		
-		for(int i = 0; i < slots.length; i++)
+		for(int i = 0; i < this.slots.length; i++)
 		{
-			if(slots[i] != null)
+			if(this.slots[i] != null)
 			{
 				NBTTagCompound nbt1 = new NBTTagCompound();
 				nbt1.setByte("slot", (byte)i);
-				slots[i].writeToNBT(nbt1);
+				this.slots[i].writeToNBT(nbt1);
 				list.appendTag(nbt1);
 			}
 		}
@@ -164,12 +164,12 @@ public class TileEntityMachineKeyForge extends TileEntity implements ISidedInven
 	@Override
 	public int[] getAccessibleSlotsFromSide(int p_94128_1_)
     {
-        return p_94128_1_ == 0 ? slots_bottom : (p_94128_1_ == 1 ? slots_top : slots_side);
+        return p_94128_1_ == 0 ? TileEntityMachineKeyForge.slots_bottom : (p_94128_1_ == 1 ? TileEntityMachineKeyForge.slots_top : TileEntityMachineKeyForge.slots_side);
     }
 
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemStack, int j) {
-		return this.isItemValidForSlot(i, itemStack);
+		return isItemValidForSlot(i, itemStack);
 	}
 
 	@Override
@@ -180,21 +180,21 @@ public class TileEntityMachineKeyForge extends TileEntity implements ISidedInven
 	@Override
 	public void updateEntity() {
 
-		if(!worldObj.isRemote)
+		if(!this.worldObj.isRemote)
 		{
-			if(slots[0] != null && slots[1] != null && slots[0].getItem() instanceof ItemKeyPin && slots[1].getItem() instanceof ItemKeyPin && 
-					((ItemKeyPin)slots[0].getItem()).canTransfer() && ((ItemKeyPin)slots[1].getItem()).canTransfer()) {
+			if(this.slots[0] != null && this.slots[1] != null && this.slots[0].getItem() instanceof ItemKeyPin && this.slots[1].getItem() instanceof ItemKeyPin && 
+					((ItemKeyPin)this.slots[0].getItem()).canTransfer() && ((ItemKeyPin)this.slots[1].getItem()).canTransfer()) {
 				
-				ItemKeyPin.setPins(slots[1], ItemKeyPin.getPins(slots[0]));
+				ItemKeyPin.setPins(this.slots[1], ItemKeyPin.getPins(this.slots[0]));
 			}
 			
-			if(slots[2] != null && slots[2].getItem() instanceof ItemKeyPin && ((ItemKeyPin)slots[2].getItem()).canTransfer()) {
-				ItemKeyPin.setPins(slots[2], worldObj.rand.nextInt(900) + 100);
+			if(this.slots[2] != null && this.slots[2].getItem() instanceof ItemKeyPin && ((ItemKeyPin)this.slots[2].getItem()).canTransfer()) {
+				ItemKeyPin.setPins(this.slots[2], this.worldObj.rand.nextInt(900) + 100);
 			}
 
 			//DEBUG, remove later
-			if(slots[2] != null && slots[2].getItem() == ModItems.ammo_4gauge) {
-				slots[2] = ModItems.ammo_4gauge.stackFromEnum(slots[2].stackSize, Ammo4Gauge.QUACK);
+			if(this.slots[2] != null && this.slots[2].getItem() == ModItems.ammo_4gauge) {
+				this.slots[2] = ModItems.ammo_4gauge.stackFromEnum(this.slots[2].stackSize, Ammo4Gauge.QUACK);
 			}
 		}
 	}

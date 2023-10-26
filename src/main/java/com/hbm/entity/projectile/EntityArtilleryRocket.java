@@ -46,7 +46,7 @@ public class EntityArtilleryRocket extends EntityThrowableInterp implements IChu
 
 	@Override
 	protected void entityInit() {
-		init(ForgeChunkManager.requestTicket(MainRegistry.instance, worldObj, Type.ENTITY));
+		init(ForgeChunkManager.requestTicket(MainRegistry.instance, this.worldObj, Type.ENTITY));
 		this.dataWatcher.addObject(10, new Integer(0));
 	}
 	
@@ -87,7 +87,7 @@ public class EntityArtilleryRocket extends EntityThrowableInterp implements IChu
 	@Override
 	public void onUpdate() {
 		
-		if(worldObj.isRemote) {
+		if(this.worldObj.isRemote) {
 			this.lastTickPosX = this.posX;
 			this.lastTickPosY = this.posY;
 			this.lastTickPosZ = this.posZ;
@@ -95,7 +95,7 @@ public class EntityArtilleryRocket extends EntityThrowableInterp implements IChu
 		
 		super.onUpdate();
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			if(this.targetEntity == null) {
 				Vec3 delta = Vec3.createVectorHelper(this.lastTargetPos.xCoord - this.posX, this.lastTargetPos.yCoord - this.posY, this.lastTargetPos.zCoord - this.posZ);
@@ -108,65 +108,65 @@ public class EntityArtilleryRocket extends EntityThrowableInterp implements IChu
 			if(this.targeting != null && this.targetEntity != null) this.targeting.recalculateTargetPosition(this, this.targetEntity);
 			if(this.steering != null) this.steering.adjustCourse(this, 25D, 15D);
 			
-			loadNeighboringChunks((int)Math.floor(posX / 16D), (int)Math.floor(posZ / 16D));
-			this.getType().onUpdate(this);
+			loadNeighboringChunks((int)Math.floor(this.posX / 16D), (int)Math.floor(this.posZ / 16D));
+			getType().onUpdate(this);
 		} else {
 			
-			Vec3 v = Vec3.createVectorHelper(lastTickPosX - posX, lastTickPosY - posY, lastTickPosZ - posZ);
+			Vec3 v = Vec3.createVectorHelper(this.lastTickPosX - this.posX, this.lastTickPosY - this.posY, this.lastTickPosZ - this.posZ);
 			double velocity = v.lengthVector();
 			v = v.normalize();
 			
 			int offset = 6;
-			if(velocity > 1) for(int i = offset; i < velocity + offset; i++) MainRegistry.proxy.spawnParticle(posX + v.xCoord * i, posY + v.yCoord * i, posZ + v.zCoord * i, "exKerosene", null);
+			if(velocity > 1) for(int i = offset; i < velocity + offset; i++) MainRegistry.proxy.spawnParticle(this.posX + v.xCoord * i, this.posY + v.yCoord * i, this.posZ + v.zCoord * i, "exKerosene", null);
 		}
 	}
 
 	@Override
 	protected void onImpact(MovingObjectPosition mop) {
 		
-		if(!worldObj.isRemote) {
-			this.getType().onImpact(this, mop);
+		if(!this.worldObj.isRemote) {
+			getType().onImpact(this, mop);
 		}
 	}
 
 	@Override
 	public void init(Ticket ticket) {
-		if(!worldObj.isRemote && ticket != null) {
-			if(loaderTicket == null) {
-				loaderTicket = ticket;
-				loaderTicket.bindEntity(this);
-				loaderTicket.getModData();
+		if(!this.worldObj.isRemote && ticket != null) {
+			if(this.loaderTicket == null) {
+				this.loaderTicket = ticket;
+				this.loaderTicket.bindEntity(this);
+				this.loaderTicket.getModData();
 			}
-			ForgeChunkManager.forceChunk(loaderTicket, new ChunkCoordIntPair(chunkCoordX, chunkCoordZ));
+			ForgeChunkManager.forceChunk(this.loaderTicket, new ChunkCoordIntPair(this.chunkCoordX, this.chunkCoordZ));
 		}
 	}
 
-	List<ChunkCoordIntPair> loadedChunks = new ArrayList<ChunkCoordIntPair>();
+	List<ChunkCoordIntPair> loadedChunks = new ArrayList<>();
 
 	public void loadNeighboringChunks(int newChunkX, int newChunkZ) {
-		if(!worldObj.isRemote && loaderTicket != null) {
+		if(!this.worldObj.isRemote && this.loaderTicket != null) {
 			
 			clearChunkLoader();
 
-			loadedChunks.clear();
-			loadedChunks.add(new ChunkCoordIntPair(newChunkX, newChunkZ));
-			loadedChunks.add(new ChunkCoordIntPair(newChunkX + (int) Math.ceil((this.posX + this.motionX) / 16D), newChunkZ + (int) Math.ceil((this.posZ + this.motionZ) / 16D)));
+			this.loadedChunks.clear();
+			this.loadedChunks.add(new ChunkCoordIntPair(newChunkX, newChunkZ));
+			this.loadedChunks.add(new ChunkCoordIntPair(newChunkX + (int) Math.ceil((this.posX + this.motionX) / 16D), newChunkZ + (int) Math.ceil((this.posZ + this.motionZ) / 16D)));
 
-			for(ChunkCoordIntPair chunk : loadedChunks) {
-				ForgeChunkManager.forceChunk(loaderTicket, chunk);
+			for(ChunkCoordIntPair chunk : this.loadedChunks) {
+				ForgeChunkManager.forceChunk(this.loaderTicket, chunk);
 			}
 		}
 	}
 	
 	public void killAndClear() {
-		this.setDead();
-		this.clearChunkLoader();
+		setDead();
+		clearChunkLoader();
 	}
 	
 	public void clearChunkLoader() {
-		if(!worldObj.isRemote && loaderTicket != null) {
-			for(ChunkCoordIntPair chunk : loadedChunks) {
-				ForgeChunkManager.unforceChunk(loaderTicket, chunk);
+		if(!this.worldObj.isRemote && this.loaderTicket != null) {
+			for(ChunkCoordIntPair chunk : this.loadedChunks) {
+				ForgeChunkManager.unforceChunk(this.loaderTicket, chunk);
 			}
 		}
 	}
@@ -176,7 +176,7 @@ public class EntityArtilleryRocket extends EntityThrowableInterp implements IChu
 		super.writeEntityToNBT(nbt);
 		
 		if(this.lastTargetPos == null) {
-			this.lastTargetPos = Vec3.createVectorHelper(posX, posY, posZ);
+			this.lastTargetPos = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
 		}
 		
 		nbt.setDouble("targetX", this.lastTargetPos.xCoord);

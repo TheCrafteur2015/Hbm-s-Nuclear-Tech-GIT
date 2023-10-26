@@ -15,6 +15,7 @@ public class BlockBallsSpawner extends Block {
 		super(mat);
 	}
 
+	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int i, float fx, float fy, float fz) {
 		
 		if(player.getHeldItem() != null && player.getHeldItem().getItem() == ModItems.mech_key) {

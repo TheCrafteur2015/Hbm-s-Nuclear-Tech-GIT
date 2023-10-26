@@ -21,13 +21,13 @@ public class TileEntityHadronPower extends TileEntityLoadedBase implements IEner
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-				this.trySubscribe(worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, dir);
+				trySubscribe(this.worldObj, this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ, dir);
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setLong("power", power);
+			data.setLong("power", this.power);
 			INBTPacketReceiver.networkPack(this, data, 15);
 		}
 	}
@@ -39,19 +39,19 @@ public class TileEntityHadronPower extends TileEntityLoadedBase implements IEner
 
 	@Override
 	public void setPower(long i) {
-		power = i;
+		this.power = i;
 		this.worldObj.markTileEntityChunkModified(this.xCoord, this.yCoord, this.zCoord, this);
 	}
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 
 	@Override
 	public long getMaxPower() {
 		
-		Block b = this.getBlockType();
+		Block b = getBlockType();
 		
 		if(b instanceof BlockHadronPower) {
 			return ((BlockHadronPower)b).power;
@@ -69,6 +69,6 @@ public class TileEntityHadronPower extends TileEntityLoadedBase implements IEner
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setLong("power", power);
+		nbt.setLong("power", this.power);
 	}
 }

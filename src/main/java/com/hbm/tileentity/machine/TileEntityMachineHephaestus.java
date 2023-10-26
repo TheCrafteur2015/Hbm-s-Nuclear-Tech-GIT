@@ -41,41 +41,41 @@ public class TileEntityMachineHephaestus extends TileEntityLoadedBase implements
 	@Override
 	public void updateEntity() {
 
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			setupTanks();
 			
-			if(worldObj.getTotalWorldTime() % 20 == 0) {
-				this.updateConnections();
+			if(this.worldObj.getTotalWorldTime() % 20 == 0) {
+				updateConnections();
 			}
 			
-			int height = (int) (worldObj.getTotalWorldTime() % 10);
+			int height = (int) (this.worldObj.getTotalWorldTime() % 10);
 			int range = 7;
-			int y = yCoord - 1 - height;
+			int y = this.yCoord - 1 - height;
 			
-			heat[height] = 0;
+			this.heat[height] = 0;
 			
 			if(y >= 0) {
 				for(int x = -range; x <= range; x++) {
 					for(int z = -range; z <= range; z++) {
-						heat[height] += heatFromBlock(xCoord + x, y, zCoord + z);
+						this.heat[height] += heatFromBlock(this.xCoord + x, y, this.zCoord + z);
 					}
 				}
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			input.writeToNBT(data, "i");
+			this.input.writeToNBT(data, "i");
 			
 			heatFluid();
 			
-			output.writeToNBT(data, "o");
+			this.output.writeToNBT(data, "o");
 			
-			if(output.getFill() > 0) {
+			if(this.output.getFill() > 0) {
 				for(DirPos pos : getConPos()) {
-					this.sendFluid(output, worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+					this.sendFluid(this.output, this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 				}
 			}
-			data.setInteger("heat", this.getTotalHeat());
+			data.setInteger("heat", getTotalHeat());
 			INBTPacketReceiver.networkPack(this, data, 150);
 			
 		} else {
@@ -85,11 +85,11 @@ public class TileEntityMachineHephaestus extends TileEntityLoadedBase implements
 			if(this.bufferedHeat > 0) {
 				this.rot += 0.5F;
 				
-				if(worldObj.rand.nextInt(7) == 0) {
-					double x = worldObj.rand.nextGaussian() * 2;
-					double y = worldObj.rand.nextGaussian() * 3;
-					double z = worldObj.rand.nextGaussian() * 2;
-					worldObj.spawnParticle("cloud", xCoord + 0.5 + x, yCoord + 6 + y, zCoord + 0.5 + z, 0, 0, 0);
+				if(this.worldObj.rand.nextInt(7) == 0) {
+					double x = this.worldObj.rand.nextGaussian() * 2;
+					double y = this.worldObj.rand.nextGaussian() * 3;
+					double z = this.worldObj.rand.nextGaussian() * 2;
+					this.worldObj.spawnParticle("cloud", this.xCoord + 0.5 + x, this.yCoord + 6 + y, this.zCoord + 0.5 + z, 0, 0, 0);
 				}
 			}
 			
@@ -102,50 +102,50 @@ public class TileEntityMachineHephaestus extends TileEntityLoadedBase implements
 	
 	protected void heatFluid() {
 		
-		FluidType type = input.getTankType();
+		FluidType type = this.input.getTankType();
 		
 		if(type.hasTrait(FT_Heatable.class)) {
 			FT_Heatable trait = type.getTrait(FT_Heatable.class);
-			int heat = this.getTotalHeat();
+			int heat = getTotalHeat();
 			HeatingStep step = trait.getFirstStep();
 			
-			int inputOps = input.getFill() / step.amountReq;
-			int outputOps = (output.getMaxFill() - output.getFill()) / step.amountProduced;
+			int inputOps = this.input.getFill() / step.amountReq;
+			int outputOps = (this.output.getMaxFill() - this.output.getFill()) / step.amountProduced;
 			int heatOps = heat / step.heatReq;
 			int ops = Math.min(Math.min(inputOps, outputOps), heatOps);
 
-			input.setFill(input.getFill() - step.amountReq * ops);
-			output.setFill(output.getFill() + step.amountProduced * ops);
-			worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
+			this.input.setFill(this.input.getFill() - step.amountReq * ops);
+			this.output.setFill(this.output.getFill() + step.amountProduced * ops);
+			this.worldObj.markTileEntityChunkModified(this.xCoord, this.yCoord, this.zCoord, this);
 		}
 	}
 	
 	protected void setupTanks() {
 		
-		FluidType type = input.getTankType();
+		FluidType type = this.input.getTankType();
 		
 		if(type.hasTrait(FT_Heatable.class)) {
 			FT_Heatable trait = type.getTrait(FT_Heatable.class);
 			
 			if(trait.getEfficiency(HeatingType.HEATEXCHANGER) > 0) {
 				FluidType outType = trait.getFirstStep().typeProduced;
-				output.setTankType(outType);
+				this.output.setTankType(outType);
 				return;
 			}
 		}
 
-		input.setTankType(Fluids.NONE);
-		output.setTankType(Fluids.NONE);
+		this.input.setTankType(Fluids.NONE);
+		this.output.setTankType(Fluids.NONE);
 	}
 	
 	protected int heatFromBlock(int x, int y, int z) {
-		Block b = worldObj.getBlock(x, y, z);
+		Block b = this.worldObj.getBlock(x, y, z);
 		
 		if(b == Blocks.lava || b == Blocks.flowing_lava)	return 5;
 		if(b == ModBlocks.volcanic_lava_block)				return 150;
 		
 		if(b == ModBlocks.ore_volcano) {
-			this.fissureScanTime = worldObj.getTotalWorldTime();
+			this.fissureScanTime = this.worldObj.getTotalWorldTime();
 			return 300;
 		}
 		
@@ -153,7 +153,7 @@ public class TileEntityMachineHephaestus extends TileEntityLoadedBase implements
 	}
 	
 	public int getTotalHeat() {
-		boolean fissure = worldObj.getTotalWorldTime() - this.fissureScanTime < 20;
+		boolean fissure = this.worldObj.getTotalWorldTime() - this.fissureScanTime < 20;
 		int heat = 0;
 		
 		for(int h : this.heat) {
@@ -169,32 +169,32 @@ public class TileEntityMachineHephaestus extends TileEntityLoadedBase implements
 
 	@Override
 	public void networkUnpack(NBTTagCompound nbt) {
-		input.readFromNBT(nbt, "i");
-		output.readFromNBT(nbt, "o");
+		this.input.readFromNBT(nbt, "i");
+		this.output.readFromNBT(nbt, "o");
 		
 		this.bufferedHeat = nbt.getInteger("heat");
 	}
 	
 	private void updateConnections() {
 		
-		if(input.getTankType() == Fluids.NONE) return;
+		if(this.input.getTankType() == Fluids.NONE) return;
 		
 		for(DirPos pos : getConPos()) {
-			this.trySubscribe(input.getTankType(), worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			trySubscribe(this.input.getTankType(), this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 		}
 	}
 	
 	private DirPos[] getConPos() {
 		
 		return new DirPos[] {
-				new DirPos(xCoord + 2, yCoord, zCoord, Library.POS_X),
-				new DirPos(xCoord - 2, yCoord, zCoord, Library.NEG_X),
-				new DirPos(xCoord, yCoord, zCoord + 2, Library.POS_Z),
-				new DirPos(xCoord, yCoord, zCoord - 2, Library.NEG_Z),
-				new DirPos(xCoord + 2, yCoord + 11, zCoord, Library.POS_X),
-				new DirPos(xCoord - 2, yCoord + 11, zCoord, Library.NEG_X),
-				new DirPos(xCoord, yCoord + 11, zCoord + 2, Library.POS_Z),
-				new DirPos(xCoord, yCoord + 11, zCoord - 2, Library.NEG_Z)
+				new DirPos(this.xCoord + 2, this.yCoord, this.zCoord, Library.POS_X),
+				new DirPos(this.xCoord - 2, this.yCoord, this.zCoord, Library.NEG_X),
+				new DirPos(this.xCoord, this.yCoord, this.zCoord + 2, Library.POS_Z),
+				new DirPos(this.xCoord, this.yCoord, this.zCoord - 2, Library.NEG_Z),
+				new DirPos(this.xCoord + 2, this.yCoord + 11, this.zCoord, Library.POS_X),
+				new DirPos(this.xCoord - 2, this.yCoord + 11, this.zCoord, Library.NEG_X),
+				new DirPos(this.xCoord, this.yCoord + 11, this.zCoord + 2, Library.POS_Z),
+				new DirPos(this.xCoord, this.yCoord + 11, this.zCoord - 2, Library.NEG_Z)
 		};
 	}
 	
@@ -216,17 +216,17 @@ public class TileEntityMachineHephaestus extends TileEntityLoadedBase implements
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return new FluidTank[] {input, output};
+		return new FluidTank[] {this.input, this.output};
 	}
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return new FluidTank[] {output};
+		return new FluidTank[] {this.output};
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] {input};
+		return new FluidTank[] {this.input};
 	}
 	
 	@Override
@@ -239,18 +239,18 @@ public class TileEntityMachineHephaestus extends TileEntityLoadedBase implements
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 3,
-					yCoord,
-					zCoord - 3,
-					xCoord + 4,
-					yCoord + 12,
-					zCoord + 4
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 3,
+					this.yCoord,
+					this.zCoord - 3,
+					this.xCoord + 4,
+					this.yCoord + 12,
+					this.zCoord + 4
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override

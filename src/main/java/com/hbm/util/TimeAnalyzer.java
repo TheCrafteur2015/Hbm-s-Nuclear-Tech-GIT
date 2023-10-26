@@ -12,31 +12,32 @@ import com.hbm.util.Tuple.Pair;
 public class TimeAnalyzer {
 
 	/* instead of writing to the hashmap outright, we write it to a list since during analysis using a hashmap would add unnecessary load */
-	private static List<Pair<String, Long>> deltas = new ArrayList();
+	private static List<Pair<String, Long>> deltas = new ArrayList<>();
 	private static String currentSection = "";
 	private static long sectionStartTime = 0;
 	
 	public static void startCount(String section) {
-		currentSection = section;
-		sectionStartTime = System.nanoTime();
+		TimeAnalyzer.currentSection = section;
+		TimeAnalyzer.sectionStartTime = System.nanoTime();
 	}
 	
 	public static void endCount() {
-		long delta = System.nanoTime() - sectionStartTime;
-		deltas.add(new Pair(currentSection, delta));
+		long delta = System.nanoTime() - TimeAnalyzer.sectionStartTime;
+		TimeAnalyzer.deltas.add(new Pair<>(TimeAnalyzer.currentSection, delta));
 	}
 	
 	public static void startEndCount(String section) {
-		endCount();
-		startCount(section);
+		TimeAnalyzer.endCount();
+		TimeAnalyzer.startCount(section);
 	}
 	
 	public static void dump() {
-		HashMap<String, Long> milliTime = new HashMap();
+		HashMap<String, Long> milliTime = new HashMap<>();
 		
-		for(Pair<String, Long> delta : deltas) {
+		for(Pair<String, Long> delta : TimeAnalyzer.deltas) {
 			Long total = milliTime.get(delta.getKey());
-			if(total == null) total = new Long(0);
+			if(total == null)
+				total = 0L;
 			total += delta.getValue();
 			milliTime.put(delta.getKey(), total);
 		}
@@ -51,8 +52,8 @@ public class TimeAnalyzer {
 
 		System.out.println("Total time passed: " + String.format(Locale.US, "%,d", total) + "ns (" + (total / 1_000_000_000) + "s)");
 		
-		currentSection = "";
-		sectionStartTime = 0;
-		deltas.clear();
+		TimeAnalyzer.currentSection = "";
+		TimeAnalyzer.sectionStartTime = 0;
+		TimeAnalyzer.deltas.clear();
 	}
 }

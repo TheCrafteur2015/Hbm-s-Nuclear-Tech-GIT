@@ -16,7 +16,7 @@ public class ItemRenderUboinik implements IItemRenderer {
 	protected ModelUboinik swordModel;
 	
 	public ItemRenderUboinik() {
-		swordModel = new ModelUboinik();
+		this.swordModel = new ModelUboinik();
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class ItemRenderUboinik implements IItemRenderer {
 				GL11.glRotatef(-20.0F, 0.0F, 0.0F, 1.0F);
 				GL11.glRotatef(5.0F, 0.0F, 1.0F, 0.0F);
 				GL11.glTranslatef(-0.2F, 0.0F, -0.2F);
-				swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, item);
+				this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, item);
 			GL11.glPopMatrix();
 			break;
 		case EQUIPPED:
@@ -67,7 +67,7 @@ public class ItemRenderUboinik implements IItemRenderer {
 				GL11.glTranslatef(0.5F, -0.2F, 0.0F);
 				GL11.glScalef(0.75F, 0.75F, 0.75F);
 				GL11.glTranslatef(-1.4F, 0.0F, 0.0F);
-				swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, item);
+				this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, item);
 			GL11.glPopMatrix();
 		default: break;
 		}

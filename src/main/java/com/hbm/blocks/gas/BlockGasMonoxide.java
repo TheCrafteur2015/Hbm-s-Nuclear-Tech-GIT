@@ -39,7 +39,7 @@ public class BlockGasMonoxide extends BlockGasBase {
 
 	@Override
 	public ForgeDirection getSecondDirection(World world, int x, int y, int z) {
-		return this.randomHorizontal(world);
+		return randomHorizontal(world);
 	}
 
 	@Override

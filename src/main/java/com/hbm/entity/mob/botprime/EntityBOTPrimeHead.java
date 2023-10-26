@@ -33,7 +33,7 @@ public class EntityBOTPrimeHead extends EntityBOTPrimeBase implements IBossDispl
 		this.experienceValue = 1000;
 		this.wasNearGround = false;
 		this.attackRange = 150.0D;
-		this.setSize(3.0F, 3.0F);
+		setSize(3.0F, 3.0F);
 		this.maxSpeed = 1.0D;
 		this.fallSpeed = 0.006D;
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
@@ -44,7 +44,7 @@ public class EntityBOTPrimeHead extends EntityBOTPrimeBase implements IBossDispl
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.15D);
+		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.15D);
 	}
 
 	@Override
@@ -63,10 +63,11 @@ public class EntityBOTPrimeHead extends EntityBOTPrimeBase implements IBossDispl
 		return false;
 	}
 
-    public IEntityLivingData onSpawnWithEgg(IEntityLivingData data) {
+    @Override
+	public IEntityLivingData onSpawnWithEgg(IEntityLivingData data) {
     	
     	//TODO: check if this is even needed
-    	setHeadID(this.getEntityId());
+    	setHeadID(getEntityId());
     	
     	int x = MathHelper.floor_double(this.posX);
         int y = MathHelper.floor_double(this.posY);
@@ -90,7 +91,7 @@ public class EntityBOTPrimeHead extends EntityBOTPrimeBase implements IBossDispl
 	@Override
 	protected void updateAITasks() {
 
-		this.updateEntityActionState();
+		updateEntityActionState();
 		super.updateAITasks();
 
 		updateHeadMovement();
@@ -125,9 +126,9 @@ public class EntityBOTPrimeHead extends EntityBOTPrimeBase implements IBossDispl
 		
 		super.onUpdate();
 
-		double dx = motionX;
-		double dy = motionY;
-		double dz = motionZ;
+		double dx = this.motionX;
+		double dy = this.motionY;
+		double dz = this.motionZ;
 		float f3 = MathHelper.sqrt_double(dx * dx + dz * dz);
 		this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(dx, dz) * 180.0D / Math.PI);
 		this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(dy, f3) * 180.0D / Math.PI);
@@ -137,7 +138,7 @@ public class EntityBOTPrimeHead extends EntityBOTPrimeBase implements IBossDispl
 	public void onDeath(DamageSource p_70645_1_) {
 		super.onDeath(p_70645_1_);
 		
-		List<EntityPlayer> players = worldObj.getEntitiesWithinAABB(EntityPlayer.class, this.boundingBox.expand(200, 200, 200));
+		List<EntityPlayer> players = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, this.boundingBox.expand(200, 200, 200));
 
 		for(EntityPlayer player : players) {
 			player.triggerAchievement(MainRegistry.bossWorm);
@@ -150,6 +151,7 @@ public class EntityBOTPrimeHead extends EntityBOTPrimeBase implements IBossDispl
 		return 1000;
 	}
 	
+	@Override
 	public void writeEntityToNBT(NBTTagCompound nbt) {
 		super.writeEntityToNBT(nbt);
 		nbt.setInteger("spawnX", this.spawnPoint.posX);
@@ -157,6 +159,7 @@ public class EntityBOTPrimeHead extends EntityBOTPrimeBase implements IBossDispl
 		nbt.setInteger("spawnZ", this.spawnPoint.posZ);
 	}
 
+	@Override
 	public void readEntityFromNBT(NBTTagCompound nbt) {
 		super.readEntityFromNBT(nbt);
 		this.spawnPoint.set(nbt.getInteger("spawnX"), nbt.getInteger("spawnY"), nbt.getInteger("spawnZ"));
@@ -171,23 +174,23 @@ public class EntityBOTPrimeHead extends EntityBOTPrimeBase implements IBossDispl
 		
 		if(this.courseChangeCooldown-- <= 0) {
 			
-			this.courseChangeCooldown += this.getRNG().nextInt(5) + 2;
+			this.courseChangeCooldown += getRNG().nextInt(5) + 2;
 			deltaSq = MathHelper.sqrt_double(deltaSq);
 			
 			if(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ < this.maxSpeed) {
 				
-				if(!this.isCourseTraversable()) {
+				if(!isCourseTraversable()) {
 					deltaSq *= 8.0D;
 				}
 				
-				double moverSpeed = this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getBaseValue();
+				double moverSpeed = getEntityAttribute(SharedMonsterAttributes.movementSpeed).getBaseValue();
 				this.motionX += deltaX / deltaSq * moverSpeed;
 				this.motionY += deltaY / deltaSq * moverSpeed;
 				this.motionZ += deltaZ / deltaSq * moverSpeed;
 			}
 		}
 		
-		if(!this.isCourseTraversable()) {
+		if(!isCourseTraversable()) {
 			this.motionY -= this.fallSpeed;
 		}
 		
@@ -197,17 +200,17 @@ public class EntityBOTPrimeHead extends EntityBOTPrimeBase implements IBossDispl
 		
 		this.aggroCooldown -= 1;
 		
-		if(this.getAttackTarget() != null) {
+		if(getAttackTarget() != null) {
 			
 			if(this.aggroCooldown <= 0) {
-				this.targetedEntity = this.getAttackTarget();
+				this.targetedEntity = getAttackTarget();
 				this.aggroCooldown = 20;
 			}
 			
 		} else if(this.targetedEntity == null) {
-			this.waypointX = this.spawnPoint.posX - 50 + this.getRNG().nextInt(100);
-			this.waypointY = this.spawnPoint.posY - 30 + this.getRNG().nextInt(60);
-			this.waypointZ = this.spawnPoint.posZ - 50 + this.getRNG().nextInt(100);
+			this.waypointX = this.spawnPoint.posX - 50 + getRNG().nextInt(100);
+			this.waypointY = this.spawnPoint.posY - 30 + getRNG().nextInt(60);
+			this.waypointZ = this.spawnPoint.posZ - 50 + getRNG().nextInt(100);
 		}
 		
 		this.rotationYaw = -(float) -(Math.atan2(this.motionX, this.motionZ) * 180.0F / Math.PI);
@@ -221,7 +224,7 @@ public class EntityBOTPrimeHead extends EntityBOTPrimeBase implements IBossDispl
 				this.waypointY = this.targetedEntity.posY;
 				this.waypointZ = this.targetedEntity.posZ;
 				
-				if(this.getRNG().nextInt(80) == 0 && this.posY > this.surfaceY && !this.isCourseTraversable()) {
+				if(getRNG().nextInt(80) == 0 && this.posY > this.surfaceY && !isCourseTraversable()) {
 					this.wasNearGround = false;
 				}
 				

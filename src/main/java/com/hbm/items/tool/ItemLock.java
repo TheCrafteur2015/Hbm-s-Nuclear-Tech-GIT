@@ -13,13 +13,13 @@ public class ItemLock extends ItemKeyPin {
 	public double lockMod = 0.1D;
 	
 	public ItemLock(double mod) {
-		lockMod = mod;
+		this.lockMod = mod;
 	}
 	
 	@Override
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int i, float f0, float f1, float f2)
     {
-		if(this.getPins(stack) != 0) {
+		if(getPins(stack) != 0) {
 			TileEntity te = world.getTileEntity(x, y, z);
 			
 			if(te != null && te instanceof TileEntityLockableBase) {
@@ -28,9 +28,9 @@ public class ItemLock extends ItemKeyPin {
 				if(tile.isLocked())
 					return false;
 				
-				tile.setPins(this.getPins(stack));
+				tile.setPins(getPins(stack));
 				tile.lock();
-				tile.setMod(lockMod);
+				tile.setMod(this.lockMod);
 
 	        	world.playSoundAtEntity(player, "hbm:block.lockHang", 1.0F, 1.0F);
 				stack.stackSize--;
@@ -49,9 +49,9 @@ public class ItemLock extends ItemKeyPin {
 					if(tile.isLocked())
 						return false;
 					
-					tile.setPins(this.getPins(stack));
+					tile.setPins(getPins(stack));
 					tile.lock();
-					tile.setMod(lockMod);
+					tile.setMod(this.lockMod);
 
 		        	world.playSoundAtEntity(player, "hbm:block.lockHang", 1.0F, 1.0F);
 					stack.stackSize--;

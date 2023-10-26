@@ -110,7 +110,7 @@ public class ItemAmmo extends ItemEnumMulti {
 		public String key = "desc.item.ammo.";
 		
 		private AmmoItemTrait() {
-			key += this.toString().toLowerCase(Locale.US);
+			this.key += toString().toLowerCase(Locale.US);
 		}
 	}
 	
@@ -126,22 +126,23 @@ public class ItemAmmo extends ItemEnumMulti {
 		this.altName = altName;
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		super.addInformation(stack, player, list, ext);
 		
-		if(!altName.isEmpty()) list.add(EnumChatFormatting.ITALIC + I18nUtil.resolveKey(altName));
+		if(!this.altName.isEmpty()) list.add(EnumChatFormatting.ITALIC + I18nUtil.resolveKey(this.altName));
 		
 		if(stack.getItem() == ModItems.ammo_rocket && stack.getItemDamage() == AmmoRocket.DIGAMMA.ordinal()) {
 			list.add(player.worldObj.rand.nextInt(3) < 2 ? EnumChatFormatting.RED + "COVER YOURSELF IN OIL" : EnumChatFormatting.RED + "" + EnumChatFormatting.OBFUSCATED + "COVER YOURSELF IN OIL");
 		}
 
-		IAmmoItemEnum item = (IAmmoItemEnum) EnumUtil.grabEnumSafely(theEnum, stack.getItemDamage());
+		IAmmoItemEnum item = (IAmmoItemEnum) EnumUtil.grabEnumSafely(this.theEnum, stack.getItemDamage());
 		Set<AmmoItemTrait> ammoTraits = item.getTraits();
 
 		if(ammoTraits.size() > 0) {
 			
-			ArrayList<AmmoItemTrait> sortedTraits = new ArrayList<AmmoItemTrait>(ammoTraits);
+			ArrayList<AmmoItemTrait> sortedTraits = new ArrayList<>(ammoTraits);
 			sortedTraits.sort(Comparator.reverseOrder());
 			for(AmmoItemTrait trait : sortedTraits) {
 				final EnumChatFormatting color;
@@ -156,12 +157,13 @@ public class ItemAmmo extends ItemEnumMulti {
 		}		
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister reg) {
-		Enum[] enums = theEnum.getEnumConstants();
+		Enum<?>[] enums = this.theEnum.getEnumConstants();
 		this.icons = new IIcon[enums.length];
 		
-		for(int i = 0; i < icons.length; i++) {
+		for(int i = 0; i < this.icons.length; i++) {
 			IAmmoItemEnum num = (IAmmoItemEnum) enums[i];
 			this.icons[i] = reg.registerIcon(RefStrings.MODID + ":" + num.getInternalName());
 		}
@@ -169,7 +171,7 @@ public class ItemAmmo extends ItemEnumMulti {
 	
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
-		IAmmoItemEnum num = EnumUtil.grabEnumSafely(theEnum, stack.getItemDamage());
+		IAmmoItemEnum num = EnumUtil.grabEnumSafely(this.theEnum, stack.getItemDamage());
 		return "item." + num.getInternalName();
 	}
 	

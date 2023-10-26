@@ -28,10 +28,10 @@ public class GUIPlasmaHeater extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		microwave.tanks[0].renderTankInfo(this, mouseX, mouseY, guiLeft + 62, guiTop + 17, 16, 52);
-		microwave.tanks[1].renderTankInfo(this, mouseX, mouseY, guiLeft + 134, guiTop + 17, 16, 52);
-		microwave.plasma.renderTankInfo(this, mouseX, mouseY, guiLeft + 98, guiTop + 17, 16, 52);
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 8, guiTop + 17, 16, 34, microwave.power, microwave.maxPower);
+		this.microwave.tanks[0].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 62, this.guiTop + 17, 16, 52);
+		this.microwave.tanks[1].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 134, this.guiTop + 17, 16, 52);
+		this.microwave.plasma.renderTankInfo(this, mouseX, mouseY, this.guiLeft + 98, this.guiTop + 17, 16, 52);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 8, this.guiTop + 17, 16, 34, this.microwave.power, TileEntityMachinePlasmaHeater.maxPower);
 	}
 	
 	@Override
@@ -45,14 +45,14 @@ public class GUIPlasmaHeater extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIPlasmaHeater.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
-		int i = (int)microwave.getPowerScaled(34);
-		drawTexturedModalRect(guiLeft + 8, guiTop + 51 - i, 176, 34 - i, 16, i);
+		int i = (int)this.microwave.getPowerScaled(34);
+		drawTexturedModalRect(this.guiLeft + 8, this.guiTop + 51 - i, 176, 34 - i, 16, i);
 
-		microwave.tanks[0].renderTank(guiLeft + 62, guiTop + 69, this.zLevel, 16, 52);
-		microwave.tanks[1].renderTank(guiLeft + 134, guiTop + 69, this.zLevel, 16, 52);
-		microwave.plasma.renderTank(guiLeft + 98, guiTop + 69, this.zLevel, 16, 52);
+		this.microwave.tanks[0].renderTank(this.guiLeft + 62, this.guiTop + 69, this.zLevel, 16, 52);
+		this.microwave.tanks[1].renderTank(this.guiLeft + 134, this.guiTop + 69, this.zLevel, 16, 52);
+		this.microwave.plasma.renderTank(this.guiLeft + 98, this.guiTop + 69, this.zLevel, 16, 52);
 	}
 }

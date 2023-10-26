@@ -4,6 +4,7 @@ import com.hbm.items.machine.ItemBattery;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -20,18 +21,18 @@ public class ItemPotatos extends ItemBattery {
     	if(getCharge(stack) == 0)
     		return;
     	
-    	if(getTimer(stack) > 0) {
-    		setTimer(stack, getTimer(stack) - 1);
+    	if(ItemPotatos.getTimer(stack) > 0) {
+    		ItemPotatos.setTimer(stack, ItemPotatos.getTimer(stack) - 1);
     	} else {
     		if(entity instanceof EntityPlayer) {
     			EntityPlayer p = (EntityPlayer) entity;
     			
     			if(p.getHeldItem() == stack) {
     				
-    		    	float pitch = (float)getCharge(stack) / (float)this.getMaxCharge() * 0.5F + 0.5F;
+    		    	float pitch = (float)getCharge(stack) / (float)getMaxCharge() * 0.5F + 0.5F;
     		    	
     				world.playSoundAtEntity(p, "hbm:potatos.random", 1.0F, pitch);
-    				setTimer(stack, 200 + itemRand.nextInt(100));
+    				ItemPotatos.setTimer(stack, 200 + Item.itemRand.nextInt(100));
     			}
     		}
     	}

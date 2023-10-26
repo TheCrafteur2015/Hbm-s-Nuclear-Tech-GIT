@@ -33,32 +33,32 @@ public class EntitySoyuz extends Entity {
 	public EntitySoyuz(World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.ignoreFrustumCheck = true;
-        this.setSize(5.0F, 50.0F);
-        payload = new ItemStack[18];
+        setSize(5.0F, 50.0F);
+        this.payload = new ItemStack[18];
 	}
 	
 	@Override
 	public void onUpdate() {
 		
-		if(motionY < 2.0D) {
-			acceleration += 0.00025D;
-			motionY += acceleration;
+		if(this.motionY < 2.0D) {
+			this.acceleration += 0.00025D;
+			this.motionY += this.acceleration;
 		}
 		
-		this.setLocationAndAngles(posX + this.motionX, posY + this.motionY, posZ + this.motionZ, 0, 0);
+		setLocationAndAngles(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ, 0, 0);
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(posX - 5, posY - 15, posZ - 5, posX + 5, posY, posZ + 5));
+			List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(this.posX - 5, this.posY - 15, this.posZ - 5, this.posX + 5, this.posY, this.posZ + 5));
 			
 			for(Entity e : list) {
 				e.setFire(15);
 				e.attackEntityFrom(ModDamageSource.exhaust, 100.0F);
 				
 				if(e instanceof EntityPlayer) {
-					if(!memed) {
-						memed = true;
-						worldObj.playSoundEffect(posX, posY, posZ, "hbm:alarm.soyuzed", 100, 1.0F);
+					if(!this.memed) {
+						this.memed = true;
+						this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "hbm:alarm.soyuzed", 100, 1.0F);
 					}
 					
 					((EntityPlayer)e).triggerAchievement(MainRegistry.achSoyuz);
@@ -66,12 +66,12 @@ public class EntitySoyuz extends Entity {
 			}
 		}
 		
-		if(worldObj.isRemote) {
-			spawnExhaust(posX, posY, posZ);
-			spawnExhaust(posX + 2.75, posY, posZ);
-			spawnExhaust(posX - 2.75, posY, posZ);
-			spawnExhaust(posX, posY, posZ + 2.75);
-			spawnExhaust(posX, posY, posZ - 2.75);
+		if(this.worldObj.isRemote) {
+			spawnExhaust(this.posX, this.posY, this.posZ);
+			spawnExhaust(this.posX + 2.75, this.posY, this.posZ);
+			spawnExhaust(this.posX - 2.75, this.posY, this.posZ);
+			spawnExhaust(this.posX, this.posY, this.posZ + 2.75);
+			spawnExhaust(this.posX, this.posY, this.posZ - 2.75);
 		}
 		
 		if(this.posY > 600) {
@@ -85,7 +85,7 @@ public class EntitySoyuz extends Entity {
 		data.setString("type", "exhaust");
 		data.setString("mode", "soyuz");
 		data.setInteger("count", 1);
-		data.setDouble("width", worldObj.rand.nextDouble() * 0.25 - 0.5);
+		data.setDouble("width", this.worldObj.rand.nextDouble() * 0.25 - 0.5);
 		data.setDouble("posX", x);
 		data.setDouble("posY", y);
 		data.setDouble("posZ", z);
@@ -95,20 +95,20 @@ public class EntitySoyuz extends Entity {
 	
 	private void deployPayload() {
 
-		if(mode == 0 && payload != null) {
+		if(this.mode == 0 && this.payload != null) {
 
-			if(payload[0] != null) {
+			if(this.payload[0] != null) {
 				
-				ItemStack load = payload[0];
+				ItemStack load = this.payload[0];
 				
 				if(load.getItem() == ModItems.flame_pony) {
-					ExplosionLarge.spawnTracers(worldObj, posX, posY, posZ, 25);
-					for(Object p : worldObj.playerEntities)
+					ExplosionLarge.spawnTracers(this.worldObj, this.posX, this.posY, this.posZ, 25);
+					for(Object p : this.worldObj.playerEntities)
 						((EntityPlayer)p).triggerAchievement(MainRegistry.achSpace);
 				}
 				
 				if(load.getItem() == ModItems.sat_foeq) {
-					for(Object p : worldObj.playerEntities)
+					for(Object p : this.worldObj.playerEntities)
 						((EntityPlayer)p).triggerAchievement(MainRegistry.achFOEQ);
 				}
 				
@@ -116,25 +116,25 @@ public class EntitySoyuz extends Entity {
 					
 				    int freq = ISatChip.getFreqS(load);
 			    	
-			    	Satellite.orbit(worldObj, Satellite.getIDFromItem(load.getItem()), freq, posX, posY, posZ);
+			    	Satellite.orbit(this.worldObj, Satellite.getIDFromItem(load.getItem()), freq, this.posX, this.posY, this.posZ);
 				}
 			}
 		}
 		
-		if(mode == 1) {
+		if(this.mode == 1) {
 			
-			EntitySoyuzCapsule capsule = new EntitySoyuzCapsule(worldObj);
+			EntitySoyuzCapsule capsule = new EntitySoyuzCapsule(this.worldObj);
 			capsule.payload = this.payload;
-			capsule.soyuz = this.getSkin();
-			capsule.setPosition(targetX + 0.5, 600, targetZ + 0.5);
+			capsule.soyuz = getSkin();
+			capsule.setPosition(this.targetX + 0.5, 600, this.targetZ + 0.5);
 			
-			IChunkProvider provider = worldObj.getChunkProvider();
-			provider.loadChunk(targetX >> 4, targetZ >> 4);
+			IChunkProvider provider = this.worldObj.getChunkProvider();
+			provider.loadChunk(this.targetX >> 4, this.targetZ >> 4);
 			
-			worldObj.spawnEntityInWorld(capsule);
+			this.worldObj.spawnEntityInWorld(capsule);
 		}
 		
-		this.setDead();
+		setDead();
 	}
 
 	@Override
@@ -173,16 +173,16 @@ public class EntitySoyuz extends Entity {
 
 		NBTTagList list = nbt.getTagList("items", 10);
 		
-		this.setSkin(nbt.getInteger("skin"));
-		targetX = nbt.getInteger("targetX");
-		targetZ = nbt.getInteger("targetZ");
-		mode = nbt.getInteger("mode");
+		setSkin(nbt.getInteger("skin"));
+		this.targetX = nbt.getInteger("targetX");
+		this.targetZ = nbt.getInteger("targetZ");
+		this.mode = nbt.getInteger("mode");
 
 		for (int i = 0; i < list.tagCount(); i++) {
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("slot");
-			if (b0 >= 0 && b0 < payload.length) {
-				payload[b0] = ItemStack.loadItemStackFromNBT(nbt1);
+			if (b0 >= 0 && b0 < this.payload.length) {
+				this.payload[b0] = ItemStack.loadItemStackFromNBT(nbt1);
 			}
 		}
 	}
@@ -192,16 +192,16 @@ public class EntitySoyuz extends Entity {
 
 		NBTTagList list = new NBTTagList();
 
-		nbt.setInteger("skin", this.getSkin());
-		nbt.setInteger("targetX", targetX);
-		nbt.setInteger("targetZ", targetZ);
-		nbt.setInteger("mode", mode);
+		nbt.setInteger("skin", getSkin());
+		nbt.setInteger("targetX", this.targetX);
+		nbt.setInteger("targetZ", this.targetZ);
+		nbt.setInteger("mode", this.mode);
 
-		for (int i = 0; i < payload.length; i++) {
-			if (payload[i] != null) {
+		for (int i = 0; i < this.payload.length; i++) {
+			if (this.payload[i] != null) {
 				NBTTagCompound nbt1 = new NBTTagCompound();
 				nbt1.setByte("slot", (byte) i);
-				payload[i].writeToNBT(nbt1);
+				this.payload[i].writeToNBT(nbt1);
 				list.appendTag(nbt1);
 			}
 		}

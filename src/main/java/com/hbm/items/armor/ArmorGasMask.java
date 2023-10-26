@@ -10,9 +10,9 @@ import com.hbm.items.ModItems;
 import com.hbm.lib.RefStrings;
 import com.hbm.render.model.ModelGasMask;
 import com.hbm.render.model.ModelM65;
+import com.hbm.util.ArmorRegistry.HazardClass;
 import com.hbm.util.ArmorUtil;
 import com.hbm.util.I18nUtil;
-import com.hbm.util.ArmorRegistry.HazardClass;
 
 import api.hbm.item.IGasMask;
 import cpw.mods.fml.relauncher.Side;
@@ -104,6 +104,7 @@ public class ArmorGasMask extends ItemArmor implements IGasMask {
 		return null;
 	}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void renderHelmetOverlay(ItemStack stack, EntityPlayer player, ScaledResolution resolution, float partialTicks, boolean hasScreen, int mouseX, int mouseY) {
 
@@ -148,9 +149,9 @@ public class ArmorGasMask extends ItemArmor implements IGasMask {
 	public ArrayList<HazardClass> getBlacklist(ItemStack stack, EntityLivingBase entity) {
 		
 		if(this == ModItems.gas_mask_mono) {
-			return new ArrayList<HazardClass>(Arrays.asList(new HazardClass[] {HazardClass.GAS_CHLORINE, HazardClass.GAS_CORROSIVE, HazardClass.NERVE_AGENT, HazardClass.BACTERIA}));
+			return new ArrayList<>(Arrays.asList(new HazardClass[] {HazardClass.GAS_CHLORINE, HazardClass.GAS_CORROSIVE, HazardClass.NERVE_AGENT, HazardClass.BACTERIA}));
 		} else {
-			return new ArrayList<HazardClass>(Arrays.asList(new HazardClass[] {HazardClass.GAS_CORROSIVE, HazardClass.NERVE_AGENT}));
+			return new ArrayList<>(Arrays.asList(new HazardClass[] {HazardClass.GAS_CORROSIVE, HazardClass.NERVE_AGENT}));
 		}
 	}
 
@@ -169,6 +170,7 @@ public class ArmorGasMask extends ItemArmor implements IGasMask {
 		ArmorUtil.damageGasMaskFilter(stack, damage);
 	}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		
@@ -195,7 +197,7 @@ public class ArmorGasMask extends ItemArmor implements IGasMask {
 		
 		if(player.isSneaking()) {
 			
-			ItemStack filter = this.getFilter(stack, player);
+			ItemStack filter = getFilter(stack, player);
 			
 			if(filter != null) {
 				ArmorUtil.removeFilter(stack);

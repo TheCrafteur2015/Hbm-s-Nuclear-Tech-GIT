@@ -1,6 +1,10 @@
 package com.hbm.tileentity.machine.storage;
 
-import api.hbm.fluid.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import com.hbm.blocks.ModBlocks;
 import com.hbm.interfaces.IFluidAcceptor;
 import com.hbm.interfaces.IFluidSource;
@@ -17,6 +21,12 @@ import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.IPersistentNBT;
 import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbm.util.fauxpointtwelve.DirPos;
+
+import api.hbm.fluid.IFluidConductor;
+import api.hbm.fluid.IFluidConnector;
+import api.hbm.fluid.IFluidStandardTransceiver;
+import api.hbm.fluid.IPipeNet;
+import api.hbm.fluid.PipeNet;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -35,11 +45,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+@SuppressWarnings("deprecation")
 @Optional.InterfaceList({@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "opencomputers")})
 public class TileEntityBarrel extends TileEntityMachineBase implements IFluidAcceptor, IFluidSource, SimpleComponent, IFluidStandardTransceiver, IPersistentNBT, IGUIProvider {
 	
@@ -47,18 +53,18 @@ public class TileEntityBarrel extends TileEntityMachineBase implements IFluidAcc
 	public short mode = 0;
 	public static final short modes = 4;
 	public int age = 0;
-	public List<IFluidAcceptor> list = new ArrayList();
+	public List<IFluidAcceptor> list = new ArrayList<>();
 	protected boolean sendingBrake = false;
 	public byte lastRedstone = 0;
 
 	public TileEntityBarrel() {
 		super(6);
-		tank = new FluidTank(Fluids.NONE, 0, 0);
+		this.tank = new FluidTank(Fluids.NONE, 0);
 	}
 
 	public TileEntityBarrel(int capacity) {
 		super(6);
-		tank = new FluidTank(Fluids.NONE, capacity, 0);
+		this.tank = new FluidTank(Fluids.NONE, capacity);
 	}
 
 	@Override
@@ -67,82 +73,79 @@ public class TileEntityBarrel extends TileEntityMachineBase implements IFluidAcc
 	}
 
 	public byte getComparatorPower() {
-		if(tank.getFill() == 0) return 0;
-		double frac = (double) tank.getFill() / (double) tank.getMaxFill() * 15D;
+		if(this.tank.getFill() == 0) return 0;
+		double frac = (double) this.tank.getFill() / (double) this.tank.getMaxFill() * 15D;
 		return (byte) (MathHelper.clamp_int((int) frac + 1, 0, 15));
 	}
 
 	@Override
 	public long getDemand(FluidType type, int pressure) {
 		
-		if(this.mode == 2 || this.mode == 3 || this.sendingBrake)
-			return 0;
+		if(this.mode == 2 || this.mode == 3 || this.sendingBrake || (this.tank.getPressure() != pressure)) return 0;
 		
-		if(tank.getPressure() != pressure) return 0;
-		
-		return type == tank.getTankType() ? tank.getMaxFill() - tank.getFill() : 0;
+		return type == this.tank.getTankType() ? this.tank.getMaxFill() - this.tank.getFill() : 0;
 	}
 
 	@Override
 	public long transferFluid(FluidType type, int pressure, long fluid) {
 		long toTransfer = Math.min(getDemand(type, pressure), fluid);
-		tank.setFill(tank.getFill() + (int) toTransfer);
+		this.tank.setFill(this.tank.getFill() + (int) toTransfer);
 		return fluid - toTransfer;
 	}
 
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 
-			byte comp = this.getComparatorPower(); //do comparator shenanigans
+			byte comp = getComparatorPower(); //do comparator shenanigans
 			if(comp != this.lastRedstone)
-				this.markDirty();
+				markDirty();
 			this.lastRedstone = comp;
 
-			tank.setType(0, 1, slots);
-			tank.loadTank(2, 3, slots);
-			tank.unloadTank(4, 5, slots);
-			tank.updateTank(xCoord, yCoord, zCoord, worldObj.provider.dimensionId);
+			this.tank.setType(0, 1, this.slots);
+			this.tank.loadTank(2, 3, this.slots);
+			this.tank.unloadTank(4, 5, this.slots);
+			this.tank.updateTank(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId);
 			
 			this.sendingBrake = true;
-			tank.setFill(transmitFluidFairly(worldObj, tank, this, tank.getFill(), this.mode == 0 || this.mode == 1, this.mode == 1 || this.mode == 2, getConPos()));
+			this.tank.setFill(TileEntityBarrel.transmitFluidFairly(this.worldObj, this.tank, this, this.tank.getFill(), this.mode == 0 || this.mode == 1, this.mode == 1 || this.mode == 2, getConPos()));
 			this.sendingBrake = false;
 			
-			age++;
-			if(age >= 20) {
-				age = 0;
-				this.markChanged();
+			this.age++;
+			if(this.age >= 20) {
+				this.age = 0;
+				markChanged();
 			}
 			
-			if((mode == 1 || mode == 2) && (age == 9 || age == 19))
-				fillFluidInit(tank.getTankType());
+			if((this.mode == 1 || this.mode == 2) && (this.age == 9 || this.age == 19))
+				fillFluidInit(this.tank.getTankType());
 			
-			if(tank.getFill() > 0) {
+			if(this.tank.getFill() > 0) {
 				checkFluidInteraction();
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setShort("mode", mode);
-			this.networkPack(data, 50);
+			data.setShort("mode", this.mode);
+			networkPack(data, 50);
 		}
 	}
 	
 	protected DirPos[] getConPos() {
 		return new DirPos[] {
-				new DirPos(xCoord + 1, yCoord, zCoord, Library.POS_X),
-				new DirPos(xCoord - 1, yCoord, zCoord, Library.NEG_X),
-				new DirPos(xCoord, yCoord + 1, zCoord, Library.POS_Y),
-				new DirPos(xCoord, yCoord - 1, zCoord, Library.NEG_Y),
-				new DirPos(xCoord, yCoord, zCoord + 1, Library.POS_Z),
-				new DirPos(xCoord, yCoord, zCoord - 1, Library.NEG_Z)
+				new DirPos(this.xCoord + 1, this.yCoord, this.zCoord, Library.POS_X),
+				new DirPos(this.xCoord - 1, this.yCoord, this.zCoord, Library.NEG_X),
+				new DirPos(this.xCoord, this.yCoord + 1, this.zCoord, Library.POS_Y),
+				new DirPos(this.xCoord, this.yCoord - 1, this.zCoord, Library.NEG_Y),
+				new DirPos(this.xCoord, this.yCoord, this.zCoord + 1, Library.POS_Z),
+				new DirPos(this.xCoord, this.yCoord, this.zCoord - 1, Library.NEG_Z)
 		};
 	}
 	
 	protected static int transmitFluidFairly(World world, FluidTank tank, IFluidConnector that, int fill, boolean connect, boolean send, DirPos[] connections) {
 		
-		Set<IPipeNet> nets = new HashSet();
-		Set<IFluidConnector> consumers = new HashSet();
+		Set<IPipeNet> nets = new HashSet<>();
+		Set<IFluidConnector> consumers = new HashSet<>();
 		FluidType type = tank.getTankType();
 		int pressure = tank.getPressure();
 		
@@ -167,13 +170,13 @@ public class TileEntityBarrel extends TileEntityMachineBase implements IFluidAcc
 		consumers.remove(that);
 
 		if(fill > 0 && send) {
-			List<IFluidConnector> con = new ArrayList();
+			List<IFluidConnector> con = new ArrayList<>();
 			con.addAll(consumers);
 
 			con.removeIf(x -> x == null || !(x instanceof TileEntity) || ((TileEntity)x).isInvalid());
 			
 			if(PipeNet.trackingInstances == null) {
-				PipeNet.trackingInstances = new ArrayList();
+				PipeNet.trackingInstances = new ArrayList<>();
 			}
 			
 			PipeNet.trackingInstances.clear();
@@ -194,13 +197,13 @@ public class TileEntityBarrel extends TileEntityMachineBase implements IFluidAcc
 
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemStack) {
-		ItemStack full = FluidContainerRegistry.getFullContainer(itemStack, tank.getTankType());
+		ItemStack full = FluidContainerRegistry.getFullContainer(itemStack, this.tank.getTankType());
 		//if fillable and the fill being possible for this tank size
-		if(i == 4 && full != null && FluidContainerRegistry.getFluidContent(full, tank.getTankType()) <= tank.getMaxFill())
+		if(i == 4 && full != null && FluidContainerRegistry.getFluidContent(full, this.tank.getTankType()) <= this.tank.getMaxFill())
 			return true;
-		int content = FluidContainerRegistry.getFluidContent(itemStack, tank.getTankType());
+		int content = FluidContainerRegistry.getFluidContent(itemStack, this.tank.getTankType());
 		//if content is above 0 but still within capacity
-		if(i == 2 && content > 0 && content <= tank.getMaxFill())
+		if(i == 2 && content > 0 && content <= this.tank.getMaxFill())
 			return true;
 		
 		return false;
@@ -218,72 +221,73 @@ public class TileEntityBarrel extends TileEntityMachineBase implements IFluidAcc
 	
 	public void checkFluidInteraction() {
 		
-		Block b = this.getBlockType();
+		Block b = getBlockType();
 		
 		//for when you fill antimatter into a matter tank
-		if(b != ModBlocks.barrel_antimatter && tank.getTankType().isAntimatter()) {
-			worldObj.func_147480_a(xCoord, yCoord, zCoord, false);
-			worldObj.newExplosion(null, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, 5, true, true);
+		if(b != ModBlocks.barrel_antimatter && this.tank.getTankType().isAntimatter()) {
+			this.worldObj.func_147480_a(this.xCoord, this.yCoord, this.zCoord, false);
+			this.worldObj.newExplosion(null, this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, 5, true, true);
 		}
 		
 		//for when you fill hot or corrosive liquids into a plastic tank
-		if(b == ModBlocks.barrel_plastic && (tank.getTankType().isCorrosive() || tank.getTankType().isHot())) {
-			worldObj.func_147480_a(xCoord, yCoord, zCoord, false);
-			worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "random.fizz", 1.0F, 1.0F);
+		if(b == ModBlocks.barrel_plastic && (this.tank.getTankType().isCorrosive() || this.tank.getTankType().isHot())) {
+			this.worldObj.func_147480_a(this.xCoord, this.yCoord, this.zCoord, false);
+			this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, "random.fizz", 1.0F, 1.0F);
 		}
 		
 		//for when you fill corrosive liquid into an iron tank
-		if((b == ModBlocks.barrel_iron && tank.getTankType().isCorrosive()) ||
-				(b == ModBlocks.barrel_steel && tank.getTankType().hasTrait(FT_Corrosive.class) && tank.getTankType().getTrait(FT_Corrosive.class).getRating() > 50)) {
+		if((b == ModBlocks.barrel_iron && this.tank.getTankType().isCorrosive()) ||
+				(b == ModBlocks.barrel_steel && this.tank.getTankType().hasTrait(FT_Corrosive.class) && this.tank.getTankType().getTrait(FT_Corrosive.class).getRating() > 50)) {
 			ItemStack[] copy = this.slots.clone();
 			this.slots = new ItemStack[6];
-			worldObj.setBlock(xCoord, yCoord, zCoord, ModBlocks.barrel_corroded);
-			TileEntityBarrel barrel = (TileEntityBarrel)worldObj.getTileEntity(xCoord, yCoord, zCoord);
+			this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, ModBlocks.barrel_corroded);
+			TileEntityBarrel barrel = (TileEntityBarrel)this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord);
 			
 			if(barrel != null) {
-				barrel.tank.setTankType(tank.getTankType());
-				barrel.tank.setFill(Math.min(barrel.tank.getMaxFill(), tank.getFill()));
+				barrel.tank.setTankType(this.tank.getTankType());
+				barrel.tank.setFill(Math.min(barrel.tank.getMaxFill(), this.tank.getFill()));
 				barrel.slots = copy;
 			}
 			
-			worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "random.fizz", 1.0F, 1.0F);
+			this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, "random.fizz", 1.0F, 1.0F);
 		}
 		
-		if(b == ModBlocks.barrel_corroded && worldObj.rand.nextInt(3) == 0) {
-			tank.setFill(tank.getFill() - 1);
+		if(b == ModBlocks.barrel_corroded && this.worldObj.rand.nextInt(3) == 0) {
+			this.tank.setFill(this.tank.getFill() - 1);
 		}
 		
 		//For when Tom's firestorm hits a barrel full of water
-		if(tank.getTankType() == Fluids.WATER && TomSaveData.forWorld(worldObj).fire > 1e-5) {
+		if(this.tank.getTankType() == Fluids.WATER && TomSaveData.forWorld(this.worldObj).fire > 1e-5) {
 			int light = this.worldObj.getSavedLightValue(EnumSkyBlock.Sky, this.xCoord, this.yCoord, this.zCoord);
 			
 			if(light > 7) {
-				worldObj.newExplosion(null, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, 5, true, true);
+				this.worldObj.newExplosion(null, this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, 5, true, true);
 			}
 		}
 	}
 	
+	@Override
 	public void networkUnpack(NBTTagCompound data) {
-		mode = data.getShort("mode");
+		this.mode = data.getShort("mode");
 	}
 
 	@Override
 	public void setFillForSync(int fill, int index) {
-		tank.setFill(fill);
+		this.tank.setFill(fill);
 	}
 
 	@Override
 	public void setTypeForSync(FluidType type, int index) {
-		tank.setTankType(type);
+		this.tank.setTankType(type);
 	}
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
 		
-		if(mode == 2 || mode == 3)
+		if(this.mode == 2 || this.mode == 3)
 			return 0;
 		
-		return type == this.tank.getTankType() ? tank.getMaxFill() : 0;
+		return type == this.tank.getTankType() ? this.tank.getMaxFill() : 0;
 	}
 
 	@Override
@@ -298,12 +302,12 @@ public class TileEntityBarrel extends TileEntityMachineBase implements IFluidAcc
 
 	@Override
 	public void fillFluid(int x, int y, int z, boolean newTact, FluidType type) {
-		Library.transmitFluid(x, y, z, newTact, this, worldObj, type);
+		Library.transmitFluid(x, y, z, newTact, this, this.worldObj, type);
 	}
 
 	@Override
 	public boolean getTact() {
-		if (age >= 0 && age < 10) {
+		if (this.age >= 0 && this.age < 10) {
 			return true;
 		}
 
@@ -312,12 +316,12 @@ public class TileEntityBarrel extends TileEntityMachineBase implements IFluidAcc
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		return type == this.tank.getTankType() ? tank.getFill() : 0;
+		return type == this.tank.getTankType() ? this.tank.getFill() : 0;
 	}
 
 	@Override
 	public void setFluidFill(int i, FluidType type) {
-		if(type == tank.getTankType()) tank.setFill(i);
+		if(type == this.tank.getTankType()) this.tank.setFill(i);
 	}
 
 	@Override
@@ -334,45 +338,45 @@ public class TileEntityBarrel extends TileEntityMachineBase implements IFluidAcc
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		
-		mode = nbt.getShort("mode");
-		tank.readFromNBT(nbt, "tank");
+		this.mode = nbt.getShort("mode");
+		this.tank.readFromNBT(nbt, "tank");
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		
-		nbt.setShort("mode", mode);
-		tank.writeToNBT(nbt, "tank");
+		nbt.setShort("mode", this.mode);
+		this.tank.writeToNBT(nbt, "tank");
 	}
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return (mode == 1 || mode == 2) ? new FluidTank[] {tank} : new FluidTank[0];
+		return (this.mode == 1 || this.mode == 2) ? new FluidTank[] {this.tank} : new FluidTank[0];
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return (mode == 0 || mode == 1) && !sendingBrake ? new FluidTank[] {tank} : new FluidTank[0];
+		return (this.mode == 0 || this.mode == 1) && !this.sendingBrake ? new FluidTank[] {this.tank} : new FluidTank[0];
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return new FluidTank[] { tank };
+		return new FluidTank[] { this.tank };
 	}
 
 	@Override
 	public void writeNBT(NBTTagCompound nbt) {
-		if(tank.getFill() == 0) return;
+		if(this.tank.getFill() == 0) return;
 		NBTTagCompound data = new NBTTagCompound();
 		this.tank.writeToNBT(data, "tank");
-		data.setShort("mode", mode);
-		nbt.setTag(NBT_PERSISTENT_KEY, data);
+		data.setShort("mode", this.mode);
+		nbt.setTag(IPersistentNBT.NBT_PERSISTENT_KEY, data);
 	}
 
 	@Override
 	public void readNBT(NBTTagCompound nbt) {
-		NBTTagCompound data = nbt.getCompoundTag(NBT_PERSISTENT_KEY);
+		NBTTagCompound data = nbt.getCompoundTag(IPersistentNBT.NBT_PERSISTENT_KEY);
 		this.tank.readFromNBT(data, "tank");
 		this.mode = data.getShort("nbt");
 	}
@@ -396,24 +400,24 @@ public class TileEntityBarrel extends TileEntityMachineBase implements IFluidAcc
 	@Callback(direct = true, limit = 4)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getFluidStored(Context context, Arguments args) {
-		return new Object[] {tank.getFill()};
+		return new Object[] {this.tank.getFill()};
 	}
 
 	@Callback(direct = true, limit = 4)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getMaxStored(Context context, Arguments args) {
-		return new Object[] {tank.getMaxFill()};
+		return new Object[] {this.tank.getMaxFill()};
 	}
 
 	@Callback(direct = true, limit = 4)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getTypeStored(Context context, Arguments args) {
-		return new Object[] {tank.getTankType().getName()};
+		return new Object[] {this.tank.getTankType().getName()};
 	}
 
 	@Callback(direct = true, limit = 4)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getInfo(Context context, Arguments args) {
-		return new Object[]{tank.getFill(), tank.getMaxFill(), tank.getTankType().getName()};
+		return new Object[]{this.tank.getFill(), this.tank.getMaxFill(), this.tank.getTankType().getName()};
 	}
 }

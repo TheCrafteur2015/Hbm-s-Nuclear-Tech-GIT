@@ -18,26 +18,26 @@ public class ContainerMachineCMBFactory extends Container {
 	
 	public ContainerMachineCMBFactory(InventoryPlayer invPlayer, TileEntityMachineCMBFactory tedf) {
 		
-		diFurnace = tedf;
+		this.diFurnace = tedf;
 		
-		this.addSlotToContainer(new Slot(tedf, 0, 62 + 9, 17));
-		this.addSlotToContainer(new Slot(tedf, 1, 80 + 9, 17));
-		this.addSlotToContainer(new Slot(tedf, 2, 62 + 9, 53));
-		this.addSlotToContainer(new Slot(tedf, 3, 80 + 9, 53));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 4, 134 + 9, 35));
-		this.addSlotToContainer(new SlotTakeOnly(tedf, 5, 62 - 9, 53));
+		addSlotToContainer(new Slot(tedf, 0, 62 + 9, 17));
+		addSlotToContainer(new Slot(tedf, 1, 80 + 9, 17));
+		addSlotToContainer(new Slot(tedf, 2, 62 + 9, 53));
+		addSlotToContainer(new Slot(tedf, 3, 80 + 9, 53));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 4, 134 + 9, 35));
+		addSlotToContainer(new SlotTakeOnly(tedf, 5, 62 - 9, 53));
 		
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++)
 		{
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
 		}
 	}
 	
@@ -59,14 +59,14 @@ public class ContainerMachineCMBFactory extends Container {
 			var3 = var5.copy();
 			
             if (par2 <= 5) {
-				if (!this.mergeItemStack(var5, 6, this.inventorySlots.size(), true))
+				if (!mergeItemStack(var5, 6, this.inventorySlots.size(), true))
 				{
 					return null;
 				}
 			}
 			else
 			{
-				if (!this.mergeItemStack(var5, 0, 4, false))
+				if (!mergeItemStack(var5, 0, 4, false))
 						return null;
 			}
 			
@@ -85,16 +85,15 @@ public class ContainerMachineCMBFactory extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return diFurnace.isUseableByPlayer(player);
+		return this.diFurnace.isUseableByPlayer(player);
 	}
 	
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 		
-		for(int i = 0; i < this.crafters.size(); i++)
-		{
-			ICrafting par1 = (ICrafting)this.crafters.get(i);
+		for (Object element : this.crafters) {
+			ICrafting par1 = (ICrafting)element;
 			
 			if(this.progress != this.diFurnace.process)
 			{
@@ -109,7 +108,7 @@ public class ContainerMachineCMBFactory extends Container {
 	public void updateProgressBar(int i, int j) {
 		if(i == 1)
 		{
-			diFurnace.process = j;
+			this.diFurnace.process = j;
 		}
 	}
 }

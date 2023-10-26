@@ -12,6 +12,7 @@ import com.hbm.util.BobMathUtil;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
@@ -38,22 +39,22 @@ public abstract class GuiInfoContainer extends GuiContainer {
 	public void drawCustomInfoStat(int mouseX, int mouseY, int x, int y, int width, int height, int tPosX, int tPosY, List text) {
 		
 		if(x <= mouseX && x + width > mouseX && y < mouseY && y + height >= mouseY)
-			this.func_146283_a(text, tPosX, tPosY);
+			func_146283_a(text, tPosX, tPosY);
 	}
 	
 	public void drawInfo(String[] text, int x, int y) {
-		this.func_146283_a(Arrays.asList(text), x, y);
+		func_146283_a(Arrays.asList(text), x, y);
 	}
 	
 	@Deprecated
 	public void drawCustomInfo(GuiInfoContainer gui, int mouseX, int mouseY, int x, int y, int width, int height, String[] text) {
 		if(x <= mouseX && x + width > mouseX && y < mouseY && y + height >= mouseY)
-			this.func_146283_a(Arrays.asList(text), mouseX, mouseY);
+			func_146283_a(Arrays.asList(text), mouseX, mouseY);
 	}
 	
 	public void drawInfoPanel(int x, int y, int width, int height, int type) {
 
-		Minecraft.getMinecraft().getTextureManager().bindTexture(guiUtil);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GuiInfoContainer.guiUtil);
 		
 		switch(type) {
 		case 0: drawTexturedModalRect(x, y, 0, 0, 8, 8); break; //Small blue I
@@ -72,7 +73,7 @@ public abstract class GuiInfoContainer extends GuiContainer {
 	}
 	
 	protected boolean isMouseOverSlot(Slot slot, int x, int y) {
-		return this.func_146978_c(slot.xDisplayPosition, slot.yDisplayPosition, 16, 16, x, y);
+		return func_146978_c(slot.xDisplayPosition, slot.yDisplayPosition, 16, 16, x, y);
 	}
 	
 	/* Getters for external use of the GUI's rect rendering, such as NumberDisplay */
@@ -93,7 +94,7 @@ public abstract class GuiInfoContainer extends GuiContainer {
 	}
 	
 	public RenderItem getItemRenderer() {
-		return this.itemRender;
+		return GuiScreen.itemRender;
 	}
 	
 	public FontRenderer getFontRenderer() {
@@ -103,14 +104,14 @@ public abstract class GuiInfoContainer extends GuiContainer {
 	protected void drawItemStack(ItemStack stack, int x, int y, String label) {
 		GL11.glTranslatef(0.0F, 0.0F, 32.0F);
 		this.zLevel = 200.0F;
-		itemRender.zLevel = 200.0F;
+		GuiScreen.itemRender.zLevel = 200.0F;
 		FontRenderer font = null;
 		if(stack != null) font = stack.getItem().getFontRenderer(stack);
-		if(font == null) font = fontRendererObj;
-		itemRender.renderItemAndEffectIntoGUI(font, this.mc.getTextureManager(), stack, x, y);
-		itemRender.renderItemOverlayIntoGUI(font, this.mc.getTextureManager(), stack, x, y, label);
+		if(font == null) font = this.fontRendererObj;
+		GuiScreen.itemRender.renderItemAndEffectIntoGUI(font, this.mc.getTextureManager(), stack, x, y);
+		GuiScreen.itemRender.renderItemOverlayIntoGUI(font, this.mc.getTextureManager(), stack, x, y, label);
 		this.zLevel = 0.0F;
-		itemRender.zLevel = 0.0F;
+		GuiScreen.itemRender.zLevel = 0.0F;
 	}
 
 	protected void drawStackText(List lines, int x, int y, FontRenderer font) {
@@ -164,22 +165,22 @@ public abstract class GuiInfoContainer extends GuiContainer {
 			}
 
 			this.zLevel = 400.0F;
-			itemRender.zLevel = 400.0F;
+			GuiScreen.itemRender.zLevel = 400.0F;
 			//int j1 = -267386864;
 			int colorBg = 0xF0100010;
-			this.drawGradientRect(minX - 3, minY - 4, minX + longestline + 3, minY - 3, colorBg, colorBg);
-			this.drawGradientRect(minX - 3, minY + height + 3, minX + longestline + 3, minY + height + 4, colorBg, colorBg);
-			this.drawGradientRect(minX - 3, minY - 3, minX + longestline + 3, minY + height + 3, colorBg, colorBg);
-			this.drawGradientRect(minX - 4, minY - 3, minX - 3, minY + height + 3, colorBg, colorBg);
-			this.drawGradientRect(minX + longestline + 3, minY - 3, minX + longestline + 4, minY + height + 3, colorBg, colorBg);
+			drawGradientRect(minX - 3, minY - 4, minX + longestline + 3, minY - 3, colorBg, colorBg);
+			drawGradientRect(minX - 3, minY + height + 3, minX + longestline + 3, minY + height + 4, colorBg, colorBg);
+			drawGradientRect(minX - 3, minY - 3, minX + longestline + 3, minY + height + 3, colorBg, colorBg);
+			drawGradientRect(minX - 4, minY - 3, minX - 3, minY + height + 3, colorBg, colorBg);
+			drawGradientRect(minX + longestline + 3, minY - 3, minX + longestline + 4, minY + height + 3, colorBg, colorBg);
 			//int k1 = 1347420415;
 			int color0 = 0x505000FF;
 			//int l1 = (k1 & 16711422) >> 1 | k1 & -16777216;
 			int color1 = (color0 & 0xFEFEFE) >> 1 | color0 & 0xFF000000;
-			this.drawGradientRect(minX - 3, minY - 3 + 1, minX - 3 + 1, minY + height + 3 - 1, color0, color1);
-			this.drawGradientRect(minX + longestline + 2, minY - 3 + 1, minX + longestline + 3, minY + height + 3 - 1, color0, color1);
-			this.drawGradientRect(minX - 3, minY - 3, minX + longestline + 3, minY - 3 + 1, color0, color0);
-			this.drawGradientRect(minX - 3, minY + height + 2, minX + longestline + 3, minY + height + 3, color1, color1);
+			drawGradientRect(minX - 3, minY - 3 + 1, minX - 3 + 1, minY + height + 3 - 1, color0, color1);
+			drawGradientRect(minX + longestline + 2, minY - 3 + 1, minX + longestline + 3, minY + height + 3 - 1, color0, color1);
+			drawGradientRect(minX - 3, minY - 3, minX + longestline + 3, minY - 3 + 1, color0, color0);
+			drawGradientRect(minX - 3, minY + height + 2, minX + longestline + 3, minY + height + 3, color1, color1);
 
 			for(int index = 0; index < lines.size(); ++index) {
 				
@@ -203,12 +204,12 @@ public abstract class GuiInfoContainer extends GuiContainer {
 						GL11.glColor3f(1F, 1F, 1F);
 
 						if(stack.stackSize == 0) {
-							this.drawGradientRect(minX + indent - 1, minY - 1, minX + indent + 17, minY + 17, 0xffff0000, 0xffff0000);
-							this.drawGradientRect(minX + indent, minY, minX + indent + 16, minY + 16, 0xffb0b0b0, 0xffb0b0b0);
+							drawGradientRect(minX + indent - 1, minY - 1, minX + indent + 17, minY + 17, 0xffff0000, 0xffff0000);
+							drawGradientRect(minX + indent, minY, minX + indent + 16, minY + 16, 0xffb0b0b0, 0xffb0b0b0);
 						}
 						GL11.glEnable(GL11.GL_DEPTH_TEST);
-						itemRender.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.getTextureManager(), stack, minX + indent, minY);
-						itemRender.renderItemOverlayIntoGUI(this.fontRendererObj, this.mc.getTextureManager(), stack, minX + indent, minY, null);
+						GuiScreen.itemRender.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.getTextureManager(), stack, minX + indent, minY);
+						GuiScreen.itemRender.renderItemOverlayIntoGUI(this.fontRendererObj, this.mc.getTextureManager(), stack, minX + indent, minY, null);
 						RenderHelper.disableStandardItemLighting();
 						GL11.glDisable(GL11.GL_DEPTH_TEST);
 						indent += 18;
@@ -223,7 +224,7 @@ public abstract class GuiInfoContainer extends GuiContainer {
 			}
 
 			this.zLevel = 0.0F;
-			itemRender.zLevel = 0.0F;
+			GuiScreen.itemRender.zLevel = 0.0F;
 			GL11.glEnable(GL11.GL_LIGHTING);
 			GL11.glEnable(GL11.GL_DEPTH_TEST);
 			RenderHelper.enableStandardItemLighting();

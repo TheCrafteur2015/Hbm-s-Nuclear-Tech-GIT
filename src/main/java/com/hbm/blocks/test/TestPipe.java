@@ -25,7 +25,7 @@ public class TestPipe extends BlockContainer {
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		super.registerBlockIcons(iconRegister);
-		this.overlay = iconRegister.registerIcon(this.getTextureName() + "_overlay");
+		this.overlay = iconRegister.registerIcon(getTextureName() + "_overlay");
 	}
 	
 	@Override
@@ -43,7 +43,7 @@ public class TestPipe extends BlockContainer {
 
 	@Override
 	public int getRenderType() {
-		return renderID;
+		return TestPipe.renderID;
 	}
 	
 	@Override

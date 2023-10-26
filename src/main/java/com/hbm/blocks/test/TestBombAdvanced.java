@@ -26,7 +26,7 @@ public class TestBombAdvanced extends BlockContainer {
 	int bombStartStrength = 40;
 	int bombStrengthA = 10;
 	protected int timer1 = 20;
-	int timer2 = timer1;
+	int timer2 = this.timer1;
 
 	//Normaler Matrial-Constructor
 	public TestBombAdvanced(Material p_i45394_1_) {
@@ -70,7 +70,7 @@ public class TestBombAdvanced extends BlockContainer {
 	public void setBlockBoundsBasedOnState(IBlockAccess p_149719_1_, int p_149719_2_, int p_149719_3_, int p_149719_4_)
     {
         float f = 0.0625F;
-        this.setBlockBounds(4*f, 0.0F, 0.0F, 12*f, 8*f, 1.0F);
+        setBlockBounds(4*f, 0.0F, 0.0F, 12*f, 8*f, 1.0F);
     }
 	
 	@Override
@@ -80,9 +80,9 @@ public class TestBombAdvanced extends BlockContainer {
 
         if (world.isBlockIndirectlyGettingPowered(x, y, z))
         {
-            this.onBlockDestroyedByPlayer(world, x, y, z, 1);
+            onBlockDestroyedByPlayer(world, x, y, z, 1);
             world.setBlockToAir(x, y, z);
-            soos(world, x, y, z, bombStartStrength, bombStrengthA);
+            soos(world, x, y, z, this.bombStartStrength, this.bombStrengthA);
         }
     }
 	
@@ -91,9 +91,9 @@ public class TestBombAdvanced extends BlockContainer {
     {
         if (p_149695_1_.isBlockIndirectlyGettingPowered(x, y, z))
         {
-            this.onBlockDestroyedByPlayer(p_149695_1_, x, y, z, 1);
+            onBlockDestroyedByPlayer(p_149695_1_, x, y, z, 1);
             p_149695_1_.setBlockToAir(x, y, z);
-            soos(p_149695_1_, x, y, z, bombStartStrength, bombStrengthA);
+            soos(p_149695_1_, x, y, z, this.bombStartStrength, this.bombStrengthA);
         }
     }
 	

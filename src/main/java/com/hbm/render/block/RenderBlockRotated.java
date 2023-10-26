@@ -39,7 +39,7 @@ public class RenderBlockRotated implements ISimpleBlockRenderingHandler {
 		GL11.glRotated(-90, 0, 0, 1);
 		GL11.glTranslated(0, 0.375, 0);
 		tessellator.startDrawingQuads();
-		ObjUtil.renderWithIcon((WavefrontObject) model, iicon, tessellator, 0, false);
+		ObjUtil.renderWithIcon((WavefrontObject) this.model, iicon, tessellator, 0, false);
 		tessellator.draw();
 
 		GL11.glPopMatrix();
@@ -80,7 +80,7 @@ public class RenderBlockRotated implements ISimpleBlockRenderingHandler {
 			flip = (float)Math.PI * 0.5F;
 
 		tessellator.addTranslation(x + 0.5F, y + 0.5F, z + 0.5F);
-		ObjUtil.renderWithIcon((WavefrontObject) model, iicon, tessellator, rotation, flip, true);
+		ObjUtil.renderWithIcon((WavefrontObject) this.model, iicon, tessellator, rotation, flip, true);
 		tessellator.addTranslation(-x - 0.5F, -y - 0.5F, -z - 0.5F);
 
 		return true;

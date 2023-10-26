@@ -29,19 +29,19 @@ public class ItemBattery extends Item implements IBatteryItem {
 
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		long charge = maxCharge;
+		long charge = this.maxCharge;
 		if(itemstack.hasTagCompound())
 			charge = getCharge(itemstack);
 
 		if(itemstack.getItem() != ModItems.fusion_core && itemstack.getItem() != ModItems.energy_core) {
-			list.add("Energy stored: " + BobMathUtil.getShortNumber(charge) + "/" + BobMathUtil.getShortNumber(maxCharge) + "HE");
+			list.add("Energy stored: " + BobMathUtil.getShortNumber(charge) + "/" + BobMathUtil.getShortNumber(this.maxCharge) + "HE");
 		} else {
 			String charge1 = BobMathUtil.getShortNumber((charge * 100) / this.maxCharge);
 			list.add("Charge: " + charge1 + "%");
-			list.add("(" + BobMathUtil.getShortNumber(charge) + "/" + BobMathUtil.getShortNumber(maxCharge) + "HE)");
+			list.add("(" + BobMathUtil.getShortNumber(charge) + "/" + BobMathUtil.getShortNumber(this.maxCharge) + "HE)");
 		}
-		list.add("Charge rate: " + BobMathUtil.getShortNumber(chargeRate) + "HE/t");
-		list.add("Discharge rate: " + BobMathUtil.getShortNumber(dischargeRate) + "HE/t");
+		list.add("Charge rate: " + BobMathUtil.getShortNumber(this.chargeRate) + "HE/t");
+		list.add("Discharge rate: " + BobMathUtil.getShortNumber(this.dischargeRate) + "HE/t");
 	}
 
 	@Override
@@ -58,6 +58,7 @@ public class ItemBattery extends Item implements IBatteryItem {
 		return EnumRarity.common;
 	}
 
+	@Override
 	public void chargeBattery(ItemStack stack, long i) {
 		if(stack.getItem() instanceof ItemBattery) {
 			if(stack.hasTagCompound()) {
@@ -69,6 +70,7 @@ public class ItemBattery extends Item implements IBatteryItem {
 		}
 	}
 
+	@Override
 	public void setCharge(ItemStack stack, long i) {
 		if(stack.getItem() instanceof ItemBattery) {
 			if(stack.hasTagCompound()) {
@@ -80,6 +82,7 @@ public class ItemBattery extends Item implements IBatteryItem {
 		}
 	}
 
+	@Override
 	public void dischargeBattery(ItemStack stack, long i) {
 		if(stack.getItem() instanceof ItemBattery) {
 			if(stack.hasTagCompound()) {
@@ -91,6 +94,7 @@ public class ItemBattery extends Item implements IBatteryItem {
 		}
 	}
 
+	@Override
 	public long getCharge(ItemStack stack) {
 		if(stack.getItem() instanceof ItemBattery) {
 			if(stack.hasTagCompound()) {
@@ -105,16 +109,19 @@ public class ItemBattery extends Item implements IBatteryItem {
 		return 0;
 	}
 
+	@Override
 	public long getMaxCharge() {
-		return maxCharge;
+		return this.maxCharge;
 	}
 
+	@Override
 	public long getChargeRate() {
-		return chargeRate;
+		return this.chargeRate;
 	}
 
+	@Override
 	public long getDischargeRate() {
-		return dischargeRate;
+		return this.dischargeRate;
 	}
 
 	public static ItemStack getEmptyBattery(Item item) {
@@ -141,10 +148,12 @@ public class ItemBattery extends Item implements IBatteryItem {
 		return new ItemStack(item);
 	}
 
+	@Override
 	public boolean showDurabilityBar(ItemStack stack) {
 		return true;
 	}
 
+	@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
 		return 1D - (double) getCharge(stack) / (double) getMaxCharge();
 	}
@@ -154,11 +163,11 @@ public class ItemBattery extends Item implements IBatteryItem {
 	public void getSubItems(Item item, CreativeTabs tab, List list) {
 
 		if(this.chargeRate > 0) {
-			list.add(getEmptyBattery(item));
+			list.add(ItemBattery.getEmptyBattery(item));
 		}
 		
 		if(this.dischargeRate > 0) {
-			list.add(getFullBattery(item));
+			list.add(ItemBattery.getFullBattery(item));
 		}
 	}
 }

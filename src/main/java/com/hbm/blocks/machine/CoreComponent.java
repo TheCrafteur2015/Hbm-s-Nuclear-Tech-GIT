@@ -53,7 +53,8 @@ public class CoreComponent extends BlockContainer {
 		return false;
 	}
 	
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
+    @Override
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
     	
         int l = BlockPistonBase.determineOrientation(world, x, y, z, player);
         world.setBlockMetadataWithNotify(x, y, z, l, 2);

@@ -37,14 +37,14 @@ public class EntityOilSpillFX extends EntityModFX {
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
 
-		if(maxAge < 15) {
-			maxAge = rand.nextInt(4) + 15;
+		if(this.maxAge < 15) {
+			this.maxAge = this.rand.nextInt(4) + 15;
 		}
 
 		this.particleAge++;
 
-		if(this.particleAge >= maxAge) {
-			this.setDead();
+		if(this.particleAge >= this.maxAge) {
+			setDead();
 		}
 
 		this.motionX *= 0.7599999785423279D;
@@ -69,6 +69,6 @@ public class EntityOilSpillFX extends EntityModFX {
 	@Override
 	public void readEntityFromNBT(NBTTagCompound nbt) {
 		super.readEntityFromNBT(nbt);
-		this.setDead();
+		setDead();
 	}
 }

@@ -73,7 +73,7 @@ public class OreLayer {
 		if(world.provider == null || world.provider.dimensionId != this.dim) return;
 		
 		if(this.noise == null) {
-			this.noise = new NoiseGeneratorPerlin(new Random(event.world.getSeed() + (ore.getID() * 31) + yLevel), 4);
+			this.noise = new NoiseGeneratorPerlin(new Random(event.world.getSeed() + (this.ore.hashCode() * 31) + this.yLevel), 4);
 		}
 		
 		int cX = event.chunkX;
@@ -84,24 +84,24 @@ public class OreLayer {
 		for(int x = cX; x < cX + 16; x++) {
 			for(int z = cZ; z < cZ + 16; z++) {
 				
-				double n = noise.func_151601_a(x * scale, z * scale);
+				double n = this.noise.func_151601_a(x * scale, z * scale);
 				
-				if(n > threshold) {
-					int range = (int)((n - threshold) * rangeMult);
+				if(n > this.threshold) {
+					int range = (int)((n - this.threshold) * this.rangeMult);
 					
-					if(range > maxRange)
-						range = (maxRange * 2) - range;
+					if(range > this.maxRange)
+						range = (this.maxRange * 2) - range;
 					
 					if(range < 0)
 						continue;
 					
-					for(int y = yLevel - range; y <= yLevel + range; y++) {
+					for(int y = this.yLevel - range; y <= this.yLevel + range; y++) {
 						
-						if(event.rand.nextFloat() < density) {
+						if(event.rand.nextFloat() < this.density) {
 							Block genTarget = world.getBlock(x, y, z);
 							
-							if(genTarget.isReplaceableOreGen(world, x, y, z, target) && DungeonToolbox.allowedToReplace(genTarget)) {
-								world.setBlock(x, y, z, ore.block, ore.meta, 2);
+							if(genTarget.isReplaceableOreGen(world, x, y, z, this.target) && DungeonToolbox.allowedToReplace(genTarget)) {
+								world.setBlock(x, y, z, this.ore.block, this.ore.meta, 2);
 							}
 						}
 					}

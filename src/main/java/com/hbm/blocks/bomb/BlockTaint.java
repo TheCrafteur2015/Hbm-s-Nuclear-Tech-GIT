@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Random;
 
 import com.hbm.blocks.ModBlocks;
-import com.hbm.entity.mob.EntityTaintCrab;
 import com.hbm.entity.mob.EntityCreeperTainted;
+import com.hbm.entity.mob.EntityTaintCrab;
 import com.hbm.entity.mob.EntityTeslaCrab;
 import com.hbm.potion.HbmPotion;
 
@@ -35,7 +35,7 @@ public class BlockTaint extends Block/*Container*/ {
 
 	public BlockTaint(Material p_i45386_1_) {
 		super(p_i45386_1_);
-        this.setTickRandomly(true);
+        setTickRandomly(true);
 	}
 
 	/*@Override
@@ -43,20 +43,22 @@ public class BlockTaint extends Block/*Container*/ {
 		return new TileEntityTaint();
 	}*/
 	
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public IIcon getIcon(int p_149691_1_, int meta)
     {
         return this.icons[meta % this.icons.length];
     }
     
-    public int damageDropped(int meta)
+    @Override
+	public int damageDropped(int meta)
     {
         return 0;
     }
 
     public static int func_150032_b(int p_150032_0_)
     {
-        return func_150031_c(p_150032_0_);
+        return BlockTaint.func_150031_c(p_150032_0_);
     }
 
     public static int func_150031_c(int p_150031_0_)
@@ -64,7 +66,9 @@ public class BlockTaint extends Block/*Container*/ {
         return p_150031_0_ & 15;
     }
 
-    @SideOnly(Side.CLIENT)
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	@SideOnly(Side.CLIENT)
     public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List p_149666_3_)
     {
         for (int i = 0; i < 16; ++i)
@@ -73,7 +77,8 @@ public class BlockTaint extends Block/*Container*/ {
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister p_149651_1_)
     {
         this.icons = new IIcon[16];
@@ -84,7 +89,8 @@ public class BlockTaint extends Block/*Container*/ {
         }
     }
 
-    public MapColor getMapColor(int p_149728_1_)
+    @Override
+	public MapColor getMapColor(int p_149728_1_)
     {
         return MapColor.purpleColor;
     }
@@ -93,7 +99,7 @@ public class BlockTaint extends Block/*Container*/ {
 	
 	@Override
 	public int getRenderType(){
-		return renderID;
+		return BlockTaint.renderID;
 	}
 
     @Override
@@ -112,13 +118,15 @@ public class BlockTaint extends Block/*Container*/ {
 		return false;
 	}
     
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block b)
+    @Override
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block b)
     {
-    	if(!hasPosNeightbour(world, x, y, z) && !world.isRemote)
+    	if(!BlockTaint.hasPosNeightbour(world, x, y, z) && !world.isRemote)
 			world.setBlockToAir(x, y, z);
     }
 
-    public void updateTick(World world, int x, int y, int z, Random rand)
+    @Override
+	public void updateTick(World world, int x, int y, int z, Random rand)
     {
     	int meta = world.getBlockMetadata(x, y, z);
     	if(!world.isRemote && meta < 15) {
@@ -127,7 +135,7 @@ public class BlockTaint extends Block/*Container*/ {
 	    		int a = rand.nextInt(11) + x - 5;
 	    		int b = rand.nextInt(11) + y - 5;
 	    		int c = rand.nextInt(11) + z - 5;
-	            if(world.getBlock(a, b, c).isReplaceable(world, a, b, c) && hasPosNeightbour(world, a, b, c))
+	            if(world.getBlock(a, b, c).isReplaceable(world, a, b, c) && BlockTaint.hasPosNeightbour(world, a, b, c))
 	            	world.setBlock(a, b, c, ModBlocks.taint, meta + 1, 2);
 	    	}
 	            
@@ -135,7 +143,7 @@ public class BlockTaint extends Block/*Container*/ {
 		    	int a = rand.nextInt(7) + x - 3;
 		    	int b = rand.nextInt(7) + y - 3;
 		    	int c = rand.nextInt(7) + z - 3;
-		           if(world.getBlock(a, b, c).isReplaceable(world, a, b, c) && hasPosNeightbour(world, a, b, c))
+		           if(world.getBlock(a, b, c).isReplaceable(world, a, b, c) && BlockTaint.hasPosNeightbour(world, a, b, c))
 		           	world.setBlock(a, b, c, ModBlocks.taint, meta + 1, 2);
 		    }
     	}
@@ -175,7 +183,7 @@ public class BlockTaint extends Block/*Container*/ {
 		int meta = world.getBlockMetadata(x, y, z);
 		int level = 15 - meta;
 		
-    	List<ItemStack> list = new ArrayList<ItemStack>();
+    	List<ItemStack> list = new ArrayList<>();
     	PotionEffect effect = new PotionEffect(HbmPotion.taint.id, 15 * 20, level);
     	effect.setCurativeItems(list);
     	

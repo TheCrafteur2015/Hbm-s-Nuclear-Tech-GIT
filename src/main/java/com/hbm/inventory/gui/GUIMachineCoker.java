@@ -20,7 +20,7 @@ public class GUIMachineCoker extends GuiInfoContainer {
 
 	public GUIMachineCoker(InventoryPlayer invPlayer, TileEntityMachineCoker tedf) {
 		super(new ContainerMachineCoker(invPlayer, tedf));
-		refinery = tedf;
+		this.refinery = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 204;
@@ -30,11 +30,11 @@ public class GUIMachineCoker extends GuiInfoContainer {
 	public void drawScreen(int x, int y, float f) {
 		super.drawScreen(x, y, f);
 
-		refinery.tanks[0].renderTankInfo(this, x, y, guiLeft + 35, guiTop + 18, 16, 52);
-		refinery.tanks[1].renderTankInfo(this, x, y, guiLeft + 125, guiTop + 18, 16, 52);
+		this.refinery.tanks[0].renderTankInfo(this, x, y, this.guiLeft + 35, this.guiTop + 18, 16, 52);
+		this.refinery.tanks[1].renderTankInfo(this, x, y, this.guiLeft + 125, this.guiTop + 18, 16, 52);
 		
-		this.drawCustomInfoStat(x, y, guiLeft + 60, guiTop + 45, 54, 7, x, y, new String[] { String.format(Locale.US, "%,d", refinery.progress) + " / " + String.format(Locale.US, "%,d", refinery.processTime) + "TU" });
-		this.drawCustomInfoStat(x, y, guiLeft + 60, guiTop + 54, 54, 7, x, y, new String[] { String.format(Locale.US, "%,d", refinery.heat) + " / " + String.format(Locale.US, "%,d", refinery.maxHeat) + "TU" });
+		this.drawCustomInfoStat(x, y, this.guiLeft + 60, this.guiTop + 45, 54, 7, x, y, new String[] { String.format(Locale.US, "%,d", this.refinery.progress) + " / " + String.format(Locale.US, "%,d", TileEntityMachineCoker.processTime) + "TU" });
+		this.drawCustomInfoStat(x, y, this.guiLeft + 60, this.guiTop + 54, 54, 7, x, y, new String[] { String.format(Locale.US, "%,d", this.refinery.heat) + " / " + String.format(Locale.US, "%,d", TileEntityMachineCoker.maxHeat) + "TU" });
 	}
 	
 	@Override
@@ -48,16 +48,16 @@ public class GUIMachineCoker extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIMachineCoker.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		int p = refinery.progress * 53 / refinery.processTime;
-		drawTexturedModalRect(guiLeft + 61, guiTop + 46, 176, 0, p, 5);
+		int p = this.refinery.progress * 53 / TileEntityMachineCoker.processTime;
+		drawTexturedModalRect(this.guiLeft + 61, this.guiTop + 46, 176, 0, p, 5);
 		
-		int h = refinery.heat * 52 / refinery.maxHeat;
-		drawTexturedModalRect(guiLeft + 61, guiTop + 55, 176, 5, h, 5);
+		int h = this.refinery.heat * 52 / TileEntityMachineCoker.maxHeat;
+		drawTexturedModalRect(this.guiLeft + 61, this.guiTop + 55, 176, 5, h, 5);
 		
-		refinery.tanks[0].renderTank(guiLeft + 35, guiTop + 70, this.zLevel, 16, 52);
-		refinery.tanks[1].renderTank(guiLeft + 125, guiTop + 70, this.zLevel, 16, 52);
+		this.refinery.tanks[0].renderTank(this.guiLeft + 35, this.guiTop + 70, this.zLevel, 16, 52);
+		this.refinery.tanks[1].renderTank(this.guiLeft + 125, this.guiTop + 70, this.zLevel, 16, 52);
 	}
 }

@@ -20,42 +20,43 @@ public class TileEntityDroneWaypoint extends TileEntity implements INBTPacketRec
 	public int nextY = -1;
 	public int nextZ = -1;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void updateEntity() {
 		
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata());
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata());
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			if(nextY != -1) {
-				List<EntityDeliveryDrone> drones = worldObj.getEntitiesWithinAABB(EntityDeliveryDrone.class, AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).offset(dir.offsetX * height, dir.offsetY * height, dir.offsetZ * height));
+			if(this.nextY != -1) {
+				List<EntityDeliveryDrone> drones = this.worldObj.getEntitiesWithinAABB(EntityDeliveryDrone.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1).offset(dir.offsetX * this.height, dir.offsetY * this.height, dir.offsetZ * this.height));
 				for(EntityDeliveryDrone drone : drones) {
 					if(Vec3.createVectorHelper(drone.motionX, drone.motionY, drone.motionZ).lengthVector() < 0.05) {
-						drone.setTarget(nextX + 0.5, nextY, nextZ + 0.5);
+						drone.setTarget(this.nextX + 0.5, this.nextY, this.nextZ + 0.5);
 					}
 				}
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setInteger("height", height);
-			data.setIntArray("pos", new int[] {nextX, nextY, nextZ});
+			data.setInteger("height", this.height);
+			data.setIntArray("pos", new int[] {this.nextX, this.nextY, this.nextZ});
 			INBTPacketReceiver.networkPack(this, data, 15);
 		} else {
 			
-			if(nextY != -1 && worldObj.getTotalWorldTime() % 2 == 0) {
-				double x = xCoord + height * dir.offsetX + 0.5;
-				double y = yCoord + height * dir.offsetY + 0.5;
-				double z = zCoord + height * dir.offsetZ + 0.5;
+			if(this.nextY != -1 && this.worldObj.getTotalWorldTime() % 2 == 0) {
+				double x = this.xCoord + this.height * dir.offsetX + 0.5;
+				double y = this.yCoord + this.height * dir.offsetY + 0.5;
+				double z = this.zCoord + this.height * dir.offsetZ + 0.5;
 				
-				worldObj.spawnParticle("reddust", x, y, z, 0, 0, 0);
+				this.worldObj.spawnParticle("reddust", x, y, z, 0, 0, 0);
 			}
 		}
 	}
 
 	@Override
 	public BlockPos getPoint() {
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata());
-		return new BlockPos(xCoord, yCoord, zCoord).offset(dir, height);
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata());
+		return new BlockPos(this.xCoord, this.yCoord, this.zCoord).offset(dir, this.height);
 	}
 
 	@Override
@@ -63,7 +64,7 @@ public class TileEntityDroneWaypoint extends TileEntity implements INBTPacketRec
 		this.nextX = x;
 		this.nextY = y;
 		this.nextZ = z;
-		this.markDirty();
+		markDirty();
 	}
 
 	@Override
@@ -76,8 +77,8 @@ public class TileEntityDroneWaypoint extends TileEntity implements INBTPacketRec
 	}
 	
 	public void addHeight(int h) {
-		height += h;
-		height = MathHelper.clamp_int(height, 1, 15);
+		this.height += h;
+		this.height = MathHelper.clamp_int(this.height, 1, 15);
 	}
 	
 	@Override
@@ -95,7 +96,7 @@ public class TileEntityDroneWaypoint extends TileEntity implements INBTPacketRec
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("height", height);
-		nbt.setIntArray("pos", new int[] {nextX, nextY, nextZ});
+		nbt.setInteger("height", this.height);
+		nbt.setIntArray("pos", new int[] {this.nextX, this.nextY, this.nextZ});
 	}
 }

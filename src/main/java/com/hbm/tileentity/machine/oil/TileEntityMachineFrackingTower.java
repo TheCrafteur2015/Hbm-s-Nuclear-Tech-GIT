@@ -41,10 +41,10 @@ public class TileEntityMachineFrackingTower extends TileEntityOilDrillBase imple
 
 	public TileEntityMachineFrackingTower() {
 		super();
-		tanks = new FluidTank[3];
-		tanks[0] = new FluidTank(Fluids.OIL, 64_000, 0);
-		tanks[1] = new FluidTank(Fluids.GAS, 64_000, 1);
-		tanks[2] = new FluidTank(Fluids.FRACKSOL, 64_000, 2);
+		this.tanks = new FluidTank[3];
+		this.tanks[0] = new FluidTank(Fluids.OIL, 64_000, 0);
+		this.tanks[1] = new FluidTank(Fluids.GAS, 64_000, 1);
+		this.tanks[2] = new FluidTank(Fluids.FRACKSOL, 64_000, 2);
 	}
 
 	@Override
@@ -54,17 +54,17 @@ public class TileEntityMachineFrackingTower extends TileEntityOilDrillBase imple
 
 	@Override
 	public long getMaxPower() {
-		return maxPower;
+		return TileEntityMachineFrackingTower.maxPower;
 	}
 
 	@Override
 	public int getPowerReq() {
-		return consumption;
+		return TileEntityMachineFrackingTower.consumption;
 	}
 
 	@Override
 	public int getDelay() {
-		return delay;
+		return TileEntityMachineFrackingTower.delay;
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class TileEntityMachineFrackingTower extends TileEntityOilDrillBase imple
 
 	@Override
 	public boolean canPump() {
-		boolean b = this.tanks[2].getFill() >= solutionRequired;
+		boolean b = this.tanks[2].getFill() >= TileEntityMachineFrackingTower.solutionRequired;
 		
 		if(!b) {
 			this.indicator = 3;
@@ -92,7 +92,7 @@ public class TileEntityMachineFrackingTower extends TileEntityOilDrillBase imple
 	public void doSuck(int x, int y, int z) {
 		super.doSuck(x, y, z);
 		
-		if(worldObj.getBlock(x, y, z) == ModBlocks.ore_bedrock_oil) {
+		if(this.worldObj.getBlock(x, y, z) == ModBlocks.ore_bedrock_oil) {
 			onSuck(x, y, z);
 		}
 	}
@@ -100,32 +100,32 @@ public class TileEntityMachineFrackingTower extends TileEntityOilDrillBase imple
 	@Override
 	public void onSuck(int x, int y, int z) {
 		
-		Block b = worldObj.getBlock(x, y, z);
+		Block b = this.worldObj.getBlock(x, y, z);
 		
 		int oil = 0;
 		int gas = 0;
 
 		if(b == ModBlocks.ore_oil) {
-			oil = oilPerDepsoit;
-			gas = gasPerDepositMin + worldObj.rand.nextInt(gasPerDepositMax - gasPerDepositMin + 1);
+			oil = TileEntityMachineFrackingTower.oilPerDepsoit;
+			gas = TileEntityMachineFrackingTower.gasPerDepositMin + this.worldObj.rand.nextInt(TileEntityMachineFrackingTower.gasPerDepositMax - TileEntityMachineFrackingTower.gasPerDepositMin + 1);
 			
-			if(worldObj.rand.nextDouble() < drainChance) {
-				worldObj.setBlock(x, y, z, ModBlocks.ore_oil_empty);
+			if(this.worldObj.rand.nextDouble() < TileEntityMachineFrackingTower.drainChance) {
+				this.worldObj.setBlock(x, y, z, ModBlocks.ore_oil_empty);
 			}
 		}
 		if(b == ModBlocks.ore_bedrock_oil) {
-			oil = oilPerBedrockDepsoit;
-			gas = gasPerBedrockDepositMin + worldObj.rand.nextInt(gasPerBedrockDepositMax - gasPerBedrockDepositMin + 1);
+			oil = TileEntityMachineFrackingTower.oilPerBedrockDepsoit;
+			gas = TileEntityMachineFrackingTower.gasPerBedrockDepositMin + this.worldObj.rand.nextInt(TileEntityMachineFrackingTower.gasPerBedrockDepositMax - TileEntityMachineFrackingTower.gasPerBedrockDepositMin + 1);
 		}
 		
 		this.tanks[0].setFill(this.tanks[0].getFill() + oil);
-		if(this.tanks[0].getFill() > this.tanks[0].getMaxFill()) this.tanks[0].setFill(tanks[0].getMaxFill());
+		if(this.tanks[0].getFill() > this.tanks[0].getMaxFill()) this.tanks[0].setFill(this.tanks[0].getMaxFill());
 		this.tanks[1].setFill(this.tanks[1].getFill() + gas);
-		if(this.tanks[1].getFill() > this.tanks[1].getMaxFill()) this.tanks[1].setFill(tanks[1].getMaxFill());
+		if(this.tanks[1].getFill() > this.tanks[1].getMaxFill()) this.tanks[1].setFill(this.tanks[1].getMaxFill());
 		
-		this.tanks[2].setFill(tanks[2].getFill() - solutionRequired);
+		this.tanks[2].setFill(this.tanks[2].getFill() - TileEntityMachineFrackingTower.solutionRequired);
 
-		OilSpot.generateOilSpot(worldObj, xCoord, zCoord, destructionRange, 10, false);
+		OilSpot.generateOilSpot(this.worldObj, this.xCoord, this.zCoord, TileEntityMachineFrackingTower.destructionRange, 10, false);
 	}
 
 	@Override
@@ -138,39 +138,39 @@ public class TileEntityMachineFrackingTower extends TileEntityOilDrillBase imple
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		return type == tanks[2].getTankType() ? tanks[2].getMaxFill() : 0;
+		return type == this.tanks[2].getTankType() ? this.tanks[2].getMaxFill() : 0;
 	}
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return new FluidTank[] { tanks[0], tanks[1] };
+		return new FluidTank[] { this.tanks[0], this.tanks[1] };
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] { tanks[2] };
+		return new FluidTank[] { this.tanks[2] };
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return tanks;
+		return this.tanks;
 	}
 
 	@Override
 	public DirPos[] getConPos() {
 		return new DirPos[] {
-				new DirPos(xCoord + 1, yCoord, zCoord, Library.POS_X),
-				new DirPos(xCoord - 1, yCoord, zCoord, Library.NEG_X),
-				new DirPos(xCoord, yCoord, zCoord + 1, Library.POS_Z),
-				new DirPos(xCoord, yCoord, zCoord - 1, Library.NEG_Z)
+				new DirPos(this.xCoord + 1, this.yCoord, this.zCoord, Library.POS_X),
+				new DirPos(this.xCoord - 1, this.yCoord, this.zCoord, Library.NEG_X),
+				new DirPos(this.xCoord, this.yCoord, this.zCoord + 1, Library.POS_Z),
+				new DirPos(this.xCoord, this.yCoord, this.zCoord - 1, Library.NEG_Z)
 		};
 	}
 
 	@Override
 	protected void updateConnections() {
 		for(DirPos pos : getConPos()) {
-			this.trySubscribe(worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
-			this.trySubscribe(tanks[2].getTankType(), worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			this.trySubscribe(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			this.trySubscribe(this.tanks[2].getTankType(), this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 		}
 	}
 
@@ -181,34 +181,34 @@ public class TileEntityMachineFrackingTower extends TileEntityOilDrillBase imple
 
 	@Override
 	public void readIfPresent(JsonObject obj) {
-		maxPower = IConfigurableMachine.grab(obj, "I:powerCap", maxPower);
-		consumption = IConfigurableMachine.grab(obj, "I:consumption", consumption);
-		solutionRequired = IConfigurableMachine.grab(obj, "I:solutionRequired", solutionRequired);
-		delay = IConfigurableMachine.grab(obj, "I:delay", delay);
-		oilPerDepsoit = IConfigurableMachine.grab(obj, "I:oilPerDeposit", oilPerDepsoit);
-		gasPerDepositMin = IConfigurableMachine.grab(obj, "I:gasPerDepositMin", gasPerDepositMin);
-		gasPerDepositMax = IConfigurableMachine.grab(obj, "I:gasPerDepositMax", gasPerDepositMax);
-		drainChance = IConfigurableMachine.grab(obj, "D:drainChance", drainChance);
-		oilPerBedrockDepsoit = IConfigurableMachine.grab(obj, "I:oilPerBedrockDeposit", oilPerBedrockDepsoit);
-		gasPerBedrockDepositMin = IConfigurableMachine.grab(obj, "I:gasPerBedrockDepositMin", gasPerBedrockDepositMin);
-		gasPerBedrockDepositMax = IConfigurableMachine.grab(obj, "I:gasPerBedrockDepositMax", gasPerBedrockDepositMax);
-		destructionRange = IConfigurableMachine.grab(obj, "I:destructionRange", destructionRange);
+		TileEntityMachineFrackingTower.maxPower = IConfigurableMachine.grab(obj, "I:powerCap", TileEntityMachineFrackingTower.maxPower);
+		TileEntityMachineFrackingTower.consumption = IConfigurableMachine.grab(obj, "I:consumption", TileEntityMachineFrackingTower.consumption);
+		TileEntityMachineFrackingTower.solutionRequired = IConfigurableMachine.grab(obj, "I:solutionRequired", TileEntityMachineFrackingTower.solutionRequired);
+		TileEntityMachineFrackingTower.delay = IConfigurableMachine.grab(obj, "I:delay", TileEntityMachineFrackingTower.delay);
+		TileEntityMachineFrackingTower.oilPerDepsoit = IConfigurableMachine.grab(obj, "I:oilPerDeposit", TileEntityMachineFrackingTower.oilPerDepsoit);
+		TileEntityMachineFrackingTower.gasPerDepositMin = IConfigurableMachine.grab(obj, "I:gasPerDepositMin", TileEntityMachineFrackingTower.gasPerDepositMin);
+		TileEntityMachineFrackingTower.gasPerDepositMax = IConfigurableMachine.grab(obj, "I:gasPerDepositMax", TileEntityMachineFrackingTower.gasPerDepositMax);
+		TileEntityMachineFrackingTower.drainChance = IConfigurableMachine.grab(obj, "D:drainChance", TileEntityMachineFrackingTower.drainChance);
+		TileEntityMachineFrackingTower.oilPerBedrockDepsoit = IConfigurableMachine.grab(obj, "I:oilPerBedrockDeposit", TileEntityMachineFrackingTower.oilPerBedrockDepsoit);
+		TileEntityMachineFrackingTower.gasPerBedrockDepositMin = IConfigurableMachine.grab(obj, "I:gasPerBedrockDepositMin", TileEntityMachineFrackingTower.gasPerBedrockDepositMin);
+		TileEntityMachineFrackingTower.gasPerBedrockDepositMax = IConfigurableMachine.grab(obj, "I:gasPerBedrockDepositMax", TileEntityMachineFrackingTower.gasPerBedrockDepositMax);
+		TileEntityMachineFrackingTower.destructionRange = IConfigurableMachine.grab(obj, "I:destructionRange", TileEntityMachineFrackingTower.destructionRange);
 	}
 
 	@Override
 	public void writeConfig(JsonWriter writer) throws IOException {
-		writer.name("I:powerCap").value(maxPower);
-		writer.name("I:consumption").value(consumption);
-		writer.name("I:solutionRequired").value(solutionRequired);
-		writer.name("I:delay").value(delay);
-		writer.name("I:oilPerDeposit").value(oilPerDepsoit);
-		writer.name("I:gasPerDepositMin").value(gasPerDepositMin);
-		writer.name("I:gasPerDepositMax").value(gasPerDepositMax);
-		writer.name("D:drainChance").value(drainChance);
-		writer.name("I:oilPerBedrockDeposit").value(oilPerBedrockDepsoit);
-		writer.name("I:gasPerBedrockDepositMin").value(gasPerBedrockDepositMin);
-		writer.name("I:gasPerBedrockDepositMax").value(gasPerBedrockDepositMax);
-		writer.name("I:destructionRange").value(destructionRange);
+		writer.name("I:powerCap").value(TileEntityMachineFrackingTower.maxPower);
+		writer.name("I:consumption").value(TileEntityMachineFrackingTower.consumption);
+		writer.name("I:solutionRequired").value(TileEntityMachineFrackingTower.solutionRequired);
+		writer.name("I:delay").value(TileEntityMachineFrackingTower.delay);
+		writer.name("I:oilPerDeposit").value(TileEntityMachineFrackingTower.oilPerDepsoit);
+		writer.name("I:gasPerDepositMin").value(TileEntityMachineFrackingTower.gasPerDepositMin);
+		writer.name("I:gasPerDepositMax").value(TileEntityMachineFrackingTower.gasPerDepositMax);
+		writer.name("D:drainChance").value(TileEntityMachineFrackingTower.drainChance);
+		writer.name("I:oilPerBedrockDeposit").value(TileEntityMachineFrackingTower.oilPerBedrockDepsoit);
+		writer.name("I:gasPerBedrockDepositMin").value(TileEntityMachineFrackingTower.gasPerBedrockDepositMin);
+		writer.name("I:gasPerBedrockDepositMax").value(TileEntityMachineFrackingTower.gasPerBedrockDepositMax);
+		writer.name("I:destructionRange").value(TileEntityMachineFrackingTower.destructionRange);
 	}
 
 	@Override

@@ -37,15 +37,13 @@ public class ItemSatInterface extends ItemSatChip implements IGUIProvider {
 		return stack;
 	}
 	
-    public void onUpdate(ItemStack stack, World world, Entity entity, int i, boolean b) {
+    @Override
+	public void onUpdate(ItemStack stack, World world, Entity entity, int i, boolean b) {
     	
-    	if(world.isRemote || !(entity instanceof EntityPlayerMP))
+    	if(world.isRemote || !(entity instanceof EntityPlayerMP) || (((EntityPlayerMP)entity).getHeldItem() != stack))
     		return;
     	
-    	if(((EntityPlayerMP)entity).getHeldItem() != stack)
-    		return;
-    	
-    	Satellite sat = SatelliteSavedData.getData(world).getSatFromFreq(this.getFreq(stack));
+    	Satellite sat = SatelliteSavedData.getData(world).getSatFromFreq(getFreq(stack));
     	
     	if(sat != null && entity.ticksExisted % 2 == 0) {
     		PacketDispatcher.wrapper.sendTo(new SatPanelPacket(sat), (EntityPlayerMP) entity); //making this one sat that is static might not have been a good idea

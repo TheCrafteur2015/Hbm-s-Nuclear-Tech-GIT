@@ -37,7 +37,7 @@ public class RenderSteelPoles extends TileEntitySpecialRenderer {
 				GL11.glRotatef(0, 0F, 1F, 0F); break;
 			}
 			
-			this.bindTexture(texture);
+			bindTexture(RenderSteelPoles.texture);
 			
 			GL11.glPushMatrix();
 				this.model.renderModel(0.0625F);

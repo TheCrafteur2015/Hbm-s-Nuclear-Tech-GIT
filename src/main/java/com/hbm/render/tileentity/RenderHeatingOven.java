@@ -69,10 +69,12 @@ public class RenderHeatingOven extends TileEntitySpecialRenderer implements IIte
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase() {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(0, -1, 0);
 				GL11.glScaled(3.25, 3.25, 3.25);
 			}
+			@Override
 			public void renderCommon() {
 				bindTexture(ResourceManager.heater_oven_tex);
 				ResourceManager.heater_oven.renderPart("Main");

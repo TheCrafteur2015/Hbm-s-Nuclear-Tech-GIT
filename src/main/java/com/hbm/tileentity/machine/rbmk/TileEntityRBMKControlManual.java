@@ -35,7 +35,7 @@ public class TileEntityRBMKControlManual extends TileEntityRBMKControl implement
 	
 	@Override
 	public boolean isModerated() {
-		return ((RBMKControl)this.getBlockType()).moderated;
+		return ((RBMKControl)getBlockType()).moderated;
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class TileEntityRBMKControlManual extends TileEntityRBMKControl implement
 		double surge = 0;
 		
 		if(this.targetLevel < this.startingLevel && Math.abs(this.level - this.targetLevel) > 0.01D) {
-			surge = Math.sin(Math.pow((1D - this.level), 15) * Math.PI) * (this.startingLevel - this.targetLevel) * RBMKDials.getSurgeMod(worldObj);
+			surge = Math.sin(Math.pow((1D - this.level), 15) * Math.PI) * (this.startingLevel - this.targetLevel) * RBMKDials.getSurgeMod(this.worldObj);
 			
 		}
 		
@@ -59,14 +59,14 @@ public class TileEntityRBMKControlManual extends TileEntityRBMKControl implement
 
 	@Override
 	public boolean hasPermission(EntityPlayer player) {
-		return Vec3.createVectorHelper(xCoord - player.posX, yCoord - player.posY, zCoord - player.posZ).lengthVector() < 20;
+		return Vec3.createVectorHelper(this.xCoord - player.posX, this.yCoord - player.posY, this.zCoord - player.posZ).lengthVector() < 20;
 	}
 
 	@Override
 	public void receiveControl(NBTTagCompound data) {
 		
 		if(data.hasKey("level")) {
-			this.setTarget(data.getDouble("level"));
+			setTarget(data.getDouble("level"));
 		}
 		
 		if(data.hasKey("color")) {
@@ -81,7 +81,7 @@ public class TileEntityRBMKControlManual extends TileEntityRBMKControl implement
 			}
 		}
 		
-		this.markDirty();
+		markDirty();
 	}
 	
 	@Override
@@ -102,10 +102,10 @@ public class TileEntityRBMKControlManual extends TileEntityRBMKControl implement
 		super.writeToNBT(nbt);
 
 		nbt.setDouble("startingLevel", this.startingLevel);
-		nbt.setDouble("mult", this.getMult());
+		nbt.setDouble("mult", getMult());
 		
-		if(color != null)
-			nbt.setInteger("color", color.ordinal());
+		if(this.color != null)
+			nbt.setInteger("color", this.color.ordinal());
 	}
 	
 	public static enum RBMKColor {

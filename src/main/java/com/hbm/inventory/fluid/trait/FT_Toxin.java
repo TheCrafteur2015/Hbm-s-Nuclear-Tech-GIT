@@ -9,9 +9,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
 import com.hbm.util.ArmorRegistry;
+import com.hbm.util.ArmorRegistry.HazardClass;
 import com.hbm.util.ArmorUtil;
 import com.hbm.util.I18nUtil;
-import com.hbm.util.ArmorRegistry.HazardClass;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.PotionEffect;
@@ -22,10 +22,10 @@ import net.minecraft.util.StringUtils;
 
 public class FT_Toxin extends FluidTrait {
 	
-	public List<ToxinEntry> entries = new ArrayList();
+	public List<ToxinEntry> entries = new ArrayList<>();
 	
 	public FT_Toxin addEntry(ToxinEntry entry) {
-		entries.add(entry);
+		this.entries.add(entry);
 		return this;
 	}
 	
@@ -33,14 +33,14 @@ public class FT_Toxin extends FluidTrait {
 	public void addInfoHidden(List<String> info) {
 		info.add(EnumChatFormatting.LIGHT_PURPLE + "[Toxin]");
 		
-		for(ToxinEntry entry : entries) {
+		for(ToxinEntry entry : this.entries) {
 			entry.addInfo(info);
 		}
 	}
 	
 	public void affect(EntityLivingBase entity, double intensity) {
 		
-		for(ToxinEntry entry : entries) {
+		for(ToxinEntry entry : this.entries) {
 			entry.poison(entity, intensity);
 		}
 	}
@@ -57,15 +57,15 @@ public class FT_Toxin extends FluidTrait {
 		
 		public boolean isProtected(EntityLivingBase entity) {
 			
-			boolean hasMask = clazz == null;
-			boolean hasSuit = !fullBody;
+			boolean hasMask = this.clazz == null;
+			boolean hasSuit = !this.fullBody;
 			
-			if(clazz != null && ArmorRegistry.hasAllProtection(entity, 3, clazz)) {
+			if(this.clazz != null && ArmorRegistry.hasAllProtection(entity, 3, this.clazz)) {
 				ArmorUtil.damageGasMaskFilter(entity, 1);
 				hasMask = true;
 			}
 			
-			if(fullBody && ArmorUtil.checkForHazmat(entity)) {
+			if(this.fullBody && ArmorUtil.checkForHazmat(entity)) {
 				hasSuit = true;
 			}
 			
@@ -94,20 +94,20 @@ public class FT_Toxin extends FluidTrait {
 			
 			if(isProtected(entity)) return;
 			
-			if(delay == 0 || entity.worldObj.getTotalWorldTime() % delay == 0) {
-				entity.attackEntityFrom(damage, (float) (amount * intensity));
+			if(this.delay == 0 || entity.worldObj.getTotalWorldTime() % this.delay == 0) {
+				entity.attackEntityFrom(this.damage, (float) (this.amount * intensity));
 			}
 		}
 
 		@Override
 		public void addInfo(List<String> info) {
-			info.add(EnumChatFormatting.YELLOW + "- " + I18nUtil.resolveKey(clazz.lang) + (fullBody ? EnumChatFormatting.RED + " (requires hazmat suit)" : "") + ": " + EnumChatFormatting.YELLOW + String.format(Locale.US, "%,.1f", amount * 20 / delay) + " DPS");
+			info.add(EnumChatFormatting.YELLOW + "- " + I18nUtil.resolveKey(this.clazz.lang) + (this.fullBody ? EnumChatFormatting.RED + " (requires hazmat suit)" : "") + ": " + EnumChatFormatting.YELLOW + String.format(Locale.US, "%,.1f", this.amount * 20 / this.delay) + " DPS");
 		}
 	}
 
 	public static class ToxinEffects extends ToxinEntry {
 
-		public List<PotionEffect> effects = new ArrayList();
+		public List<PotionEffect> effects = new ArrayList<>();
 		
 		public ToxinEffects(HazardClass clazz, boolean fullBody) {
 			super(clazz, fullBody);
@@ -123,16 +123,16 @@ public class FT_Toxin extends FluidTrait {
 			
 			if(isProtected(entity)) return;
 			
-			for(PotionEffect eff : effects) {
+			for(PotionEffect eff : this.effects) {
 				entity.addPotionEffect(new PotionEffect(eff.getPotionID(), (int) (eff.getDuration() * intensity), eff.getAmplifier()));
 			}
 		}
 
 		@Override
 		public void addInfo(List<String> info) {
-			info.add(EnumChatFormatting.YELLOW + "- " + I18nUtil.resolveKey(clazz.lang) + (fullBody ? EnumChatFormatting.RED + " (requires hazmat suit)" + EnumChatFormatting.YELLOW : "") + ":");
+			info.add(EnumChatFormatting.YELLOW + "- " + I18nUtil.resolveKey(this.clazz.lang) + (this.fullBody ? EnumChatFormatting.RED + " (requires hazmat suit)" + EnumChatFormatting.YELLOW : "") + ":");
 			
-			for(PotionEffect eff : effects) {
+			for(PotionEffect eff : this.effects) {
 				info.add(EnumChatFormatting.YELLOW + "   - " + I18nUtil.resolveKey(eff.getEffectName()) + (eff.getAmplifier() > 0 ? " " + StatCollector.translateToLocal("potion.potency." + eff.getAmplifier()).trim() : "") + " " + StringUtils.ticksToElapsedTime(eff.getDuration()));
 			}
 		}
@@ -142,7 +142,7 @@ public class FT_Toxin extends FluidTrait {
 		
 		writer.name("entries").beginArray();
 		
-		for(ToxinEntry entry : entries) {
+		for(ToxinEntry entry : this.entries) {
 			writer.beginObject();
 
 			if(entry instanceof ToxinDirectDamage) {

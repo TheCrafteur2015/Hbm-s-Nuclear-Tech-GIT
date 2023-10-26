@@ -19,7 +19,7 @@ public class GUICartDestroyer extends GuiContainer {
 	
 	public GUICartDestroyer(InventoryPlayer invPlayer, IInventory inv) {
 		super(new ContainerCartDestroyer(invPlayer, inv));
-		cart = inv;
+		this.cart = inv;
 		
 		this.xSize = 176;
 		this.ySize = 166;
@@ -36,15 +36,15 @@ public class GUICartDestroyer extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUICartDestroyer.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
 		int time = (int) (System.currentTimeMillis() % 1000);
 		int index = time / 128;
 
-		if(index == 1 || index == 7) drawTexturedModalRect(guiLeft + 66, guiTop + 35, 0, 166, 44, 16);
-		if(index == 2 || index == 6) drawTexturedModalRect(guiLeft + 66, guiTop + 35, 0, 182, 44, 16);
-		if(index == 3 || index == 5) drawTexturedModalRect(guiLeft + 66, guiTop + 35, 0, 198, 44, 16);
-		if(index == 4) drawTexturedModalRect(guiLeft + 66, guiTop + 35, 0, 214, 44, 16);
+		if(index == 1 || index == 7) drawTexturedModalRect(this.guiLeft + 66, this.guiTop + 35, 0, 166, 44, 16);
+		if(index == 2 || index == 6) drawTexturedModalRect(this.guiLeft + 66, this.guiTop + 35, 0, 182, 44, 16);
+		if(index == 3 || index == 5) drawTexturedModalRect(this.guiLeft + 66, this.guiTop + 35, 0, 198, 44, 16);
+		if(index == 4) drawTexturedModalRect(this.guiLeft + 66, this.guiTop + 35, 0, 214, 44, 16);
 	}
 }

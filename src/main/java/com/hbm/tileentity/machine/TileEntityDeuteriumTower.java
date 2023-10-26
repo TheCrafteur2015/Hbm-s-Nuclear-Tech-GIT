@@ -17,15 +17,15 @@ public class TileEntityDeuteriumTower extends TileEntityDeuteriumExtractor {
 
 	public TileEntityDeuteriumTower() {
 		super();
-		tanks[0] = new FluidTank(Fluids.WATER, 50000, 0);
-		tanks[1] = new FluidTank(Fluids.HEAVYWATER, 5000, 1);
+		this.tanks[0] = new FluidTank(Fluids.WATER, 50000, 0);
+		this.tanks[1] = new FluidTank(Fluids.HEAVYWATER, 5000, 1);
 	}
 
 	@Override
 	protected void updateConnections() {
 
 		for(DirPos pos : getConPos()) {
-			this.trySubscribe(worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			this.trySubscribe(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 		}
 	}
 	
@@ -41,13 +41,13 @@ public class TileEntityDeuteriumTower extends TileEntityDeuteriumExtractor {
 	public void sendFluidToAll(FluidTank tank, TileEntity te) {
 
 		for(DirPos pos : getConPos()) {
-			this.sendFluid(tank, worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			this.sendFluid(tank, this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 		}
 	}
 	
 	private DirPos[] getConPos() {
 		
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
 		ForgeDirection rot = dir.getRotation(ForgeDirection.DOWN);
 
 		return new DirPos[] {
@@ -70,18 +70,18 @@ public class TileEntityDeuteriumTower extends TileEntityDeuteriumExtractor {
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 1,
-					yCoord,
-					zCoord - 1,
-					xCoord + 2,
-					yCoord + 10,
-					zCoord + 2
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 1,
+					this.yCoord,
+					this.zCoord - 1,
+					this.xCoord + 2,
+					this.yCoord + 10,
+					this.zCoord + 2
 					);
 		}
 
-		return bb;
+		return this.bb;
 	}
 
 	@Override

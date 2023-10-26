@@ -16,24 +16,24 @@ public class ContainerMachineTurbofan extends Container {
 	private int afterburner;
 	
 	public ContainerMachineTurbofan(InventoryPlayer invPlayer, TileEntityMachineTurbofan tedf) {
-		afterburner = 0;
+		this.afterburner = 0;
 		
-		diFurnace = tedf;
+		this.diFurnace = tedf;
 		
-		this.addSlotToContainer(new Slot(tedf, 0, 17, 17));
-		this.addSlotToContainer(new SlotTakeOnly(tedf, 1, 17, 53));
-		this.addSlotToContainer(new Slot(tedf, 2, 98, 71));
-		this.addSlotToContainer(new Slot(tedf, 3, 143, 71));
-		this.addSlotToContainer(new Slot(tedf, 4, 44, 71));
+		addSlotToContainer(new Slot(tedf, 0, 17, 17));
+		addSlotToContainer(new SlotTakeOnly(tedf, 1, 17, 53));
+		addSlotToContainer(new Slot(tedf, 2, 98, 71));
+		addSlotToContainer(new Slot(tedf, 3, 143, 71));
+		addSlotToContainer(new Slot(tedf, 4, 44, 71));
 		
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 121 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 121 + i * 18));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 179));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 179));
 		}
 	}
 	
@@ -53,11 +53,11 @@ public class ContainerMachineTurbofan extends Container {
 			var3 = var5.copy();
 
 			if(par2 <= 4) {
-				if(!this.mergeItemStack(var5, 5, this.inventorySlots.size(), true)) {
+				if(!mergeItemStack(var5, 5, this.inventorySlots.size(), true)) {
 					return null;
 				}
-			} else if(!this.mergeItemStack(var5, 0, 1, false)) {
-				if(!this.mergeItemStack(var5, 2, 3, false))
+			} else if(!mergeItemStack(var5, 0, 1, false)) {
+				if(!mergeItemStack(var5, 2, 3, false))
 					return null;
 			}
 
@@ -73,16 +73,15 @@ public class ContainerMachineTurbofan extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return diFurnace.isUseableByPlayer(player);
+		return this.diFurnace.isUseableByPlayer(player);
 	}
 	
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 		
-		for(int i = 0; i < this.crafters.size(); i++)
-		{
-			ICrafting par1 = (ICrafting)this.crafters.get(i);
+		for (Object element : this.crafters) {
+			ICrafting par1 = (ICrafting)element;
 			
 			if(this.afterburner != this.diFurnace.afterburner)
 			{
@@ -97,7 +96,7 @@ public class ContainerMachineTurbofan extends Container {
 	public void updateProgressBar(int i, int j) {
 		if(i == 1)
 		{
-			diFurnace.afterburner = j;
+			this.diFurnace.afterburner = j;
 		}
 	}
 

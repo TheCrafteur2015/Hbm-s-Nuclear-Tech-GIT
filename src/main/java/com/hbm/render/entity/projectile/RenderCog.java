@@ -33,7 +33,7 @@ public class RenderCog extends Render {
 		
 		GL11.glTranslated(0, -1.375, 0);
 		
-		this.bindEntityTexture(cog);
+		bindEntityTexture(cog);
 		ResourceManager.stirling.renderPart("Cog");
 		
 		GL11.glPopMatrix();

@@ -29,7 +29,7 @@ public class TileEntityFoundryBasin extends TileEntityFoundryCastingBase impleme
 
 	@Override
 	public double getLevel() {
-		return 0.125 + this.amount * 0.75D / this.getCapacity();
+		return 0.125 + this.amount * 0.75D / getCapacity();
 	}
 
 	@Override

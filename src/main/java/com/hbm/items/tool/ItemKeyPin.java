@@ -11,11 +11,12 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class ItemKeyPin extends Item {
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool)
 	{
-		if(getPins(itemstack) != 0)
-			list.add("Pin configuration: " + getPins(itemstack));
+		if(ItemKeyPin.getPins(itemstack) != 0)
+			list.add("Pin configuration: " + ItemKeyPin.getPins(itemstack));
 		else
 			list.add("Pins not set!");
 		

@@ -22,18 +22,19 @@ import net.minecraft.util.StatCollector;
 public class ItemCrucibleTemplate extends Item {
 
 	public ItemCrucibleTemplate() {
-		this.setHasSubtypes(true);
-		this.setMaxDamage(0);
+		setHasSubtypes(true);
+		setMaxDamage(0);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tabs, List list) {
-		for(int i = 0; i < CrucibleRecipes.recipes.size(); i++) {
-			list.add(new ItemStack(item, 1, CrucibleRecipes.recipes.get(i).getId()));
+		for (CrucibleRecipe element : CrucibleRecipes.recipes) {
+			list.add(new ItemStack(item, 1, element.getId()));
 		}
 	}
 
+	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
 		
 		CrucibleRecipe recipe = CrucibleRecipes.indexMapping.get(stack.getItemDamage());

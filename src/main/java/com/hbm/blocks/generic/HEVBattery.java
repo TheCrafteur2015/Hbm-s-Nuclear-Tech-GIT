@@ -24,7 +24,7 @@ public class HEVBattery extends Block {
 
 	@Override
 	public int getRenderType() {
-		return renderID;
+		return HEVBattery.renderID;
 	}
 
 	@Override
@@ -40,13 +40,13 @@ public class HEVBattery extends Block {
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
 		float f = 0.0625F;
-		this.setBlockBounds(6 * f, 0.0F, 6 * f, 10 * f, 6 * f, 10 * f);
+		setBlockBounds(6 * f, 0.0F, 6 * f, 10 * f, 6 * f, 10 * f);
 	}
 
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
 		float f = 0.0625F;
-		this.setBlockBounds(6 * f, 0.0F, 6 * f, 10 * f, 6 * f, 10 * f);
+		setBlockBounds(6 * f, 0.0F, 6 * f, 10 * f, 6 * f, 10 * f);
 		return AxisAlignedBB.getBoundingBox(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
 	}
 

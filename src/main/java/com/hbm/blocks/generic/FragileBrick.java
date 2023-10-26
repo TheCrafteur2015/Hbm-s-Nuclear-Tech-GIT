@@ -52,6 +52,7 @@ public class FragileBrick extends Block {
 		}
 	}
 
+	@Override
 	public void breakBlock(World world, int x, int y, int z, Block b, int m) {
 		notifyNeighbors(world, x, y, z);
 	}

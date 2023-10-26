@@ -34,13 +34,13 @@ public class TileEntityMachineAssemfac extends TileEntityMachineAssemblerBase im
 	public TileEntityMachineAssemfac() {
 		super(14 * 8 + 4 + 1); //8 assembler groups with 14 slots, 4 upgrade slots, 1 battery slot
 		
-		arms = new AssemblerArm[6];
-		for(int i = 0; i < arms.length; i++) {
-			arms[i] = new AssemblerArm(i % 3 == 1 ? 1 : 0); //the second of every group of three becomes a welder
+		this.arms = new AssemblerArm[6];
+		for(int i = 0; i < this.arms.length; i++) {
+			this.arms[i] = new AssemblerArm(i % 3 == 1 ? 1 : 0); //the second of every group of three becomes a welder
 		}
 
-		water = new FluidTank(Fluids.WATER, 64_000);
-		steam = new FluidTank(Fluids.SPENTSTEAM, 64_000);
+		this.water = new FluidTank(Fluids.WATER, 64_000);
+		this.steam = new FluidTank(Fluids.SPENTSTEAM, 64_000);
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class TileEntityMachineAssemfac extends TileEntityMachineAssemblerBase im
 		super.setInventorySlotContents(i, stack);
 		
 		if(stack != null && i >= 1 && i <= 4 && stack.getItem() instanceof ItemMachineUpgrade) {
-			worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "hbm:item.upgradePlug", 1.0F, 1.0F);
+			this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, "hbm:item.upgradePlug", 1.0F, 1.0F);
 		}
 	}
 
@@ -61,16 +61,16 @@ public class TileEntityMachineAssemfac extends TileEntityMachineAssemblerBase im
 	public void updateEntity() {
 		super.updateEntity();
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			if(worldObj.getTotalWorldTime() % 20 == 0) {
-				this.updateConnections();
+			if(this.worldObj.getTotalWorldTime() % 20 == 0) {
+				updateConnections();
 			}
 			
 			this.speed = 100;
 			this.consumption = 100;
 			
-			UpgradeManager.eval(slots, 1, 4);
+			UpgradeManager.eval(this.slots, 1, 4);
 
 			int speedLevel = Math.min(UpgradeManager.getLevel(UpgradeType.SPEED), 6);
 			int powerLevel = Math.min(UpgradeManager.getLevel(UpgradeType.POWER), 3);
@@ -84,25 +84,25 @@ public class TileEntityMachineAssemfac extends TileEntityMachineAssemblerBase im
 			this.consumption *= (overLevel + 1);
 			
 			for(DirPos pos : getConPos()) {
-				this.sendFluid(steam, worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+				this.sendFluid(this.steam, this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
 			data.setLong("power", this.power);
 			data.setIntArray("progress", this.progress);
 			data.setIntArray("maxProgress", this.maxProgress);
-			data.setBoolean("isProgressing", isProgressing);
+			data.setBoolean("isProgressing", this.isProgressing);
 			
-			water.writeToNBT(data, "w");
-			steam.writeToNBT(data, "s");
+			this.water.writeToNBT(data, "w");
+			this.steam.writeToNBT(data, "s");
 			
-			this.networkPack(data, 150);
+			networkPack(data, 150);
 			
 		} else {
 			
-			for(AssemblerArm arm : arms) {
+			for(AssemblerArm arm : this.arms) {
 				arm.updateInterp();
-				if(isProgressing) {
+				if(this.isProgressing) {
 					arm.updateArm();
 				}
 			}
@@ -116,8 +116,8 @@ public class TileEntityMachineAssemfac extends TileEntityMachineAssemblerBase im
 		this.maxProgress = nbt.getIntArray("maxProgress");
 		this.isProgressing = nbt.getBoolean("isProgressing");
 		
-		water.readFromNBT(nbt, "w");
-		steam.readFromNBT(nbt, "s");
+		this.water.readFromNBT(nbt, "w");
+		this.steam.readFromNBT(nbt, "s");
 	}
 	
 	private int getWaterRequired() {
@@ -138,25 +138,25 @@ public class TileEntityMachineAssemfac extends TileEntityMachineAssemblerBase im
 	
 	private void updateConnections() {
 		for(DirPos pos : getConPos()) {
-			this.trySubscribe(worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
-			this.trySubscribe(water.getTankType(), worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			this.trySubscribe(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			this.trySubscribe(this.water.getTankType(), this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 		}
 	}
 	
 	public DirPos[] getConPos() {
 		
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 		
 		return new DirPos[] {
-				new DirPos(xCoord - dir.offsetX * 3 + rot.offsetX * 5, yCoord, zCoord - dir.offsetZ * 3 + rot.offsetZ * 5, rot),
-				new DirPos(xCoord + dir.offsetX * 2 + rot.offsetX * 5, yCoord, zCoord + dir.offsetZ * 2 + rot.offsetZ * 5, rot),
-				new DirPos(xCoord - dir.offsetX * 3 - rot.offsetX * 4, yCoord, zCoord - dir.offsetZ * 3 - rot.offsetZ * 4, rot.getOpposite()),
-				new DirPos(xCoord + dir.offsetX * 2 - rot.offsetX * 4, yCoord, zCoord + dir.offsetZ * 2 - rot.offsetZ * 4, rot.getOpposite()),
-				new DirPos(xCoord - dir.offsetX * 5 + rot.offsetX * 3, yCoord, zCoord - dir.offsetZ * 5 + rot.offsetZ * 3, dir.getOpposite()),
-				new DirPos(xCoord - dir.offsetX * 5 - rot.offsetX * 2, yCoord, zCoord - dir.offsetZ * 5 - rot.offsetZ * 2, dir.getOpposite()),
-				new DirPos(xCoord + dir.offsetX * 4 + rot.offsetX * 3, yCoord, zCoord + dir.offsetZ * 4 + rot.offsetZ * 3, dir),
-				new DirPos(xCoord + dir.offsetX * 4 - rot.offsetX * 2, yCoord, zCoord + dir.offsetZ * 4 - rot.offsetZ * 2, dir)
+				new DirPos(this.xCoord - dir.offsetX * 3 + rot.offsetX * 5, this.yCoord, this.zCoord - dir.offsetZ * 3 + rot.offsetZ * 5, rot),
+				new DirPos(this.xCoord + dir.offsetX * 2 + rot.offsetX * 5, this.yCoord, this.zCoord + dir.offsetZ * 2 + rot.offsetZ * 5, rot),
+				new DirPos(this.xCoord - dir.offsetX * 3 - rot.offsetX * 4, this.yCoord, this.zCoord - dir.offsetZ * 3 - rot.offsetZ * 4, rot.getOpposite()),
+				new DirPos(this.xCoord + dir.offsetX * 2 - rot.offsetX * 4, this.yCoord, this.zCoord + dir.offsetZ * 2 - rot.offsetZ * 4, rot.getOpposite()),
+				new DirPos(this.xCoord - dir.offsetX * 5 + rot.offsetX * 3, this.yCoord, this.zCoord - dir.offsetZ * 5 + rot.offsetZ * 3, dir.getOpposite()),
+				new DirPos(this.xCoord - dir.offsetX * 5 - rot.offsetX * 2, this.yCoord, this.zCoord - dir.offsetZ * 5 - rot.offsetZ * 2, dir.getOpposite()),
+				new DirPos(this.xCoord + dir.offsetX * 4 + rot.offsetX * 3, this.yCoord, this.zCoord + dir.offsetZ * 4 + rot.offsetZ * 3, dir),
+				new DirPos(this.xCoord + dir.offsetX * 4 - rot.offsetX * 2, this.yCoord, this.zCoord + dir.offsetZ * 4 - rot.offsetZ * 2, dir)
 		};
 	}
 	
@@ -176,70 +176,70 @@ public class TileEntityMachineAssemfac extends TileEntityMachineAssemblerBase im
 			this.actionMode = actionMode;
 			
 			if(this.actionMode == 0) {
-				speed[0] = 15;	//Pivot
-				speed[1] = 15;	//Arm
-				speed[2] = 15;	//Piston
-				speed[3] = 0.5;	//Striker
+				this.speed[0] = 15;	//Pivot
+				this.speed[1] = 15;	//Arm
+				this.speed[2] = 15;	//Piston
+				this.speed[3] = 0.5;	//Striker
 			} else if(this.actionMode == 1) {
-				speed[0] = 3;		//Pivot
-				speed[1] = 3;		//Arm
-				speed[2] = 1;		//Piston
-				speed[3] = 0.125;	//Striker
+				this.speed[0] = 3;		//Pivot
+				this.speed[1] = 3;		//Arm
+				this.speed[2] = 1;		//Piston
+				this.speed[3] = 0.125;	//Striker
 			}
 			
-			state = ArmActionState.ASSUME_POSITION;
+			this.state = ArmActionState.ASSUME_POSITION;
 			chooseNewArmPoistion();
-			actionDelay = rand.nextInt(20);
+			this.actionDelay = this.rand.nextInt(20);
 		}
 		
 		public void updateArm() {
 			
-			if(actionDelay > 0) {
-				actionDelay--;
+			if(this.actionDelay > 0) {
+				this.actionDelay--;
 				return;
 			}
 			
-			switch(state) {
+			switch(this.state) {
 			//Move. If done moving, set a delay and progress to EXTEND
 			case ASSUME_POSITION:
 				if(move()) {
 					if(this.actionMode == 0) {
-						actionDelay = 2;
+						this.actionDelay = 2;
 					} else if(this.actionMode == 1) {
-						actionDelay = 10;
+						this.actionDelay = 10;
 					}
-					state = ArmActionState.EXTEND_STRIKER;
-					targetAngles[3] = 1D;
+					this.state = ArmActionState.EXTEND_STRIKER;
+					this.targetAngles[3] = 1D;
 				}
 				break;
 			case EXTEND_STRIKER:
 				if(move()) {
 					if(this.actionMode == 0) {
-						state = ArmActionState.RETRACT_STRIKER;
-						targetAngles[3] = 0D;
+						this.state = ArmActionState.RETRACT_STRIKER;
+						this.targetAngles[3] = 0D;
 					} else if(this.actionMode == 1) {
-						state = ArmActionState.WELD;
-						targetAngles[2] -= 20;
-						actionDelay = 5 + rand.nextInt(5);
+						this.state = ArmActionState.WELD;
+						this.targetAngles[2] -= 20;
+						this.actionDelay = 5 + this.rand.nextInt(5);
 					}
 				}
 				break;
 			case WELD:
 				if(move()) {
-					state = ArmActionState.RETRACT_STRIKER;
-					targetAngles[3] = 0D;
-					actionDelay = 10 + rand.nextInt(5);
+					this.state = ArmActionState.RETRACT_STRIKER;
+					this.targetAngles[3] = 0D;
+					this.actionDelay = 10 + this.rand.nextInt(5);
 				}
 				break;
 			case RETRACT_STRIKER:
 				if(move()) {
 					if(this.actionMode == 0) {
-						actionDelay = 2 + rand.nextInt(5);
+						this.actionDelay = 2 + this.rand.nextInt(5);
 					} else if(this.actionMode == 1) {
-						actionDelay = 5 + rand.nextInt(3);
+						this.actionDelay = 5 + this.rand.nextInt(3);
 					}
 					chooseNewArmPoistion();
-					state = ArmActionState.ASSUME_POSITION;
+					this.state = ArmActionState.ASSUME_POSITION;
 				}
 				break;
 			
@@ -249,19 +249,19 @@ public class TileEntityMachineAssemfac extends TileEntityMachineAssemblerBase im
 		public void chooseNewArmPoistion() {
 			
 			if(this.actionMode == 0) {
-				targetAngles[0] = -rand.nextInt(50);		//Pivot
-				targetAngles[1] = -targetAngles[0];			//Arm
-				targetAngles[2] = rand.nextInt(30) - 15;	//Piston
+				this.targetAngles[0] = -this.rand.nextInt(50);		//Pivot
+				this.targetAngles[1] = -this.targetAngles[0];			//Arm
+				this.targetAngles[2] = this.rand.nextInt(30) - 15;	//Piston
 			} else if(this.actionMode == 1) {
-				targetAngles[0] = -rand.nextInt(30) + 10;	//Pivot
-				targetAngles[1] = -targetAngles[0];			//Arm
-				targetAngles[2] = rand.nextInt(10) + 10;	//Piston
+				this.targetAngles[0] = -this.rand.nextInt(30) + 10;	//Pivot
+				this.targetAngles[1] = -this.targetAngles[0];			//Arm
+				this.targetAngles[2] = this.rand.nextInt(10) + 10;	//Piston
 			}
 		}
 		
 		private void updateInterp() {
-			for(int i = 0; i < angles.length; i++) {
-				prevAngles[i] = angles[i];
+			for(int i = 0; i < this.angles.length; i++) {
+				this.prevAngles[i] = this.angles[i];
 			}
 		}
 		
@@ -271,26 +271,26 @@ public class TileEntityMachineAssemfac extends TileEntityMachineAssemblerBase im
 		private boolean move() {
 			boolean didMove = false;
 			
-			for(int i = 0; i < angles.length; i++) {
-				if(angles[i] == targetAngles[i])
+			for(int i = 0; i < this.angles.length; i++) {
+				if(this.angles[i] == this.targetAngles[i])
 					continue;
 				
 				didMove = true;
 				
-				double angle = angles[i];
-				double target = targetAngles[i];
-				double turn = speed[i];
+				double angle = this.angles[i];
+				double target = this.targetAngles[i];
+				double turn = this.speed[i];
 				double delta = Math.abs(angle - target);
 				
 				if(delta <= turn) {
-					angles[i] = targetAngles[i];
+					this.angles[i] = this.targetAngles[i];
 					continue;
 				}
 				
 				if(angle < target) {
-					angles[i] += turn;
+					this.angles[i] += turn;
 				} else {
-					angles[i] -= turn;
+					this.angles[i] -= turn;
 				}
 			}
 			
@@ -310,18 +310,18 @@ public class TileEntityMachineAssemfac extends TileEntityMachineAssemblerBase im
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 5,
-					yCoord,
-					zCoord - 5,
-					xCoord + 5,
-					yCoord + 4,
-					zCoord + 5
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 5,
+					this.yCoord,
+					this.zCoord - 5,
+					this.xCoord + 5,
+					this.yCoord + 4,
+					this.zCoord + 5
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override
@@ -356,39 +356,39 @@ public class TileEntityMachineAssemfac extends TileEntityMachineAssemblerBase im
 	@Override
 	public DirPos[] getInputPositions() {
 		
-		if(inpos != null)
-			return inpos;
+		if(this.inpos != null)
+			return this.inpos;
 		
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 		
-		inpos = new DirPos[] {
-				new DirPos(xCoord + dir.offsetX * 4 - rot.offsetX * 1, yCoord, zCoord + dir.offsetZ * 4 - rot.offsetZ * 1, dir),
-				new DirPos(xCoord - dir.offsetX * 5 + rot.offsetX * 2, yCoord, zCoord - dir.offsetZ * 5 + rot.offsetZ * 2, dir.getOpposite()),
-				new DirPos(xCoord - dir.offsetX * 2 - rot.offsetX * 4, yCoord, zCoord - dir.offsetZ * 2 - rot.offsetZ * 4, rot.getOpposite()),
-				new DirPos(xCoord + dir.offsetX * 1 + rot.offsetX * 5, yCoord, zCoord + dir.offsetZ * 1 + rot.offsetZ * 5, rot)
+		this.inpos = new DirPos[] {
+				new DirPos(this.xCoord + dir.offsetX * 4 - rot.offsetX * 1, this.yCoord, this.zCoord + dir.offsetZ * 4 - rot.offsetZ * 1, dir),
+				new DirPos(this.xCoord - dir.offsetX * 5 + rot.offsetX * 2, this.yCoord, this.zCoord - dir.offsetZ * 5 + rot.offsetZ * 2, dir.getOpposite()),
+				new DirPos(this.xCoord - dir.offsetX * 2 - rot.offsetX * 4, this.yCoord, this.zCoord - dir.offsetZ * 2 - rot.offsetZ * 4, rot.getOpposite()),
+				new DirPos(this.xCoord + dir.offsetX * 1 + rot.offsetX * 5, this.yCoord, this.zCoord + dir.offsetZ * 1 + rot.offsetZ * 5, rot)
 		};
 		
-		return inpos;
+		return this.inpos;
 	}
 
 	@Override
 	public DirPos[] getOutputPositions() {
 		
-		if(outpos != null)
-			return outpos;
+		if(this.outpos != null)
+			return this.outpos;
 		
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 		
-		outpos = new DirPos[] {
-				new DirPos(xCoord + dir.offsetX * 4 + rot.offsetX * 2, yCoord, zCoord + dir.offsetZ * 4 + rot.offsetZ * 2, dir),
-				new DirPos(xCoord - dir.offsetX * 5 - rot.offsetX * 1, yCoord, zCoord - dir.offsetZ * 5 - rot.offsetZ * 1, dir.getOpposite()),
-				new DirPos(xCoord + dir.offsetX * 1 - rot.offsetX * 4, yCoord, zCoord + dir.offsetZ * 1 - rot.offsetZ * 4, rot.getOpposite()),
-				new DirPos(xCoord - dir.offsetX * 2 + rot.offsetX * 5, yCoord, zCoord - dir.offsetZ * 2 + rot.offsetZ * 5, rot)
+		this.outpos = new DirPos[] {
+				new DirPos(this.xCoord + dir.offsetX * 4 + rot.offsetX * 2, this.yCoord, this.zCoord + dir.offsetZ * 4 + rot.offsetZ * 2, dir),
+				new DirPos(this.xCoord - dir.offsetX * 5 - rot.offsetX * 1, this.yCoord, this.zCoord - dir.offsetZ * 5 - rot.offsetZ * 1, dir.getOpposite()),
+				new DirPos(this.xCoord + dir.offsetX * 1 - rot.offsetX * 4, this.yCoord, this.zCoord + dir.offsetZ * 1 - rot.offsetZ * 4, rot.getOpposite()),
+				new DirPos(this.xCoord - dir.offsetX * 2 + rot.offsetX * 5, this.yCoord, this.zCoord - dir.offsetZ * 2 + rot.offsetZ * 5, rot)
 		};
 		
-		return outpos;
+		return this.outpos;
 	}
 
 	@Override
@@ -398,17 +398,17 @@ public class TileEntityMachineAssemfac extends TileEntityMachineAssemblerBase im
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return new FluidTank[] { steam };
+		return new FluidTank[] { this.steam };
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] { water };
+		return new FluidTank[] { this.water };
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return new FluidTank[] { water, steam };
+		return new FluidTank[] { this.water, this.steam };
 	}
 
 	@Override

@@ -34,7 +34,7 @@ public class EntitySiegeLaser extends EntityThrowable {
 	
 	@Override
 	protected void entityInit() {
-		this.getDataWatcher().addObject(12, (int) 0xffffff);
+		getDataWatcher().addObject(12, (int) 0xffffff);
 	}
 	
 	public EntitySiegeLaser setDamage(float f) {
@@ -58,12 +58,12 @@ public class EntitySiegeLaser extends EntityThrowable {
 	}
 	
 	public EntitySiegeLaser setColor(int color) {
-		this.getDataWatcher().updateObject(12, color);
+		getDataWatcher().updateObject(12, color);
 		return this;
 	}
 	
 	public int getColor() {
-		return this.getDataWatcher().getWatchableObjectInt(12);
+		return getDataWatcher().getWatchableObjectInt(12);
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class EntitySiegeLaser extends EntityThrowable {
 		super.onUpdate();
 		
 		if(this.ticksExisted > 60)
-			this.setDead();
+			setDead();
 	}
 
 	@Override
@@ -80,13 +80,13 @@ public class EntitySiegeLaser extends EntityThrowable {
 		if(mop.typeOfHit == MovingObjectType.ENTITY) {
 			DamageSource dmg;
 
-			if(this.getThrower() != null)
-				dmg = new EntityDamageSourceIndirect(ModDamageSource.s_laser, this, this.getThrower());
+			if(getThrower() != null)
+				dmg = new EntityDamageSourceIndirect(ModDamageSource.s_laser, this, getThrower());
 			else
 				dmg = new DamageSource(ModDamageSource.s_laser);
 			
 			if(mop.entityHit.attackEntityFrom(dmg, this.damage)) {
-				this.setDead();
+				setDead();
 				
 				if(this.incendiary)
 					mop.entityHit.setFire(3);
@@ -116,7 +116,7 @@ public class EntitySiegeLaser extends EntityThrowable {
 				this.worldObj.func_147480_a(mop.blockX, mop.blockY, mop.blockZ, false);
 			}
 
-			this.setDead();
+			setDead();
 		}
 	}
 	
@@ -132,7 +132,7 @@ public class EntitySiegeLaser extends EntityThrowable {
 		nbt.setFloat("explosive", this.explosive);
 		nbt.setFloat("breakChance", this.breakChance);
 		nbt.setBoolean("incendiary", this.incendiary);
-		nbt.setInteger("color", this.getColor());
+		nbt.setInteger("color", getColor());
 	}
 
 	@Override
@@ -142,7 +142,7 @@ public class EntitySiegeLaser extends EntityThrowable {
 		this.explosive = nbt.getFloat("explosive");
 		this.breakChance = nbt.getFloat("breakChance");
 		this.incendiary = nbt.getBoolean("incendiary");
-		this.setColor(nbt.getInteger("color"));
+		setColor(nbt.getInteger("color"));
 		
 	}
 }

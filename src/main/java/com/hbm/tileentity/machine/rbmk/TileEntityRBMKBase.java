@@ -1,8 +1,15 @@
 package com.hbm.tileentity.machine.rbmk;
 
-import api.hbm.fluid.IFluidConductor;
-import api.hbm.fluid.IFluidConnector;
-import api.hbm.fluid.IPipeNet;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import org.lwjgl.opengl.GL11;
+
+import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.rbmk.RBMKBase;
 import com.hbm.entity.effect.EntitySpear;
@@ -19,6 +26,10 @@ import com.hbm.tileentity.TileEntityLoadedBase;
 import com.hbm.tileentity.machine.rbmk.TileEntityRBMKConsole.ColumnType;
 import com.hbm.util.Compat;
 import com.hbm.util.I18nUtil;
+
+import api.hbm.fluid.IFluidConductor;
+import api.hbm.fluid.IFluidConnector;
+import api.hbm.fluid.IPipeNet;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -36,9 +47,6 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.opengl.GL11;
-
-import java.util.*;
 
 /**
  * Base class for all RBMK components, active or passive. Handles heat and the explosion sequence
@@ -59,7 +67,7 @@ public abstract class TileEntityRBMKBase extends TileEntityLoadedBase implements
 		if(!isLidRemovable())
 			return true;
 		
-		return this.getBlockMetadata() != RBMKBase.DIR_NO_LID.ordinal() + RBMKBase.offset;
+		return getBlockMetadata() != RBMKBase.DIR_NO_LID.ordinal() + BlockDummyable.offset;
 	}
 
 	public boolean isLidRemovable() {
@@ -80,7 +88,7 @@ public abstract class TileEntityRBMKBase extends TileEntityLoadedBase implements
 	 * @return
 	 */
 	public double passiveCooling() {
-		return RBMKDials.getPassiveCooling(worldObj); //default: 1.0D
+		return RBMKDials.getPassiveCooling(this.worldObj); //default: 1.0D
 	}
 	
 	//necessary checks to figure out whether players are close enough to ensure that the reactor can be safely used
@@ -96,11 +104,11 @@ public abstract class TileEntityRBMKBase extends TileEntityLoadedBase implements
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			this.worldObj.theProfiler.startSection("rbmkBase_heat_movement");
 			moveHeat();
-			if(RBMKDials.getReasimBoilers(worldObj)) {
+			if(RBMKDials.getReasimBoilers(this.worldObj)) {
 				this.worldObj.theProfiler.endStartSection("rbmkBase_reasim_boilers");
 				boilWater();
 			}
@@ -110,8 +118,8 @@ public abstract class TileEntityRBMKBase extends TileEntityLoadedBase implements
 			this.worldObj.theProfiler.endSection();
 			
 			NBTTagCompound data = new NBTTagCompound();
-			this.writeToNBT(data);
-			this.networkPack(data, trackingRange());
+			writeToNBT(data);
+			networkPack(data, trackingRange());
 		}
 	}
 	
@@ -120,15 +128,15 @@ public abstract class TileEntityRBMKBase extends TileEntityLoadedBase implements
 	 */
 	private void boilWater() {
 		
-		if(heat < 100D)
+		if(this.heat < 100D)
 			return;
 		
-		double heatConsumption = RBMKDials.getBoilerHeatConsumption(worldObj);
+		double heatConsumption = RBMKDials.getBoilerHeatConsumption(this.worldObj);
 		double availableHeat = (this.heat - 100) / heatConsumption;
 		double availableWater = this.water;
-		double availableSpace = this.maxSteam - this.steam;
+		double availableSpace = TileEntityRBMKBase.maxSteam - this.steam;
 		
-		int processedWater = (int)Math.floor(Math.min(availableHeat, Math.min(availableWater, availableSpace)) * RBMKDials.getReaSimBoilerSpeed(worldObj));
+		int processedWater = (int)Math.floor(Math.min(availableHeat, Math.min(availableWater, availableSpace)) * RBMKDials.getReaSimBoilerSpeed(this.worldObj));
 		
 		this.water -= processedWater;
 		this.steam += processedWater;
@@ -149,31 +157,31 @@ public abstract class TileEntityRBMKBase extends TileEntityLoadedBase implements
 	 */
 	private void moveHeat() {
 		
-		List<TileEntityRBMKBase> rec = new ArrayList();
+		List<TileEntityRBMKBase> rec = new ArrayList<>();
 		rec.add(this);
 		double heatTot = this.heat;
 		int waterTot = this.water;
 		int steamTot = this.steam;
 		
 		int index = 0;
-		for(ForgeDirection dir : heatDirs) {
+		for(ForgeDirection dir : TileEntityRBMKBase.heatDirs) {
 			
-			if(heatCache[index] != null && heatCache[index].isInvalid())
-				heatCache[index] = null;
+			if(this.heatCache[index] != null && this.heatCache[index].isInvalid())
+				this.heatCache[index] = null;
 			
-			if(heatCache[index] == null) {
-				TileEntity te = Compat.getTileStandard(worldObj, xCoord + dir.offsetX, yCoord, zCoord + dir.offsetZ);
+			if(this.heatCache[index] == null) {
+				TileEntity te = Compat.getTileStandard(this.worldObj, this.xCoord + dir.offsetX, this.yCoord, this.zCoord + dir.offsetZ);
 				
 				if(te instanceof TileEntityRBMKBase) {
 					TileEntityRBMKBase base = (TileEntityRBMKBase) te;
-					heatCache[index] = base;
+					this.heatCache[index] = base;
 				}
 			}
 			
 			index++;
 		}
 		
-		for(TileEntityRBMKBase base : heatCache) {
+		for(TileEntityRBMKBase base : this.heatCache) {
 			
 			if(base != null) {
 				rec.add(base);
@@ -184,11 +192,11 @@ public abstract class TileEntityRBMKBase extends TileEntityLoadedBase implements
 		}
 		
 		int members = rec.size();
-		double stepSize = RBMKDials.getColumnHeatFlow(worldObj);
+		double stepSize = RBMKDials.getColumnHeatFlow(this.worldObj);
 		
 		if(members > 1) {
 			
-			double targetHeat = heatTot / (double)members;
+			double targetHeat = heatTot / members;
 			
 			int tWater = waterTot / members;
 			int rWater = waterTot % members;
@@ -208,7 +216,7 @@ public abstract class TileEntityRBMKBase extends TileEntityLoadedBase implements
 			this.water += rWater;
 			this.steam += rSteam;
 			
-			this.markDirty();
+			markDirty();
 		}
 	}
 	
@@ -222,17 +230,17 @@ public abstract class TileEntityRBMKBase extends TileEntityLoadedBase implements
 	
 	protected void coolPassively() {
 
-		if(TomSaveData.forWorld(worldObj).fire > 1e-5) {
+		if(TomSaveData.forWorld(this.worldObj).fire > 1e-5) {
 			double light = this.worldObj.getSavedLightValue(EnumSkyBlock.Sky, this.xCoord, this.yCoord, this.zCoord) / 15D;
-			if(heat < 20 + (480 * light)) {
-				this.heat += this.passiveCooling() * 2;
+			if(this.heat < 20 + (480 * light)) {
+				this.heat += passiveCooling() * 2;
 			}
 		}
 		
-		this.heat -= this.passiveCooling();
+		this.heat -= passiveCooling();
 		
-		if(heat < 20)
-			heat = 20D;
+		if(this.heat < 20)
+			this.heat = 20D;
 	}
 	
 	protected static boolean diag = false;
@@ -240,7 +248,7 @@ public abstract class TileEntityRBMKBase extends TileEntityLoadedBase implements
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		
-		if(!diag) {
+		if(!TileEntityRBMKBase.diag) {
 			super.readFromNBT(nbt);
 		}
 
@@ -252,7 +260,7 @@ public abstract class TileEntityRBMKBase extends TileEntityLoadedBase implements
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		
-		if(!diag) {
+		if(!TileEntityRBMKBase.diag) {
 			super.writeToNBT(nbt);
 		}
 		
@@ -263,25 +271,27 @@ public abstract class TileEntityRBMKBase extends TileEntityLoadedBase implements
 	
 	public void networkPack(NBTTagCompound nbt, int range) {
 
-		diag = true;
-		if(!worldObj.isRemote)
-			PacketDispatcher.wrapper.sendToAllAround(new NBTPacket(nbt, xCoord, yCoord, zCoord), new TargetPoint(this.worldObj.provider.dimensionId, xCoord, yCoord, zCoord, range));
-		diag = false;
+		TileEntityRBMKBase.diag = true;
+		if(!this.worldObj.isRemote)
+			PacketDispatcher.wrapper.sendToAllAround(new NBTPacket(nbt, this.xCoord, this.yCoord, this.zCoord), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, range));
+		TileEntityRBMKBase.diag = false;
 	}
 	
+	@Override
 	public void networkUnpack(NBTTagCompound nbt) {
 		
-		diag = true;
-		this.readFromNBT(nbt);
-		diag = false;
+		TileEntityRBMKBase.diag = true;
+		readFromNBT(nbt);
+		TileEntityRBMKBase.diag = false;
 	}
 	
 	public void getDiagData(NBTTagCompound nbt) {
-		diag = true;
-		this.writeToNBT(nbt);
-		diag = false;
+		TileEntityRBMKBase.diag = true;
+		writeToNBT(nbt);
+		TileEntityRBMKBase.diag = false;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@SideOnly(Side.CLIENT)
 	public static void diagnosticPrintHook(RenderGameOverlayEvent.Pre event, World world, int x, int y, int z) {
 
@@ -304,7 +314,7 @@ public abstract class TileEntityRBMKBase extends TileEntityLoadedBase implements
 		int pX = resolution.getScaledWidth() / 2 + 8;
 		int pZ = resolution.getScaledHeight() / 2;
 
-		List<String> exceptions = new ArrayList();
+		List<String> exceptions = new ArrayList<>();
 		exceptions.add("x");
 		exceptions.add("y");
 		exceptions.add("z");
@@ -340,7 +350,7 @@ public abstract class TileEntityRBMKBase extends TileEntityLoadedBase implements
 	public void onOverheat() {
 		
 		for(int i = 0; i < 4; i++) {
-			worldObj.setBlock(xCoord, yCoord + i, zCoord, Blocks.lava);
+			this.worldObj.setBlock(this.xCoord, this.yCoord + i, this.zCoord, Blocks.lava);
 		}
 	}
 	
@@ -348,16 +358,16 @@ public abstract class TileEntityRBMKBase extends TileEntityLoadedBase implements
 		
 		standardMelt(reduce);
 		
-		if(this.getBlockMetadata() == RBMKBase.DIR_NORMAL_LID.ordinal() + RBMKBase.offset)
+		if(getBlockMetadata() == RBMKBase.DIR_NORMAL_LID.ordinal() + BlockDummyable.offset)
 			spawnDebris(DebrisType.LID);
 	}
 	
 	protected void standardMelt(int reduce) {
 		
-		int h = RBMKDials.getColumnHeight(worldObj);
+		int h = RBMKDials.getColumnHeight(this.worldObj);
 		reduce = MathHelper.clamp_int(reduce, 1, h);
 		
-		if(worldObj.rand.nextInt(3) == 0)
+		if(this.worldObj.rand.nextInt(3) == 0)
 			reduce++;
 		
 		for(int i = h; i >= 0; i--) {
@@ -365,24 +375,24 @@ public abstract class TileEntityRBMKBase extends TileEntityLoadedBase implements
 			if(i <= h + 1 - reduce) {
 				
 				if(reduce > 1 && i == h + 1 - reduce) {
-					worldObj.setBlock(xCoord, yCoord + i, zCoord, ModBlocks.pribris_burning);
+					this.worldObj.setBlock(this.xCoord, this.yCoord + i, this.zCoord, ModBlocks.pribris_burning);
 				} else {
-					worldObj.setBlock(xCoord, yCoord + i, zCoord, ModBlocks.pribris);
+					this.worldObj.setBlock(this.xCoord, this.yCoord + i, this.zCoord, ModBlocks.pribris);
 				}
 				
 			} else {
-				worldObj.setBlock(xCoord, yCoord + i, zCoord, Blocks.air);
+				this.worldObj.setBlock(this.xCoord, this.yCoord + i, this.zCoord, Blocks.air);
 			}
-			worldObj.markBlockForUpdate(xCoord, yCoord + i, zCoord);
+			this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord + i, this.zCoord);
 		}
 	}
 	
 	protected void spawnDebris(DebrisType type) {
 
-		EntityRBMKDebris debris = new EntityRBMKDebris(worldObj, xCoord + 0.5D, yCoord + 4D, zCoord + 0.5D, type);
-		debris.motionX = worldObj.rand.nextGaussian() * 0.25D;
-		debris.motionZ = worldObj.rand.nextGaussian() * 0.25D;
-		debris.motionY = 0.25D + worldObj.rand.nextDouble() * 1.25D;
+		EntityRBMKDebris debris = new EntityRBMKDebris(this.worldObj, this.xCoord + 0.5D, this.yCoord + 4D, this.zCoord + 0.5D, type);
+		debris.motionX = this.worldObj.rand.nextGaussian() * 0.25D;
+		debris.motionZ = this.worldObj.rand.nextGaussian() * 0.25D;
+		debris.motionY = 0.25D + this.worldObj.rand.nextDouble() * 1.25D;
 		
 		if(type == DebrisType.LID) {
 			debris.motionX *= 0.5D;
@@ -390,28 +400,29 @@ public abstract class TileEntityRBMKBase extends TileEntityLoadedBase implements
 			debris.motionZ *= 0.5D;
 		}
 		
-		worldObj.spawnEntityInWorld(debris);
+		this.worldObj.spawnEntityInWorld(debris);
 	}
 	
-	public static HashSet<TileEntityRBMKBase> columns = new HashSet();
-	public static HashSet<IPipeNet> pipes = new HashSet();
+	public static HashSet<TileEntityRBMKBase> columns = new HashSet<>();
+	public static HashSet<IPipeNet> pipes = new HashSet<>();
 	
 	//assumes that !worldObj.isRemote
+	@SuppressWarnings("unchecked")
 	public void meltdown() {
 		
 		RBMKBase.dropLids = false;
 		
-		columns.clear();
-		pipes.clear();
-		getFF(xCoord, yCoord, zCoord);
+		TileEntityRBMKBase.columns.clear();
+		TileEntityRBMKBase.pipes.clear();
+		getFF(this.xCoord, this.yCoord, this.zCoord);
 		
-		int minX = xCoord;
-		int maxX = xCoord;
-		int minZ = zCoord;
-		int maxZ = zCoord;
+		int minX = this.xCoord;
+		int maxX = this.xCoord;
+		int minZ = this.zCoord;
+		int maxZ = this.zCoord;
 		
 		//set meltdown bounds
-		for(TileEntityRBMKBase rbmk : columns) {
+		for(TileEntityRBMKBase rbmk : TileEntityRBMKBase.columns) {
 
 			if(rbmk.xCoord < minX)
 				minX = rbmk.xCoord;
@@ -423,7 +434,7 @@ public abstract class TileEntityRBMKBase extends TileEntityLoadedBase implements
 				maxZ = rbmk.zCoord;
 		}
 		
-		for(TileEntityRBMKBase rbmk : columns) {
+		for(TileEntityRBMKBase rbmk : TileEntityRBMKBase.columns) {
 
 			int distFromMinX = rbmk.xCoord - minX;
 			int distFromMaxX = maxX - rbmk.xCoord;
@@ -435,22 +446,22 @@ public abstract class TileEntityRBMKBase extends TileEntityLoadedBase implements
 			rbmk.onMelt(minDist + 1);
 		}
 		
-		for(TileEntityRBMKBase rbmk : columns) {
+		for(TileEntityRBMKBase rbmk : TileEntityRBMKBase.columns) {
 			
-			if(rbmk instanceof TileEntityRBMKRod && worldObj.getBlock(rbmk.xCoord, rbmk.yCoord, rbmk.zCoord) == ModBlocks.corium_block) {
+			if(rbmk instanceof TileEntityRBMKRod && this.worldObj.getBlock(rbmk.xCoord, rbmk.yCoord, rbmk.zCoord) == ModBlocks.corium_block) {
 				
 				for(int x = rbmk.xCoord - 1; x <= rbmk.xCoord + 1; x ++) {
 					for(int y = rbmk.yCoord - 1; y <= rbmk.yCoord + 1; y ++) {
 						for(int z = rbmk.zCoord - 1; z <= rbmk.zCoord + 1; z ++) {
 							
-							Block b = worldObj.getBlock(x, y, z);
+							Block b = this.worldObj.getBlock(x, y, z);
 							
-							if(worldObj.rand.nextInt(3) == 0 && (b == ModBlocks.pribris || b == ModBlocks.pribris_burning)) {
+							if(this.worldObj.rand.nextInt(3) == 0 && (b == ModBlocks.pribris || b == ModBlocks.pribris_burning)) {
 								
 								if(RBMKBase.digamma)
-									worldObj.setBlock(x, y, z, ModBlocks.pribris_digamma);
+									this.worldObj.setBlock(x, y, z, ModBlocks.pribris_digamma);
 								else
-									worldObj.setBlock(x, y, z, ModBlocks.pribris_radiating);
+									this.worldObj.setBlock(x, y, z, ModBlocks.pribris_radiating);
 							}
 						}
 					}
@@ -459,12 +470,12 @@ public abstract class TileEntityRBMKBase extends TileEntityLoadedBase implements
 		}
 		
 		/* Hanlde overpressure event */
-		if(RBMKDials.getOverpressure(worldObj) && !pipes.isEmpty()) {
-			HashSet<IFluidConductor> pipeBlocks = new HashSet();
-			HashSet<IFluidConnector> pipeReceivers = new HashSet();
+		if(RBMKDials.getOverpressure(this.worldObj) && !TileEntityRBMKBase.pipes.isEmpty()) {
+			HashSet<IFluidConductor> pipeBlocks = new HashSet<>();
+			HashSet<IFluidConnector> pipeReceivers = new HashSet<>();
 			
 			//unify all parts into single sets to prevent redundancy
-			pipes.forEach(x -> {
+			TileEntityRBMKBase.pipes.forEach(x -> {
 				pipeBlocks.addAll(x.getLinks());
 				pipeReceivers.addAll(x.getSubscribers());
 			});
@@ -472,26 +483,23 @@ public abstract class TileEntityRBMKBase extends TileEntityLoadedBase implements
 			int count = 0;
 			int max = Math.min(pipeBlocks.size() / 5, 100);
 			Iterator<IFluidConductor>  itPipes = pipeBlocks.iterator();
-			Iterator<IFluidConnector>  itReceivers = pipeReceivers.iterator();
-			
 			while(itPipes.hasNext() && count < max) {
 				IFluidConductor pipe = itPipes.next();
 				if(pipe instanceof TileEntity) {
 					TileEntity tile = (TileEntity) pipe;
-					worldObj.setBlock(tile.xCoord, tile.yCoord, tile.zCoord, Blocks.air);
+					this.worldObj.setBlock(tile.xCoord, tile.yCoord, tile.zCoord, Blocks.air);
 				}
 				count++;
 			}
 			
-			while(itReceivers.hasNext()) {
-				IFluidConnector con = itReceivers.next();
+			for (IFluidConnector con : pipeReceivers) {
 				if(con instanceof TileEntity) {
 					TileEntity tile = (TileEntity) con;
 					if(con instanceof IOverpressurable) {
-						((IOverpressurable) con).explode(worldObj, tile.xCoord, tile.yCoord, tile.zCoord);
+						((IOverpressurable) con).explode(this.worldObj, tile.xCoord, tile.yCoord, tile.zCoord);
 					} else {
-						worldObj.setBlock(tile.xCoord, tile.yCoord, tile.zCoord, Blocks.air);
-						worldObj.newExplosion(null, tile.xCoord + 0.5, tile.yCoord + 0.5, tile.zCoord + 0.5, 5F, false, false);
+						this.worldObj.setBlock(tile.xCoord, tile.yCoord, tile.zCoord, Blocks.air);
+						this.worldObj.newExplosion(null, tile.xCoord + 0.5, tile.yCoord + 0.5, tile.zCoord + 0.5, 5F, false, false);
 					}
 				}
 			}
@@ -504,24 +512,24 @@ public abstract class TileEntityRBMKBase extends TileEntityLoadedBase implements
 		NBTTagCompound data = new NBTTagCompound();
 		data.setString("type", "rbmkmush");
 		data.setFloat("scale", smallDim);
-		PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, avgX + 0.5, yCoord + 1, avgZ + 0.5), new TargetPoint(worldObj.provider.dimensionId,avgX + 0.5, yCoord + 1, avgZ + 0.5, 250));
+		PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, avgX + 0.5, this.yCoord + 1, avgZ + 0.5), new TargetPoint(this.worldObj.provider.dimensionId,avgX + 0.5, this.yCoord + 1, avgZ + 0.5, 250));
 		MainRegistry.proxy.effectNT(data);
 		
-		worldObj.playSoundEffect(avgX + 0.5, yCoord + 1, avgZ + 0.5, "hbm:block.rbmk_explosion", 50.0F, 1.0F);
+		this.worldObj.playSoundEffect(avgX + 0.5, this.yCoord + 1, avgZ + 0.5, "hbm:block.rbmk_explosion", 50.0F, 1.0F);
 		
-		List<EntityPlayer> players = worldObj.getEntitiesWithinAABB(EntityPlayer.class,
-				AxisAlignedBB.getBoundingBox(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5).expand(50, 50, 50));
+		List<EntityPlayer> players = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class,
+				AxisAlignedBB.getBoundingBox(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5).expand(50, 50, 50));
 		
 		for(EntityPlayer player : players) {
 			player.triggerAchievement(MainRegistry.achRBMKBoom);
 		}
 		
 		if(RBMKBase.digamma) {
-			EntitySpear spear = new EntitySpear(worldObj);
+			EntitySpear spear = new EntitySpear(this.worldObj);
 			spear.posX = avgX + 0.5;
 			spear.posZ = avgZ + 0.5;
-			spear.posY = yCoord + 100;
-			worldObj.spawnEntityInWorld(spear);
+			spear.posY = this.yCoord + 100;
+			this.worldObj.spawnEntityInWorld(spear);
 		}
 		
 		RBMKBase.dropLids = true;
@@ -530,14 +538,14 @@ public abstract class TileEntityRBMKBase extends TileEntityLoadedBase implements
 	
 	private void getFF(int x, int y, int z) {
 		
-		TileEntity te = Compat.getTileStandard(worldObj, x, y, z);
+		TileEntity te = Compat.getTileStandard(this.worldObj, x, y, z);
 		
 		if(te instanceof TileEntityRBMKBase) {
 			
 			TileEntityRBMKBase rbmk = (TileEntityRBMKBase) te;
 			
-			if(!columns.contains(rbmk)) {
-				columns.add(rbmk);
+			if(!TileEntityRBMKBase.columns.contains(rbmk)) {
+				TileEntityRBMKBase.columns.add(rbmk);
 				getFF(x + 1, y, z);
 				getFF(x - 1, y, z);
 				getFF(x, y, z + 1);
@@ -562,6 +570,6 @@ public abstract class TileEntityRBMKBase extends TileEntityLoadedBase implements
 	
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
-		return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 17, zCoord + 1);
+		return AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 17, this.zCoord + 1);
 	}
 }

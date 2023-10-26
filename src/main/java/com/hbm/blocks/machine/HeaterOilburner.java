@@ -35,7 +35,7 @@ public class HeaterOilburner extends BlockDummyable implements ILookOverlay, ITo
 		if(meta >= 12)
 			return new TileEntityHeaterOilburner();
 		
-		if(hasExtra(meta) && meta - extra > 1)
+		if(hasExtra(meta) && meta - BlockDummyable.extra > 1)
 			return new TileEntityProxyCombo().fluid();
 		
 		if(hasExtra(meta))
@@ -46,7 +46,7 @@ public class HeaterOilburner extends BlockDummyable implements ILookOverlay, ITo
 	
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-		return this.standardOpenBehavior(world, x, y, z, player, 0);
+		return standardOpenBehavior(world, x, y, z, player, 0);
 	}
 
 	@Override
@@ -66,22 +66,22 @@ public class HeaterOilburner extends BlockDummyable implements ILookOverlay, ITo
 		x = x + dir.offsetX * o;
 		z = z + dir.offsetZ * o;
 
-		this.makeExtra(world, x + 1, y, z);
-		this.makeExtra(world, x - 1, y, z);
-		this.makeExtra(world, x, y, z + 1);
-		this.makeExtra(world, x, y, z - 1);
-		this.makeExtra(world, x, y + 1, z);
+		makeExtra(world, x + 1, y, z);
+		makeExtra(world, x - 1, y, z);
+		makeExtra(world, x, y, z + 1);
+		makeExtra(world, x, y, z - 1);
+		makeExtra(world, x, y + 1, z);
 	}
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		this.addStandardInfo(stack, player, list, ext);
+		addStandardInfo(stack, player, list, ext);
 	}
 
 	@Override
 	public void printHook(Pre event, World world, int x, int y, int z) {
 		
-		int[] pos = this.findCore(world, x, y, z);
+		int[] pos = findCore(world, x, y, z);
 		
 		if(pos == null)
 			return;
@@ -93,7 +93,7 @@ public class HeaterOilburner extends BlockDummyable implements ILookOverlay, ITo
 		
 		TileEntityHeaterOilburner heater = (TileEntityHeaterOilburner) te;
 
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		text.add(EnumChatFormatting.GREEN + "-> " + EnumChatFormatting.RESET + heater.setting + " mB/t");
 		FluidType type = heater.tank.getTankType();
 		if(type.hasTrait(FT_Flammable.class)) {
@@ -112,7 +112,7 @@ public class HeaterOilburner extends BlockDummyable implements ILookOverlay, ITo
 		
 		if(world.isRemote) return true;
 		
-		int[] pos = this.findCore(world, x, y, z);
+		int[] pos = findCore(world, x, y, z);
 		
 		if(pos == null) return false;
 		

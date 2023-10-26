@@ -21,10 +21,10 @@ public class RocketSteeringBallisticArc implements IRocketSteeringBehavior {
 		Vec3 target = Vec3.createVectorHelper(targetPos.xCoord - rocket.posX, targetPos.yCoord - rocket.posY, targetPos.zCoord - rocket.posZ).normalize();
 		
 		/* the entity's angles lack precision and i lack the nerve to figure out how they're oriented */
-		double rocketYaw = yaw(direction);
-		double rocketPitch = pitch(direction);
-		double targetYaw = yaw(target);
-		double targetPitch = pitch(target);
+		double rocketYaw = RocketSteeringBallisticArc.yaw(direction);
+		double rocketPitch = RocketSteeringBallisticArc.pitch(direction);
+		double targetYaw = RocketSteeringBallisticArc.yaw(target);
+		double targetPitch = RocketSteeringBallisticArc.pitch(target);
 		
 		boolean debug = false;
 

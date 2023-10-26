@@ -37,7 +37,7 @@ public class GunJack extends Item {
 	 */
 	@Override
 	public void onPlayerStoppedUsing(ItemStack p_77615_1_, World p_77615_2_, EntityPlayer p_77615_3_, int p_77615_4_) {
-		int j = this.getMaxItemUseDuration(p_77615_1_) - p_77615_4_;
+		int j = getMaxItemUseDuration(p_77615_1_) - p_77615_4_;
 
 		ArrowLooseEvent event = new ArrowLooseEvent(p_77615_3_, p_77615_1_, j);
 		MinecraftForge.EVENT_BUS.post(event);
@@ -66,12 +66,12 @@ public class GunJack extends Item {
 				p_77615_3_.inventory.consumeInventoryItem(ModItems.gun_jack_ammo);
 			}
 
-			int k = rand.nextInt(25) + 24;
+			int k = this.rand.nextInt(25) + 24;
 			
 			for(int i = 0; i < k; i++) {
 
 				EntityBullet entityarrow1 = new EntityBullet(p_77615_2_, p_77615_3_, 3.0F);
-				entityarrow1.setDamage(dmgMin + rand.nextInt(dmgMax - dmgMin));
+				entityarrow1.setDamage(this.dmgMin + this.rand.nextInt(this.dmgMax - this.dmgMin));
 				
 				if(!p_77615_2_.isRemote)
 					p_77615_2_.spawnEntityInWorld(entityarrow1);
@@ -111,7 +111,7 @@ public class GunJack extends Item {
 		MinecraftForge.EVENT_BUS.post(event);
 
 		if (p_77659_3_.capabilities.isCreativeMode || p_77659_3_.inventory.hasItem(ModItems.gun_jack_ammo)) {
-			p_77659_3_.setItemInUse(p_77659_1_, this.getMaxItemUseDuration(p_77659_1_));
+			p_77659_3_.setItemInUse(p_77659_1_, getMaxItemUseDuration(p_77659_1_));
 		}
 
 		return p_77659_1_;
@@ -126,6 +126,7 @@ public class GunJack extends Item {
 		return 1;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
@@ -140,11 +141,12 @@ public class GunJack extends Item {
 		list.add("[LEGENDARY WEAPON]");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Multimap getItemAttributeModifiers() {
 		Multimap multimap = super.getItemAttributeModifiers();
 		multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
-				new AttributeModifier(field_111210_e, "Weapon modifier", 4.5, 0));
+				new AttributeModifier(Item.field_111210_e, "Weapon modifier", 4.5, 0));
 		return multimap;
 	}
 }

@@ -5,6 +5,7 @@ import com.hbm.lib.ModDamageSource;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
 
 public class EntityAcidBomb extends EntityThrowableInterp {
@@ -22,18 +23,18 @@ public class EntityAcidBomb extends EntityThrowableInterp {
 	@Override
 	protected void onImpact(MovingObjectPosition mop) {
 		
-		if(worldObj.isRemote) return;
+		if(this.worldObj.isRemote) return;
 		
-		if(mop.typeOfHit == mop.typeOfHit.ENTITY) {
+		if(mop.typeOfHit == MovingObjectType.ENTITY) {
 			
 			if(!(mop.entityHit instanceof EntityGlyphid)) {
-				mop.entityHit.attackEntityFrom(ModDamageSource.acid, damage);
-				this.setDead();
+				mop.entityHit.attackEntityFrom(ModDamageSource.acid, this.damage);
+				setDead();
 			}
 		}
 		
-		if(mop.typeOfHit == mop.typeOfHit.BLOCK)
-			this.setDead();
+		if(mop.typeOfHit == MovingObjectType.BLOCK)
+			setDead();
 	}
 
 	@Override
@@ -49,7 +50,7 @@ public class EntityAcidBomb extends EntityThrowableInterp {
 	@Override
 	public void writeEntityToNBT(NBTTagCompound nbt) {
 		super.writeEntityToNBT(nbt);
-		nbt.setFloat("damage", damage);
+		nbt.setFloat("damage", this.damage);
 	}
 
 	@Override

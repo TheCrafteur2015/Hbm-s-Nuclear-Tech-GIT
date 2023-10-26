@@ -29,21 +29,23 @@ public class BlockModDoor extends Block {
 		super(p_i45402_1_);
 		float f = 0.5F;
 		float f1 = 1.0F;
-		this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, f1, 0.5F + f);
+		setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, f1, 0.5F + f);
 	}
 
 	/**
 	 * Gets the block's texture. Args: side, meta
 	 */
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int p_149691_1_, int p_149691_2_) {
 		return this.field_150016_b[0];
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(IBlockAccess p_149673_1_, int p_149673_2_, int p_149673_3_, int p_149673_4_, int p_149673_5_) {
 		if (p_149673_5_ != 1 && p_149673_5_ != 0) {
-			int i1 = this.func_150012_g(p_149673_1_, p_149673_2_, p_149673_3_, p_149673_4_);
+			int i1 = func_150012_g(p_149673_1_, p_149673_2_, p_149673_3_, p_149673_4_);
 			int j1 = i1 & 3;
 			boolean flag = (i1 & 4) != 0;
 			boolean flag1 = false;
@@ -81,12 +83,13 @@ public class BlockModDoor extends Block {
 		}
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister p_149651_1_) {
 		this.field_150017_a = new IIcon[2];
 		this.field_150016_b = new IIcon[2];
-		this.field_150017_a[0] = p_149651_1_.registerIcon(this.getTextureName() + "_upper");
-		this.field_150016_b[0] = p_149651_1_.registerIcon(this.getTextureName() + "_lower");
+		this.field_150017_a[0] = p_149651_1_.registerIcon(getTextureName() + "_upper");
+		this.field_150016_b[0] = p_149651_1_.registerIcon(getTextureName() + "_lower");
 		this.field_150017_a[1] = new IconFlipped(this.field_150017_a[0], true, false);
 		this.field_150016_b[1] = new IconFlipped(this.field_150016_b[0], true, false);
 	}
@@ -96,12 +99,14 @@ public class BlockModDoor extends Block {
 	 * or not to render the shared face of two adjacent blocks and also whether
 	 * the player can attach torches, redstone wire, etc to this block.
 	 */
+	@Override
 	public boolean isOpaqueCube() {
 		return false;
 	}
 
+	@Override
 	public boolean getBlocksMovement(IBlockAccess p_149655_1_, int p_149655_2_, int p_149655_3_, int p_149655_4_) {
-		int l = this.func_150012_g(p_149655_1_, p_149655_2_, p_149655_3_, p_149655_4_);
+		int l = func_150012_g(p_149655_1_, p_149655_2_, p_149655_3_, p_149655_4_);
 		return (l & 4) != 0;
 	}
 
@@ -109,6 +114,7 @@ public class BlockModDoor extends Block {
 	 * If this block doesn't render as an ordinary block it will return False
 	 * (examples: signs, buttons, stairs, etc)
 	 */
+	@Override
 	public boolean renderAsNormalBlock() {
 		return false;
 	}
@@ -116,6 +122,7 @@ public class BlockModDoor extends Block {
 	/**
 	 * The type of render function that is called for this block
 	 */
+	@Override
 	public int getRenderType() {
 		return 7;
 	}
@@ -123,10 +130,11 @@ public class BlockModDoor extends Block {
 	/**
 	 * Returns the bounding box of the wired rectangular prism to render.
 	 */
+	@Override
 	@SideOnly(Side.CLIENT)
 	public AxisAlignedBB getSelectedBoundingBoxFromPool(World p_149633_1_, int p_149633_2_, int p_149633_3_,
 			int p_149633_4_) {
-		this.setBlockBoundsBasedOnState(p_149633_1_, p_149633_2_, p_149633_3_, p_149633_4_);
+		setBlockBoundsBasedOnState(p_149633_1_, p_149633_2_, p_149633_3_, p_149633_4_);
 		return super.getSelectedBoundingBoxFromPool(p_149633_1_, p_149633_2_, p_149633_3_, p_149633_4_);
 	}
 
@@ -134,9 +142,10 @@ public class BlockModDoor extends Block {
 	 * Returns a bounding box from the pool of bounding boxes (this means this
 	 * box can change after the pool has been cleared to be reused)
 	 */
+	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World p_149668_1_, int p_149668_2_, int p_149668_3_,
 			int p_149668_4_) {
-		this.setBlockBoundsBasedOnState(p_149668_1_, p_149668_2_, p_149668_3_, p_149668_4_);
+		setBlockBoundsBasedOnState(p_149668_1_, p_149668_2_, p_149668_3_, p_149668_4_);
 		return super.getCollisionBoundingBoxFromPool(p_149668_1_, p_149668_2_, p_149668_3_, p_149668_4_);
 	}
 
@@ -144,22 +153,23 @@ public class BlockModDoor extends Block {
 	 * Updates the blocks bounds based on its current state. Args: world, x, y,
 	 * z
 	 */
+	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess p_149719_1_, int p_149719_2_, int p_149719_3_,
 			int p_149719_4_) {
-		this.func_150011_b(this.func_150012_g(p_149719_1_, p_149719_2_, p_149719_3_, p_149719_4_));
+		func_150011_b(func_150012_g(p_149719_1_, p_149719_2_, p_149719_3_, p_149719_4_));
 	}
 
 	public int func_150013_e(IBlockAccess p_150013_1_, int p_150013_2_, int p_150013_3_, int p_150013_4_) {
-		return this.func_150012_g(p_150013_1_, p_150013_2_, p_150013_3_, p_150013_4_) & 3;
+		return func_150012_g(p_150013_1_, p_150013_2_, p_150013_3_, p_150013_4_) & 3;
 	}
 
 	public boolean func_150015_f(IBlockAccess p_150015_1_, int p_150015_2_, int p_150015_3_, int p_150015_4_) {
-		return (this.func_150012_g(p_150015_1_, p_150015_2_, p_150015_3_, p_150015_4_) & 4) != 0;
+		return (func_150012_g(p_150015_1_, p_150015_2_, p_150015_3_, p_150015_4_) & 4) != 0;
 	}
 
 	private void func_150011_b(int p_150011_1_) {
 		float f = 0.1875F;
-		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 2.0F, 1.0F);
+		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 2.0F, 1.0F);
 		int j = p_150011_1_ & 3;
 		boolean flag = (p_150011_1_ & 4) != 0;
 		boolean flag1 = (p_150011_1_ & 16) != 0;
@@ -167,42 +177,42 @@ public class BlockModDoor extends Block {
 		if (j == 0) {
 			if (flag) {
 				if (!flag1) {
-					this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, f);
+					setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, f);
 				} else {
-					this.setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
+					setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
 				}
 			} else {
-				this.setBlockBounds(0.0F, 0.0F, 0.0F, f, 1.0F, 1.0F);
+				setBlockBounds(0.0F, 0.0F, 0.0F, f, 1.0F, 1.0F);
 			}
 		} else if (j == 1) {
 			if (flag) {
 				if (!flag1) {
-					this.setBlockBounds(1.0F - f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+					setBlockBounds(1.0F - f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 				} else {
-					this.setBlockBounds(0.0F, 0.0F, 0.0F, f, 1.0F, 1.0F);
+					setBlockBounds(0.0F, 0.0F, 0.0F, f, 1.0F, 1.0F);
 				}
 			} else {
-				this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, f);
+				setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, f);
 			}
 		} else if (j == 2) {
 			if (flag) {
 				if (!flag1) {
-					this.setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
+					setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
 				} else {
-					this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, f);
+					setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, f);
 				}
 			} else {
-				this.setBlockBounds(1.0F - f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+				setBlockBounds(1.0F - f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 			}
 		} else if (j == 3) {
 			if (flag) {
 				if (!flag1) {
-					this.setBlockBounds(0.0F, 0.0F, 0.0F, f, 1.0F, 1.0F);
+					setBlockBounds(0.0F, 0.0F, 0.0F, f, 1.0F, 1.0F);
 				} else {
-					this.setBlockBounds(1.0F - f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+					setBlockBounds(1.0F - f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 				}
 			} else {
-				this.setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
+				setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
 			}
 		}
 	}
@@ -210,6 +220,7 @@ public class BlockModDoor extends Block {
 	/**
 	 * Called when a player hits the block. Args: world, x, y, z, player
 	 */
+	@Override
 	public void onBlockClicked(World p_149699_1_, int p_149699_2_, int p_149699_3_, int p_149699_4_,
 			EntityPlayer p_149699_5_) {
 	}
@@ -217,9 +228,10 @@ public class BlockModDoor extends Block {
 	/**
 	 * Called upon block activation (right click on the block.)
 	 */
+	@Override
 	public boolean onBlockActivated(World p_149727_1_, int p_149727_2_, int p_149727_3_, int p_149727_4_,
 			EntityPlayer p_149727_5_, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
-		int i1 = this.func_150012_g(p_149727_1_, p_149727_2_, p_149727_3_, p_149727_4_);
+		int i1 = func_150012_g(p_149727_1_, p_149727_2_, p_149727_3_, p_149727_4_);
 		int j1 = i1 & 7;
 		j1 ^= 4;
 
@@ -240,7 +252,7 @@ public class BlockModDoor extends Block {
 
 	public void func_150014_a(World p_150014_1_, int p_150014_2_, int p_150014_3_, int p_150014_4_,
 			boolean p_150014_5_) {
-		int l = this.func_150012_g(p_150014_1_, p_150014_2_, p_150014_3_, p_150014_4_);
+		int l = func_150012_g(p_150014_1_, p_150014_2_, p_150014_3_, p_150014_4_);
 		boolean flag1 = (l & 4) != 0;
 
 		if (flag1 != p_150014_5_) {
@@ -266,6 +278,7 @@ public class BlockModDoor extends Block {
 	 * neighbor changed (coordinates passed are their own) Args: x, y, z,
 	 * neighbor Block
 	 */
+	@Override
 	public void onNeighborBlockChange(World p_149695_1_, int p_149695_2_, int p_149695_3_, int p_149695_4_,
 			Block p_149695_5_) {
 		int l = p_149695_1_.getBlockMetadata(p_149695_2_, p_149695_3_, p_149695_4_);
@@ -296,7 +309,7 @@ public class BlockModDoor extends Block {
 						|| p_149695_1_.isBlockIndirectlyGettingPowered(p_149695_2_, p_149695_3_ + 1, p_149695_4_);
 
 				if ((flag1 || p_149695_5_.canProvidePower()) && p_149695_5_ != this) {
-					this.func_150014_a(p_149695_1_, p_149695_2_, p_149695_3_, p_149695_4_, flag1);
+					func_150014_a(p_149695_1_, p_149695_2_, p_149695_3_, p_149695_4_, flag1);
 				}
 			}
 		} else {
@@ -305,11 +318,12 @@ public class BlockModDoor extends Block {
 			}
 
 			if (p_149695_5_ != this) {
-				this.onNeighborBlockChange(p_149695_1_, p_149695_2_, p_149695_3_ - 1, p_149695_4_, p_149695_5_);
+				onNeighborBlockChange(p_149695_1_, p_149695_2_, p_149695_3_ - 1, p_149695_4_, p_149695_5_);
 			}
 		}
 	}
 
+	@Override
 	public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_) {
 		
 		if((p_149650_1_ & 8) != 0)
@@ -327,9 +341,10 @@ public class BlockModDoor extends Block {
 	 * Ray traces through the blocks collision from start vector to end vector
 	 * returning a ray trace hit. Args: world, x, y, z, startVec, endVec
 	 */
+	@Override
 	public MovingObjectPosition collisionRayTrace(World p_149731_1_, int p_149731_2_, int p_149731_3_, int p_149731_4_,
 			Vec3 p_149731_5_, Vec3 p_149731_6_) {
-		this.setBlockBoundsBasedOnState(p_149731_1_, p_149731_2_, p_149731_3_, p_149731_4_);
+		setBlockBoundsBasedOnState(p_149731_1_, p_149731_2_, p_149731_3_, p_149731_4_);
 		return super.collisionRayTrace(p_149731_1_, p_149731_2_, p_149731_3_, p_149731_4_, p_149731_5_, p_149731_6_);
 	}
 
@@ -337,6 +352,7 @@ public class BlockModDoor extends Block {
 	 * Checks to see if its valid to put this block at the specified
 	 * coordinates. Args: world, x, y, z
 	 */
+	@Override
 	public boolean canPlaceBlockAt(World p_149742_1_, int p_149742_2_, int p_149742_3_, int p_149742_4_) {
 		return p_149742_3_ >= p_149742_1_.getHeight() - 1 ? false
 				: World.doesBlockHaveSolidTopSurface(p_149742_1_, p_149742_2_, p_149742_3_ - 1, p_149742_4_)
@@ -348,6 +364,7 @@ public class BlockModDoor extends Block {
 	 * Returns the mobility information of the block, 0 = free, 1 = can't push
 	 * but can move over, 2 = total immobility and stop pistons
 	 */
+	@Override
 	public int getMobilityFlag() {
 		return 1;
 	}
@@ -373,6 +390,7 @@ public class BlockModDoor extends Block {
 	/**
 	 * Gets an item for the block being called on. Args: world, x, y, z
 	 */
+	@Override
 	@SideOnly(Side.CLIENT)
 	public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_) {
 		if (this == ModBlocks.door_metal)
@@ -386,6 +404,7 @@ public class BlockModDoor extends Block {
 	/**
 	 * Called when the block is attempted to be harvested
 	 */
+	@Override
 	public void onBlockHarvested(World p_149681_1_, int p_149681_2_, int p_149681_3_, int p_149681_4_, int p_149681_5_, EntityPlayer p_149681_6_) {
 		if (p_149681_6_.capabilities.isCreativeMode && (p_149681_5_ & 8) != 0
 				&& p_149681_1_.getBlock(p_149681_2_, p_149681_3_ - 1, p_149681_4_) == this) {

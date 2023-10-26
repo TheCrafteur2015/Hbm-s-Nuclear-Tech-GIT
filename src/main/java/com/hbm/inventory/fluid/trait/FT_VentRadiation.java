@@ -27,7 +27,7 @@ public class FT_VentRadiation extends FluidTrait {
 	
 	@Override
 	public void onFluidRelease(World world, int x, int y, int z, FluidTank tank, int overflowAmount) {
-		ChunkRadiationManager.proxy.incrementRad(world, x, y, z, overflowAmount * radPerMB);
+		ChunkRadiationManager.proxy.incrementRad(world, x, y, z, overflowAmount * this.radPerMB);
 	}
 	
 	@Override
@@ -37,7 +37,7 @@ public class FT_VentRadiation extends FluidTrait {
 
 	@Override
 	public void serializeJSON(JsonWriter writer) throws IOException {
-		writer.name("radiation").value(radPerMB);
+		writer.name("radiation").value(this.radPerMB);
 	}
 	
 	@Override

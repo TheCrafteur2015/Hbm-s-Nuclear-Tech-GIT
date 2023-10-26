@@ -15,30 +15,30 @@ private TileEntityITER iter;
 	
 	public ContainerITER(InventoryPlayer invPlayer, TileEntityITER tedf) {
 		
-		iter = tedf;
+		this.iter = tedf;
 
 		//Battery
-		this.addSlotToContainer(new Slot(tedf, 0, 107, 108));
+		addSlotToContainer(new Slot(tedf, 0, 107, 108));
 		//Breeder In
-		this.addSlotToContainer(new Slot(tedf, 1, 26, 18));
+		addSlotToContainer(new Slot(tedf, 1, 26, 18));
 		//Breeder Out
-		this.addSlotToContainer(new SlotTakeOnly(tedf, 2, 62, 18));
+		addSlotToContainer(new SlotTakeOnly(tedf, 2, 62, 18));
 		//Plasma Shield
-		this.addSlotToContainer(new Slot(tedf, 3, 98, 18));
+		addSlotToContainer(new Slot(tedf, 3, 98, 18));
 		//Byproduct
-		this.addSlotToContainer(new SlotTakeOnly(tedf, 4, 134, 18));
+		addSlotToContainer(new SlotTakeOnly(tedf, 4, 134, 18));
 		
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 56));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 56));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++)
 		{
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 56));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 56));
 		}
 	}
 	
@@ -54,7 +54,7 @@ private TileEntityITER iter;
 			var3 = var5.copy();
 			
             if (par2 <= 2) {
-				if (!this.mergeItemStack(var5, 2, this.inventorySlots.size(), true))
+				if (!mergeItemStack(var5, 2, this.inventorySlots.size(), true))
 				{
 					return null;
 				}
@@ -77,6 +77,6 @@ private TileEntityITER iter;
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return iter.isUseableByPlayer(player);
+		return this.iter.isUseableByPlayer(player);
 	}
 }

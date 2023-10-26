@@ -53,6 +53,7 @@ public class FoundryChannel extends BlockContainer implements ICrucibleAcceptor 
 		this.iconLava = iconRegister.registerIcon(RefStrings.MODID + ":lava_gray");
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
 		return true;
@@ -63,10 +64,11 @@ public class FoundryChannel extends BlockContainer implements ICrucibleAcceptor 
 		return new TileEntityFoundryChannel();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB entityBounding, List list, Entity entity) {
 		
-		List<AxisAlignedBB> bbs = new ArrayList();
+		List<AxisAlignedBB> bbs = new ArrayList<>();
 		
 		bbs.add(AxisAlignedBB.getBoundingBox(x + 0.3125D, y, z + 0.3125D, x + 0.6875D, y + 0.5D, z + 0.6875D));
 
@@ -91,7 +93,7 @@ public class FoundryChannel extends BlockContainer implements ICrucibleAcceptor 
 
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
-		this.setBlockBounds(
+		setBlockBounds(
 				canConnectTo(world, x, y, z, Library.NEG_X) ? 0F : 0.3125F,
 				0F,
 				canConnectTo(world, x, y, z, Library.NEG_Z) ? 0F : 0.3125F,
@@ -138,7 +140,7 @@ public class FoundryChannel extends BlockContainer implements ICrucibleAcceptor 
 
 	@Override
 	public int getRenderType() {
-		return renderID;
+		return FoundryChannel.renderID;
 	}
 	
 	@Override

@@ -2,6 +2,7 @@ package com.hbm.inventory.container;
 
 import com.hbm.inventory.SlotCraftingOutput;
 import com.hbm.tileentity.machine.TileEntityMachineRadGen;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -14,27 +15,27 @@ public class ContainerMachineRadGen extends Container {
 	private TileEntityMachineRadGen diFurnace;
 	
 	public ContainerMachineRadGen(InventoryPlayer invPlayer, TileEntityMachineRadGen tedf) {
-		diFurnace = tedf;
+		this.diFurnace = tedf;
 
 		for(int i = 0; i < 4; i++) {
 			for(int j = 0; j < 3; j++) {
-				this.addSlotToContainer(new Slot(tedf, j + i * 3, 8 + j * 18, 17 + i * 18));
+				addSlotToContainer(new Slot(tedf, j + i * 3, 8 + j * 18, 17 + i * 18));
 			}
 		}
 		for(int i = 0; i < 4; i++) {
 			for(int j = 0; j < 3; j++) {
-				this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, j + i * 3 + 12, 116 + j * 18, 17 + i * 18));
+				addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, j + i * 3 + 12, 116 + j * 18, 17 + i * 18));
 			}
 		}
 		
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 102 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 102 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 160));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 160));
 		}
 	}
 	
@@ -53,10 +54,10 @@ public class ContainerMachineRadGen extends Container {
 			var3 = var5.copy();
 
 			if(par2 <= 23) {
-				if(!this.mergeItemStack(var5, 24, this.inventorySlots.size(), true)) {
+				if(!mergeItemStack(var5, 24, this.inventorySlots.size(), true)) {
 					return null;
 				}
-			} else if(!this.mergeItemStack(var5, 0, 12, false)) {
+			} else if(!mergeItemStack(var5, 0, 12, false)) {
 				return null;
 			}
 
@@ -72,6 +73,6 @@ public class ContainerMachineRadGen extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return diFurnace.isUseableByPlayer(player);
+		return this.diFurnace.isUseableByPlayer(player);
 	}
 }

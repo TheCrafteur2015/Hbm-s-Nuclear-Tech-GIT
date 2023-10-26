@@ -19,29 +19,29 @@ public class ContainerMachineExcavator extends Container {
 		this.excavator = tile;
 
 		//Battery: 0
-		this.addSlotToContainer(new Slot(tile, 0, 220, 72));
+		addSlotToContainer(new Slot(tile, 0, 220, 72));
 		//Fluid ID: 1
-		this.addSlotToContainer(new Slot(tile, 1, 202, 72));
+		addSlotToContainer(new Slot(tile, 1, 202, 72));
 		//Upgrades: 2-4
 		for(int i = 0; i < 3; i++) {
-			this.addSlotToContainer(new Slot(tile, 2 + i, 136 + i * 18, 75));
+			addSlotToContainer(new Slot(tile, 2 + i, 136 + i * 18, 75));
 		}
 		
 		//Buffer: 5-13
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 3; j++) {
-				this.addSlotToContainer(new SlotTakeOnly(tile, 5 + j + i * 3, 136 + j * 18, 5 + i * 18));
+				addSlotToContainer(new SlotTakeOnly(tile, 5 + j + i * 3, 136 + j * 18, 5 + i * 18));
 			}
 		}
 		
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 41 + j * 18, 122 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 41 + j * 18, 122 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 41 + i * 18, 180));
+			addSlotToContainer(new Slot(invPlayer, i, 41 + i * 18, 180));
 		}
 	}
 
@@ -55,21 +55,21 @@ public class ContainerMachineExcavator extends Container {
 			var3 = var5.copy();
 
 			if(par2 <= 4) {
-				if(!this.mergeItemStack(var5, 5, this.inventorySlots.size(), true)) {
+				if(!mergeItemStack(var5, 5, this.inventorySlots.size(), true)) {
 					return null;
 				}
 			} else {
 				
 				if(var3.getItem() instanceof IBatteryItem) {
-					if(!this.mergeItemStack(var5, 0, 1, false)) {
+					if(!mergeItemStack(var5, 0, 1, false)) {
 						return null;
 					}
 				} else if(var3.getItem() instanceof IItemFluidIdentifier) {
-					if(!this.mergeItemStack(var5, 1, 2, false)) {
+					if(!mergeItemStack(var5, 1, 2, false)) {
 						return null;
 					}
 				} else {
-					if(!this.mergeItemStack(var5, 2, 5, false)) {
+					if(!mergeItemStack(var5, 2, 5, false)) {
 						return null;
 					}
 				}
@@ -87,6 +87,6 @@ public class ContainerMachineExcavator extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return excavator.isUseableByPlayer(player);
+		return this.excavator.isUseableByPlayer(player);
 	}
 }

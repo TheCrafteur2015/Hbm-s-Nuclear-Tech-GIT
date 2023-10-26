@@ -24,7 +24,7 @@ public class BlockMutatorBulkie implements IBlockMutator {
 		if(!block.isNormalCube()) return;
 		Vec3 vec = Vec3.createVectorHelper(x + 0.5 - explosion.posX, y + 0.5 - explosion.posY, z + 0.5 - explosion.posZ);
 		if(vec.lengthVector() >= explosion.size - 0.5) {
-			explosion.world.setBlock(x, y, z, metaBlock.block, metaBlock.meta, 3);
+			explosion.world.setBlock(x, y, z, this.metaBlock.block, this.metaBlock.meta, 3);
 		}
 	}
 

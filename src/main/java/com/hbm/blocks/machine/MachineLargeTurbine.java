@@ -53,7 +53,7 @@ public class MachineLargeTurbine extends BlockDummyable implements ITooltipProvi
 			return true;
 		} else if(!player.isSneaking())
 		{
-			int[] pos = this.findCore(world, x, y, z);
+			int[] pos = findCore(world, x, y, z);
 			
 			if(pos == null)
 				return false;
@@ -88,20 +88,20 @@ public class MachineLargeTurbine extends BlockDummyable implements ITooltipProvi
 		ForgeDirection dir2 = dir.getRotation(ForgeDirection.UP);
 		
 		//back connector
-		this.makeExtra(world, x + dir.offsetX * -4, y, z + dir.offsetZ * -4);
+		makeExtra(world, x + dir.offsetX * -4, y, z + dir.offsetZ * -4);
 		//front connector
-		this.makeExtra(world, x, y, z);
+		makeExtra(world, x, y, z);
 
 		int xc = x - dir.offsetX;
 		int zc = z - dir.offsetZ;
 		
 		//side connectors
-		this.makeExtra(world, xc + dir2.offsetX, y, zc + dir2.offsetZ);
-		this.makeExtra(world, xc - dir2.offsetX, y, zc - dir2.offsetZ);
+		makeExtra(world, xc + dir2.offsetX, y, zc + dir2.offsetZ);
+		makeExtra(world, xc - dir2.offsetX, y, zc - dir2.offsetZ);
 	}
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		this.addStandardInfo(stack, player, list, ext);
+		addStandardInfo(stack, player, list, ext);
 	}
 }

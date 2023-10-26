@@ -31,13 +31,13 @@ public class EntityGrenadeIFToxic extends EntityGrenadeBouncyBase {
     	
         if (!this.worldObj.isRemote)
         {
-            this.setDead();
+            setDead();
     		
-    		ExplosionLarge.jolt(worldObj, posX, posY, posZ, 3, 200, 0.25);
-    		ExplosionLarge.explode(worldObj, posX, posY, posZ, 2, true, true, true);
-    		ExplosionChaos.poison(worldObj, (int)posX, (int)posY, (int)posZ, 12);
-    		ExplosionNukeGeneric.waste(worldObj, (int)posX, (int)posY, (int)posZ, 12);
-    		ExplosionChaos.spawnChlorine(worldObj, posX, posY, posZ, 50, 1.5, 0);
+    		ExplosionLarge.jolt(this.worldObj, this.posX, this.posY, this.posZ, 3, 200, 0.25);
+    		ExplosionLarge.explode(this.worldObj, this.posX, this.posY, this.posZ, 2, true, true, true);
+    		ExplosionChaos.poison(this.worldObj, (int)this.posX, (int)this.posY, (int)this.posZ, 12);
+    		ExplosionNukeGeneric.waste(this.worldObj, (int)this.posX, (int)this.posY, (int)this.posZ, 12);
+    		ExplosionChaos.spawnChlorine(this.worldObj, this.posX, this.posY, this.posZ, 50, 1.5, 0);
         }
     }
 

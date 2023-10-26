@@ -36,10 +36,10 @@ public class ItemSimpleConsumable extends ItemCustomLore {
 	public boolean hitEntity(ItemStack stack, EntityLivingBase entity, EntityLivingBase entityPlayer) {
 		
 		if(this.hitAction != null)
-			this.hitAction.accept(stack, new Pair(entity, entityPlayer));
+			this.hitAction.accept(stack, new Pair<>(entity, entityPlayer));
 		
 		if(!entity.worldObj.isRemote && this.hitActionServer != null)
-			this.hitActionServer.accept(stack, new Pair(entity, entityPlayer));
+			this.hitActionServer.accept(stack, new Pair<>(entity, entityPlayer));
 		
 		return false;
 	}

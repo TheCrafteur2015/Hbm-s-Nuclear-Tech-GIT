@@ -47,6 +47,7 @@ import com.hbm.world.feature.Sellafield;
 import com.hbm.world.generator.CellularDungeonFactory;
 import com.hbm.world.generator.DungeonToolbox;
 
+import cpw.mods.fml.common.IWorldGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -64,7 +65,6 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderFlat;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.common.IWorldGenerator;
 
 public class HbmWorldGen implements IWorldGenerator {
 
@@ -83,6 +83,7 @@ public class HbmWorldGen implements IWorldGenerator {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void generateSurface(World world, Random rand, int i, int j) {
 
 		BiomeGenBase biome = world.getWorldChunkManager().getBiomeGenAt(i, j);
@@ -745,6 +746,7 @@ public class HbmWorldGen implements IWorldGenerator {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	private void generateNether(World world, Random rand, int i, int j) {
 
 		if(WorldConfig.netherOre) {

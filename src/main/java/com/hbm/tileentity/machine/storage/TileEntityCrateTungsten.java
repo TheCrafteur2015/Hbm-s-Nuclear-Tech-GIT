@@ -24,50 +24,44 @@ public class TileEntityCrateTungsten extends TileEntityCrateBase implements ILas
 
 	@Override
 	public String getInventoryName() {
-		return this.hasCustomInventoryName() ? this.customName : "container.crateTungsten";
+		return hasCustomInventoryName() ? this.customName : "container.crateTungsten";
 	}
 
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
-			if(heatTimer > 0)
-				heatTimer--;
+		if(!this.worldObj.isRemote) {
+			if(this.heatTimer > 0)
+				this.heatTimer--;
 	
-			if(worldObj.getBlockMetadata(xCoord, yCoord, zCoord) != 1 && heatTimer > 0)
-				worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 1, 3);
+			if(this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord) != 1 && this.heatTimer > 0)
+				this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, 1, 3);
 			
-			if(worldObj.getBlockMetadata(xCoord, yCoord, zCoord) != 0 && heatTimer <= 0)
-				worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 0, 3);
+			if(this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord) != 0 && this.heatTimer <= 0)
+				this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, 0, 3);
 		}
 		
-		if(worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1) {
-			worldObj.spawnParticle("flame", xCoord + worldObj.rand.nextDouble(), yCoord + 1.1, zCoord + worldObj.rand.nextDouble(), 0.0, 0.0, 0.0);
-			worldObj.spawnParticle("smoke", xCoord + worldObj.rand.nextDouble(), yCoord + 1.1, zCoord + worldObj.rand.nextDouble(), 0.0, 0.0, 0.0);
+		if(this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord) == 1) {
+			this.worldObj.spawnParticle("flame", this.xCoord + this.worldObj.rand.nextDouble(), this.yCoord + 1.1, this.zCoord + this.worldObj.rand.nextDouble(), 0.0, 0.0, 0.0);
+			this.worldObj.spawnParticle("smoke", this.xCoord + this.worldObj.rand.nextDouble(), this.yCoord + 1.1, this.zCoord + this.worldObj.rand.nextDouble(), 0.0, 0.0, 0.0);
 			
-			worldObj.spawnParticle("flame", xCoord - 0.1, yCoord + worldObj.rand.nextDouble(), zCoord + worldObj.rand.nextDouble(), 0.0, 0.0, 0.0);
-			worldObj.spawnParticle("smoke", xCoord - 0.1, yCoord + worldObj.rand.nextDouble(), zCoord + worldObj.rand.nextDouble(), 0.0, 0.0, 0.0);
+			this.worldObj.spawnParticle("flame", this.xCoord - 0.1, this.yCoord + this.worldObj.rand.nextDouble(), this.zCoord + this.worldObj.rand.nextDouble(), 0.0, 0.0, 0.0);
+			this.worldObj.spawnParticle("smoke", this.xCoord - 0.1, this.yCoord + this.worldObj.rand.nextDouble(), this.zCoord + this.worldObj.rand.nextDouble(), 0.0, 0.0, 0.0);
 			
-			worldObj.spawnParticle("flame", xCoord + 1.1, yCoord + worldObj.rand.nextDouble(), zCoord + worldObj.rand.nextDouble(), 0.0, 0.0, 0.0);
-			worldObj.spawnParticle("smoke", xCoord + 1.1, yCoord + worldObj.rand.nextDouble(), zCoord + worldObj.rand.nextDouble(), 0.0, 0.0, 0.0);
+			this.worldObj.spawnParticle("flame", this.xCoord + 1.1, this.yCoord + this.worldObj.rand.nextDouble(), this.zCoord + this.worldObj.rand.nextDouble(), 0.0, 0.0, 0.0);
+			this.worldObj.spawnParticle("smoke", this.xCoord + 1.1, this.yCoord + this.worldObj.rand.nextDouble(), this.zCoord + this.worldObj.rand.nextDouble(), 0.0, 0.0, 0.0);
 			
-			worldObj.spawnParticle("flame", xCoord + worldObj.rand.nextDouble(), yCoord + worldObj.rand.nextDouble(), zCoord - 0.1, 0.0, 0.0, 0.0);
-			worldObj.spawnParticle("smoke", xCoord + worldObj.rand.nextDouble(), yCoord + worldObj.rand.nextDouble(), zCoord - 0.1, 0.0, 0.0, 0.0);
+			this.worldObj.spawnParticle("flame", this.xCoord + this.worldObj.rand.nextDouble(), this.yCoord + this.worldObj.rand.nextDouble(), this.zCoord - 0.1, 0.0, 0.0, 0.0);
+			this.worldObj.spawnParticle("smoke", this.xCoord + this.worldObj.rand.nextDouble(), this.yCoord + this.worldObj.rand.nextDouble(), this.zCoord - 0.1, 0.0, 0.0, 0.0);
 			
-			worldObj.spawnParticle("flame", xCoord + worldObj.rand.nextDouble(), yCoord + worldObj.rand.nextDouble(), zCoord + 1.1, 0.0, 0.0, 0.0);
-			worldObj.spawnParticle("smoke", xCoord + worldObj.rand.nextDouble(), yCoord + worldObj.rand.nextDouble(), zCoord + 1.1, 0.0, 0.0, 0.0);
+			this.worldObj.spawnParticle("flame", this.xCoord + this.worldObj.rand.nextDouble(), this.yCoord + this.worldObj.rand.nextDouble(), this.zCoord + 1.1, 0.0, 0.0, 0.0);
+			this.worldObj.spawnParticle("smoke", this.xCoord + this.worldObj.rand.nextDouble(), this.yCoord + this.worldObj.rand.nextDouble(), this.zCoord + 1.1, 0.0, 0.0, 0.0);
 		}
 	}
 
 	@Override
 	public boolean canExtractItem(int i, ItemStack itemStack, int j) {
-		if(this.isLocked())
-			return false;
-		
-		if(itemStack.getItem() == ModItems.billet_polonium)
-			return false;
-		
-		if(itemStack.getItem() == ModItems.crucible && itemStack.getItemDamage() > 0)
+		if(isLocked() || (itemStack.getItem() == ModItems.billet_polonium) || (itemStack.getItem() == ModItems.crucible && itemStack.getItemDamage() > 0))
 			return false;
 		
 		if(FurnaceRecipes.smelting().getSmeltingResult(itemStack) == null)
@@ -78,26 +72,26 @@ public class TileEntityCrateTungsten extends TileEntityCrateBase implements ILas
 
 	@Override
 	public void addEnergy(World world, int x, int y, int z, long energy, ForgeDirection dir) {
-		heatTimer = 5;
+		this.heatTimer = 5;
 		
-		for(int i = 0; i < slots.length; i++) {
+		for(int i = 0; i < this.slots.length; i++) {
 			
-			if(slots[i] == null)
+			if(this.slots[i] == null)
 				continue;
 			
-			ItemStack result = FurnaceRecipes.smelting().getSmeltingResult(slots[i]);
+			ItemStack result = FurnaceRecipes.smelting().getSmeltingResult(this.slots[i]);
 			
-			if(slots[i].getItem() == ModItems.billet_polonium && energy > 10000000)
+			if(this.slots[i].getItem() == ModItems.billet_polonium && energy > 10000000)
 				result = new ItemStack(ModItems.billet_yharonite);
 			
-			if(slots[i].getItem() == ModItems.crucible && slots[i].getItemDamage() > 0 && energy > 10000000)
+			if(this.slots[i].getItem() == ModItems.crucible && this.slots[i].getItemDamage() > 0 && energy > 10000000)
 				result = new ItemStack(ModItems.crucible, 1, 0);
 			
-			int size = slots[i].stackSize;
+			int size = this.slots[i].stackSize;
 			
 			if(result != null && result.stackSize * size <= result.getMaxStackSize()) {
-				slots[i] = result.copy();
-				slots[i].stackSize *= size;
+				this.slots[i] = result.copy();
+				this.slots[i].stackSize *= size;
 			}
 		}
 	}

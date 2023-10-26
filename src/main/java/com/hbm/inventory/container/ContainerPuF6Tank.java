@@ -15,24 +15,24 @@ public class ContainerPuF6Tank extends Container {
 	private TileEntityMachinePuF6Tank testNuke;
 	
 	public ContainerPuF6Tank(InventoryPlayer invPlayer, TileEntityMachinePuF6Tank tedf) {
-		testNuke = tedf;
+		this.testNuke = tedf;
 		
-		this.addSlotToContainer(new Slot(tedf, 0, 44, 17));
-		this.addSlotToContainer(new SlotTakeOnly(tedf, 1, 44, 53));
-		this.addSlotToContainer(new Slot(tedf, 2, 116, 17));
-		this.addSlotToContainer(new SlotTakeOnly(tedf, 3, 116, 53));
+		addSlotToContainer(new Slot(tedf, 0, 44, 17));
+		addSlotToContainer(new SlotTakeOnly(tedf, 1, 44, 53));
+		addSlotToContainer(new Slot(tedf, 2, 116, 17));
+		addSlotToContainer(new SlotTakeOnly(tedf, 3, 116, 53));
 		
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++)
 		{
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
 		}
 	}
 	
@@ -53,14 +53,14 @@ public class ContainerPuF6Tank extends Container {
 			var3 = var5.copy();
 			
             if (par2 <= 3) {
-				if (!this.mergeItemStack(var5, 4, this.inventorySlots.size(), true))
+				if (!mergeItemStack(var5, 4, this.inventorySlots.size(), true))
 				{
 					return null;
 				}
 			}
-			else if (!this.mergeItemStack(var5, 0, 1, false))
+			else if (!mergeItemStack(var5, 0, 1, false))
 			{
-				if (!this.mergeItemStack(var5, 2, 3, false))
+				if (!mergeItemStack(var5, 2, 3, false))
 					return null;
 			}
 			
@@ -79,7 +79,7 @@ public class ContainerPuF6Tank extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return testNuke.isUseableByPlayer(player);
+		return this.testNuke.isUseableByPlayer(player);
 	}
 
 }

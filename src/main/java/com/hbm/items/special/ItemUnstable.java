@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.hbm.entity.logic.EntityNukeExplosionMK5;
 import com.hbm.lib.ModDamageSource;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -28,7 +29,7 @@ public class ItemUnstable extends Item {
 	public ItemUnstable(int radius, int timer) {
 		this.radius = radius;
 		this.timer = timer;
-        this.setHasSubtypes(true);
+        setHasSubtypes(true);
 	}
 	
 	@Override
@@ -37,18 +38,19 @@ public class ItemUnstable extends Item {
     	if(stack.getItemDamage() != 0)
     		return;
 		
-		list.add("Decay: " + (getTimer(stack) * 100 / timer) + "%");
+		list.add("Decay: " + (getTimer(stack) * 100 / this.timer) + "%");
 	}
 	
-    public void onUpdate(ItemStack stack, World world, Entity entity, int i, boolean b) {
+    @Override
+	public void onUpdate(ItemStack stack, World world, Entity entity, int i, boolean b) {
     	
     	if(stack.getItemDamage() != 0)
     		return;
     	
-    	this.setTimer(stack, this.getTimer(stack) + 1);
+    	setTimer(stack, getTimer(stack) + 1);
     	
-    	if(this.getTimer(stack) == timer && !world.isRemote) {
-    		world.spawnEntityInWorld(EntityNukeExplosionMK5.statFac(world, radius, entity.posX, entity.posY, entity.posZ));
+    	if(getTimer(stack) == this.timer && !world.isRemote) {
+    		world.spawnEntityInWorld(EntityNukeExplosionMK5.statFac(world, this.radius, entity.posX, entity.posY, entity.posZ));
     		world.playSoundAtEntity(entity, "hbm:entity.oldExplosion", 1.0F, 1.0F);
     		entity.attackEntityFrom(ModDamageSource.nuclearBlast, 10000);
     		
@@ -100,7 +102,8 @@ public class ItemUnstable extends Item {
     	}
     }
 
-    public String getItemStackDisplayName(ItemStack stack)
+    @Override
+	public String getItemStackDisplayName(ItemStack stack)
     {
     	switch(stack.getItemDamage()) {
 	    	case 1: return "ELEMENTS";

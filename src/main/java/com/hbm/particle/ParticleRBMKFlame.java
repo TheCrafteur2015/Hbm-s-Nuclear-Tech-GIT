@@ -24,13 +24,15 @@ public class ParticleRBMKFlame extends EntityFX {
 		super(world, x, y, z);
 		this.theRenderEngine = texman;
 		this.particleMaxAge = maxAge;
-		this.particleScale = rand.nextFloat() + 1F;
+		this.particleScale = this.rand.nextFloat() + 1F;
 	}
 
+	@Override
 	public int getFXLayer() {
 		return 3;
 	}
 
+	@Override
 	public void renderParticle(Tessellator tess, float interp, float x, float y, float z, float tx, float tz) {
 
 		this.theRenderEngine.bindTexture(getTexture());
@@ -74,9 +76,9 @@ public class ParticleRBMKFlame extends EntityFX {
 		
 		tess.setColorRGBA_F(1.0F, 1.0F, 1.0F, this.particleAlpha);
 
-		float pX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) interp - interpPosX);
-		float pY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) interp - interpPosY);
-		float pZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) interp - interpPosZ);
+		float pX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) interp - EntityFX.interpPosX);
+		float pY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) interp - EntityFX.interpPosY);
+		float pZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) interp - EntityFX.interpPosZ);
 		
 		GL11.glTranslatef(pX + x, pY + y, pZ + z);
 		GL11.glRotatef(-RenderManager.instance.playerViewY, 0.0F, 1.0F, 0.0F);
@@ -96,6 +98,6 @@ public class ParticleRBMKFlame extends EntityFX {
 	}
 	
 	protected ResourceLocation getTexture() {
-		return texture;
+		return ParticleRBMKFlame.texture;
 	}
 }

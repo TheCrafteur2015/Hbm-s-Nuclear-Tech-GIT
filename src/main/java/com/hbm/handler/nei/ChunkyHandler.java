@@ -1,12 +1,11 @@
 package com.hbm.handler.nei;
 
-import static codechicken.lib.gui.GuiDraw.drawTexturedModalRect;
-
 import org.lwjgl.opengl.GL11;
 
 import com.hbm.config.GeneralConfig;
 import com.hbm.lib.RefStrings;
 
+import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.recipe.TemplateRecipeHandler;
@@ -57,7 +56,7 @@ public class ChunkyHandler extends TemplateRecipeHandler {
 	@Override
 	public void drawExtras(int recipe) {
 		RecipeSet rec = (RecipeSet) this.arecipes.get(recipe);
-		drawTexturedModalRect(145, 0, 20, 20, 20, 20);
+		GuiDraw.drawTexturedModalRect(145, 0, 20, 20, 20, 20);
 		GL11.glPushMatrix();
 		GL11.glTranslated(83, 50, 0);
 		double scale = 5D;

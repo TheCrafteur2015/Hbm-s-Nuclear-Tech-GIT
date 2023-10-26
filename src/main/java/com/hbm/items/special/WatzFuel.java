@@ -33,18 +33,18 @@ public class WatzFuel extends ItemFuelRod {
 		this.heat = heat;
 		this.heatMultiplier = heatMultiplier;
 		this.decayMultiplier = decayMultiplier;
-		this.setMaxDamage(100);
+		setMaxDamage(100);
 	}
 	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool)
 	{
 		list.add("Max age:          " + this.lifeTime/100 + " ticks");
-		list.add("Power per tick:  " + (power) + "HE");
-		list.add("Power multiplier: " + (powerMultiplier >= 1 ? "+" : "") + (Math.round(powerMultiplier * 1000) * .10 - 100) + "%");
-		list.add("Heat provided:   " + heat + " heat");
-		list.add("Heat multiplier:   " + (heatMultiplier >= 1 ? "+" : "") + (Math.round(heatMultiplier * 1000) * .10 - 100) + "%");
-		list.add("Decay multiplier: " + (decayMultiplier >= 1 ? "+" : "") + (Math.round(decayMultiplier * 1000) * .10 - 100) + "%");
+		list.add("Power per tick:  " + (this.power) + "HE");
+		list.add("Power multiplier: " + (this.powerMultiplier >= 1 ? "+" : "") + (Math.round(this.powerMultiplier * 1000) * .10 - 100) + "%");
+		list.add("Heat provided:   " + this.heat + " heat");
+		list.add("Heat multiplier:   " + (this.heatMultiplier >= 1 ? "+" : "") + (Math.round(this.heatMultiplier * 1000) * .10 - 100) + "%");
+		list.add("Decay multiplier: " + (this.decayMultiplier >= 1 ? "+" : "") + (Math.round(this.decayMultiplier * 1000) * .10 - 100) + "%");
 		
 		super.addInformation(itemstack, player, list, bool);
 	}
@@ -54,6 +54,6 @@ public class WatzFuel extends ItemFuelRod {
 		if(!stack.hasTagCompound())
 			stack.stackTagCompound = new NBTTagCompound();
 		
-		stack.setItemDamage((int)((double)getLifeTime(stack) / (double)((WatzFuel)stack.getItem()).lifeTime * 100D));
+		stack.setItemDamage((int)((double)ItemFuelRod.getLifeTime(stack) / (double)((WatzFuel)stack.getItem()).lifeTime * 100D));
 	}
 }

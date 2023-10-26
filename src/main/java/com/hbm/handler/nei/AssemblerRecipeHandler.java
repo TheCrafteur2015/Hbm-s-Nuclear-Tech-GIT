@@ -21,10 +21,10 @@ import net.minecraft.item.ItemStack;
 
 public class AssemblerRecipeHandler extends TemplateRecipeHandler {
 	
-    public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<RecipeTransferRect>();
-    public LinkedList<RecipeTransferRect> transferRectsGui = new LinkedList<RecipeTransferRect>();
-    public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<Class<? extends GuiContainer>>();
-    public LinkedList<Class<? extends GuiContainer>> guiGui = new LinkedList<Class<? extends GuiContainer>>();
+    public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<>();
+    public LinkedList<RecipeTransferRect> transferRectsGui = new LinkedList<>();
+    public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<>();
+    public LinkedList<Class<? extends GuiContainer>> guiGui = new LinkedList<>();
 
     public class SmeltingSet extends TemplateRecipeHandler.CachedRecipe {
     	
@@ -33,27 +33,27 @@ public class AssemblerRecipeHandler extends TemplateRecipeHandler {
     	
         public SmeltingSet(List<Object> in, ItemStack result) {
         	
-        	input = new ArrayList();
+        	this.input = new ArrayList<>();
         	
         	ComparableStack comp = new ComparableStack(result);
         	ItemStack template = ItemAssemblyTemplate.writeType(new ItemStack(ModItems.assembly_template), comp);
         	
         	for(int i = 0; i < Math.min(in.size(), 12); i++) {
-        		input.add(new PositionedStack(in.get(i), 30 + (i % 4) * 18, 6 + (i / 4) * 18));
+        		this.input.add(new PositionedStack(in.get(i), 30 + (i % 4) * 18, 6 + (i / 4) * 18));
         	}
             
-            input.add(new PositionedStack(template, 66 + 45, 6));
+            this.input.add(new PositionedStack(template, 66 + 45, 6));
             this.result = new PositionedStack(result, 138, 24);
         }
 
         @Override
 		public List<PositionedStack> getIngredients() {
-            return getCycledIngredients(cycleticks / 48, input);
+            return getCycledIngredients(AssemblerRecipeHandler.this.cycleticks / 48, this.input);
         }
 
         @Override
 		public PositionedStack getResult() {
-            return result;
+            return this.result;
         }
     }
     
@@ -136,14 +136,14 @@ public class AssemblerRecipeHandler extends TemplateRecipeHandler {
     
     @Override
     public void loadTransferRects() {
-        transferRectsGui = new LinkedList<RecipeTransferRect>();
-        guiGui = new LinkedList<Class<? extends GuiContainer>>();
+        this.transferRectsGui = new LinkedList<>();
+        this.guiGui = new LinkedList<>();
 
-        transferRects.add(new RecipeTransferRect(new Rectangle(138 - 1 - 36, 23, 36, 18), "assembly"));
-        transferRectsGui.add(new RecipeTransferRect(new Rectangle(18 * 2 + 2, 89 - 7 - 11, 18 * 5 - 4, 18 + 16), "assembly"));
-        guiGui.add(GUIMachineAssembler.class);
-        RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), transferRects);
-        RecipeTransferRectHandler.registerRectsToGuis(guiGui, transferRectsGui);
+        this.transferRects.add(new RecipeTransferRect(new Rectangle(138 - 1 - 36, 23, 36, 18), "assembly"));
+        this.transferRectsGui.add(new RecipeTransferRect(new Rectangle(18 * 2 + 2, 89 - 7 - 11, 18 * 5 - 4, 18 + 16), "assembly"));
+        this.guiGui.add(GUIMachineAssembler.class);
+        RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), this.transferRects);
+        RecipeTransferRectHandler.registerRectsToGuis(this.guiGui, this.transferRectsGui);
     }
 
     @Override

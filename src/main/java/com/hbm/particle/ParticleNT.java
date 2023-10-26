@@ -14,7 +14,7 @@ public class ParticleNT extends EntityFX {
 
 	public ParticleNT(World world, double x, double y, double z, double moX, double moY, double moZ, ParticleDefinition definition) {
 		this(world, x, y, z, definition);
-		this.setVelocity(moX, moY, moZ);
+		setVelocity(moX, moY, moZ);
 	}
 
 }

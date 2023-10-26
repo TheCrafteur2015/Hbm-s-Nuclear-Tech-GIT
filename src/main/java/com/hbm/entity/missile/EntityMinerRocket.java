@@ -16,7 +16,7 @@ public class EntityMinerRocket extends Entity {
 	public EntityMinerRocket(World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.ignoreFrustumCheck = true;
-        this.setSize(1F, 3F);
+        setSize(1F, 3F);
 	}
 
 	@Override
@@ -27,58 +27,58 @@ public class EntityMinerRocket extends Entity {
 	
 	@Override
 	public void onUpdate() {
-		if(dataWatcher.getWatchableObjectInt(16) == 0)
-			motionY = -0.75;
-		if(dataWatcher.getWatchableObjectInt(16) == 1)
-			motionY = 0;
-		if(dataWatcher.getWatchableObjectInt(16) == 2)
-			motionY = 1;
+		if(this.dataWatcher.getWatchableObjectInt(16) == 0)
+			this.motionY = -0.75;
+		if(this.dataWatcher.getWatchableObjectInt(16) == 1)
+			this.motionY = 0;
+		if(this.dataWatcher.getWatchableObjectInt(16) == 2)
+			this.motionY = 1;
 		
-		motionX = 0;
-		motionZ = 0;
+		this.motionX = 0;
+		this.motionZ = 0;
 		
-		this.setPositionAndRotation(posX + motionX, posY + motionY, posZ + motionZ, 0.0F, 0.0F);
+		setPositionAndRotation(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ, 0.0F, 0.0F);
 
-		if(dataWatcher.getWatchableObjectInt(16) == 0 && worldObj.getBlock((int)(posX - 0.5), (int)(posY - 0.5), (int)(posZ - 0.5)) == ModBlocks.sat_dock) {
-			dataWatcher.updateObject(16, 1);
-			motionY = 0;
-			posY = (int)posY;
-		} else if(worldObj.getBlock((int)(posX - 0.5), (int)(posY + 1), (int)(posZ - 0.5)).getMaterial() != Material.air && !worldObj.isRemote && dataWatcher.getWatchableObjectInt(16) != 1) {
-			this.setDead();
-			ExplosionLarge.explodeFire(worldObj, posX - 0.5, posY, posZ - 0.5, 10F, true, false, true);
+		if(this.dataWatcher.getWatchableObjectInt(16) == 0 && this.worldObj.getBlock((int)(this.posX - 0.5), (int)(this.posY - 0.5), (int)(this.posZ - 0.5)) == ModBlocks.sat_dock) {
+			this.dataWatcher.updateObject(16, 1);
+			this.motionY = 0;
+			this.posY = (int)this.posY;
+		} else if(this.worldObj.getBlock((int)(this.posX - 0.5), (int)(this.posY + 1), (int)(this.posZ - 0.5)).getMaterial() != Material.air && !this.worldObj.isRemote && this.dataWatcher.getWatchableObjectInt(16) != 1) {
+			setDead();
+			ExplosionLarge.explodeFire(this.worldObj, this.posX - 0.5, this.posY, this.posZ - 0.5, 10F, true, false, true);
 			//worldObj.setBlock((int)(posX - 0.5), (int)(posY + 0.5), (int)(posZ - 0.5), Blocks.dirt);
 		}
 		
-		if(dataWatcher.getWatchableObjectInt(16) == 1) {
-			if(!worldObj.isRemote && ticksExisted % 4 == 0)
-				ExplosionLarge.spawnShock(worldObj, posX, posY, posZ, 1 + rand.nextInt(3), 1 + rand.nextGaussian());
+		if(this.dataWatcher.getWatchableObjectInt(16) == 1) {
+			if(!this.worldObj.isRemote && this.ticksExisted % 4 == 0)
+				ExplosionLarge.spawnShock(this.worldObj, this.posX, this.posY, this.posZ, 1 + this.rand.nextInt(3), 1 + this.rand.nextGaussian());
 			
-			timer++;
+			this.timer++;
 			
-			if(timer > 100) {
-				dataWatcher.updateObject(16, 2);
+			if(this.timer > 100) {
+				this.dataWatcher.updateObject(16, 2);
 			}
 		}
 		
-		if(dataWatcher.getWatchableObjectInt(16) != 1 && !worldObj.isRemote && ticksExisted % 2 == 0) {
-			ParticleUtil.spawnGasFlame(worldObj, posX, posY - 0.5, posZ, 0.0, -1.0, 0.0);
+		if(this.dataWatcher.getWatchableObjectInt(16) != 1 && !this.worldObj.isRemote && this.ticksExisted % 2 == 0) {
+			ParticleUtil.spawnGasFlame(this.worldObj, this.posX, this.posY - 0.5, this.posZ, 0.0, -1.0, 0.0);
 		}
 		
-		if(dataWatcher.getWatchableObjectInt(16) == 2 && posY > 300)
-			this.setDead();
+		if(this.dataWatcher.getWatchableObjectInt(16) == 2 && this.posY > 300)
+			setDead();
 	}
 
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound nbt) {
-		dataWatcher.updateObject(16, nbt.getInteger("mode"));
-		dataWatcher.updateObject(17, nbt.getInteger("sat"));
-		timer = nbt.getInteger("timer");
+		this.dataWatcher.updateObject(16, nbt.getInteger("mode"));
+		this.dataWatcher.updateObject(17, nbt.getInteger("sat"));
+		this.timer = nbt.getInteger("timer");
 	}
 
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound nbt) {
-		nbt.setInteger("mode", dataWatcher.getWatchableObjectInt(16));
-		nbt.setInteger("sat", dataWatcher.getWatchableObjectInt(17));
-		nbt.setInteger("timer", timer);
+		nbt.setInteger("mode", this.dataWatcher.getWatchableObjectInt(16));
+		nbt.setInteger("sat", this.dataWatcher.getWatchableObjectInt(17));
+		nbt.setInteger("timer", this.timer);
 	}
 }

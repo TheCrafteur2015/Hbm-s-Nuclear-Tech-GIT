@@ -11,9 +11,9 @@ public interface IFluidConductor extends IFluidConnector {
 	@Override
 	public default long transferFluid(FluidType type, int pressure, long amount) {
 		
-		if(this.getPipeNet(type) == null)
+		if(getPipeNet(type) == null)
 			return amount;
 
-		return this.getPipeNet(type).transferFluid(amount, pressure);
+		return getPipeNet(type).transferFluid(amount, pressure);
 	}
 }

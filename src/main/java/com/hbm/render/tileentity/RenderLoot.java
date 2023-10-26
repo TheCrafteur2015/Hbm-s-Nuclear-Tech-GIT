@@ -69,29 +69,29 @@ public class RenderLoot extends TileEntitySpecialRenderer {
 	protected ModelFatman launcher;
 	private void renderLauncher() {
 		
-		if(launcher == null)
-			launcher = new ModelFatman();
+		if(this.launcher == null)
+			this.launcher = new ModelFatman();
 		
 		GL11.glRotated(180, 1, 0, 0);
 		GL11.glRotated(3, 0, 0, 1);
 		GL11.glTranslated(0.5, -0.3751, -0.625);
 		
 		bindTexture(new ResourceLocation(RefStrings.MODID +":textures/models/FatmanLauncher.png"));
-		launcher.render(null, 0F, 0F, 0F, 0F, 0F, 0.0625F, new ItemStack(ModItems.gun_fatman));
+		this.launcher.render(null, 0F, 0F, 0F, 0F, 0F, 0.0625F, new ItemStack(ModItems.gun_fatman));
 	}
 
 	protected ModelLeverAction shotgun;
 	private void renderShotgun() {
 		
-		if(shotgun == null)
-			shotgun = new ModelLeverAction();
+		if(this.shotgun == null)
+			this.shotgun = new ModelLeverAction();
 
 		GL11.glScaled(0.25, 0.25, 0.25);
 		GL11.glTranslated(3, 0.0625, 2);
 		GL11.glRotated(-25, 0, 1, 0);
 		GL11.glRotated(90, 1, 0, 0);
 		bindTexture(new ResourceLocation(RefStrings.MODID +":textures/models/ModelLeverAction.png"));
-		shotgun.render(null, 0F, 0F, 0F, 0F, 0F, 0.0625F);
+		this.shotgun.render(null, 0F, 0F, 0F, 0F, 0F, 0.0625F);
 	}
 	
 	private void renderStandardItem(ItemStack stack) {

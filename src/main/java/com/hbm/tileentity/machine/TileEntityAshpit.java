@@ -38,12 +38,12 @@ public class TileEntityAshpit extends TileEntityMachineBase implements IGUIProvi
 	
 	@Override
 	public void openInventory() {
-		if(!worldObj.isRemote) this.playersUsing++;
+		if(!this.worldObj.isRemote) this.playersUsing++;
 	}
 	
 	@Override
 	public void closeInventory() {
-		if(!worldObj.isRemote) this.playersUsing--;
+		if(!this.worldObj.isRemote) this.playersUsing--;
 	}
 
 	@Override
@@ -54,30 +54,30 @@ public class TileEntityAshpit extends TileEntityMachineBase implements IGUIProvi
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 
 			int threshold = 2000;
 
-			if(processAsh(ashLevelWood, EnumAshType.WOOD, threshold)) ashLevelWood -= threshold;
-			if(processAsh(ashLevelCoal, EnumAshType.COAL, threshold)) ashLevelCoal -= threshold;
-			if(processAsh(ashLevelMisc, EnumAshType.MISC, threshold)) ashLevelMisc -= threshold;
-			if(processAsh(ashLevelFly, EnumAshType.FLY, threshold)) ashLevelFly -= threshold;
-			if(processAsh(ashLevelSoot, EnumAshType.SOOT, threshold * 4)) ashLevelSoot -= threshold * 4;
+			if(processAsh(this.ashLevelWood, EnumAshType.WOOD, threshold)) this.ashLevelWood -= threshold;
+			if(processAsh(this.ashLevelCoal, EnumAshType.COAL, threshold)) this.ashLevelCoal -= threshold;
+			if(processAsh(this.ashLevelMisc, EnumAshType.MISC, threshold)) this.ashLevelMisc -= threshold;
+			if(processAsh(this.ashLevelFly, EnumAshType.FLY, threshold)) this.ashLevelFly -= threshold;
+			if(processAsh(this.ashLevelSoot, EnumAshType.SOOT, threshold * 4)) this.ashLevelSoot -= threshold * 4;
 			
-			isFull = false;
+			this.isFull = false;
 			
 			for(int i = 0; i < 5; i++) {
-				if(slots[i] != null) isFull = true;
+				if(this.slots[i] != null) this.isFull = true;
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
 			data.setInteger("playersUsing", this.playersUsing);
 			data.setBoolean("isFull", this.isFull);
-			this.networkPack(data, 50);
+			networkPack(data, 50);
 			
 		} else {
 			this.prevDoorAngle = this.doorAngle;
-			float swingSpeed = (doorAngle / 10F) + 3;
+			float swingSpeed = (this.doorAngle / 10F) + 3;
 			
 			if(this.playersUsing > 0) {
 				this.doorAngle += swingSpeed;
@@ -93,12 +93,12 @@ public class TileEntityAshpit extends TileEntityMachineBase implements IGUIProvi
 		
 		if(level >= threshold) {
 			for(int i = 0; i < 5; i++) {
-				if(slots[i] == null) {
-					slots[i] = DictFrame.fromOne(ModItems.powder_ash, type);
-					ashLevelWood -= threshold;
+				if(this.slots[i] == null) {
+					this.slots[i] = DictFrame.fromOne(ModItems.powder_ash, type);
+					this.ashLevelWood -= threshold;
 					return true;
-				} else if(slots[i].stackSize < slots[i].getMaxStackSize() && slots[i].getItem() == ModItems.powder_ash && slots[i].getItemDamage() == type.ordinal()) {
-					slots[i].stackSize++;
+				} else if(this.slots[i].stackSize < this.slots[i].getMaxStackSize() && this.slots[i].getItem() == ModItems.powder_ash && this.slots[i].getItemDamage() == type.ordinal()) {
+					this.slots[i].stackSize++;
 					return true;
 				}
 			}
@@ -138,11 +138,11 @@ public class TileEntityAshpit extends TileEntityMachineBase implements IGUIProvi
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("ashLevelWood", ashLevelWood);
-		nbt.setInteger("ashLevelCoal", ashLevelCoal);
-		nbt.setInteger("ashLevelMisc", ashLevelMisc);
-		nbt.setInteger("ashLevelFly", ashLevelFly);
-		nbt.setInteger("ashLevelSoot", ashLevelSoot);
+		nbt.setInteger("ashLevelWood", this.ashLevelWood);
+		nbt.setInteger("ashLevelCoal", this.ashLevelCoal);
+		nbt.setInteger("ashLevelMisc", this.ashLevelMisc);
+		nbt.setInteger("ashLevelFly", this.ashLevelFly);
+		nbt.setInteger("ashLevelSoot", this.ashLevelSoot);
 	}
 	
 	AxisAlignedBB bb = null;
@@ -150,18 +150,18 @@ public class TileEntityAshpit extends TileEntityMachineBase implements IGUIProvi
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 1,
-					yCoord,
-					zCoord - 1,
-					xCoord + 2,
-					yCoord + 1,
-					zCoord + 2
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 1,
+					this.yCoord,
+					this.zCoord - 1,
+					this.xCoord + 2,
+					this.yCoord + 1,
+					this.zCoord + 2
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override

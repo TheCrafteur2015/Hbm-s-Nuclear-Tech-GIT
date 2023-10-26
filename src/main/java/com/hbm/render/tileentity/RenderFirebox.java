@@ -71,10 +71,12 @@ public class RenderFirebox extends TileEntitySpecialRenderer implements IItemRen
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase() {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(0, -1, 0);
 				GL11.glScaled(3.25, 3.25, 3.25);
 			}
+			@Override
 			public void renderCommon() {
 				bindTexture(ResourceManager.heater_firebox_tex);
 				ResourceManager.heater_firebox.renderPart("Main");

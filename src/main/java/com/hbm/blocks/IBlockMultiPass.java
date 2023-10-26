@@ -8,7 +8,7 @@ public interface IBlockMultiPass {
 
 	public static int renderID = RenderingRegistry.getNextAvailableRenderId();
 	public static int getRenderType() {
-		return renderID;
+		return IBlockMultiPass.renderID;
 	}
 	
 }

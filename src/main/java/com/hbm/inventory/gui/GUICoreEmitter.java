@@ -27,51 +27,53 @@ public class GUICoreEmitter extends GuiInfoContainer {
 
 	public GUICoreEmitter(InventoryPlayer invPlayer, TileEntityCoreEmitter tedf) {
 		super(new ContainerCoreEmitter(invPlayer, tedf));
-		emitter = tedf;
+		this.emitter = tedf;
 
 		this.xSize = 176;
 		this.ySize = 166;
 	}
 
+	@Override
 	public void initGui() {
 
 		super.initGui();
 
 		Keyboard.enableRepeatEvents(true);
-		this.field = new GuiTextField(this.fontRendererObj, guiLeft + 57, guiTop + 57, 29, 12);
+		this.field = new GuiTextField(this.fontRendererObj, this.guiLeft + 57, this.guiTop + 57, 29, 12);
 		this.field.setTextColor(-1);
 		this.field.setDisabledTextColour(-1);
 		this.field.setEnableBackgroundDrawing(false);
 		this.field.setMaxStringLength(3);
-		this.field.setText(String.valueOf(emitter.watts));
+		this.field.setText(String.valueOf(this.emitter.watts));
 	}
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		emitter.tank.renderTankInfo(this, mouseX, mouseY, guiLeft + 8, guiTop + 17, 16, 52);
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 26, guiTop + 17, 16, 52, emitter.power, emitter.maxPower);
+		this.emitter.tank.renderTankInfo(this, mouseX, mouseY, this.guiLeft + 8, this.guiTop + 17, 16, 52);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 26, this.guiTop + 17, 16, 52, this.emitter.power, TileEntityCoreEmitter.maxPower);
 	}
 
+	@Override
 	protected void mouseClicked(int x, int y, int i) {
 		super.mouseClicked(x, y, i);
 
 		this.field.mouseClicked(x, y, i);
 
-		if(guiLeft + 97 <= x && guiLeft + 97 + 18 > x && guiTop + 52 < y && guiTop + 52 + 18 >= y) {
+		if(this.guiLeft + 97 <= x && this.guiLeft + 97 + 18 > x && this.guiTop + 52 < y && this.guiTop + 52 + 18 >= y) {
 
-			if(NumberUtils.isNumber(field.getText())) {
-				int j = MathHelper.clamp_int((int) Double.parseDouble(field.getText()), 1, 100);
-				field.setText(j + "");
-				mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
-				PacketDispatcher.wrapper.sendToServer(new AuxButtonPacket(emitter.xCoord, emitter.yCoord, emitter.zCoord, j, 0));
+			if(NumberUtils.isNumber(this.field.getText())) {
+				int j = MathHelper.clamp_int((int) Double.parseDouble(this.field.getText()), 1, 100);
+				this.field.setText(j + "");
+				this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+				PacketDispatcher.wrapper.sendToServer(new AuxButtonPacket(this.emitter.xCoord, this.emitter.yCoord, this.emitter.zCoord, j, 0));
 			}
 		}
 
-		if(guiLeft + 133 <= x && guiLeft + 133 + 18 > x && guiTop + 52 < y && guiTop + 52 + 18 >= y) {
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
-			PacketDispatcher.wrapper.sendToServer(new AuxButtonPacket(emitter.xCoord, emitter.yCoord, emitter.zCoord, 0, 1));
+		if(this.guiLeft + 133 <= x && this.guiLeft + 133 + 18 > x && this.guiTop + 52 < y && this.guiTop + 52 + 18 >= y) {
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+			PacketDispatcher.wrapper.sendToServer(new AuxButtonPacket(this.emitter.xCoord, this.emitter.yCoord, this.emitter.zCoord, 0, 1));
 		}
 	}
 
@@ -80,7 +82,7 @@ public class GUICoreEmitter extends GuiInfoContainer {
 		String name = I18n.format(this.emitter.getInventoryName());
 		this.fontRendererObj.drawString(name, this.xSize / 2 - this.fontRendererObj.getStringWidth(name) / 2, 6, 4210752);
 
-		this.fontRendererObj.drawString("Output: " + BobMathUtil.getShortNumber(emitter.prev) + "Spk", 50, 30, 0xFF7F7F);
+		this.fontRendererObj.drawString("Output: " + BobMathUtil.getShortNumber(this.emitter.prev) + "Spk", 50, 30, 0xFF7F7F);
 
 		this.fontRendererObj.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
@@ -88,25 +90,26 @@ public class GUICoreEmitter extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUICoreEmitter.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
-		if(field.isFocused())
-			drawTexturedModalRect(guiLeft + 53, guiTop + 53, 210, 4, 34, 16);
+		if(this.field.isFocused())
+			drawTexturedModalRect(this.guiLeft + 53, this.guiTop + 53, 210, 4, 34, 16);
 
-		if(emitter.isOn)
-			drawTexturedModalRect(guiLeft + 133, guiTop + 52, 192, 0, 18, 18);
+		if(this.emitter.isOn)
+			drawTexturedModalRect(this.guiLeft + 133, this.guiTop + 52, 192, 0, 18, 18);
 
-		drawTexturedModalRect(guiLeft + 53, guiTop + 45, 210, 0, emitter.watts * 34 / 100, 4);
+		drawTexturedModalRect(this.guiLeft + 53, this.guiTop + 45, 210, 0, this.emitter.watts * 34 / 100, 4);
 
-		int i = (int) emitter.getPowerScaled(52);
-		drawTexturedModalRect(guiLeft + 26, guiTop + 69 - i, 176, 52 - i, 16, i);
+		int i = (int) this.emitter.getPowerScaled(52);
+		drawTexturedModalRect(this.guiLeft + 26, this.guiTop + 69 - i, 176, 52 - i, 16, i);
 
 		this.field.drawTextBox();
 
-		emitter.tank.renderTank(guiLeft + 8, guiTop + 69, this.zLevel, 16, 52);
+		this.emitter.tank.renderTank(this.guiLeft + 8, this.guiTop + 69, this.zLevel, 16, 52);
 	}
 
+	@Override
 	protected void keyTyped(char p_73869_1_, int p_73869_2_) {
 
 		if(this.field.textboxKeyTyped(p_73869_1_, p_73869_2_)) {

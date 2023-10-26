@@ -23,20 +23,20 @@ public class TileEntityPipeBaseNT extends TileEntity implements IFluidConductor 
 	@Override
 	public void updateEntity() {
 
-		if(worldObj.isRemote && lastType != type) {
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-			lastType = type;
+		if(this.worldObj.isRemote && this.lastType != this.type) {
+			this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+			this.lastType = this.type;
 		}
 		
-		if(!worldObj.isRemote && canUpdate()) {
+		if(!this.worldObj.isRemote && canUpdate()) {
 			
 			//we got here either because the net doesn't exist or because it's not valid, so that's safe to assume
-			this.setPipeNet(type, null);
+			setPipeNet(this.type, null);
 			
-			this.connect();
+			connect();
 			
-			if(this.getPipeNet(type) == null) {
-				this.setPipeNet(type, new PipeNet(type).joinLink(this));
+			if(getPipeNet(this.type) == null) {
+				setPipeNet(this.type, new PipeNet(this.type).joinLink(this));
 			}
 		}
 	}
@@ -47,11 +47,11 @@ public class TileEntityPipeBaseNT extends TileEntity implements IFluidConductor 
 	
 	public void setType(FluidType type) {
 		this.type = type;
-		this.markDirty();
+		markDirty();
 		
-		if(worldObj instanceof WorldServer) {
-			WorldServer world = (WorldServer) worldObj;
-			world.getPlayerManager().markBlockForUpdate(xCoord, yCoord, zCoord);
+		if(this.worldObj instanceof WorldServer) {
+			WorldServer world = (WorldServer) this.worldObj;
+			world.getPlayerManager().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
 		}
 		
 		if(this.network != null)
@@ -67,21 +67,21 @@ public class TileEntityPipeBaseNT extends TileEntity implements IFluidConductor 
 		
 		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 			
-			TileEntity te = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
+			TileEntity te = this.worldObj.getTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
 			
 			if(te instanceof IFluidConductor) {
 				
 				IFluidConductor conductor = (IFluidConductor) te;
 				
-				if(!conductor.canConnect(type, dir.getOpposite()))
+				if(!conductor.canConnect(this.type, dir.getOpposite()))
 					continue;
 				
-				if(this.getPipeNet(type) == null && conductor.getPipeNet(type) != null) {
-					conductor.getPipeNet(type).joinLink(this);
+				if(getPipeNet(this.type) == null && conductor.getPipeNet(this.type) != null) {
+					conductor.getPipeNet(this.type).joinLink(this);
 				}
 				
-				if(this.getPipeNet(type) != null && conductor.getPipeNet(type) != null && this.getPipeNet(type) != conductor.getPipeNet(type)) {
-					conductor.getPipeNet(type).joinNetworks(this.getPipeNet(type));
+				if(getPipeNet(this.type) != null && conductor.getPipeNet(this.type) != null && getPipeNet(this.type) != conductor.getPipeNet(this.type)) {
+					conductor.getPipeNet(this.type).joinNetworks(getPipeNet(this.type));
 				}
 			}
 		}
@@ -91,7 +91,7 @@ public class TileEntityPipeBaseNT extends TileEntity implements IFluidConductor 
 	public void invalidate() {
 		super.invalidate();
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			if(this.network != null) {
 				this.network.destroy();
 			}
@@ -103,7 +103,7 @@ public class TileEntityPipeBaseNT extends TileEntity implements IFluidConductor 
 	 */
 	@Override
 	public boolean canUpdate() {
-		return (this.network == null || !this.network.isValid()) && !this.isInvalid();
+		return (this.network == null || !this.network.isValid()) && !isInvalid();
 	}
 
 	@Override
@@ -133,13 +133,13 @@ public class TileEntityPipeBaseNT extends TileEntity implements IFluidConductor 
 	@Override
 	public Packet getDescriptionPacket() {
 		NBTTagCompound nbt = new NBTTagCompound();
-		this.writeToNBT(nbt);
+		writeToNBT(nbt);
 		return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, nbt);
 	}
 	
 	@Override
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-		this.readFromNBT(pkt.func_148857_g());
+		readFromNBT(pkt.func_148857_g());
 	}
 
 	@Override

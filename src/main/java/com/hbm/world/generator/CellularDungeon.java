@@ -15,7 +15,7 @@ public class CellularDungeon {
 	CellularDungeonRoom[][] cells;
 	ForgeDirection[][] doors;
 	//the order in which the buffer should be processed
-	List<int[]> order = new ArrayList();
+	List<int[]> order = new ArrayList<>();
 	
 	//the size of the cell array x
 	int dimX;
@@ -26,13 +26,13 @@ public class CellularDungeon {
 	//the height of a room
 	public int height;
 	//list of random floor blocks with equal weight
-	public List<MetaBlock> floor = new ArrayList();
+	public List<MetaBlock> floor = new ArrayList<>();
 	//list of random ceiling blocks with equal weight
-	public List<MetaBlock> ceiling = new ArrayList();
+	public List<MetaBlock> ceiling = new ArrayList<>();
 	//list of random wall blocks with equal weight
-	public List<MetaBlock> wall = new ArrayList();
+	public List<MetaBlock> wall = new ArrayList<>();
 	//the rooms that the dungeon can use
-	public List<CellularDungeonRoom> rooms = new ArrayList();
+	public List<CellularDungeonRoom> rooms = new ArrayList<>();
 	int tries;
 	int branches;
 	
@@ -61,12 +61,12 @@ public class CellularDungeon {
 	
 	public void generate(World world, int x, int y, int z, Random rand) {
 
-		x -= dimX * width / 2;
-		z -= dimZ * width / 2;
+		x -= this.dimX * this.width / 2;
+		z -= this.dimZ * this.width / 2;
 		
 		compose(rand);
 		
-		for(int[] coord : order) {
+		for(int[] coord : this.order) {
 			
 			if(coord == null || coord.length != 2)
 				continue;
@@ -74,12 +74,12 @@ public class CellularDungeon {
 			int dx = coord[0];
 			int dz = coord[1];
 			
-			if(cells[dx][dz] != null) {
+			if(this.cells[dx][dz] != null) {
 				
-				if(doors[dx][dz] == null)
-					doors[dx][dz] = ForgeDirection.UNKNOWN;
+				if(this.doors[dx][dz] == null)
+					this.doors[dx][dz] = ForgeDirection.UNKNOWN;
 				
-				cells[dx][dz].generate(world, x + dx * (width - 1), y, z + dz * (width - 1), doors[dx][dz]);
+				this.cells[dx][dz].generate(world, x + dx * (this.width - 1), y, z + dz * (this.width - 1), this.doors[dx][dz]);
 			}
 		}
 	}
@@ -87,47 +87,47 @@ public class CellularDungeon {
 	int rec = 0;
 	public void compose(Random rand) {
 
-		cells = new CellularDungeonRoom[dimX][dimZ];
-		doors = new ForgeDirection[dimX][dimZ];
-		order.clear();
+		this.cells = new CellularDungeonRoom[this.dimX][this.dimZ];
+		this.doors = new ForgeDirection[this.dimX][this.dimZ];
+		this.order.clear();
 
-		int startX = dimX / 2;
-		int startZ = dimZ / 2;
+		int startX = this.dimX / 2;
+		int startZ = this.dimZ / 2;
 
-		cells[startX][startZ] = DungeonToolbox.getRandom(rooms, rand);
-		doors[startX][startZ] = ForgeDirection.UNKNOWN;
-		order.add(new int[] { startX, startZ });
+		this.cells[startX][startZ] = DungeonToolbox.getRandom(this.rooms, rand);
+		this.doors[startX][startZ] = ForgeDirection.UNKNOWN;
+		this.order.add(new int[] { startX, startZ });
 		
-		rec = 0;
-		addRoom(startX, startZ, rand, ForgeDirection.UNKNOWN, DungeonToolbox.getRandom(rooms, rand));
+		this.rec = 0;
+		addRoom(startX, startZ, rand, ForgeDirection.UNKNOWN, DungeonToolbox.getRandom(this.rooms, rand));
 	}
 	
 	//if x and z are occupied, it will just use the next nearby random space
 	private boolean addRoom(int x, int z, Random rand, ForgeDirection door, CellularDungeonRoom room) {
 		
-		rec++;
-		if(rec > tries)
+		this.rec++;
+		if(this.rec > this.tries)
 			return false;
 		
-		if(x < 0 || z < 0 || x >= dimX || z >= dimZ)
+		if(x < 0 || z < 0 || x >= this.dimX || z >= this.dimZ)
 			return false;
 		
-		if(cells[x][z] != null) {
+		if(this.cells[x][z] != null) {
 
-			ForgeDirection dir = getRandomDir(rand);
-			addRoom(x + dir.offsetX, z + dir.offsetZ, rand, dir.getOpposite(), DungeonToolbox.getRandom(rooms, rand));
+			ForgeDirection dir = CellularDungeon.getRandomDir(rand);
+			addRoom(x + dir.offsetX, z + dir.offsetZ, rand, dir.getOpposite(), DungeonToolbox.getRandom(this.rooms, rand));
 			return false;
 		}
 		
 		if(room.daisyChain == null || addRoom(x + room.daisyDirection.offsetX, z + room.daisyDirection.offsetZ, rand, ForgeDirection.UNKNOWN, room.daisyChain)) {
-			cells[x][z] = room;
-			doors[x][z] = door;
-			order.add(new int[] { x, z });
+			this.cells[x][z] = room;
+			this.doors[x][z] = door;
+			this.order.add(new int[] { x, z });
 		}
 		
-		for(int i = 0; i < branches; i++) {
-			ForgeDirection dir = getRandomDir(rand);
-			addRoom(x + dir.offsetX, z + dir.offsetZ, rand, dir.getOpposite(), DungeonToolbox.getRandom(rooms, rand));
+		for(int i = 0; i < this.branches; i++) {
+			ForgeDirection dir = CellularDungeon.getRandomDir(rand);
+			addRoom(x + dir.offsetX, z + dir.offsetZ, rand, dir.getOpposite(), DungeonToolbox.getRandom(this.rooms, rand));
 		}
 		
 		return true;

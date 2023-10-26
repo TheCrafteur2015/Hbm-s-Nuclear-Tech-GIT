@@ -18,21 +18,21 @@ public class ContainerMachineTurbineGas extends Container {
 	
 	public ContainerMachineTurbineGas(InventoryPlayer invPlayer, TileEntityMachineTurbineGas te) {
 		
-		turbinegas = te;
+		this.turbinegas = te;
 		
 		//Battery
-		this.addSlotToContainer(new Slot(te, 0, 8, 109));
+		addSlotToContainer(new Slot(te, 0, 8, 109));
 		//Fluid ID
-		this.addSlotToContainer(new Slot(te, 1, 36, 17));
+		addSlotToContainer(new Slot(te, 1, 36, 17));
 		
 		for(int i = 0; i < 3; i++) { 
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 141 + i * 18)); //player's inventory
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 141 + i * 18)); //player's inventory
 			}
 		}
 
 		for(int i = 0; i < 9; i++) { 
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 199)); //shit in the hotbar
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 199)); //shit in the hotbar
 		}
 	}
 	
@@ -46,22 +46,19 @@ public class ContainerMachineTurbineGas extends Container {
 			var3 = var5.copy();
 
 			if(par2 <= 1) { //checks if the item is in the battery or fluidID slot
-				if(!this.mergeItemStack(var5, 2, this.inventorySlots.size(), true)) {
+				if(!mergeItemStack(var5, 2, this.inventorySlots.size(), true)) {
 					return null;
 				}
 				
 			} else if(var5.getItem() instanceof IBatteryItem) { //only yeets batteries in the battery slot
 
-				if(!this.mergeItemStack(var5, 0, 1, true))
+				if(!mergeItemStack(var5, 0, 1, true))
 					return null;
 				
 			} else if(var5.getItem() instanceof ItemFluidIdentifier) { 
 				
 				FluidType type = ItemFluidIdentifier.getType(var5);
-				if (type != Fluids.GAS && type != Fluids.PETROLEUM && type != Fluids.LPG ) //doesn't let you yeet random identifiers in the identifier slot
-					return null;
-
-				if(!this.mergeItemStack(var5, 1, 2, true))
+				if((type != Fluids.GAS && type != Fluids.PETROLEUM && type != Fluids.LPG) || !mergeItemStack(var5, 1, 2, true))
 					return null;
 				
 			} else {
@@ -80,6 +77,6 @@ public class ContainerMachineTurbineGas extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return turbinegas.isUseableByPlayer(player);
+		return this.turbinegas.isUseableByPlayer(player);
 	}
 }

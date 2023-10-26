@@ -21,9 +21,9 @@ public class ItemRenderUZI implements IItemRenderer {
 	protected ModelUziSilencer silencer;
 	
 	public ItemRenderUZI() {
-		uzi = new ModelUzi();
-		barrel = new ModelUziBarrel();
-		silencer = new ModelUziSilencer();
+		this.uzi = new ModelUzi();
+		this.barrel = new ModelUziBarrel();
+		this.silencer = new ModelUziSilencer();
 	}
 
 	@Override
@@ -59,16 +59,16 @@ public class ItemRenderUZI implements IItemRenderer {
 				if(item.getItem() == ModItems.gun_uzi_saturnite || item.getItem() == ModItems.gun_uzi_saturnite_silencer)
 					Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(RefStrings.MODID +":textures/models/ModelUziSaturnite.png"));
 				
-				uzi.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.uzi.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				
 				if(item.getItem() == ModItems.gun_uzi || item.getItem() == ModItems.gun_uzi_saturnite) {
 					Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(RefStrings.MODID +":textures/models/ModelUziBarrel.png"));
-					barrel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.barrel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				}
 				
 				if(item.getItem() == ModItems.gun_uzi_silencer || item.getItem() == ModItems.gun_uzi_saturnite_silencer) {
 					Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(RefStrings.MODID +":textures/models/ModelUziSilencer.png"));
-					silencer.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.silencer.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				}
 				
 			GL11.glPopMatrix();
@@ -89,16 +89,16 @@ public class ItemRenderUZI implements IItemRenderer {
 				Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(RefStrings.MODID +":textures/models/ModelUzi.png"));
 			if(item.getItem() == ModItems.gun_uzi_saturnite || item.getItem() == ModItems.gun_uzi_saturnite_silencer)
 				Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(RefStrings.MODID +":textures/models/ModelUziSaturnite.png"));
-			uzi.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+			this.uzi.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			
 			if(item.getItem() == ModItems.gun_uzi || item.getItem() == ModItems.gun_uzi_saturnite) {
 				Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(RefStrings.MODID +":textures/models/ModelUziBarrel.png"));
-				barrel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.barrel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			}
 			
 			if(item.getItem() == ModItems.gun_uzi_silencer || item.getItem() == ModItems.gun_uzi_saturnite_silencer) {
 				Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(RefStrings.MODID +":textures/models/ModelUziSilencer.png"));
-				silencer.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.silencer.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			}
 			
 		GL11.glPopMatrix();
@@ -116,16 +116,16 @@ public class ItemRenderUZI implements IItemRenderer {
 					Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(RefStrings.MODID +":textures/models/ModelUzi.png"));
 				if(item.getItem() == ModItems.gun_uzi_saturnite || item.getItem() == ModItems.gun_uzi_saturnite_silencer)
 					Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(RefStrings.MODID +":textures/models/ModelUziSaturnite.png"));
-				uzi.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.uzi.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				
 				if(item.getItem() == ModItems.gun_uzi || item.getItem() == ModItems.gun_uzi_saturnite) {
 					Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(RefStrings.MODID +":textures/models/ModelUziBarrel.png"));
-					barrel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.barrel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				}
 				
 				if(item.getItem() == ModItems.gun_uzi_silencer || item.getItem() == ModItems.gun_uzi_saturnite_silencer) {
 					Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(RefStrings.MODID +":textures/models/ModelUziSilencer.png"));
-					silencer.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+					this.silencer.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 				}
 				
 			GL11.glPopMatrix();

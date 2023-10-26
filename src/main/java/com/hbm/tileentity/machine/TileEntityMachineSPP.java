@@ -17,21 +17,21 @@ public class TileEntityMachineSPP extends TileEntityLoadedBase implements IEnerg
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 
-			this.sendPower(worldObj, xCoord + 1, yCoord, zCoord, Library.POS_X);
-			this.sendPower(worldObj, xCoord - 1, yCoord, zCoord, Library.NEG_X);
-			this.sendPower(worldObj, xCoord, yCoord, zCoord + 1, Library.POS_Z);
-			this.sendPower(worldObj, xCoord, yCoord, zCoord - 1, Library.NEG_Z);
-			this.sendPower(worldObj, xCoord, yCoord - 1, zCoord, Library.NEG_Y);
+			sendPower(this.worldObj, this.xCoord + 1, this.yCoord, this.zCoord, Library.POS_X);
+			sendPower(this.worldObj, this.xCoord - 1, this.yCoord, this.zCoord, Library.NEG_X);
+			sendPower(this.worldObj, this.xCoord, this.yCoord, this.zCoord + 1, Library.POS_Z);
+			sendPower(this.worldObj, this.xCoord, this.yCoord, this.zCoord - 1, Library.NEG_Z);
+			sendPower(this.worldObj, this.xCoord, this.yCoord - 1, this.zCoord, Library.NEG_Y);
 			
-			if(worldObj.getTotalWorldTime() % 20 == 0)
-				gen = checkStructure() * 15;
+			if(this.worldObj.getTotalWorldTime() % 20 == 0)
+				this.gen = checkStructure() * 15;
 			
-			if(gen > 0)
-				power += gen;
-			if(power > maxPower)
-				power = maxPower;
+			if(this.gen > 0)
+				this.power += this.gen;
+			if(this.power > TileEntityMachineSPP.maxPower)
+				this.power = TileEntityMachineSPP.maxPower;
 		}
 		
 	}
@@ -40,18 +40,18 @@ public class TileEntityMachineSPP extends TileEntityLoadedBase implements IEnerg
 
 		int h = 0;
 		
-		for(int i = yCoord + 1; i < 254; i++)
-			if(worldObj.getBlock(xCoord, i, zCoord) == ModBlocks.machine_spp_top) {
+		for(int i = this.yCoord + 1; i < 254; i++)
+			if(this.worldObj.getBlock(this.xCoord, i, this.zCoord) == ModBlocks.machine_spp_top) {
 				h = i;
 				break;
 			}
 		
-		for(int i = yCoord + 1; i < h; i++)
+		for(int i = this.yCoord + 1; i < h; i++)
 			if(!checkSegment(i))
 				return 0;
 
 		
-		return h - yCoord - 1;
+		return h - this.yCoord - 1;
 	}
 	
 	public boolean checkSegment(int y) {
@@ -60,15 +60,15 @@ public class TileEntityMachineSPP extends TileEntityLoadedBase implements IEnerg
 		//   BAB
 		//   BBB
 		
-		return (worldObj.getBlock(xCoord + 1, y, zCoord) != Blocks.air &&
-				worldObj.getBlock(xCoord + 1, y, zCoord + 1) != Blocks.air &&
-				worldObj.getBlock(xCoord + 1, y, zCoord - 1) != Blocks.air &&
-				worldObj.getBlock(xCoord - 1, y, zCoord + 1) != Blocks.air &&
-				worldObj.getBlock(xCoord - 1, y, zCoord) != Blocks.air &&
-				worldObj.getBlock(xCoord - 1, y, zCoord - 1) != Blocks.air &&
-				worldObj.getBlock(xCoord, y, zCoord + 1) != Blocks.air &&
-				worldObj.getBlock(xCoord, y, zCoord - 1) != Blocks.air &&
-				worldObj.getBlock(xCoord, y, zCoord) == Blocks.air);
+		return (this.worldObj.getBlock(this.xCoord + 1, y, this.zCoord) != Blocks.air &&
+				this.worldObj.getBlock(this.xCoord + 1, y, this.zCoord + 1) != Blocks.air &&
+				this.worldObj.getBlock(this.xCoord + 1, y, this.zCoord - 1) != Blocks.air &&
+				this.worldObj.getBlock(this.xCoord - 1, y, this.zCoord + 1) != Blocks.air &&
+				this.worldObj.getBlock(this.xCoord - 1, y, this.zCoord) != Blocks.air &&
+				this.worldObj.getBlock(this.xCoord - 1, y, this.zCoord - 1) != Blocks.air &&
+				this.worldObj.getBlock(this.xCoord, y, this.zCoord + 1) != Blocks.air &&
+				this.worldObj.getBlock(this.xCoord, y, this.zCoord - 1) != Blocks.air &&
+				this.worldObj.getBlock(this.xCoord, y, this.zCoord) == Blocks.air);
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public class TileEntityMachineSPP extends TileEntityLoadedBase implements IEnerg
 
 	@Override
 	public long getMaxPower() {
-		return this.maxPower;
+		return TileEntityMachineSPP.maxPower;
 	}
 
 }

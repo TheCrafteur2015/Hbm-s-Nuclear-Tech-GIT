@@ -1,11 +1,12 @@
 package com.hbm.blocks.network;
 
-import api.hbm.conveyor.IConveyorItem;
-import api.hbm.conveyor.IConveyorPackage;
-import api.hbm.conveyor.IEnterableBlock;
 import com.hbm.lib.RefStrings;
 import com.hbm.tileentity.network.TileEntityCraneBase;
 import com.hbm.tileentity.network.TileEntityCraneInserter;
+
+import api.hbm.conveyor.IConveyorItem;
+import api.hbm.conveyor.IConveyorPackage;
+import api.hbm.conveyor.IEnterableBlock;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -72,17 +73,17 @@ public class CraneInserter extends BlockCraneBase implements IEnterableBlock {
 		
 		if(te instanceof ISidedInventory) {
 			ISidedInventory sided = (ISidedInventory) te;
-			access = masquerade(sided, outputDirection.getOpposite().ordinal());
+			access = CraneInserter.masquerade(sided, outputDirection.getOpposite().ordinal());
 		}
 		
 		if(te instanceof IInventory) {
 			IInventory inv = (IInventory) te;
 			
-			addToInventory(inv, access, toAdd, outputDirection.getOpposite().ordinal());
+			CraneInserter.addToInventory(inv, access, toAdd, outputDirection.getOpposite().ordinal());
 		}
 		
 		if(toAdd.stackSize > 0) {
-			addToInventory((TileEntityCraneInserter) world.getTileEntity(x, y, z), null, toAdd, outputDirection.getOpposite().ordinal());
+			CraneInserter.addToInventory((TileEntityCraneInserter) world.getTileEntity(x, y, z), null, toAdd, outputDirection.getOpposite().ordinal());
 		}
 		if(toAdd.stackSize > 0) {
 			EntityItem drop = new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, toAdd.copy());
@@ -169,7 +170,7 @@ public class CraneInserter extends BlockCraneBase implements IEnterableBlock {
 
 	@Override
 	public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-		this.dropContents(world, x, y, z, block, meta, 0, 21);
+		dropContents(world, x, y, z, block, meta, 0, 21);
 		super.breakBlock(world, x, y, z, block, meta);
 	}
 }

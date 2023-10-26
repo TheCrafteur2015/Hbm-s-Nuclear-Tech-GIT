@@ -16,7 +16,7 @@ public class SiegeCircuit extends SiegeBase {
 	@Override
 	public void updateTick(World world, int x, int y, int z, Random rand) {
 
-		if(!this.solidNeighbors(world, x, y, z)) {
+		if(!solidNeighbors(world, x, y, z)) {
 			world.setBlock(x, y, z, ModBlocks.siege_emergency);
 		}
 	}

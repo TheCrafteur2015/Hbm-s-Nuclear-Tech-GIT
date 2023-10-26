@@ -23,7 +23,7 @@ public class PermaSyncPacket implements IMessage {
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		PermaSyncHandler.writePacket(buf, player.worldObj, player);
+		PermaSyncHandler.writePacket(buf, this.player.worldObj, this.player);
 	}
 
 	@Override

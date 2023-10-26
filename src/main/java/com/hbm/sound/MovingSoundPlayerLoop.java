@@ -9,8 +9,8 @@ import net.minecraft.util.ResourceLocation;
 
 public abstract class MovingSoundPlayerLoop extends MovingSound {
 
-	public static List<MovingSoundPlayerLoop> globalSoundList = new ArrayList<MovingSoundPlayerLoop>();
-	public List<Entity> playerForSound = new ArrayList<Entity>();
+	public static List<MovingSoundPlayerLoop> globalSoundList = new ArrayList<>();
+	public List<Entity> playerForSound = new ArrayList<>();
 	public Entity player;
 	public enum EnumHbmSound { soundTauLoop, soundChopperLoop, soundCrashingLoop, soundMineLoop };
 	public EnumHbmSound type;
@@ -23,34 +23,34 @@ public abstract class MovingSoundPlayerLoop extends MovingSound {
 		this.init = false;
 		this.repeat = true;
 		if(MovingSoundPlayerLoop.getSoundByPlayer(player, type) == null)
-			globalSoundList.add(this);
+			MovingSoundPlayerLoop.globalSoundList.add(this);
 	}
 
 	@Override
 	public void update() {
 		
-		if(player != null) {
-			this.xPosF = (float)player.posX;
-			this.yPosF = (float)player.posY;
-			this.zPosF = (float)player.posZ;
+		if(this.player != null) {
+			this.xPosF = (float)this.player.posX;
+			this.yPosF = (float)this.player.posY;
+			this.zPosF = (float)this.player.posZ;
 		}
 		
-		if(player == null || player.isDead)
-			this.stop();
+		if(this.player == null || this.player.isDead)
+			stop();
 	}
 	
 	public void stop() {
 		this.donePlaying = true;
 		this.repeat = false;
-		while(MovingSoundPlayerLoop.getSoundByPlayer(player, type) != null)
-			globalSoundList.remove(MovingSoundPlayerLoop.getSoundByPlayer(player, type));
+		while(MovingSoundPlayerLoop.getSoundByPlayer(this.player, this.type) != null)
+			MovingSoundPlayerLoop.globalSoundList.remove(MovingSoundPlayerLoop.getSoundByPlayer(this.player, this.type));
 		
 		this.player = null;
 	}
 	
 	public static MovingSoundPlayerLoop getSoundByPlayer(Entity player, EnumHbmSound type) {
 		
-		for(MovingSoundPlayerLoop sound : globalSoundList) {
+		for(MovingSoundPlayerLoop sound : MovingSoundPlayerLoop.globalSoundList) {
 			if(sound.player == player && sound.type == type)
 				return sound;
 		}

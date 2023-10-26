@@ -36,7 +36,7 @@ public class EntityGlyphid extends EntityMob {
 		this.tasks.addTask(8, new EntityAILookIdle(this));
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));*/
-		this.setSize(1.75F, 1F);
+		setSize(1.75F, 1F);
 	}
 	
 	public ResourceLocation getSkin() {
@@ -57,21 +57,21 @@ public class EntityGlyphid extends EntityMob {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30D);
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1D);
-		this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(5D);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30D);
+		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1D);
+		getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(5D);
 	}
 	
 	@Override
 	protected void dropFewItems(boolean byPlayer, int looting) {
-		if(rand.nextInt(3) == 0) this.entityDropItem(new ItemStack(ModItems.glyphid_meat, 1 + rand.nextInt(2) + looting), 0F);
+		if(this.rand.nextInt(3) == 0) entityDropItem(new ItemStack(ModItems.glyphid_meat, 1 + this.rand.nextInt(2) + looting), 0F);
 	}
 
 	@Override
 	protected Entity findPlayerToAttack() {
 		if(this.isPotionActive(Potion.blindness)) return null;
 		EntityPlayer entityplayer = this.worldObj.getClosestVulnerablePlayerToEntity(this, useExtendedTargeting() ? 128D : 16D);
-		return entityplayer != null && this.canEntityBeSeen(entityplayer) ? entityplayer : null;
+		return entityplayer != null && canEntityBeSeen(entityplayer) ? entityplayer : null;
 	}
 
 	@Override
@@ -80,30 +80,30 @@ public class EntityGlyphid extends EntityMob {
 		
 		if(this.isPotionActive(Potion.blindness)) {
 			this.entityToAttack = null;
-			this.setPathToEntity(null);
+			setPathToEntity(null);
 		} else {
 			
 			// hell yeah!!
-			if(useExtendedTargeting() && this.entityToAttack != null && !this.hasPath()) {
-				this.setPathToEntity(PathFinderUtils.getPathEntityToEntityPartial(worldObj, this, this.entityToAttack, 16F, true, false, false, true));
+			if(useExtendedTargeting() && this.entityToAttack != null && !hasPath()) {
+				setPathToEntity(PathFinderUtils.getPathEntityToEntityPartial(this.worldObj, this, this.entityToAttack, 16F, true, false, false, true));
 			}
 		}
 
 	}
 	
 	public boolean useExtendedTargeting() {
-		return PollutionHandler.getPollution(worldObj, (int) Math.floor(posX), (int) Math.floor(posY), (int) Math.floor(posZ), PollutionType.SOOT) >= MobConfig.targetingThreshold;
+		return PollutionHandler.getPollution(this.worldObj, (int) Math.floor(this.posX), (int) Math.floor(this.posY), (int) Math.floor(this.posZ), PollutionType.SOOT) >= MobConfig.targetingThreshold;
 	}
 
 	@Override
 	protected boolean canDespawn() {
-		return entityToAttack == null;
+		return this.entityToAttack == null;
 	}
 	
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
 		
-		if(!source.isDamageAbsolute() && !source.isUnblockable() && !worldObj.isRemote && !source.isFireDamage() && !source.getDamageType().equals(ModDamageSource.s_cryolator)) {
+		if(!source.isDamageAbsolute() && !source.isUnblockable() && !this.worldObj.isRemote && !source.isFireDamage() && !source.getDamageType().equals(ModDamageSource.s_cryolator)) {
 			byte armor = this.dataWatcher.getWatchableObjectByte(17);
 			
 			if(armor != 0) { //if at least one bit of armor is present
@@ -120,7 +120,7 @@ public class EntityGlyphid extends EntityMob {
 				if(amount < 0) return true;
 			}
 			
-			amount = this.calculateDamage(amount);
+			amount = calculateDamage(amount);
 		}
 		
 		if(source.isFireDamage()) amount *= 4F;
@@ -163,7 +163,7 @@ public class EntityGlyphid extends EntityMob {
 				armor &= ~bit;
 				armor = (byte) (armor & 0b11111);
 				this.dataWatcher.updateObject(17, armor);
-				worldObj.playSoundAtEntity(this, "mob.zombie.woodbreak", 1.0F, 1.25F);
+				this.worldObj.playSoundAtEntity(this, "mob.zombie.woodbreak", 1.0F, 1.25F);
 				break;
 			}
 		}
@@ -172,7 +172,7 @@ public class EntityGlyphid extends EntityMob {
 	@Override
 	public boolean attackEntityAsMob(Entity victum) {
 		if(this.isSwingInProgress) return false;
-		this.swingItem();
+		swingItem();
 		return super.attackEntityAsMob(victum);
 	}
 
@@ -181,17 +181,17 @@ public class EntityGlyphid extends EntityMob {
 		super.onUpdate();
 
 		if(!this.worldObj.isRemote) {
-			this.setBesideClimbableBlock(this.isCollidedHorizontally);
+			setBesideClimbableBlock(this.isCollidedHorizontally);
 			
-			if(worldObj.getTotalWorldTime() % 200 == 0) {
-				this.swingItem();
+			if(this.worldObj.getTotalWorldTime() % 200 == 0) {
+				swingItem();
 			}
 		}
 	}
 
 	@Override
 	protected void updateArmSwingProgress() {
-		int i = this.swingDuration();
+		int i = swingDuration();
 
 		if(this.isSwingInProgress) {
 			++this.swingProgressInt;
@@ -216,7 +216,7 @@ public class EntityGlyphid extends EntityMob {
 	
 	@Override
 	public boolean isOnLadder() {
-		return this.isBesideClimbableBlock();
+		return isBesideClimbableBlock();
 	}
 	
 	public boolean isBesideClimbableBlock() {

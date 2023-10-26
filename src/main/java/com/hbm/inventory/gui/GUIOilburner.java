@@ -25,7 +25,7 @@ public class GUIOilburner extends GuiInfoContainer {
 
 	public GUIOilburner(InventoryPlayer invPlayer, TileEntityHeaterOilburner tedf) {
 		super(new ContainerOilburner(invPlayer, tedf));
-		diFurnace = tedf;
+		this.diFurnace = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 203;
@@ -35,23 +35,24 @@ public class GUIOilburner extends GuiInfoContainer {
 	public void drawScreen(int x, int y, float interp) {
 		super.drawScreen(x, y, interp);
 		
-		this.drawCustomInfoStat(x, y, guiLeft + 116, guiTop + 17, 16, 52, x, y, new String[] { String.format(Locale.US, "%,d", Math.min(diFurnace.heatEnergy, diFurnace.maxHeatEnergy)) + " / " + String.format(Locale.US, "%,d", diFurnace.maxHeatEnergy) + " TU" });
+		this.drawCustomInfoStat(x, y, this.guiLeft + 116, this.guiTop + 17, 16, 52, x, y, new String[] { String.format(Locale.US, "%,d", Math.min(this.diFurnace.heatEnergy, TileEntityHeaterOilburner.maxHeatEnergy)) + " / " + String.format(Locale.US, "%,d", TileEntityHeaterOilburner.maxHeatEnergy) + " TU" });
 
-		if(diFurnace.tank.getTankType().hasTrait(FT_Flammable.class)) {
-			this.drawCustomInfoStat(x, y, guiLeft + 79, guiTop + 34, 18, 18, x, y, new String[] { diFurnace.setting + " mB/t", String.format(Locale.US, "%,d", (int)(diFurnace.tank.getTankType().getTrait(FT_Flammable.class).getHeatEnergy() / 1000) * diFurnace.setting) + " TU/t" });
+		if(this.diFurnace.tank.getTankType().hasTrait(FT_Flammable.class)) {
+			this.drawCustomInfoStat(x, y, this.guiLeft + 79, this.guiTop + 34, 18, 18, x, y, new String[] { this.diFurnace.setting + " mB/t", String.format(Locale.US, "%,d", (int)(this.diFurnace.tank.getTankType().getTrait(FT_Flammable.class).getHeatEnergy() / 1000) * this.diFurnace.setting) + " TU/t" });
 		}
 		
-		diFurnace.tank.renderTankInfo(this, x, y, guiLeft + 44, guiTop + 17, 16, 52);
+		this.diFurnace.tank.renderTankInfo(this, x, y, this.guiLeft + 44, this.guiTop + 17, 16, 52);
 	}
 
+	@Override
 	protected void mouseClicked(int x, int y, int i) {
 		super.mouseClicked(x, y, i);
 		
-		if(guiLeft + 80 <= x && guiLeft + 80 + 16 > x && guiTop + 54 < y && guiTop + 54 + 14 >= y) {
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+		if(this.guiLeft + 80 <= x && this.guiLeft + 80 + 16 > x && this.guiTop + 54 < y && this.guiTop + 54 + 14 >= y) {
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 			NBTTagCompound data = new NBTTagCompound();
 			data.setBoolean("toggle", true);
-			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, diFurnace.xCoord, diFurnace.yCoord, diFurnace.zCoord));
+			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, this.diFurnace.xCoord, this.diFurnace.yCoord, this.diFurnace.zCoord));
 			
 		}
 		
@@ -68,20 +69,20 @@ public class GUIOilburner extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIOilburner.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		int i = diFurnace.heatEnergy * 52 / diFurnace.maxHeatEnergy;
-		drawTexturedModalRect(guiLeft + 116, guiTop + 69 - i, 194, 52 - i, 16, i);
+		int i = this.diFurnace.heatEnergy * 52 / TileEntityHeaterOilburner.maxHeatEnergy;
+		drawTexturedModalRect(this.guiLeft + 116, this.guiTop + 69 - i, 194, 52 - i, 16, i);
 		
-		if(diFurnace.isOn) {
-			drawTexturedModalRect(guiLeft + 70, guiTop + 54, 210, 0, 35, 14);
+		if(this.diFurnace.isOn) {
+			drawTexturedModalRect(this.guiLeft + 70, this.guiTop + 54, 210, 0, 35, 14);
 
-			if(diFurnace.tank.getFill() > 0 && diFurnace.tank.getTankType().hasTrait(FT_Flammable.class)) {
-				drawTexturedModalRect(guiLeft + 79, guiTop + 34, 176, 0, 18, 18);
+			if(this.diFurnace.tank.getFill() > 0 && this.diFurnace.tank.getTankType().hasTrait(FT_Flammable.class)) {
+				drawTexturedModalRect(this.guiLeft + 79, this.guiTop + 34, 176, 0, 18, 18);
 			}
 		}
 		
-		diFurnace.tank.renderTank(guiLeft + 44, guiTop + 69, this.zLevel, 16, 52);
+		this.diFurnace.tank.renderTank(this.guiLeft + 44, this.guiTop + 69, this.zLevel, 16, 52);
 	}
 }

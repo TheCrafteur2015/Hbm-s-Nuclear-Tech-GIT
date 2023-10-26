@@ -1,13 +1,15 @@
 package com.hbm.inventory.gui;
 
+import org.lwjgl.opengl.GL11;
+
 import com.hbm.inventory.container.ContainerSatDock;
 import com.hbm.lib.RefStrings;
 import com.hbm.tileentity.machine.TileEntityMachineSatDock;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
 public class GUISatDock extends GuiInfoContainer {
 
@@ -16,7 +18,7 @@ public class GUISatDock extends GuiInfoContainer {
 	
 	public GUISatDock(InventoryPlayer invPlayer, TileEntityMachineSatDock tesd) {
 		super(new ContainerSatDock(invPlayer, tesd));
-		tileSatelliteDock = tesd;
+		this.tileSatelliteDock = tesd;
 
 		this.xSize = 176;
 		this.ySize = 168;
@@ -29,7 +31,7 @@ public class GUISatDock extends GuiInfoContainer {
 		String[] text = new String[] { "Requires linked miner sat chip.",
 				"Cargo ship will land periodically to",
 				"deliver resources." };
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36, 16, 16, guiLeft - 8, guiTop + 36 + 16, text);
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft - 16, this.guiTop + 36, 16, 16, this.guiLeft - 8, this.guiTop + 36 + 16, text);
 	}
 	
 	@Override
@@ -43,9 +45,9 @@ public class GUISatDock extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUISatDock.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		this.drawInfoPanel(guiLeft - 16, guiTop + 36, 16, 16, 2);
+		drawInfoPanel(this.guiLeft - 16, this.guiTop + 36, 16, 16, 2);
 	}
 }

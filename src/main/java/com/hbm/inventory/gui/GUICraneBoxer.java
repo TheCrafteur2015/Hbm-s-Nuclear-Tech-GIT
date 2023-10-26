@@ -22,7 +22,7 @@ public class GUICraneBoxer extends GuiInfoContainer {
 
 	public GUICraneBoxer(InventoryPlayer invPlayer, TileEntityCraneBoxer tedf) {
 		super(new ContainerCraneBoxer(invPlayer, tedf));
-		boxer = tedf;
+		this.boxer = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 185;
@@ -32,12 +32,12 @@ public class GUICraneBoxer extends GuiInfoContainer {
 	protected void mouseClicked(int x, int y, int i) {
 		super.mouseClicked(x, y, i);
 
-		if(guiLeft + 151 <= x && guiLeft + 151 + 18 > x && guiTop + 34 < y && guiTop + 34 + 18 >= y) {
+		if(this.guiLeft + 151 <= x && this.guiLeft + 151 + 18 > x && this.guiTop + 34 < y && this.guiTop + 34 + 18 >= y) {
 
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 			NBTTagCompound data = new NBTTagCompound();
 			data.setBoolean("toggle", true);
-			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, boxer.xCoord, boxer.yCoord, boxer.zCoord));
+			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, this.boxer.xCoord, this.boxer.yCoord, this.boxer.zCoord));
 		}
 	}
 	
@@ -51,9 +51,9 @@ public class GUICraneBoxer extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float interp, int i, int j) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUICraneBoxer.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		drawTexturedModalRect(guiLeft + 151, guiTop + 34, 176, boxer.mode * 18, 18, 18);
+		drawTexturedModalRect(this.guiLeft + 151, this.guiTop + 34, 176, this.boxer.mode * 18, 18, 18);
 	}
 }

@@ -13,14 +13,14 @@ public class ModelHat extends ModelArmorBase {
 	public ModelHat(int type) {
 		super(type);
 
-		head = new ModelRendererObj(ResourceManager.armor_hat);
-		body = new ModelRendererObj(null);
-		leftArm = new ModelRendererObj(null).setRotationPoint(-5.0F, 2.0F, 0.0F);
-		rightArm = new ModelRendererObj(null).setRotationPoint(5.0F, 2.0F, 0.0F);
-		leftLeg = new ModelRendererObj(null).setRotationPoint(1.9F, 12.0F, 0.0F);
-		rightLeg = new ModelRendererObj(null).setRotationPoint(-1.9F, 12.0F, 0.0F);
-		leftFoot = new ModelRendererObj(null).setRotationPoint(1.9F, 12.0F, 0.0F);
-		rightFoot = new ModelRendererObj(null).setRotationPoint(-1.9F, 12.0F, 0.0F);
+		this.head = new ModelRendererObj(ResourceManager.armor_hat);
+		this.body = new ModelRendererObj(null);
+		this.leftArm = new ModelRendererObj(null).setRotationPoint(-5.0F, 2.0F, 0.0F);
+		this.rightArm = new ModelRendererObj(null).setRotationPoint(5.0F, 2.0F, 0.0F);
+		this.leftLeg = new ModelRendererObj(null).setRotationPoint(1.9F, 12.0F, 0.0F);
+		this.rightLeg = new ModelRendererObj(null).setRotationPoint(-1.9F, 12.0F, 0.0F);
+		this.leftFoot = new ModelRendererObj(null).setRotationPoint(1.9F, 12.0F, 0.0F);
+		this.rightFoot = new ModelRendererObj(null).setRotationPoint(-1.9F, 12.0F, 0.0F);
 	}
 
 	@Override
@@ -30,9 +30,9 @@ public class ModelHat extends ModelArmorBase {
 		
 		GL11.glPushMatrix();
 		
-		if(type == 0) {
+		if(this.type == 0) {
 			Minecraft.getMinecraft().renderEngine.bindTexture(ResourceManager.hat);
-			head.render(par7);
+			this.head.render(par7);
 		}
 		
 		GL11.glPopMatrix();

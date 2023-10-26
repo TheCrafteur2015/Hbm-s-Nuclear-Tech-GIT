@@ -90,37 +90,37 @@ public class MachinePWRController extends BlockContainer implements ITooltipProv
 		}
 	}
 
-	private static HashMap<BlockPos, Block> assembly = new HashMap();
-	private static HashMap<BlockPos, Block> fuelRods = new HashMap();
-	private static HashMap<BlockPos, Block> sources = new HashMap();
+	private static HashMap<BlockPos, Block> assembly = new HashMap<>();
+	private static HashMap<BlockPos, Block> fuelRods = new HashMap<>();
+	private static HashMap<BlockPos, Block> sources = new HashMap<>();
 	private static boolean errored;
 	private static final int maxSize = 4096;
 	
 	public void assemble(World world, int x, int y, int z, EntityPlayer player) {
-		assembly.clear();
-		fuelRods.clear();
-		sources.clear();
-		assembly.put(new BlockPos(x, y, z), this);
+		MachinePWRController.assembly.clear();
+		MachinePWRController.fuelRods.clear();
+		MachinePWRController.sources.clear();
+		MachinePWRController.assembly.put(new BlockPos(x, y, z), this);
 		
 		ForgeDirection dir = ForgeDirection.getOrientation(world.getBlockMetadata(x, y, z)).getOpposite();
 		
-		errored = false;
+		MachinePWRController.errored = false;
 		floodFill(world, x + dir.offsetX, y, z + dir.offsetZ, player);
 		
-		if(fuelRods.size() == 0){
+		if(MachinePWRController.fuelRods.size() == 0){
 			sendError(world, x, y, z, "Fuel rods required", player);
-			errored = true;
+			MachinePWRController.errored = true;
 		}
 		
-		if(sources.size() == 0) {
+		if(MachinePWRController.sources.size() == 0) {
 			sendError(world, x, y, z, "Neutron sources required", player);
-			errored = true;
+			MachinePWRController.errored = true;
 		}
 		
 		TileEntityPWRController controller = (TileEntityPWRController) world.getTileEntity(x, y, z);
 		
-		if(!errored) {
-			for(Entry<BlockPos, Block> entry : assembly.entrySet()) {
+		if(!MachinePWRController.errored) {
+			for(Entry<BlockPos, Block> entry : MachinePWRController.assembly.entrySet()) {
 				
 				BlockPos pos = entry.getKey();
 				Block block = entry.getValue();
@@ -142,22 +142,22 @@ public class MachinePWRController extends BlockContainer implements ITooltipProv
 				}
 			}
 			
-			controller.setup(assembly, fuelRods);
+			controller.setup(MachinePWRController.assembly, MachinePWRController.fuelRods);
 		}
-		controller.assembled = !errored;
+		controller.assembled = !MachinePWRController.errored;
 		
-		assembly.clear();
-		fuelRods.clear();
-		sources.clear();
+		MachinePWRController.assembly.clear();
+		MachinePWRController.fuelRods.clear();
+		MachinePWRController.sources.clear();
 	}
 	
 	private void floodFill(World world, int x, int y, int z, EntityPlayer player) {
 		
 		BlockPos pos = new BlockPos(x, y, z);
 		
-		if(assembly.containsKey(pos)) return;
-		if(assembly.size() >= maxSize) {
-			errored = true;
+		if(MachinePWRController.assembly.containsKey(pos)) return;
+		if(MachinePWRController.assembly.size() >= MachinePWRController.maxSize) {
+			MachinePWRController.errored = true;
 			sendError(world, x, y, z, "Max size exceeded", player);
 			return;
 		}
@@ -165,14 +165,14 @@ public class MachinePWRController extends BlockContainer implements ITooltipProv
 		Block block = world.getBlock(x, y, z);
 		
 		if(isValidCasing(block)) {
-			assembly.put(pos, block);
+			MachinePWRController.assembly.put(pos, block);
 			return;
 		}
 		
 		if(isValidCore(block)) {
-			assembly.put(pos, block);
-			if(block == ModBlocks.pwr_fuel) fuelRods.put(pos, block);
-			if(block == ModBlocks.pwr_neutron_source) sources.put(pos, block);
+			MachinePWRController.assembly.put(pos, block);
+			if(block == ModBlocks.pwr_fuel) MachinePWRController.fuelRods.put(pos, block);
+			if(block == ModBlocks.pwr_neutron_source) MachinePWRController.sources.put(pos, block);
 			floodFill(world, x + 1, y, z, player);
 			floodFill(world, x - 1, y, z, player);
 			floodFill(world, x, y + 1, z, player);
@@ -183,7 +183,7 @@ public class MachinePWRController extends BlockContainer implements ITooltipProv
 		}
 
 		sendError(world, x, y, z, "Non-reactor block", player);
-		errored = true;
+		MachinePWRController.errored = true;
 	}
 	
 	private void sendError(World world, int x, int y, int z, String message, EntityPlayer player) {
@@ -211,6 +211,6 @@ public class MachinePWRController extends BlockContainer implements ITooltipProv
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		this.addStandardInfo(stack, player, list, ext);
+		addStandardInfo(stack, player, list, ext);
 	}
 }

@@ -1,5 +1,6 @@
 package com.hbm.blocks.machine.rbmk;
 
+import com.hbm.blocks.BlockDummyable;
 import com.hbm.handler.BossSpawnHandler;
 import com.hbm.tileentity.TileEntityProxyInventory;
 import com.hbm.tileentity.machine.rbmk.TileEntityRBMKRod;
@@ -20,7 +21,7 @@ public class RBMKRod extends RBMKBase {
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
 		
-		if(meta >= this.offset)
+		if(meta >= BlockDummyable.offset)
 			return new TileEntityRBMKRod();
 		
 		if(hasExtra(meta))
@@ -37,6 +38,6 @@ public class RBMKRod extends RBMKBase {
 	
 	@Override
 	public int getRenderType(){
-		return this.renderIDRods;
+		return RBMKBase.renderIDRods;
 	}
 }

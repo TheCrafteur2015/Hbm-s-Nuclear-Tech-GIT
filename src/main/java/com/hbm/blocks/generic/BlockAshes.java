@@ -5,8 +5,8 @@ import java.util.Random;
 import com.hbm.items.ModItems;
 import com.hbm.main.MainRegistry;
 import com.hbm.util.ArmorRegistry;
-import com.hbm.util.ArmorUtil;
 import com.hbm.util.ArmorRegistry.HazardClass;
+import com.hbm.util.ArmorUtil;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -30,16 +30,16 @@ public class BlockAshes extends BlockFalling {
 		if(p_149734_5_.nextInt(25) == 0) {
 			
 			if(ArmorUtil.checkArmorPiece(MainRegistry.proxy.me(), ModItems.ashglasses, 3)) {
-				if(ashes < 256 * 0.25) {
-					ashes++;
+				if(BlockAshes.ashes < 256 * 0.25) {
+					BlockAshes.ashes++;
 				}
 			} else if(ArmorRegistry.hasAnyProtection(MainRegistry.proxy.me(), 3, HazardClass.SAND, HazardClass.LIGHT)) {
-				if(ashes < 256 * 0.75) {
-					ashes++;
+				if(BlockAshes.ashes < 256 * 0.75) {
+					BlockAshes.ashes++;
 				}
 			} else {
-				if(ashes < 256 * 0.95) {
-					ashes++;
+				if(BlockAshes.ashes < 256 * 0.95) {
+					BlockAshes.ashes++;
 				}
 			}
 		}

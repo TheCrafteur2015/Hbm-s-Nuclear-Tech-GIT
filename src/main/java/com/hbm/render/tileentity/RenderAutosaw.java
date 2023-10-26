@@ -76,10 +76,12 @@ public class RenderAutosaw extends TileEntitySpecialRenderer implements IItemRen
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase( ) {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(0, -3.5, -3);
 				GL11.glScaled(5, 5, 5);
 			}
+			@Override
 			public void renderCommonWithStack(ItemStack item) {
 				GL11.glScaled(0.5, 0.5, 0.5);
 				GL11.glRotatef(-90, 0F, 1F, 0F);

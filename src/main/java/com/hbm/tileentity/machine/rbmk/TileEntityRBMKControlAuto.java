@@ -31,13 +31,13 @@ public class TileEntityRBMKControlAuto extends TileEntityRBMKControl implements 
 
 	@Override
 	public boolean hasPermission(EntityPlayer player) {
-		return Vec3.createVectorHelper(xCoord - player.posX, yCoord - player.posY, zCoord - player.posZ).lengthVector() < 20;
+		return Vec3.createVectorHelper(this.xCoord - player.posX, this.yCoord - player.posY, this.zCoord - player.posZ).lengthVector() < 20;
 	}
 	
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			double fauxLevel = 0;
 
@@ -96,13 +96,13 @@ public class TileEntityRBMKControlAuto extends TileEntityRBMKControl implements 
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 
-		nbt.setDouble("levelLower", levelLower);
-		nbt.setDouble("levelUpper", levelUpper);
-		nbt.setDouble("heatLower", heatLower);
-		nbt.setDouble("heatUpper", heatUpper);
+		nbt.setDouble("levelLower", this.levelLower);
+		nbt.setDouble("levelUpper", this.levelUpper);
+		nbt.setDouble("heatLower", this.heatLower);
+		nbt.setDouble("heatUpper", this.heatUpper);
 		
-		if(function != null)
-			nbt.setInteger("function", function.ordinal());
+		if(this.function != null)
+			nbt.setInteger("function", this.function.ordinal());
 	}
 
 	@Override
@@ -120,7 +120,7 @@ public class TileEntityRBMKControlAuto extends TileEntityRBMKControl implements 
 			this.heatUpper = data.getDouble("heatUpper");
 		}
 		
-		this.markDirty();
+		markDirty();
 	}
 	
 	public static enum RBMKFunction {

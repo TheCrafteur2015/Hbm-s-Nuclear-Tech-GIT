@@ -35,9 +35,10 @@ public class EntityAIMaskmanCasualApproach extends EntityAIBase {
 		this.worldObj = owner.worldObj;
 		this.speedTowardsTarget = speed;
 		this.longMemory = longMemory;
-		this.setMutexBits(3);
+		setMutexBits(3);
 	}
 	
+	@Override
 	public boolean shouldExecute() {
 		EntityLivingBase entitylivingbase = this.attacker.getAttackTarget();
 
@@ -66,6 +67,7 @@ public class EntityAIMaskmanCasualApproach extends EntityAIBase {
 	}
 
 	
+	@Override
 	public boolean continueExecuting() {
 		
 		EntityLivingBase entitylivingbase = this.attacker.getAttackTarget();
@@ -77,23 +79,27 @@ public class EntityAIMaskmanCasualApproach extends EntityAIBase {
 	}
 
 	
+	@Override
 	public void startExecuting() {
 		this.attacker.getNavigator().setPath(this.entityPathEntity, this.speedTowardsTarget);
 		this.pathTimer = 0;
 	}
 
 	
+	@Override
 	public void resetTask() {
 		this.attacker.getNavigator().clearPathEntity();
 	}
 
 	
+	@Override
 	public void updateTask() {
 		
 		EntityLivingBase entitylivingbase = this.attacker.getAttackTarget();
 		this.attacker.getLookHelper().setLookPositionWithEntity(entitylivingbase, 30.0F, 30.0F);
 		double d0 = this.attacker.getDistanceSq(entitylivingbase.posX, entitylivingbase.boundingBox.minY, entitylivingbase.posZ);
-		double d1 = (double) (this.attacker.width * 2.0F * this.attacker.width * 2.0F + entitylivingbase.width);
+		@SuppressWarnings("unused")
+		double d1 = this.attacker.width * 2.0F * this.attacker.width * 2.0F + entitylivingbase.width;
 		
 		this.pathTimer--;
 
@@ -105,20 +111,20 @@ public class EntityAIMaskmanCasualApproach extends EntityAIBase {
 			this.lastX = entitylivingbase.posX;
 			this.lastY = entitylivingbase.boundingBox.minY;
 			this.lastZ = entitylivingbase.posZ;
-			this.pathTimer = failedPathFindingPenalty + 4 + this.attacker.getRNG().nextInt(7);
+			this.pathTimer = this.failedPathFindingPenalty + 4 + this.attacker.getRNG().nextInt(7);
 
 			if(this.attacker.getNavigator().getPath() != null) {
 				
 				PathPoint finalPathPoint = this.attacker.getNavigator().getPath().getFinalPathPoint();
 				if(finalPathPoint != null && entitylivingbase.getDistanceSq(finalPathPoint.xCoord, finalPathPoint.yCoord, finalPathPoint.zCoord) < 1) {
-					failedPathFindingPenalty = 0;
+					this.failedPathFindingPenalty = 0;
 					
 				} else {
-					failedPathFindingPenalty += 10;
+					this.failedPathFindingPenalty += 10;
 				}
 				
 			} else {
-				failedPathFindingPenalty += 10;
+				this.failedPathFindingPenalty += 10;
 			}
 
 			if(d0 > 1024.0D) {
@@ -128,7 +134,7 @@ public class EntityAIMaskmanCasualApproach extends EntityAIBase {
 			}
 
 			double[] pos = getApproachPos();
-			if(!this.attacker.getNavigator().tryMoveToXYZ(pos[0], pos[1], pos[2], speedTowardsTarget)) {
+			if(!this.attacker.getNavigator().tryMoveToXYZ(pos[0], pos[1], pos[2], this.speedTowardsTarget)) {
 				this.pathTimer += 15;
 			}
 		}

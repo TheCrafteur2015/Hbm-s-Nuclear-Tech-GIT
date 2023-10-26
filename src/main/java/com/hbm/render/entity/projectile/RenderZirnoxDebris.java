@@ -33,9 +33,9 @@ public class RenderZirnoxDebris extends Render {
 		GL11.glDisable(GL11.GL_CULL_FACE);
 		switch(type) {
 		case BLANK: bindTexture(ResourceManager.zirnox_tex); ResourceManager.deb_zirnox_blank.renderAll(); break;
-		case ELEMENT: bindTexture(tex_rod); ResourceManager.deb_zirnox_element.renderAll(); break;
+		case ELEMENT: bindTexture(RenderZirnoxDebris.tex_rod); ResourceManager.deb_zirnox_element.renderAll(); break;
 		case SHRAPNEL: bindTexture(ResourceManager.zirnox_tex); ResourceManager.deb_zirnox_shrapnel.renderAll(); break;
-		case GRAPHITE: bindTexture(tex_graphite); ResourceManager.deb_graphite.renderAll(); break;
+		case GRAPHITE: bindTexture(RenderZirnoxDebris.tex_graphite); ResourceManager.deb_graphite.renderAll(); break;
 		case CONCRETE: bindTexture(ResourceManager.zirnox_destroyed_tex); ResourceManager.deb_zirnox_concrete.renderAll(); break;
 		case EXCHANGER: bindTexture(ResourceManager.zirnox_tex); ResourceManager.deb_zirnox_exchanger.renderAll(); break;
 		default: break;
@@ -47,6 +47,6 @@ public class RenderZirnoxDebris extends Render {
 
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity) {
-		return tex_graphite;
+		return RenderZirnoxDebris.tex_graphite;
 	}
 }

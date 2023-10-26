@@ -42,10 +42,7 @@ public class RBMKFuelCraftingHandler implements IRecipe {
 			
 			ItemRBMKRod rod = (ItemRBMKRod)stack.getItem();
 			
-			if(rod.pellet == null)
-				return null;
-			
-			if(ItemRBMKRod.getEnrichment(stack) > 0.99D)
+			if((rod.pellet == null) || (ItemRBMKRod.getEnrichment(stack) > 0.99D))
 				return null;
 			
 			if(ItemRBMKRod.getHullHeat(stack) < 50 && ItemRBMKRod.getCoreHeat(stack) < 50) {

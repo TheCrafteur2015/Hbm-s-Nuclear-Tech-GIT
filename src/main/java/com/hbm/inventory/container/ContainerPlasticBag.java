@@ -17,16 +17,16 @@ public class ContainerPlasticBag extends Container {
 		this.bag = bag;
 		this.bag.openInventory();
 
-		this.addSlotToContainer(new Slot(bag, 0, 80, 65));
+		addSlotToContainer(new Slot(bag, 0, 80, 65));
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 134 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 134 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 192));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 192));
 		}
 	}
 
@@ -39,11 +39,11 @@ public class ContainerPlasticBag extends Container {
 			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 
-			if(par2 <= bag.getSizeInventory() - 1) {
-				if(!InventoryUtil.mergeItemStack(this.inventorySlots, var5, bag.getSizeInventory(), this.inventorySlots.size(), true)) {
+			if(par2 <= this.bag.getSizeInventory() - 1) {
+				if(!InventoryUtil.mergeItemStack(this.inventorySlots, var5, this.bag.getSizeInventory(), this.inventorySlots.size(), true)) {
 					return null;
 				}
-			} else if(!InventoryUtil.mergeItemStack(this.inventorySlots, var5, 0, bag.getSizeInventory(), false)) {
+			} else if(!InventoryUtil.mergeItemStack(this.inventorySlots, var5, 0, this.bag.getSizeInventory(), false)) {
 				return null;
 			}
 
@@ -62,14 +62,13 @@ public class ContainerPlasticBag extends Container {
 	@Override
 	public ItemStack slotClick(int index, int button, int mode, EntityPlayer player) {
 		// prevents the player from moving around the currently open box
-		if(mode == 2 && button == player.inventory.currentItem) return null;
-		if(index == player.inventory.currentItem + 28) return null;
+		if((mode == 2 && button == player.inventory.currentItem) || (index == player.inventory.currentItem + 28)) return null;
 		return super.slotClick(index, button, mode, player);
 	}
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return bag.isUseableByPlayer(player);
+		return this.bag.isUseableByPlayer(player);
 	}
 	
 	@Override

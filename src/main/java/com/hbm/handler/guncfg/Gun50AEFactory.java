@@ -4,8 +4,8 @@ import com.hbm.handler.BulletConfiguration;
 import com.hbm.handler.CasingEjector;
 import com.hbm.handler.GunConfiguration;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
-import com.hbm.items.ModItems;
 import com.hbm.items.ItemAmmoEnums.Ammo50AE;
+import com.hbm.items.ModItems;
 import com.hbm.lib.HbmCollection;
 import com.hbm.lib.HbmCollection.EnumGunManufacturer;
 import com.hbm.particle.SpentCasing;
@@ -45,7 +45,7 @@ public class Gun50AEFactory {
 	
 	public static GunConfiguration getDeagleConfig() {
 		
-		GunConfiguration config = getBaseConfig();
+		GunConfiguration config = Gun50AEFactory.getBaseConfig();
 		
 		config.durability = 2500;
 		
@@ -58,7 +58,7 @@ public class Gun50AEFactory {
 		config.hasSights = true;
 		config.config = HbmCollection.ae50;
 		
-		config.ejector = EJECTOR_PISTOL;
+		config.ejector = Gun50AEFactory.EJECTOR_PISTOL;
 		
 		return config;
 	}
@@ -69,11 +69,11 @@ public class Gun50AEFactory {
 		BulletConfiguration bullet = BulletConfigFactory.standardPistolConfig();
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_50ae.stackFromEnum(Ammo50AE.STOCK));
-		bullet.spread *= inaccuracy;
+		bullet.spread *= Gun50AEFactory.inaccuracy;
 		bullet.dmgMin = 28;
 		bullet.dmgMax = 32;
 		
-		bullet.spentCasing = CASING50AE.clone().register("50AEStock");
+		bullet.spentCasing = Gun50AEFactory.CASING50AE.clone().register("50AEStock");
 		
 		return bullet;
 	}
@@ -83,13 +83,13 @@ public class Gun50AEFactory {
 		BulletConfiguration bullet = BulletConfigFactory.standardPistolConfig();
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_50ae.stackFromEnum(Ammo50AE.AP));
-		bullet.spread *= inaccuracy;
+		bullet.spread *= Gun50AEFactory.inaccuracy;
 		bullet.dmgMin = 30;
 		bullet.dmgMax = 36;
 		bullet.leadChance = 10;
 		bullet.wear = 15;
 		
-		bullet.spentCasing = CASING50AE.clone().register("50AEAP");
+		bullet.spentCasing = Gun50AEFactory.CASING50AE.clone().register("50AEAP");
 		
 		return bullet;
 	}
@@ -99,13 +99,13 @@ public class Gun50AEFactory {
 		BulletConfiguration bullet = BulletConfigFactory.standardPistolConfig();
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_50ae.stackFromEnum(Ammo50AE.DU));
-		bullet.spread *= inaccuracy;
+		bullet.spread *= Gun50AEFactory.inaccuracy;
 		bullet.dmgMin = 38;
 		bullet.dmgMax = 46;
 		bullet.leadChance = 50;
 		bullet.wear = 25;
 		
-		bullet.spentCasing = CASING50AE.clone().register("50AEDU");
+		bullet.spentCasing = Gun50AEFactory.CASING50AE.clone().register("50AEDU");
 		
 		return bullet;
 	}
@@ -115,13 +115,13 @@ public class Gun50AEFactory {
 		BulletConfiguration bullet = BulletConfigFactory.standardPistolConfig();
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_50ae.stackFromEnum(Ammo50AE.STAR));
-		bullet.spread *= inaccuracy;
+		bullet.spread *= Gun50AEFactory.inaccuracy;
 		bullet.dmgMin = 52;
 		bullet.dmgMax = 60;
 		bullet.leadChance = 100;
 		bullet.wear = 25;
 		
-		bullet.spentCasing = CASING50AE.clone().register("50AEStar");
+		bullet.spentCasing = Gun50AEFactory.CASING50AE.clone().register("50AEStar");
 		
 		return bullet;
 	}

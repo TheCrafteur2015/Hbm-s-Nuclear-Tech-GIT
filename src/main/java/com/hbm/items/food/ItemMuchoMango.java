@@ -17,7 +17,7 @@ public class ItemMuchoMango extends ItemFood {
 
 	public ItemMuchoMango(int hunger) {
 		super(hunger, true);
-		this.setAlwaysEdible();
+		setAlwaysEdible();
 	}
 
 	Random rand = new Random();
@@ -36,6 +36,7 @@ public class ItemMuchoMango extends ItemFood {
 		}
 	}
 
+	@Override
 	public int getMaxItemUseDuration(ItemStack p_77626_1_) {
 		return 200;
 	}
@@ -47,7 +48,7 @@ public class ItemMuchoMango extends ItemFood {
 
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-		player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
+		player.setItemInUse(stack, getMaxItemUseDuration(stack));
 
 		return stack;
 	}

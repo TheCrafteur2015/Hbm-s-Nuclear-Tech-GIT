@@ -19,8 +19,8 @@ import net.minecraft.item.ItemStack;
 
 public class CrucibleCastingHandler extends TemplateRecipeHandler {
 	
-	public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<RecipeTransferRect>();
-	public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<Class<? extends GuiContainer>>();
+	public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<>();
+	public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<>();
 	
 	public class RecipeSet extends TemplateRecipeHandler.CachedRecipe {
 
@@ -40,22 +40,22 @@ public class CrucibleCastingHandler extends TemplateRecipeHandler {
 
 		@Override
 		public List<PositionedStack> getIngredients() {
-			return getCycledIngredients(cycleticks / 20, Arrays.asList(input, mold, basin));
+			return getCycledIngredients(CrucibleCastingHandler.this.cycleticks / 20, Arrays.asList(this.input, this.mold, this.basin));
 		}
 
 		@Override
 		public PositionedStack getResult() {
-			return output;
+			return this.output;
 		}
 
 		@Override
 		public List<PositionedStack> getOtherStacks() {
-			List<PositionedStack> other = new ArrayList();
-			other.add(input);
-			other.add(mold);
-			other.add(basin);
-			other.add(output);
-			return getCycledIngredients(cycleticks / 20, other);
+			List<PositionedStack> other = new ArrayList<>();
+			other.add(this.input);
+			other.add(this.mold);
+			other.add(this.basin);
+			other.add(this.output);
+			return getCycledIngredients(CrucibleCastingHandler.this.cycleticks / 20, other);
 		}
 	}
 
@@ -118,7 +118,7 @@ public class CrucibleCastingHandler extends TemplateRecipeHandler {
 	
 	@Override
 	public void loadTransferRects() {
-		transferRects.add(new RecipeTransferRect(new Rectangle(65, 23, 36, 18), "ntmCrucibleFoundry"));
-		RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), transferRects);
+		this.transferRects.add(new RecipeTransferRect(new Rectangle(65, 23, 36, 18), "ntmCrucibleFoundry"));
+		RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), this.transferRects);
 	}
 }

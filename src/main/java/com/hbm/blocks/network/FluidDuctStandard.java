@@ -43,13 +43,13 @@ public class FluidDuctStandard extends FluidDuctBase implements IBlockMulti, ILo
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		super.registerBlockIcons(iconRegister);
-		icon = new IIcon[3];
-		overlay = new IIcon[3];
+		this.icon = new IIcon[3];
+		this.overlay = new IIcon[3];
 
-		this.icon[0] = iconRegister.registerIcon(this.getTextureName());
+		this.icon[0] = iconRegister.registerIcon(getTextureName());
 		this.icon[1] = iconRegister.registerIcon(RefStrings.MODID + ":pipe_silver");
 		this.icon[2] = iconRegister.registerIcon(RefStrings.MODID + ":pipe_colored");
-		this.overlay[0] = iconRegister.registerIcon(this.getTextureName() + "_overlay");
+		this.overlay[0] = iconRegister.registerIcon(getTextureName() + "_overlay");
 		this.overlay[1] = iconRegister.registerIcon(RefStrings.MODID + ":pipe_silver_overlay");
 		this.overlay[2] = iconRegister.registerIcon(RefStrings.MODID + ":pipe_colored_overlay");
 	}
@@ -60,6 +60,8 @@ public class FluidDuctStandard extends FluidDuctBase implements IBlockMulti, ILo
 		return side == 0 ? this.icon[rectify(metadata)] : this.overlay[rectify(metadata)];
 	}
 	
+	@SuppressWarnings("unchecked")
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 		for(int i = 0; i < 3; ++i) {
@@ -67,6 +69,7 @@ public class FluidDuctStandard extends FluidDuctBase implements IBlockMulti, ILo
 		}
 	}
 	
+	@Override
 	public int damageDropped(int meta) {
 		return rectify(meta);
 	}
@@ -91,10 +94,11 @@ public class FluidDuctStandard extends FluidDuctBase implements IBlockMulti, ILo
 		return 3;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB entityBounding, List list, Entity entity) {
 		
-		List<AxisAlignedBB> bbs = new ArrayList();
+		List<AxisAlignedBB> bbs = new ArrayList<>();
 
 		TileEntity te = world.getTileEntity(x, y, z);
 		if(te instanceof TileEntityPipeBaseNT) {
@@ -166,16 +170,16 @@ public class FluidDuctStandard extends FluidDuctBase implements IBlockMulti, ILo
 			int mask = 0 + (pX ? 32 : 0) + (nX ? 16 : 0) + (pY ? 8 : 0) + (nY ? 4 : 0) + (pZ ? 2 : 0) + (nZ ? 1 : 0);
 			
 			if(mask == 0) {
-				this.setBlockBounds(0F, 0F, 0F, 1F, 1F, 1F);
+				setBlockBounds(0F, 0F, 0F, 1F, 1F, 1F);
 			} else if(mask == 0b100000 || mask == 0b010000 || mask == 0b110000) {
-				this.setBlockBounds(0F, 0.3125F, 0.3125F, 1F, 0.6875F, 0.6875F);
+				setBlockBounds(0F, 0.3125F, 0.3125F, 1F, 0.6875F, 0.6875F);
 			} else if(mask == 0b001000 || mask == 0b000100 || mask == 0b001100) {
-				this.setBlockBounds(0.3125F, 0F, 0.3125F, 0.6875F, 1F, 0.6875F);
+				setBlockBounds(0.3125F, 0F, 0.3125F, 0.6875F, 1F, 0.6875F);
 			} else if(mask == 0b000010 || mask == 0b000001 || mask == 0b000011) {
-				this.setBlockBounds(0.3125F, 0.3125F, 0F, 0.6875F, 0.6875F, 1F);
+				setBlockBounds(0.3125F, 0.3125F, 0F, 0.6875F, 0.6875F, 1F);
 			} else {
 				
-				this.setBlockBounds(
+				setBlockBounds(
 						nX ? 0F : 0.3125F,
 						nY ? 0F : 0.3125F,
 						nZ ? 0F : 0.3125F,
@@ -200,7 +204,7 @@ public class FluidDuctStandard extends FluidDuctBase implements IBlockMulti, ILo
 		
 		TileEntityPipeBaseNT duct = (TileEntityPipeBaseNT) te;
 		
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		text.add("&[" + duct.getType().getColor() + "&]" + duct.getType().getLocalizedName());
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}

@@ -32,14 +32,16 @@ public class RenderQuacc extends RenderChicken {
     /**
      *  BOW
      */
-    protected ResourceLocation getEntityTexture(EntityChicken DUCC) {
-        return ducc;
+    @Override
+	protected ResourceLocation getEntityTexture(EntityChicken DUCC) {
+        return RenderQuacc.ducc;
     }
     
     /**
      *  BOW
      */
-    protected void preRenderCallback(EntityLivingBase DUCC, float f0) {
+    @Override
+	protected void preRenderCallback(EntityLivingBase DUCC, float f0) {
     	
         BossStatus.setBossStatus((IBossDisplayData) DUCC, false);
         

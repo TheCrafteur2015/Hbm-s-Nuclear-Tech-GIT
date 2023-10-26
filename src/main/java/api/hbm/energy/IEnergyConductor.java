@@ -22,11 +22,11 @@ public interface IEnergyConductor extends IEnergyConnector {
 	 * @return
 	 */
 	public default int getIdentity() {
-		return getIdentityFromTile((TileEntity) this);
+		return IEnergyConductor.getIdentityFromTile((TileEntity) this);
 	}
 	
 	public static int getIdentityFromTile(TileEntity te) {
-		return getIdentityFromPos(te.xCoord, te.yCoord, te.zCoord);
+		return IEnergyConductor.getIdentityFromPos(te.xCoord, te.yCoord, te.zCoord);
 	}
 	
 	public static int getIdentityFromPos(int x, int y, int z) {
@@ -70,16 +70,16 @@ public interface IEnergyConductor extends IEnergyConnector {
 				}
 			}
 			
-			if(neighbor != null && this.canReevaluate() && neighbor.canReevaluate()) {
+			if(neighbor != null && canReevaluate() && neighbor.canReevaluate()) {
 				
 				if(neighbor.getPowerNet() != null) {
 					
 					//neighbor net and no self net
-					if(this.getPowerNet() == null) {
+					if(getPowerNet() == null) {
 						neighbor.getPowerNet().joinLink(this);
 					//neighbor net and self net
 					} else {
-						this.getPowerNet().joinNetworks(neighbor.getPowerNet());
+						getPowerNet().joinNetworks(neighbor.getPowerNet());
 					}
 					
 				//bidirectional re-eval, experimental and technically optional, only useful as a fallback
@@ -108,7 +108,7 @@ public interface IEnergyConductor extends IEnergyConnector {
 	 */
 	public default List<int[]> getConnectionPoints() {
 
-		List<int[]> pos = new ArrayList();
+		List<int[]> pos = new ArrayList<>();
 		TileEntity tile = (TileEntity) this;
 		
 		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
@@ -136,10 +136,10 @@ public interface IEnergyConductor extends IEnergyConnector {
 	@Override
 	public default long transferPower(long power) {
 		
-		if(this.getPowerNet() == null)
+		if(getPowerNet() == null)
 			return power;
 		
-		return this.getPowerNet().transferPower(power);
+		return getPowerNet().transferPower(power);
 	}
 	
 	/**
@@ -155,6 +155,6 @@ public interface IEnergyConductor extends IEnergyConnector {
 	 * @return
 	 */
 	public default List<Integer> getProxies() {
-		return new ArrayList();
+		return new ArrayList<>();
 	}
 }

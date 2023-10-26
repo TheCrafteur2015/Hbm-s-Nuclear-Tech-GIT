@@ -31,24 +31,25 @@ public class GUIReactorControl extends GuiInfoContainer {
 
 	public GUIReactorControl(InventoryPlayer invPlayer, TileEntityReactorControl tedf) {
 		super(new ContainerReactorControl(invPlayer, tedf));
-		control = tedf;
-		displays[0] = new NumberDisplay(this, 6, 20, 0x08FF00).setDigitLength(3);
-		displays[1] = new NumberDisplay(this, 66, 20, 0x08FF00).setDigitLength(4);
-		displays[2] = new NumberDisplay(this, 126, 20, 0x08FF00).setDigitLength(3);
+		this.control = tedf;
+		this.displays[0] = new NumberDisplay(this, 6, 20, 0x08FF00).setDigitLength(3);
+		this.displays[1] = new NumberDisplay(this, 66, 20, 0x08FF00).setDigitLength(4);
+		this.displays[2] = new NumberDisplay(this, 126, 20, 0x08FF00).setDigitLength(3);
 
-		fields = new GuiTextField[4];
+		this.fields = new GuiTextField[4];
 
 		this.xSize = 176;
 		this.ySize = 166;
 	}
 
+	@Override
 	public void initGui() {
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
 
 		// rod extraction fields
 		for(byte i = 0; i < 2; i++) {
-			this.fields[i] = new GuiTextField(this.fontRendererObj, guiLeft + 35 + 30 * i, guiTop + 38, 26, 7);
+			this.fields[i] = new GuiTextField(this.fontRendererObj, this.guiLeft + 35 + 30 * i, this.guiTop + 38, 26, 7);
 			this.fields[i].setTextColor(0x08FF00);
 			this.fields[i].setDisabledTextColour(-1);
 			this.fields[i].setEnableBackgroundDrawing(false);
@@ -58,7 +59,7 @@ public class GUIReactorControl extends GuiInfoContainer {
 
 		// heat fields
 		for(byte i = 0; i < 2; i++) {
-			this.fields[i + 2] = new GuiTextField(this.fontRendererObj, guiLeft + 35 + 30 * i, guiTop + 49, 26, 7);
+			this.fields[i + 2] = new GuiTextField(this.fontRendererObj, this.guiLeft + 35 + 30 * i, this.guiTop + 49, 26, 7);
 			this.fields[i + 2].setTextColor(0x08FF00);
 			this.fields[i + 2].setDisabledTextColour(-1);
 			this.fields[i + 2].setEnableBackgroundDrawing(false);
@@ -66,10 +67,10 @@ public class GUIReactorControl extends GuiInfoContainer {
 			this.fields[i + 2].setMaxStringLength(4);
 		}
 
-		this.fields[0].setText(String.valueOf((int) control.levelUpper));
-		this.fields[1].setText(String.valueOf((int) control.levelLower));
-		this.fields[2].setText(String.valueOf((int) control.heatUpper / 50));
-		this.fields[3].setText(String.valueOf((int) control.heatLower / 50));
+		this.fields[0].setText(String.valueOf((int) this.control.levelUpper));
+		this.fields[1].setText(String.valueOf((int) this.control.levelLower));
+		this.fields[2].setText(String.valueOf((int) this.control.heatUpper / 50));
+		this.fields[3].setText(String.valueOf((int) this.control.heatLower / 50));
 	}
 
 	@Override
@@ -77,6 +78,7 @@ public class GUIReactorControl extends GuiInfoContainer {
 		super.drawScreen(mouseX, mouseY, f);
 	}
 
+	@Override
 	protected void mouseClicked(int x, int y, int i) {
 		super.mouseClicked(x, y, i);
 
@@ -84,9 +86,9 @@ public class GUIReactorControl extends GuiInfoContainer {
 			this.fields[j].mouseClicked(x, y, i);
 		}
 
-		if(guiLeft + 33 <= x && guiLeft + 33 + 58 > x && guiTop + 59 < y && guiTop + 59 + 10 >= y) {
+		if(this.guiLeft + 33 <= x && this.guiLeft + 33 + 58 > x && this.guiTop + 59 < y && this.guiTop + 59 + 10 >= y) {
 
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 			NBTTagCompound data = new NBTTagCompound();
 
 			double[] vals = new double[] { 0D, 0D, 0D, 0D };
@@ -96,12 +98,12 @@ public class GUIReactorControl extends GuiInfoContainer {
 				double clamp = k < 2 ? 100 : 1000;
 				int mod = k < 2 ? 1 : 50;
 
-				if(NumberUtils.isDigits(fields[k].getText())) {
-					int j = (int) MathHelper.clamp_double(Double.parseDouble(fields[k].getText()), 0, clamp);
-					fields[k].setText(j + "");
+				if(NumberUtils.isDigits(this.fields[k].getText())) {
+					int j = (int) MathHelper.clamp_double(Double.parseDouble(this.fields[k].getText()), 0, clamp);
+					this.fields[k].setText(j + "");
 					vals[k] = j * mod;
 				} else {
-					fields[k].setText("0");
+					this.fields[k].setText("0");
 				}
 			}
 
@@ -110,16 +112,16 @@ public class GUIReactorControl extends GuiInfoContainer {
 			data.setDouble("heatUpper", vals[2]);
 			data.setDouble("heatLower", vals[3]);
 
-			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, control.xCoord, control.yCoord, control.zCoord));
+			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, this.control.xCoord, this.control.yCoord, this.control.zCoord));
 		}
 
 		for(int k = 0; k < 3; k++) {
-			if(guiLeft + 7 <= x && guiLeft + 7 + 22 > x && guiTop + 37 + k * 11 < y && guiTop + 37 + 10 + k * 11 >= y) {
+			if(this.guiLeft + 7 <= x && this.guiLeft + 7 + 22 > x && this.guiTop + 37 + k * 11 < y && this.guiTop + 37 + 10 + k * 11 >= y) {
 
-				mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+				this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 				NBTTagCompound data = new NBTTagCompound();
 				data.setInteger("function", k);
-				PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, control.xCoord, control.yCoord, control.zCoord));
+				PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, this.control.xCoord, this.control.yCoord, this.control.zCoord));
 			}
 		}
 	}
@@ -135,8 +137,8 @@ public class GUIReactorControl extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIReactorControl.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
 		GL11.glPushMatrix();
 		Tessellator tess = Tessellator.instance;
@@ -146,7 +148,7 @@ public class GUIReactorControl extends GuiInfoContainer {
 		tess.setColorOpaque_I(0x08FF00);
 
 		for(int i = 0; i < 40; i++) {
-			tess.addVertex(guiLeft + 128 + i, guiTop + 39 + MathHelper.clamp_double(control.getTargetLevel(control.function, i * 1250) / 100 * 28, 0, 28), this.zLevel);
+			tess.addVertex(this.guiLeft + 128 + i, this.guiTop + 39 + MathHelper.clamp_double(this.control.getTargetLevel(this.control.function, i * 1250) / 100 * 28, 0, 28), this.zLevel);
 		}
 
 		tess.draw();
@@ -154,7 +156,7 @@ public class GUIReactorControl extends GuiInfoContainer {
 		GL11.glPopMatrix();
 		
 		for(byte i = 0; i < 3; i++)
-			displays[i].drawNumber(control.getDisplayData()[i]);
+			this.displays[i].drawNumber(this.control.getDisplayData()[i]);
 
 		for(int i = 0; i < 4; i++)
 			this.fields[i].drawTextBox();

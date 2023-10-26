@@ -16,7 +16,7 @@ public class ItemRenderBigSword implements IItemRenderer {
 	protected ModelBigSword bigSwordModel;
 	
 	public ItemRenderBigSword() {
-		bigSwordModel = new ModelBigSword();
+		this.bigSwordModel = new ModelBigSword();
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class ItemRenderBigSword implements IItemRenderer {
 				GL11.glRotatef(-135.0F, 0.0F, 0.0F, 1.0F);
 				GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
 				GL11.glTranslatef(0.0F, 0.4F, -0.7F);
-				bigSwordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+				this.bigSwordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			GL11.glPopMatrix();
 		default: break;
 		}

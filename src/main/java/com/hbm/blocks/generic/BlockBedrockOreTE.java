@@ -37,9 +37,9 @@ public class BlockBedrockOreTE extends BlockContainer implements ILookOverlay, I
 
 	public BlockBedrockOreTE() {
 		super(Material.rock);
-		this.setBlockTextureName("bedrock");
-		this.setBlockUnbreakable();
-		this.setResistance(1_000_000);
+		setBlockTextureName("bedrock");
+		setBlockUnbreakable();
+		setResistance(1_000_000);
 	}
 
 	@Override
@@ -75,8 +75,8 @@ public class BlockBedrockOreTE extends BlockContainer implements ILookOverlay, I
 	public void registerBlockIcons(IIconRegister reg) {
 		
 		this.blockIcon = reg.registerIcon("bedrock");
-		for(int i = 0; i < overlays.length; i++) {
-			overlays[i] = reg.registerIcon(RefStrings.MODID + ":ore_random_" + (i + 1));
+		for(int i = 0; i < this.overlays.length; i++) {
+			this.overlays[i] = reg.registerIcon(RefStrings.MODID + ":ore_random_" + (i + 1));
 		}
 	}
 	
@@ -91,8 +91,8 @@ public class BlockBedrockOreTE extends BlockContainer implements ILookOverlay, I
 		
 		if(te instanceof TileEntityBedrockOre) {
 			TileEntityBedrockOre ore = (TileEntityBedrockOre) te;
-			int index = ore.shape % overlays.length;
-			return overlays[index];
+			int index = ore.shape % this.overlays.length;
+			return this.overlays[index];
 		}
 
 		return Blocks.bedrock.getIcon(0, 0);
@@ -105,8 +105,8 @@ public class BlockBedrockOreTE extends BlockContainer implements ILookOverlay, I
 		if(RenderBlockMultipass.currentPass == 0)
 			return Blocks.bedrock.getIcon(0, 0);
 		
-		int index = meta % overlays.length;
-		return overlays[index];
+		int index = meta % this.overlays.length;
+		return this.overlays[index];
 	}
 
 	@Override
@@ -136,7 +136,7 @@ public class BlockBedrockOreTE extends BlockContainer implements ILookOverlay, I
 		
 		TileEntityBedrockOre ore = (TileEntityBedrockOre) te;
 
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		
 		if(ore.resource != null) {
 			text.add(ore.resource.getDisplayName());
@@ -212,13 +212,13 @@ public class BlockBedrockOreTE extends BlockContainer implements ILookOverlay, I
 		@Override
 		public Packet getDescriptionPacket() {
 			NBTTagCompound nbt = new NBTTagCompound();
-			this.writeToNBT(nbt);
+			writeToNBT(nbt);
 			return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, nbt);
 		}
 		
 		@Override
 		public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-			this.readFromNBT(pkt.func_148857_g());
+			readFromNBT(pkt.func_148857_g());
 		}
 	}
 }

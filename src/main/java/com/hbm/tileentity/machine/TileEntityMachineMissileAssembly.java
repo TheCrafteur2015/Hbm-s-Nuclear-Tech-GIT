@@ -36,24 +36,24 @@ public class TileEntityMachineMissileAssembly extends TileEntity implements ISid
 	private String customName;
 
 	public TileEntityMachineMissileAssembly() {
-		slots = new ItemStack[6];
+		this.slots = new ItemStack[6];
 	}
 
 	@Override
 	public int getSizeInventory() {
-		return slots.length;
+		return this.slots.length;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		return slots[i];
+		return this.slots[i];
 	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
-		if (slots[i] != null) {
-			ItemStack itemStack = slots[i];
-			slots[i] = null;
+		if (this.slots[i] != null) {
+			ItemStack itemStack = this.slots[i];
+			this.slots[i] = null;
 			return itemStack;
 		} else {
 			return null;
@@ -62,7 +62,7 @@ public class TileEntityMachineMissileAssembly extends TileEntity implements ISid
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemStack) {
-		slots[i] = itemStack;
+		this.slots[i] = itemStack;
 		if (itemStack != null && itemStack.stackSize > getInventoryStackLimit()) {
 			itemStack.stackSize = getInventoryStackLimit();
 		}
@@ -70,7 +70,7 @@ public class TileEntityMachineMissileAssembly extends TileEntity implements ISid
 
 	@Override
 	public String getInventoryName() {
-		return this.hasCustomInventoryName() ? this.customName : "container.missileAssembly";
+		return hasCustomInventoryName() ? this.customName : "container.missileAssembly";
 	}
 
 	@Override
@@ -89,10 +89,10 @@ public class TileEntityMachineMissileAssembly extends TileEntity implements ISid
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		if (worldObj.getTileEntity(xCoord, yCoord, zCoord) != this) {
+		if (this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this) {
 			return false;
 		} else {
-			return player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64;
+			return player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64;
 		}
 	}
 
@@ -112,15 +112,15 @@ public class TileEntityMachineMissileAssembly extends TileEntity implements ISid
 
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		if (slots[i] != null) {
-			if (slots[i].stackSize <= j) {
-				ItemStack itemStack = slots[i];
-				slots[i] = null;
+		if (this.slots[i] != null) {
+			if (this.slots[i].stackSize <= j) {
+				ItemStack itemStack = this.slots[i];
+				this.slots[i] = null;
 				return itemStack;
 			}
-			ItemStack itemStack1 = slots[i].splitStack(j);
-			if (slots[i].stackSize == 0) {
-				slots[i] = null;
+			ItemStack itemStack1 = this.slots[i].splitStack(j);
+			if (this.slots[i].stackSize == 0) {
+				this.slots[i] = null;
 			}
 
 			return itemStack1;
@@ -134,13 +134,13 @@ public class TileEntityMachineMissileAssembly extends TileEntity implements ISid
 		super.readFromNBT(nbt);
 		NBTTagList list = nbt.getTagList("items", 10);
 
-		slots = new ItemStack[getSizeInventory()];
+		this.slots = new ItemStack[getSizeInventory()];
 
 		for (int i = 0; i < list.tagCount(); i++) {
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("slot");
-			if (b0 >= 0 && b0 < slots.length) {
-				slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
+			if (b0 >= 0 && b0 < this.slots.length) {
+				this.slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
 			}
 		}
 	}
@@ -151,11 +151,11 @@ public class TileEntityMachineMissileAssembly extends TileEntity implements ISid
 		
 		NBTTagList list = new NBTTagList();
 
-		for (int i = 0; i < slots.length; i++) {
-			if (slots[i] != null) {
+		for (int i = 0; i < this.slots.length; i++) {
+			if (this.slots[i] != null) {
 				NBTTagCompound nbt1 = new NBTTagCompound();
 				nbt1.setByte("slot", (byte) i);
-				slots[i].writeToNBT(nbt1);
+				this.slots[i].writeToNBT(nbt1);
 				list.appendTag(nbt1);
 			}
 		}
@@ -164,12 +164,12 @@ public class TileEntityMachineMissileAssembly extends TileEntity implements ISid
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(int p_94128_1_) {
-		return access;
+		return TileEntityMachineMissileAssembly.access;
 	}
 
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemStack, int j) {
-		return this.isItemValidForSlot(i, itemStack);
+		return isItemValidForSlot(i, itemStack);
 	}
 
 	@Override
@@ -180,19 +180,19 @@ public class TileEntityMachineMissileAssembly extends TileEntity implements ISid
 	@Override
 	public void updateEntity() {
 
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			MissileStruct multipart = new MissileStruct(slots[1], slots[2], slots[3], slots[4]);
+			MissileStruct multipart = new MissileStruct(this.slots[1], this.slots[2], this.slots[3], this.slots[4]);
 			
-			PacketDispatcher.wrapper.sendToAllAround(new TEMissileMultipartPacket(xCoord, yCoord, zCoord, multipart), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 250));
+			PacketDispatcher.wrapper.sendToAllAround(new TEMissileMultipartPacket(this.xCoord, this.yCoord, this.zCoord, multipart), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 250));
 		}
 	}
 	
 	public int fuselageState() {
 		
-		if(slots[2] != null && slots[2].getItem() instanceof ItemMissile) {
+		if(this.slots[2] != null && this.slots[2].getItem() instanceof ItemMissile) {
 			
-			ItemMissile part = (ItemMissile)slots[2].getItem();
+			ItemMissile part = (ItemMissile)this.slots[2].getItem();
 			
 			if(part.type == PartType.FUSELAGE)
 				return 1;
@@ -203,9 +203,9 @@ public class TileEntityMachineMissileAssembly extends TileEntity implements ISid
 
 	public int chipState() {
 		
-		if(slots[0] != null && slots[0].getItem() instanceof ItemMissile) {
+		if(this.slots[0] != null && this.slots[0].getItem() instanceof ItemMissile) {
 			
-			ItemMissile part = (ItemMissile)slots[0].getItem();
+			ItemMissile part = (ItemMissile)this.slots[0].getItem();
 			
 			if(part.type == PartType.CHIP)
 				return 1;
@@ -216,13 +216,13 @@ public class TileEntityMachineMissileAssembly extends TileEntity implements ISid
 
 	public int warheadState() {
 		
-		if(slots[1] != null && slots[1].getItem() instanceof ItemMissile &&
-				slots[2] != null && slots[2].getItem() instanceof ItemMissile &&
-				slots[4] != null && slots[4].getItem() instanceof ItemMissile) {
+		if(this.slots[1] != null && this.slots[1].getItem() instanceof ItemMissile &&
+				this.slots[2] != null && this.slots[2].getItem() instanceof ItemMissile &&
+				this.slots[4] != null && this.slots[4].getItem() instanceof ItemMissile) {
 
-			ItemMissile part = (ItemMissile)slots[1].getItem();
-			ItemMissile fuselage = (ItemMissile)slots[2].getItem();
-			ItemMissile thruster = (ItemMissile)slots[4].getItem();
+			ItemMissile part = (ItemMissile)this.slots[1].getItem();
+			ItemMissile fuselage = (ItemMissile)this.slots[2].getItem();
+			ItemMissile thruster = (ItemMissile)this.slots[4].getItem();
 
 			if(part.type == PartType.WARHEAD && fuselage.type == PartType.FUSELAGE && thruster.type == PartType.THRUSTER) {
 				float weight = (Float)part.attributes[2];
@@ -238,14 +238,14 @@ public class TileEntityMachineMissileAssembly extends TileEntity implements ISid
 
 	public int stabilityState() {
 		
-		if(slots[3] == null)
+		if(this.slots[3] == null)
 			return -1;
 		
-		if(slots[3] != null && slots[3].getItem() instanceof ItemMissile &&
-				slots[2] != null && slots[2].getItem() instanceof ItemMissile) {
+		if(this.slots[3] != null && this.slots[3].getItem() instanceof ItemMissile &&
+				this.slots[2] != null && this.slots[2].getItem() instanceof ItemMissile) {
 
-			ItemMissile part = (ItemMissile)slots[3].getItem();
-			ItemMissile fuselage = (ItemMissile)slots[2].getItem();
+			ItemMissile part = (ItemMissile)this.slots[3].getItem();
+			ItemMissile fuselage = (ItemMissile)this.slots[2].getItem();
 			
 			if(part.top == fuselage.bottom && part.type == PartType.FINS)
 				return 1;
@@ -256,11 +256,11 @@ public class TileEntityMachineMissileAssembly extends TileEntity implements ISid
 
 	public int thrusterState() {
 		
-		if(slots[4] != null && slots[4].getItem() instanceof ItemMissile &&
-				slots[2] != null && slots[2].getItem() instanceof ItemMissile) {
+		if(this.slots[4] != null && this.slots[4].getItem() instanceof ItemMissile &&
+				this.slots[2] != null && this.slots[2].getItem() instanceof ItemMissile) {
 
-			ItemMissile part = (ItemMissile)slots[4].getItem();
-			ItemMissile fuselage = (ItemMissile)slots[2].getItem();
+			ItemMissile part = (ItemMissile)this.slots[4].getItem();
+			ItemMissile fuselage = (ItemMissile)this.slots[2].getItem();
 			
 			if(part.type == PartType.THRUSTER && fuselage.type == PartType.FUSELAGE &&
 					part.top == fuselage.bottom && (FuelType)part.attributes[0] == (FuelType)fuselage.attributes[0]) {
@@ -273,7 +273,7 @@ public class TileEntityMachineMissileAssembly extends TileEntity implements ISid
 	
 	public boolean canBuild() {
 		
-		if(slots[5] == null && chipState() == 1 && warheadState() == 1 && fuselageState() == 1 && thrusterState() == 1) {
+		if(this.slots[5] == null && chipState() == 1 && warheadState() == 1 && fuselageState() == 1 && thrusterState() == 1) {
 			return stabilityState() != 0;
 		}
 		
@@ -285,15 +285,15 @@ public class TileEntityMachineMissileAssembly extends TileEntity implements ISid
 		if(!canBuild())
 			return;
 		
-		slots[5] = ItemCustomMissile.buildMissile(slots[0], slots[1], slots[2], slots[3], slots[4]).copy();
+		this.slots[5] = ItemCustomMissile.buildMissile(this.slots[0], this.slots[1], this.slots[2], this.slots[3], this.slots[4]).copy();
 		
 		if(stabilityState() == 1)
-			slots[3] = null;
+			this.slots[3] = null;
 
-		slots[0] = null;
-		slots[1] = null;
-		slots[2] = null;
-		slots[4] = null;
+		this.slots[0] = null;
+		this.slots[1] = null;
+		this.slots[2] = null;
+		this.slots[4] = null;
 
 		this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:block.missileAssembly2", 1F, 1F);
 	}

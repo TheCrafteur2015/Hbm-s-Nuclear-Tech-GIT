@@ -44,11 +44,13 @@ public class RenderNukeMan extends TileEntitySpecialRenderer implements IItemRen
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase() {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(0, -2, 0);
 				GL11.glScaled(5, 5, 5);
 			}
 
+			@Override
 			public void renderCommon() {
 				GL11.glRotated(180, 0, 1, 0);
 				GL11.glTranslated(-0.75, 0, 0);

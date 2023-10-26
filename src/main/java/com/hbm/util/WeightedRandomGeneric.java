@@ -8,10 +8,10 @@ public class WeightedRandomGeneric<T> extends WeightedRandom.Item {
 
 	public WeightedRandomGeneric(T o, int weight) {
 		super(weight);
-		item = o;
+		this.item = o;
 	}
 	
 	public T get() {
-		return item;
+		return this.item;
 	}
 }

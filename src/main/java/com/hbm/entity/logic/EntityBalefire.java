@@ -21,15 +21,15 @@ public class EntityBalefire extends EntityExplosionChunkloading  {
 
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound nbt) {
-		age = nbt.getInteger("age");
-		destructionRange = nbt.getInteger("destructionRange");
-		speed = nbt.getInteger("speed");
-		did = nbt.getBoolean("did");
-		mute = nbt.getBoolean("mute");
+		this.age = nbt.getInteger("age");
+		this.destructionRange = nbt.getInteger("destructionRange");
+		this.speed = nbt.getInteger("speed");
+		this.did = nbt.getBoolean("did");
+		this.mute = nbt.getBoolean("mute");
 		
     	
-		exp = new ExplosionBalefire((int)this.posX, (int)this.posY, (int)this.posZ, this.worldObj, this.destructionRange);
-		exp.readFromNbt(nbt, "exp_");
+		this.exp = new ExplosionBalefire((int)this.posX, (int)this.posY, (int)this.posZ, this.worldObj, this.destructionRange);
+		this.exp.readFromNbt(nbt, "exp_");
     	
     	this.did = true;
 		
@@ -37,14 +37,14 @@ public class EntityBalefire extends EntityExplosionChunkloading  {
 
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound nbt) {
-		nbt.setInteger("age", age);
-		nbt.setInteger("destructionRange", destructionRange);
-		nbt.setInteger("speed", speed);
-		nbt.setBoolean("did", did);
-		nbt.setBoolean("mute", mute);
+		nbt.setInteger("age", this.age);
+		nbt.setInteger("destructionRange", this.destructionRange);
+		nbt.setInteger("speed", this.speed);
+		nbt.setBoolean("did", this.did);
+		nbt.setBoolean("mute", this.mute);
     	
-		if(exp != null)
-			exp.saveToNbt(nbt, "exp_");
+		if(this.exp != null)
+			this.exp.saveToNbt(nbt, "exp_");
 		
 	}
 
@@ -56,41 +56,41 @@ public class EntityBalefire extends EntityExplosionChunkloading  {
 	public void onUpdate() {
 		super.onUpdate();
 
-		if(!worldObj.isRemote) loadChunk((int) Math.floor(posX / 16D), (int) Math.floor(posZ / 16D));
+		if(!this.worldObj.isRemote) loadChunk((int) Math.floor(this.posX / 16D), (int) Math.floor(this.posZ / 16D));
 
 		if(!this.did) {
-			if(GeneralConfig.enableExtendedLogging && !worldObj.isRemote)
-				MainRegistry.logger.log(Level.INFO, "[NUKE] Initialized BF explosion at " + posX + " / " + posY + " / " + posZ + " with strength " + destructionRange + "!");
+			if(GeneralConfig.enableExtendedLogging && !this.worldObj.isRemote)
+				MainRegistry.logger.log(Level.INFO, "[NUKE] Initialized BF explosion at " + this.posX + " / " + this.posY + " / " + this.posZ + " with strength " + this.destructionRange + "!");
 
-			exp = new ExplosionBalefire((int) this.posX, (int) this.posY, (int) this.posZ, this.worldObj, this.destructionRange);
+			this.exp = new ExplosionBalefire((int) this.posX, (int) this.posY, (int) this.posZ, this.worldObj, this.destructionRange);
 
 			this.did = true;
 		}
 
-		speed += 1; // increase speed to keep up with expansion
+		this.speed += 1; // increase speed to keep up with expansion
 
 		boolean flag = false;
 		for(int i = 0; i < this.speed; i++) {
-			flag = exp.update();
+			flag = this.exp.update();
 
 			if(flag) {
 				clearChunkLoader();
-				this.setDead();
+				setDead();
 			}
 		}
 
-		if(!mute && rand.nextInt(5) == 0)
+		if(!this.mute && this.rand.nextInt(5) == 0)
 			this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "random.explode", 10000.0F, 0.8F + this.rand.nextFloat() * 0.2F);
 
 		if(!flag) {
 
-			if(!mute)
+			if(!this.mute)
 				this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "ambient.weather.thunder", 10000.0F, 0.8F + this.rand.nextFloat() * 0.2F);
 
 			ExplosionNukeGeneric.dealDamage(this.worldObj, this.posX, this.posY, this.posZ, this.destructionRange * 2);
 		}
 
-		age++;
+		this.age++;
 	}
 	
 	public EntityBalefire mute() {

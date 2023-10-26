@@ -73,51 +73,51 @@ public class ModDamageSource extends DamageSource {
 	}
 
 	public static DamageSource causeBulletDamage(EntityBullet ent, Entity hit) {
-		return (new EntityDamageSourceIndirect(s_bullet, ent, hit)).setProjectile();
+		return (new EntityDamageSourceIndirect(ModDamageSource.s_bullet, ent, hit)).setProjectile();
 	}
 
 	public static DamageSource causeBulletDamage(Entity base, Entity ent) {
-		return (new EntityDamageSourceIndirect(s_bullet, base, ent)).setProjectile();
+		return (new EntityDamageSourceIndirect(ModDamageSource.s_bullet, base, ent)).setProjectile();
 	}
 
 	public static DamageSource causeDisplacementDamage(Entity ent, Entity hit) {
-		return (new EntityDamageSourceIndirect(s_emplacer, ent, hit)).setProjectile();
+		return (new EntityDamageSourceIndirect(ModDamageSource.s_emplacer, ent, hit)).setProjectile();
 	}
 
 	public static DamageSource causeTauDamage(Entity ent, Entity hit) {
-		return (new EntityDamageSourceIndirect(s_tau, ent, hit)).setProjectile().setDamageBypassesArmor();
+		return (new EntityDamageSourceIndirect(ModDamageSource.s_tau, ent, hit)).setProjectile().setDamageBypassesArmor();
 	}
 
 	public static DamageSource causeCombineDamage(Entity ent, Entity hit) {
-		return (new EntityDamageSourceIndirect(s_combineball, ent, hit)).setProjectile().setDamageBypassesArmor();
+		return (new EntityDamageSourceIndirect(ModDamageSource.s_combineball, ent, hit)).setProjectile().setDamageBypassesArmor();
 	}
 
 	public static DamageSource causeSubatomicDamage(Entity ent, Entity hit) {
-		return (new EntityDamageSourceIndirect(s_zomg_prefix + (ent.worldObj.rand.nextInt(5) + 1), ent, hit)).setProjectile().setDamageBypassesArmor();
+		return (new EntityDamageSourceIndirect(ModDamageSource.s_zomg_prefix + (ent.worldObj.rand.nextInt(5) + 1), ent, hit)).setProjectile().setDamageBypassesArmor();
 	}
 
 	public static DamageSource euthanized(Entity ent, Entity hit) {
-		return (new EntityDamageSourceIndirect(s_euthanized, ent, hit)).setDamageBypassesArmor();
+		return (new EntityDamageSourceIndirect(ModDamageSource.s_euthanized, ent, hit)).setDamageBypassesArmor();
 	}
 
 	public static DamageSource causeDischargeDamage(EntityDischarge ent, Entity hit) {
-		return (new EntityDamageSourceIndirect(s_emp, ent, hit)).setDamageBypassesArmor();
+		return (new EntityDamageSourceIndirect(ModDamageSource.s_emp, ent, hit)).setDamageBypassesArmor();
 	}
 
 	public static DamageSource causeFireDamage(EntityFire ent, Entity hit) {
-		return (new EntityDamageSourceIndirect(s_flamethrower, ent, hit)).setFireDamage().setDamageBypassesArmor();
+		return (new EntityDamageSourceIndirect(ModDamageSource.s_flamethrower, ent, hit)).setFireDamage().setDamageBypassesArmor();
 	}
 
 	public static DamageSource causePlasmaDamage(EntityPlasmaBeam ent, Entity hit) {
-		return (new EntityDamageSourceIndirect(s_immolator, ent, hit)).setDamageBypassesArmor();
+		return (new EntityDamageSourceIndirect(ModDamageSource.s_immolator, ent, hit)).setDamageBypassesArmor();
 	}
 
 	public static DamageSource causeIceDamage(EntityLN2 ent, Entity hit) {
-		return (new EntityDamageSourceIndirect(s_cryolator, ent, hit)).setDamageBypassesArmor();
+		return (new EntityDamageSourceIndirect(ModDamageSource.s_cryolator, ent, hit)).setDamageBypassesArmor();
 	}
 
 	public static DamageSource causeLaserDamage(EntityLaserBeam ent, Entity hit) {
-		return (new EntityDamageSourceIndirect(s_laser, ent, hit)).setDamageBypassesArmor();
+		return (new EntityDamageSourceIndirect(ModDamageSource.s_laser, ent, hit)).setDamageBypassesArmor();
 	}
 
 	public static DamageSource causeLaserDamage(EntityMinerBeam ent, Entity hit) {

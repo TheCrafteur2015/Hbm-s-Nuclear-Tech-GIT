@@ -6,8 +6,8 @@ public class UnionOfTileEntitiesAndBooleansForFluids {
 	
 	public UnionOfTileEntitiesAndBooleansForFluids(IFluidSource tileentity, boolean bool)
 	{
-		source = tileentity;
-		ticked = bool;
+		this.source = tileentity;
+		this.ticked = bool;
 	}
 
 	public IFluidSource source;

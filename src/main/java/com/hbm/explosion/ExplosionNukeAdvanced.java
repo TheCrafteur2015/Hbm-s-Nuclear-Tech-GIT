@@ -22,37 +22,37 @@ public class ExplosionNukeAdvanced
 	public int type = 0;
 	
 	public void saveToNbt(NBTTagCompound nbt, String name) {
-		nbt.setInteger(name + "posX", posX);
-		nbt.setInteger(name + "posY", posY);
-		nbt.setInteger(name + "posZ", posZ);
-		nbt.setInteger(name + "lastposX", lastposX);
-		nbt.setInteger(name + "lastposZ", lastposZ);
-		nbt.setInteger(name + "radius", radius);
-		nbt.setInteger(name + "radius2", radius2);
-		nbt.setInteger(name + "n", n);
-		nbt.setInteger(name + "nlimit", nlimit);
-		nbt.setInteger(name + "shell", shell);
-		nbt.setInteger(name + "leg", leg);
-		nbt.setInteger(name + "element", element);
-		nbt.setFloat(name + "explosionCoefficient", explosionCoefficient);
-		nbt.setInteger(name + "type", type);
+		nbt.setInteger(name + "posX", this.posX);
+		nbt.setInteger(name + "posY", this.posY);
+		nbt.setInteger(name + "posZ", this.posZ);
+		nbt.setInteger(name + "lastposX", this.lastposX);
+		nbt.setInteger(name + "lastposZ", this.lastposZ);
+		nbt.setInteger(name + "radius", this.radius);
+		nbt.setInteger(name + "radius2", this.radius2);
+		nbt.setInteger(name + "n", this.n);
+		nbt.setInteger(name + "nlimit", this.nlimit);
+		nbt.setInteger(name + "shell", this.shell);
+		nbt.setInteger(name + "leg", this.leg);
+		nbt.setInteger(name + "element", this.element);
+		nbt.setFloat(name + "explosionCoefficient", this.explosionCoefficient);
+		nbt.setInteger(name + "type", this.type);
 	}
 	
 	public void readFromNbt(NBTTagCompound nbt, String name) {
-		posX = nbt.getInteger(name + "posX");
-		posY = nbt.getInteger(name + "posY");
-		posZ = nbt.getInteger(name + "posZ");
-		lastposX = nbt.getInteger(name + "lastposX");
-		lastposZ = nbt.getInteger(name + "lastposZ");
-		radius = nbt.getInteger(name + "radius");
-		radius2 = nbt.getInteger(name + "radius2");
-		n = nbt.getInteger(name + "n");
-		nlimit = nbt.getInteger(name + "nlimit");
-		shell = nbt.getInteger(name + "shell");
-		leg = nbt.getInteger(name + "leg");
-		element = nbt.getInteger(name + "element");
-		explosionCoefficient = nbt.getFloat(name + "explosionCoefficient");
-		type = nbt.getInteger(name + "type");
+		this.posX = nbt.getInteger(name + "posX");
+		this.posY = nbt.getInteger(name + "posY");
+		this.posZ = nbt.getInteger(name + "posZ");
+		this.lastposX = nbt.getInteger(name + "lastposX");
+		this.lastposZ = nbt.getInteger(name + "lastposZ");
+		this.radius = nbt.getInteger(name + "radius");
+		this.radius2 = nbt.getInteger(name + "radius2");
+		this.n = nbt.getInteger(name + "n");
+		this.nlimit = nbt.getInteger(name + "nlimit");
+		this.shell = nbt.getInteger(name + "shell");
+		this.leg = nbt.getInteger(name + "leg");
+		this.element = nbt.getInteger(name + "element");
+		this.explosionCoefficient = nbt.getFloat(name + "explosionCoefficient");
+		this.type = nbt.getInteger(name + "type");
 	}
 	
 	public ExplosionNukeAdvanced(int x, int y, int z, World world, int rad, float coefficient, int typ)
@@ -83,7 +83,7 @@ public class ExplosionNukeAdvanced
 		case 2:
 			waste(this.lastposX, this.lastposZ); break;
 		}
-		this.shell = (int) Math.floor((Math.sqrt(n) + 1) / 2); //crazy stuff I can't explain
+		this.shell = (int) Math.floor((Math.sqrt(this.n) + 1) / 2); //crazy stuff I can't explain
 		int shell2 = this.shell * 2;
 		this.leg = (int) Math.floor((this.n - (shell2 - 1) * (shell2 - 1)) / shell2);
 		this.element = (this.n - (shell2 - 1) * (shell2 - 1)) - shell2 * this.leg - this.shell + 1;
@@ -140,7 +140,7 @@ public class ExplosionNukeAdvanced
 			dist = (int) Math.sqrt(dist);
 			for (int y = dist; y > -dist * this.explosionCoefficient; y--)
 			{
-				if(radius >= 95)
+				if(this.radius >= 95)
 					ExplosionNukeGeneric.wasteDest(this.worldObj, this.posX + x, this.posY + y, this.posZ + z);
 				else
 					ExplosionNukeGeneric.wasteDestNoSchrab(this.worldObj, this.posX + x, this.posY + y, this.posZ + z);

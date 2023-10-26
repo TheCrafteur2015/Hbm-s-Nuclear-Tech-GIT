@@ -27,37 +27,38 @@ public class TileEntityZirnoxDestroyed extends TileEntity {
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
-		onFire = nbt.getBoolean("fire");
+		this.onFire = nbt.getBoolean("fire");
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setBoolean("onFire", onFire);
+		nbt.setBoolean("onFire", this.onFire);
 	}
 	
 	@Override
 	public void updateEntity() {
-		if(!worldObj.isRemote) {
-			radiate(worldObj, this.xCoord, this.yCoord, this.zCoord);
+		if(!this.worldObj.isRemote) {
+			radiate(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 			
 			if(this.worldObj.rand.nextInt(5000) == 0)
-				onFire = false;
+				this.onFire = false;
 			
-			if(onFire && this.worldObj.getTotalWorldTime() % 50 == 0) {
+			if(this.onFire && this.worldObj.getTotalWorldTime() % 50 == 0) {
 				NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "rbmkflame");
 				data.setInteger("maxAge", 90);
-				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, xCoord + 0.25 + worldObj.rand.nextDouble() * 0.5, yCoord + 1.75, zCoord + 0.25 + worldObj.rand.nextDouble() * 0.5), new TargetPoint(worldObj.provider.dimensionId, xCoord + 0.5, yCoord + 1.75, zCoord + 0.5, 75));
+				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, this.xCoord + 0.25 + this.worldObj.rand.nextDouble() * 0.5, this.yCoord + 1.75, this.zCoord + 0.25 + this.worldObj.rand.nextDouble() * 0.5), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord + 0.5, this.yCoord + 1.75, this.zCoord + 0.5, 75));
 				MainRegistry.proxy.effectNT(data);
-				worldObj.playSoundEffect(xCoord + 0.5F, yCoord + 0.5, zCoord + 0.5, "fire.fire", 1.0F + worldObj.rand.nextFloat(), worldObj.rand.nextFloat() * 0.7F + 0.3F);
+				this.worldObj.playSoundEffect(this.xCoord + 0.5F, this.yCoord + 0.5, this.zCoord + 0.5, "fire.fire", 1.0F + this.worldObj.rand.nextFloat(), this.worldObj.rand.nextFloat() * 0.7F + 0.3F);
 			}
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void radiate(World world, int x, int y, int z) {
 
-		float rads = onFire ? 500000F : 75000F;
+		float rads = this.onFire ? 500000F : 75000F;
 		double range = 100D;
 
 		List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(x + 0.5, y + 0.5, z + 0.5, x + 0.5, y + 0.5, z + 0.5).expand(range, range, range));
@@ -83,21 +84,23 @@ public class TileEntityZirnoxDestroyed extends TileEntity {
 				res = 1;
 
 			float eRads = rads;
-			eRads /= (float)res;
+			eRads /= res;
 			eRads /= (float)(len * len);
 
 			ContaminationUtil.contaminate(e, HazardType.RADIATION, ContaminationType.CREATIVE, eRads);
 
-			if(onFire && len < 5) {
+			if(this.onFire && len < 5) {
 				e.attackEntityFrom(DamageSource.onFire, 2);
 			}
 		}
 	}
 
+	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
-		return AxisAlignedBB.getBoundingBox(xCoord - 3, yCoord, zCoord - 3, xCoord + 4, yCoord + 3, zCoord + 4);
+		return AxisAlignedBB.getBoundingBox(this.xCoord - 3, this.yCoord, this.zCoord - 3, this.xCoord + 4, this.yCoord + 3, this.zCoord + 4);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public double getMaxRenderDistanceSquared() {
 		return 65536.0D;

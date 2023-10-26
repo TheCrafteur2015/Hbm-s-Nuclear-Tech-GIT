@@ -1,8 +1,7 @@
 package com.hbm.tileentity.machine;
 
-import api.hbm.block.ILaserable;
-import api.hbm.energy.IEnergyUser;
-import api.hbm.fluid.IFluidStandardReceiver;
+import java.util.List;
+
 import com.hbm.inventory.container.ContainerCoreEmitter;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTank;
@@ -10,6 +9,10 @@ import com.hbm.inventory.gui.GUICoreEmitter;
 import com.hbm.lib.ModDamageSource;
 import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.TileEntityMachineBase;
+
+import api.hbm.block.ILaserable;
+import api.hbm.energy.IEnergyUser;
+import api.hbm.fluid.IFluidStandardReceiver;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -30,8 +33,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.List;
-
 @Optional.InterfaceList({@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "OpenComputers")})
 public class TileEntityCoreEmitter extends TileEntityMachineBase implements IEnergyUser, ILaserable, IFluidStandardReceiver, SimpleComponent, IGUIProvider {
 	
@@ -48,7 +49,7 @@ public class TileEntityCoreEmitter extends TileEntityMachineBase implements IEne
 
 	public TileEntityCoreEmitter() {
 		super(0);
-		tank = new FluidTank(Fluids.CRYOGEL, 64000, 0);
+		this.tank = new FluidTank(Fluids.CRYOGEL, 64000, 0);
 	}
 
 	@Override
@@ -56,64 +57,65 @@ public class TileEntityCoreEmitter extends TileEntityMachineBase implements IEne
 		return "container.dfcEmitter";
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void updateEntity() {
 
-		if (!worldObj.isRemote) {
+		if (!this.worldObj.isRemote) {
 			
-			this.updateStandardConnections(worldObj, xCoord, yCoord, zCoord);
-			this.subscribeToAllAround(tank.getTankType(), this);
+			this.updateStandardConnections(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+			this.subscribeToAllAround(this.tank.getTankType(), this);
 			
-			watts = MathHelper.clamp_int(watts, 1, 100);
-			long demand = maxPower * watts / 2000;
+			this.watts = MathHelper.clamp_int(this.watts, 1, 100);
+			long demand = TileEntityCoreEmitter.maxPower * this.watts / 2000;
 			
-			beam = 0;
+			this.beam = 0;
 			
-			if(joules > 0 || prev > 0) {
+			if(this.joules > 0 || this.prev > 0) {
 
-				if(tank.getFill() >= 20) {
-					tank.setFill(tank.getFill() - 20);
+				if(this.tank.getFill() >= 20) {
+					this.tank.setFill(this.tank.getFill() - 20);
 				} else {
-					worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.flowing_lava);
+					this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, Blocks.flowing_lava);
 					return;
 				}
 			}
 			
-			if(isOn) {
+			if(this.isOn) {
 				
 				//i.e. 50,000,000 HE = 10,000 SPK
 				//1 SPK = 5,000HE
 				
-				if(power >= demand) {
-					power -= demand;
-					long add = watts * 100;
-					joules += add;
+				if(this.power >= demand) {
+					this.power -= demand;
+					long add = this.watts * 100;
+					this.joules += add;
 				}
-				prev = joules;
+				this.prev = this.joules;
 				
-				if(joules > 0) {
+				if(this.joules > 0) {
 					
-					long out = joules * 98 / 100;
+					long out = this.joules * 98 / 100;
 					
-					ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata());
-					for(int i = 1; i <= range; i++) {
+					ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata());
+					for(int i = 1; i <= TileEntityCoreEmitter.range; i++) {
 						
-						beam = i;
+						this.beam = i;
 		
-						int x = xCoord + dir.offsetX * i;
-						int y = yCoord + dir.offsetY * i;
-						int z = zCoord + dir.offsetZ * i;
+						int x = this.xCoord + dir.offsetX * i;
+						int y = this.yCoord + dir.offsetY * i;
+						int z = this.zCoord + dir.offsetZ * i;
 						
-						Block block = worldObj.getBlock(x, y, z);
-						TileEntity te = worldObj.getTileEntity(x, y, z);
+						Block block = this.worldObj.getBlock(x, y, z);
+						TileEntity te = this.worldObj.getTileEntity(x, y, z);
 						
 						if(block instanceof ILaserable) {
-							((ILaserable)block).addEnergy(worldObj, x, y, z, out * 98 / 100, dir);
+							((ILaserable)block).addEnergy(this.worldObj, x, y, z, out * 98 / 100, dir);
 							break;
 						}
 						
 						if(te instanceof ILaserable) {
-							((ILaserable)te).addEnergy(worldObj, x, y, z, out * 98 / 100, dir);
+							((ILaserable)te).addEnergy(this.worldObj, x, y, z, out * 98 / 100, dir);
 							break;
 						}
 						
@@ -122,19 +124,19 @@ public class TileEntityCoreEmitter extends TileEntityMachineBase implements IEne
 							continue;
 						}
 						
-						Block b = worldObj.getBlock(x, y, z);
+						Block b = this.worldObj.getBlock(x, y, z);
 						
-						if(!b.isAir(worldObj, x, y, z)) {
+						if(!b.isAir(this.worldObj, x, y, z)) {
 							
 							if(b.getMaterial().isLiquid()) {
-								worldObj.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, "random.fizz", 1.0F, 1.0F);
-								worldObj.setBlockToAir(x, y, z);
+								this.worldObj.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, "random.fizz", 1.0F, 1.0F);
+								this.worldObj.setBlockToAir(x, y, z);
 								break;
 							}
 							
 							float hardness = b.getExplosionResistance(null);
-							if(hardness < 6000 && worldObj.rand.nextInt(20) == 0) {
-								worldObj.func_147480_a(x, y, z, false);
+							if(hardness < 6000 && this.worldObj.rand.nextInt(20) == 0) {
+								this.worldObj.func_147480_a(x, y, z, false);
 							}
 							
 							break;
@@ -142,16 +144,16 @@ public class TileEntityCoreEmitter extends TileEntityMachineBase implements IEne
 					}
 					
 					
-					joules = 0;
+					this.joules = 0;
 		
-					double blx = Math.min(xCoord, xCoord + dir.offsetX * beam) + 0.2;
-					double bux = Math.max(xCoord, xCoord + dir.offsetX * beam) + 0.8;
-					double bly = Math.min(yCoord, yCoord + dir.offsetY * beam) + 0.2;
-					double buy = Math.max(yCoord, yCoord + dir.offsetY * beam) + 0.8;
-					double blz = Math.min(zCoord, zCoord + dir.offsetZ * beam) + 0.2;
-					double buz = Math.max(zCoord, zCoord + dir.offsetZ * beam) + 0.8;
+					double blx = Math.min(this.xCoord, this.xCoord + dir.offsetX * this.beam) + 0.2;
+					double bux = Math.max(this.xCoord, this.xCoord + dir.offsetX * this.beam) + 0.8;
+					double bly = Math.min(this.yCoord, this.yCoord + dir.offsetY * this.beam) + 0.2;
+					double buy = Math.max(this.yCoord, this.yCoord + dir.offsetY * this.beam) + 0.8;
+					double blz = Math.min(this.zCoord, this.zCoord + dir.offsetZ * this.beam) + 0.2;
+					double buz = Math.max(this.zCoord, this.zCoord + dir.offsetZ * this.beam) + 0.8;
 					
-					List<Entity> list = worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(blx, bly, blz, bux, buy, buz));
+					List<Entity> list = this.worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(blx, bly, blz, bux, buy, buz));
 					
 					for(Entity e : list) {
 						e.attackEntityFrom(ModDamageSource.amsCore, 50);
@@ -159,39 +161,40 @@ public class TileEntityCoreEmitter extends TileEntityMachineBase implements IEne
 					}
 				}
 			} else {
-				joules = 0;
-				prev = 0;
+				this.joules = 0;
+				this.prev = 0;
 			}
 			
-			this.markDirty();
+			markDirty();
 
 			NBTTagCompound data = new NBTTagCompound();
-			data.setLong("power", power);
-			data.setInteger("watts", watts);
-			data.setLong("prev", prev);
-			data.setInteger("beam", beam);
-			data.setBoolean("isOn", isOn);
-			tank.writeToNBT(data, "tank");
-			this.networkPack(data, 250);
+			data.setLong("power", this.power);
+			data.setInteger("watts", this.watts);
+			data.setLong("prev", this.prev);
+			data.setInteger("beam", this.beam);
+			data.setBoolean("isOn", this.isOn);
+			this.tank.writeToNBT(data, "tank");
+			networkPack(data, 250);
 		}
 	}
 	
+	@Override
 	public void networkUnpack(NBTTagCompound data) {
 
-		power = data.getLong("power");
-		watts = data.getInteger("watts");
-		prev = data.getLong("prev");
-		beam = data.getInteger("beam");
-		isOn = data.getBoolean("isOn");
-		tank.readFromNBT(data, "tank");
+		this.power = data.getLong("power");
+		this.watts = data.getInteger("watts");
+		this.prev = data.getLong("prev");
+		this.beam = data.getInteger("beam");
+		this.isOn = data.getBoolean("isOn");
+		this.tank.readFromNBT(data, "tank");
 	}
 	
 	public long getPowerScaled(long i) {
-		return (power * i) / maxPower;
+		return (this.power * i) / TileEntityCoreEmitter.maxPower;
 	}
 	
 	public int getWattsScaled(int i) {
-		return (watts * i) / 100;
+		return (this.watts * i) / 100;
 	}
 
 	@Override
@@ -206,7 +209,7 @@ public class TileEntityCoreEmitter extends TileEntityMachineBase implements IEne
 
 	@Override
 	public long getMaxPower() {
-		return this.maxPower;
+		return TileEntityCoreEmitter.maxPower;
 	}
 
 	@Override
@@ -218,8 +221,8 @@ public class TileEntityCoreEmitter extends TileEntityMachineBase implements IEne
 	public void addEnergy(World world, int x, int y, int z, long energy, ForgeDirection dir) {
 		
 		//do not accept lasers from the front
-		if(dir.getOpposite().ordinal() != this.getBlockMetadata())
-			joules += energy;
+		if(dir.getOpposite().ordinal() != getBlockMetadata())
+			this.joules += energy;
 	}
 	
 	@Override
@@ -238,34 +241,34 @@ public class TileEntityCoreEmitter extends TileEntityMachineBase implements IEne
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		
-		power = nbt.getLong("power");
-		watts = nbt.getInteger("watts");
-		joules = nbt.getLong("joules");
-		prev = nbt.getLong("prev");
-		isOn = nbt.getBoolean("isOn");
-		tank.readFromNBT(nbt, "tank");
+		this.power = nbt.getLong("power");
+		this.watts = nbt.getInteger("watts");
+		this.joules = nbt.getLong("joules");
+		this.prev = nbt.getLong("prev");
+		this.isOn = nbt.getBoolean("isOn");
+		this.tank.readFromNBT(nbt, "tank");
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		
-		nbt.setLong("power", power);
-		nbt.setInteger("watts", watts);
-		nbt.setLong("joules", joules);
-		nbt.setLong("prev", prev);
-		nbt.setBoolean("isOn", isOn);
-		tank.writeToNBT(nbt, "tank");
+		nbt.setLong("power", this.power);
+		nbt.setInteger("watts", this.watts);
+		nbt.setLong("joules", this.joules);
+		nbt.setLong("prev", this.prev);
+		nbt.setBoolean("isOn", this.isOn);
+		this.tank.writeToNBT(nbt, "tank");
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] { tank };
+		return new FluidTank[] { this.tank };
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return new FluidTank[] { tank };
+		return new FluidTank[] { this.tank };
 	}
 	
 	// do some opencomputer stuff
@@ -283,31 +286,31 @@ public class TileEntityCoreEmitter extends TileEntityMachineBase implements IEne
 	@Callback(direct = true, limit = 4)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getCryogel(Context context, Arguments args) {
-		return new Object[] {tank.getFill()};
+		return new Object[] {this.tank.getFill()};
 	}
 
 	@Callback(direct = true, limit = 4)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getInput(Context context, Arguments args) {
-		return new Object[] {watts};
+		return new Object[] {this.watts};
 	}
 
 	@Callback(direct = true, limit = 4)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getInfo(Context context, Arguments args) {
-		return new Object[] {getPower(), getMaxPower(), tank.getFill(), watts, isOn};
+		return new Object[] {getPower(), getMaxPower(), this.tank.getFill(), this.watts, this.isOn};
 	}
 
 	@Callback(direct = true, limit = 2)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] isActive(Context context, Arguments args) {
-		return new Object[] {isOn};
+		return new Object[] {this.isOn};
 	}
 
 	@Callback(direct = true, limit = 2)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] setActive(Context context, Arguments args) {
-		isOn = args.checkBoolean(0);
+		this.isOn = args.checkBoolean(0);
 		return new Object[] {};
 	}
 
@@ -320,7 +323,7 @@ public class TileEntityCoreEmitter extends TileEntityMachineBase implements IEne
 		} else if (newOutput < 0) {
 			newOutput = 0;
 		}
-		watts = newOutput;
+		this.watts = newOutput;
 		return new Object[] {};
 	}
 

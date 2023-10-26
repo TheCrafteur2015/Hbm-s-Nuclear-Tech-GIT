@@ -26,6 +26,6 @@ public class ActionSetTile implements IJarAction {
 
 	@Override
 	public void act(WorldInAJar world, JarScene scene) {
-		world.setTileEntity(x, y, z, tile);
+		world.setTileEntity(this.x, this.y, this.z, this.tile);
 	}
 }

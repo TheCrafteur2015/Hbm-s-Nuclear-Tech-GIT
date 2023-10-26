@@ -38,7 +38,7 @@ public class ExplosionThermo {
 					int Z = zz+z;
 					int ZZ = YY+zz*zz;
 					if (ZZ<r22 + world.rand.nextInt(r22/2))
-						freezeDest(world, X, Y, Z);
+						ExplosionThermo.freezeDest(world, X, Y, Z);
 				}
 			}
 		}
@@ -89,7 +89,7 @@ public class ExplosionThermo {
 					int Z = zz+z;
 					int ZZ = YY+zz*zz;
 					if (ZZ<r22 + world.rand.nextInt(r22/2))
-						scorchDest(world, X, Y, Z);
+						ExplosionThermo.scorchDest(world, X, Y, Z);
 				}
 			}
 		}
@@ -112,7 +112,7 @@ public class ExplosionThermo {
 					int Z = zz+z;
 					int ZZ = YY+zz*zz;
 					if (ZZ<r22 + world.rand.nextInt(r22/2))
-						scorchDestLight(world, X, Y, Z);
+						ExplosionThermo.scorchDestLight(world, X, Y, Z);
 				}
 			}
 		}
@@ -431,9 +431,8 @@ public class ExplosionThermo {
 		        List list = world.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBox(i, k, l, j, i2, j2));
 		        Vec3.createVectorHelper(x, y, z);
 
-		        for (int i1 = 0; i1 < list.size(); ++i1)
-		        {
-		            Entity entity = (Entity)list.get(i1);
+		        for (Object element : list) {
+		            Entity entity = (Entity)element;
 		            double d4 = entity.getDistance(x, y, z) / bombStartStrength;
 
 		            if (d4 <= 1.0D)

@@ -26,10 +26,10 @@ public class BookRecipeHandler extends TemplateRecipeHandler {
     	
         public RecipeSet(List<Object> in, ItemStack result) {
         	
-        	input = new ArrayList();
+        	this.input = new ArrayList<>();
         	
         	for(int i = 0; i < Math.min(in.size(), 4); i++) {
-        		input.add(new PositionedStack(in.get(i), 25 + (i % 2) * 36, 6 + (i / 2) * 36));
+        		this.input.add(new PositionedStack(in.get(i), 25 + (i % 2) * 36, 6 + (i / 2) * 36));
         	}
         	
             this.result = new PositionedStack(result, 119, 24);
@@ -37,12 +37,12 @@ public class BookRecipeHandler extends TemplateRecipeHandler {
 
         @Override
 		public List<PositionedStack> getIngredients() {
-            return getCycledIngredients(cycleticks / 48, input);
+            return getCycledIngredients(BookRecipeHandler.this.cycleticks / 48, this.input);
         }
 
         @Override
 		public PositionedStack getResult() {
-            return result;
+            return this.result;
         }
     }
     
@@ -65,7 +65,7 @@ public class BookRecipeHandler extends TemplateRecipeHandler {
 			
 			for(MagicRecipe recipe : recipes) {
 				
-				List<Object> input = new ArrayList();
+				List<Object> input = new ArrayList<>();
 				
 				for(AStack stack : recipe.in) {
 					
@@ -93,7 +93,7 @@ public class BookRecipeHandler extends TemplateRecipeHandler {
 			
 			if (NEIServerUtils.areStacksSameTypeCrafting(recipe.out, result)) {
 				
-				List<Object> input = new ArrayList();
+				List<Object> input = new ArrayList<>();
 				
 				for(AStack stack : recipe.in) {
 					
@@ -132,7 +132,7 @@ public class BookRecipeHandler extends TemplateRecipeHandler {
 				
 				if(astack.isApplicable(ingredient)) {
 					
-					List<Object> input = new ArrayList();
+					List<Object> input = new ArrayList<>();
 					
 					for(AStack stack : recipe.in) {
 						
@@ -152,7 +152,7 @@ public class BookRecipeHandler extends TemplateRecipeHandler {
     
     @Override
     public void loadTransferRects() {
-        transferRects.add(new RecipeTransferRect(new Rectangle(84, 34 - 11, 24, 18), "book_of_boxcars"));
+        this.transferRects.add(new RecipeTransferRect(new Rectangle(84, 34 - 11, 24, 18), "book_of_boxcars"));
     }
 
     @Override

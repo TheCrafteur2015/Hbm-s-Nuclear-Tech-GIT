@@ -16,8 +16,8 @@ public class ItemTooling extends ItemCraftingDegradation {
 	public ItemTooling(ToolType type, int durability) {
 		super(durability);
 		this.type = type;
-		this.setFull3D();
-		this.setCreativeTab(MainRegistry.controlTab);
+		setFull3D();
+		setCreativeTab(MainRegistry.controlTab);
 		
 		type.register(new ItemStack(this));
 	}

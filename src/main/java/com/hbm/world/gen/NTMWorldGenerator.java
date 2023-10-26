@@ -10,10 +10,11 @@ import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.IChunkProvider;
-import static net.minecraftforge.common.BiomeDictionary.*;
+import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.event.terraingen.InitMapGenEvent.EventType;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
-import static net.minecraftforge.event.terraingen.TerrainGen.*;
+import net.minecraftforge.event.terraingen.TerrainGen;
 import net.minecraftforge.event.world.WorldEvent;
 
 public class NTMWorldGenerator implements IWorldGenerator {
@@ -25,16 +26,16 @@ public class NTMWorldGenerator implements IWorldGenerator {
 	/** Inits all MapGen upon the loading of a new world. Hopefully clears out structureMaps and structureData when a different world is loaded. */
 	@SubscribeEvent
 	public void onLoad(WorldEvent.Load event) {
-		scatteredFeatureGenerator = (MapGenNTMFeatures) getModdedMapGen(new MapGenNTMFeatures(), EventType.CUSTOM);
-		hasPopulationEvent = false;
+		this.scatteredFeatureGenerator = (MapGenNTMFeatures) TerrainGen.getModdedMapGen(new MapGenNTMFeatures(), EventType.CUSTOM);
+		this.hasPopulationEvent = false;
 	}
 	
 	/** Called upon the initial population of a chunk. Called in the pre-population event first; called again if pre-population didn't occur (flatland) */
 	private void setRandomSeed(World world, int chunkX, int chunkZ) {
-		rand.setSeed(world.getSeed());
-		final long i = rand.nextLong() / 2L * 2L + 1L;
-		final long j = rand.nextLong() / 2L * 2L + 1L;
-		rand.setSeed((long)chunkX * i + (long)chunkZ * j ^ world.getSeed());
+		this.rand.setSeed(world.getSeed());
+		final long i = this.rand.nextLong() / 2L * 2L + 1L;
+		final long j = this.rand.nextLong() / 2L * 2L + 1L;
+		this.rand.setSeed(chunkX * i + chunkZ * j ^ world.getSeed());
 	}
 	
 	/*
@@ -47,7 +48,7 @@ public class NTMWorldGenerator implements IWorldGenerator {
 	@SubscribeEvent
 	public void generateStructures(PopulateChunkEvent.Pre event) {
 		setRandomSeed(event.world, event.chunkX, event.chunkZ); //Set random for population down the line.
-		hasPopulationEvent = true;
+		this.hasPopulationEvent = true;
 		
 		if(!StructureConfig.enableStructures) return;
 		
@@ -66,7 +67,7 @@ public class NTMWorldGenerator implements IWorldGenerator {
 		Block[] ablock = new Block[65536]; //ablock isn't actually used for anything in MapGenStructure
 		
 		this.scatteredFeatureGenerator.func_151539_a(chunkProvider, world, chunkX, chunkZ, ablock);
-		this.scatteredFeatureGenerator.generateStructuresInChunk(world, rand, chunkX, chunkZ);
+		this.scatteredFeatureGenerator.generateStructuresInChunk(world, this.rand, chunkX, chunkZ);
 	}
 	
 	/*
@@ -92,13 +93,14 @@ public class NTMWorldGenerator implements IWorldGenerator {
 	/* Overworld Generation */
 	
 	private void generateSurface(World world, Random rand, IChunkProvider chunkGenerator, IChunkProvider chunkProvider, int chunkX, int chunkZ) {
-		if(!hasPopulationEvent) { //If we've failed to generate any structures (flatlands)
+		if(!this.hasPopulationEvent) { //If we've failed to generate any structures (flatlands)
 			setRandomSeed(world, chunkX, chunkZ); //Reset the random seed to compensate
 			if(StructureConfig.enableStructures) generateOverworldStructures(world, chunkGenerator, chunkX, chunkZ); //Do it through the post-population generation directly
 		}
 		
 		final int posX = (chunkX << 4) + 8;
 		final int posZ = (chunkZ << 4) + 8;
+		@SuppressWarnings("unused")
 		BiomeGenBase biome = world.getBiomeGenForCoords(posX, posZ);
 		
 		/* biome dictionary my beloved <3 
@@ -115,7 +117,7 @@ public class NTMWorldGenerator implements IWorldGenerator {
 	/** Utility method for biome checking multiple types exclusively. Not sure why it wasn't already present. */
 	public static boolean isBiomeOfTypes(BiomeGenBase biome, Type... types) { //If new biomes are implemented, move this to any biome-related utility class.
 		for(Type type : types) {
-			if(!isBiomeOfType(biome, type)) return false;
+			if(!BiomeDictionary.isBiomeOfType(biome, type)) return false;
 		}
 		
 		return true;

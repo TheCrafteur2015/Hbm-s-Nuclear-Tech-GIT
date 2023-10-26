@@ -14,14 +14,14 @@ import net.minecraft.util.ResourceLocation;
 
 public class SoundLoopSiren extends SoundLoopMachine {
 	
-	public static List<SoundLoopSiren> list = new ArrayList<SoundLoopSiren>();
+	public static List<SoundLoopSiren> list = new ArrayList<>();
 	public float intendedVolume;
 	public SoundType type;
 
 	public SoundLoopSiren(ResourceLocation path, TileEntity te, SoundType type) {
 		super(path, te);
-		list.add(this);
-		intendedVolume = 10.0F;
+		SoundLoopSiren.list.add(this);
+		this.intendedVolume = 10.0F;
 		this.field_147666_i = ISound.AttenuationType.NONE;
 		this.type = type;
 	}
@@ -34,21 +34,21 @@ public class SoundLoopSiren extends SoundLoopMachine {
 		float f = 0;
 		
 		if(player != null) {
-			f = (float)Math.sqrt(Math.pow(xPosF - player.posX, 2) + Math.pow(yPosF - player.posY, 2) + Math.pow(zPosF - player.posZ, 2));
-			volume = func(f, intendedVolume);
+			f = (float)Math.sqrt(Math.pow(this.xPosF - player.posX, 2) + Math.pow(this.yPosF - player.posY, 2) + Math.pow(this.zPosF - player.posZ, 2));
+			this.volume = func(f, this.intendedVolume);
 		} else {
-			volume = intendedVolume;
+			this.volume = this.intendedVolume;
 		}
 		
-		if(te instanceof TileEntityMachineSiren) {
-			this.setRepeat(type.name().equals(SoundType.LOOP.name()));
+		if(this.te instanceof TileEntityMachineSiren) {
+			setRepeat(this.type.name().equals(SoundType.LOOP.name()));
 		} else {
 			this.donePlaying = true;
 		}
 	}
 	
 	public TileEntity getTE() {
-		return te;
+		return this.te;
 	}
 	
 	public void endSound() {

@@ -16,10 +16,10 @@ public class FluidContainer {
 	public int content;
 	
 	public FluidContainer(ItemStack full, ItemStack empty, FluidType type, int amount) {
-		fullContainer = full;
-		emptyContainer = empty;
+		this.fullContainer = full;
+		this.emptyContainer = empty;
 		this.type = type;
-		content = amount;
+		this.content = amount;
 	}
 
 }

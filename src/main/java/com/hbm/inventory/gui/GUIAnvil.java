@@ -21,6 +21,7 @@ import com.hbm.packet.PacketDispatcher;
 
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.RenderHelper;
@@ -38,8 +39,8 @@ public class GUIAnvil extends GuiContainer {
 	public static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/processing/gui_anvil.png");
 	
 	private int tier;
-	private List<AnvilConstructionRecipe> originList = new ArrayList();
-	private List<AnvilConstructionRecipe> recipes = new ArrayList();
+	private List<AnvilConstructionRecipe> originList = new ArrayList<>();
+	private List<AnvilConstructionRecipe> recipes = new ArrayList<>();
 	int index;
 	int size;
 	int selection;
@@ -59,8 +60,8 @@ public class GUIAnvil extends GuiContainer {
 		
 		regenerateRecipes();
 		
-		guiLeft = (this.width - this.xSize) / 2;
-		guiTop = (this.height - this.ySize) / 2;
+		this.guiLeft = (this.width - this.xSize) / 2;
+		this.guiTop = (this.height - this.ySize) / 2;
 	}
 	
 	@Override
@@ -69,7 +70,7 @@ public class GUIAnvil extends GuiContainer {
 		super.initGui();
 
 		Keyboard.enableRepeatEvents(true);
-		this.search = new GuiTextField(this.fontRendererObj, guiLeft + 10, guiTop + 111, 84, 12);
+		this.search = new GuiTextField(this.fontRendererObj, this.guiLeft + 10, this.guiTop + 111, 84, 12);
 		this.search.setTextColor(-1);
 		this.search.setDisabledTextColour(-1);
 		this.search.setEnableBackgroundDrawing(false);
@@ -142,12 +143,12 @@ public class GUIAnvil extends GuiContainer {
 			Slot slot = (Slot) obj;
 			
 			// if the mouse is over a slot, cancel
-			if(this.func_146978_c(slot.xDisplayPosition, slot.yDisplayPosition, 16, 16, x, y) && slot.getHasStack()) {
+			if(func_146978_c(slot.xDisplayPosition, slot.yDisplayPosition, 16, 16, x, y) && slot.getHasStack()) {
 				return;
 			}
 		}
 
-		if(guiLeft <= x && guiLeft + xSize > x && guiTop < y && guiTop + ySize >= y && getSlotAtPosition(x, y) == null) {
+		if(this.guiLeft <= x && this.guiLeft + this.xSize > x && this.guiTop < y && this.guiTop + this.ySize >= y && getSlotAtPosition(x, y) == null) {
 			if(!Mouse.isButtonDown(0) && !Mouse.isButtonDown(1) && Mouse.next()) {
 				int scroll = Mouse.getEventDWheel();
 				
@@ -158,10 +159,10 @@ public class GUIAnvil extends GuiContainer {
 	}
 	
 	private Slot getSlotAtPosition(int x, int y) {
-		for(int k = 0; k < this.inventorySlots.inventorySlots.size(); ++k) {
-			Slot slot = (Slot) this.inventorySlots.inventorySlots.get(k);
+		for (Object element : this.inventorySlots.inventorySlots) {
+			Slot slot = (Slot) element;
 
-			if(this.isMouseOverSlot(slot, x, y)) {
+			if(isMouseOverSlot(slot, x, y)) {
 				return slot;
 			}
 		}
@@ -170,7 +171,7 @@ public class GUIAnvil extends GuiContainer {
 	}
 	
 	private boolean isMouseOverSlot(Slot slot, int x, int y) {
-		return this.func_146978_c(slot.xDisplayPosition, slot.yDisplayPosition, 16, 16, x, y);
+		return func_146978_c(slot.xDisplayPosition, slot.yDisplayPosition, 16, 16, x, y);
 	}
 	
 	@Override
@@ -179,28 +180,28 @@ public class GUIAnvil extends GuiContainer {
 		
 		this.search.mouseClicked(x, y, k);
 		
-		if(guiLeft + 7 <= x && guiLeft + 7 + 9 > x && guiTop + 71 < y && guiTop + 71 + 36 >= y) {
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+		if(this.guiLeft + 7 <= x && this.guiLeft + 7 + 9 > x && this.guiTop + 71 < y && this.guiTop + 71 + 36 >= y) {
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 			if(this.index > 0)
 				this.index--;
 			
 			return;
 		}
 		
-		if(guiLeft + 106 <= x && guiLeft + 106 + 9 > x && guiTop + 71 < y && guiTop + 71 + 36 >= y) {
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+		if(this.guiLeft + 106 <= x && this.guiLeft + 106 + 9 > x && this.guiTop + 71 < y && this.guiTop + 71 + 36 >= y) {
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 			if(this.index < this.size)
 				this.index++;
 			
 			return;
 		}
 		
-		if(guiLeft + 52 <= x && guiLeft + 52 + 18 > x && guiTop + 53 < y && guiTop + 53 + 18 >= y) {
+		if(this.guiLeft + 52 <= x && this.guiLeft + 52 + 18 > x && this.guiTop + 53 < y && this.guiTop + 53 + 18 >= y) {
 			
 			if(this.selection == -1)
 				return;
 			
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 			PacketDispatcher.wrapper.sendToServer(new AnvilCraftPacket(this.recipes.get(this.selection), Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ? 1 : 0));
 			
 			return;
@@ -212,23 +213,23 @@ public class GUIAnvil extends GuiContainer {
 			return;
 		}*/
 		
-		for(int i = index * 2; i < index * 2 + 10; i++) {
+		for(int i = this.index * 2; i < this.index * 2 + 10; i++) {
 			
 			if(i >= this.recipes.size())
 				break;
 			
-			int ind = i - index * 2;
+			int ind = i - this.index * 2;
 			
 			int ix = 16 + 18 * (ind / 2);
 			int iy = 71 + 18 * (ind % 2);
-			if(guiLeft + ix <= x && guiLeft + ix + 18 > x && guiTop + iy < y && guiTop + iy + 18 >= y) {
+			if(this.guiLeft + ix <= x && this.guiLeft + ix + 18 > x && this.guiTop + iy < y && this.guiTop + iy + 18 >= y) {
 				
 				if(this.selection != i)
 					this.selection = i;
 				else
 					this.selection = -1;
 				
-				mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+				this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 				return;
 			}
 		}
@@ -236,13 +237,13 @@ public class GUIAnvil extends GuiContainer {
 	
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mX, int mY) {
-		String name = I18n.format("container.anvil", tier);
+		String name = I18n.format("container.anvil", this.tier);
 		this.fontRendererObj.drawString(name, 61 - this.fontRendererObj.getStringWidth(name) / 2, 8, 4210752);
 		this.fontRendererObj.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 		
 		if(this.selection >= 0) {
 			
-			AnvilConstructionRecipe recipe = recipes.get(this.selection);
+			AnvilConstructionRecipe recipe = this.recipes.get(this.selection);
 			List<String> list = recipeToList(recipe);
 			int longest = 0;
 			
@@ -276,7 +277,7 @@ public class GUIAnvil extends GuiContainer {
 	 */
 	public List<String> recipeToList(AnvilConstructionRecipe recipe) {
 
-		List<String> list = new ArrayList();
+		List<String> list = new ArrayList<>();
 		
 		list.add(EnumChatFormatting.YELLOW + "Inputs:");
 		
@@ -316,7 +317,7 @@ public class GUIAnvil extends GuiContainer {
 	 */
 	public List<String> recipeToSearchList(AnvilConstructionRecipe recipe) {
 
-		List<String> list = new ArrayList();
+		List<String> list = new ArrayList<>();
 		
 		for(AStack stack : recipe.input) {
 			if(stack instanceof ComparableStack)  {
@@ -349,9 +350,9 @@ public class GUIAnvil extends GuiContainer {
 	protected void drawGuiContainerBackgroundLayer(float inter, int mX, int mY) {
 		
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.getTextureManager().bindTexture(texture);
+		this.mc.getTextureManager().bindTexture(GUIAnvil.texture);
 		
-		this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
 		int slide = MathHelper.clamp_int(this.lastSize - 42, 0, 1000);
 		
@@ -359,7 +360,7 @@ public class GUIAnvil extends GuiContainer {
 		while(true) {
 			
 			if(slide >= 51 * mul) {
-				this.drawTexturedModalRect(guiLeft + 125 + 51 * mul, guiTop + 17, 125, 17, 54, 108);
+				drawTexturedModalRect(this.guiLeft + 125 + 51 * mul, this.guiTop + 17, 125, 17, 54, 108);
 				mul++;
 				
 			} else {
@@ -367,54 +368,54 @@ public class GUIAnvil extends GuiContainer {
 			}
 		}
 		
-		this.drawTexturedModalRect(guiLeft + 125 + slide, guiTop + 17, 125, 17, 54, 108);
+		drawTexturedModalRect(this.guiLeft + 125 + slide, this.guiTop + 17, 125, 17, 54, 108);
 		
 		if(this.search.isFocused()) {
-			drawTexturedModalRect(guiLeft + 8, guiTop + 108, 168, 222, 88, 16);
+			drawTexturedModalRect(this.guiLeft + 8, this.guiTop + 108, 168, 222, 88, 16);
 		}
 		
-		if(guiLeft + 7 <= mX && guiLeft + 7 + 9 > mX && guiTop + 71 < mY && guiTop + 71 + 36 >= mY) {
-			drawTexturedModalRect(guiLeft + 7, guiTop + 71, 176, 186, 9, 36);
+		if(this.guiLeft + 7 <= mX && this.guiLeft + 7 + 9 > mX && this.guiTop + 71 < mY && this.guiTop + 71 + 36 >= mY) {
+			drawTexturedModalRect(this.guiLeft + 7, this.guiTop + 71, 176, 186, 9, 36);
 		}
-		if(guiLeft + 106 <= mX && guiLeft + 106 + 9 > mX && guiTop + 71 < mY && guiTop + 71 + 36 >= mY) {
-			drawTexturedModalRect(guiLeft + 106, guiTop + 71, 185, 186, 9, 36);
+		if(this.guiLeft + 106 <= mX && this.guiLeft + 106 + 9 > mX && this.guiTop + 71 < mY && this.guiTop + 71 + 36 >= mY) {
+			drawTexturedModalRect(this.guiLeft + 106, this.guiTop + 71, 185, 186, 9, 36);
 		}
-		if(guiLeft + 52 <= mX && guiLeft + 52 + 18 > mX && guiTop + 53 < mY && guiTop + 53 + 18 >= mY) {
-			drawTexturedModalRect(guiLeft + 52, guiTop + 53, 176, 150, 18, 18);
+		if(this.guiLeft + 52 <= mX && this.guiLeft + 52 + 18 > mX && this.guiTop + 53 < mY && this.guiTop + 53 + 18 >= mY) {
+			drawTexturedModalRect(this.guiLeft + 52, this.guiTop + 53, 176, 150, 18, 18);
 		}
 		/*if(guiLeft + 97 <= mX && guiLeft + 97 + 18 > mX && guiTop + 107 < mY && guiTop + 107 + 18 >= mY) {
 			drawTexturedModalRect(guiLeft + 97, guiTop + 107, 176, 168, 18, 18);
 		}*/
 		
-		for(int i = index * 2; i < index * 2 + 10; i++) {
-			if(i >= recipes.size())
+		for(int i = this.index * 2; i < this.index * 2 + 10; i++) {
+			if(i >= this.recipes.size())
 				break;
 			
-			int ind = i - index * 2;
+			int ind = i - this.index * 2;
 			
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			RenderHelper.enableGUIStandardItemLighting();
 			GL11.glDisable(GL11.GL_LIGHTING);
 			
-			AnvilConstructionRecipe recipe = recipes.get(i);
+			AnvilConstructionRecipe recipe = this.recipes.get(i);
 			ItemStack display = recipe.getDisplay();
 			
 			FontRenderer font = null;
 			if (display != null) font = display.getItem().getFontRenderer(display);
-			if (font == null) font = fontRendererObj;
+			if (font == null) font = this.fontRendererObj;
 			
-			itemRender.zLevel = 100.0F;
-			itemRender.renderItemAndEffectIntoGUI(font, this.mc.getTextureManager(), recipe.getDisplay(), guiLeft + 17 + 18 * (ind / 2), guiTop + 72 + 18 * (ind % 2));
-			itemRender.zLevel = 0.0F;
+			GuiScreen.itemRender.zLevel = 100.0F;
+			GuiScreen.itemRender.renderItemAndEffectIntoGUI(font, this.mc.getTextureManager(), recipe.getDisplay(), this.guiLeft + 17 + 18 * (ind / 2), this.guiTop + 72 + 18 * (ind % 2));
+			GuiScreen.itemRender.zLevel = 0.0F;
 			
 			GL11.glEnable(GL11.GL_ALPHA_TEST);
 			GL11.glDisable(GL11.GL_LIGHTING);
-			this.mc.getTextureManager().bindTexture(texture);
+			this.mc.getTextureManager().bindTexture(GUIAnvil.texture);
 			this.zLevel = 300.0F;
-			this.drawTexturedModalRect(guiLeft + 16 + 18 * (ind / 2), guiTop + 71 + 18 * (ind % 2), 18 + 18 * recipe.getOverlay().ordinal(), 222, 18, 18);
+			drawTexturedModalRect(this.guiLeft + 16 + 18 * (ind / 2), this.guiTop + 71 + 18 * (ind % 2), 18 + 18 * recipe.getOverlay().ordinal(), 222, 18, 18);
 			
-			if(selection == i)
-				this.drawTexturedModalRect(guiLeft + 16 + 18 * (ind / 2), guiTop + 71 + 18 * (ind % 2), 0, 222, 18, 18);
+			if(this.selection == i)
+				drawTexturedModalRect(this.guiLeft + 16 + 18 * (ind / 2), this.guiTop + 71 + 18 * (ind % 2), 0, 222, 18, 18);
 		}
 		
 		this.search.drawTextBox();

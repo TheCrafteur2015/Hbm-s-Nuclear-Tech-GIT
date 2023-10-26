@@ -53,7 +53,7 @@ public class EntityMinecartTest extends EntityMinecartModBase
         }
         else if (this.minecartTNTFuse == 0)
         {
-            this.explodeCart(this.motionX * this.motionX + this.motionZ * this.motionZ);
+            explodeCart(this.motionX * this.motionX + this.motionZ * this.motionZ);
         }
 
         if (this.isCollidedHorizontally)
@@ -62,7 +62,7 @@ public class EntityMinecartTest extends EntityMinecartModBase
 
             if (d0 >= 0.009999999776482582D)
             {
-                this.explodeCart(d0);
+                explodeCart(d0);
             }
         }
     }
@@ -75,12 +75,12 @@ public class EntityMinecartTest extends EntityMinecartModBase
 
         if (!p_94095_1_.isExplosion())
         {
-            this.entityDropItem(new ItemStack(Blocks.tnt, 1), 0.0F);
+            entityDropItem(new ItemStack(Blocks.tnt, 1), 0.0F);
         }
 
         if (p_94095_1_.isFireDamage() || p_94095_1_.isExplosion() || d0 >= 0.009999999776482582D)
         {
-            this.explodeCart(d0);
+            explodeCart(d0);
         }
     }
 
@@ -99,7 +99,7 @@ public class EntityMinecartTest extends EntityMinecartModBase
             }
 
             this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, (float)(4.0D + this.rand.nextDouble() * 1.5D * d1), true);
-            this.setDead();
+            setDead();
         }
     }
 
@@ -112,7 +112,7 @@ public class EntityMinecartTest extends EntityMinecartModBase
         if (p_70069_1_ >= 3.0F)
         {
             float f1 = p_70069_1_ / 10.0F;
-            this.explodeCart(f1 * f1);
+            explodeCart(f1 * f1);
         }
 
         super.fall(p_70069_1_);
@@ -126,7 +126,7 @@ public class EntityMinecartTest extends EntityMinecartModBase
     {
         if (p_96095_4_ && this.minecartTNTFuse < 0)
         {
-            this.ignite();
+            ignite();
         }
     }
 
@@ -136,7 +136,7 @@ public class EntityMinecartTest extends EntityMinecartModBase
     {
         if (p_70103_1_ == 10)
         {
-            this.ignite();
+            ignite();
         }
         else
         {
@@ -175,13 +175,13 @@ public class EntityMinecartTest extends EntityMinecartModBase
     @Override
 	public float func_145772_a(Explosion p_145772_1_, World p_145772_2_, int p_145772_3_, int p_145772_4_, int p_145772_5_, Block p_145772_6_)
     {
-        return this.isIgnited() && (BlockRailBase.func_150051_a(p_145772_6_) || BlockRailBase.func_150049_b_(p_145772_2_, p_145772_3_, p_145772_4_ + 1, p_145772_5_)) ? 0.0F : super.func_145772_a(p_145772_1_, p_145772_2_, p_145772_3_, p_145772_4_, p_145772_5_, p_145772_6_);
+        return isIgnited() && (BlockRailBase.func_150051_a(p_145772_6_) || BlockRailBase.func_150049_b_(p_145772_2_, p_145772_3_, p_145772_4_ + 1, p_145772_5_)) ? 0.0F : super.func_145772_a(p_145772_1_, p_145772_2_, p_145772_3_, p_145772_4_, p_145772_5_, p_145772_6_);
     }
 
     @Override
 	public boolean func_145774_a(Explosion p_145774_1_, World p_145774_2_, int p_145774_3_, int p_145774_4_, int p_145774_5_, Block p_145774_6_, float p_145774_7_)
     {
-        return this.isIgnited() && (BlockRailBase.func_150051_a(p_145774_6_) || BlockRailBase.func_150049_b_(p_145774_2_, p_145774_3_, p_145774_4_ + 1, p_145774_5_)) ? false : super.func_145774_a(p_145774_1_, p_145774_2_, p_145774_3_, p_145774_4_, p_145774_5_, p_145774_6_, p_145774_7_);
+        return isIgnited() && (BlockRailBase.func_150051_a(p_145774_6_) || BlockRailBase.func_150049_b_(p_145774_2_, p_145774_3_, p_145774_4_ + 1, p_145774_5_)) ? false : super.func_145774_a(p_145774_1_, p_145774_2_, p_145774_3_, p_145774_4_, p_145774_5_, p_145774_6_, p_145774_7_);
     }
 
     /**

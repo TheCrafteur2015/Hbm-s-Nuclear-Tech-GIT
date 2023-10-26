@@ -19,7 +19,7 @@ public class GUICrateDesh extends GuiContainer {
 	
 	public GUICrateDesh(InventoryPlayer invPlayer, IInventory inv) {
 		super(new ContainerCrateDesh(invPlayer, inv));
-		crate = inv;
+		this.crate = inv;
 		
 		this.xSize = 248;
 		this.ySize = 256;
@@ -36,7 +36,7 @@ public class GUICrateDesh extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUICrateDesh.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 	}
 }

@@ -60,7 +60,7 @@ public class EnchantmentUtil {
 		
 		while (true) {
 			
-			int xpCap = xpBarCap(level);
+			int xpCap = EnchantmentUtil.xpBarCap(level);
 			
 			if (xp < xpCap)
 				return level;
@@ -89,7 +89,7 @@ public class EnchantmentUtil {
 			player.experience = (player.experience - 1.0F) * (float) player.xpBarCap();
 
 			if(silent)
-				addExperienceLevelSilent(player, 1);
+				EnchantmentUtil.addExperienceLevelSilent(player, 1);
 			else
 				player.addExperienceLevel(1);
 		}
@@ -101,7 +101,7 @@ public class EnchantmentUtil {
 		player.experience = 0.0F;
 		player.experienceTotal = 0;
 
-		addExperience(player, xp, true);
+		EnchantmentUtil.addExperience(player, xp, true);
 	}
 
 	public static void addExperienceLevelSilent(EntityPlayer player, int level) {
@@ -120,10 +120,10 @@ public class EnchantmentUtil {
 		
 		/* count only completed levels */
 		for(int i = 0; i < player.experienceLevel; i++) {
-			xp += xpBarCap(i);
+			xp += EnchantmentUtil.xpBarCap(i);
 		}
 		
-		xp += xpBarCap(player.experienceLevel) * player.experience;
+		xp += EnchantmentUtil.xpBarCap(player.experienceLevel) * player.experience;
 		
 		return xp;
 	}

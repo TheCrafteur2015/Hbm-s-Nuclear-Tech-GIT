@@ -74,10 +74,12 @@ public class RenderArcWelder extends TileEntitySpecialRenderer implements IItemR
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase( ) {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(0, -2, 0);
 				GL11.glScaled(4, 4, 4);
 			}
+			@Override
 			public void renderCommon() {
 				bindTexture(ResourceManager.arc_welder_tex);
 				ResourceManager.arc_welder.renderAll();

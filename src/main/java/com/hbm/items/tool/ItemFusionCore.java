@@ -49,10 +49,11 @@ public class ItemFusionCore extends Item {
 		return stack;
 	}
     
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		
-		list.add(EnumChatFormatting.YELLOW + "Charges all worn armor pieces by " + BobMathUtil.getShortNumber(charge) + "HE");
+		list.add(EnumChatFormatting.YELLOW + "Charges all worn armor pieces by " + BobMathUtil.getShortNumber(this.charge) + "HE");
 		list.add("[Requires full electric set to be worn]");
 	}
 }

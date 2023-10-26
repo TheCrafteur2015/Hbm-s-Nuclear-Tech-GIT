@@ -18,22 +18,22 @@ public class TileEntityStructureMarker extends TileEntity {
 	public void updateEntity() {
 		
 		if(this.type > 2)
-			type -= 3;
+			this.type -= 3;
 
-		if(!worldObj.isRemote)
-			PacketDispatcher.wrapper.sendToAllAround(new TEStructurePacket(xCoord, yCoord, zCoord, type), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 250));
+		if(!this.worldObj.isRemote)
+			PacketDispatcher.wrapper.sendToAllAround(new TEStructurePacket(this.xCoord, this.yCoord, this.zCoord, this.type), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 250));
 	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
-		type = nbt.getInteger("type");
+		this.type = nbt.getInteger("type");
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setInteger("type", type);
+		nbt.setInteger("type", this.type);
 	}
 
 }

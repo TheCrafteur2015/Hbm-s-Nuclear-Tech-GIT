@@ -13,7 +13,7 @@ import net.minecraft.util.Vec3;
 
 public class EntityAI_MLPF extends EntityAIBase {
 
-	private Class targetClass;
+	private Class<?> targetClass;
     private EntityLivingBase target;
 	private EntityLiving mover;
     private final Sorter theNearestAttackableTargetSorter;
@@ -22,7 +22,7 @@ public class EntityAI_MLPF extends EntityAIBase {
 	private static final int vertical = 10;
     private double speed;
 	
-	public EntityAI_MLPF(EntityLiving entity, Class targetClass, int range, double speed, int distance)
+	public EntityAI_MLPF(EntityLiving entity, Class<?> targetClass, int range, double speed, int distance)
 	{
 		this.mover = entity;
 		this.targetClass = targetClass;
@@ -36,32 +36,33 @@ public class EntityAI_MLPF extends EntityAIBase {
 	public boolean shouldExecute() {
 		
 		//roll the dice for targetiing if there's nothing to track
-		if(mover.getRNG().nextInt(100) < 5 && mover.getAttackTarget() == null) {
+		if(this.mover.getRNG().nextInt(100) < 5 && this.mover.getAttackTarget() == null) {
 			//System.out.println("Randomizer fired!");
 			//load potential targets
 			calculateTarget();
 			
 			//start if there is a valid target
-			return target != null;
+			return this.target != null;
 		}
 		
 		return false;
 	}
 	
-    public void startExecuting() {
+    @Override
+	public void startExecuting() {
 
     	//create a path line from mover to target
     	Vec3 vec = Vec3.createVectorHelper(
-    			target.posX - mover.posX,
-    			target.posY - mover.posY,
-    			target.posZ - mover.posZ);
+    			this.target.posX - this.mover.posX,
+    			this.target.posY - this.mover.posY,
+    			this.target.posZ - this.mover.posZ);
     	
     	
     	//line length is capped so the pathfinder can manage it
-    	int range = distance;
+    	int range = this.distance;
 
     	if(vec.lengthVector() < 16)
-    		mover.setAttackTarget(target);
+    		this.mover.setAttackTarget(this.target);
 
     	vec = vec.normalize();
     	vec.xCoord *= range;
@@ -69,9 +70,9 @@ public class EntityAI_MLPF extends EntityAIBase {
     	vec.zCoord *= range;
     	
     	//target positions are set (with randomized Y-offset)
-    	double x = mover.posX + vec.xCoord;
-    	double y = mover.posY + vec.yCoord - 5 + mover.getRNG().nextInt(11);
-    	double z = mover.posZ + vec.zCoord;
+    	double x = this.mover.posX + vec.xCoord;
+    	double y = this.mover.posY + vec.yCoord - 5 + this.mover.getRNG().nextInt(11);
+    	double z = this.mover.posZ + vec.zCoord;
     	
     	//System.out.println("Routing to " + x + "/" + y + "/" + z);
     	
@@ -92,29 +93,30 @@ public class EntityAI_MLPF extends EntityAIBase {
 	public void resetTask()
 	{
 		//once the task is complete, remove target
-		target = null;
+		this.target = null;
 	}
 	
 	//scans the area and determines a new target entity
+	@SuppressWarnings("unchecked")
 	private void calculateTarget() {
 		
-		List list = mover.worldObj.getEntitiesWithinAABB(targetClass, AxisAlignedBB.getBoundingBox(
-				mover.posX - range,
-				mover.posY - vertical,
-				mover.posZ - range,
-				mover.posX + range,
-				mover.posY + vertical,
-				mover.posZ + range));
+		List<Entity> list = this.mover.worldObj.getEntitiesWithinAABB(this.targetClass, AxisAlignedBB.getBoundingBox(
+				this.mover.posX - this.range,
+				this.mover.posY - EntityAI_MLPF.vertical,
+				this.mover.posZ - this.range,
+				this.mover.posX + this.range,
+				this.mover.posY + EntityAI_MLPF.vertical,
+				this.mover.posZ + this.range));
 		
-		Collections.sort(list, theNearestAttackableTargetSorter);
+		Collections.sort(list, this.theNearestAttackableTargetSorter);
 		
 		if (!list.isEmpty())
         {
-			target = (EntityLivingBase)list.get(0);
+			this.target = (EntityLivingBase)list.get(0);
         }
 	}
 
-	public static class Sorter implements Comparator {
+	public static class Sorter implements Comparator<Object> {
 		private final Entity theEntity;
 
 		public Sorter(Entity p_i1662_1_) {
@@ -127,6 +129,7 @@ public class EntityAI_MLPF extends EntityAIBase {
 			return d0 < d1 ? -1 : (d0 > d1 ? 1 : 0);
 		}
 
+		@Override
 		public int compare(Object p_compare_1_, Object p_compare_2_) {
 			return this.compare((Entity) p_compare_1_, (Entity) p_compare_2_);
 		}

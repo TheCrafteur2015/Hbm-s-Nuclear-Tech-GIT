@@ -25,10 +25,10 @@ public class ArmorAshGlasses extends ItemArmor {
 	@SideOnly(Side.CLIENT)
 	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot) {
 		
-		if(model == null) {
-			model = new ModelGlasses(0);
+		if(this.model == null) {
+			this.model = new ModelGlasses(0);
 		}
 		
-		return model;
+		return this.model;
 	}
 }

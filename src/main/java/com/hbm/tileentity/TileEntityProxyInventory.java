@@ -11,7 +11,7 @@ public class TileEntityProxyInventory extends TileEntityProxyBase implements ISi
 	@Override
 	public int getSizeInventory() {
 		
-		ISidedInventory inv = this.getBase();
+		ISidedInventory inv = getBase();
 		
 		if(inv != null)
 			return inv.getSizeInventory();
@@ -22,7 +22,7 @@ public class TileEntityProxyInventory extends TileEntityProxyBase implements ISi
 	@Override
 	public ItemStack getStackInSlot(int slot) {
 		
-		ISidedInventory inv = this.getBase();
+		ISidedInventory inv = getBase();
 		
 		if(inv != null)
 			return inv.getStackInSlot(slot);
@@ -33,7 +33,7 @@ public class TileEntityProxyInventory extends TileEntityProxyBase implements ISi
 	@Override
 	public ItemStack decrStackSize(int slot, int count) {
 		
-		ISidedInventory inv = this.getBase();
+		ISidedInventory inv = getBase();
 		
 		if(inv != null)
 			return inv.decrStackSize(slot, count);
@@ -44,7 +44,7 @@ public class TileEntityProxyInventory extends TileEntityProxyBase implements ISi
 	@Override
 	public ItemStack getStackInSlotOnClosing(int slot) {
 		
-		ISidedInventory inv = this.getBase();
+		ISidedInventory inv = getBase();
 		
 		if(inv != null)
 			return inv.getStackInSlotOnClosing(slot);
@@ -55,7 +55,7 @@ public class TileEntityProxyInventory extends TileEntityProxyBase implements ISi
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
 		
-		ISidedInventory inv = this.getBase();
+		ISidedInventory inv = getBase();
 		
 		if(inv != null)
 			inv.setInventorySlotContents(slot, stack);
@@ -64,7 +64,7 @@ public class TileEntityProxyInventory extends TileEntityProxyBase implements ISi
 	@Override
 	public String getInventoryName() {
 		
-		ISidedInventory inv = this.getBase();
+		ISidedInventory inv = getBase();
 		
 		if(inv != null)
 			return inv.getInventoryName();
@@ -75,7 +75,7 @@ public class TileEntityProxyInventory extends TileEntityProxyBase implements ISi
 	@Override
 	public boolean hasCustomInventoryName() {
 		
-		ISidedInventory inv = this.getBase();
+		ISidedInventory inv = getBase();
 		
 		if(inv != null)
 			return inv.hasCustomInventoryName();
@@ -86,7 +86,7 @@ public class TileEntityProxyInventory extends TileEntityProxyBase implements ISi
 	@Override
 	public int getInventoryStackLimit() {
 		
-		ISidedInventory inv = this.getBase();
+		ISidedInventory inv = getBase();
 		
 		if(inv != null)
 			return inv.getInventoryStackLimit();
@@ -108,7 +108,7 @@ public class TileEntityProxyInventory extends TileEntityProxyBase implements ISi
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 		
-		ISidedInventory inv = this.getBase();
+		ISidedInventory inv = getBase();
 		
 		if(inv != null)
 			return inv.isItemValidForSlot(slot, stack);
@@ -119,7 +119,7 @@ public class TileEntityProxyInventory extends TileEntityProxyBase implements ISi
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
 		
-		ISidedInventory inv = this.getBase();
+		ISidedInventory inv = getBase();
 		
 		if(inv != null)
 			return inv.getAccessibleSlotsFromSide(side);
@@ -130,7 +130,7 @@ public class TileEntityProxyInventory extends TileEntityProxyBase implements ISi
 	@Override
 	public boolean canInsertItem(int slot, ItemStack stack, int side) {
 		
-		ISidedInventory inv = this.getBase();
+		ISidedInventory inv = getBase();
 		
 		if(inv != null)
 			return inv.canInsertItem(slot, stack, side);
@@ -141,7 +141,7 @@ public class TileEntityProxyInventory extends TileEntityProxyBase implements ISi
 	@Override
 	public boolean canExtractItem(int slot, ItemStack stack, int side) {
 		
-		ISidedInventory inv = this.getBase();
+		ISidedInventory inv = getBase();
 		
 		if(inv != null)
 			return inv.canExtractItem(slot, stack, side);
@@ -151,7 +151,7 @@ public class TileEntityProxyInventory extends TileEntityProxyBase implements ISi
 	
 	private ISidedInventory getBase() {
 		
-		TileEntity te = this.getTE();
+		TileEntity te = getTE();
 		
 		if(te instanceof ISidedInventory)
 			return (ISidedInventory)te;

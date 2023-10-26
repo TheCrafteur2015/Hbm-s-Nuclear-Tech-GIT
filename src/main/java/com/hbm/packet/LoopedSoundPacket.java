@@ -44,16 +44,16 @@ public class LoopedSoundPacket implements IMessage {
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		x = buf.readInt();
-		y = buf.readInt();
-		z = buf.readInt();
+		this.x = buf.readInt();
+		this.y = buf.readInt();
+		this.z = buf.readInt();
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeInt(x);
-		buf.writeInt(y);
-		buf.writeInt(z);
+		buf.writeInt(this.x);
+		buf.writeInt(this.y);
+		buf.writeInt(this.z);
 	}
 
 	public static class Handler implements IMessageHandler<LoopedSoundPacket, IMessage> {
@@ -67,8 +67,8 @@ public class LoopedSoundPacket implements IMessage {
 			if (te != null && te instanceof TileEntityMachineMiningDrill) {
 				
 				boolean flag = true;
-				for(int i = 0; i < SoundLoopMiner.list.size(); i++)  {
-					if(SoundLoopMiner.list.get(i).getTE() == te && !SoundLoopMiner.list.get(i).isDonePlaying())
+				for (SoundLoopMiner element : SoundLoopMiner.list) {
+					if(element.getTE() == te && !element.isDonePlaying())
 						flag = false;
 				}
 				
@@ -79,8 +79,8 @@ public class LoopedSoundPacket implements IMessage {
 			if (te != null && te instanceof TileEntityMachineAssembler) {
 				
 				boolean flag = true;
-				for(int i = 0; i < SoundLoopAssembler.list.size(); i++)  {
-					if(SoundLoopAssembler.list.get(i).getTE() == te && !SoundLoopAssembler.list.get(i).isDonePlaying())
+				for (SoundLoopAssembler element : SoundLoopAssembler.list) {
+					if(element.getTE() == te && !element.isDonePlaying())
 						flag = false;
 				}
 				
@@ -91,8 +91,8 @@ public class LoopedSoundPacket implements IMessage {
 			if (te != null && te instanceof TileEntityMachineTurbofan) {
 				
 				boolean flag = true;
-				for(int i = 0; i < SoundLoopTurbofan.list.size(); i++)  {
-					if(SoundLoopTurbofan.list.get(i).getTE() == te && !SoundLoopTurbofan.list.get(i).isDonePlaying())
+				for (SoundLoopTurbofan element : SoundLoopTurbofan.list) {
+					if(element.getTE() == te && !element.isDonePlaying())
 						flag = false;
 				}
 				
@@ -103,8 +103,8 @@ public class LoopedSoundPacket implements IMessage {
 			if (te != null && te instanceof TileEntityBroadcaster) {
 				
 				boolean flag = true;
-				for(int i = 0; i < SoundLoopBroadcaster.list.size(); i++)  {
-					if(SoundLoopBroadcaster.list.get(i).getTE() == te && !SoundLoopBroadcaster.list.get(i).isDonePlaying())
+				for (SoundLoopBroadcaster element : SoundLoopBroadcaster.list) {
+					if(element.getTE() == te && !element.isDonePlaying())
 						flag = false;
 				}
 				
@@ -117,8 +117,8 @@ public class LoopedSoundPacket implements IMessage {
 			if (te != null && te instanceof TileEntityMachineCentrifuge) {
 				
 				boolean flag = true;
-				for(int i = 0; i < SoundLoopCentrifuge.list.size(); i++)  {
-					if(SoundLoopCentrifuge.list.get(i).getTE() == te && !SoundLoopCentrifuge.list.get(i).isDonePlaying())
+				for (SoundLoopCentrifuge element : SoundLoopCentrifuge.list) {
+					if(element.getTE() == te && !element.isDonePlaying())
 						flag = false;
 				}
 				
@@ -129,8 +129,8 @@ public class LoopedSoundPacket implements IMessage {
 			if (te != null && te instanceof TileEntityMachineGasCent) {
 				
 				boolean flag = true;
-				for(int i = 0; i < SoundLoopCentrifuge.list.size(); i++)  {
-					if(SoundLoopCentrifuge.list.get(i).getTE() == te && !SoundLoopCentrifuge.list.get(i).isDonePlaying())
+				for (SoundLoopCentrifuge element : SoundLoopCentrifuge.list) {
+					if(element.getTE() == te && !element.isDonePlaying())
 						flag = false;
 				}
 				

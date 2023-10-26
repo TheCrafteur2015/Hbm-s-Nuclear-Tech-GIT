@@ -30,13 +30,13 @@ public class FT_Flammable extends FluidTrait {
 		
 		info.add(EnumChatFormatting.YELLOW + "[Flammable]");
 		
-		if(energy > 0)
-			info.add(EnumChatFormatting.YELLOW + "Provides " + EnumChatFormatting.RED + "" + BobMathUtil.getShortNumber(energy) + "TU " + EnumChatFormatting.YELLOW + "per bucket");
+		if(this.energy > 0)
+			info.add(EnumChatFormatting.YELLOW + "Provides " + EnumChatFormatting.RED + "" + BobMathUtil.getShortNumber(this.energy) + "TU " + EnumChatFormatting.YELLOW + "per bucket");
 	}
 
 	@Override
 	public void serializeJSON(JsonWriter writer) throws IOException {
-		writer.name("energy").value(energy);
+		writer.name("energy").value(this.energy);
 	}
 	
 	@Override

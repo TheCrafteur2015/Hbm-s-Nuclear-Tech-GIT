@@ -23,14 +23,14 @@ public class KeybindPacket implements IMessage {
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		key = buf.readInt();
-		pressed = buf.readBoolean();
+		this.key = buf.readInt();
+		this.pressed = buf.readBoolean();
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeInt(key);
-		buf.writeBoolean(pressed);
+		buf.writeInt(this.key);
+		buf.writeBoolean(this.pressed);
 	}
 
 	public static class Handler implements IMessageHandler<KeybindPacket, IMessage> {

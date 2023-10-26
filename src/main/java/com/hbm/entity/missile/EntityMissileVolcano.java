@@ -23,22 +23,22 @@ public class EntityMissileVolcano extends EntityMissileBaseAdvanced {
 	@Override
 	public void onImpact() {
 		
-		ExplosionLarge.explode(worldObj, posX, posY, posZ, 10.0F, true, true, true);
+		ExplosionLarge.explode(this.worldObj, this.posX, this.posY, this.posZ, 10.0F, true, true, true);
 		
 		for(int x = -1; x <= 1; x++) {
 			for(int y = -1; y <= 1; y++) {
 				for(int z = -1; z <= 1; z++) {
-					worldObj.setBlock((int)Math.floor(posX + x), (int)Math.floor(posY + y), (int)Math.floor(posZ + z), ModBlocks.volcanic_lava_block);
+					this.worldObj.setBlock((int)Math.floor(this.posX + x), (int)Math.floor(this.posY + y), (int)Math.floor(this.posZ + z), ModBlocks.volcanic_lava_block);
 				}
 			}
 		}
 		
-		worldObj.setBlock((int)Math.floor(posX), (int)Math.floor(posY), (int)Math.floor(posZ), ModBlocks.volcano_core);
+		this.worldObj.setBlock((int)Math.floor(this.posX), (int)Math.floor(this.posY), (int)Math.floor(this.posZ), ModBlocks.volcano_core);
 	}
 
 	@Override
 	public List<ItemStack> getDebris() {
-		List<ItemStack> list = new ArrayList<ItemStack>();
+		List<ItemStack> list = new ArrayList<>();
 
 		list.add(new ItemStack(ModItems.plate_titanium, 16));
 		list.add(new ItemStack(ModItems.plate_steel, 20));

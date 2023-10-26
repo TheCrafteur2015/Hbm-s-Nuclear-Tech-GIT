@@ -26,8 +26,8 @@ public class GUIMachineRadar extends GuiInfoContainer {
 
 	public GUIMachineRadar(InventoryPlayer invPlayer, TileEntityMachineRadar tedf) {
 		super(new ContainerMachineRadar(invPlayer, tedf));
-		diFurnace = tedf;
-		texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/machine/gui_radar.png");
+		this.diFurnace = tedf;
+		GUIMachineRadar.texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/machine/gui_radar.png");
 		
 		this.xSize = 216;
 		this.ySize = 234;
@@ -37,17 +37,17 @@ public class GUIMachineRadar extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 8, guiTop + 221, 200, 7, diFurnace.power, diFurnace.maxPower);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 8, this.guiTop + 221, 200, 7, this.diFurnace.power, TileEntityMachineRadar.maxPower);
 
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 10, guiTop + 98, 8, 8, mouseX, mouseY, I18nUtil.resolveKeyArray("radar.detectMissiles") );
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 10, guiTop + 108, 8, 8, mouseX, mouseY, I18nUtil.resolveKeyArray("radar.detectPlayers"));
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 10, guiTop + 118, 8, 8, mouseX, mouseY, I18nUtil.resolveKeyArray("radar.smartMode"));
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 10, guiTop + 128, 8, 8, mouseX, mouseY, I18nUtil.resolveKeyArray("radar.redMode"));
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft - 10, this.guiTop + 98, 8, 8, mouseX, mouseY, I18nUtil.resolveKeyArray("radar.detectMissiles") );
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft - 10, this.guiTop + 108, 8, 8, mouseX, mouseY, I18nUtil.resolveKeyArray("radar.detectPlayers"));
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft - 10, this.guiTop + 118, 8, 8, mouseX, mouseY, I18nUtil.resolveKeyArray("radar.smartMode"));
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft - 10, this.guiTop + 128, 8, 8, mouseX, mouseY, I18nUtil.resolveKeyArray("radar.redMode"));
 
-		if(!diFurnace.nearbyMissiles.isEmpty()) {
-			for(int[] m : diFurnace.nearbyMissiles) {
-				int x = guiLeft + (int)((m[0] - diFurnace.xCoord) / ((double)WeaponConfig.radarRange * 2 + 1) * (200D - 8D)) + 108;
-				int z = guiTop + (int)((m[1] - diFurnace.zCoord) / ((double)WeaponConfig.radarRange * 2 + 1) * (200D - 8D)) + 117;
+		if(!this.diFurnace.nearbyMissiles.isEmpty()) {
+			for(int[] m : this.diFurnace.nearbyMissiles) {
+				int x = this.guiLeft + (int)((m[0] - this.diFurnace.xCoord) / ((double)WeaponConfig.radarRange * 2 + 1) * (200D - 8D)) + 108;
+				int z = this.guiTop + (int)((m[1] - this.diFurnace.zCoord) / ((double)WeaponConfig.radarRange * 2 + 1) * (200D - 8D)) + 117;
 				
 				if(mouseX + 4 > x && mouseX - 4 < x && 
 						mouseY + 4 > z && mouseY - 4 < z) {
@@ -55,7 +55,7 @@ public class GUIMachineRadar extends GuiInfoContainer {
 					
 					String[] text = new String[] { RadarTargetType.values()[m[2]].name, m[0] + " / " + m[1], "Alt.: " + m[3] };
 					
-					this.func_146283_a(Arrays.asList(text), x, z);
+					func_146283_a(Arrays.asList(text), x, z);
 					
 					return;
 				}
@@ -67,24 +67,24 @@ public class GUIMachineRadar extends GuiInfoContainer {
 	protected void mouseClicked(int x, int y, int i) {
 		super.mouseClicked(x, y, i);
 
-		if(guiLeft -10 <= x && guiLeft + -10 + 8 > x && guiTop + 98 < y && guiTop + 98 + 8 >= y) {
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
-			PacketDispatcher.wrapper.sendToServer(new AuxButtonPacket(diFurnace.xCoord, diFurnace.yCoord, diFurnace.zCoord, 0, 0));
+		if(this.guiLeft -10 <= x && this.guiLeft + -10 + 8 > x && this.guiTop + 98 < y && this.guiTop + 98 + 8 >= y) {
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+			PacketDispatcher.wrapper.sendToServer(new AuxButtonPacket(this.diFurnace.xCoord, this.diFurnace.yCoord, this.diFurnace.zCoord, 0, 0));
 		}
 
-		if(guiLeft -10 <= x && guiLeft + -10 + 8 > x && guiTop + 108 < y && guiTop + 108 + 8 >= y) {
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
-			PacketDispatcher.wrapper.sendToServer(new AuxButtonPacket(diFurnace.xCoord, diFurnace.yCoord, diFurnace.zCoord, 0, 1));
+		if(this.guiLeft -10 <= x && this.guiLeft + -10 + 8 > x && this.guiTop + 108 < y && this.guiTop + 108 + 8 >= y) {
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+			PacketDispatcher.wrapper.sendToServer(new AuxButtonPacket(this.diFurnace.xCoord, this.diFurnace.yCoord, this.diFurnace.zCoord, 0, 1));
 		}
 
-		if(guiLeft -10 <= x && guiLeft + -10 + 8 > x && guiTop + 118 < y && guiTop + 118 + 8 >= y) {
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
-			PacketDispatcher.wrapper.sendToServer(new AuxButtonPacket(diFurnace.xCoord, diFurnace.yCoord, diFurnace.zCoord, 0, 2));
+		if(this.guiLeft -10 <= x && this.guiLeft + -10 + 8 > x && this.guiTop + 118 < y && this.guiTop + 118 + 8 >= y) {
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+			PacketDispatcher.wrapper.sendToServer(new AuxButtonPacket(this.diFurnace.xCoord, this.diFurnace.yCoord, this.diFurnace.zCoord, 0, 2));
 		}
 
-		if(guiLeft -10 <= x && guiLeft + -10 + 8 > x && guiTop + 128 < y && guiTop + 128 + 8 >= y) {
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
-			PacketDispatcher.wrapper.sendToServer(new AuxButtonPacket(diFurnace.xCoord, diFurnace.yCoord, diFurnace.zCoord, 0, 3));
+		if(this.guiLeft -10 <= x && this.guiLeft + -10 + 8 > x && this.guiTop + 128 < y && this.guiTop + 128 + 8 >= y) {
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+			PacketDispatcher.wrapper.sendToServer(new AuxButtonPacket(this.diFurnace.xCoord, this.diFurnace.yCoord, this.diFurnace.zCoord, 0, 3));
 		}
 	}
 	
@@ -98,45 +98,45 @@ public class GUIMachineRadar extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
-		drawTexturedModalRect(guiLeft - 14, guiTop + 94, 216, 198, 14, 46);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIMachineRadar.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
+		drawTexturedModalRect(this.guiLeft - 14, this.guiTop + 94, 216, 198, 14, 46);
 		
-		if(diFurnace.scanMissiles || (diFurnace.jammed && diFurnace.getWorldObj().rand.nextBoolean()))
-			drawTexturedModalRect(guiLeft - 10, guiTop + 98, 230, 202, 8, 8);
+		if(this.diFurnace.scanMissiles || (this.diFurnace.jammed && this.diFurnace.getWorldObj().rand.nextBoolean()))
+			drawTexturedModalRect(this.guiLeft - 10, this.guiTop + 98, 230, 202, 8, 8);
 		
-		if(diFurnace.scanPlayers || (diFurnace.jammed && diFurnace.getWorldObj().rand.nextBoolean()))
-			drawTexturedModalRect(guiLeft - 10, guiTop + 108, 230, 212, 8, 8);
+		if(this.diFurnace.scanPlayers || (this.diFurnace.jammed && this.diFurnace.getWorldObj().rand.nextBoolean()))
+			drawTexturedModalRect(this.guiLeft - 10, this.guiTop + 108, 230, 212, 8, 8);
 		
-		if(diFurnace.smartMode || (diFurnace.jammed && diFurnace.getWorldObj().rand.nextBoolean()))
-			drawTexturedModalRect(guiLeft - 10, guiTop + 118, 230, 222, 8, 8);
+		if(this.diFurnace.smartMode || (this.diFurnace.jammed && this.diFurnace.getWorldObj().rand.nextBoolean()))
+			drawTexturedModalRect(this.guiLeft - 10, this.guiTop + 118, 230, 222, 8, 8);
 		
-		if(diFurnace.redMode || (diFurnace.jammed && diFurnace.getWorldObj().rand.nextBoolean()))
-			drawTexturedModalRect(guiLeft - 10, guiTop + 128, 230, 232, 8, 8);
+		if(this.diFurnace.redMode || (this.diFurnace.jammed && this.diFurnace.getWorldObj().rand.nextBoolean()))
+			drawTexturedModalRect(this.guiLeft - 10, this.guiTop + 128, 230, 232, 8, 8);
 		
-		if(diFurnace.power > 0) {
-			int i = (int)diFurnace.getPowerScaled(200);
-			drawTexturedModalRect(guiLeft + 8, guiTop + 221, 0, 234, i, 16);
+		if(this.diFurnace.power > 0) {
+			int i = (int)this.diFurnace.getPowerScaled(200);
+			drawTexturedModalRect(this.guiLeft + 8, this.guiTop + 221, 0, 234, i, 16);
 		}
 		
-		if(diFurnace.jammed) {
+		if(this.diFurnace.jammed) {
 			
 			for(int i = 0; i < 5; i++) {
 				for(int j = 0; j < 5; j++) {
-					drawTexturedModalRect(guiLeft + 8 + i * 40, guiTop + 17 + j * 40, 216, 118 + diFurnace.getWorldObj().rand.nextInt(41), 40, 40);
+					drawTexturedModalRect(this.guiLeft + 8 + i * 40, this.guiTop + 17 + j * 40, 216, 118 + this.diFurnace.getWorldObj().rand.nextInt(41), 40, 40);
 				}
 			}
 			
 			return;
 		}
 		
-		if(!diFurnace.nearbyMissiles.isEmpty()) {
-			for(int[] m : diFurnace.nearbyMissiles) {
-				int x = (int)((m[0] - diFurnace.xCoord) / ((double)WeaponConfig.radarRange * 2 + 1) * (200D - 8D)) - 4;
-				int z = (int)((m[1] - diFurnace.zCoord) / ((double)WeaponConfig.radarRange * 2 + 1) * (200D - 8D)) - 4;
+		if(!this.diFurnace.nearbyMissiles.isEmpty()) {
+			for(int[] m : this.diFurnace.nearbyMissiles) {
+				int x = (int)((m[0] - this.diFurnace.xCoord) / ((double)WeaponConfig.radarRange * 2 + 1) * (200D - 8D)) - 4;
+				int z = (int)((m[1] - this.diFurnace.zCoord) / ((double)WeaponConfig.radarRange * 2 + 1) * (200D - 8D)) - 4;
 				int t = m[2];
 
-				drawTexturedModalRect(guiLeft + 108 + x, guiTop + 117 + z, 216, 8 * t, 8, 8);
+				drawTexturedModalRect(this.guiLeft + 108 + x, this.guiTop + 117 + z, 216, 8 * t, 8, 8);
 			}
 		}
 	}

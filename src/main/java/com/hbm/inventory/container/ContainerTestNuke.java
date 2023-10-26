@@ -14,25 +14,25 @@ public class ContainerTestNuke extends Container {
 	
 	public ContainerTestNuke(InventoryPlayer invPlayer, TileEntityTestNuke tedf) {
 		
-		testNuke = tedf;
+		this.testNuke = tedf;
 		
-		this.addSlotToContainer(new Slot(tedf, 0, 26, 36));
-		this.addSlotToContainer(new Slot(tedf, 1, 44, 36));
-		this.addSlotToContainer(new Slot(tedf, 2, 62, 36));
-		this.addSlotToContainer(new Slot(tedf, 3, 80, 36));
-		this.addSlotToContainer(new Slot(tedf, 4, 98, 36));
+		addSlotToContainer(new Slot(tedf, 0, 26, 36));
+		addSlotToContainer(new Slot(tedf, 1, 44, 36));
+		addSlotToContainer(new Slot(tedf, 2, 62, 36));
+		addSlotToContainer(new Slot(tedf, 3, 80, 36));
+		addSlotToContainer(new Slot(tedf, 4, 98, 36));
 		
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++)
 		{
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
 		}
 	}
 	
@@ -44,7 +44,7 @@ public class ContainerTestNuke extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return testNuke.isUseableByPlayer(player);
+		return this.testNuke.isUseableByPlayer(player);
 	}
 
 }

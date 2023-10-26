@@ -17,25 +17,25 @@ public class EntityMovingItem extends EntityMovingConveyorObject implements ICon
 
 	public EntityMovingItem(World p_i1582_1_) {
 		super(p_i1582_1_);
-		this.setSize(0.375F, 0.375F);
+		setSize(0.375F, 0.375F);
 	}
 
 	public void setItemStack(ItemStack stack) {
-		this.getDataWatcher().updateObject(10, stack);
-		this.getDataWatcher().setObjectWatched(10);
+		getDataWatcher().updateObject(10, stack);
+		getDataWatcher().setObjectWatched(10);
 	}
 
 	@Override
 	public ItemStack getItemStack() {
-		ItemStack stack = this.getDataWatcher().getWatchableObjectItemStack(10);
+		ItemStack stack = getDataWatcher().getWatchableObjectItemStack(10);
 		return stack == null ? new ItemStack(Blocks.stone) : stack;
 	}
 
 	@Override
 	public boolean interactFirst(EntityPlayer player) {
 
-		if(!worldObj.isRemote && player.inventory.addItemStackToInventory(this.getItemStack().copy())) {
-			this.setDead();
+		if(!this.worldObj.isRemote && player.inventory.addItemStackToInventory(getItemStack().copy())) {
+			setDead();
 		}
 
 		return false;
@@ -44,56 +44,56 @@ public class EntityMovingItem extends EntityMovingConveyorObject implements ICon
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
 
-		if(!worldObj.isRemote) {
-			this.setDead();
-			worldObj.spawnEntityInWorld(new EntityItem(worldObj, posX, posY, posZ, this.getItemStack()));
+		if(!this.worldObj.isRemote) {
+			setDead();
+			this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.posX, this.posY, this.posZ, getItemStack()));
 		}
 		return true;
 	}
 
 	@Override
 	protected void entityInit() {
-		this.getDataWatcher().addObjectByDataType(10, 5);
+		getDataWatcher().addObjectByDataType(10, 5);
 	}
 
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound nbt) {
 
 		NBTTagCompound compound = nbt.getCompoundTag("Item");
-		this.setItemStack(ItemStack.loadItemStackFromNBT(compound));
+		setItemStack(ItemStack.loadItemStackFromNBT(compound));
 
 		ItemStack stack = getDataWatcher().getWatchableObjectItemStack(10);
 
 		if(stack == null || stack.stackSize <= 0)
-			this.setDead();
+			setDead();
 	}
 
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound nbt) {
 
-		if(this.getItemStack() != null)
-			nbt.setTag("Item", this.getItemStack().writeToNBT(new NBTTagCompound()));
+		if(getItemStack() != null)
+			nbt.setTag("Item", getItemStack().writeToNBT(new NBTTagCompound()));
 	}
 
 	@Override
 	public void enterBlock(IEnterableBlock enterable, BlockPos pos, ForgeDirection dir) {
 		
-		if(enterable.canItemEnter(worldObj, pos.getX(), pos.getY(), pos.getZ(), dir, this)) {
-			enterable.onItemEnter(worldObj, pos.getX(), pos.getY(), pos.getZ(), dir, this);
-			this.setDead();
+		if(enterable.canItemEnter(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), dir, this)) {
+			enterable.onItemEnter(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), dir, this);
+			setDead();
 		}
 	}
 
 	@Override
 	public boolean onLeaveConveyor() {
 		
-		this.setDead();
-		EntityItem item = new EntityItem(worldObj, posX + motionX * 2, posY + motionY * 2, posZ + motionZ * 2, this.getItemStack());
+		setDead();
+		EntityItem item = new EntityItem(this.worldObj, this.posX + this.motionX * 2, this.posY + this.motionY * 2, this.posZ + this.motionZ * 2, getItemStack());
 		item.motionX = this.motionX * 2;
 		item.motionY = 0.1;
 		item.motionZ = this.motionZ * 2;
 		item.velocityChanged = true;
-		worldObj.spawnEntityInWorld(item);
+		this.worldObj.spawnEntityInWorld(item);
 		
 		return true;
 	}

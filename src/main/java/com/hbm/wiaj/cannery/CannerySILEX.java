@@ -25,9 +25,9 @@ import com.hbm.wiaj.actions.ActionSetZoom;
 import com.hbm.wiaj.actions.ActionUpdateActor;
 import com.hbm.wiaj.actions.ActionWait;
 import com.hbm.wiaj.actors.ActorFancyPanel;
+import com.hbm.wiaj.actors.ActorFancyPanel.Orientation;
 import com.hbm.wiaj.actors.ActorTileEntity;
 import com.hbm.wiaj.actors.ITileActorRenderer;
-import com.hbm.wiaj.actors.ActorFancyPanel.Orientation;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
@@ -47,6 +47,7 @@ public class CannerySILEX extends CanneryBase {
 		return "cannery.silex";
 	}
 
+	@Override
 	public JarScript createScript() {
 		WorldInAJar world = new WorldInAJar(17, 5, 5);
 		JarScript script = new JarScript(world);
@@ -74,30 +75,30 @@ public class CannerySILEX extends CanneryBase {
 		scene0.add(new ActionCreateActor(0, new ActorTileEntity(new ActorFEL(), fel)));
 
 		scene0.add(new ActionCreateActor(3, new ActorFancyPanel(Minecraft.getMinecraft().fontRenderer, 15, -5, new Object[][] {{I18nUtil.resolveKey("cannery.silex.0")}}, 100)
-				.setColors(colorCopper).setOrientation(Orientation.LEFT)));
+				.setColors(CanneryBase.colorCopper).setOrientation(Orientation.LEFT)));
 
 		scene0.add(new ActionWait(80));
 		scene0.add(new ActionRemoveActor(3));
 		scene0.add(new ActionWait(10));
 
 		scene0.add(new ActionCreateActor(3, new ActorFancyPanel(Minecraft.getMinecraft().fontRenderer, -7, -15, new Object[][] {{new ItemStack(ModItems.laser_crystal_co2)}}, 0)
-				.setColors(colorCopper).setOrientation(Orientation.BOTTOM)));
+				.setColors(CanneryBase.colorCopper).setOrientation(Orientation.BOTTOM)));
 		scene0.add(new ActionUpdateActor(0, "mode", 1));
 		scene0.add(new ActionWait(20));
 		scene0.add(new ActionCreateActor(3, new ActorFancyPanel(Minecraft.getMinecraft().fontRenderer, -7, -15, new Object[][] {{new ItemStack(ModItems.laser_crystal_bismuth)}}, 0)
-				.setColors(colorCopper).setOrientation(Orientation.BOTTOM)));
+				.setColors(CanneryBase.colorCopper).setOrientation(Orientation.BOTTOM)));
 		scene0.add(new ActionUpdateActor(0, "mode", 2));
 		scene0.add(new ActionWait(20));
 		scene0.add(new ActionCreateActor(3, new ActorFancyPanel(Minecraft.getMinecraft().fontRenderer, -7, -15, new Object[][] {{new ItemStack(ModItems.laser_crystal_cmb)}}, 0)
-				.setColors(colorCopper).setOrientation(Orientation.BOTTOM)));
+				.setColors(CanneryBase.colorCopper).setOrientation(Orientation.BOTTOM)));
 		scene0.add(new ActionUpdateActor(0, "mode", 3));
 		scene0.add(new ActionWait(20));
 		scene0.add(new ActionCreateActor(3, new ActorFancyPanel(Minecraft.getMinecraft().fontRenderer, -7, -15, new Object[][] {{new ItemStack(ModItems.laser_crystal_dnt)}}, 0)
-				.setColors(colorCopper).setOrientation(Orientation.BOTTOM)));
+				.setColors(CanneryBase.colorCopper).setOrientation(Orientation.BOTTOM)));
 		scene0.add(new ActionUpdateActor(0, "mode", 4));
 		scene0.add(new ActionWait(20));
 		scene0.add(new ActionCreateActor(3, new ActorFancyPanel(Minecraft.getMinecraft().fontRenderer, -7, -15, new Object[][] {{new ItemStack(ModItems.laser_crystal_digamma)}}, 0)
-				.setColors(colorCopper).setOrientation(Orientation.BOTTOM)));
+				.setColors(CanneryBase.colorCopper).setOrientation(Orientation.BOTTOM)));
 		scene0.add(new ActionUpdateActor(0, "mode", 5));
 		scene0.add(new ActionWait(20));
 		
@@ -113,7 +114,7 @@ public class CannerySILEX extends CanneryBase {
 		}
 		
 		scene0.add(new ActionCreateActor(3, new ActorFancyPanel(Minecraft.getMinecraft().fontRenderer, -7, -15, new Object[][] {{I18nUtil.resolveKey("cannery.silex.1")}}, 150)
-				.setColors(colorCopper).setOrientation(Orientation.BOTTOM)));
+				.setColors(CanneryBase.colorCopper).setOrientation(Orientation.BOTTOM)));
 		scene0.add(new ActionUpdateActor(0, "mode", 3));
 		scene0.add(new ActionUpdateActor(0, "length", 4));
 		
@@ -137,7 +138,7 @@ public class CannerySILEX extends CanneryBase {
 		}
 		
 		scene0.add(new ActionCreateActor(3, new ActorFancyPanel(Minecraft.getMinecraft().fontRenderer, -7, -15, new Object[][] {{I18nUtil.resolveKey("cannery.silex.2")}}, 150)
-				.setColors(colorCopper).setOrientation(Orientation.BOTTOM)));
+				.setColors(CanneryBase.colorCopper).setOrientation(Orientation.BOTTOM)));
 		scene0.add(new ActionWait(40));
 		scene0.add(new ActionRemoveActor(3));
 		
@@ -167,17 +168,17 @@ public class CannerySILEX extends CanneryBase {
 		scene1.add(new ActionWait(20));
 		
 		scene1.add(new ActionCreateActor(3, new ActorFancyPanel(Minecraft.getMinecraft().fontRenderer, 42, -18, new Object[][] {{I18nUtil.resolveKey("cannery.silex.3")}}, 150)
-				.setColors(colorCopper).setOrientation(Orientation.BOTTOM)));
+				.setColors(CanneryBase.colorCopper).setOrientation(Orientation.BOTTOM)));
 		
 		scene1.add(new ActionWait(80));
 		
 		scene1.add(new ActionCreateActor(3, new ActorFancyPanel(Minecraft.getMinecraft().fontRenderer, 60, 32, new Object[][] {{I18nUtil.resolveKey("cannery.silex.4")}}, 150)
-				.setColors(colorCopper).setOrientation(Orientation.RIGHT)));
+				.setColors(CanneryBase.colorCopper).setOrientation(Orientation.RIGHT)));
 		
 		scene1.add(new ActionWait(60));
 		
 		scene1.add(new ActionCreateActor(3, new ActorFancyPanel(Minecraft.getMinecraft().fontRenderer, 12, 32, new Object[][] {{I18nUtil.resolveKey("cannery.silex.5")}}, 150)
-				.setColors(colorCopper).setOrientation(Orientation.RIGHT)));
+				.setColors(CanneryBase.colorCopper).setOrientation(Orientation.RIGHT)));
 		
 		scene1.add(new ActionWait(60));
 		scene1.add(new ActionRemoveActor(3));
@@ -200,17 +201,17 @@ public class CannerySILEX extends CanneryBase {
 		scene1.add(new ActionWait(10));
 		
 		scene1.add(new ActionCreateActor(3, new ActorFancyPanel(Minecraft.getMinecraft().fontRenderer, 42, -18, new Object[][] {{I18nUtil.resolveKey("cannery.silex.6")}}, 150)
-				.setColors(colorCopper).setOrientation(Orientation.BOTTOM)));
+				.setColors(CanneryBase.colorCopper).setOrientation(Orientation.BOTTOM)));
 		
 		scene1.add(new ActionWait(80));
 		
 		scene1.add(new ActionCreateActor(3, new ActorFancyPanel(Minecraft.getMinecraft().fontRenderer, 42, -18, new Object[][] {{I18nUtil.resolveKey("cannery.silex.7")}}, 150)
-				.setColors(colorCopper).setOrientation(Orientation.BOTTOM)));
+				.setColors(CanneryBase.colorCopper).setOrientation(Orientation.BOTTOM)));
 		
 		scene1.add(new ActionWait(60));
 		
 		scene1.add(new ActionCreateActor(3, new ActorFancyPanel(Minecraft.getMinecraft().fontRenderer, -7, -15, new Object[][] {{I18nUtil.resolveKey("cannery.silex.8")}}, 150)
-				.setColors(colorCopper).setOrientation(Orientation.BOTTOM)));
+				.setColors(CanneryBase.colorCopper).setOrientation(Orientation.BOTTOM)));
 		
 		scene1.add(new ActionWait(60));
 		scene1.add(new ActionRemoveActor(3));

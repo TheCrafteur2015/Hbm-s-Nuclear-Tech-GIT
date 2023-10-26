@@ -38,7 +38,7 @@ public class BlockHadronPower extends BlockContainer implements ILookOverlay {
 		
 		TileEntityHadronPower battery = (TileEntityHadronPower) te;
 		
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		text.add(BobMathUtil.getShortNumber(battery.getPower()) + " / " + BobMathUtil.getShortNumber(battery.getMaxPower()) + "HE");
 		
 		double percent = (double) battery.getPower() / (double) battery.getMaxPower();

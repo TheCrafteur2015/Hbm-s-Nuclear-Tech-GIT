@@ -35,10 +35,10 @@ public abstract class BlockGraphiteDrilledBase extends BlockFlammable implements
 	public BlockGraphiteDrilledBase() {
 		super(ModBlocks.block_graphite.getMaterial(), ((BlockFlammable) ModBlocks.block_graphite).encouragement, ((BlockFlammable) ModBlocks.block_graphite).flammability);
 		
-		this.setCreativeTab(null);
-		this.setStepSound(Block.soundTypeMetal);
-		this.setHardness(5.0F);
-		this.setResistance(10.0F);
+		setCreativeTab(null);
+		setStepSound(Block.soundTypeMetal);
+		setHardness(5.0F);
+		setResistance(10.0F);
 	}
 	
 	@Override
@@ -93,7 +93,7 @@ public abstract class BlockGraphiteDrilledBase extends BlockFlammable implements
 			
 			if(side == cfg * 2 || side == cfg * 2 + 1) {
 				world.setBlock(x, y, z, ModBlocks.block_graphite_drilled, meta & 7, 3);
-				this.ejectItem(world, x, y, z, ForgeDirection.getOrientation(side), new ItemStack(getInsertedItem(meta)));
+				ejectItem(world, x, y, z, ForgeDirection.getOrientation(side), new ItemStack(getInsertedItem(meta)));
 			}
 		}
 		
@@ -111,7 +111,7 @@ public abstract class BlockGraphiteDrilledBase extends BlockFlammable implements
 	
 	@Override
 	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int meta, int fortune) {
-		ArrayList<ItemStack> drops = new ArrayList();
+		ArrayList<ItemStack> drops = new ArrayList<>();
 		drops.add(new ItemStack(ModItems.ingot_graphite, 8));
 		if((meta & 4) == 4)
 			drops.add(new ItemStack(ModItems.hull_small_aluminium, 1));
@@ -218,7 +218,7 @@ public abstract class BlockGraphiteDrilledBase extends BlockFlammable implements
 						break;
 				} else {
 					Item eject = ((BlockGraphiteDrilledBase) oldBlock).getInsertedItem(oldMeta); //TODO old methods to itemstack
-					this.ejectItem(world, ix - dir.offsetX, iy - dir.offsetY, iz - dir.offsetZ, dir, new ItemStack(eject));
+					ejectItem(world, ix - dir.offsetX, iy - dir.offsetY, iz - dir.offsetZ, dir, new ItemStack(eject));
 					world.playSoundEffect(ix + 0.5, iy + 0.5, iz + 0.5, "hbm:item.upgradePlug", 1.25F, 1.0F);
 					
 					break;

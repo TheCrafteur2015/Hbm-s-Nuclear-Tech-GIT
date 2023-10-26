@@ -32,7 +32,7 @@ public class ElectricityRenderer extends Render {
 	@Override
 	public void doRender(Entity p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_) {
 		
-		IIcon iicon = field_94151_a.getIconFromDamage(0);
+		IIcon iicon = this.field_94151_a.getIconFromDamage(0);
 
 		if (iicon != null) {
 			GL11.glPushMatrix();
@@ -40,10 +40,10 @@ public class ElectricityRenderer extends Render {
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 			GL11.glScalef(0.5F, 0.5F, 0.5F);
 			GL11.glScalef(7.5F, 7.5F, 7.5F);
-			this.bindEntityTexture(p_76986_1_);
+			bindEntityTexture(p_76986_1_);
 			Tessellator tessellator = Tessellator.instance;
 
-			this.func_77026_a(tessellator, iicon);
+			func_77026_a(tessellator, iicon);
 			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 			GL11.glPopMatrix();
 		}

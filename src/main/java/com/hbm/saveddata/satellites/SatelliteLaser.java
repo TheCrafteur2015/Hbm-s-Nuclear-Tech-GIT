@@ -16,18 +16,21 @@ public class SatelliteLaser extends Satellite {
 		this.satIface = Interfaces.SAT_PANEL;
 	}
 	
+	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
-		nbt.setLong("lastOp", lastOp);
+		nbt.setLong("lastOp", this.lastOp);
 	}
 	
+	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
-		lastOp = nbt.getLong("lastOp");
+		this.lastOp = nbt.getLong("lastOp");
 	}
 	
+	@Override
 	public void onClick(World world, int x, int z) {
 		
-		if(lastOp + 10000 < System.currentTimeMillis()) {
-    		lastOp = System.currentTimeMillis();
+		if(this.lastOp + 10000 < System.currentTimeMillis()) {
+    		this.lastOp = System.currentTimeMillis();
     		
     		int y = world.getHeightValue(x, z);
     		

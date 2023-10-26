@@ -50,19 +50,19 @@ public class TileEntityMachineGasCent extends TileEntityMachineBase implements I
 	
 	private static final int[] slots_io = new int[] { 0, 1, 2, 3 };
 	
-	private static HashMap<FluidType, PseudoFluidType> fluidConversions = new HashMap();
+	private static HashMap<FluidType, PseudoFluidType> fluidConversions = new HashMap<>();
 	
 	static {
-		fluidConversions.put(Fluids.UF6, PseudoFluidType.NUF6);
-		fluidConversions.put(Fluids.PUF6, PseudoFluidType.PF6);
-		fluidConversions.put(Fluids.WATZ, PseudoFluidType.MUD);
+		TileEntityMachineGasCent.fluidConversions.put(Fluids.UF6, PseudoFluidType.NUF6);
+		TileEntityMachineGasCent.fluidConversions.put(Fluids.PUF6, PseudoFluidType.PF6);
+		TileEntityMachineGasCent.fluidConversions.put(Fluids.WATZ, PseudoFluidType.MUD);
 	}
 	
 	public TileEntityMachineGasCent() {
 		super(7); 
-		tank = new FluidTank(Fluids.UF6, 2000, 0);
-		inputTank = new PseudoFluidTank(PseudoFluidType.NUF6, 8000);
-		outputTank = new PseudoFluidTank(PseudoFluidType.LEUF6, 8000);
+		this.tank = new FluidTank(Fluids.UF6, 2000, 0);
+		this.inputTank = new PseudoFluidTank(PseudoFluidType.NUF6, 8000);
+		this.outputTank = new PseudoFluidTank(PseudoFluidType.LEUF6, 8000);
 	}
 	
 	@Override
@@ -77,54 +77,51 @@ public class TileEntityMachineGasCent extends TileEntityMachineBase implements I
 	
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
-		return slots_io;
+		return TileEntityMachineGasCent.slots_io;
 	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		
-		power = nbt.getLong("power");
-		progress = nbt.getShort("progress");
-		tank.readFromNBT(nbt, "tank");
-		inputTank.readFromNBT(nbt, "inputTank");
-		outputTank.readFromNBT(nbt, "outputTank");
+		this.power = nbt.getLong("power");
+		this.progress = nbt.getShort("progress");
+		this.tank.readFromNBT(nbt, "tank");
+		this.inputTank.readFromNBT(nbt, "inputTank");
+		this.outputTank.readFromNBT(nbt, "outputTank");
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setLong("power", power);
-		nbt.setShort("progress", (short) progress);
-		tank.writeToNBT(nbt, "tank");
-		inputTank.writeToNBT(nbt, "inputTank");
-		outputTank.writeToNBT(nbt, "outputTank");
+		nbt.setLong("power", this.power);
+		nbt.setShort("progress", (short) this.progress);
+		this.tank.writeToNBT(nbt, "tank");
+		this.inputTank.writeToNBT(nbt, "inputTank");
+		this.outputTank.writeToNBT(nbt, "outputTank");
 	}
 	
 	public int getCentrifugeProgressScaled(int i) {
-		return (progress * i) / getProcessingSpeed();
+		return (this.progress * i) / getProcessingSpeed();
 	}
 	
 	public long getPowerRemainingScaled(int i) {
-		return (power * i) / maxPower;
+		return (this.power * i) / TileEntityMachineGasCent.maxPower;
 	}
 	
 	private boolean canEnrich() {
-		if(power > 0 && this.inputTank.getFill() >= inputTank.getTankType().getFluidConsumed() && this.outputTank.getFill() + this.inputTank.getTankType().getFluidProduced() <= outputTank.getMaxFill()) {
+		if(this.power > 0 && this.inputTank.getFill() >= this.inputTank.getTankType().getFluidConsumed() && this.outputTank.getFill() + this.inputTank.getTankType().getFluidProduced() <= this.outputTank.getMaxFill()) {
 			
-			ItemStack[] list = inputTank.getTankType().getOutput();
+			ItemStack[] list = this.inputTank.getTankType().getOutput();
 			
 			if(this.inputTank.getTankType().getIfHighSpeed())
-				if(!(slots[6] != null && slots[6].getItem() == ModItems.upgrade_gc_speed))
+				if(!(this.slots[6] != null && this.slots[6].getItem() == ModItems.upgrade_gc_speed))
 					return false;
 			
-			if(list == null)
+			if((list == null) || (list.length < 1))
 				return false;
 			
-			if(list.length < 1)
-				return false;
-			
-			if(InventoryUtil.doesArrayHaveSpace(slots, 0, 3, list))
+			if(InventoryUtil.doesArrayHaveSpace(this.slots, 0, 3, list))
 				return true;
 		}
 		
@@ -132,22 +129,22 @@ public class TileEntityMachineGasCent extends TileEntityMachineBase implements I
 	}
 	
 	private void enrich() {
-		ItemStack[] output = inputTank.getTankType().getOutput();
+		ItemStack[] output = this.inputTank.getTankType().getOutput();
 		
 		this.progress = 0;
-		inputTank.setFill(inputTank.getFill() - inputTank.getTankType().getFluidConsumed()); 
-		outputTank.setFill(outputTank.getFill() + inputTank.getTankType().getFluidProduced()); 
+		this.inputTank.setFill(this.inputTank.getFill() - this.inputTank.getTankType().getFluidConsumed()); 
+		this.outputTank.setFill(this.outputTank.getFill() + this.inputTank.getTankType().getFluidProduced()); 
 		
 		for(byte i = 0; i < output.length; i++)
-			InventoryUtil.tryAddItemToInventory(slots, 0, 3, output[i].copy()); //reference types almost got me again
+			InventoryUtil.tryAddItemToInventory(this.slots, 0, 3, output[i].copy()); //reference types almost got me again
 	}
 	
 	private void attemptConversion() {
-		if(inputTank.getFill() < inputTank.getMaxFill() && tank.getFill() > 0) {
-			int fill = Math.min(inputTank.getMaxFill() - inputTank.getFill(), tank.getFill());
+		if(this.inputTank.getFill() < this.inputTank.getMaxFill() && this.tank.getFill() > 0) {
+			int fill = Math.min(this.inputTank.getMaxFill() - this.inputTank.getFill(), this.tank.getFill());
 			
-			tank.setFill(tank.getFill() - fill);
-			inputTank.setFill(inputTank.getFill() + fill);
+			this.tank.setFill(this.tank.getFill() - fill);
+			this.inputTank.setFill(this.inputTank.getFill() + fill);
 		}
 	}
 	
@@ -155,17 +152,17 @@ public class TileEntityMachineGasCent extends TileEntityMachineBase implements I
 		if(te instanceof TileEntityMachineGasCent) {
 			TileEntityMachineGasCent cent = (TileEntityMachineGasCent) te;
 			
-			if(cent.tank.getFill() == 0 && cent.tank.getTankType() == tank.getTankType()) {
-				if(cent.inputTank.getTankType() != outputTank.getTankType() && outputTank.getTankType() != PseudoFluidType.NONE) {
-					cent.inputTank.setTankType(outputTank.getTankType());
-					cent.outputTank.setTankType(outputTank.getTankType().getOutputType());
+			if(cent.tank.getFill() == 0 && cent.tank.getTankType() == this.tank.getTankType()) {
+				if(cent.inputTank.getTankType() != this.outputTank.getTankType() && this.outputTank.getTankType() != PseudoFluidType.NONE) {
+					cent.inputTank.setTankType(this.outputTank.getTankType());
+					cent.outputTank.setTankType(this.outputTank.getTankType().getOutputType());
 				}
 				
 				//God, why did I forget about the entirety of the fucking math library?
-				if(cent.inputTank.getFill() < cent.inputTank.getMaxFill() && outputTank.getFill() > 0) {
-					int fill = Math.min(cent.inputTank.getMaxFill() - cent.inputTank.getFill(), outputTank.getFill());
+				if(cent.inputTank.getFill() < cent.inputTank.getMaxFill() && this.outputTank.getFill() > 0) {
+					int fill = Math.min(cent.inputTank.getMaxFill() - cent.inputTank.getFill(), this.outputTank.getFill());
 					
-					outputTank.setFill(outputTank.getFill() - fill);
+					this.outputTank.setFill(this.outputTank.getFill() - fill);
 					cent.inputTank.setFill(cent.inputTank.getFill() + fill);
 				}
 				
@@ -176,6 +173,7 @@ public class TileEntityMachineGasCent extends TileEntityMachineBase implements I
 		return false;
 	}
 	
+	@Override
 	public void networkUnpack(NBTTagCompound data) {
 		this.power = data.getLong("power");
 		this.progress = data.getInteger("progress");
@@ -189,127 +187,127 @@ public class TileEntityMachineGasCent extends TileEntityMachineBase implements I
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			updateConnections();
 
-			power = Library.chargeTEFromItems(slots, 4, power, maxPower);
+			this.power = Library.chargeTEFromItems(this.slots, 4, this.power, TileEntityMachineGasCent.maxPower);
 			setTankType(5);
-			tank.updateTank(this);
+			this.tank.updateTank(this);
 			
-			if(fluidConversions.containsValue(inputTank.getTankType())) {
+			if(TileEntityMachineGasCent.fluidConversions.containsValue(this.inputTank.getTankType())) {
 				attemptConversion();
 			}
 			
 			if(canEnrich()) {
 				
-				isProgressing = true;
+				this.isProgressing = true;
 				this.progress++;
 				
-				if(slots[6] != null && slots[6].getItem() == ModItems.upgrade_gc_speed)
+				if(this.slots[6] != null && this.slots[6].getItem() == ModItems.upgrade_gc_speed)
 					this.power -= 300;
 				else
 					this.power -= 200;
 				
 				if(this.power < 0) {
-					power = 0;
+					this.power = 0;
 					this.progress = 0;
 				}
 				
-				if(progress >= getProcessingSpeed())
+				if(this.progress >= getProcessingSpeed())
 					enrich();
 				
 			} else {
-				isProgressing = false;
+				this.isProgressing = false;
 				this.progress = 0;
 			}
 			
-			if(worldObj.getTotalWorldTime() % 10 == 0) {
-				ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
-				TileEntity te = worldObj.getTileEntity(this.xCoord - dir.offsetX, this.yCoord, this.zCoord - dir.offsetZ);
+			if(this.worldObj.getTotalWorldTime() % 10 == 0) {
+				ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
+				TileEntity te = this.worldObj.getTileEntity(this.xCoord - dir.offsetX, this.yCoord, this.zCoord - dir.offsetZ);
 				
 				//*AT THE MOMENT*, there's not really any need for a dedicated method for this. Yet.
 				if(!attemptTransfer(te) && this.inputTank.getTankType() == PseudoFluidType.LEUF6) {
 					ItemStack[] converted = new ItemStack[] { new ItemStack(ModItems.nugget_uranium_fuel, 6), new ItemStack(ModItems.fluorite) };
 					
-					if(this.outputTank.getFill() >= 600 && InventoryUtil.doesArrayHaveSpace(slots, 0, 3, converted)) {
+					if(this.outputTank.getFill() >= 600 && InventoryUtil.doesArrayHaveSpace(this.slots, 0, 3, converted)) {
 						this.outputTank.setFill(this.outputTank.getFill() - 600);
 						for(ItemStack stack : converted)
-							InventoryUtil.tryAddItemToInventory(slots, 0, 3, stack);
+							InventoryUtil.tryAddItemToInventory(this.slots, 0, 3, stack);
 					}
 				}
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setLong("power", power);
-			data.setInteger("progress", progress);
-			data.setBoolean("isProgressing", isProgressing);
-			data.setInteger("inputFill", inputTank.getFill());
-			data.setInteger("outputFill", outputTank.getFill());
-			data.setString("inputType", inputTank.getTankType().toString());
-			data.setString("outputType", outputTank.getTankType().toString());
-			this.networkPack(data, 50);
+			data.setLong("power", this.power);
+			data.setInteger("progress", this.progress);
+			data.setBoolean("isProgressing", this.isProgressing);
+			data.setInteger("inputFill", this.inputTank.getFill());
+			data.setInteger("outputFill", this.outputTank.getFill());
+			data.setString("inputType", this.inputTank.getTankType().toString());
+			data.setString("outputType", this.outputTank.getTankType().toString());
+			networkPack(data, 50);
 
-			PacketDispatcher.wrapper.sendToAllAround(new LoopedSoundPacket(xCoord, yCoord, zCoord), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 50));
+			PacketDispatcher.wrapper.sendToAllAround(new LoopedSoundPacket(this.xCoord, this.yCoord, this.zCoord), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 50));
 		}
 	}
 	
 	private void updateConnections() {
 		for(DirPos pos : getConPos()) {
-			this.trySubscribe(worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			this.trySubscribe(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 			
-			if(fluidConversions.containsValue(inputTank.getTankType())) {
-				this.trySubscribe(tank.getTankType(), worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			if(TileEntityMachineGasCent.fluidConversions.containsValue(this.inputTank.getTankType())) {
+				this.trySubscribe(this.tank.getTankType(), this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 			}
 		}
 	}
 	
 	private DirPos[] getConPos() {
 		return new DirPos[] {
-			new DirPos(xCoord, yCoord - 1, zCoord, Library.NEG_Y),
-			new DirPos(xCoord + 1, yCoord, zCoord, Library.POS_X),
-			new DirPos(xCoord - 1, yCoord, zCoord, Library.NEG_X),
-			new DirPos(xCoord, yCoord, zCoord + 1, Library.POS_Z),
-			new DirPos(xCoord, yCoord, zCoord - 1, Library.NEG_Z)
+			new DirPos(this.xCoord, this.yCoord - 1, this.zCoord, Library.NEG_Y),
+			new DirPos(this.xCoord + 1, this.yCoord, this.zCoord, Library.POS_X),
+			new DirPos(this.xCoord - 1, this.yCoord, this.zCoord, Library.NEG_X),
+			new DirPos(this.xCoord, this.yCoord, this.zCoord + 1, Library.POS_Z),
+			new DirPos(this.xCoord, this.yCoord, this.zCoord - 1, Library.NEG_Z)
 		};
 	}
 
 	@Override
 	public void setPower(long i) {
-		power = i;
+		this.power = i;
 	}
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 		
 	}
 
 	@Override
 	public long getMaxPower() {
-		return maxPower;
+		return TileEntityMachineGasCent.maxPower;
 	}
 	
 	public int getProcessingSpeed() {
-		if(slots[6] != null && slots[6].getItem() == ModItems.upgrade_gc_speed) {
-			return processingSpeed - 70;
+		if(this.slots[6] != null && this.slots[6].getItem() == ModItems.upgrade_gc_speed) {
+			return TileEntityMachineGasCent.processingSpeed - 70;
 		}
-		return processingSpeed;
+		return TileEntityMachineGasCent.processingSpeed;
 	}
 	
 	public void setTankType(int in) {
 		
-		if(slots[in] != null && slots[in].getItem() instanceof IItemFluidIdentifier) {
-			IItemFluidIdentifier id = (IItemFluidIdentifier) slots[in].getItem();
-			FluidType newType = id.getType(null, 0, 0, 0, slots[in]);
+		if(this.slots[in] != null && this.slots[in].getItem() instanceof IItemFluidIdentifier) {
+			IItemFluidIdentifier id = (IItemFluidIdentifier) this.slots[in].getItem();
+			FluidType newType = id.getType(null, 0, 0, 0, this.slots[in]);
 			
-			if(tank.getTankType() != newType) {
-				PseudoFluidType pseudo = fluidConversions.get(newType);
+			if(this.tank.getTankType() != newType) {
+				PseudoFluidType pseudo = TileEntityMachineGasCent.fluidConversions.get(newType);
 				
 				if(pseudo != null) {
-					inputTank.setTankType(pseudo);
-					outputTank.setTankType(pseudo.getOutputType());
-					tank.setTankType(newType);
+					this.inputTank.setTankType(pseudo);
+					this.outputTank.setTankType(pseudo.getOutputType());
+					this.tank.setTankType(newType);
 				}
 			}
 			
@@ -318,38 +316,38 @@ public class TileEntityMachineGasCent extends TileEntityMachineBase implements I
 	
 	@Override
 	public void setTypeForSync(FluidType type, int index) {
-		tank.setTankType(type);
+		this.tank.setTankType(type);
 	}
 	
 	@Override
 	public void setFillForSync(int fill, int index) {
-		tank.setFill(fill);
+		this.tank.setFill(fill);
 	}
 
 	@Override
 	public void setFluidFill(int fill, FluidType type) {
-		if(type == tank.getTankType())
-			tank.setFill(fill);
+		if(type == this.tank.getTankType())
+			this.tank.setFill(fill);
 	}
 	
 	@Override
 	public int getFluidFill(FluidType type) {
-		return tank.getTankType() == type ? tank.getFill() : 0;
+		return this.tank.getTankType() == type ? this.tank.getFill() : 0;
 	}
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		return tank.getTankType() == type ? tank.getMaxFill() : 0;
+		return this.tank.getTankType() == type ? this.tank.getMaxFill() : 0;
 	}
 	
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] { tank };
+		return new FluidTank[] { this.tank };
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return new FluidTank[] { tank };
+		return new FluidTank[] { this.tank };
 	}
 	
 	AxisAlignedBB bb = null;
@@ -357,11 +355,11 @@ public class TileEntityMachineGasCent extends TileEntityMachineBase implements I
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 5, zCoord + 1);
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 5, this.zCoord + 1);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override
@@ -381,7 +379,7 @@ public class TileEntityMachineGasCent extends TileEntityMachineBase implements I
 		}
 		
 		public void setFill(int i) {
-			fluid = i;
+			this.fluid = i;
 		}
 		
 		public void setTankType(PseudoFluidType type) {
@@ -394,35 +392,35 @@ public class TileEntityMachineGasCent extends TileEntityMachineBase implements I
 			else
 				this.type = type;
 			
-			this.setFill(0);
+			setFill(0);
 		}
 		
 		public PseudoFluidType getTankType() {
-			return type;
+			return this.type;
 		}
 		
 		public int getFill() {
-			return fluid;
+			return this.fluid;
 		}
 		
 		public int getMaxFill() {
-			return maxFluid;
+			return this.maxFluid;
 		}
 		
 		//Called by TE to save fillstate
 		public void writeToNBT(NBTTagCompound nbt, String s) {
-			nbt.setInteger(s, fluid);
-			nbt.setInteger(s + "_max", maxFluid);
-			nbt.setString(s + "_type", type.toString());
+			nbt.setInteger(s, this.fluid);
+			nbt.setInteger(s + "_max", this.maxFluid);
+			nbt.setString(s + "_type", this.type.toString());
 		}
 		
 		//Called by TE to load fillstate
 		public void readFromNBT(NBTTagCompound nbt, String s) {
-			fluid = nbt.getInteger(s);
+			this.fluid = nbt.getInteger(s);
 			int max = nbt.getInteger(s + "_max");
 			if(max > 0)
-				maxFluid = nbt.getInteger(s + "_max");
-			type = PseudoFluidType.valueOf(nbt.getString(s + "_type"));
+				this.maxFluid = nbt.getInteger(s + "_max");
+			this.type = PseudoFluidType.valueOf(nbt.getString(s + "_type"));
 		}
 		
 		/*        ______      ______

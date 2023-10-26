@@ -13,13 +13,13 @@ import net.minecraft.util.ResourceLocation;
 
 public class MovingSoundBomber extends MovingSound {
 
-	public static List<MovingSoundBomber> globalSoundList = new ArrayList<MovingSoundBomber>();
+	public static List<MovingSoundBomber> globalSoundList = new ArrayList<>();
 	public EntityBomber bomber;
 	
 	public MovingSoundBomber(ResourceLocation loc, EntityBomber bomber) {
 		super(loc);
 		this.bomber = bomber;
-		globalSoundList.add(this);
+		MovingSoundBomber.globalSoundList.add(this);
 		this.repeat = true;
 		this.field_147666_i = ISound.AttenuationType.NONE;
 	}
@@ -30,20 +30,20 @@ public class MovingSoundBomber extends MovingSound {
 		float iVolume = 150;
 		
 		if(this.bomber == null || this.bomber.isDead || this.bomber.health <= 0) {
-			this.stop();
+			stop();
 		} else {
-			this.xPosF = (float)bomber.posX;
-			this.yPosF = (float)bomber.posY;
-			this.zPosF = (float)bomber.posZ;
+			this.xPosF = (float)this.bomber.posX;
+			this.yPosF = (float)this.bomber.posY;
+			this.zPosF = (float)this.bomber.posZ;
 			
 			EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
 			float f = 0;
 			
 			if(player != null) {
-				f = (float)Math.sqrt(Math.pow(xPosF - player.posX, 2) + Math.pow(yPosF - player.posY, 2) + Math.pow(zPosF - player.posZ, 2));
-				volume = (f / iVolume) * -2 + 2;
+				f = (float)Math.sqrt(Math.pow(this.xPosF - player.posX, 2) + Math.pow(this.yPosF - player.posY, 2) + Math.pow(this.zPosF - player.posZ, 2));
+				this.volume = (f / iVolume) * -2 + 2;
 			} else {
-				volume = iVolume;
+				this.volume = iVolume;
 			}
 		}
 		
@@ -57,7 +57,7 @@ public class MovingSoundBomber extends MovingSound {
 		this.donePlaying = true;
 		this.repeat = false;
 		
-		globalSoundList.remove(this);
+		MovingSoundBomber.globalSoundList.remove(this);
 	}
 	
 	public void setPitch(float f) {

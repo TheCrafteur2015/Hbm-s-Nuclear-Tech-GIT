@@ -28,11 +28,11 @@ public class BlockPos implements Cloneable {
 	}
 	
 	public BlockPos add(int x, int y, int z) {
-		return x == 0 && y == 0 && z == 0 ? this : new BlockPos(this.getX() + x, this.getY() + y, this.getZ() + z);
+		return x == 0 && y == 0 && z == 0 ? this : new BlockPos(getX() + x, getY() + y, getZ() + z);
 	}
 	
 	public BlockPos add(double x, double y, double z) {
-		return x == 0.0D && y == 0.0D && z == 0.0D ? this : new BlockPos((double) this.getX() + x, (double) this.getY() + y, (double) this.getZ() + z);
+		return x == 0.0D && y == 0.0D && z == 0.0D ? this : new BlockPos((double) getX() + x, (double) getY() + y, (double) getZ() + z);
 	}
 	
 	public BlockPos add(BlockPos vec) {
@@ -43,9 +43,9 @@ public class BlockPos implements Cloneable {
 		switch(rotationIn) {
 		case NONE:
 		default: return this;
-		case CLOCKWISE_90: return new BlockPos(-this.getZ(), this.getY(), this.getX());
-		case CLOCKWISE_180: return new BlockPos(-this.getX(), this.getY(), -this.getZ());
-		case COUNTERCLOCKWISE_90: return new BlockPos(this.getZ(), this.getY(), -this.getX());
+		case CLOCKWISE_90: return new BlockPos(-getZ(), getY(), getX());
+		case CLOCKWISE_180: return new BlockPos(-getX(), getY(), -getZ());
+		case COUNTERCLOCKWISE_90: return new BlockPos(getZ(), getY(), -getX());
 		}
 	}
 
@@ -54,7 +54,7 @@ public class BlockPos implements Cloneable {
 	}
 
 	public BlockPos offset(ForgeDirection dir, int distance) {
-		return new BlockPos(x + dir.offsetX * distance, y + dir.offsetY * distance, z + dir.offsetZ * distance);
+		return new BlockPos(this.x + dir.offsetX * distance, this.y + dir.offsetY * distance, this.z + dir.offsetZ * distance);
 	}
 	
 	public int getX() {
@@ -72,7 +72,7 @@ public class BlockPos implements Cloneable {
 	/** modified 1.12 vanilla implementation */
 	@Override
 	public int hashCode() {
-		return (this.getY() + this.getZ() * 27644437) * 27644437 + this.getX();
+		return (getY() + getZ() * 27644437) * 27644437 + getX();
 	}
 
 	@Override
@@ -83,12 +83,12 @@ public class BlockPos implements Cloneable {
 			return false;
 		} else {
 			BlockPos pos = (BlockPos) toCompare;
-			if(this.getX() != pos.getX()) {
+			if(getX() != pos.getX()) {
 				return false;
-			} else if(this.getY() != pos.getY()) {
+			} else if(getY() != pos.getY()) {
 				return false;
 			} else {
-				return this.getZ() == pos.getZ();
+				return getZ() == pos.getZ();
 			}
 		}
 	}

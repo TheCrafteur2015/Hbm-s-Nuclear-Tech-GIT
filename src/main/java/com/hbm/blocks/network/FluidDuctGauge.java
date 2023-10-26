@@ -63,7 +63,7 @@ public class FluidDuctGauge extends FluidDuctBase implements IBlockMultiPass, IL
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
 		
 		if(RenderBlockMultipass.currentPass == 0) {
-			return blockIcon;
+			return this.blockIcon;
 		}
 		
 		return side == world.getBlockMetadata(x, y, z) ? this.overlayGauge : this.overlay;
@@ -82,7 +82,7 @@ public class FluidDuctGauge extends FluidDuctBase implements IBlockMultiPass, IL
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		this.addStandardInfo(stack, player, list, ext);
+		addStandardInfo(stack, player, list, ext);
 	}
 
 	@Override
@@ -95,7 +95,7 @@ public class FluidDuctGauge extends FluidDuctBase implements IBlockMultiPass, IL
 		
 		TileEntityPipeGauge duct = (TileEntityPipeGauge) te;
 		
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		text.add("&[" + duct.getType().getColor() + "&]" + duct.getType().getLocalizedName());
 		text.add(String.format(Locale.US, "%,d", duct.deltaTick) + " mB/t");
 		text.add(String.format(Locale.US, "%,d", duct.deltaLastSecond) + " mB/s");
@@ -119,29 +119,29 @@ public class FluidDuctGauge extends FluidDuctBase implements IBlockMultiPass, IL
 		public void updateEntity() {
 			super.updateEntity();
 
-			if(!worldObj.isRemote) {
+			if(!this.worldObj.isRemote) {
 
-				IPipeNet net = this.getPipeNet(this.getType());
+				IPipeNet net = getPipeNet(getType());
 				
-				if(net != null && this.getType() != Fluids.NONE) {
+				if(net != null && getType() != Fluids.NONE) {
 					BigInteger total = net.getTotalTransfer();
 					BigInteger delta = total.subtract(this.lastMeasurement);
 					this.lastMeasurement = total;
 					
 					try {
 						this.deltaTick = delta.longValueExact();
-						if(worldObj.getTotalWorldTime() % 20 == 0) {
+						if(this.worldObj.getTotalWorldTime() % 20 == 0) {
 							this.deltaLastSecond = this.deltaSecond;
 							this.deltaSecond = 0;
 						}
-						this.deltaSecond += deltaTick;
+						this.deltaSecond += this.deltaTick;
 						
 					} catch(Exception ex) { }
 				}
 				
 				NBTTagCompound data = new NBTTagCompound();
-				data.setLong("deltaT", deltaTick);
-				data.setLong("deltaS", deltaLastSecond);
+				data.setLong("deltaT", this.deltaTick);
+				data.setLong("deltaS", this.deltaLastSecond);
 				INBTPacketReceiver.networkPack(this, data, 25);
 			}
 		}
@@ -152,6 +152,7 @@ public class FluidDuctGauge extends FluidDuctBase implements IBlockMultiPass, IL
 			this.deltaLastSecond = Math.max(nbt.getLong("deltaS"), 0);
 		}
 
+		@Override
 		public String getComponentName() {
 			return "ntm_fluid_gauge";
 		}
@@ -159,7 +160,7 @@ public class FluidDuctGauge extends FluidDuctBase implements IBlockMultiPass, IL
 		@Callback(direct = true, limit = 8)
 		@Optional.Method(modid = "OpenComputers")
 		public Object[] getTransfer(Context context, Arguments args) {
-			return new Object[] {deltaTick, deltaSecond};
+			return new Object[] {this.deltaTick, this.deltaSecond};
 		}
 
 		@Callback(direct = true, limit = 8)
@@ -171,7 +172,7 @@ public class FluidDuctGauge extends FluidDuctBase implements IBlockMultiPass, IL
 		@Callback(direct = true, limit = 8)
 		@Optional.Method(modid = "OpenComputers")
 		public Object[] getInfo(Context context, Arguments args) {
-			return new Object[] {deltaTick, deltaSecond, getType().getName(), xCoord, yCoord, zCoord};
+			return new Object[] {this.deltaTick, this.deltaSecond, getType().getName(), this.xCoord, this.yCoord, this.zCoord};
 		}
 	}
 }

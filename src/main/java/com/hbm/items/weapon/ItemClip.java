@@ -10,16 +10,16 @@ public class ItemClip extends Item {
 	private ItemStack toGive;
 
 	public ItemClip(ItemStack stack) {
-		toGive = stack;
-		this.setMaxDamage(1);
+		this.toGive = stack;
+		setMaxDamage(1);
 	}
 	
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
 		
-		if(toGive == null) return stack;
+		if(this.toGive == null) return stack;
 		
-		ItemStack ammo = toGive.copy();
+		ItemStack ammo = this.toGive.copy();
 		
 		player.inventory.addItemStackToInventory(ammo);
 		

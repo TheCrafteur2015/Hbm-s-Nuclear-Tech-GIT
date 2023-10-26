@@ -34,23 +34,23 @@ public class MudBlock extends BlockFluidClassic {
 
 	public MudBlock(Fluid fluid, Material material, DamageSource damage) {
 		super(fluid, material);
-		damageSource = damage;
+		MudBlock.damageSource = damage;
 		setQuantaPerBlock(4);
 		setCreativeTab(null);
-		displacements.put(this, false);
+		this.displacements.put(this, false);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
-		return (side == 0 || side == 1) ? stillIcon : flowingIcon;
+		return (side == 0 || side == 1) ? MudBlock.stillIcon : MudBlock.flowingIcon;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister register) {
-		stillIcon = register.registerIcon(RefStrings.MODID + ":mud_still");
-		flowingIcon = register.registerIcon(RefStrings.MODID + ":mud_flowing");
+		MudBlock.stillIcon = register.registerIcon(RefStrings.MODID + ":mud_still");
+		MudBlock.flowingIcon = register.registerIcon(RefStrings.MODID + ":mud_flowing");
 	}
 
 	@Override
@@ -124,17 +124,17 @@ public class MudBlock extends BlockFluidClassic {
 					block == Blocks.stonebrick || 
 					block == Blocks.stone_slab || 
 					block == Blocks.stone) {
-				if(rand.nextInt(20) == 0)
+				if(this.rand.nextInt(20) == 0)
 					world.setBlock(x, y, z, Blocks.cobblestone);
 			} else if (block == Blocks.cobblestone) {
-				if(rand.nextInt(15) == 0)
+				if(this.rand.nextInt(15) == 0)
 					world.setBlock(x, y, z, Blocks.gravel);
 			} else if (block == Blocks.sandstone) {
-				if(rand.nextInt(5) == 0)
+				if(this.rand.nextInt(5) == 0)
 					world.setBlock(x, y, z, Blocks.sand);
 			} else if (block == Blocks.hardened_clay || 
 					block == Blocks.stained_hardened_clay) {
-				if(rand.nextInt(10) == 0)
+				if(this.rand.nextInt(10) == 0)
 					world.setBlock(x, y, z, Blocks.clay);
 			} else if (block.getMaterial() == Material.wood) {
 				world.setBlock(x, y, z, Blocks.air);

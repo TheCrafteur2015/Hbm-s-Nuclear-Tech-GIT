@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 public class ItemKitNBT extends Item {
 	
 	public ItemKitNBT() {
-		this.setMaxStackSize(1);
+		setMaxStackSize(1);
 	}
 	
 	@Override

@@ -43,7 +43,7 @@ public abstract class EntityMovingConveyorObject extends Entity {
 	public boolean hitByEntity(Entity attacker) {
 
 		if(attacker instanceof EntityPlayer) {
-			this.setDead();
+			setDead();
 		}
 		
 		return false;
@@ -57,32 +57,32 @@ public abstract class EntityMovingConveyorObject extends Entity {
 	@Override
 	public void onUpdate() {
 		
-		if(worldObj.isRemote) {
+		if(this.worldObj.isRemote) {
 			if(this.turnProgress > 0) {
 				double interpX = this.posX + (this.syncPosX - this.posX) / (double) this.turnProgress;
 				double interpY = this.posY + (this.syncPosY - this.posY) / (double) this.turnProgress;
 				double interpZ = this.posZ + (this.syncPosZ - this.posZ) / (double) this.turnProgress;
 				--this.turnProgress;
-				this.setPosition(interpX, interpY, interpZ);
+				setPosition(interpX, interpY, interpZ);
 			} else {
-				this.setPosition(this.posX, this.posY, this.posZ);
+				setPosition(this.posX, this.posY, this.posZ);
 			}
 		}
 
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			ticksExisted++;
+			this.ticksExisted++;
 			
 			if(this.ticksExisted <= 5) {
 				return;
 			}
 
-			int blockX = (int) Math.floor(posX);
-			int blockY = (int) Math.floor(posY);
-			int blockZ = (int) Math.floor(posZ);
+			int blockX = (int) Math.floor(this.posX);
+			int blockY = (int) Math.floor(this.posY);
+			int blockZ = (int) Math.floor(this.posZ);
 			
-			Block b = worldObj.getBlock(blockX, blockY, blockZ);
-			boolean isOnConveyor = b instanceof IConveyorBelt && ((IConveyorBelt) b).canItemStay(worldObj, blockX, blockY, blockZ, Vec3.createVectorHelper(posX, posY, posZ));
+			Block b = this.worldObj.getBlock(blockX, blockY, blockZ);
+			boolean isOnConveyor = b instanceof IConveyorBelt && ((IConveyorBelt) b).canItemStay(this.worldObj, blockX, blockY, blockZ, Vec3.createVectorHelper(this.posX, this.posY, this.posZ));
 			
 			if(!isOnConveyor) {
 				
@@ -91,19 +91,19 @@ public abstract class EntityMovingConveyorObject extends Entity {
 				}
 			} else {
 				
-				Vec3 target = ((IConveyorBelt) b).getTravelLocation(worldObj, blockX, blockY, blockZ, Vec3.createVectorHelper(posX, posY, posZ), getMoveSpeed());
-				this.motionX = target.xCoord - posX;
-				this.motionY = target.yCoord - posY;
-				this.motionZ = target.zCoord - posZ;
+				Vec3 target = ((IConveyorBelt) b).getTravelLocation(this.worldObj, blockX, blockY, blockZ, Vec3.createVectorHelper(this.posX, this.posY, this.posZ), getMoveSpeed());
+				this.motionX = target.xCoord - this.posX;
+				this.motionY = target.yCoord - this.posY;
+				this.motionZ = target.zCoord - this.posZ;
 			}
 			
-			BlockPos lastPos = new BlockPos(posX, posY, posZ);
-			this.moveEntity(motionX, motionY, motionZ);
-			BlockPos newPos = new BlockPos(posX, posY, posZ);
+			BlockPos lastPos = new BlockPos(this.posX, this.posY, this.posZ);
+			moveEntity(this.motionX, this.motionY, this.motionZ);
+			BlockPos newPos = new BlockPos(this.posX, this.posY, this.posZ);
 			
 			if(!lastPos.equals(newPos)) {
 				
-				Block newBlock = worldObj.getBlock(newPos.getX(), newPos.getY(), newPos.getZ());
+				Block newBlock = this.worldObj.getBlock(newPos.getX(), newPos.getY(), newPos.getZ());
 				
 				if(newBlock instanceof IEnterableBlock) {
 					
@@ -123,7 +123,7 @@ public abstract class EntityMovingConveyorObject extends Entity {
 					
 					if(!newBlock.getMaterial().isSolid()) {
 						
-						newBlock = worldObj.getBlock(newPos.getX(), newPos.getY() - 1, newPos.getZ());
+						newBlock = this.worldObj.getBlock(newPos.getX(), newPos.getY() - 1, newPos.getZ());
 						
 						if(newBlock instanceof IEnterableBlock) {
 							
@@ -139,7 +139,7 @@ public abstract class EntityMovingConveyorObject extends Entity {
 	public abstract void enterBlock(IEnterableBlock enterable, BlockPos pos, ForgeDirection dir);
 	
 	public void enterBlockFalling(IEnterableBlock enterable, BlockPos pos) {
-		this.enterBlock(enterable, pos.add(0, -1, 0), ForgeDirection.UP);
+		enterBlock(enterable, pos.add(0, -1, 0), ForgeDirection.UP);
 	}
 	
 	/**
@@ -151,6 +151,7 @@ public abstract class EntityMovingConveyorObject extends Entity {
 		return 0.0625D;
 	}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void setVelocity(double motionX, double motionY, double motionZ) {
 		this.velocityX = this.motionX = motionX;
@@ -158,6 +159,7 @@ public abstract class EntityMovingConveyorObject extends Entity {
 		this.velocityZ = this.motionZ = motionZ;
 	}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int theNumberThree) {
 		this.syncPosX = x;

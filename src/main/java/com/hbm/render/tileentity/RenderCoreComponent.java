@@ -125,11 +125,13 @@ public class RenderCoreComponent extends TileEntitySpecialRenderer implements II
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase() {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(0, -2.5, 0);
 				double scale = 5;
 				GL11.glScaled(scale, scale, scale);
 			}
+			@Override
 			public void renderCommonWithStack(ItemStack item) {
 				GL11.glScaled(2, 2, 2);
 				GL11.glRotated(90, 0, 1, 0);

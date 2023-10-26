@@ -31,10 +31,10 @@ public class RenderWormHead extends Render {
 		GL11.glRotatef(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * f1 - 90.0F, 0.0F, 1.0F, 0.0F);
 		GL11.glRotatef(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * f1 - 90, 0.0F, 0.0F, 1.0F);
 		
-		this.bindEntityTexture(entity);
+		bindEntityTexture(entity);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		GL11.glDisable(GL11.GL_CULL_FACE);
-		body.renderAll();
+		RenderWormHead.body.renderAll();
 		GL11.glEnable(GL11.GL_CULL_FACE);
 		GL11.glShadeModel(GL11.GL_FLAT);
 		
@@ -43,6 +43,6 @@ public class RenderWormHead extends Render {
 
 	@Override
 	protected ResourceLocation getEntityTexture(Entity p_110775_1_) {
-		return texture;
+		return RenderWormHead.texture;
 	}
 }

@@ -23,7 +23,7 @@ public class EntityMinecartPowder extends EntityMinecartNTM {
 
 	@Override
 	public ItemStack getCartItem() {
-		return ItemModMinecart.createCartItem(this.getBase(), EnumMinecart.POWDER);
+		return ItemModMinecart.createCartItem(getBase(), EnumMinecart.POWDER);
 	}
 
 	@Override

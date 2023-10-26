@@ -16,8 +16,8 @@ public class RenderCreeperUniversal extends RenderCreeper {
 	public RenderCreeperUniversal(String texture, String overlay) {
 		super();
 
-		creeperTextures = new ResourceLocation(texture);
-		armoredCreeperTextures = new ResourceLocation(overlay);
+		this.creeperTextures = new ResourceLocation(texture);
+		this.armoredCreeperTextures = new ResourceLocation(overlay);
 	}
 	
 	public RenderCreeperUniversal setSwellMod(float mod) {
@@ -40,7 +40,7 @@ public class RenderCreeperUniversal extends RenderCreeper {
 
 		swell *= swell;
 		swell *= swell;
-		swell *= swellMod;
+		swell *= this.swellMod;
 		float scaleHorizontal = (1.0F + swell * 0.4F) * flash;
 		float scaleVertical = (1.0F + swell * 0.1F) / flash;
 		GL11.glScalef(scaleHorizontal, scaleVertical, scaleHorizontal);
@@ -57,13 +57,13 @@ public class RenderCreeperUniversal extends RenderCreeper {
 
 			if(pass == 1) {
 				float time = (float) creeper.ticksExisted + interp;
-				this.bindTexture(armoredCreeperTextures);
+				bindTexture(this.armoredCreeperTextures);
 				GL11.glMatrixMode(GL11.GL_TEXTURE);
 				GL11.glLoadIdentity();
 				float x = time * 0.01F;
 				float y = time * 0.01F;
 				GL11.glTranslatef(x, y, 0.0F);
-				this.setRenderPassModel(this.creeperModel);
+				setRenderPassModel(this.creeperModel);
 				GL11.glMatrixMode(GL11.GL_MODELVIEW);
 				GL11.glEnable(GL11.GL_BLEND);
 				float flashColor = 0.5F;
@@ -87,6 +87,6 @@ public class RenderCreeperUniversal extends RenderCreeper {
 
 	@Override
 	protected ResourceLocation getEntityTexture(EntityCreeper p_110775_1_) {
-		return creeperTextures;
+		return this.creeperTextures;
 	}
 }

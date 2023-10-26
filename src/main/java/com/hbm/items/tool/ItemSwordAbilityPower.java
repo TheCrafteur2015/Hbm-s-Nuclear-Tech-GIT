@@ -22,7 +22,7 @@ public class ItemSwordAbilityPower extends ItemSwordAbility implements IBatteryI
 		this.maxPower = maxPower;
 		this.chargeRate = chargeRate;
 		this.consumption = consumption;
-		this.setMaxDamage(1);
+		setMaxDamage(1);
 	}
 
 	@Override
@@ -79,10 +79,11 @@ public class ItemSwordAbilityPower extends ItemSwordAbility implements IBatteryI
     	return 0;
     }
     
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
     	
-    	list.add("Charge: " + BobMathUtil.getShortNumber(getCharge(stack)) + " / " + BobMathUtil.getShortNumber(maxPower));
+    	list.add("Charge: " + BobMathUtil.getShortNumber(getCharge(stack)) + " / " + BobMathUtil.getShortNumber(this.maxPower));
     	
     	super.addInformation(stack, player, list, ext);
     }
@@ -90,13 +91,13 @@ public class ItemSwordAbilityPower extends ItemSwordAbility implements IBatteryI
 	@Override
     public boolean showDurabilityBar(ItemStack stack) {
     	
-        return getCharge(stack) < maxPower;
+        return getCharge(stack) < this.maxPower;
     }
 
 	@Override
     public double getDurabilityForDisplay(ItemStack stack) {
     	
-        return 1 - (double)getCharge(stack) / (double)maxPower;
+        return 1 - (double)getCharge(stack) / (double)this.maxPower;
     }
 
 	@Override
@@ -107,12 +108,12 @@ public class ItemSwordAbilityPower extends ItemSwordAbility implements IBatteryI
 
 	@Override
     public long getMaxCharge() {
-    	return maxPower;
+    	return this.maxPower;
     }
 
 	@Override
     public long getChargeRate() {
-    	return chargeRate;
+    	return this.chargeRate;
     }
 
 	@Override
@@ -123,7 +124,7 @@ public class ItemSwordAbilityPower extends ItemSwordAbility implements IBatteryI
 	@Override
     public void setDamage(ItemStack stack, int damage)
     {
-        this.dischargeBattery(stack, damage * consumption);
+        dischargeBattery(stack, damage * this.consumption);
     }
 
 	@Override

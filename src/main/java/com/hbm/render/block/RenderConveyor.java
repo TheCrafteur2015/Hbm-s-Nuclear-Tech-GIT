@@ -2,7 +2,7 @@ package com.hbm.render.block;
 
 import org.lwjgl.opengl.GL11;
 
-import com.hbm.blocks.network.BlockConveyor;
+import com.hbm.blocks.network.BlockConveyorBase;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import net.minecraft.block.Block;
@@ -117,7 +117,7 @@ public class RenderConveyor implements ISimpleBlockRenderingHandler {
 
 	@Override
 	public int getRenderId() {
-		return BlockConveyor.renderID;
+		return BlockConveyorBase.renderID;
 	}
 
 }

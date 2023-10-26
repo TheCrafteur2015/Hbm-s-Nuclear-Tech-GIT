@@ -18,6 +18,7 @@ public class ItemRenderTemplate implements IItemRenderer {
 	
 	private ItemStack currentItem;
 
+	@Override
 	public boolean handleRenderType(ItemStack stack, IItemRenderer.ItemRenderType type) {
 		
 		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && (type == IItemRenderer.ItemRenderType.INVENTORY)) {
@@ -41,16 +42,18 @@ public class ItemRenderTemplate implements IItemRenderer {
 		return false;
 	}
 
+	@Override
 	public boolean shouldUseRenderHelper(IItemRenderer.ItemRenderType type, ItemStack stack, IItemRenderer.ItemRendererHelper renderHelper) {
 		return false;
 	}
 
+	@Override
 	public void renderItem(IItemRenderer.ItemRenderType type, ItemStack stack, Object... args) {
 		GL11.glPushMatrix();
 		RenderHelper.enableGUIStandardItemLighting();
 		
-		if(currentItem != null)
-			RenderItemStack.renderItemStack(0, 0, 1.0F, currentItem);
+		if(this.currentItem != null)
+			RenderItemStack.renderItemStack(0, 0, 1.0F, this.currentItem);
 		else
 			RenderItemStack.renderItemStack(0, 0, 1.0F, stack);
 		

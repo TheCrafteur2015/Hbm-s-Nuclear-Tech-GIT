@@ -19,16 +19,16 @@ public class BlockToolConversionPillar extends BlockToolConversion {
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
 
-		this.blockIcon = iconRegister.registerIcon(this.getTextureName() + "_side");
-		this.topIcon = iconRegister.registerIcon(this.getTextureName() + "_top");
+		this.blockIcon = iconRegister.registerIcon(getTextureName() + "_side");
+		this.topIcon = iconRegister.registerIcon(getTextureName() + "_top");
 		
-		if(names != null) {
-			icons = new IIcon[names.length];
-			topIcons = new IIcon[names.length];
+		if(this.names != null) {
+			this.icons = new IIcon[this.names.length];
+			this.topIcons = new IIcon[this.names.length];
 			
-			for(int i = 0; i < names.length; i++) {
-				icons[i] = iconRegister.registerIcon(getTextureName() + "_side" + names[i]);
-				topIcons[i] = iconRegister.registerIcon(getTextureName() + "_top" + names[i]);
+			for(int i = 0; i < this.names.length; i++) {
+				this.icons[i] = iconRegister.registerIcon(getTextureName() + "_side" + this.names[i]);
+				this.topIcons[i] = iconRegister.registerIcon(getTextureName() + "_top" + this.names[i]);
 			}
 		}
 	}
@@ -39,10 +39,10 @@ public class BlockToolConversionPillar extends BlockToolConversion {
 		
 		metadata -= 1;
 		
-		if(metadata == -1 || icons == null || metadata >= icons.length) {
-			return side == 0 || side == 1 ? topIcon : blockIcon;
+		if(metadata == -1 || this.icons == null || metadata >= this.icons.length) {
+			return side == 0 || side == 1 ? this.topIcon : this.blockIcon;
 		}
 		
-		return side == 0 || side == 1 ? topIcons[metadata] : icons[metadata];
+		return side == 0 || side == 1 ? this.topIcons[metadata] : this.icons[metadata];
 	}
 }

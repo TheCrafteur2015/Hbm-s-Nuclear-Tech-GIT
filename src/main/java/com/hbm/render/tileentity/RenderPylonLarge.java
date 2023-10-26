@@ -31,7 +31,7 @@ public class RenderPylonLarge extends RenderPylonBase {
 		
 		GL11.glPushMatrix();
 		TileEntityPylonLarge pyl = (TileEntityPylonLarge)tile;
-		this.renderLinesGeneric(pyl, x, y, z);
+		renderLinesGeneric(pyl, x, y, z);
 		GL11.glPopMatrix();
 	}
 

@@ -25,13 +25,14 @@ public class ArmorFSBPowered extends ArmorFSB implements IBatteryItem {
 		this.chargeRate = chargeRate;
 		this.consumption = consumption;
 		this.drain = drain;
-		this.setMaxDamage(1);
+		setMaxDamage(1);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 
-		list.add("Charge: " + BobMathUtil.getShortNumber(getCharge(stack)) + " / " + BobMathUtil.getShortNumber(maxPower));
+		list.add("Charge: " + BobMathUtil.getShortNumber(getCharge(stack)) + " / " + BobMathUtil.getShortNumber(this.maxPower));
 
 		super.addInformation(stack, player, list, ext);
 	}
@@ -98,23 +99,23 @@ public class ArmorFSBPowered extends ArmorFSB implements IBatteryItem {
 	@Override
 	public boolean showDurabilityBar(ItemStack stack) {
 
-		return getCharge(stack) < maxPower;
+		return getCharge(stack) < this.maxPower;
 	}
 
 	@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
 
-		return 1 - (double) getCharge(stack) / (double) maxPower;
+		return 1 - (double) getCharge(stack) / (double) this.maxPower;
 	}
 
 	@Override
 	public long getMaxCharge() {
-		return maxPower;
+		return this.maxPower;
 	}
 
 	@Override
 	public long getChargeRate() {
-		return chargeRate;
+		return this.chargeRate;
 	}
 
 	@Override
@@ -124,15 +125,16 @@ public class ArmorFSBPowered extends ArmorFSB implements IBatteryItem {
 
 	@Override
 	public void setDamage(ItemStack stack, int damage) {
-		this.dischargeBattery(stack, damage * consumption);
+		dischargeBattery(stack, damage * this.consumption);
 	}
 
+	@Override
 	public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
 
 		super.onArmorTick(world, player, itemStack);
 
 		if(this.drain > 0 && ArmorFSB.hasFSBArmor(player) && !player.capabilities.isCreativeMode) {
-			this.dischargeBattery(itemStack, drain);
+			dischargeBattery(itemStack, this.drain);
 		}
 	}
 }

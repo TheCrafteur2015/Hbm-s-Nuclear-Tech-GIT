@@ -37,7 +37,7 @@ public class FluidSwitch extends FluidDuctBase implements ILookOverlay {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int metadata) {
-		return metadata == 1 ? iconOn : blockIcon;
+		return metadata == 1 ? this.iconOn : this.blockIcon;
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class FluidSwitch extends FluidDuctBase implements ILookOverlay {
 		
 		TileEntityFluidValve duct = (TileEntityFluidValve) te;
 		
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		text.add("&[" + duct.getType().getColor() + "&]" + duct.getType().getLocalizedName());
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}

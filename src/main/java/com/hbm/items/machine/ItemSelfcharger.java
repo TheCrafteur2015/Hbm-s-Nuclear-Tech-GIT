@@ -20,7 +20,7 @@ public class ItemSelfcharger extends Item implements IBatteryItem {
 
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		list.add(EnumChatFormatting.YELLOW + "" + BobMathUtil.getShortNumber(charge) + "HE/t");
+		list.add(EnumChatFormatting.YELLOW + "" + BobMathUtil.getShortNumber(this.charge) + "HE/t");
 	}
 
 	@Override
@@ -34,12 +34,12 @@ public class ItemSelfcharger extends Item implements IBatteryItem {
 
 	@Override
 	public long getCharge(ItemStack stack) {
-		return charge;
+		return this.charge;
 	}
 
 	@Override
 	public long getMaxCharge() {
-		return charge;
+		return this.charge;
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class ItemSelfcharger extends Item implements IBatteryItem {
 
 	@Override
 	public long getDischargeRate() {
-		return charge;
+		return this.charge;
 	}
 
 }

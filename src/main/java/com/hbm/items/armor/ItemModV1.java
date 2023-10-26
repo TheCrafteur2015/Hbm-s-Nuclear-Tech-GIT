@@ -24,7 +24,7 @@ public class ItemModV1 extends ItemArmorMod implements IArmorModDash {
 	@Override
 	public Multimap getModifiers(ItemStack armor) {
 		Multimap multimap = super.getAttributeModifiers(armor);
-		multimap.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new AttributeModifier(speed, "V1 SPEED", 0.5, 2));
+		multimap.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new AttributeModifier(ItemModV1.speed, "V1 SPEED", 0.5, 2));
 		return multimap;
 	}
 
@@ -41,6 +41,7 @@ public class ItemModV1 extends ItemArmorMod implements IArmorModDash {
 		list.add(EnumChatFormatting.RED + "  " + stack.getDisplayName() + " (BLOOD IS FUEL)");
 	}
 	
+	@Override
 	public int getDashes() {
 		return 3;
 	}

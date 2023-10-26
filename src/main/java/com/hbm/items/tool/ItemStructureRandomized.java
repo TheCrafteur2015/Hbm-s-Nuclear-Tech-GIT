@@ -26,7 +26,7 @@ public class ItemStructureRandomized extends ItemStructureTool {
 	@Override
 	protected void doTheThing(ItemStack stack, World world, int x, int y, int z) {
 		
-		BlockPos pos = this.getAnchor(stack);
+		BlockPos pos = getAnchor(stack);
 		if(pos == null) return;
 
 		int savedX = stack.stackTagCompound.getInteger("x");

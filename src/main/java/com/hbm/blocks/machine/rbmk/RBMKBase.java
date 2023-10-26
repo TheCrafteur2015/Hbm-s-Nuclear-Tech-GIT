@@ -35,8 +35,8 @@ public abstract class RBMKBase extends BlockDummyable implements IToolable, ILoo
 
 	protected RBMKBase() {
 		super(Material.iron);
-		this.setHardness(3F);
-		this.setResistance(30F);
+		setHardness(3F);
+		setResistance(30F);
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public abstract class RBMKBase extends BlockDummyable implements IToolable, ILoo
 			return true;
 		}
 		
-		int[] pos = this.findCore(world, x, y, z);
+		int[] pos = findCore(world, x, y, z);
 		
 		if(pos == null)
 			return false;
@@ -93,7 +93,7 @@ public abstract class RBMKBase extends BlockDummyable implements IToolable, ILoo
 		
 		float height = 0.0F;
 		
-		int[] pos = this.findCore(world, x, y, z);
+		int[] pos = findCore(world, x, y, z);
 		
 		if(pos != null) {
 			TileEntity te = world.getTileEntity(pos[0], pos[1], pos[2]);
@@ -125,12 +125,12 @@ public abstract class RBMKBase extends BlockDummyable implements IToolable, ILoo
 	@Override
 	public void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		MultiblockHandlerXR.fillSpace(world, x + dir.offsetX * o, y + dir.offsetY * o, z + dir.offsetZ * o, getDimensions(world), this, dir);
-		this.makeExtra(world, x, y + RBMKDials.getColumnHeight(world), z);
+		makeExtra(world, x, y + RBMKDials.getColumnHeight(world), z);
 	}
 	
 	@Override
 	protected ForgeDirection getDirModified(ForgeDirection dir) {
-		return DIR_NO_LID;
+		return RBMKBase.DIR_NO_LID;
 	}
 	
 	public int[] getDimensions(World world) {
@@ -140,12 +140,12 @@ public abstract class RBMKBase extends BlockDummyable implements IToolable, ILoo
 	@Override
 	public void breakBlock(World world, int x, int y, int z, Block b, int i) {
 		
-		if(!world.isRemote && dropLids) {
+		if(!world.isRemote && RBMKBase.dropLids) {
 			
-			if(i == DIR_NORMAL_LID.ordinal() + offset) {
+			if(i == RBMKBase.DIR_NORMAL_LID.ordinal() + BlockDummyable.offset) {
 				world.spawnEntityInWorld(new EntityItem(world, x + 0.5, y + 0.5 + RBMKDials.getColumnHeight(world), z + 0.5, new ItemStack(ModItems.rbmk_lid)));
 			}
-			if(i == DIR_GLASS_LID.ordinal() + offset) {
+			if(i == RBMKBase.DIR_GLASS_LID.ordinal() + BlockDummyable.offset) {
 				world.spawnEntityInWorld(new EntityItem(world, x + 0.5, y + 0.5 + RBMKDials.getColumnHeight(world), z + 0.5, new ItemStack(ModItems.rbmk_lid_glass)));
 			}
 		}
@@ -159,7 +159,7 @@ public abstract class RBMKBase extends BlockDummyable implements IToolable, ILoo
 		if(tool != ToolType.SCREWDRIVER)
 			return false;
 		
-		int[] pos = this.findCore(world, x, y, z);
+		int[] pos = findCore(world, x, y, z);
 		
 		if(pos != null) {
 			TileEntity te = world.getTileEntity(pos[0], pos[1], pos[2]);
@@ -172,14 +172,14 @@ public abstract class RBMKBase extends BlockDummyable implements IToolable, ILoo
 				if(rbmk.hasLid() && rbmk.isLidRemovable()) {
 					
 					if(!world.isRemote) {
-						if(i == DIR_NORMAL_LID.ordinal() + offset) {
+						if(i == RBMKBase.DIR_NORMAL_LID.ordinal() + BlockDummyable.offset) {
 							world.spawnEntityInWorld(new EntityItem(world, pos[0] + 0.5, pos[1] + 0.5 + RBMKDials.getColumnHeight(world), pos[2] + 0.5, new ItemStack(ModItems.rbmk_lid)));
 						}
-						if(i == DIR_GLASS_LID.ordinal() + offset) {
+						if(i == RBMKBase.DIR_GLASS_LID.ordinal() + BlockDummyable.offset) {
 							world.spawnEntityInWorld(new EntityItem(world, pos[0] + 0.5, pos[1] + 0.5 + RBMKDials.getColumnHeight(world), pos[2] + 0.5, new ItemStack(ModItems.rbmk_lid_glass)));
 						}
 						
-						world.setBlockMetadataWithNotify(pos[0], pos[1], pos[2], DIR_NO_LID.ordinal() + this.offset, 3);
+						world.setBlockMetadataWithNotify(pos[0], pos[1], pos[2], RBMKBase.DIR_NO_LID.ordinal() + BlockDummyable.offset, 3);
 					}
 					
 					return true;

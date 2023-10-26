@@ -32,6 +32,7 @@ public class JungleDungeon extends CellularDungeon {
 		this.ceiling.add(new MetaBlock(ModBlocks.brick_jungle_cracked));
 	}
 	
+	@Override
 	public void generate(final World world, final int x, final int y, final int z, final Random rand) {
 		super.generate(world, x, y, z, rand);
 		
@@ -44,7 +45,7 @@ public class JungleDungeon extends CellularDungeon {
 				//A hole has not been made -> this is the bottom floor
 				if(!that.hasHole) {
 					
-					List<int[]> rooms = new ArrayList();
+					List<int[]> rooms = new ArrayList<>();
 					
 					for(int i = 0; i < that.cells.length; i++) {
 						for(int j = 0; j < that.cells[0].length; j++) {
@@ -56,11 +57,11 @@ public class JungleDungeon extends CellularDungeon {
 					
 					if(!rooms.isEmpty()) {
 
-						int ix = x - dimX * width / 2;
-						int iz = z - dimZ * width / 2;
+						int ix = x - JungleDungeon.this.dimX * JungleDungeon.this.width / 2;
+						int iz = z - JungleDungeon.this.dimZ * JungleDungeon.this.width / 2;
 						
 						int[] room = rooms.get(world.rand.nextInt(rooms.size()));
-						world.setBlock(ix + room[0] * (width - 1) + width / 2, y, iz + room[1] * (width - 1) + width / 2, ModBlocks.brick_jungle_circle);
+						world.setBlock(ix + room[0] * (JungleDungeon.this.width - 1) + JungleDungeon.this.width / 2, y, iz + room[1] * (JungleDungeon.this.width - 1) + JungleDungeon.this.width / 2, ModBlocks.brick_jungle_circle);
 					}
 				}
 				

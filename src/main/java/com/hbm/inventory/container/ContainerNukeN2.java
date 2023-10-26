@@ -1,6 +1,7 @@
 package com.hbm.inventory.container;
 
 import com.hbm.tileentity.bomb.TileEntityNukeN2;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -13,32 +14,32 @@ private TileEntityNukeN2 nukeSol;
 	
 	public ContainerNukeN2(InventoryPlayer invPlayer, TileEntityNukeN2 tedf) {
 		
-		nukeSol = tedf;
+		this.nukeSol = tedf;
 		
-		this.addSlotToContainer(new Slot(tedf, 0, 98, 36));
-		this.addSlotToContainer(new Slot(tedf, 1, 116, 36));
-		this.addSlotToContainer(new Slot(tedf, 2, 134, 36));
-		this.addSlotToContainer(new Slot(tedf, 3, 98, 54));
-		this.addSlotToContainer(new Slot(tedf, 4, 116, 54));
-		this.addSlotToContainer(new Slot(tedf, 5, 134, 54));
-		this.addSlotToContainer(new Slot(tedf, 6, 98, 72));
-		this.addSlotToContainer(new Slot(tedf, 7, 116, 72));
-		this.addSlotToContainer(new Slot(tedf, 8, 134, 72));
-		this.addSlotToContainer(new Slot(tedf, 9, 98, 90));
-		this.addSlotToContainer(new Slot(tedf, 10, 116, 90));
-		this.addSlotToContainer(new Slot(tedf, 11, 134, 90));
+		addSlotToContainer(new Slot(tedf, 0, 98, 36));
+		addSlotToContainer(new Slot(tedf, 1, 116, 36));
+		addSlotToContainer(new Slot(tedf, 2, 134, 36));
+		addSlotToContainer(new Slot(tedf, 3, 98, 54));
+		addSlotToContainer(new Slot(tedf, 4, 116, 54));
+		addSlotToContainer(new Slot(tedf, 5, 134, 54));
+		addSlotToContainer(new Slot(tedf, 6, 98, 72));
+		addSlotToContainer(new Slot(tedf, 7, 116, 72));
+		addSlotToContainer(new Slot(tedf, 8, 134, 72));
+		addSlotToContainer(new Slot(tedf, 9, 98, 90));
+		addSlotToContainer(new Slot(tedf, 10, 116, 90));
+		addSlotToContainer(new Slot(tedf, 11, 134, 90));
 		
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 56));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 56));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++)
 		{
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 56));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 56));
 		}
 	}
 	
@@ -54,7 +55,7 @@ private TileEntityNukeN2 nukeSol;
 			var3 = var5.copy();
 			
             if (par2 <= 11) {
-				if (!this.mergeItemStack(var5, 12, this.inventorySlots.size(), true))
+				if (!mergeItemStack(var5, 12, this.inventorySlots.size(), true))
 				{
 					return null;
 				}
@@ -77,6 +78,6 @@ private TileEntityNukeN2 nukeSol;
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return nukeSol.isUseableByPlayer(player);
+		return this.nukeSol.isUseableByPlayer(player);
 	}
 }

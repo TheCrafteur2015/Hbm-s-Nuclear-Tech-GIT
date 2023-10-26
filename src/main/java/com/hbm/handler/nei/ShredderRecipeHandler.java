@@ -23,10 +23,10 @@ public class ShredderRecipeHandler extends TemplateRecipeHandler {
 
 	public static ArrayList<Fuel> fuels;
 
-	public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<RecipeTransferRect>();
-	public LinkedList<RecipeTransferRect> transferRectsGui = new LinkedList<RecipeTransferRect>();
-	public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<Class<? extends GuiContainer>>();
-	public LinkedList<Class<? extends GuiContainer>> guiGui = new LinkedList<Class<? extends GuiContainer>>();
+	public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<>();
+	public LinkedList<RecipeTransferRect> transferRectsGui = new LinkedList<>();
+	public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<>();
+	public LinkedList<Class<? extends GuiContainer>> guiGui = new LinkedList<>();
 
 	public class SmeltingSet extends TemplateRecipeHandler.CachedRecipe {
 		PositionedStack input;
@@ -40,20 +40,20 @@ public class ShredderRecipeHandler extends TemplateRecipeHandler {
 
 		@Override
 		public List<PositionedStack> getIngredients() {
-			return getCycledIngredients(cycleticks / 48, Arrays.asList(new PositionedStack[] { input }));
+			return getCycledIngredients(ShredderRecipeHandler.this.cycleticks / 48, Arrays.asList(new PositionedStack[] { this.input }));
 		}
 
 		@Override
 		public List<PositionedStack> getOtherStacks() {
-			List<PositionedStack> stacks = new ArrayList<PositionedStack>();
-			stacks.add(fuels.get((cycleticks / 24) % fuels.size()).stack0);
-			stacks.add(fuels.get((cycleticks / 24) % fuels.size()).stack1);
+			List<PositionedStack> stacks = new ArrayList<>();
+			stacks.add(ShredderRecipeHandler.fuels.get((ShredderRecipeHandler.this.cycleticks / 24) % ShredderRecipeHandler.fuels.size()).stack0);
+			stacks.add(ShredderRecipeHandler.fuels.get((ShredderRecipeHandler.this.cycleticks / 24) % ShredderRecipeHandler.fuels.size()).stack1);
 			return stacks;
 		}
 
 		@Override
 		public PositionedStack getResult() {
-			return result;
+			return this.result;
 		}
 	}
 
@@ -126,18 +126,18 @@ public class ShredderRecipeHandler extends TemplateRecipeHandler {
 	@Override
 	public void loadTransferRects() {
 		// transferRectsRec = new LinkedList<RecipeTransferRect>();
-		transferRectsGui = new LinkedList<RecipeTransferRect>();
+		this.transferRectsGui = new LinkedList<>();
 		// guiRec = new LinkedList<Class<? extends GuiContainer>>();
-		guiGui = new LinkedList<Class<? extends GuiContainer>>();
+		this.guiGui = new LinkedList<>();
 
-		transferRects.add(new RecipeTransferRect(new Rectangle(74 + 6, 23, 24, 18), "shredding"));
-		transferRectsGui.add(new RecipeTransferRect(new Rectangle(63 - 7 + 4, 89 - 11, 34, 18), "shredding"));
+		this.transferRects.add(new RecipeTransferRect(new Rectangle(74 + 6, 23, 24, 18), "shredding"));
+		this.transferRectsGui.add(new RecipeTransferRect(new Rectangle(63 - 7 + 4, 89 - 11, 34, 18), "shredding"));
 		// guiRec.add(GuiRecipe.class);
-		guiGui.add(GUIMachineShredder.class);
-		RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), transferRects);
+		this.guiGui.add(GUIMachineShredder.class);
+		RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), this.transferRects);
 		// RecipeTransferRectHandler.registerRectsToGuis(guiRec,
 		// transferRectsRec);
-		RecipeTransferRectHandler.registerRectsToGuis(guiGui, transferRectsGui);
+		RecipeTransferRectHandler.registerRectsToGuis(this.guiGui, this.transferRectsGui);
 
 		// for(Class<? extends GuiContainer> r : getRecipeTransferRectGuis())
 		// System.out.println(r.toString());
@@ -162,10 +162,10 @@ public class ShredderRecipeHandler extends TemplateRecipeHandler {
 
 	@Override
 	public TemplateRecipeHandler newInstance() {
-		if(fuels == null || fuels.isEmpty())
-			fuels = new ArrayList<Fuel>();
+		if(ShredderRecipeHandler.fuels == null || ShredderRecipeHandler.fuels.isEmpty())
+			ShredderRecipeHandler.fuels = new ArrayList<>();
 		for(ItemStack i : MachineRecipes.instance().getBlades()) {
-			fuels.add(new Fuel(i));
+			ShredderRecipeHandler.fuels.add(new Fuel(i));
 		}
 		return super.newInstance();
 	}

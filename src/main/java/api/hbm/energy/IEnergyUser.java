@@ -28,12 +28,12 @@ public interface IEnergyUser extends IEnergyConnector {
 	@Override
 	public default long transferPower(long power) {
 		
-		this.setPower(this.getPower() + power);
+		setPower(getPower() + power);
 		
-		if(this.getPower() > this.getMaxPower()) {
+		if(getPower() > getMaxPower()) {
 			
-			long overshoot = this.getPower() - this.getMaxPower();
-			this.setPower(this.getMaxPower());
+			long overshoot = getPower() - getMaxPower();
+			setPower(getMaxPower());
 			return overshoot;
 		}
 		
@@ -69,9 +69,9 @@ public interface IEnergyUser extends IEnergyConnector {
 			IEnergyConnector con = (IEnergyConnector) te;
 			
 			if(con.canConnect(dir.getOpposite())) {
-				long oldPower = this.getPower();
+				long oldPower = getPower();
 				long transfer = oldPower - con.transferPower(oldPower);
-				this.setPower(oldPower - transfer);
+				setPower(oldPower - transfer);
 				red = true;
 			}
 		}
@@ -85,7 +85,7 @@ public interface IEnergyUser extends IEnergyConnector {
 			}
 		}
 		
-		if(particleDebug) {
+		if(IEnergyConnector.particleDebug) {
 			NBTTagCompound data = new NBTTagCompound();
 			data.setString("type", "network");
 			data.setString("mode", "power");
@@ -106,7 +106,7 @@ public interface IEnergyUser extends IEnergyConnector {
 	public default void updateStandardConnections(World world, int x, int y, int z) {
 		
 		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-			this.trySubscribe(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, dir);
+			trySubscribe(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, dir);
 		}
 	}
 }

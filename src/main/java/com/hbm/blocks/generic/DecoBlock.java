@@ -43,7 +43,7 @@ public class DecoBlock extends BlockContainer {
 	@Override
 	public int getRenderType(){
 		if(this == ModBlocks.steel_beam)
-			return renderIDBeam;
+			return DecoBlock.renderIDBeam;
 		else
 			return -1;
 	}
@@ -99,51 +99,51 @@ public class DecoBlock extends BlockContainer {
 			switch(te)
 			{
 			case 4:
-            	this.setBlockBounds(14*f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+            	setBlockBounds(14*f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
             	break;
 			case 2:
-            	this.setBlockBounds(0.0F, 0.0F, 14*f, 1.0F, 1.0F, 1.0F);
+            	setBlockBounds(0.0F, 0.0F, 14*f, 1.0F, 1.0F, 1.0F);
             	break;
 			case 5:
-            	this.setBlockBounds(0.0F, 0.0F, 0.0F, 2*f, 1.0F, 1.0F);
+            	setBlockBounds(0.0F, 0.0F, 0.0F, 2*f, 1.0F, 1.0F);
             	break;
 			case 3:
-            	this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 2*f);
+            	setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 2*f);
             	break;
 			}
         }
         
         if(this == ModBlocks.steel_corner)
         {
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+            setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         }
         
         if(this == ModBlocks.steel_roof)
         {
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1*f, 1.0F);
+            setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1*f, 1.0F);
         }
         
         if(this == ModBlocks.steel_beam)
         {
-            this.setBlockBounds(7*f, 0.0F, 7*f, 9*f, 1.0F, 9*f);
+            setBlockBounds(7*f, 0.0F, 7*f, 9*f, 1.0F, 9*f);
         }
         
         if(this == ModBlocks.steel_scaffold)
         {
-            this.setBlockBounds(0.0F, 0.0F, 2*f, 1.0F, 1.0F, 14*f);
+            setBlockBounds(0.0F, 0.0F, 2*f, 1.0F, 1.0F, 14*f);
 			switch(te)
 			{
 			case 4:
-	            this.setBlockBounds(2*f, 0.0F, 0.0F, 14*f, 1.0F, 1.0F);
+	            setBlockBounds(2*f, 0.0F, 0.0F, 14*f, 1.0F, 1.0F);
             	break;
 			case 2:
-	            this.setBlockBounds(0.0F, 0.0F, 2*f, 1.0F, 1.0F, 14*f);
+	            setBlockBounds(0.0F, 0.0F, 2*f, 1.0F, 1.0F, 14*f);
             	break;
 			case 5:
-	            this.setBlockBounds(2*f, 0.0F, 0.0F, 14*f, 1.0F, 1.0F);
+	            setBlockBounds(2*f, 0.0F, 0.0F, 14*f, 1.0F, 1.0F);
             	break;
 			case 3:
-	            this.setBlockBounds(0.0F, 0.0F, 2*f, 1.0F, 1.0F, 14*f);
+	            setBlockBounds(0.0F, 0.0F, 2*f, 1.0F, 1.0F, 14*f);
             	break;
 			}
         }
@@ -162,51 +162,51 @@ public class DecoBlock extends BlockContainer {
 			switch(te)
 			{
 			case 4:
-            	this.setBlockBounds(14*f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+            	setBlockBounds(14*f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
             	break;
 			case 2:
-            	this.setBlockBounds(0.0F, 0.0F, 14*f, 1.0F, 1.0F, 1.0F);
+            	setBlockBounds(0.0F, 0.0F, 14*f, 1.0F, 1.0F, 1.0F);
             	break;
 			case 5:
-            	this.setBlockBounds(0.0F, 0.0F, 0.0F, 2*f, 1.0F, 1.0F);
+            	setBlockBounds(0.0F, 0.0F, 0.0F, 2*f, 1.0F, 1.0F);
             	break;
 			case 3:
-            	this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 2*f);
+            	setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 2*f);
             	break;
 			}
         }
         
         if(this == ModBlocks.steel_corner)
         {
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+            setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         }
         
         if(this == ModBlocks.steel_roof)
         {
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1*f, 1.0F);
+            setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1*f, 1.0F);
         }
         
         if(this == ModBlocks.steel_beam)
         {
-            this.setBlockBounds(7*f, 0.0F, 7*f, 9*f, 1.0F, 9*f);
+            setBlockBounds(7*f, 0.0F, 7*f, 9*f, 1.0F, 9*f);
         }
         
         if(this == ModBlocks.steel_scaffold)
         {
-            this.setBlockBounds(0.0F, 0.0F, 2*f, 1.0F, 1.0F, 14*f);
+            setBlockBounds(0.0F, 0.0F, 2*f, 1.0F, 1.0F, 14*f);
 			switch(te)
 			{
 			case 4:
-	            this.setBlockBounds(2*f, 0.0F, 0.0F, 14*f, 1.0F, 1.0F);
+	            setBlockBounds(2*f, 0.0F, 0.0F, 14*f, 1.0F, 1.0F);
             	break;
 			case 2:
-	            this.setBlockBounds(0.0F, 0.0F, 2*f, 1.0F, 1.0F, 14*f);
+	            setBlockBounds(0.0F, 0.0F, 2*f, 1.0F, 1.0F, 14*f);
             	break;
 			case 5:
-	            this.setBlockBounds(2*f, 0.0F, 0.0F, 14*f, 1.0F, 1.0F);
+	            setBlockBounds(2*f, 0.0F, 0.0F, 14*f, 1.0F, 1.0F);
             	break;
 			case 3:
-	            this.setBlockBounds(0.0F, 0.0F, 2*f, 1.0F, 1.0F, 14*f);
+	            setBlockBounds(0.0F, 0.0F, 2*f, 1.0F, 1.0F, 14*f);
             	break;
 			}
         }

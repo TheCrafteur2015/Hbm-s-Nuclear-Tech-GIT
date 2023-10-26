@@ -39,7 +39,7 @@ public class TrainCargoTramTrailer extends EntityRailCarCargo implements IGUIPro
 
 	public TrainCargoTramTrailer(World world) {
 		super(world);
-		this.setSize(5F, 2F);
+		setSize(5F, 2F);
 	}
 
 	@Override public double getMaxRailSpeed() { return 1; }
@@ -47,7 +47,7 @@ public class TrainCargoTramTrailer extends EntityRailCarCargo implements IGUIPro
 	@Override public double getLengthSpan() { return 1.5; }
 	@Override public double getCollisionSpan() { return 2.5; }
 	@Override public int getSizeInventory() { return 45; }
-	@Override public String getInventoryName() { return this.hasCustomInventoryName() ? this.getEntityName() : "container.trainTramTrailer"; }
+	@Override public String getInventoryName() { return hasCustomInventoryName() ? getEntityName() : "container.trainTramTrailer"; }
 	//@Override public AxisAlignedBB getCollisionBox() { return AxisAlignedBB.getBoundingBox(renderX, renderY, renderZ, renderX, renderY + 1, renderZ).expand(4, 0, 4); }
 	@Override public double getCouplingDist(TrainCoupling coupling) { return coupling != null ? 2.75 : 0; }
 	@Override public double getCurrentSpeed() { return 0; }
@@ -64,7 +64,7 @@ public class TrainCargoTramTrailer extends EntityRailCarCargo implements IGUIPro
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
 		if(!this.worldObj.isRemote && !this.isDead) {
-			this.setDead();
+			setDead();
 		}
 		
 		return true;
@@ -75,7 +75,7 @@ public class TrainCargoTramTrailer extends EntityRailCarCargo implements IGUIPro
 		if(super.interactFirst(player)) return false;
 		
 		if(!this.worldObj.isRemote) {
-			FMLNetworkHandler.openGui(player, MainRegistry.instance, 0, worldObj, this.getEntityId(), 0, 0);
+			FMLNetworkHandler.openGui(player, MainRegistry.instance, 0, this.worldObj, getEntityId(), 0, 0);
 		}
 		
 		return true;
@@ -105,16 +105,16 @@ public class TrainCargoTramTrailer extends EntityRailCarCargo implements IGUIPro
 			this.train = train;
 			for(int i = 0; i < 5; i++) {
 				for(int j = 0; j < 9; j++) {
-					this.addSlotToContainer(new Slot(train, i * 9 + j, 8 + j * 18, 18 + i * 18));
+					addSlotToContainer(new Slot(train, i * 9 + j, 8 + j * 18, 18 + i * 18));
 				}
 			}
 			for(int i = 0; i < 3; i++) {
 				for(int j = 0; j < 9; j++) {
-					this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 140 + i * 18));
+					addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 140 + i * 18));
 				}
 			}
 			for(int i = 0; i < 9; i++) {
-				this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 198));
+				addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 198));
 			}
 		}
 		
@@ -125,12 +125,12 @@ public class TrainCargoTramTrailer extends EntityRailCarCargo implements IGUIPro
 			if(slot != null && slot.getHasStack()) {
 				ItemStack stack = slot.getStack();
 				stackCopy = stack.copy();
-				if(slotIndex < train.getSizeInventory()) {
-					if(!this.mergeItemStack(stack, train.getSizeInventory(), this.inventorySlots.size(), true)) {
+				if(slotIndex < this.train.getSizeInventory()) {
+					if(!mergeItemStack(stack, this.train.getSizeInventory(), this.inventorySlots.size(), true)) {
 						return null;
 					}
 				} else 
-					if(!this.mergeItemStack(stack, 0, 45, false)) {
+					if(!mergeItemStack(stack, 0, 45, false)) {
 						return null;
 					}
 				if(stack.stackSize == 0) {
@@ -144,7 +144,7 @@ public class TrainCargoTramTrailer extends EntityRailCarCargo implements IGUIPro
 
 		@Override
 		public boolean canInteractWith(EntityPlayer player) {
-			return train.isUseableByPlayer(player);
+			return this.train.isUseableByPlayer(player);
 		}
 	}
 	
@@ -176,8 +176,8 @@ public class TrainCargoTramTrailer extends EntityRailCarCargo implements IGUIPro
 		@Override
 		protected void drawGuiContainerBackgroundLayer(float intero, int x, int y) {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-			drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+			Minecraft.getMinecraft().getTextureManager().bindTexture(GUITrainCargoTramTrailer.texture);
+			drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		}
 	}
 }

@@ -4,6 +4,7 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.explosion.ExplosionNT;
 import com.hbm.explosion.ExplosionNT.ExAttrib;
 import com.hbm.lib.ModDamageSource;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
@@ -35,8 +36,8 @@ public class EntityShrapnel extends EntityThrowable {
 	public void onUpdate() {
 		super.onUpdate();
 
-		if(worldObj.isRemote && this.dataWatcher.getWatchableObjectByte(16) == 1)
-			worldObj.spawnParticle("flame", posX, posY, posZ, 0.0, 0.0, 0.0);
+		if(this.worldObj.isRemote && this.dataWatcher.getWatchableObjectByte(16) == 1)
+			this.worldObj.spawnParticle("flame", this.posX, this.posY, this.posZ, 0.0, 0.0, 0.0);
 	}
 
 	@Override
@@ -49,29 +50,29 @@ public class EntityShrapnel extends EntityThrowable {
 
 		if(this.ticksExisted > 5) {
 			
-			if(!worldObj.isRemote)
-				this.setDead();
+			if(!this.worldObj.isRemote)
+				setDead();
 
 			if(this.dataWatcher.getWatchableObjectByte(16) == 2) {
 				
-				if(!worldObj.isRemote) {
-					if(motionY < -0.2D) {
+				if(!this.worldObj.isRemote) {
+					if(this.motionY < -0.2D) {
 						
-						if(worldObj.getBlock(mop.blockX, mop.blockY + 1, mop.blockZ).isReplaceable(worldObj, mop.blockX, mop.blockY + 1, mop.blockZ))
-							worldObj.setBlock(mop.blockX, mop.blockY + 1, mop.blockZ, ModBlocks.volcanic_lava_block);
+						if(this.worldObj.getBlock(mop.blockX, mop.blockY + 1, mop.blockZ).isReplaceable(this.worldObj, mop.blockX, mop.blockY + 1, mop.blockZ))
+							this.worldObj.setBlock(mop.blockX, mop.blockY + 1, mop.blockZ, ModBlocks.volcanic_lava_block);
 						
 						for(int x = mop.blockX - 1; x <= mop.blockX + 1; x++) {
 							for(int y = mop.blockY; y <= mop.blockY + 2; y++) {
 								for(int z = mop.blockZ - 1; z <= mop.blockZ + 1; z++) {
-									if(worldObj.getBlock(x, y, z) == Blocks.air)
-										worldObj.setBlock(x, y, z, ModBlocks.gas_monoxide);
+									if(this.worldObj.getBlock(x, y, z) == Blocks.air)
+										this.worldObj.setBlock(x, y, z, ModBlocks.gas_monoxide);
 								}
 							}
 						}
 					}
 					
-					if(motionY > 0) {
-						ExplosionNT explosion = new ExplosionNT(worldObj, null, mop.blockX + 0.5, mop.blockY + 0.5, mop.blockZ + 0.5, 7);
+					if(this.motionY > 0) {
+						ExplosionNT explosion = new ExplosionNT(this.worldObj, null, mop.blockX + 0.5, mop.blockY + 0.5, mop.blockZ + 0.5, 7);
 						explosion.addAttrib(ExAttrib.NODROP);
 						explosion.addAttrib(ExAttrib.LAVA_V);
 						explosion.addAttrib(ExAttrib.NOSOUND);
@@ -83,16 +84,16 @@ public class EntityShrapnel extends EntityThrowable {
 				
 			} else if(this.dataWatcher.getWatchableObjectByte(16) == 3) {
 				
-				if(worldObj.getBlock(mop.blockX, mop.blockY + 1, mop.blockZ).isReplaceable(worldObj, mop.blockX, mop.blockY + 1, mop.blockZ)) {
-					worldObj.setBlock(mop.blockX, mop.blockY + 1, mop.blockZ, ModBlocks.mud_block);
+				if(this.worldObj.getBlock(mop.blockX, mop.blockY + 1, mop.blockZ).isReplaceable(this.worldObj, mop.blockX, mop.blockY + 1, mop.blockZ)) {
+					this.worldObj.setBlock(mop.blockX, mop.blockY + 1, mop.blockZ, ModBlocks.mud_block);
 				}
 				
 			} else {
 				
-				for(int i = 0; i < 5; i++) worldObj.spawnParticle("lava", posX, posY, posZ, 0.0, 0.0, 0.0);
+				for(int i = 0; i < 5; i++) this.worldObj.spawnParticle("lava", this.posX, this.posY, this.posZ, 0.0, 0.0, 0.0);
 			}
 
-			worldObj.playSoundEffect(posX, posY, posZ, "random.fizz", 1.0F, 1.0F);
+			this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "random.fizz", 1.0F, 1.0F);
 		}
 	}
 
@@ -116,6 +117,6 @@ public class EntityShrapnel extends EntityThrowable {
 	@Override
 	public void readEntityFromNBT(NBTTagCompound nbt) {
 		super.readEntityFromNBT(nbt);
-		this.setDead();
+		setDead();
 	}
 }

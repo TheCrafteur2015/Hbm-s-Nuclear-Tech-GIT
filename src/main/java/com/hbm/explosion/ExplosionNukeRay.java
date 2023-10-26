@@ -99,10 +99,10 @@ public class ExplosionNukeRay {
 
 		while (this.gspNumMax >= this.gspNum){
 			// Get Cartesian coordinates for spherical coordinates
-			Vec3 vec = this.getSpherical2cartesian();
+			Vec3 vec = getSpherical2cartesian();
 
-			int length = (int)Math.ceil(strength);
-			float res = strength;
+			int length = (int)Math.ceil(this.strength);
+			float res = this.strength;
 			FloatTriplet lastPos = null;
 
 			for(int i = 0; i < length; i ++) {
@@ -110,38 +110,38 @@ public class ExplosionNukeRay {
 				if(i > this.length)
 					break;
 
-				float x0 = (float) (posX + (vec.xCoord * i));
-				float y0 = (float) (posY + (vec.yCoord * i));
-				float z0 = (float) (posZ + (vec.zCoord * i));
+				float x0 = (float) (this.posX + (vec.xCoord * i));
+				float y0 = (float) (this.posY + (vec.yCoord * i));
+				float z0 = (float) (this.posZ + (vec.zCoord * i));
 
 				double fac = 100 - ((double) i) / ((double) length) * 100;
 				fac *= 0.07D;
 
-				if(!world.getBlock((int)x0, (int)y0, (int)z0).getMaterial().isLiquid())
-					res -= Math.pow(world.getBlock((int)x0, (int)y0, (int)z0).getExplosionResistance(null), 7.5D - fac);
+				if(!this.world.getBlock((int)x0, (int)y0, (int)z0).getMaterial().isLiquid())
+					res -= Math.pow(this.world.getBlock((int)x0, (int)y0, (int)z0).getExplosionResistance(null), 7.5D - fac);
 				else
 					res -= Math.pow(Blocks.air.getExplosionResistance(null), 7.5D - fac);
 
-				if(res > 0 && world.getBlock((int)x0, (int)y0, (int)z0) != Blocks.air) {
+				if(res > 0 && this.world.getBlock((int)x0, (int)y0, (int)z0) != Blocks.air) {
 					lastPos = new FloatTriplet(x0, y0, z0);
 				}
 
 				if(res <= 0 || i + 1 >= this.length) {
-					if(affectedBlocks.size() < Integer.MAX_VALUE - 100 && lastPos != null) {
-						affectedBlocks.add(lastPos);
+					if(this.affectedBlocks.size() < Integer.MAX_VALUE - 100 && lastPos != null) {
+						this.affectedBlocks.add(lastPos);
 					}
 					break;
 				}
 			}
 			// Raise one generalized spiral points
-			this.generateGspUp();
+			generateGspUp();
 
 			amountProcessed++;
 			if(amountProcessed >= count) {
 				return;
 			}
 		}
-		isAusf3Complete = true;
+		this.isAusf3Complete = true;
 	}
 
 	public void processTip(int count) {
@@ -151,25 +151,22 @@ public class ExplosionNukeRay {
 
 		for(int l = 0; l < Integer.MAX_VALUE; l++) {
 
-			if(processedBlocks >= count)
+			if((processedBlocks >= count) || (braker >= count * 50))
 				return;
 
-			if(braker >= count * 50)
-				return;
-
-			if(l > affectedBlocks.size() - 1)
+			if(l > this.affectedBlocks.size() - 1)
 				break;
 
-			if(affectedBlocks.isEmpty())
+			if(this.affectedBlocks.isEmpty())
 				return;
 
-			int in = affectedBlocks.size() - 1;
+			int in = this.affectedBlocks.size() - 1;
 
-			float x = affectedBlocks.get(in).xCoord;
-			float y = affectedBlocks.get(in).yCoord;
-			float z = affectedBlocks.get(in).zCoord;
+			float x = this.affectedBlocks.get(in).xCoord;
+			float y = this.affectedBlocks.get(in).yCoord;
+			float z = this.affectedBlocks.get(in).zCoord;
 
-			world.setBlock((int)x, (int)y, (int)z, Blocks.air);
+			this.world.setBlock((int)x, (int)y, (int)z, Blocks.air);
 
 			Vec3 vec = Vec3.createVectorHelper(x - this.posX, y - this.posY, z - this.posZ);
 			double pX = vec.xCoord / vec.lengthVector();
@@ -177,22 +174,22 @@ public class ExplosionNukeRay {
 			double pZ = vec.zCoord / vec.lengthVector();
 
 			for(int i = 0; i < vec.lengthVector(); i ++) {
-				int x0 = (int)(posX + pX * i);
-				int y0 = (int)(posY + pY * i);
-				int z0 = (int)(posZ + pZ * i);
+				int x0 = (int)(this.posX + pX * i);
+				int y0 = (int)(this.posY + pY * i);
+				int z0 = (int)(this.posZ + pZ * i);
 
-				if(!world.isAirBlock(x0, y0, z0)) {
-					world.setBlock(x0, y0, z0, Blocks.air);
+				if(!this.world.isAirBlock(x0, y0, z0)) {
+					this.world.setBlock(x0, y0, z0, Blocks.air);
 					processedBlocks++;
 				}
 
 				braker++;
 			}
 
-			affectedBlocks.remove(in);
+			this.affectedBlocks.remove(in);
 		}
 
-		processed += count;
+		this.processed += count;
 	}
 	
 	/*public void processBunch(int count) {
@@ -510,9 +507,9 @@ public class ExplosionNukeRay {
 		public float zCoord;
 		
 		public FloatTriplet(float x, float y, float z) {
-			xCoord = x;
-			yCoord = y;
-			zCoord = z;
+			this.xCoord = x;
+			this.yCoord = y;
+			this.zCoord = z;
 		}
 	}
 

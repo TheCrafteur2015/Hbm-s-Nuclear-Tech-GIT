@@ -14,8 +14,8 @@ public class AudioWrapperClientStartStop extends AudioWrapperClient {
 	
 	public AudioWrapperClientStartStop(World world, ResourceLocation source, String start, String stop, float vol){
 		super(source);
-		if(sound != null){
-			sound.setVolume(vol);
+		if(this.sound != null){
+			this.sound.setVolume(vol);
 		}
 		this.ssVol = vol;
 		this.world = world;
@@ -33,22 +33,22 @@ public class AudioWrapperClientStartStop extends AudioWrapperClient {
 	
 	@Override
 	public void startSound(){
-		if(start != null){
-			world.playSound(x, y, z, start, ssVol * 0.2F, 1, false);
+		if(this.start != null){
+			this.world.playSound(this.x, this.y, this.z, this.start, this.ssVol * 0.2F, 1, false);
 		}
 		super.startSound();
 	}
 	
 	@Override
 	public void stopSound(){
-		if(stop != null){
-			world.playSound(x, y, z, stop, ssVol * 0.2F, 1, false);
+		if(this.stop != null){
+			this.world.playSound(this.x, this.y, this.z, this.stop, this.ssVol * 0.2F, 1, false);
 		}
 		super.stopSound();
 	}
 	
 	@Override
 	public float getVolume(){
-		return ssVol;
+		return this.ssVol;
 	}
 }

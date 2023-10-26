@@ -24,8 +24,8 @@ public class RenderQuasar extends RenderBlackHole {
 
 		GL11.glScalef(size, size, size);
 
-		bindTexture(hole);
-		blastModel.renderAll();
+		bindTexture(this.hole);
+		this.blastModel.renderAll();
 		
 		renderDisc(entity, interp);
 		renderJets(entity, interp);

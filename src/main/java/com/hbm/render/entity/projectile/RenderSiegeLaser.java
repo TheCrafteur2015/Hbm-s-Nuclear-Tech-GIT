@@ -20,7 +20,7 @@ public class RenderSiegeLaser extends Render {
 		GL11.glRotatef(laser.prevRotationYaw + (laser.rotationYaw - laser.prevRotationYaw) * f1 - 90.0F, 0.0F, 1.0F, 0.0F);
 		GL11.glRotatef(laser.prevRotationPitch + (laser.rotationPitch - laser.prevRotationPitch) * f1 + 180, 0.0F, 0.0F, 1.0F);
 		
-		this.renderDart((EntitySiegeLaser) laser);
+		renderDart((EntitySiegeLaser) laser);
 		
 		GL11.glPopMatrix();
 	}

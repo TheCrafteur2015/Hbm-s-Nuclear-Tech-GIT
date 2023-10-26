@@ -18,7 +18,8 @@ public class BlockSoyuzStruct extends BlockContainer {
 		return new TileEntitySoyuzStruct();
 	}
 	
-    public boolean isOpaqueCube() {
+    @Override
+	public boolean isOpaqueCube() {
     	
         return false;
     }

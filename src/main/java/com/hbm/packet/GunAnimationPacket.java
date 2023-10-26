@@ -28,12 +28,12 @@ public class GunAnimationPacket implements IMessage {
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		type = buf.readInt();
+		this.type = buf.readInt();
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeInt(type);
+		buf.writeInt(this.type);
 	}
 
 	public static class Handler implements IMessageHandler<GunAnimationPacket, IMessage> {
@@ -48,13 +48,7 @@ public class GunAnimationPacket implements IMessage {
 				ItemStack stack = player.getHeldItem();
 				int slot = player.inventory.currentItem;
 				
-				if(stack == null)
-					return null;
-				
-				if(!(stack.getItem() instanceof ItemGunBase))
-					return null;
-				
-				if(m.type < 0 || m.type >= AnimType.values().length)
+				if((stack == null) || !(stack.getItem() instanceof ItemGunBase) || m.type < 0 || m.type >= AnimType.values().length)
 					return null;
 				
 				AnimType type = AnimType.values()[m.type];

@@ -69,13 +69,13 @@ public class TileEntityMachineElectricFurnace extends TileEntityMachineBase impl
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setLong("power", power);
-		nbt.setInteger("progress", progress);
+		nbt.setLong("power", this.power);
+		nbt.setInteger("progress", this.progress);
 	}
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
-		return slots_io;
+		return TileEntityMachineElectricFurnace.slots_io;
 	}
 
 	@Override
@@ -90,15 +90,15 @@ public class TileEntityMachineElectricFurnace extends TileEntityMachineBase impl
 	}
 
 	public int getProgressScaled(int i) {
-		return (progress * i) / maxProgress;
+		return (this.progress * i) / this.maxProgress;
 	}
 
 	public long getPowerScaled(long i) {
-		return (power * i) / maxPower;
+		return (this.power * i) / TileEntityMachineElectricFurnace.maxPower;
 	}
 
 	public boolean hasPower() {
-		return power >= consumption;
+		return this.power >= this.consumption;
 	}
 
 	public boolean isProcessing() {
@@ -107,7 +107,7 @@ public class TileEntityMachineElectricFurnace extends TileEntityMachineBase impl
 
 	public boolean canProcess() {
 		
-		if(slots[1] == null || cooldown > 0) {
+		if(this.slots[1] == null || this.cooldown > 0) {
 			return false;
 		}
 		ItemStack itemStack = FurnaceRecipes.smelting().getSmeltingResult(this.slots[1]);
@@ -116,18 +116,18 @@ public class TileEntityMachineElectricFurnace extends TileEntityMachineBase impl
 			return false;
 		}
 
-		if(slots[2] == null) {
+		if(this.slots[2] == null) {
 			return true;
 		}
 
-		if(!slots[2].isItemEqual(itemStack)) {
+		if(!this.slots[2].isItemEqual(itemStack)) {
 			return false;
 		}
 
-		if(slots[2].stackSize < getInventoryStackLimit() && slots[2].stackSize < slots[2].getMaxStackSize()) {
+		if(this.slots[2].stackSize < getInventoryStackLimit() && this.slots[2].stackSize < this.slots[2].getMaxStackSize()) {
 			return true;
 		} else {
-			return slots[2].stackSize < itemStack.getMaxStackSize();
+			return this.slots[2].stackSize < itemStack.getMaxStackSize();
 		}
 	}
 
@@ -135,20 +135,20 @@ public class TileEntityMachineElectricFurnace extends TileEntityMachineBase impl
 		if(canProcess()) {
 			ItemStack itemStack = FurnaceRecipes.smelting().getSmeltingResult(this.slots[1]);
 
-			if(slots[2] == null) {
-				slots[2] = itemStack.copy();
-			} else if(slots[2].isItemEqual(itemStack)) {
-				slots[2].stackSize += itemStack.stackSize;
+			if(this.slots[2] == null) {
+				this.slots[2] = itemStack.copy();
+			} else if(this.slots[2].isItemEqual(itemStack)) {
+				this.slots[2].stackSize += itemStack.stackSize;
 			}
 
 			for(int i = 1; i < 2; i++) {
-				if(slots[i].stackSize <= 0) {
-					slots[i] = new ItemStack(slots[i].getItem().setFull3D());
+				if(this.slots[i].stackSize <= 0) {
+					this.slots[i] = new ItemStack(this.slots[i].getItem().setFull3D());
 				} else {
-					slots[i].stackSize--;
+					this.slots[i].stackSize--;
 				}
-				if(slots[i].stackSize <= 0) {
-					slots[i] = null;
+				if(this.slots[i].stackSize <= 0) {
+					this.slots[i] = null;
 				}
 			}
 		}
@@ -158,45 +158,45 @@ public class TileEntityMachineElectricFurnace extends TileEntityMachineBase impl
 	public void updateEntity() {
 		boolean markDirty = false;
 
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			if(cooldown > 0) {
-				cooldown--;
+			if(this.cooldown > 0) {
+				this.cooldown--;
 			}
 
-			power = Library.chargeTEFromItems(slots, 0, power, maxPower);
+			this.power = Library.chargeTEFromItems(this.slots, 0, this.power, TileEntityMachineElectricFurnace.maxPower);
 
-			if(worldObj.getTotalWorldTime() % 40 == 0) this.updateConnections();
+			if(this.worldObj.getTotalWorldTime() % 40 == 0) updateConnections();
 
 			this.consumption = 50;
 			this.maxProgress = 100;
 
-			UpgradeManager.eval(slots, 3, 3);
+			UpgradeManager.eval(this.slots, 3, 3);
 
 			int speedLevel = UpgradeManager.getLevel(UpgradeType.SPEED);
 			int powerLevel = UpgradeManager.getLevel(UpgradeType.POWER);
 
-			maxProgress -= speedLevel * 25;
-			consumption += speedLevel * 50;
-			maxProgress += powerLevel * 10;
-			consumption -= powerLevel * 15;
+			this.maxProgress -= speedLevel * 25;
+			this.consumption += speedLevel * 50;
+			this.maxProgress += powerLevel * 10;
+			this.consumption -= powerLevel * 15;
 			
 			if(!hasPower()) {
-				cooldown = 20;
+				this.cooldown = 20;
 			}
 
 			if(hasPower() && canProcess()) {
-				progress++;
+				this.progress++;
 
-				power -= consumption;
+				this.power -= this.consumption;
 
-				if(this.progress >= maxProgress) {
+				if(this.progress >= this.maxProgress) {
 					this.progress = 0;
-					this.processItem();
+					processItem();
 					markDirty = true;
 				}
 			} else {
-				progress = 0;
+				this.progress = 0;
 			}
 
 			boolean trigger = true;
@@ -214,11 +214,11 @@ public class TileEntityMachineElectricFurnace extends TileEntityMachineBase impl
 			data.setLong("power", this.power);
 			data.setInteger("MaxProgress", this.maxProgress);
 			data.setInteger("progress", this.progress);
-			this.networkPack(data, 50);
+			networkPack(data, 50);
 
 
 			if(markDirty) {
-				this.markDirty();
+				markDirty();
 			}
 		}
 	}
@@ -226,9 +226,10 @@ public class TileEntityMachineElectricFurnace extends TileEntityMachineBase impl
 	private void updateConnections() {
 
 		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-			this.trySubscribe(worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, dir);
+			trySubscribe(this.worldObj, this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ, dir);
 	}
 
+	@Override
 	public void networkUnpack(NBTTagCompound nbt) {
 		this.power = nbt.getLong("power");
 		this.maxProgress = nbt.getInteger("MaxProgress");
@@ -238,19 +239,19 @@ public class TileEntityMachineElectricFurnace extends TileEntityMachineBase impl
 
 	@Override
 	public void setPower(long i) {
-		power = i;
+		this.power = i;
 
 	}
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 
 	}
 
 	@Override
 	public long getMaxPower() {
-		return maxPower;
+		return TileEntityMachineElectricFurnace.maxPower;
 	}
 
 	@Override

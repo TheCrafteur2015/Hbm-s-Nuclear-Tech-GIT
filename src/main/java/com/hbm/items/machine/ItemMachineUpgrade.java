@@ -15,12 +15,12 @@ public class ItemMachineUpgrade extends Item {
 	public int tier = 0;
 	
 	public ItemMachineUpgrade() {
-		this.setMaxStackSize(1);
+		setMaxStackSize(1);
 		this.type = UpgradeType.SPECIAL;
 	}
 	
 	public ItemMachineUpgrade(UpgradeType type) {
-		this.setMaxStackSize(1);
+		setMaxStackSize(1);
 		this.type = type;
 	}
 	

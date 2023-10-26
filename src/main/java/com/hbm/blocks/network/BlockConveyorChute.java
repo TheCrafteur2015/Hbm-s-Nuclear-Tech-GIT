@@ -53,7 +53,7 @@ public class BlockConveyorChute extends BlockConveyorBase {
 
 	@Override
 	public int getRenderType() {
-		return renderID;
+		return BlockConveyorChute.renderID;
 	}
 
 	@Override

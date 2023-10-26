@@ -94,7 +94,7 @@ public class RenderFoundry extends TileEntitySpecialRenderer implements ITileAct
 		
 		if(foundry.shouldRender()) {
 			
-			ITileActorRenderer.bindTexture(lava);
+			ITileActorRenderer.bindTexture(RenderFoundry.lava);
 			
 			int hex = foundry.getMat().moltenColor;
 			Color color = new Color(hex);

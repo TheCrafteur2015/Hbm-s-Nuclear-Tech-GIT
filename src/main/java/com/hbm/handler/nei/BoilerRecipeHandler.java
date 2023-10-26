@@ -18,10 +18,10 @@ import net.minecraft.item.ItemStack;
 
 public class BoilerRecipeHandler extends TemplateRecipeHandler {
 	
-    public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<RecipeTransferRect>();
-    public LinkedList<RecipeTransferRect> transferRectsGui = new LinkedList<RecipeTransferRect>();
-    public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<Class<? extends GuiContainer>>();
-    public LinkedList<Class<? extends GuiContainer>> guiGui = new LinkedList<Class<? extends GuiContainer>>();
+    public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<>();
+    public LinkedList<RecipeTransferRect> transferRectsGui = new LinkedList<>();
+    public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<>();
+    public LinkedList<Class<? extends GuiContainer>> guiGui = new LinkedList<>();
 
     public class SmeltingSet extends TemplateRecipeHandler.CachedRecipe
     {
@@ -36,12 +36,12 @@ public class BoilerRecipeHandler extends TemplateRecipeHandler {
 
         @Override
 		public List<PositionedStack> getIngredients() {
-            return getCycledIngredients(cycleticks / 48, Arrays.asList(new PositionedStack[] {input}));
+            return getCycledIngredients(BoilerRecipeHandler.this.cycleticks / 48, Arrays.asList(new PositionedStack[] {this.input}));
         }
 
         @Override
 		public PositionedStack getResult() {
-            return result;
+            return this.result;
         }
     }
     
@@ -119,14 +119,14 @@ public class BoilerRecipeHandler extends TemplateRecipeHandler {
     
     @Override
     public void loadTransferRects() {
-        transferRectsGui = new LinkedList<RecipeTransferRect>();
-        guiGui = new LinkedList<Class<? extends GuiContainer>>();
+        this.transferRectsGui = new LinkedList<>();
+        this.guiGui = new LinkedList<>();
 
-        transferRects.add(new RecipeTransferRect(new Rectangle(138 - 1 - 36 - 27 - 9, 23, 36, 18), "ntmboiler"));
-        transferRectsGui.add(new RecipeTransferRect(new Rectangle(18 * 2 + 2 + 36, 89 - 29 - 18 - 18, 18, 18 * 2), "ntmboiler"));
-        guiGui.add(GUIMachineBoiler.class);
-        guiGui.add(GUIMachineBoilerElectric.class);
-        RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), transferRects);
-        RecipeTransferRectHandler.registerRectsToGuis(guiGui, transferRectsGui);
+        this.transferRects.add(new RecipeTransferRect(new Rectangle(138 - 1 - 36 - 27 - 9, 23, 36, 18), "ntmboiler"));
+        this.transferRectsGui.add(new RecipeTransferRect(new Rectangle(18 * 2 + 2 + 36, 89 - 29 - 18 - 18, 18, 18 * 2), "ntmboiler"));
+        this.guiGui.add(GUIMachineBoiler.class);
+        this.guiGui.add(GUIMachineBoilerElectric.class);
+        RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), this.transferRects);
+        RecipeTransferRectHandler.registerRectsToGuis(this.guiGui, this.transferRectsGui);
     }
 }

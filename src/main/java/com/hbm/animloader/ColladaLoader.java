@@ -54,7 +54,7 @@ public class ColladaLoader {
 	 */
 	
 	public static AnimatedModel load(ResourceLocation file) {
-		return load(file, false);
+		return ColladaLoader.load(file, false);
 	}
 	
 	public static AnimatedModel load(ResourceLocation file, boolean flipV) {
@@ -64,7 +64,7 @@ public class ColladaLoader {
 			Document doc;
 			try {
 				doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(res.getInputStream());
-				return parse(doc.getDocumentElement(), flipV);
+				return ColladaLoader.parse(doc.getDocumentElement(), flipV);
 			} catch(SAXException e) {
 				e.printStackTrace();
 			} catch(IOException e) {
@@ -75,7 +75,7 @@ public class ColladaLoader {
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
-		MainRegistry.logger.log(Level.ERROR, "FAILED TO LOAD MODEL: " + file);
+		MainRegistry.logger.log(Level.ERROR, "FAILED TO LOAD MODEL: " + file, null, null);
 		return null;
 	}
 	
@@ -83,29 +83,29 @@ public class ColladaLoader {
 	
 	private static AnimatedModel parse(Element root, boolean flipV){
 		//Should get the first bone
-		Element scene = getFirstElement((Element)root.getElementsByTagName("library_visual_scenes").item(0));
+		Element scene = ColladaLoader.getFirstElement(root.getElementsByTagName("library_visual_scenes").item(0));
 		AnimatedModel structure = new AnimatedModel(){
 			@Override
 			protected void renderWithIndex(float inter, int firstIndex, int nextIndex, float diffN, IAnimatedModelCallback c) {
-				for(AnimatedModel m : children){
+				for(AnimatedModel m : this.children){
 					m.renderWithIndex(inter, firstIndex, nextIndex, diffN, c);
 				}
 			}
 			@Override
 			public void render() {
-				for(AnimatedModel m : children){
+				for(AnimatedModel m : this.children){
 					m.render();
 				}
 			}
 		};
-		for(Element node : getChildElements(scene)){
+		for(Element node : ColladaLoader.getChildElements(scene)){
 			if(node.getElementsByTagName("instance_geometry").getLength() > 0){
-				structure.children.add(parseStructure(node));
+				structure.children.add(ColladaLoader.parseStructure(node));
 			}
 		}
-		Map<String, Integer> geometry = parseGeometry((Element)root.getElementsByTagName("library_geometries").item(0), flipV);
-		addGeometry(structure, geometry);
-		setAnimationController(structure, new AnimationController());
+		Map<String, Integer> geometry = ColladaLoader.parseGeometry((Element)root.getElementsByTagName("library_geometries").item(0), flipV);
+		ColladaLoader.addGeometry(structure, geometry);
+		ColladaLoader.setAnimationController(structure, new AnimationController());
 		
 		return structure;
 	}
@@ -113,7 +113,7 @@ public class ColladaLoader {
 	private static void setAnimationController(AnimatedModel model, AnimationController control){
 		model.controller = control;
 		for(AnimatedModel m : model.children)
-			setAnimationController(m, control);
+			ColladaLoader.setAnimationController(m, control);
 	}
 	
 	private static Element getFirstElement(Node root){
@@ -128,7 +128,7 @@ public class ColladaLoader {
 	}
 	
 	private static List<Element> getElementsByName(Element e, String name){
-		List<Element> elements = new ArrayList<Element>();
+		List<Element> elements = new ArrayList<>();
 		NodeList n = e.getChildNodes();
 		for(int i = 0; i < n.getLength(); i ++){
 			Node node = n.item(i);
@@ -140,7 +140,7 @@ public class ColladaLoader {
 	}
 	
 	private static List<Element> getChildElements(Element e){
-		List<Element> elements = new ArrayList<Element>();
+		List<Element> elements = new ArrayList<>();
 		if(e == null)
 			return elements;
 		NodeList n = e.getChildNodes();
@@ -165,12 +165,12 @@ public class ColladaLoader {
 			Element ele = (Element) node;
 			if("transform".equals(ele.getAttribute("sid"))){
 				//Do I even need to flip the matrix here? No idea!
-				model.transform = flipMatrix(parseFloatArray(ele.getTextContent()));
+				model.transform = ColladaLoader.flipMatrix(ColladaLoader.parseFloatArray(ele.getTextContent()));
 				model.hasTransform = true;
 			} else if("instance_geometry".equals(ele.getTagName())){
 				model.geo_name = ele.getAttribute("url").substring(1);
 			} else if(ele.getElementsByTagName("instance_geometry").getLength() > 0){
-				AnimatedModel childModel = parseStructure(ele);
+				AnimatedModel childModel = ColladaLoader.parseStructure(ele);
 				childModel.parent = model;
 				model.children.add(childModel);
 			}
@@ -207,26 +207,26 @@ public class ColladaLoader {
 	
 	//Map of geometry name to display list id
 	private static Map<String, Integer> parseGeometry(Element root, boolean flipV){
-		Map<String, Integer> allGeometry = new HashMap<String, Integer>();
-		for(Element e : getElementsByName(root, "geometry")){
+		Map<String, Integer> allGeometry = new HashMap<>();
+		for(Element e : ColladaLoader.getElementsByName(root, "geometry")){
 			String name = e.getAttribute("id");
-			Element mesh = getElementsByName(e, "mesh").get(0);
+			Element mesh = ColladaLoader.getElementsByName(e, "mesh").get(0);
 			
 			float[] positions = new float[0];
 			float[] normals = new float[0];
 			float[] texCoords = new float[0];
 			int[] indices = new int[0];
 			
-			for(Element section : getChildElements(mesh)){
+			for(Element section : ColladaLoader.getChildElements(mesh)){
 				String id = section.getAttribute("id");
 				if(id.endsWith("mesh-positions")){
-					positions = parsePositions(section);
+					positions = ColladaLoader.parsePositions(section);
 				} else if(id.endsWith("mesh-normals")){
-					normals = parseNormals(section);
+					normals = ColladaLoader.parseNormals(section);
 				} else if(id.endsWith("mesh-map-0")){
-					texCoords = parseTexCoords(section);
+					texCoords = ColladaLoader.parseTexCoords(section);
 				} else if(section.getNodeName().equals("triangles")){
-					indices = ArrayUtils.addAll(indices, parseIndices(section));
+					indices = ArrayUtils.addAll(indices, ColladaLoader.parseIndices(section));
 				}
 			}
 			if(positions.length == 0)
@@ -281,22 +281,22 @@ public class ColladaLoader {
 	
 	private static float[] parsePositions(Element root){
 		String content = root.getElementsByTagName("float_array").item(0).getTextContent();
-		return parseFloatArray(content);
+		return ColladaLoader.parseFloatArray(content);
 	}
 	
 	private static float[] parseNormals(Element root){
 		String content = root.getElementsByTagName("float_array").item(0).getTextContent();
-		return parseFloatArray(content);
+		return ColladaLoader.parseFloatArray(content);
 	}
 	
 	private static float[] parseTexCoords(Element root){
 		String content = root.getElementsByTagName("float_array").item(0).getTextContent();
-		return parseFloatArray(content);
+		return ColladaLoader.parseFloatArray(content);
 	}
 	
 	private static int[] parseIndices(Element root){
 		String content = root.getElementsByTagName("p").item(0).getTextContent();
-		return parseIntegerArray(content);
+		return ColladaLoader.parseIntegerArray(content);
 	}
 	
 	private static float[] parseFloatArray(String s){
@@ -327,7 +327,7 @@ public class ColladaLoader {
 			m.callList = -1;
 		}
 		for(AnimatedModel child : m.children){
-			addGeometry(child, geometry);
+			ColladaLoader.addGeometry(child, geometry);
 		}
 	}
 	
@@ -342,7 +342,7 @@ public class ColladaLoader {
 			Document doc;
 			try {
 				doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(res.getInputStream());
-				return parseAnim(doc.getDocumentElement(), length);
+				return ColladaLoader.parseAnim(doc.getDocumentElement(), length);
 			} catch(SAXException e) {
 				e.printStackTrace();
 			} catch(IOException e) {
@@ -361,19 +361,19 @@ public class ColladaLoader {
 		Element anim_section = (Element)root.getElementsByTagName("library_animations").item(0);
 		Animation anim = new Animation();
 		anim.length = length;
-		for(Element e : getChildElements(anim_section)){
+		for(Element e : ColladaLoader.getChildElements(anim_section)){
 			if("animation".equals(e.getNodeName())){
 				String name = e.getAttribute("name");
 				Transform[] t = null;
-				List<Element> elements2 = getChildElements(e);
+				List<Element> elements2 = ColladaLoader.getChildElements(e);
 				if(elements2.isEmpty()){
 					continue;
 				}
 				for(Element e2 : elements2){
 					if(e2.getAttribute("id").endsWith("transform")){
-						t = parseTransforms(e2);
+						t = ColladaLoader.parseTransforms(e2);
 					} else if(e2.getAttribute("id").endsWith("hide_viewport")){
-						setViewportHiddenKeyframes(t, e2);
+						ColladaLoader.setViewportHiddenKeyframes(t, e2);
 					}
 				}
 				anim.objectTransforms.put(name, t);
@@ -384,10 +384,10 @@ public class ColladaLoader {
 	}
 	
 	private static Transform[] parseTransforms(Element root){
-		String output = getOutputLocation(root);
-		for(Element e : getChildElements(root)){
+		String output = ColladaLoader.getOutputLocation(root);
+		for(Element e : ColladaLoader.getChildElements(root)){
 			if(e.getAttribute("id").equals(output)){
-				return parseTransformsFromText(e.getElementsByTagName("float_array").item(0).getTextContent());
+				return ColladaLoader.parseTransformsFromText(e.getElementsByTagName("float_array").item(0).getTextContent());
 			}
 		}
 		System.out.println("Failed to parse transforms! This will not work!");
@@ -396,10 +396,10 @@ public class ColladaLoader {
 	}
 	
 	private static void setViewportHiddenKeyframes(Transform[] t, Element root){
-		String output = getOutputLocation(root);
-		for(Element e : getChildElements(root)){
+		String output = ColladaLoader.getOutputLocation(root);
+		for(Element e : ColladaLoader.getChildElements(root)){
 			if(e.getAttribute("id").equals(output)){
-				int[] hiddenFrames = parseIntegerArray(e.getElementsByTagName("float_array").item(0).getTextContent());
+				int[] hiddenFrames = ColladaLoader.parseIntegerArray(e.getElementsByTagName("float_array").item(0).getTextContent());
 				for(int i = 0; i < hiddenFrames.length; i ++){
 					t[i].hidden = hiddenFrames[i] > 0 ? true : false;
 				}
@@ -409,7 +409,7 @@ public class ColladaLoader {
 	
 	private static String getOutputLocation(Element root){
 		Element sampler = (Element) root.getElementsByTagName("sampler").item(0);
-		for(Element e : getChildElements(sampler)){
+		for(Element e : ColladaLoader.getChildElements(sampler)){
 			if("OUTPUT".equals(e.getAttribute("semantic"))){
 				return e.getAttribute("source").substring(1);
 			}
@@ -418,7 +418,7 @@ public class ColladaLoader {
 	}
 	
 	private static Transform[] parseTransformsFromText(String data){
-		float[] floats = parseFloatArray(data);
+		float[] floats = ColladaLoader.parseFloatArray(data);
 		Transform[] transforms = new Transform[floats.length/16];
 		for(int i = 0; i < floats.length/16; i++){
 			float[] rawTransform = new float[16];

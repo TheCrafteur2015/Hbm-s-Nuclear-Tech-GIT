@@ -33,15 +33,15 @@ public class BlockHazardFalling extends BlockFalling {
 
 	@Override
 	public boolean isBeaconBase(IBlockAccess worldObj, int x, int y, int z, int beaconX, int beaconY, int beaconZ) {
-		return beaconable;
+		return this.beaconable;
 	}
 
 	@Override
 	public void updateTick(World world, int x, int y, int z, Random rand) {
 
 		if(this.rad > 0) {
-			ChunkRadiationManager.proxy.incrementRad(world, x, y, z, rad);
-			world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
+			ChunkRadiationManager.proxy.incrementRad(world, x, y, z, this.rad);
+			world.scheduleBlockUpdate(x, y, z, this, tickRate(world));
 		}
 		
 		super.updateTick(world, x, y, z, rand);
@@ -56,12 +56,13 @@ public class BlockHazardFalling extends BlockFalling {
 		return super.tickRate(world);
 	}
 
+	@Override
 	public void onBlockAdded(World world, int x, int y, int z) {
 		super.onBlockAdded(world, x, y, z);
 		
-		rad = HazardSystem.getHazardLevelFromStack(new ItemStack(this), HazardRegistry.RADIATION) * 0.1F;
+		this.rad = HazardSystem.getHazardLevelFromStack(new ItemStack(this), HazardRegistry.RADIATION) * 0.1F;
 		
 		if(this.rad > 0)
-			world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
+			world.scheduleBlockUpdate(x, y, z, this, tickRate(world));
 	}
 }

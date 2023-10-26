@@ -24,10 +24,11 @@ public class TileEntitySoyuzCapsule extends TileEntityInventoryBase implements I
 		return "container.soyuzCapsule";
 	}
 	
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
     	
-        return AxisAlignedBB.getBoundingBox(xCoord - 1, yCoord - 1, zCoord - 1, xCoord + 2, yCoord + 3, zCoord + 2);
+        return AxisAlignedBB.getBoundingBox(this.xCoord - 1, this.yCoord - 1, this.zCoord - 1, this.xCoord + 2, this.yCoord + 3, this.zCoord + 2);
     }
 
 	@Override

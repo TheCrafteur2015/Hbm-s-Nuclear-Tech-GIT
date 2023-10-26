@@ -20,27 +20,27 @@ private TileEntityMachineEPress nukeBoy;
 
 	public ContainerMachineEPress(InventoryPlayer invPlayer, TileEntityMachineEPress tedf) {
 		
-		nukeBoy = tedf;
+		this.nukeBoy = tedf;
 
 		//Battery
-		this.addSlotToContainer(new Slot(tedf, 0, 44, 53));
+		addSlotToContainer(new Slot(tedf, 0, 44, 53));
 		//Stamp
-		this.addSlotToContainer(new Slot(tedf, 1, 80, 17));
+		addSlotToContainer(new Slot(tedf, 1, 80, 17));
 		//Input
-		this.addSlotToContainer(new Slot(tedf, 2, 80, 53));
+		addSlotToContainer(new Slot(tedf, 2, 80, 53));
 		//Output
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 3, 140, 35));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 3, 140, 35));
 		//Upgrade
-		this.addSlotToContainer(new SlotUpgrade(tedf, 4, 44, 21));
+		addSlotToContainer(new SlotUpgrade(tedf, 4, 44, 21));
 		
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
 		}
 	}
 
@@ -54,25 +54,25 @@ private TileEntityMachineEPress nukeBoy;
 			var3 = var5.copy();
 
 			if(par2 <= 4) {
-				if(!this.mergeItemStack(var5, 5, this.inventorySlots.size(), true)) {
+				if(!mergeItemStack(var5, 5, this.inventorySlots.size(), true)) {
 					return null;
 				}
 			} else {
 				
 				if(var3.getItem() instanceof IBatteryItem || var3.getItem() == ModItems.battery_creative) {
-					if(!this.mergeItemStack(var5, 0, 1, false)) {
+					if(!mergeItemStack(var5, 0, 1, false)) {
 						return null;
 					}
 				} else if(var3.getItem() instanceof ItemMachineUpgrade) {
-					if(!this.mergeItemStack(var5, 4, 5, false)) {
+					if(!mergeItemStack(var5, 4, 5, false)) {
 						return null;
 					}
 				} else if(var3.getItem() instanceof ItemStamp) {
-					if(!this.mergeItemStack(var5, 1, 2, false)) {
+					if(!mergeItemStack(var5, 1, 2, false)) {
 						return null;
 					}
 				} else {
-					if(!this.mergeItemStack(var5, 2, 3, false)) {
+					if(!mergeItemStack(var5, 2, 3, false)) {
 						return null;
 					}
 				}
@@ -90,6 +90,6 @@ private TileEntityMachineEPress nukeBoy;
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return nukeBoy.isUseableByPlayer(player);
+		return this.nukeBoy.isUseableByPlayer(player);
 	}
 }

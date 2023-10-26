@@ -18,29 +18,29 @@ public class ContainerNukeFurnace extends Container {
 	private int dualPower;
 
 	public ContainerNukeFurnace(InventoryPlayer invPlayer, TileEntityNukeFurnace tedf) {
-		dualCookTime = 0;
-		dualPower = 0;
+		this.dualCookTime = 0;
+		this.dualPower = 0;
 
-		diFurnace = tedf;
+		this.diFurnace = tedf;
 
-		this.addSlotToContainer(new Slot(tedf, 0, 56, 53) {
+		addSlotToContainer(new Slot(tedf, 0, 56, 53) {
 			@Override
 			public int getSlotStackLimit() {
 				return 1;
 			}
 		});
 
-		this.addSlotToContainer(new Slot(tedf, 1, 56, 17));
-		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 2, 116, 35));
+		addSlotToContainer(new Slot(tedf, 1, 56, 17));
+		addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 2, 116, 35));
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
 		}
 	}
 
@@ -61,7 +61,7 @@ public class ContainerNukeFurnace extends Container {
 			var3 = var5.copy();
 
 			if(par2 <= 2) {
-				if(!this.mergeItemStack(var5, 3, this.inventorySlots.size(), true)) {
+				if(!mergeItemStack(var5, 3, this.inventorySlots.size(), true)) {
 					return null;
 				}
 			} else {
@@ -70,7 +70,7 @@ public class ContainerNukeFurnace extends Container {
 					if(!InventoryUtil.mergeItemStack(this.inventorySlots, var5, 0, 1, false))
 						return null;
 				} else {
-					if(!this.mergeItemStack(var5, 1, 2, false)) 
+					if(!mergeItemStack(var5, 1, 2, false)) 
 						return null;
 				}
 			}
@@ -87,15 +87,15 @@ public class ContainerNukeFurnace extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return diFurnace.isUseableByPlayer(player);
+		return this.diFurnace.isUseableByPlayer(player);
 	}
 
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 
-		for(int i = 0; i < this.crafters.size(); i++) {
-			ICrafting par1 = (ICrafting) this.crafters.get(i);
+		for (Object element : this.crafters) {
+			ICrafting par1 = (ICrafting) element;
 
 			if(this.dualCookTime != this.diFurnace.dualCookTime) {
 				par1.sendProgressBarUpdate(this, 0, this.diFurnace.dualCookTime);
@@ -113,10 +113,10 @@ public class ContainerNukeFurnace extends Container {
 	@Override
 	public void updateProgressBar(int i, int j) {
 		if(i == 0) {
-			diFurnace.dualCookTime = j;
+			this.diFurnace.dualCookTime = j;
 		}
 		if(i == 1) {
-			diFurnace.dualPower = j;
+			this.diFurnace.dualPower = j;
 		}
 	}
 }

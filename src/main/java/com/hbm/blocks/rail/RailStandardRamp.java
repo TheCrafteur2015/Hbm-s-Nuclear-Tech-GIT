@@ -35,7 +35,7 @@ public class RailStandardRamp extends BlockDummyable implements IRailNTM {
 
 	@Override
 	public int getRenderType() {
-		return renderID;
+		return RailStandardRamp.renderID;
 	}
 
 	@Override
@@ -50,12 +50,12 @@ public class RailStandardRamp extends BlockDummyable implements IRailNTM {
 
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
-		this.setBlockBounds(0F, 0F, 0F, 1F, 0.125F, 1F);
+		setBlockBounds(0F, 0F, 0F, 1F, 0.125F, 1F);
 	}
 
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
-		this.setBlockBounds(0F, 0F, 0F, 1F, 0.125F, 1F);
+		setBlockBounds(0F, 0F, 0F, 1F, 0.125F, 1F);
 		return AxisAlignedBB.getBoundingBox(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
 	}
 
@@ -71,12 +71,12 @@ public class RailStandardRamp extends BlockDummyable implements IRailNTM {
 	
 	/* Very simple function determining the snapping position and adding the motion value to it, if desired. */
 	public Vec3 snapAndMove(World world, int x, int y, int z, double trainX, double trainY, double trainZ, double motionX, double motionY, double motionZ, double speed, RailContext info) {
-		int[] pos = this.findCore(world, x, y, z);
+		int[] pos = findCore(world, x, y, z);
 		if(pos == null) return Vec3.createVectorHelper(trainX, trainY, trainZ);
 		int cX = pos[0];
 		int cY = pos[1];
 		int cZ = pos[2];
-		int meta = world.getBlockMetadata(cX, cY, cZ) - this.offset;
+		int meta = world.getBlockMetadata(cX, cY, cZ) - BlockDummyable.offset;
 		ForgeDirection dir = ForgeDirection.getOrientation(meta);
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 
@@ -126,11 +126,13 @@ public class RailStandardRamp extends BlockDummyable implements IRailNTM {
 		return TrackGauge.STANDARD;
 	}
 
+	@Override
 	protected boolean checkRequirement(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		return MultiblockHandlerXR.checkSpace(world, x + dir.offsetX * o, y + dir.offsetY * o, z + dir.offsetZ * o, getDimensions(), x, y, z, dir) &&
 				MultiblockHandlerXR.checkSpace(world, x + dir.offsetX * o, y + dir.offsetY * o, z + dir.offsetZ * o, new int[] {1, -1, 2, 2, 1, 0}, x, y, z, dir);
 	}
 
+	@Override
 	protected void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		MultiblockHandlerXR.fillSpace(world, x + dir.offsetX * o, y + dir.offsetY * o, z + dir.offsetZ * o, getDimensions(), this, dir);
 		MultiblockHandlerXR.fillSpace(world, x + dir.offsetX * o, y + dir.offsetY * o, z + dir.offsetZ * o, new int[] {1, -1, 2, 2, 1, 0}, this, dir);

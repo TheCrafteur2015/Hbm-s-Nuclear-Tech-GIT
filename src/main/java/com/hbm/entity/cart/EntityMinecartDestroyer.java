@@ -41,7 +41,7 @@ public class EntityMinecartDestroyer extends EntityMinecartContainerBase impleme
 		if(net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.event.entity.minecart.MinecartInteractEvent(this, player)))
 			return true;
 		if(!this.worldObj.isRemote) {
-			FMLNetworkHandler.openGui(player, MainRegistry.instance, 0, worldObj, this.getEntityId(), 0, 0);
+			FMLNetworkHandler.openGui(player, MainRegistry.instance, 0, this.worldObj, getEntityId(), 0, 0);
 		}
 
 		return true;
@@ -77,19 +77,20 @@ public class EntityMinecartDestroyer extends EntityMinecartContainerBase impleme
 		return this.boundingBox;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
 		
-		if(!worldObj.isRemote && this.ticksExisted % 5 == 0) {
+		if(!this.worldObj.isRemote && this.ticksExisted % 5 == 0) {
 			
-			List<EntityItem> items = worldObj.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(
-					posX - 2.5,
-					posY - 1.5,
-					posZ - 2.5,
-					posX + 2.5,
-					posY + 2,
-					posZ + 2.5));
+			List<EntityItem> items = this.worldObj.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(
+					this.posX - 2.5,
+					this.posY - 1.5,
+					this.posZ - 2.5,
+					this.posX + 2.5,
+					this.posY + 2,
+					this.posZ + 2.5));
 			
 			boolean sound = false;
 			
@@ -120,17 +121,17 @@ public class EntityMinecartDestroyer extends EntityMinecartContainerBase impleme
 			}
 			
 			if(sound)
-				worldObj.playSoundEffect(posX, posY, posZ, "mob.zombie.woodbreak", 0.5F, 0.5F + worldObj.rand.nextFloat() * 0.2F);
+				this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "mob.zombie.woodbreak", 0.5F, 0.5F + this.worldObj.rand.nextFloat() * 0.2F);
 		}
 		
-		if(worldObj.isRemote && this.ticksExisted % 5 == 0) {
-			worldObj.spawnParticle("smoke", posX, posY + 0.75, posZ, 0.0, 0.01, 0.0);
+		if(this.worldObj.isRemote && this.ticksExisted % 5 == 0) {
+			this.worldObj.spawnParticle("smoke", this.posX, this.posY + 0.75, this.posZ, 0.0, 0.01, 0.0);
 		}
 	}
 
 	@Override
 	public ItemStack getCartItem() {
-		return ItemModMinecart.createCartItem(this.getBase(), EnumMinecart.DESTROYER);
+		return ItemModMinecart.createCartItem(getBase(), EnumMinecart.DESTROYER);
 	}
 
 	@Override

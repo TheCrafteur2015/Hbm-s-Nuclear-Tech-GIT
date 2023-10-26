@@ -13,7 +13,7 @@ public class EntityCloudTom extends Entity {
 
 	public EntityCloudTom(World p_i1582_1_) {
 		super(p_i1582_1_);
-		this.setSize(1, 4);
+		setSize(1, 4);
 		this.ignoreFrustumCheck = true;
 		this.isImmuneToFire = true;
 		this.age = 0;
@@ -37,9 +37,9 @@ public class EntityCloudTom extends Entity {
 
 	public EntityCloudTom(World p_i1582_1_, int maxAge) {
 		super(p_i1582_1_);
-		this.setSize(20, 40);
+		setSize(20, 40);
 		this.isImmuneToFire = true;
-		this.setMaxAge(maxAge);
+		setMaxAge(maxAge);
 	}
 
 	@Override
@@ -48,19 +48,19 @@ public class EntityCloudTom extends Entity {
 		this.age++;
 		this.worldObj.lastLightningBolt = 2;
 
-		if (this.age >= this.getMaxAge()) {
-			this.setDead();
+		if (this.age >= getMaxAge()) {
+			setDead();
 		}
 	}
 
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound p_70037_1_) {
-		age = p_70037_1_.getShort("age");
+		this.age = p_70037_1_.getShort("age");
 	}
 
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound p_70014_1_) {
-		p_70014_1_.setShort("age", (short) age);
+		p_70014_1_.setShort("age", (short) this.age);
 	}
 
 	public void setMaxAge(int i) {

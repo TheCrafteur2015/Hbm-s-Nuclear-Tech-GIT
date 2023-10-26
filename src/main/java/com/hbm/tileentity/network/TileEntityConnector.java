@@ -27,12 +27,12 @@ public class TileEntityConnector extends TileEntityPylonBase {
 	
 	@Override
 	public List<int[]> getConnectionPoints() {
-		List<int[]> pos = new ArrayList(connected);
+		List<int[]> pos = new ArrayList<>(this.connected);
 		
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata()).getOpposite();
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata()).getOpposite();
 		//pos.add(new int[] {xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ});
 		
-		TileEntity te = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
+		TileEntity te = this.worldObj.getTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
 		
 		if(te instanceof IEnergyConductor) {
 			
@@ -40,12 +40,12 @@ public class TileEntityConnector extends TileEntityPylonBase {
 			
 			if(conductor.canConnect(dir.getOpposite())) {
 				
-				if(this.getPowerNet() == null && conductor.getPowerNet() != null) {
+				if(getPowerNet() == null && conductor.getPowerNet() != null) {
 					conductor.getPowerNet().joinLink(this);
 				}
 				
-				if(this.getPowerNet() != null && conductor.getPowerNet() != null && this.getPowerNet() != conductor.getPowerNet()) {
-					conductor.getPowerNet().joinNetworks(this.getPowerNet());
+				if(getPowerNet() != null && conductor.getPowerNet() != null && getPowerNet() != conductor.getPowerNet()) {
+					conductor.getPowerNet().joinNetworks(getPowerNet());
 				}
 			}
 		}
@@ -55,6 +55,6 @@ public class TileEntityConnector extends TileEntityPylonBase {
 
 	@Override
 	public boolean canConnect(ForgeDirection dir) { //i've about had it with your fucking bullshit
-		return ForgeDirection.getOrientation(this.getBlockMetadata()).getOpposite() == dir;
+		return ForgeDirection.getOrientation(getBlockMetadata()).getOpposite() == dir;
 	}
 }

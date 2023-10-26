@@ -24,9 +24,9 @@ public class EntityNukeExplosionNT extends Entity {
 	@Override
 	public void onUpdate() {
 
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			if(this.explosion == null || this.explosion.isDone()) {
-				this.setDead();
+				setDead();
 				return;
 			}
 			

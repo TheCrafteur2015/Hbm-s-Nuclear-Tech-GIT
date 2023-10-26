@@ -27,7 +27,7 @@ public class AnimatedModel {
 
 	public String geo_name = "";
 	public AnimatedModel parent;
-	public List<AnimatedModel> children = new ArrayList<AnimatedModel>();
+	public List<AnimatedModel> children = new ArrayList<>();
 	int callList;
 
 	public AnimatedModel() {
@@ -38,12 +38,12 @@ public class AnimatedModel {
 	}
 	
 	public void renderAnimated(long sysTime, IAnimatedModelCallback c) {
-		if(controller.activeAnim == AnimationWrapper.EMPTY) {
+		if(this.controller.activeAnim == AnimationWrapper.EMPTY) {
 			render(c);
 			return;
 		}
 
-		AnimationWrapper activeAnim = controller.activeAnim;
+		AnimationWrapper activeAnim = this.controller.activeAnim;
 		int numKeyFrames = activeAnim.anim.numKeyFrames;
 		int diff = (int) (sysTime - activeAnim.startTime);
 		diff *= activeAnim.speedScale;
@@ -51,7 +51,7 @@ public class AnimatedModel {
 			int diff2 = diff % activeAnim.anim.length;
 			switch(activeAnim.endResult.type) {
 			case END:
-				controller.activeAnim = AnimationWrapper.EMPTY;
+				this.controller.activeAnim = AnimationWrapper.EMPTY;
 				render(c);
 				return;
 			case REPEAT:
@@ -85,32 +85,32 @@ public class AnimatedModel {
 			next = first;
 		}
 		
-		renderWithIndex((float) fract(remappedTime), first, next, diffN, c);
-		controller.activeAnim.prevFrame = first;
+		renderWithIndex((float) AnimatedModel.fract(remappedTime), first, next, diffN, c);
+		this.controller.activeAnim.prevFrame = first;
 	}
 
 	protected void renderWithIndex(float inter, int firstIndex, int nextIndex, float diffN, IAnimatedModelCallback c) {
 		GL11.glPushMatrix();
 		boolean hidden = false;
-		if(hasTransform) {
-			Transform[] transforms = controller.activeAnim.anim.objectTransforms.get(name);
+		if(this.hasTransform) {
+			Transform[] transforms = this.controller.activeAnim.anim.objectTransforms.get(this.name);
 			if(transforms != null) {
 				hidden = transforms[firstIndex].hidden;
 				transforms[firstIndex].interpolateAndApply(transforms[nextIndex], inter);
 			} else {
-				auxGLMatrix.put(transform);
-				auxGLMatrix.rewind();
-				GL11.glMultMatrix(auxGLMatrix);
+				AnimatedModel.auxGLMatrix.put(this.transform);
+				AnimatedModel.auxGLMatrix.rewind();
+				GL11.glMultMatrix(AnimatedModel.auxGLMatrix);
 			}
 		}
 		if(c != null)
-			hidden |= c.onRender(controller.activeAnim.prevFrame, firstIndex, callList, diffN, name);
-		if(hasGeometry && !hidden) {
-			GL11.glCallList(callList);
+			hidden |= c.onRender(this.controller.activeAnim.prevFrame, firstIndex, this.callList, diffN, this.name);
+		if(this.hasGeometry && !hidden) {
+			GL11.glCallList(this.callList);
 		}
 		if(c != null)
-			c.postRender(controller.activeAnim.prevFrame, firstIndex, callList, diffN, name);
-		for(AnimatedModel m : children) {
+			c.postRender(this.controller.activeAnim.prevFrame, firstIndex, this.callList, diffN, this.name);
+		for(AnimatedModel m : this.children) {
 			m.renderWithIndex(inter, firstIndex, nextIndex, diffN, c);
 		}
 		GL11.glPopMatrix();
@@ -122,20 +122,20 @@ public class AnimatedModel {
 	
 	public void render(IAnimatedModelCallback c) {
 		GL11.glPushMatrix();
-		if(hasTransform) {
-			auxGLMatrix.put(transform);
-			auxGLMatrix.rewind();
-			GL11.glMultMatrix(auxGLMatrix);
+		if(this.hasTransform) {
+			AnimatedModel.auxGLMatrix.put(this.transform);
+			AnimatedModel.auxGLMatrix.rewind();
+			GL11.glMultMatrix(AnimatedModel.auxGLMatrix);
 		}
 		boolean hidden = false;
 		if(c != null)
-			hidden = c.onRender(-1, -1, callList, -1, name);
-		if(hasGeometry && !hidden) {
-			GL11.glCallList(callList);
+			hidden = c.onRender(-1, -1, this.callList, -1, this.name);
+		if(this.hasGeometry && !hidden) {
+			GL11.glCallList(this.callList);
 		}
 		if(c != null)
-			c.postRender(-1, -1, callList, -1, name);
-		for(AnimatedModel m : children) {
+			c.postRender(-1, -1, this.callList, -1, this.name);
+		for(AnimatedModel m : this.children) {
 			m.render(c);
 		}
 		GL11.glPopMatrix();

@@ -56,25 +56,25 @@ public class TileEntityMachineVacuumDistill extends TileEntityMachineBase implem
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			this.isOn = false;
 			
-			this.updateConnections();
-			power = Library.chargeTEFromItems(slots, 0, power, maxPower);
-			tanks[0].loadTank(1, 2, slots);
+			updateConnections();
+			this.power = Library.chargeTEFromItems(this.slots, 0, this.power, TileEntityMachineVacuumDistill.maxPower);
+			this.tanks[0].loadTank(1, 2, this.slots);
 			
 			refine();
 
-			tanks[1].unloadTank(3, 4, slots);
-			tanks[2].unloadTank(5, 6, slots);
-			tanks[3].unloadTank(7, 8, slots);
-			tanks[4].unloadTank(9, 10, slots);
+			this.tanks[1].unloadTank(3, 4, this.slots);
+			this.tanks[2].unloadTank(5, 6, this.slots);
+			this.tanks[3].unloadTank(7, 8, this.slots);
+			this.tanks[4].unloadTank(9, 10, this.slots);
 			
 			for(DirPos pos : getConPos()) {
 				for(int i = 1; i < 5; i++) {
-					if(tanks[i].getFill() > 0) {
-						this.sendFluid(tanks[i], worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+					if(this.tanks[i].getFill() > 0) {
+						this.sendFluid(this.tanks[i], this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 					}
 				}
 			}
@@ -82,30 +82,30 @@ public class TileEntityMachineVacuumDistill extends TileEntityMachineBase implem
 			NBTTagCompound data = new NBTTagCompound();
 			data.setLong("power", this.power);
 			data.setBoolean("isOn", this.isOn);
-			for(int i = 0; i < 5; i++) tanks[i].writeToNBT(data, "" + i);
-			this.networkPack(data, 150);
+			for(int i = 0; i < 5; i++) this.tanks[i].writeToNBT(data, "" + i);
+			networkPack(data, 150);
 		} else {
 			
-			if(this.isOn) audioTime = 20;
+			if(this.isOn) this.audioTime = 20;
 			
-			if(audioTime > 0) {
+			if(this.audioTime > 0) {
 				
-				audioTime--;
+				this.audioTime--;
 				
-				if(audio == null) {
-					audio = createAudioLoop();
-					audio.startSound();
-				} else if(!audio.isPlaying()) {
-					audio = rebootAudio(audio);
+				if(this.audio == null) {
+					this.audio = createAudioLoop();
+					this.audio.startSound();
+				} else if(!this.audio.isPlaying()) {
+					this.audio = rebootAudio(this.audio);
 				}
 				
-				audio.keepAlive();
+				this.audio.keepAlive();
 				
 			} else {
 				
-				if(audio != null) {
-					audio.stopSound();
-					audio = null;
+				if(this.audio != null) {
+					this.audio.stopSound();
+					this.audio = null;
 				}
 			}
 		}
@@ -113,15 +113,15 @@ public class TileEntityMachineVacuumDistill extends TileEntityMachineBase implem
 	
 	@Override
 	public AudioWrapper createAudioLoop() {
-		return MainRegistry.proxy.getLoopedSound("hbm:block.boiler", xCoord, yCoord, zCoord, 0.25F, 15F, 1.0F, 20);
+		return MainRegistry.proxy.getLoopedSound("hbm:block.boiler", this.xCoord, this.yCoord, this.zCoord, 0.25F, 15F, 1.0F, 20);
 	}
 
 	@Override
 	public void onChunkUnload() {
 
-		if(audio != null) {
-			audio.stopSound();
-			audio = null;
+		if(this.audio != null) {
+			this.audio.stopSound();
+			this.audio = null;
 		}
 	}
 
@@ -130,9 +130,9 @@ public class TileEntityMachineVacuumDistill extends TileEntityMachineBase implem
 
 		super.invalidate();
 
-		if(audio != null) {
-			audio.stopSound();
-			audio = null;
+		if(this.audio != null) {
+			this.audio.stopSound();
+			this.audio = null;
 		}
 	}
 	
@@ -140,44 +140,41 @@ public class TileEntityMachineVacuumDistill extends TileEntityMachineBase implem
 	public void networkUnpack(NBTTagCompound nbt) {
 		this.power = nbt.getLong("power");
 		this.isOn = nbt.getBoolean("isOn");
-		for(int i = 0; i < 5; i++) tanks[i].readFromNBT(nbt, "" + i);
+		for(int i = 0; i < 5; i++) this.tanks[i].readFromNBT(nbt, "" + i);
 	}
 	
 	private void refine() {
 		
-		if(power < 10_000) return;
-		if(tanks[0].getFill() < 100) return;
-		if(tanks[1].getFill() + RefineryRecipes.vac_frac_heavy > tanks[1].getMaxFill()) return;
-		if(tanks[2].getFill() + RefineryRecipes.vac_frac_reform > tanks[2].getMaxFill()) return;
-		if(tanks[3].getFill() + RefineryRecipes.vac_frac_light > tanks[3].getMaxFill()) return;
-		if(tanks[4].getFill() + RefineryRecipes.vac_frac_sour > tanks[4].getMaxFill()) return;
+		if((this.power < 10_000) || (this.tanks[0].getFill() < 100) || (this.tanks[1].getFill() + RefineryRecipes.vac_frac_heavy > this.tanks[1].getMaxFill()) || (this.tanks[2].getFill() + RefineryRecipes.vac_frac_reform > this.tanks[2].getMaxFill())) return;
+		if(this.tanks[3].getFill() + RefineryRecipes.vac_frac_light > this.tanks[3].getMaxFill()) return;
+		if(this.tanks[4].getFill() + RefineryRecipes.vac_frac_sour > this.tanks[4].getMaxFill()) return;
 
 		this.isOn = true;
-		power -= 10_000;
-		tanks[0].setFill(tanks[0].getFill() - 100);
-		tanks[1].setFill(tanks[1].getFill() + RefineryRecipes.vac_frac_heavy);
-		tanks[2].setFill(tanks[2].getFill() + RefineryRecipes.vac_frac_reform);
-		tanks[3].setFill(tanks[3].getFill() + RefineryRecipes.vac_frac_light);
-		tanks[4].setFill(tanks[4].getFill() + RefineryRecipes.vac_frac_sour);
+		this.power -= 10_000;
+		this.tanks[0].setFill(this.tanks[0].getFill() - 100);
+		this.tanks[1].setFill(this.tanks[1].getFill() + RefineryRecipes.vac_frac_heavy);
+		this.tanks[2].setFill(this.tanks[2].getFill() + RefineryRecipes.vac_frac_reform);
+		this.tanks[3].setFill(this.tanks[3].getFill() + RefineryRecipes.vac_frac_light);
+		this.tanks[4].setFill(this.tanks[4].getFill() + RefineryRecipes.vac_frac_sour);
 	}
 	
 	private void updateConnections() {
 		for(DirPos pos : getConPos()) {
-			this.trySubscribe(worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
-			this.trySubscribe(tanks[0].getTankType(), worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			this.trySubscribe(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			this.trySubscribe(this.tanks[0].getTankType(), this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 		}
 	}
 	
 	public DirPos[] getConPos() {
 		return new DirPos[] {
-				new DirPos(xCoord + 2, yCoord, zCoord + 1, Library.POS_X),
-				new DirPos(xCoord + 2, yCoord, zCoord - 1, Library.POS_X),
-				new DirPos(xCoord - 2, yCoord, zCoord + 1, Library.NEG_X),
-				new DirPos(xCoord - 2, yCoord, zCoord - 1, Library.NEG_X),
-				new DirPos(xCoord + 1, yCoord, zCoord + 2, Library.POS_Z),
-				new DirPos(xCoord - 1, yCoord, zCoord + 2, Library.POS_Z),
-				new DirPos(xCoord + 1, yCoord, zCoord - 2, Library.NEG_Z),
-				new DirPos(xCoord - 1, yCoord, zCoord - 2, Library.NEG_Z)
+				new DirPos(this.xCoord + 2, this.yCoord, this.zCoord + 1, Library.POS_X),
+				new DirPos(this.xCoord + 2, this.yCoord, this.zCoord - 1, Library.POS_X),
+				new DirPos(this.xCoord - 2, this.yCoord, this.zCoord + 1, Library.NEG_X),
+				new DirPos(this.xCoord - 2, this.yCoord, this.zCoord - 1, Library.NEG_X),
+				new DirPos(this.xCoord + 1, this.yCoord, this.zCoord + 2, Library.POS_Z),
+				new DirPos(this.xCoord - 1, this.yCoord, this.zCoord + 2, Library.POS_Z),
+				new DirPos(this.xCoord + 1, this.yCoord, this.zCoord - 2, Library.NEG_Z),
+				new DirPos(this.xCoord - 1, this.yCoord, this.zCoord - 2, Library.NEG_Z)
 		};
 	}
 	
@@ -185,24 +182,24 @@ public class TileEntityMachineVacuumDistill extends TileEntityMachineBase implem
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 
-		power = nbt.getLong("power");
-		tanks[0].readFromNBT(nbt, "input");
-		tanks[1].readFromNBT(nbt, "heavy");
-		tanks[2].readFromNBT(nbt, "reformate");
-		tanks[3].readFromNBT(nbt, "light");
-		tanks[4].readFromNBT(nbt, "gas");
+		this.power = nbt.getLong("power");
+		this.tanks[0].readFromNBT(nbt, "input");
+		this.tanks[1].readFromNBT(nbt, "heavy");
+		this.tanks[2].readFromNBT(nbt, "reformate");
+		this.tanks[3].readFromNBT(nbt, "light");
+		this.tanks[4].readFromNBT(nbt, "gas");
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		
-		nbt.setLong("power", power);
-		tanks[0].writeToNBT(nbt, "input");
-		tanks[1].writeToNBT(nbt, "heavy");
-		tanks[2].writeToNBT(nbt, "reformate");
-		tanks[3].writeToNBT(nbt, "light");
-		tanks[4].writeToNBT(nbt, "gas");
+		nbt.setLong("power", this.power);
+		this.tanks[0].writeToNBT(nbt, "input");
+		this.tanks[1].writeToNBT(nbt, "heavy");
+		this.tanks[2].writeToNBT(nbt, "reformate");
+		this.tanks[3].writeToNBT(nbt, "light");
+		this.tanks[4].writeToNBT(nbt, "gas");
 	}
 	
 	AxisAlignedBB bb = null;
@@ -210,18 +207,18 @@ public class TileEntityMachineVacuumDistill extends TileEntityMachineBase implem
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 1,
-					yCoord,
-					zCoord - 1,
-					xCoord + 2,
-					yCoord + 9,
-					zCoord + 2
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 1,
+					this.yCoord,
+					this.zCoord - 1,
+					this.xCoord + 2,
+					this.yCoord + 9,
+					this.zCoord + 2
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override
@@ -232,7 +229,7 @@ public class TileEntityMachineVacuumDistill extends TileEntityMachineBase implem
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 
 	@Override
@@ -242,22 +239,22 @@ public class TileEntityMachineVacuumDistill extends TileEntityMachineBase implem
 
 	@Override
 	public long getMaxPower() {
-		return maxPower;
+		return TileEntityMachineVacuumDistill.maxPower;
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return tanks;
+		return this.tanks;
 	}
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return new FluidTank[] {tanks[1], tanks[2], tanks[3], tanks[4]};
+		return new FluidTank[] {this.tanks[1], this.tanks[2], this.tanks[3], this.tanks[4]};
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] {tanks[0]};
+		return new FluidTank[] {this.tanks[0]};
 	}
 
 	@Override
@@ -272,15 +269,15 @@ public class TileEntityMachineVacuumDistill extends TileEntityMachineBase implem
 
 	@Override
 	public void writeNBT(NBTTagCompound nbt) {
-		if(tanks[0].getFill() == 0 && tanks[1].getFill() == 0 && tanks[2].getFill() == 0 && tanks[3].getFill() == 0 && tanks[4].getFill() == 0) return;
+		if(this.tanks[0].getFill() == 0 && this.tanks[1].getFill() == 0 && this.tanks[2].getFill() == 0 && this.tanks[3].getFill() == 0 && this.tanks[4].getFill() == 0) return;
 		NBTTagCompound data = new NBTTagCompound();
 		for(int i = 0; i < 5; i++) this.tanks[i].writeToNBT(data, "" + i);
-		nbt.setTag(NBT_PERSISTENT_KEY, data);
+		nbt.setTag(IPersistentNBT.NBT_PERSISTENT_KEY, data);
 	}
 
 	@Override
 	public void readNBT(NBTTagCompound nbt) {
-		NBTTagCompound data = nbt.getCompoundTag(NBT_PERSISTENT_KEY);
+		NBTTagCompound data = nbt.getCompoundTag(IPersistentNBT.NBT_PERSISTENT_KEY);
 		for(int i = 0; i < 5; i++) this.tanks[i].readFromNBT(data, "" + i);
 	}
 

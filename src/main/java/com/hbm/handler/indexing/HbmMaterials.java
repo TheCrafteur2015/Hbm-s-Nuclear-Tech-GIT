@@ -30,27 +30,28 @@ public class HbmMaterials {
 		}
 		
 		public ItemStack getRecycling() {
-			return recyclesInto.copy();
+			return this.recyclesInto.copy();
 		}
 	}
 	
-	private static HashMap<AStack, List<Tuple.Pair<Mat, Double>>> map = new HashMap(); //ACHIEVEMENT GET! Stack three generics inside of each other!
+	private static HashMap<AStack, List<Tuple.Pair<Mat, Double>>> map = new HashMap<>(); //ACHIEVEMENT GET! Stack three generics inside of each other!
 	
 	/**
 	 * Quickly adds our tuples to the map, or expands the list if it already exists
 	 * @param stack
 	 * @param tuples
 	 */
+	@SafeVarargs
 	public static void registerItem(AStack stack, Tuple.Pair<Mat, Double>... tuples) {
 		
-		List<Tuple.Pair<Mat, Double>> existing = map.get(stack);
+		List<Tuple.Pair<Mat, Double>> existing = HbmMaterials.map.get(stack);
 		
 		if(existing == null)
-			existing = new ArrayList();
+			existing = new ArrayList<>();
 		
 		existing.addAll(Arrays.asList(tuples));
 		
-		map.put(stack, existing);
+		HbmMaterials.map.put(stack, existing);
 	}
 	
 	/**
@@ -58,6 +59,6 @@ public class HbmMaterials {
 	 * @param stack
 	 */
 	public static void knockTuples(AStack stack) {
-		map.remove(stack);
+		HbmMaterials.map.remove(stack);
 	}
 }

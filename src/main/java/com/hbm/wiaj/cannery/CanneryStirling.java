@@ -17,9 +17,9 @@ import com.hbm.wiaj.actions.ActionSetZoom;
 import com.hbm.wiaj.actions.ActionUpdateActor;
 import com.hbm.wiaj.actions.ActionWait;
 import com.hbm.wiaj.actors.ActorFancyPanel;
+import com.hbm.wiaj.actors.ActorFancyPanel.Orientation;
 import com.hbm.wiaj.actors.ActorTileEntity;
 import com.hbm.wiaj.actors.ITileActorRenderer;
-import com.hbm.wiaj.actors.ActorFancyPanel.Orientation;
 import com.hbm.wiaj.cannery.CanneryFirebox.ActorFirebox;
 
 import net.minecraft.client.Minecraft;
@@ -39,6 +39,7 @@ public class CanneryStirling extends CanneryBase {
 	public String getName() {
 		return "cannery.stirling";
 	}
+	@Override
 	public CanneryBase[] seeAlso() {
 		return new CanneryBase[] {
 				new CanneryFirebox()
@@ -87,12 +88,12 @@ public class CanneryStirling extends CanneryBase {
 		scene0.add(new ActionWait(10));
 		
 		scene0.add(new ActionCreateActor(2, new ActorFancyPanel(Minecraft.getMinecraft().fontRenderer, 0, -45, new Object[][] {{I18nUtil.resolveKey("cannery.stirling.0")}}, 250)
-				.setColors(colorCopper).setOrientation(Orientation.BOTTOM)));
+				.setColors(CanneryBase.colorCopper).setOrientation(Orientation.BOTTOM)));
 		
 		scene0.add(new ActionWait(60));
 		
 		scene0.add(new ActionCreateActor(2, new ActorFancyPanel(Minecraft.getMinecraft().fontRenderer, 0, 40, new Object[][] {{I18nUtil.resolveKey("cannery.stirling.1")}}, 250)
-				.setColors(colorCopper).setOrientation(Orientation.BOTTOM)));
+				.setColors(CanneryBase.colorCopper).setOrientation(Orientation.BOTTOM)));
 		
 		scene0.add(new ActionWait(60));
 		scene0.add(new ActionRemoveActor(2));
@@ -101,7 +102,7 @@ public class CanneryStirling extends CanneryBase {
 		scene0.add(new ActionWait(30));
 		scene0.add(new ActionUpdateActor(0, "isOn", true));
 		scene0.add(new ActionCreateActor(2, new ActorFancyPanel(Minecraft.getMinecraft().fontRenderer, -50, 40, new Object[][] {{new ItemStack(Items.coal)}}, 0)
-				.setColors(colorCopper).setOrientation(Orientation.RIGHT)));
+				.setColors(CanneryBase.colorCopper).setOrientation(Orientation.RIGHT)));
 		scene0.add(new ActionWait(20));
 		scene0.add(new ActionRemoveActor(2));
 		scene0.add(new ActionWait(10));
@@ -129,7 +130,7 @@ public class CanneryStirling extends CanneryBase {
 		JarScene scene1 = new JarScene(script);
 		
 		scene1.add(new ActionCreateActor(2, new ActorFancyPanel(Minecraft.getMinecraft().fontRenderer, 0, -45, new Object[][] {{I18nUtil.resolveKey("cannery.stirling.2")}}, 250)
-				.setColors(colorCopper).setOrientation(Orientation.BOTTOM)));
+				.setColors(CanneryBase.colorCopper).setOrientation(Orientation.BOTTOM)));
 		scene1.add(new ActionWait(60));
 		scene1.add(new ActionRemoveActor(2));
 		
@@ -159,7 +160,7 @@ public class CanneryStirling extends CanneryBase {
 		scene1.add(new ActionWait(20));
 		
 		scene1.add(new ActionCreateActor(2, new ActorFancyPanel(Minecraft.getMinecraft().fontRenderer, 0, -45, new Object[][] {{I18nUtil.resolveKey("cannery.stirling.3")}}, 250)
-				.setColors(colorCopper).setOrientation(Orientation.BOTTOM)));
+				.setColors(CanneryBase.colorCopper).setOrientation(Orientation.BOTTOM)));
 		scene1.add(new ActionWait(60));
 		scene1.add(new ActionRemoveActor(2));
 		scene1.add(new ActionWait(20));

@@ -23,7 +23,7 @@ public class GUITurretArty extends GUITurretBase {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 		
-		/*List<Object[]> objects = new ArrayList();
+		/*List<Object[]> objects = new ArrayList<>();
 		objects.add(new Object[]{EnumChatFormatting.YELLOW + "Title"});
 		objects.add(new Object[]{"Stack:", new ItemStack(ModItems.upgrade_5g)});
 		objects.add(new Object[]{new ItemStack(ModItems.upgrade_afterburn_1), new ItemStack(ModItems.upgrade_afterburn_2), new ItemStack(ModItems.upgrade_afterburn_3)});
@@ -42,31 +42,31 @@ public class GUITurretArty extends GUITurretBase {
 			}
 			
 			if(draw) {
-				List list = new ArrayList();
+				List list = new ArrayList<>();
 				ModItems.ammo_arty.getSubItems(ModItems.ammo_arty, MainRegistry.weaponTab, list);
 				int cycle = (int) ((System.currentTimeMillis() % (1000 * list.size())) / 1000);
 				ItemStack selected = (ItemStack) list.get(cycle);
 				selected.stackSize = 0;
-				List<Object[]> lines = new ArrayList();
+				List<Object[]> lines = new ArrayList<>();
 				lines.add(list.toArray());
 				lines.add(new Object[] {I18nUtil.resolveKey(selected.getDisplayName())});
 				this.drawStackText(lines, mouseX, mouseY, this.fontRendererObj);
 			}
 		}*/
 		
-		TileEntityTurretArty arty = (TileEntityTurretArty) turret;
-		String mode = arty.mode == arty.MODE_ARTILLERY ? "artillery" : arty.mode == arty.MODE_CANNON ? "cannon" : "manual";
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 151, guiTop + 16, 18, 18, mouseX, mouseY, I18nUtil.resolveKeyArray("turret.arty." + mode));
+		TileEntityTurretArty arty = (TileEntityTurretArty) this.turret;
+		String mode = arty.mode == TileEntityTurretArty.MODE_ARTILLERY ? "artillery" : arty.mode == TileEntityTurretArty.MODE_CANNON ? "cannon" : "manual";
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 151, this.guiTop + 16, 18, 18, mouseX, mouseY, I18nUtil.resolveKeyArray("turret.arty." + mode));
 	}
 
 	@Override
 	protected void mouseClicked(int x, int y, int i) {
 		super.mouseClicked(x, y, i);
 
-		if(guiLeft + 151 <= x && guiLeft + 151 + 18 > x && guiTop + 16 < y && guiTop + 16 + 18 >= y) {
+		if(this.guiLeft + 151 <= x && this.guiLeft + 151 + 18 > x && this.guiTop + 16 < y && this.guiTop + 16 + 18 >= y) {
 
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
-			PacketDispatcher.wrapper.sendToServer(new AuxButtonPacket(turret.xCoord, turret.yCoord, turret.zCoord, 0, 5));
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+			PacketDispatcher.wrapper.sendToServer(new AuxButtonPacket(this.turret.xCoord, this.turret.yCoord, this.turret.zCoord, 0, 5));
 			return;
 		}
 	}
@@ -75,13 +75,13 @@ public class GUITurretArty extends GUITurretBase {
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int mX, int mY) {
 		super.drawGuiContainerBackgroundLayer(p_146976_1_, mX, mY);
 		
-		short mode = ((TileEntityTurretArty)turret).mode;
-		if(mode == TileEntityTurretArty.MODE_CANNON) drawTexturedModalRect(guiLeft + 151, guiTop + 16, 210, 0, 18, 18);
-		if(mode == TileEntityTurretArty.MODE_MANUAL) drawTexturedModalRect(guiLeft + 151, guiTop + 16, 210, 18, 18, 18);
+		short mode = ((TileEntityTurretArty)this.turret).mode;
+		if(mode == TileEntityTurretArty.MODE_CANNON) drawTexturedModalRect(this.guiLeft + 151, this.guiTop + 16, 210, 0, 18, 18);
+		if(mode == TileEntityTurretArty.MODE_MANUAL) drawTexturedModalRect(this.guiLeft + 151, this.guiTop + 16, 210, 18, 18, 18);
 	}
 
 	@Override
 	protected ResourceLocation getTexture() {
-		return texture;
+		return GUITurretArty.texture;
 	}
 }

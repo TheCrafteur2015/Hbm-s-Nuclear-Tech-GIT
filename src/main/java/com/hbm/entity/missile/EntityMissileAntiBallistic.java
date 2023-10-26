@@ -27,40 +27,40 @@ public class EntityMissileAntiBallistic extends Entity implements IRadarDetectab
 	@Override
 	public void onUpdate() {
 
-		if(activationTimer < 40) {
-			activationTimer++;
+		if(this.activationTimer < 40) {
+			this.activationTimer++;
 
-			motionY = 1.5D;
+			this.motionY = 1.5D;
 
-			this.setLocationAndAngles(posX + this.motionX, posY + this.motionY, posZ + this.motionZ, 0, 0);
-			this.rotation();
+			setLocationAndAngles(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ, 0, 0);
+			rotation();
 
 			if(!this.worldObj.isRemote && this.posY < 400)
 				this.worldObj.spawnEntityInWorld(new EntitySmokeFX(this.worldObj, this.posX, this.posY, this.posZ, 0.0, 0.0, 0.0));
 
 		} else {
 
-			if(activationTimer == 40) {
-				ExplosionLarge.spawnParticlesRadial(worldObj, posX, posY, posZ, 15);
-				activationTimer = 100;
+			if(this.activationTimer == 40) {
+				ExplosionLarge.spawnParticlesRadial(this.worldObj, this.posX, this.posY, this.posZ, 15);
+				this.activationTimer = 100;
 			}
 
 			for(int i = 0; i < 5; i++) {
 
 				targetMissile();
 
-				this.setLocationAndAngles(posX + this.motionX, posY + this.motionY, posZ + this.motionZ, 0, 0);
-				this.rotation();
+				setLocationAndAngles(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ, 0, 0);
+				rotation();
 
 				if(!this.worldObj.isRemote && this.posY < 400)
 					this.worldObj.spawnEntityInWorld(new EntitySmokeFX(this.worldObj, this.posX, this.posY, this.posZ, 0.0, 0.0, 0.0));
 
-				List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBox(posX - 5, posY - 5, posZ - 5, posX + 5, posY + 5, posZ + 5));
+				List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBox(this.posX - 5, this.posY - 5, this.posZ - 5, this.posX + 5, this.posY + 5, this.posZ + 5));
 
 				for(Entity e : list) {
 					if(e instanceof EntityMissileBaseAdvanced || e instanceof EntityMissileCustom) {
-						ExplosionLarge.explode(worldObj, posX, posY, posZ, 15F, true, false, true);
-						this.setDead();
+						ExplosionLarge.explode(this.worldObj, this.posX, this.posY, this.posZ, 15F, true, false, true);
+						setDead();
 						return;
 					}
 				}
@@ -68,14 +68,14 @@ public class EntityMissileAntiBallistic extends Entity implements IRadarDetectab
 		}
 		
 		if(this.posY > 2000)
-			this.setDead();
+			setDead();
 
 		if(this.worldObj.getBlock((int) this.posX, (int) this.posY, (int) this.posZ) != Blocks.air && this.worldObj.getBlock((int) this.posX, (int) this.posY, (int) this.posZ) != Blocks.water && this.worldObj.getBlock((int) this.posX, (int) this.posY, (int) this.posZ) != Blocks.flowing_water) {
 
 			if(!this.worldObj.isRemote) {
-				ExplosionLarge.explode(worldObj, posX, posY, posZ, 10F, true, true, true);
+				ExplosionLarge.explode(this.worldObj, this.posX, this.posY, this.posZ, 10F, true, true, true);
 			}
-			this.setDead();
+			setDead();
 			return;
 		}
 
@@ -104,14 +104,14 @@ public class EntityMissileAntiBallistic extends Entity implements IRadarDetectab
 
 	private void targetMissile() {
 
-		List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBox(posX - 500, 0, posZ - 500, posX + 500, 5000, posZ + 500));
+		List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBox(this.posX - 500, 0, this.posZ - 500, this.posX + 500, 5000, this.posZ + 500));
 
 		Entity target = null;
 		double closest = 1000D;
 
 		for(Entity e : list) {
 			if(e instanceof EntityMissileBaseAdvanced || e instanceof EntityMissileCustom) {
-				double dis = Math.sqrt(Math.pow(e.posX - posX, 2) + Math.pow(e.posY - posY, 2) + Math.pow(e.posZ - posZ, 2));
+				double dis = Math.sqrt(Math.pow(e.posX - this.posX, 2) + Math.pow(e.posY - this.posY, 2) + Math.pow(e.posZ - this.posZ, 2));
 
 				if(dis < closest) {
 					closest = dis;
@@ -122,7 +122,7 @@ public class EntityMissileAntiBallistic extends Entity implements IRadarDetectab
 
 		if(target != null) {
 
-			Vec3 vec = Vec3.createVectorHelper(target.posX - posX, target.posY - posY, target.posZ - posZ);
+			Vec3 vec = Vec3.createVectorHelper(target.posX - this.posX, target.posY - this.posY, target.posZ - this.posZ);
 
 			vec.normalize();
 

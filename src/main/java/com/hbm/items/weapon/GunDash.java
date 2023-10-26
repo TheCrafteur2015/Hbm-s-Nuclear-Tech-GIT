@@ -43,7 +43,7 @@ public class GunDash extends Item {
 	public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {
 		new ArrowNockEvent(p_77659_3_, p_77659_1_);
 		{
-			p_77659_3_.setItemInUse(p_77659_1_, this.getMaxItemUseDuration(p_77659_1_));
+			p_77659_3_.setItemInUse(p_77659_1_, getMaxItemUseDuration(p_77659_1_));
 		}
 
 		return p_77659_1_;
@@ -65,7 +65,7 @@ public class GunDash extends Item {
 			laser.posY = pos.blockY + 0.5;
 			laser.posZ = pos.blockZ + 0.5;
 
-			world.playSoundAtEntity(player, "hbm:weapon.rifleShoot", 1.0F, 0.8F + (rand.nextFloat() * 0.4F));
+			world.playSoundAtEntity(player, "hbm:weapon.rifleShoot", 1.0F, 0.8F + (this.rand.nextFloat() * 0.4F));
 
 			if (!flag) {
 				player.inventory.consumeInventoryItem(ModItems.gun_dash_ammo);
@@ -82,6 +82,7 @@ public class GunDash extends Item {
 		return 0;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
@@ -93,11 +94,12 @@ public class GunDash extends Item {
 		list.add("[LEGENDARY WEAPON]");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Multimap getItemAttributeModifiers() {
 		Multimap multimap = super.getItemAttributeModifiers();
 		multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
-				new AttributeModifier(field_111210_e, "Weapon modifier", 3, 0));
+				new AttributeModifier(Item.field_111210_e, "Weapon modifier", 3, 0));
 		return multimap;
 	}
 }

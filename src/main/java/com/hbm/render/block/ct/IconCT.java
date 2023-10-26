@@ -38,10 +38,10 @@ public class IconCT implements IIcon {
 			dv += lenV;
 		}
 
-		minU = du;
-		maxU = du + lenU;
-		minV = dv;
-		maxV = dv + lenV;
+		this.minU = du;
+		this.maxU = du + lenU;
+		this.minV = dv;
+		this.maxV = dv + lenV;
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class IconCT implements IIcon {
 
 	@Override
 	public String getIconName() {
-		return this.parent.getIconName() + "_" + type;
+		return this.parent.getIconName() + "_" + this.type;
 	}
 
 }

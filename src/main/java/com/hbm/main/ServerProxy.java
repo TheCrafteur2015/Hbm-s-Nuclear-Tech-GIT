@@ -69,7 +69,7 @@ public class ServerProxy {
 	
 	public List<ItemStack> getSubItems(ItemStack stack) {
 		
-		List<ItemStack> list = new ArrayList();
+		List<ItemStack> list = new ArrayList<>();
 		list.add(stack);
 		return list;
 	}

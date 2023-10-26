@@ -217,7 +217,7 @@ public class HazmatRegistry {
 	
 	public static void registerHazmat(Item item, double resistance) {
 		
-		entries.put(item, resistance);
+		HazmatRegistry.entries.put(item, resistance);
 	}
 	
 	public static double getResistance(ItemStack stack) {
@@ -225,9 +225,9 @@ public class HazmatRegistry {
 		if(stack == null)
 			return 0;
 		
-		double cladding = getCladding(stack);
+		double cladding = HazmatRegistry.getCladding(stack);
 		
-		Double f = entries.get(stack.getItem());
+		Double f = HazmatRegistry.entries.get(stack.getItem());
 		
 		if(f != null)
 			return f + cladding;
@@ -262,7 +262,7 @@ public class HazmatRegistry {
 		}
 		
 		for(int i = 0; i < 4; i++) {
-			res += getResistance(player.inventory.armorInventory[i]);
+			res += HazmatRegistry.getResistance(player.inventory.armorInventory[i]);
 		}
 		
 		if(player.isPotionActive(HbmPotion.radx))
@@ -279,16 +279,16 @@ public class HazmatRegistry {
 		File config = new File(folder.getAbsolutePath() + File.separatorChar + "hbmRadResist.json");
 		File template = new File(folder.getAbsolutePath() + File.separatorChar + "_hbmRadResist.json");
 		
-		initDefault();
+		HazmatRegistry.initDefault();
 		
 		if(!config.exists()) {
-			writeDefault(template);
+			HazmatRegistry.writeDefault(template);
 		} else {
-			HashMap<Item, Double> conf = readConfig(config);
+			HashMap<Item, Double> conf = HazmatRegistry.readConfig(config);
 			
 			if(conf != null) {
-				entries.clear();
-				entries.putAll(conf);
+				HazmatRegistry.entries.clear();
+				HazmatRegistry.entries.putAll(conf);
 			}
 		}
 	}
@@ -302,7 +302,7 @@ public class HazmatRegistry {
 			writer.name("comment").value("Template file, remove the underscore ('_') from the name to enable the config.");
 			writer.name("entries").beginArray();	//all recipes are stored in an array called "entries"
 			
-			for(Entry<Item, Double> entry : entries.entrySet()) {
+			for(Entry<Item, Double> entry : HazmatRegistry.entries.entrySet()) {
 				writer.beginObject();				//begin object for a single recipe
 				writer.name("item").value(Item.itemRegistry.getNameForObject(entry.getKey()));
 				writer.name("resistance").value(entry.getValue());
@@ -320,7 +320,7 @@ public class HazmatRegistry {
 	private static HashMap<Item, Double> readConfig(File config) {
 		
 		try {
-			JsonObject json = gson.fromJson(new FileReader(config), JsonObject.class);
+			JsonObject json = HazmatRegistry.gson.fromJson(new FileReader(config), JsonObject.class);
 			JsonArray array = json.get("entries").getAsJsonArray();
 			HashMap<Item, Double> conf = new HashMap();
 			

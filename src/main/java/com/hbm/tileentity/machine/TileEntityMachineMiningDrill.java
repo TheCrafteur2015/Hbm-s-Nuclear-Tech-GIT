@@ -77,26 +77,26 @@ public class TileEntityMachineMiningDrill extends TileEntityMachineBase implemen
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setLong("power", power);
+		nbt.setLong("power", this.power);
 	}
 	
 	public long getPowerScaled(long i) {
-		return (power * i) / maxPower;
+		return (this.power * i) / TileEntityMachineMiningDrill.maxPower;
 	}
 	
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			this.updateConnections();
+			updateConnections();
 			
 			this.consumption = 100;
 			this.timer = 50;
 			this.radius = 1;
 			this.fortune = 0;
 			
-			UpgradeManager.eval(slots, 10, 12);
+			UpgradeManager.eval(this.slots, 10, 12);
 			this.radius += Math.min(UpgradeManager.getLevel(UpgradeType.EFFECT), 3);
 			this.consumption += Math.min(UpgradeManager.getLevel(UpgradeType.EFFECT), 3) * 80;
 			
@@ -109,18 +109,18 @@ public class TileEntityMachineMiningDrill extends TileEntityMachineBase implemen
 			this.fortune += Math.min(UpgradeManager.getLevel(UpgradeType.FORTUNE), 3);
 			this.timer += Math.min(UpgradeManager.getLevel(UpgradeType.FORTUNE), 3) * 15;
 			
-			age++;
-			if(age >= timer)
-				age -= timer;
+			this.age++;
+			if(this.age >= this.timer)
+				this.age -= this.timer;
 			
-			power = Library.chargeTEFromItems(slots, 0, power, maxPower);
+			this.power = Library.chargeTEFromItems(this.slots, 0, this.power, TileEntityMachineMiningDrill.maxPower);
 			
-			if(power >= consumption) {
+			if(this.power >= this.consumption) {
 				
 				//operation start
 				
-				if(age == timer - 1) {
-					warning = 0;
+				if(this.age == this.timer - 1) {
+					this.warning = 0;
 					
 					//warning 0, green: drill is operational
 					//warning 1, red: drill is full, has no power or the drill is jammed
@@ -130,16 +130,16 @@ public class TileEntityMachineMiningDrill extends TileEntityMachineBase implemen
 						
 						if(i <= 3) {
 							//Code 2: The drilling ended
-							warning = 2;
+							this.warning = 2;
 							break;
 						}
 						
-						if(worldObj.getBlock(xCoord, i, zCoord) != ModBlocks.drill_pipe) {
+						if(this.worldObj.getBlock(this.xCoord, i, this.zCoord) != ModBlocks.drill_pipe) {
 							
-							if(worldObj.getBlock(xCoord, i, zCoord).isReplaceable(worldObj, xCoord, i, zCoord) || this.tryDrill(xCoord, i, zCoord)) {
+							if(this.worldObj.getBlock(this.xCoord, i, this.zCoord).isReplaceable(this.worldObj, this.xCoord, i, this.zCoord) || tryDrill(this.xCoord, i, this.zCoord)) {
 								
-								if(worldObj.getBlock(xCoord, i, zCoord).isReplaceable(worldObj, xCoord, i, zCoord)) {
-									worldObj.setBlock(xCoord, i, zCoord, ModBlocks.drill_pipe);
+								if(this.worldObj.getBlock(this.xCoord, i, this.zCoord).isReplaceable(this.worldObj, this.xCoord, i, this.zCoord)) {
+									this.worldObj.setBlock(this.xCoord, i, this.zCoord, ModBlocks.drill_pipe);
 								}
 								
 								break;
@@ -150,34 +150,34 @@ public class TileEntityMachineMiningDrill extends TileEntityMachineBase implemen
 							}
 						}
 						
-						if(this.drill(xCoord, i, zCoord, radius))
+						if(drill(this.xCoord, i, this.zCoord, this.radius))
 							break;
 					}
 				}
 				
 				//operation end
 				
-				power -= consumption;
+				this.power -= this.consumption;
 			} else {
-				warning = 1;
+				this.warning = 1;
 			}
 			
-			int meta = worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
+			int meta = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
 			TileEntity te = null;
 			if(meta == 2) {
-				te = worldObj.getTileEntity(xCoord - 2, yCoord, zCoord);
+				te = this.worldObj.getTileEntity(this.xCoord - 2, this.yCoord, this.zCoord);
 				//worldObj.setBlock(xCoord - 2, yCoord, zCoord, Blocks.dirt);
 			}
 			if(meta == 3) {
-				te = worldObj.getTileEntity(xCoord + 2, yCoord, zCoord);
+				te = this.worldObj.getTileEntity(this.xCoord + 2, this.yCoord, this.zCoord);
 				//worldObj.setBlock(xCoord - 2, yCoord, zCoord, Blocks.dirt);
 			}
 			if(meta == 4) {
-				te = worldObj.getTileEntity(xCoord, yCoord, zCoord + 2);
+				te = this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord + 2);
 				//worldObj.setBlock(xCoord - 2, yCoord, zCoord, Blocks.dirt);
 			}
 			if(meta == 5) {
-				te = worldObj.getTileEntity(xCoord, yCoord, zCoord - 2);
+				te = this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord - 2);
 				//worldObj.setBlock(xCoord - 2, yCoord, zCoord, Blocks.dirt);
 			}
 			
@@ -189,39 +189,39 @@ public class TileEntityMachineMiningDrill extends TileEntityMachineBase implemen
 						break;
 			}
 			
-			if(warning == 0) {
-				torque += 0.1;
-				if(torque > (100/timer))
-					torque = (100/timer);
+			if(this.warning == 0) {
+				this.torque += 0.1;
+				if(this.torque > (100/this.timer))
+					this.torque = (100/this.timer);
 			} else {
-				torque -= 0.1F;
-				if(torque < -(100/timer))
-					torque = -(100/timer);
+				this.torque -= 0.1F;
+				if(this.torque < -(100/this.timer))
+					this.torque = -(100/this.timer);
 			}
 			
-			if(torque < 0) {
-				torque = 0;
+			if(this.torque < 0) {
+				this.torque = 0;
 			}
-			rotation += torque;
-			if(rotation >= 360)
-				rotation -= 360;
+			this.rotation += this.torque;
+			if(this.rotation >= 360)
+				this.rotation -= 360;
 
-			PacketDispatcher.wrapper.sendToAllAround(new TEDrillPacket(xCoord, yCoord, zCoord, rotation, torque), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 150));
-			PacketDispatcher.wrapper.sendToAllAround(new LoopedSoundPacket(xCoord, yCoord, zCoord), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 50));
-			PacketDispatcher.wrapper.sendToAllAround(new AuxElectricityPacket(xCoord, yCoord, zCoord, power), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 50));
+			PacketDispatcher.wrapper.sendToAllAround(new TEDrillPacket(this.xCoord, this.yCoord, this.zCoord, this.rotation, this.torque), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 150));
+			PacketDispatcher.wrapper.sendToAllAround(new LoopedSoundPacket(this.xCoord, this.yCoord, this.zCoord), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 50));
+			PacketDispatcher.wrapper.sendToAllAround(new AuxElectricityPacket(this.xCoord, this.yCoord, this.zCoord, this.power), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 50));
 		}
 	}
 	
 	private void updateConnections()  {
-		this.getBlockMetadata();
+		getBlockMetadata();
 		
 		if(this.blockMetadata == 5 || this.blockMetadata == 4) {
-			this.trySubscribe(worldObj, xCoord + 2, yCoord, zCoord, Library.POS_X);
-			this.trySubscribe(worldObj, xCoord - 2, yCoord, zCoord, Library.NEG_X);
+			trySubscribe(this.worldObj, this.xCoord + 2, this.yCoord, this.zCoord, Library.POS_X);
+			trySubscribe(this.worldObj, this.xCoord - 2, this.yCoord, this.zCoord, Library.NEG_X);
 			
 		} else if(this.blockMetadata == 3 || this.blockMetadata == 2) {
-			this.trySubscribe(worldObj, xCoord, yCoord, zCoord + 2, Library.POS_Z);
-			this.trySubscribe(worldObj, xCoord, yCoord, zCoord - 2, Library.NEG_Z);
+			trySubscribe(this.worldObj, this.xCoord, this.yCoord, this.zCoord + 2, Library.POS_Z);
+			trySubscribe(this.worldObj, this.xCoord, this.yCoord, this.zCoord - 2, Library.NEG_Z);
 		}
 	}
 	
@@ -232,11 +232,11 @@ public class TileEntityMachineMiningDrill extends TileEntityMachineBase implemen
 		for(int i = 0; i < size; i++) {
 			if(inventory.getStackInSlot(i) != null) {
 				
-				if(slots[slot] == null)
+				if(this.slots[slot] == null)
 					return false;
 				
 				ItemStack sta1 = inventory.getStackInSlot(i).copy();
-				ItemStack sta2 = slots[slot].copy();
+				ItemStack sta2 = this.slots[slot].copy();
 				
 				if(!inventory.isItemValidForSlot(i, sta2))
 					continue;
@@ -246,10 +246,10 @@ public class TileEntityMachineMiningDrill extends TileEntityMachineBase implemen
 					sta2.stackSize = 1;
 				
 					if(ItemStack.areItemStacksEqual(sta1, sta2) && ItemStack.areItemStackTagsEqual(sta1, sta2) && inventory.getStackInSlot(i).stackSize < inventory.getStackInSlot(i).getMaxStackSize()) {
-						slots[slot].stackSize--;
+						this.slots[slot].stackSize--;
 						
-						if(slots[slot].stackSize <= 0)
-							slots[slot] = null;
+						if(this.slots[slot].stackSize <= 0)
+							this.slots[slot] = null;
 						
 						ItemStack sta3 = inventory.getStackInSlot(i).copy();
 						sta3.stackSize++;
@@ -262,20 +262,20 @@ public class TileEntityMachineMiningDrill extends TileEntityMachineBase implemen
 		}
 		for(int i = 0; i < size; i++) {
 			
-			if(slots[slot] == null)
+			if(this.slots[slot] == null)
 				return false;
 			
-			ItemStack sta2 = slots[slot].copy();
+			ItemStack sta2 = this.slots[slot].copy();
 			
 			if(!inventory.isItemValidForSlot(i, sta2))
 				continue;
 			
 			if(inventory.getStackInSlot(i) == null && sta2 != null) {
 				sta2.stackSize = 1;
-				slots[slot].stackSize--;
+				this.slots[slot].stackSize--;
 				
-				if(slots[slot].stackSize <= 0)
-					slots[slot] = null;
+				if(this.slots[slot].stackSize <= 0)
+					this.slots[slot] = null;
 				
 				inventory.setInventorySlotContents(i, sta2);
 					
@@ -291,16 +291,16 @@ public class TileEntityMachineMiningDrill extends TileEntityMachineBase implemen
 	//"ok"
 	public boolean isOreo(int x, int y, int z) {
 		
-		Block b = worldObj.getBlock(x, y, z);
-		float hardness = b.getBlockHardness(worldObj, x, y, z);
+		Block b = this.worldObj.getBlock(x, y, z);
+		float hardness = b.getBlockHardness(this.worldObj, x, y, z);
 		
 		return hardness < 70 && hardness >= 0;
 	}
 	
 	public boolean isMinableOreo(int x, int y, int z) {
 		
-		Block b = worldObj.getBlock(x, y, z);
-		float hardness = b.getBlockHardness(worldObj, x, y, z);
+		Block b = this.worldObj.getBlock(x, y, z);
+		float hardness = b.getBlockHardness(this.worldObj, x, y, z);
 		
 		return (hardness < 70 && hardness >= 0) || b instanceof IDrillInteraction;
 	}
@@ -311,7 +311,7 @@ public class TileEntityMachineMiningDrill extends TileEntityMachineBase implemen
 	 * */
 	public boolean drill(int x, int y, int z, int rad) {
 		
-		if(!flag)
+		if(!this.flag)
 			return false;
 		
 		for(int ix = x - rad; ix <= x + rad; ix++) {
@@ -332,40 +332,40 @@ public class TileEntityMachineMiningDrill extends TileEntityMachineBase implemen
 	 * */
 	public boolean tryDrill(int x, int y, int z) {
 
-		if(worldObj.getBlock(x, y, z).isAir(worldObj, x, y, z) || !isMinableOreo(x, y, z))
+		if(this.worldObj.getBlock(x, y, z).isAir(this.worldObj, x, y, z) || !isMinableOreo(x, y, z))
 			return false;
-		if(worldObj.getBlock(x, y, z).getMaterial().isLiquid()) {
-			worldObj.func_147480_a(x, y, z, false);
+		if(this.worldObj.getBlock(x, y, z).getMaterial().isLiquid()) {
+			this.worldObj.func_147480_a(x, y, z, false);
 			return false;
 		}
 		
-		Block b = worldObj.getBlock(x, y, z);
-		int meta = worldObj.getBlockMetadata(x, y, z);
+		Block b = this.worldObj.getBlock(x, y, z);
+		int meta = this.worldObj.getBlockMetadata(x, y, z);
 		
 		if(b instanceof IDrillInteraction) {
 			IDrillInteraction in = (IDrillInteraction) b;
 			
-			ItemStack sta = in.extractResource(worldObj, x, y, z, meta, this);
+			ItemStack sta = in.extractResource(this.worldObj, x, y, z, meta, this);
 
 			if(sta != null && hasSpace(sta)) {
-				this.addItemToInventory(sta);
+				addItemToInventory(sta);
 			}
 			
-			if(!in.canBreak(worldObj, x, y, z, meta, this))
+			if(!in.canBreak(this.worldObj, x, y, z, meta, this))
 				return true; //true because the block is still there and mining should continue
 		}
 		
-		ItemStack stack = new ItemStack(b.getItemDropped(meta, worldObj.rand, fortune), b.quantityDropped(meta, fortune, worldObj.rand), b.damageDropped(meta));
+		ItemStack stack = new ItemStack(b.getItemDropped(meta, this.worldObj.rand, this.fortune), b.quantityDropped(meta, this.fortune, this.worldObj.rand), b.damageDropped(meta));
 
 		//yup that worked
 		if(stack != null && stack.getItem() == null) {
-			worldObj.func_147480_a(x, y, z, false);
+			this.worldObj.func_147480_a(x, y, z, false);
 			return true;
 		}
 		
 		if(hasSpace(stack)) {
-			this.addItemToInventory(stack);
-			worldObj.func_147480_a(x, y, z, false);
+			addItemToInventory(stack);
+			this.worldObj.func_147480_a(x, y, z, false);
 			return true;
 		}
 		
@@ -380,13 +380,13 @@ public class TileEntityMachineMiningDrill extends TileEntityMachineBase implemen
 			return true;
 		
 		for(int i = 1; i < 10; i++) {
-			if(slots[i] == null)
+			if(this.slots[i] == null)
 				return true;
 		}
 		
 		st.stackSize = 1;
 		
-		ItemStack[] fakeArray = slots.clone();
+		ItemStack[] fakeArray = this.slots.clone();
 		boolean flag = true;
 		for(int i = 0; i < stack.stackSize; i++) {
 			if(!canAddItemToArray(st, fakeArray))
@@ -445,19 +445,19 @@ public class TileEntityMachineMiningDrill extends TileEntityMachineBase implemen
 
 	@Override
 	public void setPower(long i) {
-		power = i;
+		this.power = i;
 		
 	}
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 		
 	}
 
 	@Override
 	public long getMaxPower() {
-		return maxPower;
+		return TileEntityMachineMiningDrill.maxPower;
 	}
 	
 	@Override

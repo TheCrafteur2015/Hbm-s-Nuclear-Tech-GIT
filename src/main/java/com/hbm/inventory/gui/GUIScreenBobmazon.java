@@ -31,8 +31,8 @@ public class GUIScreenBobmazon extends GuiScreen {
     protected int guiLeft;
     protected int guiTop;
     int currentPage = 0;
-    List<Offer> offers = new ArrayList<Offer>();
-    List<FolderButton> buttons = new ArrayList<FolderButton>();
+    List<Offer> offers = new ArrayList<>();
+    List<FolderButton> buttons = new ArrayList<>();
     private final EntityPlayer player;
     
     public GUIScreenBobmazon(EntityPlayer player, List<Offer> offers) {
@@ -43,29 +43,32 @@ public class GUIScreenBobmazon extends GuiScreen {
     }
     
     int getPageCount() {
-    	return (int)Math.ceil((offers.size() - 1) / 3);
+    	return (int)Math.ceil((this.offers.size() - 1) / 3);
     }
     
-    public void updateScreen() {
-    	if(currentPage < 0)
-    		currentPage = 0;
-    	if(currentPage > getPageCount())
-    		currentPage = getPageCount();
+    @Override
+	public void updateScreen() {
+    	if(this.currentPage < 0)
+    		this.currentPage = 0;
+    	if(this.currentPage > getPageCount())
+    		this.currentPage = getPageCount();
     	
-    	if(this.player.getHeldItem() != null && this.player.getHeldItem().getItem() == ModItems.bobmazon_hidden && player.getDisplayName().equals("SolsticeUnlimitd"))
+    	if(this.player.getHeldItem() != null && this.player.getHeldItem().getItem() == ModItems.bobmazon_hidden && this.player.getDisplayName().equals("SolsticeUnlimitd"))
     		this.mc.thePlayer.closeScreen();
     }
     
-    public void drawScreen(int mouseX, int mouseY, float f)
+    @Override
+	public void drawScreen(int mouseX, int mouseY, float f)
     {
-        this.drawDefaultBackground();
-        this.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
+        drawDefaultBackground();
+        drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
         GL11.glDisable(GL11.GL_LIGHTING);
-        this.drawGuiContainerForegroundLayer(mouseX, mouseY);
+        drawGuiContainerForegroundLayer(mouseX, mouseY);
         GL11.glEnable(GL11.GL_LIGHTING);
     }
     
-    public void initGui()
+    @Override
+	public void initGui()
     {
         super.initGui();
         this.guiLeft = (this.width - this.xSize) / 2;
@@ -76,22 +79,23 @@ public class GUIScreenBobmazon extends GuiScreen {
     
     protected void updateButtons() {
         
-        if(!buttons.isEmpty())
-        	buttons.clear();
+        if(!this.buttons.isEmpty())
+        	this.buttons.clear();
         
-        for(int i = currentPage * 3; i < Math.min(currentPage * 3 + 3, offers.size()); i++) {
-    		buttons.add(new FolderButton(guiLeft + 34, guiTop + 35 + (54 * (int)Math.floor(i)) - currentPage * 3 * 54, offers.get(i)));
+        for(int i = this.currentPage * 3; i < Math.min(this.currentPage * 3 + 3, this.offers.size()); i++) {
+    		this.buttons.add(new FolderButton(this.guiLeft + 34, this.guiTop + 35 + (54 * (int)Math.floor(i)) - this.currentPage * 3 * 54, this.offers.get(i)));
         }
 
-        if(currentPage != 0)
-        	buttons.add(new FolderButton(guiLeft + 25 - 18, guiTop + 26 + (27 * 3), 1, "Previous"));
-        if(currentPage != getPageCount())
-        	buttons.add(new FolderButton(guiLeft + 25 + (27 * 4) + 18, guiTop + 26 + (27 * 3), 2, "Next"));
+        if(this.currentPage != 0)
+        	this.buttons.add(new FolderButton(this.guiLeft + 25 - 18, this.guiTop + 26 + (27 * 3), 1, "Previous"));
+        if(this.currentPage != getPageCount())
+        	this.buttons.add(new FolderButton(this.guiLeft + 25 + (27 * 4) + 18, this.guiTop + 26 + (27 * 3), 2, "Next"));
     }
 
-    protected void mouseClicked(int i, int j, int k) {
+    @Override
+	protected void mouseClicked(int i, int j, int k) {
     	try {
-    		for(FolderButton b : buttons)
+    		for(FolderButton b : this.buttons)
     			if(b.isMouseOnButton(i, j))
     				b.executeAction();
     	} catch (Exception ex) {
@@ -101,30 +105,31 @@ public class GUIScreenBobmazon extends GuiScreen {
 	
 	protected void drawGuiContainerForegroundLayer(int i, int j) {
 
-		this.fontRendererObj.drawString(I18n.format((currentPage + 1) + "/" + (getPageCount() + 1)), 
-				guiLeft + this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.format((currentPage + 1) + "/" + (getPageCount() + 1))) / 2, guiTop + 205, 4210752);
+		this.fontRendererObj.drawString(I18n.format((this.currentPage + 1) + "/" + (getPageCount() + 1)), 
+				this.guiLeft + this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.format((this.currentPage + 1) + "/" + (getPageCount() + 1))) / 2, this.guiTop + 205, 4210752);
 		
-		for(FolderButton b : buttons)
+		for(FolderButton b : this.buttons)
 			if(b.isMouseOnButton(i, j))
 				b.drawString(i, j);
 	}
 
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIScreenBobmazon.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
-		for(FolderButton b : buttons)
+		for(FolderButton b : this.buttons)
 			b.drawButton(b.isMouseOnButton(i, j));
-		for(FolderButton b : buttons)
+		for(FolderButton b : this.buttons)
 			b.drawIcon(b.isMouseOnButton(i, j));
         
-        for(int d = currentPage * 3; d < Math.min(currentPage * 3 + 3, offers.size()); d++) {
-    		offers.get(d).drawRequirement(this, guiLeft + 34, guiTop + 53 + (54 * (int)Math.floor(d)) - currentPage * 3 * 54);
+        for(int d = this.currentPage * 3; d < Math.min(this.currentPage * 3 + 3, this.offers.size()); d++) {
+    		this.offers.get(d).drawRequirement(this, this.guiLeft + 34, this.guiTop + 53 + (54 * (int)Math.floor(d)) - this.currentPage * 3 * 54);
         }
 	}
 	
-    protected void keyTyped(char p_73869_1_, int p_73869_2_)
+    @Override
+	protected void keyTyped(char p_73869_1_, int p_73869_2_)
     {
         if (p_73869_2_ == 1 || p_73869_2_ == this.mc.gameSettings.keyBindInventory.getKeyCode())
         {
@@ -143,16 +148,16 @@ public class GUIScreenBobmazon extends GuiScreen {
 		Offer offer;
 		
 		public FolderButton(int x, int y, int t, String i) {
-			xPos = x;
-			yPos = y;
-			type = t;
-			info = i;
+			this.xPos = x;
+			this.yPos = y;
+			this.type = t;
+			this.info = i;
 		}
 		
 		public FolderButton(int x, int y, Offer offer) {
-			xPos = x;
-			yPos = y;
-			type = 0;
+			this.xPos = x;
+			this.yPos = y;
+			this.type = 0;
 			this.offer = offer;
 		}
 		
@@ -160,42 +165,42 @@ public class GUIScreenBobmazon extends GuiScreen {
 		}
 		
 		public boolean isMouseOnButton(int mouseX, int mouseY) {
-			return xPos <= mouseX && xPos + 18 > mouseX && yPos < mouseY && yPos + 18 >= mouseY;
+			return this.xPos <= mouseX && this.xPos + 18 > mouseX && this.yPos < mouseY && this.yPos + 18 >= mouseY;
 		}
 		
 		public void drawButton(boolean b) {
-			Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-			drawTexturedModalRect(xPos, yPos, b ? 176 + 18 : 176, type == 1 ? 18 : (type == 2 ? 36 : 0), 18, 18);
+			Minecraft.getMinecraft().getTextureManager().bindTexture(GUIScreenBobmazon.texture);
+			drawTexturedModalRect(this.xPos, this.yPos, b ? 176 + 18 : 176, this.type == 1 ? 18 : (this.type == 2 ? 36 : 0), 18, 18);
 		}
 		
 		public void drawIcon(boolean b) {
 			try {
 		        GL11.glDisable(GL11.GL_LIGHTING);
-				if(offer != null) {
-					itemRender.renderItemAndEffectIntoGUI(fontRendererObj, mc.getTextureManager(), offer.offer, xPos + 1, yPos + 1);
+				if(this.offer != null) {
+					GuiScreen.itemRender.renderItemAndEffectIntoGUI(GUIScreenBobmazon.this.fontRendererObj, GUIScreenBobmazon.this.mc.getTextureManager(), this.offer.offer, this.xPos + 1, this.yPos + 1);
 				}
 		        GL11.glEnable(GL11.GL_LIGHTING);
 			} catch(Exception x) { }
 		}
 		
 		public void drawString(int x, int y) {
-			if(info == null || info.isEmpty())
+			if(this.info == null || this.info.isEmpty())
 				return;
 			
-			func_146283_a(Arrays.asList(new String[] { info }), x, y);
+			func_146283_a(Arrays.asList(new String[] { this.info }), x, y);
 		}
 		
 		public void executeAction() {
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
-			if(type == 0) {
-				PacketDispatcher.wrapper.sendToServer(new ItemBobmazonPacket(player, offer));
-			} else if(type == 1) {
-				if(currentPage > 0)
-					currentPage--;
+			GUIScreenBobmazon.this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+			if(this.type == 0) {
+				PacketDispatcher.wrapper.sendToServer(new ItemBobmazonPacket(GUIScreenBobmazon.this.player, this.offer));
+			} else if(this.type == 1) {
+				if(GUIScreenBobmazon.this.currentPage > 0)
+					GUIScreenBobmazon.this.currentPage--;
 				updateButtons();
-			} else if(type == 2) {
-				if(currentPage < getPageCount())
-					currentPage++;
+			} else if(this.type == 2) {
+				if(GUIScreenBobmazon.this.currentPage < getPageCount())
+					GUIScreenBobmazon.this.currentPage++;
 				updateButtons();
 			}
 		}
@@ -238,24 +243,24 @@ public class GUIScreenBobmazon extends GuiScreen {
 
 				RenderHelper.enableGUIStandardItemLighting();
 				GL11.glColor3f(1F, 1F, 1F);
-				Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
+				Minecraft.getMinecraft().getTextureManager().bindTexture(GUIScreenBobmazon.texture);
 				gui.drawTexturedModalRect(x + 19, y - 4, 176, 62, 39, 8);
-				gui.drawTexturedModalRect(x + 19, y - 4, 176, 54, rating, 8);
+				gui.drawTexturedModalRect(x + 19, y - 4, 176, 54, this.rating, 8);
 				
 				String count = "";
-				if(offer.stackSize > 1)
-					count = " x" + offer.stackSize;
+				if(this.offer.stackSize > 1)
+					count = " x" + this.offer.stackSize;
 
 				GL11.glPushMatrix();
 				
 				float scale = 0.65F;
 				GL11.glScalef(scale, scale, scale);
-				gui.fontRendererObj.drawString(I18n.format(offer.getDisplayName()) + count, (int)((x + 20) / scale), (int)((y - 12) / scale), 4210752);
+				gui.fontRendererObj.drawString(I18n.format(this.offer.getDisplayName()) + count, (int)((x + 20) / scale), (int)((y - 12) / scale), 4210752);
 				
 				GL11.glPopMatrix();
 				
-				String price = cost + " Cap";
-				if(cost != 1)
+				String price = this.cost + " Cap";
+				if(this.cost != 1)
 					price += "s";
 
 				gui.fontRendererObj.drawString(price, x + 62, y - 3, 4210752);
@@ -264,15 +269,15 @@ public class GUIScreenBobmazon extends GuiScreen {
 					
 					GL11.glScalef(0.5F, 0.5F, 0.5F);
 					
-					if(!author.isEmpty())
-						gui.fontRendererObj.drawString("- " + author, (x + 20) * 2, (y + 18) * 2, 0x222222);
-					gui.fontRendererObj.drawString(comment, (x + 20) * 2, (y + 8) * 2, 0x222222);
+					if(!this.author.isEmpty())
+						gui.fontRendererObj.drawString("- " + this.author, (x + 20) * 2, (y + 18) * 2, 0x222222);
+					gui.fontRendererObj.drawString(this.comment, (x + 20) * 2, (y + 8) * 2, 0x222222);
 					
 				GL11.glPopMatrix();
 				
 		        GL11.glDisable(GL11.GL_LIGHTING);
-				if(offer != null) {
-					gui.itemRender.renderItemAndEffectIntoGUI(gui.fontRendererObj, gui.mc.getTextureManager(), requirement.achievement.theItemStack, x + 1, y + 1);
+				if(this.offer != null) {
+					GuiScreen.itemRender.renderItemAndEffectIntoGUI(gui.fontRendererObj, gui.mc.getTextureManager(), this.requirement.achievement.theItemStack, x + 1, y + 1);
 				}
 		        GL11.glEnable(GL11.GL_LIGHTING);
 		        
@@ -296,7 +301,7 @@ public class GUIScreenBobmazon extends GuiScreen {
 		
 		public boolean fullfills(EntityPlayerMP player) {
 			
-			return player.func_147099_x().hasAchievementUnlocked(achievement);
+			return player.func_147099_x().hasAchievementUnlocked(this.achievement);
 		}
 		
 		public Achievement achievement;

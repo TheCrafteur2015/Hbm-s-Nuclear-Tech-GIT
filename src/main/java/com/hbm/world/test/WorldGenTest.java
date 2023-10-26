@@ -13,8 +13,8 @@ public class WorldGenTest implements IWorldGenerator {
 	
 	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
-		gen.func_151539_a(chunkGenerator, world, chunkX, chunkZ, new Block[0]);
-		gen.generateStructuresInChunk(world, random, chunkX, chunkZ);
+		WorldGenTest.gen.func_151539_a(chunkGenerator, world, chunkX, chunkZ, new Block[0]);
+		WorldGenTest.gen.generateStructuresInChunk(world, random, chunkX, chunkZ);
 	}
 }
 

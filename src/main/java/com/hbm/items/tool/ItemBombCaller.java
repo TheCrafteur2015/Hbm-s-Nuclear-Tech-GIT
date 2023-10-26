@@ -4,10 +4,10 @@ import java.util.List;
 
 import com.hbm.entity.logic.EntityBomber;
 import com.hbm.lib.Library;
+import com.hbm.world.WorldUtil;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import com.hbm.world.WorldUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -20,9 +20,10 @@ public class ItemBombCaller extends Item {
 
 	public ItemBombCaller() {
 		super();
-		this.setHasSubtypes(true);
+		setHasSubtypes(true);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool)
 	{

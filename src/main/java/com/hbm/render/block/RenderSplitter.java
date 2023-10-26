@@ -26,11 +26,11 @@ public class RenderSplitter implements ISimpleBlockRenderingHandler {
 		GL11.glRotated(-90, 0, 1, 0);
 		GL11.glTranslatef(0F, -0.5F, 0.5F);
 		tessellator.startDrawingQuads();
-		drawSplitter(tessellator, block, true, 0, false);
+		RenderSplitter.drawSplitter(tessellator, block, true, 0, false);
 		tessellator.draw();
 		GL11.glTranslatef(0F, 0F, -1F);
 		tessellator.startDrawingQuads();
-		drawSplitter(tessellator, block, false, 0, false);
+		RenderSplitter.drawSplitter(tessellator, block, false, 0, false);
 		tessellator.draw();
 
 		GL11.glPopMatrix();
@@ -52,7 +52,7 @@ public class RenderSplitter implements ISimpleBlockRenderingHandler {
 		if(meta == 14 || meta == 3) rotation = 180F / 180F * (float)Math.PI;
 		
 		boolean isLeft = meta >= 12;
-		drawSplitter(tessellator, block, isLeft, rotation, true);
+		RenderSplitter.drawSplitter(tessellator, block, isLeft, rotation, true);
 		tessellator.addTranslation(-x - 0.5F, -y, -z - 0.5F);
 		
 		return true;

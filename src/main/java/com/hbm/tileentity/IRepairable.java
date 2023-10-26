@@ -70,7 +70,7 @@ public interface IRepairable {
 		
 		if(materials == null) return;
 		
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		text.add(EnumChatFormatting.GOLD + "Repair with:");
 		
 		for(AStack stack : materials) {

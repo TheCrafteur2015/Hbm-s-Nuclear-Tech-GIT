@@ -47,33 +47,34 @@ public class TileEntityMachineReactorBreeding extends TileEntityMachineBase impl
 	@Override
 	public void updateEntity() {
 
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			this.flux = 0;
 			getInteractions();
 			
 			if(canProcess()) {
 				
-				progress += 0.0025F * (this.flux / BreederRecipes.getOutput(slots[0]).flux);
+				this.progress += 0.0025F * (this.flux / BreederRecipes.getOutput(this.slots[0]).flux);
 				
 				if(this.progress >= 1.0F) {
 					this.progress = 0F;
-					this.processItem();
-					this.markDirty();
+					processItem();
+					markDirty();
 				}
 			} else {
-				progress = 0.0F;
+				this.progress = 0.0F;
 			}
 						
 			NBTTagCompound data = new NBTTagCompound();
-			data.setInteger("flux", flux);
-			data.setFloat("progress", progress);
-			this.networkPack(data, 20);
+			data.setInteger("flux", this.flux);
+			data.setFloat("progress", this.progress);
+			networkPack(data, 20);
 		}
 	}
 	
+	@Override
 	public void networkUnpack(NBTTagCompound data) {
-		flux = data.getInteger("flux");
-		progress = data.getFloat("progress");
+		this.flux = data.getInteger("flux");
+		this.progress = data.getFloat("progress");
 	}
 	
 	public void getInteractions() {
@@ -81,16 +82,17 @@ public class TileEntityMachineReactorBreeding extends TileEntityMachineBase impl
 		for(byte d = 2; d < 6; d++) {
 			ForgeDirection dir = ForgeDirection.getOrientation(d);
 			
-			Block b = worldObj.getBlock(xCoord + dir.offsetX, yCoord, zCoord + dir.offsetZ);
-			TileEntity te = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord, zCoord + dir.offsetZ);
+			Block b = this.worldObj.getBlock(this.xCoord + dir.offsetX, this.yCoord, this.zCoord + dir.offsetZ);
+			@SuppressWarnings("unused")
+			TileEntity te = this.worldObj.getTileEntity(this.xCoord + dir.offsetX, this.yCoord, this.zCoord + dir.offsetZ);
 			
 			if(b == ModBlocks.reactor_research) {
 
-				int[] pos = ((ReactorResearch) ModBlocks.reactor_research).findCore(worldObj, xCoord + dir.offsetX, yCoord, zCoord + dir.offsetZ);
+				int[] pos = ((ReactorResearch) ModBlocks.reactor_research).findCore(this.worldObj, this.xCoord + dir.offsetX, this.yCoord, this.zCoord + dir.offsetZ);
 
 				if(pos != null) {
 
-					TileEntity tile = worldObj.getTileEntity(pos[0], pos[1], pos[2]);
+					TileEntity tile = this.worldObj.getTileEntity(pos[0], pos[1], pos[2]);
 
 					if(tile instanceof TileEntityReactorResearch) {
 
@@ -105,24 +107,21 @@ public class TileEntityMachineReactorBreeding extends TileEntityMachineBase impl
 
 	public boolean canProcess() {
 		
-		if(slots[0] == null)
+		if(this.slots[0] == null)
 			return false;
 		
-		BreederRecipe recipe = BreederRecipes.getOutput(slots[0]);
+		BreederRecipe recipe = BreederRecipes.getOutput(this.slots[0]);
 		
-		if(recipe == null)
-			return false;
-		
-		if(this.flux < recipe.flux)
+		if((recipe == null) || (this.flux < recipe.flux))
 			return false;
 
-		if(slots[1] == null)
+		if(this.slots[1] == null)
 			return true;
 
-		if(!slots[1].isItemEqual(recipe.output))
+		if(!this.slots[1].isItemEqual(recipe.output))
 			return false;
 
-		if(slots[1].stackSize < slots[1].getMaxStackSize())
+		if(this.slots[1].stackSize < this.slots[1].getMaxStackSize())
 			return true;
 		else
 			return false;
@@ -132,23 +131,23 @@ public class TileEntityMachineReactorBreeding extends TileEntityMachineBase impl
 		
 		if(canProcess()) {
 			
-			BreederRecipe rec = BreederRecipes.getOutput(slots[0]);
+			BreederRecipe rec = BreederRecipes.getOutput(this.slots[0]);
 			
 			if(rec == null)
 				return;
 			
 			ItemStack itemStack = rec.output;
 
-			if(slots[1] == null) {
-				slots[1] = itemStack.copy();
-			} else if(slots[1].isItemEqual(itemStack)) {
-				slots[1].stackSize += itemStack.stackSize;
+			if(this.slots[1] == null) {
+				this.slots[1] = itemStack.copy();
+			} else if(this.slots[1].isItemEqual(itemStack)) {
+				this.slots[1].stackSize += itemStack.stackSize;
 			}
 
-			slots[0].stackSize--;
+			this.slots[0].stackSize--;
 				
-			if(slots[0].stackSize <= 0) {
-				slots[0] = null;
+			if(this.slots[0].stackSize <= 0) {
+				this.slots[0] = null;
 			}
 		}
 	}
@@ -157,7 +156,7 @@ public class TileEntityMachineReactorBreeding extends TileEntityMachineBase impl
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
-		return slots_io;
+		return TileEntityMachineReactorBreeding.slots_io;
 	}
 
 	@Override
@@ -178,16 +177,16 @@ public class TileEntityMachineReactorBreeding extends TileEntityMachineBase impl
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		
-		flux = nbt.getInteger("flux");
-		progress = nbt.getFloat("progress");
+		this.flux = nbt.getInteger("flux");
+		this.progress = nbt.getFloat("progress");
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		
-		nbt.setInteger("flux", flux);
-		nbt.setFloat("progress", progress);
+		nbt.setInteger("flux", this.flux);
+		nbt.setFloat("progress", this.progress);
 	}
 	
 	AxisAlignedBB bb = null;
@@ -195,18 +194,18 @@ public class TileEntityMachineReactorBreeding extends TileEntityMachineBase impl
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord,
-					yCoord,
-					zCoord,
-					xCoord + 1,
-					yCoord + 3,
-					zCoord + 1
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord,
+					this.yCoord,
+					this.zCoord,
+					this.xCoord + 1,
+					this.yCoord + 3,
+					this.zCoord + 1
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override
@@ -224,19 +223,19 @@ public class TileEntityMachineReactorBreeding extends TileEntityMachineBase impl
 	@Callback
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getFlux(Context context, Arguments args) {
-		return new Object[] {flux};
+		return new Object[] {this.flux};
 	}
 
 	@Callback
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getProgress(Context context, Arguments args) {
-		return new Object[] {progress};
+		return new Object[] {this.progress};
 	}
 
 	@Callback
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getInfo(Context context, Arguments args) {
-		return new Object[] {flux, progress};
+		return new Object[] {this.flux, this.progress};
 	}
 
 	@Override

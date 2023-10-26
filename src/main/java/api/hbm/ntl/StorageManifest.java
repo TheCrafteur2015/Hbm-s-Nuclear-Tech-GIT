@@ -11,16 +11,16 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class StorageManifest {
 
-	public HashMap<Integer, MetaNode> itemMeta = new HashMap();
+	public HashMap<Integer, MetaNode> itemMeta = new HashMap<>();
 	
 	public void writeStack(ItemStack stack) {
 		int id = Item.getIdFromItem(stack.getItem());
 		
-		MetaNode meta = itemMeta.get(id);
+		MetaNode meta = this.itemMeta.get(id);
 		
 		if(meta == null) {
 			meta = new MetaNode();
-			itemMeta.put(id, meta);
+			this.itemMeta.put(id, meta);
 		}
 		
 		NBTNode nbt = meta.metaNBT.get(stack.getItemDamage());
@@ -39,9 +39,9 @@ public class StorageManifest {
 	}
 	
 	public List<StorageStack> getStacks() {
-		List<StorageStack> stacks = new ArrayList();
+		List<StorageStack> stacks = new ArrayList<>();
 		
-		for(Entry<Integer, MetaNode> itemNode : itemMeta.entrySet()) {
+		for(Entry<Integer, MetaNode> itemNode : this.itemMeta.entrySet()) {
 			for(Entry<Integer, NBTNode> metaNode : itemNode.getValue().metaNBT.entrySet()) {
 				for(Entry<NBTTagCompound, Long> nbtNode : metaNode.getValue().nbtAmount.entrySet()) {
 					
@@ -58,11 +58,11 @@ public class StorageManifest {
 	
 	public class MetaNode {
 		
-		public HashMap<Integer, NBTNode> metaNBT = new HashMap();
+		public HashMap<Integer, NBTNode> metaNBT = new HashMap<>();
 	}
 	
 	public class NBTNode {
 
-		public HashMap<NBTTagCompound, Long> nbtAmount = new HashMap();
+		public HashMap<NBTTagCompound, Long> nbtAmount = new HashMap<>();
 	}
 }

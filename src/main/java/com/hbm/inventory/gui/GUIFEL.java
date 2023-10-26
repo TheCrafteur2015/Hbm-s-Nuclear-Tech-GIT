@@ -35,15 +35,16 @@ public class GUIFEL extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 		
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 182, guiTop + 27, 16, 113, fel.power, fel.maxPower);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 182, this.guiTop + 27, 16, 113, this.fel.power, TileEntityFEL.maxPower);
 	}
 
+	@Override
 	protected void mouseClicked(int x, int y, int i) {
 		super.mouseClicked(x, y, i);
 
-		if(guiLeft + 142 <= x && guiLeft + 142 + 29 > x && guiTop + 41 < y && guiTop + 41 + 17 >= y) {
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
-			PacketDispatcher.wrapper.sendToServer(new AuxButtonPacket(fel.xCoord, fel.yCoord, fel.zCoord, 0, 2));
+		if(this.guiLeft + 142 <= x && this.guiLeft + 142 + 29 > x && this.guiTop + 41 < y && this.guiTop + 41 + 17 >= y) {
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+			PacketDispatcher.wrapper.sendToServer(new AuxButtonPacket(this.fel.xCoord, this.fel.yCoord, this.fel.zCoord, 0, 2));
 		}
 		
 	}
@@ -55,9 +56,9 @@ public class GUIFEL extends GuiInfoContainer {
 		this.fontRendererObj.drawString(name, 90 + this.xSize / 2 - this.fontRendererObj.getStringWidth(name) / 2, 7, 0xffffff);
 		this.fontRendererObj.drawString(I18n.format("container.inventory"), 8, this.ySize - 98, 4210752);
 		
-		if(fel.missingValidSilex && fel.isOn) {
+		if(this.fel.missingValidSilex && this.fel.isOn) {
 			this.fontRendererObj.drawString(I18n.format("ERR."), 55 + this.xSize / 2 - this.fontRendererObj.getStringWidth(name) / 2, 9, 0xFF0000);
-		} else if(fel.isOn) {
+		} else if(this.fel.isOn) {
 			this.fontRendererObj.drawString(I18n.format("LIVE"), 54 + this.xSize / 2 - this.fontRendererObj.getStringWidth(name) / 2, 9, 0x00FF00);
 		}
 		
@@ -66,18 +67,18 @@ public class GUIFEL extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIFEL.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		if(fel.isOn)
-			drawTexturedModalRect(guiLeft + 142, guiTop + 41, 203, 0, 29, 17);
+		if(this.fel.isOn)
+			drawTexturedModalRect(this.guiLeft + 142, this.guiTop + 41, 203, 0, 29, 17);
 		
-		int k = (int)fel.getPowerScaled(114);
-		drawTexturedModalRect(guiLeft + 182, guiTop + 27 + 113 - k, 203, 17 + 113 - k, 16, k);
+		int k = (int)this.fel.getPowerScaled(114);
+		drawTexturedModalRect(this.guiLeft + 182, this.guiTop + 27 + 113 - k, 203, 17 + 113 - k, 16, k);
 		
-		int color = !(fel.mode == EnumWavelengths.VISIBLE) ? fel.mode.guiColor : Color.HSBtoRGB(fel.getWorldObj().getTotalWorldTime() / 50.0F, 0.5F, 1F) & 16777215;
+		int color = !(this.fel.mode == EnumWavelengths.VISIBLE) ? this.fel.mode.guiColor : Color.HSBtoRGB(this.fel.getWorldObj().getTotalWorldTime() / 50.0F, 0.5F, 1F) & 16777215;
 		
-		if(fel.power > fel.powerReq * Math.pow(2, fel.mode.ordinal()) && fel.isOn && !(fel.mode == EnumWavelengths.NULL) && fel.distance > 0) {
+		if(this.fel.power > TileEntityFEL.powerReq * Math.pow(2, this.fel.mode.ordinal()) && this.fel.isOn && !(this.fel.mode == EnumWavelengths.NULL) && this.fel.distance > 0) {
 			
 			GL11.glPushMatrix();
 			GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -88,15 +89,15 @@ public class GUIFEL extends GuiInfoContainer {
 			tessellator.startDrawing(1);
 			tessellator.setColorOpaque_I(color);
 			
-			tessellator.addVertex(guiLeft + 113, guiTop + 31.5F, this.zLevel);
-			tessellator.addVertex(guiLeft + 135, guiTop + 31.5F, this.zLevel);
+			tessellator.addVertex(this.guiLeft + 113, this.guiTop + 31.5F, this.zLevel);
+			tessellator.addVertex(this.guiLeft + 135, this.guiTop + 31.5F, this.zLevel);
 			tessellator.draw();
 			
 			tessellator.startDrawing(1);
 			tessellator.setColorOpaque_I(color);
 			
-			tessellator.addVertex(0, guiTop + 31.5F, this.zLevel);
-			tessellator.addVertex(guiLeft + 4, guiTop + 31.5F, this.zLevel);
+			tessellator.addVertex(0, this.guiTop + 31.5F, this.zLevel);
+			tessellator.addVertex(this.guiLeft + 4, this.guiTop + 31.5F, this.zLevel);
 			tessellator.draw();
 			
 			GL11.glEnable(GL11.GL_TEXTURE_2D);

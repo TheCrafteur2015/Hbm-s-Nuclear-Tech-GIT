@@ -6,8 +6,8 @@ public class UnionOfTileEntitiesAndBooleansForOil {
 	
 	public UnionOfTileEntitiesAndBooleansForOil(IOilSource tileentity, boolean bool)
 	{
-		source = tileentity;
-		ticked = bool;
+		this.source = tileentity;
+		this.ticked = bool;
 	}
 
 	public IOilSource source;

@@ -21,6 +21,6 @@ public class ActionCreateActor implements IJarAction {
 
 	@Override
 	public void act(WorldInAJar world, JarScene scene) {
-		scene.script.actors.put(id, actor);
+		scene.script.actors.put(this.id, this.actor);
 	}
 }

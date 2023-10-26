@@ -24,6 +24,7 @@ import net.minecraftforge.event.world.WorldEvent;
  * Most basic implementation of a chunk radiation system: Each chunk has a radiation value which spreads out to its neighbors.
  * @author hbm
  */
+@SuppressWarnings("all")
 public class ChunkRadiationHandlerSimple extends ChunkRadiationHandler {
 	
 	private HashMap<World, SimpleRadiationPerWorld> perWorld = new HashMap();
@@ -31,12 +32,12 @@ public class ChunkRadiationHandlerSimple extends ChunkRadiationHandler {
 
 	@Override
 	public float getRadiation(World world, int x, int y, int z) {
-		SimpleRadiationPerWorld radWorld = perWorld.get(world);
+		SimpleRadiationPerWorld radWorld = this.perWorld.get(world);
 		
 		if(radWorld != null) {
 			ChunkCoordIntPair coords = new ChunkCoordIntPair(x >> 4, z >> 4);
 			Float rad = radWorld.radiation.get(coords);
-			return rad == null ? 0F : MathHelper.clamp_float(rad, 0, maxRad);
+			return rad == null ? 0F : MathHelper.clamp_float(rad, 0, ChunkRadiationHandlerSimple.maxRad);
 		}
 		
 		return 0;
@@ -44,14 +45,14 @@ public class ChunkRadiationHandlerSimple extends ChunkRadiationHandler {
 
 	@Override
 	public void setRadiation(World world, int x, int y, int z, float rad) {
-		SimpleRadiationPerWorld radWorld = perWorld.get(world);
+		SimpleRadiationPerWorld radWorld = this.perWorld.get(world);
 		
 		if(radWorld != null) {
 			
 			if(world.blockExists(x, 0, z)) {
 				
 				ChunkCoordIntPair coords = new ChunkCoordIntPair(x >> 4, z >> 4);
-				radWorld.radiation.put(coords, MathHelper.clamp_float(rad, 0, maxRad));
+				radWorld.radiation.put(coords, MathHelper.clamp_float(rad, 0, ChunkRadiationHandlerSimple.maxRad));
 				world.getChunkFromBlockCoords(x, z).isModified = true;
 			}
 		}
@@ -70,7 +71,7 @@ public class ChunkRadiationHandlerSimple extends ChunkRadiationHandler {
 	@Override
 	public void updateSystem() {
 		
-		for(Entry<World, SimpleRadiationPerWorld> entry : perWorld.entrySet()) {
+		for(Entry<World, SimpleRadiationPerWorld> entry : this.perWorld.entrySet()) {
 			
 			HashMap<ChunkCoordIntPair, Float> radiation = entry.getValue().radiation;
 			HashMap<ChunkCoordIntPair, Float> buff = new HashMap(radiation);
@@ -95,7 +96,7 @@ public class ChunkRadiationHandlerSimple extends ChunkRadiationHandler {
 							Float val = radiation.get(newCoord);
 							float rad = val == null ? 0 : val;
 							float newRad = rad + chunk.getValue() * percent;
-							newRad = MathHelper.clamp_float(0F, newRad * 0.99F - 0.05F, maxRad);
+							newRad = MathHelper.clamp_float(0F, newRad * 0.99F - 0.05F, ChunkRadiationHandlerSimple.maxRad);
 							radiation.put(newCoord, newRad);
 						} else {
 							radiation.put(newCoord, chunk.getValue() * percent);
@@ -119,13 +120,13 @@ public class ChunkRadiationHandlerSimple extends ChunkRadiationHandler {
 	@Override
 	public void receiveWorldLoad(WorldEvent.Load event) {
 		if(!event.world.isRemote)
-			perWorld.put(event.world, new SimpleRadiationPerWorld());
+			this.perWorld.put(event.world, new SimpleRadiationPerWorld());
 	}
 
 	@Override
 	public void receiveWorldUnload(WorldEvent.Unload event) {
 		if(!event.world.isRemote)
-			perWorld.remove(event.world);
+			this.perWorld.remove(event.world);
 	}
 	
 	private static final String NBT_KEY_CHUNK_RADIATION = "hfr_simple_radiation";
@@ -134,10 +135,10 @@ public class ChunkRadiationHandlerSimple extends ChunkRadiationHandler {
 	public void receiveChunkLoad(ChunkDataEvent.Load event) {
 		
 		if(!event.world.isRemote) {
-			SimpleRadiationPerWorld radWorld = perWorld.get(event.world);
+			SimpleRadiationPerWorld radWorld = this.perWorld.get(event.world);
 			
 			if(radWorld != null) {
-				radWorld.radiation.put(event.getChunk().getChunkCoordIntPair(), event.getData().getFloat(NBT_KEY_CHUNK_RADIATION));
+				radWorld.radiation.put(event.getChunk().getChunkCoordIntPair(), event.getData().getFloat(ChunkRadiationHandlerSimple.NBT_KEY_CHUNK_RADIATION));
 			}
 		}
 	}
@@ -146,12 +147,12 @@ public class ChunkRadiationHandlerSimple extends ChunkRadiationHandler {
 	public void receiveChunkSave(ChunkDataEvent.Save event) {
 		
 		if(!event.world.isRemote) {
-			SimpleRadiationPerWorld radWorld = perWorld.get(event.world);
+			SimpleRadiationPerWorld radWorld = this.perWorld.get(event.world);
 			
 			if(radWorld != null) {
 				Float val = radWorld.radiation.get(event.getChunk().getChunkCoordIntPair());
 				float rad = val == null ? 0F : val;
-				event.getData().setFloat(NBT_KEY_CHUNK_RADIATION, rad);
+				event.getData().setFloat(ChunkRadiationHandlerSimple.NBT_KEY_CHUNK_RADIATION, rad);
 			}
 		}
 	}
@@ -160,7 +161,7 @@ public class ChunkRadiationHandlerSimple extends ChunkRadiationHandler {
 	public void receiveChunkUnload(ChunkEvent.Unload event) {
 		
 		if(!event.world.isRemote) {
-			SimpleRadiationPerWorld radWorld = perWorld.get(event.world);
+			SimpleRadiationPerWorld radWorld = this.perWorld.get(event.world);
 			
 			if(radWorld != null) {
 				radWorld.radiation.remove(event.getChunk());
@@ -181,7 +182,7 @@ public class ChunkRadiationHandlerSimple extends ChunkRadiationHandler {
 		int chunks = 5;
 		
 		//for all worlds
-		for(Entry<World, SimpleRadiationPerWorld> per : perWorld.entrySet()) {
+		for(Entry<World, SimpleRadiationPerWorld> per : this.perWorld.entrySet()) {
 			
 			World world = per.getKey();
 			SimpleRadiationPerWorld list = per.getValue();

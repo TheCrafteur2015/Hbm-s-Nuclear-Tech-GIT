@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
@@ -51,13 +52,13 @@ public class EntityArtilleryShell extends EntityThrowableNT implements IChunkLoa
 	public EntityArtilleryShell(World world) {
 		super(world);
 		this.ignoreFrustumCheck = true;
-		this.setSize(0.5F, 0.5F);
+		setSize(0.5F, 0.5F);
 	}
 
 	@Override
 	protected void entityInit() {
 		super.entityInit();
-		init(ForgeChunkManager.requestTicket(MainRegistry.instance, worldObj, Type.ENTITY));
+		init(ForgeChunkManager.requestTicket(MainRegistry.instance, this.worldObj, Type.ENTITY));
 		this.dataWatcher.addObject(10, new Integer(0));
 	}
 	
@@ -109,23 +110,23 @@ public class EntityArtilleryShell extends EntityThrowableNT implements IChunkLoa
 	@Override
 	public void onUpdate() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			super.onUpdate();
 			
-			if(!didWhistle && this.shouldWhistle) {
+			if(!this.didWhistle && this.shouldWhistle) {
 				double speed = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 				double deltaX = this.posX - this.targetX;
 				double deltaZ = this.posZ - this.targetZ;
 				double dist = Math.sqrt(deltaX * deltaX + deltaZ * deltaZ);
 				
 				if(speed * 18 > dist) {
-					worldObj.playSoundEffect(this.targetX, this.targetY, this.targetZ, "hbm:turret.mortarWhistle", 15.0F, 0.9F + rand.nextFloat() * 0.2F);
+					this.worldObj.playSoundEffect(this.targetX, this.targetY, this.targetZ, "hbm:turret.mortarWhistle", 15.0F, 0.9F + this.rand.nextFloat() * 0.2F);
 					this.didWhistle = true;
 				}
 			}
 
-			loadNeighboringChunks((int)Math.floor(posX / 16D), (int)Math.floor(posZ / 16D));
-			this.getType().onUpdate(this);
+			loadNeighboringChunks((int)Math.floor(this.posX / 16D), (int)Math.floor(this.posZ / 16D));
+			getType().onUpdate(this);
 			
 		} else {
 			if(this.turnProgress > 0) {
@@ -136,17 +137,18 @@ public class EntityArtilleryShell extends EntityThrowableNT implements IChunkLoa
 				this.rotationYaw = (float) ((double) this.rotationYaw + d / (double) this.turnProgress);
 				this.rotationPitch = (float)((double)this.rotationPitch + (this.syncPitch - (double)this.rotationPitch) / (double)this.turnProgress);
 				--this.turnProgress;
-				this.setPosition(interpX, interpY, interpZ);
+				setPosition(interpX, interpY, interpZ);
 			} else {
-				this.setPosition(this.posX, this.posY, this.posZ);
+				setPosition(this.posX, this.posY, this.posZ);
 			}
 			
 			if(Vec3.createVectorHelper(this.syncPosX - this.posX, this.syncPosY - this.posY, this.syncPosZ - this.posZ).lengthVector() < 0.2) {
-				worldObj.spawnParticle("smoke", posX, posY + 0.5, posZ, 0.0, 0.1, 0.0);
+				this.worldObj.spawnParticle("smoke", this.posX, this.posY + 0.5, this.posZ, 0.0, 0.1, 0.0);
 			}
 		}
 	}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void setVelocity(double p_70016_1_, double p_70016_3_, double p_70016_5_) {
 		this.velocityX = this.motionX = p_70016_1_;
@@ -154,6 +156,7 @@ public class EntityArtilleryShell extends EntityThrowableNT implements IChunkLoa
 		this.velocityZ = this.motionZ = p_70016_5_;
 	}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int theNumberThree) {
 		this.syncPosX = x;
@@ -170,51 +173,51 @@ public class EntityArtilleryShell extends EntityThrowableNT implements IChunkLoa
 	@Override
 	protected void onImpact(MovingObjectPosition mop) {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			if(mop.typeOfHit == mop.typeOfHit.ENTITY && mop.entityHit instanceof EntityArtilleryShell) return;
-			this.getType().onImpact(this, mop);
+			if(mop.typeOfHit == MovingObjectType.ENTITY && mop.entityHit instanceof EntityArtilleryShell) return;
+			getType().onImpact(this, mop);
 		}
 	}
 
 	@Override
 	public void init(Ticket ticket) {
-		if(!worldObj.isRemote && ticket != null) {
-			if(loaderTicket == null) {
-				loaderTicket = ticket;
-				loaderTicket.bindEntity(this);
-				loaderTicket.getModData();
+		if(!this.worldObj.isRemote && ticket != null) {
+			if(this.loaderTicket == null) {
+				this.loaderTicket = ticket;
+				this.loaderTicket.bindEntity(this);
+				this.loaderTicket.getModData();
 			}
-			ForgeChunkManager.forceChunk(loaderTicket, new ChunkCoordIntPair(chunkCoordX, chunkCoordZ));
+			ForgeChunkManager.forceChunk(this.loaderTicket, new ChunkCoordIntPair(this.chunkCoordX, this.chunkCoordZ));
 		}
 	}
 
-	List<ChunkCoordIntPair> loadedChunks = new ArrayList<ChunkCoordIntPair>();
+	List<ChunkCoordIntPair> loadedChunks = new ArrayList<>();
 
 	public void loadNeighboringChunks(int newChunkX, int newChunkZ) {
-		if(!worldObj.isRemote && loaderTicket != null) {
+		if(!this.worldObj.isRemote && this.loaderTicket != null) {
 			
 			clearChunkLoader();
 
-			loadedChunks.clear();
-			loadedChunks.add(new ChunkCoordIntPair(newChunkX, newChunkZ));
-			loadedChunks.add(new ChunkCoordIntPair(newChunkX + (int) Math.ceil((this.posX + this.motionX) / 16D), newChunkZ + (int) Math.ceil((this.posZ + this.motionZ) / 16D)));
+			this.loadedChunks.clear();
+			this.loadedChunks.add(new ChunkCoordIntPair(newChunkX, newChunkZ));
+			this.loadedChunks.add(new ChunkCoordIntPair(newChunkX + (int) Math.ceil((this.posX + this.motionX) / 16D), newChunkZ + (int) Math.ceil((this.posZ + this.motionZ) / 16D)));
 
-			for(ChunkCoordIntPair chunk : loadedChunks) {
-				ForgeChunkManager.forceChunk(loaderTicket, chunk);
+			for(ChunkCoordIntPair chunk : this.loadedChunks) {
+				ForgeChunkManager.forceChunk(this.loaderTicket, chunk);
 			}
 		}
 	}
 	
 	public void killAndClear() {
-		this.setDead();
-		this.clearChunkLoader();
+		setDead();
+		clearChunkLoader();
 	}
 	
 	public void clearChunkLoader() {
-		if(!worldObj.isRemote && loaderTicket != null) {
-			for(ChunkCoordIntPair chunk : loadedChunks) {
-				ForgeChunkManager.unforceChunk(loaderTicket, chunk);
+		if(!this.worldObj.isRemote && this.loaderTicket != null) {
+			for(ChunkCoordIntPair chunk : this.loadedChunks) {
+				ForgeChunkManager.unforceChunk(this.loaderTicket, chunk);
 			}
 		}
 	}
@@ -246,7 +249,7 @@ public class EntityArtilleryShell extends EntityThrowableNT implements IChunkLoa
 		this.targetZ = nbt.getDouble("targetZ");
 
 		NBTTagCompound compound = nbt.getCompoundTag("cargo");
-		this.setCargo(ItemStack.loadItemStackFromNBT(compound));
+		setCargo(ItemStack.loadItemStackFromNBT(compound));
 	}
 
 	@Override
@@ -261,7 +264,7 @@ public class EntityArtilleryShell extends EntityThrowableNT implements IChunkLoa
 
 	@Override
 	protected int groundDespawn() {
-		return cargo != null ? 0 : 1200;
+		return this.cargo != null ? 0 : 1200;
 	}
 
 	@Override
@@ -281,12 +284,12 @@ public class EntityArtilleryShell extends EntityThrowableNT implements IChunkLoa
 	@Override
 	public boolean interactFirst(EntityPlayer player) {
 
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			if(this.cargo != null) {
 				player.inventory.addItemStackToInventory(this.cargo.copy());
 				player.inventoryContainer.detectAndSendChanges();
 			}
-			this.setDead();
+			setDead();
 		}
 
 		return false;

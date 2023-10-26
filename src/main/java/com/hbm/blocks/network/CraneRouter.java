@@ -39,7 +39,7 @@ public class CraneRouter extends BlockContainer implements IBlockMultiPass, IEnt
 
 	public CraneRouter() {
 		super(Material.iron);
-		this.setBlockTextureName(RefStrings.MODID + ":crane_in");
+		setBlockTextureName(RefStrings.MODID + ":crane_in");
 	}
 
 	@Override
@@ -123,7 +123,7 @@ public class CraneRouter extends BlockContainer implements IBlockMultiPass, IEnt
 		TileEntityCraneRouter router = (TileEntityCraneRouter) world.getTileEntity(x, y, z);
 		ItemStack stack = entity.getItemStack();
 		
-		List<ForgeDirection> validDirs = new ArrayList();
+		List<ForgeDirection> validDirs = new ArrayList<>();
 		
 		//check filters for all sides
 		for(int side = 0; side < 6; side++) {
@@ -132,7 +132,7 @@ public class CraneRouter extends BlockContainer implements IBlockMultiPass, IEnt
 			int mode = router.modes[side];
 			
 			//if the side is disabled or wildcard, skip
-			if(mode == router.MODE_NONE || mode == router.MODE_WILDCARD)
+			if(mode == TileEntityCraneRouter.MODE_NONE || mode == TileEntityCraneRouter.MODE_WILDCARD)
 				continue;
 			
 			boolean matchesFilter = false;
@@ -151,7 +151,7 @@ public class CraneRouter extends BlockContainer implements IBlockMultiPass, IEnt
 			}
 			
 			//add dir if matches with whitelist on or doesn't match with blacklist on
-			if((mode == router.MODE_WHITELIST && matchesFilter) || (mode == router.MODE_BLACKLIST && !matchesFilter)) {
+			if((mode == TileEntityCraneRouter.MODE_WHITELIST && matchesFilter) || (mode == TileEntityCraneRouter.MODE_BLACKLIST && !matchesFilter)) {
 				validDirs.add(ForgeDirection.getOrientation(side));
 			}
 		}
@@ -159,7 +159,7 @@ public class CraneRouter extends BlockContainer implements IBlockMultiPass, IEnt
 		//if no valid dirs have yet been found, use wildcard
 		if(validDirs.isEmpty()) {
 			for(int side = 0; side < 6; side++) {
-				if(router.modes[side] == router.MODE_WILDCARD) {
+				if(router.modes[side] == TileEntityCraneRouter.MODE_WILDCARD) {
 					validDirs.add(ForgeDirection.getOrientation(side));
 				}
 			}
@@ -200,6 +200,6 @@ public class CraneRouter extends BlockContainer implements IBlockMultiPass, IEnt
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		this.addStandardInfo(stack, player, list, ext);
+		addStandardInfo(stack, player, list, ext);
 	}
 }

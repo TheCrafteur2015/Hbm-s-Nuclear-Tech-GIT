@@ -38,15 +38,15 @@ public class RenderSnowglobe extends TileEntitySpecialRenderer {
 		double scale = 0.0625D;
 		GL11.glScaled(scale, scale, scale);
 		
-		this.bindTexture(socket);
-		snowglobe.renderPart("Socket");
+		bindTexture(RenderSnowglobe.socket);
+		RenderSnowglobe.snowglobe.renderPart("Socket");
 
 		TileEntitySnowglobe te = (TileEntitySnowglobe) tile;
 		
 		if(te.type.scene != null) {
 			
 			WorldInAJar world = te.type.scene;
-			renderer.blockAccess = world;
+			RenderSnowglobe.renderer.blockAccess = world;
 			
 			double size = Math.max(world.sizeX, world.sizeZ);
 			scale = 4D / size;
@@ -74,7 +74,7 @@ public class RenderSnowglobe extends TileEntitySpecialRenderer {
 				for(int b = 0; b < world.sizeY; b++) {
 					for(int c = 0; c < world.sizeZ; c++) {
 						Block block = world.getBlock(a, b, c);
-						renderer.renderBlockByRenderType(block, a, b, c);
+						RenderSnowglobe.renderer.renderBlockByRenderType(block, a, b, c);
 					}
 				}
 			}

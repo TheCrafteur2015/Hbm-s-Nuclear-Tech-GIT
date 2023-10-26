@@ -1,12 +1,15 @@
 package com.hbm.tileentity.machine.rbmk;
 
-import api.hbm.fluid.IFluidStandardReceiver;
+import java.util.List;
+
 import com.hbm.interfaces.IFluidAcceptor;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTank;
 import com.hbm.lib.Library;
 import com.hbm.tileentity.machine.rbmk.TileEntityRBMKConsole.ColumnType;
+
+import api.hbm.fluid.IFluidStandardReceiver;
 import cpw.mods.fml.common.Optional;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
@@ -17,8 +20,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 
-import java.util.List;
-
+@SuppressWarnings("deprecation")
 @Optional.InterfaceList({@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "OpenComputers")})
 public class TileEntityRBMKCooler extends TileEntityRBMKBase implements IFluidAcceptor, IFluidStandardReceiver, SimpleComponent {
 
@@ -27,30 +29,30 @@ public class TileEntityRBMKCooler extends TileEntityRBMKBase implements IFluidAc
 
 	public TileEntityRBMKCooler() {
 		super();
-
-		this.tank = new FluidTank(Fluids.CRYOGEL, 8000, 0);
+		this.tank = new FluidTank(Fluids.CRYOGEL, 8000);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void updateEntity() {
 
-		if (!worldObj.isRemote) {
+		if (!this.worldObj.isRemote) {
 
 			if (this.worldObj.getTotalWorldTime() % 20 == 0)
-				this.trySubscribe(tank.getTankType(), worldObj, xCoord, yCoord - 1, zCoord, Library.NEG_Y);
+				trySubscribe(this.tank.getTankType(), this.worldObj, this.xCoord, this.yCoord - 1, this.zCoord, Library.NEG_Y);
 
 			if ((int) (this.heat) > 750) {
 
 				int heatProvided = (int) (this.heat - 750D);
-				int cooling = Math.min(heatProvided, tank.getFill());
+				int cooling = Math.min(heatProvided, this.tank.getFill());
 
 				this.heat -= cooling;
 				this.tank.setFill(this.tank.getFill() - cooling);
 
 				this.lastCooled = cooling;
 
-				if (lastCooled > 0) {
-					List<Entity> entities = worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(xCoord, yCoord + 4, zCoord, xCoord + 1, yCoord + 8, zCoord + 1));
+				if (this.lastCooled > 0) {
+					List<Entity> entities = this.worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord + 4, this.zCoord, this.xCoord + 1, this.yCoord + 8, this.zCoord + 1));
 
 					for (Entity e : entities) {
 						e.setFire(5);
@@ -65,20 +67,20 @@ public class TileEntityRBMKCooler extends TileEntityRBMKBase implements IFluidAc
 
 			if (this.lastCooled > 100) {
 				for (int i = 0; i < 2; i++) {
-					worldObj.spawnParticle("flame", xCoord + 0.25 + worldObj.rand.nextDouble() * 0.5, yCoord + 4.5, zCoord + 0.25 + worldObj.rand.nextDouble() * 0.5, 0, 0.2, 0);
-					worldObj.spawnParticle("smoke", xCoord + 0.25 + worldObj.rand.nextDouble() * 0.5, yCoord + 4.5, zCoord + 0.25 + worldObj.rand.nextDouble() * 0.5, 0, 0.2, 0);
+					this.worldObj.spawnParticle("flame", this.xCoord + 0.25 + this.worldObj.rand.nextDouble() * 0.5, this.yCoord + 4.5, this.zCoord + 0.25 + this.worldObj.rand.nextDouble() * 0.5, 0, 0.2, 0);
+					this.worldObj.spawnParticle("smoke", this.xCoord + 0.25 + this.worldObj.rand.nextDouble() * 0.5, this.yCoord + 4.5, this.zCoord + 0.25 + this.worldObj.rand.nextDouble() * 0.5, 0, 0.2, 0);
 				}
 
-				if (worldObj.rand.nextInt(20) == 0)
-					worldObj.spawnParticle("lava", xCoord + 0.25 + worldObj.rand.nextDouble() * 0.5, yCoord + 4.5, zCoord + 0.25 + worldObj.rand.nextDouble() * 0.5, 0, 0.0, 0);
+				if (this.worldObj.rand.nextInt(20) == 0)
+					this.worldObj.spawnParticle("lava", this.xCoord + 0.25 + this.worldObj.rand.nextDouble() * 0.5, this.yCoord + 4.5, this.zCoord + 0.25 + this.worldObj.rand.nextDouble() * 0.5, 0, 0.0, 0);
 			} else if (this.lastCooled > 50) {
 				for (int i = 0; i < 2; i++) {
-					worldObj.spawnParticle("cloud", xCoord + 0.25 + worldObj.rand.nextDouble() * 0.5, yCoord + 4.5, zCoord + 0.25 + worldObj.rand.nextDouble() * 0.5, worldObj.rand.nextGaussian() * 0.05, 0.2, worldObj.rand.nextGaussian() * 0.05);
+					this.worldObj.spawnParticle("cloud", this.xCoord + 0.25 + this.worldObj.rand.nextDouble() * 0.5, this.yCoord + 4.5, this.zCoord + 0.25 + this.worldObj.rand.nextDouble() * 0.5, this.worldObj.rand.nextGaussian() * 0.05, 0.2, this.worldObj.rand.nextGaussian() * 0.05);
 				}
 			} else if (this.lastCooled > 0) {
 
-				if (worldObj.getTotalWorldTime() % 2 == 0)
-					worldObj.spawnParticle("cloud", xCoord + 0.25 + worldObj.rand.nextDouble() * 0.5, yCoord + 4.5, zCoord + 0.25 + worldObj.rand.nextDouble() * 0.5, 0, 0.2, 0);
+				if (this.worldObj.getTotalWorldTime() % 2 == 0)
+					this.worldObj.spawnParticle("cloud", this.xCoord + 0.25 + this.worldObj.rand.nextDouble() * 0.5, this.yCoord + 4.5, this.zCoord + 0.25 + this.worldObj.rand.nextDouble() * 0.5, 0, 0.2, 0);
 
 			}
 		}
@@ -90,7 +92,7 @@ public class TileEntityRBMKCooler extends TileEntityRBMKBase implements IFluidAc
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 
-		tank.readFromNBT(nbt, "cryo");
+		this.tank.readFromNBT(nbt, "cryo");
 		this.lastCooled = nbt.getInteger("cooled");
 	}
 
@@ -98,7 +100,7 @@ public class TileEntityRBMKCooler extends TileEntityRBMKBase implements IFluidAc
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 
-		tank.writeToNBT(nbt, "cryo");
+		this.tank.writeToNBT(nbt, "cryo");
 		nbt.setInteger("cooled", this.lastCooled);
 	}
 
@@ -109,42 +111,43 @@ public class TileEntityRBMKCooler extends TileEntityRBMKBase implements IFluidAc
 
 	@Override
 	public void setFillForSync(int fill, int index) {
-		tank.setFill(fill);
+		this.tank.setFill(fill);
 	}
 
 	@Override
 	public void setFluidFill(int fill, FluidType type) {
-		if (type == tank.getTankType())
-			tank.setFill(fill);
+		if (type == this.tank.getTankType())
+			this.tank.setFill(fill);
 	}
 
 	@Override
 	public void setTypeForSync(FluidType type, int index) {
-		tank.setTankType(type);
+		this.tank.setTankType(type);
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		return type == tank.getTankType() ? tank.getFill() : 0;
+		return type == this.tank.getTankType() ? this.tank.getFill() : 0;
 	}
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		return type == tank.getTankType() ? tank.getMaxFill() : 0;
+		return type == this.tank.getTankType() ? this.tank.getMaxFill() : 0;
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return new FluidTank[]{tank};
+		return new FluidTank[]{this.tank};
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[]{tank};
+		return new FluidTank[]{this.tank};
 	}
 
 	//do some opencomputers stuff
 
+	@Override
 	public String getComponentName() {
 		return "rbmk_cooler";
 	}
@@ -152,30 +155,30 @@ public class TileEntityRBMKCooler extends TileEntityRBMKBase implements IFluidAc
 	@Callback(direct = true, limit = 8)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getHeat(Context context, Arguments args) {
-		return new Object[]{heat};
+		return new Object[]{this.heat};
 	}
 
 	@Callback(direct = true, limit = 8)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getCryo(Context context, Arguments args) {
-		return new Object[]{tank.getFill()};
+		return new Object[]{this.tank.getFill()};
 	}
 
 	@Callback(direct = true, limit = 8)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getCryoMax(Context context, Arguments args) {
-		return new Object[]{tank.getMaxFill()};
+		return new Object[]{this.tank.getMaxFill()};
 	}
 
 	@Callback(direct = true, limit = 8)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getCoordinates(Context context, Arguments args) {
-		return new Object[] {xCoord, yCoord, zCoord};
+		return new Object[] {this.xCoord, this.yCoord, this.zCoord};
 	}
 
 	@Callback(direct = true, limit = 8)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getInfo(Context context, Arguments args) {
-		return new Object[]{heat, tank.getFill(), tank.getMaxFill(), xCoord, yCoord, zCoord};
+		return new Object[]{this.heat, this.tank.getFill(), this.tank.getMaxFill(), this.xCoord, this.yCoord, this.zCoord};
 	}
 }

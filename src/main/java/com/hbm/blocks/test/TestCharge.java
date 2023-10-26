@@ -37,7 +37,7 @@ public class TestCharge extends Block {
 
 	@Override
 	public void onBlockPlacedBy(World p_149689_1_, int p_149689_2_, int p_149689_3_, int p_149689_4_, EntityLivingBase p_149689_5_, ItemStack p_149689_6_) {
-		int l = determineOrientation(p_149689_1_, p_149689_2_, p_149689_3_, p_149689_4_, p_149689_5_);
+		int l = TestCharge.determineOrientation(p_149689_1_, p_149689_2_, p_149689_3_, p_149689_4_, p_149689_5_);
 		p_149689_1_.setBlockMetadataWithNotify(p_149689_2_, p_149689_3_, p_149689_4_, l, 2);
 	}
 
@@ -62,6 +62,7 @@ public class TestCharge extends Block {
 		return l == 0 ? 3 : (l == 1 ? 4 : (l == 2 ? 2 : (l == 3 ? 5 : 1)));
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister p_149651_1_) {
 		this.blockIcon = p_149651_1_.registerIcon(RefStrings.MODID + ":test_charge_side");
@@ -69,9 +70,10 @@ public class TestCharge extends Block {
 		this.bottomIcon = p_149651_1_.registerIcon(RefStrings.MODID + ":test_charge_bottom");
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int p_149691_1_, int p_149691_2_) {
-		int k = getPistonOrientation(p_149691_2_);
+		int k = TestCharge.getPistonOrientation(p_149691_2_);
 		return k > 5 ? this.topIcon : (p_149691_1_ == k ? this.topIcon : (p_149691_1_ == Facing.oppositeSide[k] ? this.bottomIcon : this.blockIcon));
 	}
 
@@ -95,7 +97,7 @@ public class TestCharge extends Block {
 		
 		if(!world.isRemote) {
 			
-			ForgeDirection dir = ForgeDirection.getOrientation(getPistonOrientation(world.getBlockMetadata(x, y, z)));
+			ForgeDirection dir = ForgeDirection.getOrientation(TestCharge.getPistonOrientation(world.getBlockMetadata(x, y, z)));
 			
 			//is our target a core?
 			if(world.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) == ModBlocks.test_core) {

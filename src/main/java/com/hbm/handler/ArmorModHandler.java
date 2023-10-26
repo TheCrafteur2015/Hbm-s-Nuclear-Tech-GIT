@@ -47,13 +47,7 @@ public class ArmorModHandler {
 	 */
 	public static boolean isApplicable(ItemStack armor, ItemStack mod) {
 		
-		if(armor == null || mod == null)
-			return false;
-		
-		if(!(armor.getItem() instanceof ItemArmor))
-			return false;
-		
-		if(!(mod.getItem() instanceof ItemArmorMod))
+		if(armor == null || mod == null || !(armor.getItem() instanceof ItemArmor) || !(mod.getItem() instanceof ItemArmorMod))
 			return false;
 		
 		int type = ((ItemArmor)armor.getItem()).armorType;
@@ -77,10 +71,10 @@ public class ArmorModHandler {
 		
 		NBTTagCompound nbt = armor.getTagCompound();
 		
-		if(!nbt.hasKey(MOD_COMPOUND_KEY))
-			nbt.setTag(MOD_COMPOUND_KEY, new NBTTagCompound());
+		if(!nbt.hasKey(ArmorModHandler.MOD_COMPOUND_KEY))
+			nbt.setTag(ArmorModHandler.MOD_COMPOUND_KEY, new NBTTagCompound());
 		
-		NBTTagCompound mods = nbt.getCompoundTag(MOD_COMPOUND_KEY);
+		NBTTagCompound mods = nbt.getCompoundTag(ArmorModHandler.MOD_COMPOUND_KEY);
 		
 		ItemArmorMod aMod = (ItemArmorMod)mod.getItem();
 		int slot = aMod.type;
@@ -88,7 +82,7 @@ public class ArmorModHandler {
 		NBTTagCompound cmp = new NBTTagCompound();
 		mod.writeToNBT(cmp);
 		
-		mods.setTag(MOD_SLOT_KEY + slot, cmp);
+		mods.setTag(ArmorModHandler.MOD_SLOT_KEY + slot, cmp);
 	}
 	
 	/**
@@ -106,14 +100,14 @@ public class ArmorModHandler {
 		
 		NBTTagCompound nbt = armor.getTagCompound();
 		
-		if(!nbt.hasKey(MOD_COMPOUND_KEY))
-			nbt.setTag(MOD_COMPOUND_KEY, new NBTTagCompound());
+		if(!nbt.hasKey(ArmorModHandler.MOD_COMPOUND_KEY))
+			nbt.setTag(ArmorModHandler.MOD_COMPOUND_KEY, new NBTTagCompound());
 		
-		NBTTagCompound mods = nbt.getCompoundTag(MOD_COMPOUND_KEY);
-		mods.removeTag(MOD_SLOT_KEY + slot);
+		NBTTagCompound mods = nbt.getCompoundTag(ArmorModHandler.MOD_COMPOUND_KEY);
+		mods.removeTag(ArmorModHandler.MOD_SLOT_KEY + slot);
 		
 		if(mods.hasNoTags())
-			clearMods(armor);
+			ArmorModHandler.clearMods(armor);
 	}
 	
 	/**
@@ -127,7 +121,7 @@ public class ArmorModHandler {
 			return;
 		
 		NBTTagCompound nbt = armor.getTagCompound();
-		nbt.removeTag(MOD_COMPOUND_KEY);
+		nbt.removeTag(ArmorModHandler.MOD_COMPOUND_KEY);
 	}
 	
 	/**
@@ -141,29 +135,29 @@ public class ArmorModHandler {
 			return false;
 		
 		NBTTagCompound nbt = armor.getTagCompound();
-		return nbt.hasKey(MOD_COMPOUND_KEY);
+		return nbt.hasKey(ArmorModHandler.MOD_COMPOUND_KEY);
 	}
 	
 	public static ItemStack[] pryMods(ItemStack armor) {
 		
 		ItemStack[] slots = new ItemStack[8];
 
-		if(!hasMods(armor))
+		if(!ArmorModHandler.hasMods(armor))
 			return slots;
 		
 		NBTTagCompound nbt = armor.getTagCompound();
-		NBTTagCompound mods = nbt.getCompoundTag(MOD_COMPOUND_KEY);
+		NBTTagCompound mods = nbt.getCompoundTag(ArmorModHandler.MOD_COMPOUND_KEY);
 		
 		for(int i = 0; i < 8; i++) {
 			
-			NBTTagCompound cmp = mods.getCompoundTag(MOD_SLOT_KEY + i);
+			NBTTagCompound cmp = mods.getCompoundTag(ArmorModHandler.MOD_SLOT_KEY + i);
 			
 			ItemStack stack = ItemStack.loadItemStackFromNBT(cmp);
 			
 			if(stack != null)
 				slots[i] = stack;
 			else // Any non-existing armor mods will be sorted out automatically
-				removeMod(armor, i);
+				ArmorModHandler.removeMod(armor, i);
 		}
 		
 		return slots;

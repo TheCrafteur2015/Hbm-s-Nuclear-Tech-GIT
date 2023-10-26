@@ -35,22 +35,22 @@ public class TEFluidPacket implements IMessage {
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		x = buf.readInt();
-		y = buf.readInt();
-		z = buf.readInt();
-		fill = buf.readInt();
-		index = buf.readInt();
-		type = buf.readInt();
+		this.x = buf.readInt();
+		this.y = buf.readInt();
+		this.z = buf.readInt();
+		this.fill = buf.readInt();
+		this.index = buf.readInt();
+		this.type = buf.readInt();
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeInt(x);
-		buf.writeInt(y);
-		buf.writeInt(z);
-		buf.writeInt(fill);
-		buf.writeInt(index);
-		buf.writeInt(type);
+		buf.writeInt(this.x);
+		buf.writeInt(this.y);
+		buf.writeInt(this.z);
+		buf.writeInt(this.fill);
+		buf.writeInt(this.index);
+		buf.writeInt(this.type);
 	}
 
 	public static class Handler implements IMessageHandler<TEFluidPacket, IMessage> {

@@ -19,6 +19,6 @@ public class EntityMinecartOre extends EntityMinecartNTM {
 
 	@Override
 	public ItemStack getCartItem() {
-		return ItemModMinecart.createCartItem(this.getBase(), EnumMinecart.EMPTY);
+		return ItemModMinecart.createCartItem(getBase(), EnumMinecart.EMPTY);
 	}
 }

@@ -10,6 +10,7 @@ import com.hbm.module.NumberDisplay;
 import com.hbm.packet.NBTControlPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.machine.TileEntityReactorResearch;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiTextField;
@@ -30,12 +31,12 @@ public class GUIReactorResearch extends GuiInfoContainer {
 
 	public GUIReactorResearch(InventoryPlayer invPlayer, TileEntityReactorResearch te) {
 		super(new ContainerReactorResearch(invPlayer, te));
-		reactor = te;
+		this.reactor = te;
 		this.xSize = 176;
 		this.ySize = 222;
-		displays[0] = new NumberDisplay(this, 14, 25, 0x08FF00).setDigitLength(4);
-		displays[1] = new NumberDisplay(this, 12, 63, 0x08FF00).setDigitLength(3);
-		displays[2] = new NumberDisplay(this, 5, 101, 0x08FF00).setDigitLength(3);
+		this.displays[0] = new NumberDisplay(this, 14, 25, 0x08FF00).setDigitLength(4);
+		this.displays[1] = new NumberDisplay(this, 12, 63, 0x08FF00).setDigitLength(3);
+		this.displays[2] = new NumberDisplay(this, 5, 101, 0x08FF00).setDigitLength(3);
 	}
 	
 	@Override
@@ -47,11 +48,11 @@ public class GUIReactorResearch extends GuiInfoContainer {
 		
 		Keyboard.enableRepeatEvents(true);
 		
-		this.field = new GuiTextField(this.fontRendererObj, guiLeft + 8, guiTop + 99, 33, 16);
+		this.field = new GuiTextField(this.fontRendererObj, this.guiLeft + 8, this.guiTop + 99, 33, 16);
 		this.field.setEnableBackgroundDrawing(false);
 		this.field.setMaxStringLength(3);
 		
-		this.field.setText(String.valueOf((int)(reactor.level * 100)));
+		this.field.setText(String.valueOf((int)(this.reactor.level * 100)));
 	}
 	
 	@Override
@@ -64,13 +65,13 @@ public class GUIReactorResearch extends GuiInfoContainer {
 				"The neutron flux is provided to",
 				"adjacent breeding reactors."
 		};
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 14, guiTop + 23, 16, 16, guiLeft - 6, guiTop + 23 + 16, text);
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft - 14, this.guiTop + 23, 16, 16, this.guiLeft - 6, this.guiTop + 23 + 16, text);
 		
 		String[] text2 = new String[] {
 				"This reactor is fueled with plate fuel.",
 				"The reaction needs a neutron source to start."
 		};
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 14, guiTop + 61, 16, 16, guiLeft - 6, guiTop + 61 + 16, text2);
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft - 14, this.guiTop + 61, 16, 16, this.guiLeft - 6, this.guiTop + 61 + 16, text2);
 	}
 	
 	@Override
@@ -85,22 +86,23 @@ public class GUIReactorResearch extends GuiInfoContainer {
 		this.fontRendererObj.drawString(labels[2], 6, 89, 15066597);
 	}
 
-    protected void mouseClicked(int mouseX, int mouseY, int i) {
+    @Override
+	protected void mouseClicked(int mouseX, int mouseY, int i) {
     	super.mouseClicked(mouseX, mouseY, i);
     	this.field.mouseClicked(mouseX, mouseY, i);
     	
-    	if(guiLeft + 8 <= mouseX && guiLeft + 8 + 33 > mouseX && guiTop + 99 < mouseY && guiTop + 99 + 16 >= mouseY)
-    		displays[2].setBlinks(true);
+    	if(this.guiLeft + 8 <= mouseX && this.guiLeft + 8 + 33 > mouseX && this.guiTop + 99 < mouseY && this.guiTop + 99 + 16 >= mouseY)
+    		this.displays[2].setBlinks(true);
     	else
-    		displays[2].setBlinks(false);
+    		this.displays[2].setBlinks(false);
     	
-    	if(guiLeft + 44 <= mouseX && guiLeft + 44 + 11 > mouseX && guiTop + 97 < mouseY && guiTop + 97 + 20 >= mouseY) {
+    	if(this.guiLeft + 44 <= mouseX && this.guiLeft + 44 + 11 > mouseX && this.guiTop + 97 < mouseY && this.guiTop + 97 + 20 >= mouseY) {
 			
     		double level;
     		
-			if(NumberUtils.isNumber(field.getText())) {
-				int j = (int)MathHelper.clamp_double(Double.parseDouble(field.getText()), 0, 100);
-				field.setText(j + "");
+			if(NumberUtils.isNumber(this.field.getText())) {
+				int j = (int)MathHelper.clamp_double(Double.parseDouble(this.field.getText()), 0, 100);
+				this.field.setText(j + "");
 				level = j * 0.01D;
 			} else {
 				return;
@@ -108,48 +110,48 @@ public class GUIReactorResearch extends GuiInfoContainer {
 			
 			NBTTagCompound control = new NBTTagCompound();
 			control.setDouble("level", level);
-			timer = 15;
+			this.timer = 15;
 			
-			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(control, reactor.xCoord, reactor.yCoord, reactor.zCoord));
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("hbm:block.rbmk_az5_cover"), 0.5F));
+			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(control, this.reactor.xCoord, this.reactor.yCoord, this.reactor.zCoord));
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("hbm:block.rbmk_az5_cover"), 0.5F));
 		}
     }
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIReactorResearch.texture);
 		
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		if(reactor.level <= 0.5D) {
+		if(this.reactor.level <= 0.5D) {
 			for(int x = 0; x < 3; x++)
 				for(int y = 0; y < 3; y++)
-					drawTexturedModalRect(guiLeft + 81 + 36 * x, guiTop + 26 + 36 * y, 176, 0, 8, 8);
+					drawTexturedModalRect(this.guiLeft + 81 + 36 * x, this.guiTop + 26 + 36 * y, 176, 0, 8, 8);
 			for(int x = 0; x < 2; x++)
 				for(int y = 0; y < 2; y++)
-					drawTexturedModalRect(guiLeft + 99 + 36 * x, guiTop + 44 + 36 * y, 176, 0, 8, 8);
+					drawTexturedModalRect(this.guiLeft + 99 + 36 * x, this.guiTop + 44 + 36 * y, 176, 0, 8, 8);
 		}
 		
-		if(timer > 0) {
-			drawTexturedModalRect(guiLeft + 44, guiTop + 97, 176, 8, 11, 20);
-			timer--;
+		if(this.timer > 0) {
+			drawTexturedModalRect(this.guiLeft + 44, this.guiTop + 97, 176, 8, 11, 20);
+			this.timer--;
 		}
 		
 		for(byte i = 0; i < 2; i++)
-			displays[i].drawNumber(reactor.getDisplayData()[i]);
+			this.displays[i].drawNumber(this.reactor.getDisplayData()[i]);
 		
-		if(NumberUtils.isDigits(field.getText())) {
-			int level = (int)MathHelper.clamp_double(Double.parseDouble(field.getText()), 0, 100);
-			field.setText(level + "");
-			displays[2].drawNumber(level);
+		if(NumberUtils.isDigits(this.field.getText())) {
+			int level = (int)MathHelper.clamp_double(Double.parseDouble(this.field.getText()), 0, 100);
+			this.field.setText(level + "");
+			this.displays[2].drawNumber(level);
 		} else {
-			field.setText(0 + "");
-			displays[2].drawNumber(0);
+			this.field.setText(0 + "");
+			this.displays[2].drawNumber(0);
 		}
 
-		this.drawInfoPanel(guiLeft - 14, guiTop + 23, 16, 16, 3);
-		this.drawInfoPanel(guiLeft - 14, guiTop + 61, 16, 16, 2);
+		drawInfoPanel(this.guiLeft - 14, this.guiTop + 23, 16, 16, 3);
+		drawInfoPanel(this.guiLeft - 14, this.guiTop + 61, 16, 16, 2);
 		
 	}
 	

@@ -33,16 +33,16 @@ public class ItemDesignatorPacket implements IMessage {
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		operator = buf.readInt();
-		value = buf.readInt();
-		reference = buf.readInt();
+		this.operator = buf.readInt();
+		this.value = buf.readInt();
+		this.reference = buf.readInt();
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeInt(operator);
-		buf.writeInt(value);
-		buf.writeInt(reference);
+		buf.writeInt(this.operator);
+		buf.writeInt(this.value);
+		buf.writeInt(this.reference);
 	}
 
 	public static class Handler implements IMessageHandler<ItemDesignatorPacket, IMessage> {

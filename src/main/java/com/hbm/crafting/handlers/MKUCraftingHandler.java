@@ -23,12 +23,12 @@ public class MKUCraftingHandler implements IRecipe {
 		if(world == null)
 			return false;
 		
-		if(MKURecipe == null || world.getSeed() != lastSeed)
-			generateRecipe(world);
+		if(MKUCraftingHandler.MKURecipe == null || world.getSeed() != MKUCraftingHandler.lastSeed)
+			MKUCraftingHandler.generateRecipe(world);
 		
 		for(int i = 0; i < 9; i++) {
 			ItemStack stack = inventory.getStackInRowAndColumn(i % 3, i / 3);
-			ItemStack recipe = MKURecipe[i];
+			ItemStack recipe = MKUCraftingHandler.MKURecipe[i];
 			
 			if(stack == null && recipe == null)
 				continue;
@@ -45,10 +45,10 @@ public class MKUCraftingHandler implements IRecipe {
 	public static void generateRecipe(World world) {
 		Random rand = new Random(world.getSeed());
 		
-		if(lastSeed == world.getSeed() && MKURecipe != null)
+		if(MKUCraftingHandler.lastSeed == world.getSeed() && MKUCraftingHandler.MKURecipe != null)
 			return;
 		
-		lastSeed = world.getSeed();
+		MKUCraftingHandler.lastSeed = world.getSeed();
 		
 		List<ItemStack> list = Arrays.asList(new ItemStack[] {
 				new ItemStack(ModItems.powder_iodine),
@@ -64,7 +64,7 @@ public class MKUCraftingHandler implements IRecipe {
 		
 		Collections.shuffle(list, rand);
 		
-		MKURecipe = list.toArray(new ItemStack[9]);
+		MKUCraftingHandler.MKURecipe = list.toArray(new ItemStack[9]);
 	}
 
 	@Override

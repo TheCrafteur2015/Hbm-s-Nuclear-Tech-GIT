@@ -1,7 +1,7 @@
 package com.hbm.inventory.container;
 
-import com.hbm.inventory.SlotTakeOnly;
 import com.hbm.inventory.SlotPattern;
+import com.hbm.inventory.SlotTakeOnly;
 import com.hbm.tileentity.machine.storage.TileEntityMassStorage;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,18 +18,18 @@ public class ContainerMassStorage extends Container {
 		this.storage = te;
 		this.storage.openInventory();
 
-		this.addSlotToContainer(new Slot(storage, 0, 61, 17));
-		this.addSlotToContainer(new SlotPattern(storage, 1, 61, 53));
-		this.addSlotToContainer(new SlotTakeOnly(storage, 2, 61, 89));
+		addSlotToContainer(new Slot(this.storage, 0, 61, 17));
+		addSlotToContainer(new SlotPattern(this.storage, 1, 61, 53));
+		addSlotToContainer(new SlotTakeOnly(this.storage, 2, 61, 89));
 		
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 139 + i * 18));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 139 + i * 18));
 			}
 		}
 
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 197));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 197));
 		}
 	}
 
@@ -43,10 +43,10 @@ public class ContainerMassStorage extends Container {
 			var3 = var5.copy();
 
 			if(par2 == 0 || par2 == 2) {
-				if(!this.mergeItemStack(var5, storage.getSizeInventory(), this.inventorySlots.size(), true)) {
+				if(!mergeItemStack(var5, this.storage.getSizeInventory(), this.inventorySlots.size(), true)) {
 					return null;
 				}
-			} else if(!this.mergeItemStack(var5, 0, 1, false)) {
+			} else if(!mergeItemStack(var5, 0, 1, false)) {
 				return null;
 			}
 
@@ -74,7 +74,7 @@ public class ContainerMassStorage extends Container {
 			return super.slotClick(index, button, mode, player);
 		}
 
-		Slot slot = this.getSlot(index);
+		Slot slot = getSlot(index);
 		
 		ItemStack ret = null;
 		ItemStack held = player.inventory.getItemStack();
@@ -83,7 +83,7 @@ public class ContainerMassStorage extends Container {
 			ret = slot.getStack().copy();
 		
 		//Don't allow for a type change when the thing isn't empty
-		if(storage.getStockpile() > 0)
+		if(this.storage.getStockpile() > 0)
 			return ret;
 
 		slot.putStack(held != null ? held.copy() : null);
@@ -99,7 +99,7 @@ public class ContainerMassStorage extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return storage.isUseableByPlayer(player);
+		return this.storage.isUseableByPlayer(player);
 	}
 	
 	@Override

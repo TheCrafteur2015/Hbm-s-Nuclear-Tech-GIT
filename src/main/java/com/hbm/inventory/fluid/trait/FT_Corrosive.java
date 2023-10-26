@@ -20,11 +20,11 @@ public class FT_Corrosive extends FluidTrait {
 	}
 	
 	public int getRating() {
-		return rating;
+		return this.rating;
 	}
 	
 	public boolean isHighlyCorrosive() {
-		return rating > 50;
+		return this.rating > 50;
 	}
 	
 	@Override
@@ -38,7 +38,7 @@ public class FT_Corrosive extends FluidTrait {
 
 	@Override
 	public void serializeJSON(JsonWriter writer) throws IOException {
-		writer.name("rating").value(rating);
+		writer.name("rating").value(this.rating);
 	}
 	
 	@Override

@@ -49,7 +49,7 @@ public class DummyBlockMachine extends DummyOldBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Item getItem(World world, int x, int y, int z) {
-		return Item.getItemFromBlock(drop);
+		return Item.getItemFromBlock(this.drop);
 	}
 
 	@Override
@@ -75,13 +75,13 @@ public class DummyBlockMachine extends DummyOldBase {
 
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess p_149719_1_, int p_149719_2_, int p_149719_3_, int p_149719_4_) {
-		this.setBlockBounds(oX, oY, oZ, dX, dY, dZ);
+		setBlockBounds(this.oX, this.oY, this.oZ, this.dX, this.dY, this.dZ);
 	}
 
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
 
-		this.setBlockBounds(oX, oY, oZ, dX, dY, dZ);
+		setBlockBounds(this.oX, this.oY, this.oZ, this.dX, this.dY, this.dZ);
 		return AxisAlignedBB.getBoundingBox(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
 	}
 }

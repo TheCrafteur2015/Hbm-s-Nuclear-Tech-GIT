@@ -10,22 +10,22 @@ import net.minecraft.util.ResourceLocation;
 
 public class SoundLoopMiner extends SoundLoopMachine {
 	
-	public static List<SoundLoopMiner> list = new ArrayList<SoundLoopMiner>();
+	public static List<SoundLoopMiner> list = new ArrayList<>();
 
 	public SoundLoopMiner(ResourceLocation path, TileEntity te) {
 		super(path, te);
-		list.add(this);
+		SoundLoopMiner.list.add(this);
 	}
 
 	@Override
 	public void update() {
 		super.update();
 		
-		if(te instanceof TileEntityMachineMiningDrill) {
-			TileEntityMachineMiningDrill drill = (TileEntityMachineMiningDrill)te;
+		if(this.te instanceof TileEntityMachineMiningDrill) {
+			TileEntityMachineMiningDrill drill = (TileEntityMachineMiningDrill)this.te;
 			
 			if(this.volume != 3)
-				volume = 3;
+				this.volume = 3;
 			
 			if(drill.torque <= 0.5F)
 				this.donePlaying = true;
@@ -33,7 +33,7 @@ public class SoundLoopMiner extends SoundLoopMachine {
 	}
 	
 	public TileEntity getTE() {
-		return te;
+		return this.te;
 	}
 
 }

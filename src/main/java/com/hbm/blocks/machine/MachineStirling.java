@@ -37,7 +37,7 @@ public class MachineStirling extends BlockDummyable implements ILookOverlay, ITo
 		if(meta >= 12)
 			return new TileEntityStirling();
 		
-		if(meta >= extra)
+		if(meta >= BlockDummyable.extra)
 			return new TileEntityProxyCombo().power();
 		
 		return null;
@@ -60,10 +60,10 @@ public class MachineStirling extends BlockDummyable implements ILookOverlay, ITo
 		x = x + dir.offsetX * o;
 		z = z + dir.offsetZ * o;
 
-		this.makeExtra(world, x + 1, y, z);
-		this.makeExtra(world, x - 1, y, z);
-		this.makeExtra(world, x, y, z + 1);
-		this.makeExtra(world, x, y, z - 1);
+		makeExtra(world, x + 1, y, z);
+		makeExtra(world, x - 1, y, z);
+		makeExtra(world, x, y, z + 1);
+		makeExtra(world, x, y, z - 1);
 	}
 	
 	@Override
@@ -73,7 +73,7 @@ public class MachineStirling extends BlockDummyable implements ILookOverlay, ITo
 			return true;
 			
 		} else if(!player.isSneaking()) {
-			int[] pos = this.findCore(world, x, y, z);
+			int[] pos = findCore(world, x, y, z);
 			
 			if(pos == null)
 				return false;
@@ -120,12 +120,12 @@ public class MachineStirling extends BlockDummyable implements ILookOverlay, ITo
 	
 	@Override
 	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+		ArrayList<ItemStack> ret = new ArrayList<>();
 
 		int count = quantityDropped(metadata, fortune, world.rand);
 		int dmg = 0;
 
-		int[] pos = this.findCore(world, x, y, z);
+		int[] pos = findCore(world, x, y, z);
 		
 		if(pos != null) {
 			TileEntityStirling stirling = (TileEntityStirling)world.getTileEntity(pos[0], pos[1], pos[2]);
@@ -146,7 +146,7 @@ public class MachineStirling extends BlockDummyable implements ILookOverlay, ITo
 	@Override
 	public void printHook(Pre event, World world, int x, int y, int z) {
 		
-		int[] pos = this.findCore(world, x, y, z);
+		int[] pos = findCore(world, x, y, z);
 		
 		if(pos == null)
 			return;
@@ -158,7 +158,7 @@ public class MachineStirling extends BlockDummyable implements ILookOverlay, ITo
 		
 		TileEntityStirling stirling = (TileEntityStirling) te;
 
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		text.add(stirling.heat + "TU/t");
 		text.add((stirling.hasCog ? stirling.powerBuffer : 0) + "HE/t");
 
@@ -186,7 +186,7 @@ public class MachineStirling extends BlockDummyable implements ILookOverlay, ITo
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		this.addStandardInfo(stack, player, list, ext);
+		addStandardInfo(stack, player, list, ext);
 	}
 
 	@Override

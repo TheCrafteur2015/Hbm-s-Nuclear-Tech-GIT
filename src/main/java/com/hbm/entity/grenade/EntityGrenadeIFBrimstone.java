@@ -29,26 +29,26 @@ public class EntityGrenadeIFBrimstone extends EntityGrenadeBouncyBase {
     public void onUpdate() {
     	super.onUpdate();
     	
-    	if(this.timer > (this.getMaxTimer() * 0.65)) {
+    	if(this.timer > (getMaxTimer() * 0.65)) {
     		
-    		if(!worldObj.isRemote) {
+    		if(!this.worldObj.isRemote) {
 	    		EntityBullet fragment;
 	
-	    		fragment = new EntityBullet(worldObj, (EntityPlayer) this.thrower, 3.0F, 35, 45, false, "tauDay");
-	    		fragment.setDamage(rand.nextInt(301) + 100);
+	    		fragment = new EntityBullet(this.worldObj, (EntityPlayer) this.thrower, 3.0F, 35, 45, false, "tauDay");
+	    		fragment.setDamage(this.rand.nextInt(301) + 100);
 	
-	    		fragment.motionX = rand.nextGaussian();
-	    		fragment.motionY = rand.nextGaussian();
-	    		fragment.motionZ = rand.nextGaussian();
+	    		fragment.motionX = this.rand.nextGaussian();
+	    		fragment.motionY = this.rand.nextGaussian();
+	    		fragment.motionZ = this.rand.nextGaussian();
 	    		fragment.shootingEntity = this.thrower;
 
-	    		fragment.posX = posX;
-	    		fragment.posY = posY;
-	    		fragment.posZ = posZ;
+	    		fragment.posX = this.posX;
+	    		fragment.posY = this.posY;
+	    		fragment.posZ = this.posZ;
 	
 	    		fragment.setIsCritical(true);
 	
-	    		worldObj.spawnEntityInWorld(fragment);
+	    		this.worldObj.spawnEntityInWorld(fragment);
     		}
     	}
     }
@@ -58,28 +58,28 @@ public class EntityGrenadeIFBrimstone extends EntityGrenadeBouncyBase {
     	
         if (!this.worldObj.isRemote)
         {
-            this.setDead();
+            setDead();
     		
-    		worldObj.newExplosion(this, posX, posY, posZ, 5, false, false);
+    		this.worldObj.newExplosion(this, this.posX, this.posY, this.posZ, 5, false, false);
     		
     		for(int i = 0; i < 100; i++) {
 	    		EntityBullet fragment;
 	
-	    		fragment = new EntityBullet(worldObj, (EntityPlayer) this.thrower, 3.0F, 35, 45, false, "tauDay");
-	    		fragment.setDamage(rand.nextInt(301) + 100);
+	    		fragment = new EntityBullet(this.worldObj, (EntityPlayer) this.thrower, 3.0F, 35, 45, false, "tauDay");
+	    		fragment.setDamage(this.rand.nextInt(301) + 100);
 	
-	    		fragment.motionX = rand.nextGaussian() * 0.25;
-	    		fragment.motionY = rand.nextGaussian() * 0.25;
-	    		fragment.motionZ = rand.nextGaussian() * 0.25;
+	    		fragment.motionX = this.rand.nextGaussian() * 0.25;
+	    		fragment.motionY = this.rand.nextGaussian() * 0.25;
+	    		fragment.motionZ = this.rand.nextGaussian() * 0.25;
 	    		fragment.shootingEntity = this.thrower;
 
-	    		fragment.posX = posX;
-	    		fragment.posY = posY;
-	    		fragment.posZ = posZ;
+	    		fragment.posX = this.posX;
+	    		fragment.posY = this.posY;
+	    		fragment.posZ = this.posZ;
 	
 	    		fragment.setIsCritical(true);
 	
-	    		worldObj.spawnEntityInWorld(fragment);
+	    		this.worldObj.spawnEntityInWorld(fragment);
     		}
         }
     }

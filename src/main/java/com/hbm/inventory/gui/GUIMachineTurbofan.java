@@ -20,7 +20,7 @@ public class GUIMachineTurbofan extends GuiInfoContainer {
 
 	public GUIMachineTurbofan(InventoryPlayer invPlayer, TileEntityMachineTurbofan tedf) {
 		super(new ContainerMachineTurbofan(invPlayer, tedf));
-		turbofan = tedf;
+		this.turbofan = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 203;
@@ -30,9 +30,9 @@ public class GUIMachineTurbofan extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		turbofan.tank.renderTankInfo(this, mouseX, mouseY, guiLeft + 35, guiTop + 17, 34, 52);
-		if(turbofan.showBlood) turbofan.blood.renderTankInfo(this, mouseX, mouseY, guiLeft + 98, guiTop + 17, 16, 16);
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 143, guiTop + 17, 16, 52, turbofan.power, turbofan.maxPower);
+		this.turbofan.tank.renderTankInfo(this, mouseX, mouseY, this.guiLeft + 35, this.guiTop + 17, 34, 52);
+		if(this.turbofan.showBlood) this.turbofan.blood.renderTankInfo(this, mouseX, mouseY, this.guiLeft + 98, this.guiTop + 17, 16, 16);
+		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 143, this.guiTop + 17, 16, 52, this.turbofan.power, TileEntityMachineTurbofan.maxPower);
 	}
 	
 	@Override
@@ -46,18 +46,18 @@ public class GUIMachineTurbofan extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float interp, int x, int y) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIMachineTurbofan.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		int i = (int)turbofan.getPowerScaled(52);
-		drawTexturedModalRect(guiLeft + 152 - 9, guiTop + 69 - i, 176 + 16, 52 - i, 16, i);
+		int i = (int)this.turbofan.getPowerScaled(52);
+		drawTexturedModalRect(this.guiLeft + 152 - 9, this.guiTop + 69 - i, 176 + 16, 52 - i, 16, i);
 		
-		if(turbofan.afterburner > 0) {
-			int a = Math.min(turbofan.afterburner, 6);
-			drawTexturedModalRect(guiLeft + 98, guiTop + 44, 176, (a - 1) * 16, 16, 16);
+		if(this.turbofan.afterburner > 0) {
+			int a = Math.min(this.turbofan.afterburner, 6);
+			drawTexturedModalRect(this.guiLeft + 98, this.guiTop + 44, 176, (a - 1) * 16, 16, 16);
 		}
 
-		if(turbofan.showBlood) GaugeUtil.renderGauge(Gauge.ROUND_SMALL, guiLeft + 97, guiTop + 16, this.zLevel, (double) turbofan.blood.getFill() / (double) turbofan.blood.getMaxFill());
-		turbofan.tank.renderTank(guiLeft + 35, guiTop + 69, this.zLevel, 34, 52);
+		if(this.turbofan.showBlood) GaugeUtil.renderGauge(Gauge.ROUND_SMALL, this.guiLeft + 97, this.guiTop + 16, this.zLevel, (double) this.turbofan.blood.getFill() / (double) this.turbofan.blood.getMaxFill());
+		this.turbofan.tank.renderTank(this.guiLeft + 35, this.guiTop + 69, this.zLevel, 34, 52);
 	}
 }

@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 public class ItemLeadBox extends Item implements IGUIProvider {
 
 	public ItemLeadBox() {
-		this.setMaxStackSize(1);
+		setMaxStackSize(1);
 	}
 	
 	@Override
@@ -55,16 +55,16 @@ public class ItemLeadBox extends Item implements IGUIProvider {
 		public InventoryLeadBox(EntityPlayer player, ItemStack box) {
 			this.player = player;
 			this.box = box;
-			slots = new ItemStack[this.getSizeInventory()];
+			this.slots = new ItemStack[getSizeInventory()];
 			
 			if(!box.hasTagCompound())
 				box.setTagCompound(new NBTTagCompound());
 			
-			ItemStack[] fromNBT = ItemStackUtil.readStacksFromNBT(box, slots.length);
+			ItemStack[] fromNBT = ItemStackUtil.readStacksFromNBT(box, this.slots.length);
 			
 			if(fromNBT != null) {
-				for(int i = 0; i < slots.length; i++) {
-					slots[i] = fromNBT[i];
+				for(int i = 0; i < this.slots.length; i++) {
+					this.slots[i] = fromNBT[i];
 				}
 			}
 		}
@@ -76,7 +76,7 @@ public class ItemLeadBox extends Item implements IGUIProvider {
 
 		@Override
 		public ItemStack getStackInSlot(int slot) {
-			return slots[slot];
+			return this.slots[slot];
 		}
 
 		@Override
@@ -104,10 +104,10 @@ public class ItemLeadBox extends Item implements IGUIProvider {
 		public void setInventorySlotContents(int slot, ItemStack stack) {
 			
 			if(stack != null) {
-				stack.stackSize = Math.min(stack.stackSize, this.getInventoryStackLimit());
+				stack.stackSize = Math.min(stack.stackSize, getInventoryStackLimit());
 			}
 			
-			slots[slot] = stack;
+			this.slots[slot] = stack;
 			markDirty();
 		}
 
@@ -118,7 +118,7 @@ public class ItemLeadBox extends Item implements IGUIProvider {
 
 		@Override
 		public boolean hasCustomInventoryName() {
-			return box.hasDisplayName();
+			return this.box.hasDisplayName();
 		}
 
 		@Override
@@ -131,11 +131,11 @@ public class ItemLeadBox extends Item implements IGUIProvider {
 			
 			for(int i = 0; i < getSizeInventory(); ++i) {
 				if(getStackInSlot(i) != null && getStackInSlot(i).stackSize == 0) {
-					slots[i] = null;
+					this.slots[i] = null;
 				}
 			}
 			
-			ItemStackUtil.addStacksToNBT(box, slots);
+			ItemStackUtil.addStacksToNBT(this.box, this.slots);
 		}
 
 		@Override
@@ -145,12 +145,12 @@ public class ItemLeadBox extends Item implements IGUIProvider {
 
 		@Override
 		public void openInventory() {
-			player.worldObj.playSoundEffect(player.posX, player.posY, player.posZ, "hbm:block.crateOpen", 1.0F, 0.8F);
+			this.player.worldObj.playSoundEffect(this.player.posX, this.player.posY, this.player.posZ, "hbm:block.crateOpen", 1.0F, 0.8F);
 		}
 
 		@Override
 		public void closeInventory() {
-			player.worldObj.playSoundEffect(player.posX, player.posY, player.posZ, "hbm:block.crateClose", 1.0F, 0.8F);
+			this.player.worldObj.playSoundEffect(this.player.posX, this.player.posY, this.player.posZ, "hbm:block.crateClose", 1.0F, 0.8F);
 		}
 
 		@Override

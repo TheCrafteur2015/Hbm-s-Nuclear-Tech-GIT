@@ -23,82 +23,82 @@ public class TileEntitySolarBoiler extends TileEntityLoadedBase implements IFlui
 
 	private FluidTank water;
 	private FluidTank steam;
-	public List<IFluidAcceptor> list = new ArrayList();
+	public List<IFluidAcceptor> list = new ArrayList<>();
 	public int heat;
 
-	public HashSet<ChunkCoordinates> primary = new HashSet();
-	public HashSet<ChunkCoordinates> secondary = new HashSet();
+	public HashSet<ChunkCoordinates> primary = new HashSet<>();
+	public HashSet<ChunkCoordinates> secondary = new HashSet<>();
 	
 	public TileEntitySolarBoiler() {
-		water = new FluidTank(Fluids.WATER, 16000, 0);
-		steam = new FluidTank(Fluids.STEAM, 1600000, 1);
+		this.water = new FluidTank(Fluids.WATER, 16000, 0);
+		this.steam = new FluidTank(Fluids.STEAM, 1600000, 1);
 	}
 
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			//if(worldObj.getTotalWorldTime() % 5 == 0) {
 			fillFluidInit(Fluids.STEAM);
 			//}
 
-			this.trySubscribe(water.getTankType(), worldObj, xCoord, yCoord + 3, zCoord, Library.POS_Y);
-			this.trySubscribe(water.getTankType(), worldObj, xCoord, yCoord - 1, zCoord, Library.NEG_Y);
+			trySubscribe(this.water.getTankType(), this.worldObj, this.xCoord, this.yCoord + 3, this.zCoord, Library.POS_Y);
+			trySubscribe(this.water.getTankType(), this.worldObj, this.xCoord, this.yCoord - 1, this.zCoord, Library.NEG_Y);
 			
-			int process = heat / 50;
-			process = Math.min(process, water.getFill());
-			process = Math.min(process, (steam.getMaxFill() - steam.getFill()) / 100);
+			int process = this.heat / 50;
+			process = Math.min(process, this.water.getFill());
+			process = Math.min(process, (this.steam.getMaxFill() - this.steam.getFill()) / 100);
 			
 			if(process < 0)
 				process = 0;
 
-			water.setFill(water.getFill() - process);
-			steam.setFill(steam.getFill() + process * 100);
+			this.water.setFill(this.water.getFill() - process);
+			this.steam.setFill(this.steam.getFill() + process * 100);
 
-			this.sendFluid(steam, worldObj, xCoord, yCoord + 3, zCoord, Library.POS_Y);
-			this.sendFluid(steam, worldObj, xCoord, yCoord - 1, zCoord, Library.NEG_Y);
+			this.sendFluid(this.steam, this.worldObj, this.xCoord, this.yCoord + 3, this.zCoord, Library.POS_Y);
+			this.sendFluid(this.steam, this.worldObj, this.xCoord, this.yCoord - 1, this.zCoord, Library.NEG_Y);
 			
-			heat = 0;
+			this.heat = 0;
 		} else {
 			
 			//a delayed queue of mirror positions because we can't expect the boiler to always tick first
-			secondary.clear();
-			secondary.addAll(primary);
-			primary.clear();
+			this.secondary.clear();
+			this.secondary.addAll(this.primary);
+			this.primary.clear();
 		}
 	}
 
 	@Override
 	public void setFillForSync(int fill, int index) {
 		if(index == 0)
-			water.setFill(fill);
+			this.water.setFill(fill);
 		if(index == 1)
-			steam.setFill(fill);
+			this.steam.setFill(fill);
 	}
 
 	@Override
 	public void setFluidFill(int fill, FluidType type) {
 		if(type == Fluids.WATER)
-			water.setFill(fill);
+			this.water.setFill(fill);
 		if(type == Fluids.STEAM)
-			steam.setFill(fill);
+			this.steam.setFill(fill);
 	}
 
 	@Override
 	public void setTypeForSync(FluidType type, int index) {
 		if(index == 0)
-			water.setTankType(type);
+			this.water.setTankType(type);
 		if(index == 1)
-			steam.setTankType(type);
+			this.steam.setTankType(type);
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
 		if(type == Fluids.WATER)
-			return water.getFill();
+			return this.water.getFill();
 		if(type == Fluids.STEAM)
-			return steam.getFill();
+			return this.steam.getFill();
 		
 		return 0;
 	}
@@ -111,32 +111,32 @@ public class TileEntitySolarBoiler extends TileEntityLoadedBase implements IFlui
 
 	@Override
 	public void fillFluid(int x, int y, int z, boolean newTact, FluidType type) {
-		Library.transmitFluid(x, y, z, newTact, this, worldObj, type);
+		Library.transmitFluid(x, y, z, newTact, this, this.worldObj, type);
 	}
 	
 	@Override
 	public boolean getTact() {
-		return worldObj.getTotalWorldTime() % 2 == 0;
+		return this.worldObj.getTotalWorldTime() % 2 == 0;
 	}
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
 		if(type == Fluids.WATER)
-			return water.getMaxFill();
+			return this.water.getMaxFill();
 		if(type == Fluids.STEAM)
-			return steam.getMaxFill();
+			return this.steam.getMaxFill();
 		
 		return 0;
 	}
 	
 	@Override
 	public List<IFluidAcceptor> getFluidList(FluidType type) {
-		return list;
+		return this.list;
 	}
 	
 	@Override
 	public void clearFluidList(FluidType type) {
-		list.clear();
+		this.list.clear();
 	}
 
 	@Override
@@ -160,18 +160,18 @@ public class TileEntitySolarBoiler extends TileEntityLoadedBase implements IFlui
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 1,
-					yCoord,
-					zCoord - 1,
-					xCoord + 2,
-					yCoord + 3,
-					zCoord + 2
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 1,
+					this.yCoord,
+					this.zCoord - 1,
+					this.xCoord + 2,
+					this.yCoord + 3,
+					this.zCoord + 2
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override
@@ -182,16 +182,16 @@ public class TileEntitySolarBoiler extends TileEntityLoadedBase implements IFlui
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return new FluidTank[] { steam };
+		return new FluidTank[] { this.steam };
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] { water };
+		return new FluidTank[] { this.water };
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return new FluidTank[] { water, steam };
+		return new FluidTank[] { this.water, this.steam };
 	}
 }

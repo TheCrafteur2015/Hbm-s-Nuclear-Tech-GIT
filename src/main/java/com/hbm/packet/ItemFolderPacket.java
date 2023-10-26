@@ -37,14 +37,14 @@ public class ItemFolderPacket implements IMessage {
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		item = buf.readInt();
-		meta = buf.readInt();
+		this.item = buf.readInt();
+		this.meta = buf.readInt();
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeInt(item);
-		buf.writeInt(meta);
+		buf.writeInt(this.item);
+		buf.writeInt(this.meta);
 	}
 
 	public static class Handler implements IMessageHandler<ItemFolderPacket, IMessage> {
@@ -78,15 +78,7 @@ public class ItemFolderPacket implements IMessage {
 						tryMakeItem(p, stack, "plateIron", "dye");
 						return null;
 					}
-					if(stack.getItem() instanceof ItemAssemblyTemplate) {
-						tryMakeItem(p, stack, Items.paper, "dye");
-						return null;
-					}
-					if(stack.getItem() instanceof ItemChemistryTemplate) {
-						tryMakeItem(p, stack, Items.paper, "dye");
-						return null;
-					}
-					if(stack.getItem() instanceof ItemCrucibleTemplate) {
+					if((stack.getItem() instanceof ItemAssemblyTemplate) || (stack.getItem() instanceof ItemChemistryTemplate) || (stack.getItem() instanceof ItemCrucibleTemplate)) {
 						tryMakeItem(p, stack, Items.paper, "dye");
 						return null;
 					}

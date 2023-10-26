@@ -53,6 +53,7 @@ public class MachineDiFurnaceExtension extends BlockContainer implements IProxyC
 		return false;
 	}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
 		return side == 0 ? this.iconBottom : side == 1 ? this.iconTop : this.blockIcon;
@@ -62,7 +63,7 @@ public class MachineDiFurnaceExtension extends BlockContainer implements IProxyC
 
 	@Override
 	public int getRenderType() {
-		return renderID;
+		return MachineDiFurnaceExtension.renderID;
 	}
 
 	@Override

@@ -184,7 +184,7 @@ public class RenderSmallNukeMK4 extends Render {
         GL11.glDisable(GL11.GL_ALPHA_TEST);
 		GL11.glDepthMask(false);
     	
-    	bindTexture(cloudlet);
+    	bindTexture(RenderSmallNukeMK4.cloudlet);
 
 		Tessellator tess = Tessellator.instance;
 		tess.startDrawingQuads();
@@ -304,7 +304,7 @@ public class RenderSmallNukeMK4 extends Render {
 		
 		GL11.glShadeModel(GL11.GL_SMOOTH);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
-		mush.renderPart("Ball");
+		RenderSmallNukeMK4.mush.renderPart("Ball");
         GL11.glEnable(GL11.GL_ALPHA_TEST);
 		GL11.glShadeModel(GL11.GL_FLAT);
 		
@@ -325,7 +325,7 @@ public class RenderSmallNukeMK4 extends Render {
 		
 		GL11.glShadeModel(GL11.GL_SMOOTH);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
-		mush.renderPart("Stem");
+		RenderSmallNukeMK4.mush.renderPart("Stem");
         GL11.glEnable(GL11.GL_ALPHA_TEST);
 		GL11.glShadeModel(GL11.GL_FLAT);
 		

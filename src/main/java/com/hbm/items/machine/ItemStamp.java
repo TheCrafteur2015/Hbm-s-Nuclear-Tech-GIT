@@ -14,16 +14,16 @@ public class ItemStamp extends Item {
 	public static final HashMap<StampType, List<ItemStack>> stamps = new HashMap();
 	
 	public ItemStamp(int dura, StampType type) {
-		this.setMaxDamage(dura);
+		setMaxDamage(dura);
 		this.type = type;
 		
-		List<ItemStack> list = stamps.get(type);
+		List<ItemStack> list = ItemStamp.stamps.get(type);
 		
 		if(list == null)
-			list = new ArrayList();
+			list = new ArrayList<>();
 		
 		list.add(new ItemStack(this));
-		stamps.put(type, list);
+		ItemStamp.stamps.put(type, list);
 	}
 	
 	@Override

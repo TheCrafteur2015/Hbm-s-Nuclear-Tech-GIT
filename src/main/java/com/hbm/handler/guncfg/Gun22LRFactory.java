@@ -4,8 +4,8 @@ import com.hbm.handler.BulletConfiguration;
 import com.hbm.handler.CasingEjector;
 import com.hbm.handler.GunConfiguration;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
-import com.hbm.items.ModItems;
 import com.hbm.items.ItemAmmoEnums.Ammo22LR;
+import com.hbm.items.ModItems;
 import com.hbm.lib.HbmCollection;
 import com.hbm.lib.HbmCollection.EnumGunManufacturer;
 import com.hbm.particle.SpentCasing;
@@ -47,14 +47,14 @@ public class Gun22LRFactory {
 		
 		config.config = HbmCollection.lr22;
 		
-		config.ejector = EJECTOR_22LR;
+		config.ejector = Gun22LRFactory.EJECTOR_22LR;
 		
 		return config;
 	}
 	
 	public static GunConfiguration getSaturniteConfig() {
 		
-		GunConfiguration config = getUziConfig();
+		GunConfiguration config = Gun22LRFactory.getUziConfig();
 		
 		config.durability = 4500;
 		
@@ -72,11 +72,11 @@ public class Gun22LRFactory {
 		BulletConfiguration bullet = BulletConfigFactory.standardPistolConfig();
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_22lr.stackFromEnum(Ammo22LR.STOCK));
-		bullet.spread *= inaccuracy;
+		bullet.spread *= Gun22LRFactory.inaccuracy;
 		bullet.dmgMin = 6;
 		bullet.dmgMax = 8;
 		
-		bullet.spentCasing = CASING22LR.clone().register("22LRStock");
+		bullet.spentCasing = Gun22LRFactory.CASING22LR.clone().register("22LRStock");
 		
 		return bullet;
 	}
@@ -86,13 +86,13 @@ public class Gun22LRFactory {
 		BulletConfiguration bullet = BulletConfigFactory.standardPistolConfig();
 		
 		bullet.ammo = new ComparableStack(ModItems.ammo_22lr.stackFromEnum(Ammo22LR.AP));
-		bullet.spread *= inaccuracy;
+		bullet.spread *= Gun22LRFactory.inaccuracy;
 		bullet.dmgMin = 12;
 		bullet.dmgMax = 16;
 		bullet.leadChance = 10;
 		bullet.wear = 15;
 		
-		bullet.spentCasing = CASING22LR.clone().register("22LRAP");
+		bullet.spentCasing = Gun22LRFactory.CASING22LR.clone().register("22LRAP");
 		
 		return bullet;
 	}

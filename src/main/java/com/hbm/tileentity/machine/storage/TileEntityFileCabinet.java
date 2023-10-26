@@ -40,67 +40,67 @@ public class TileEntityFileCabinet extends TileEntityCrateBase implements IGUIPr
 	
 	@Override
 	public void openInventory() {
-		if(!worldObj.isRemote) this.playersUsing++;
+		if(!this.worldObj.isRemote) this.playersUsing++;
 	}
 
 	@Override
 	public void closeInventory() {
-		if(!worldObj.isRemote) this.playersUsing--;
+		if(!this.worldObj.isRemote) this.playersUsing--;
 	}
 	
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			if(this.playersUsing > 0) {
-				if(timer < 10) {
-					timer++;
+				if(this.timer < 10) {
+					this.timer++;
 				}
 			} else
-				timer = 0;
+				this.timer = 0;
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setInteger("timer", timer);
+			data.setInteger("timer", this.timer);
 			data.setInteger("playersUsing", this.playersUsing);
-			PacketDispatcher.wrapper.sendToAllAround(new NBTPacket(data, xCoord, yCoord, zCoord), new TargetPoint(this.worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 25));
+			PacketDispatcher.wrapper.sendToAllAround(new NBTPacket(data, this.xCoord, this.yCoord, this.zCoord), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 25));
 		} else {
-			this.prevLowerExtent = lowerExtent;
-			this.prevUpperExtent = upperExtent;
+			this.prevLowerExtent = this.lowerExtent;
+			this.prevUpperExtent = this.upperExtent;
 		}
 		
-		float openSpeed = playersUsing > 0 ? 1F / 16F : 1F / 25F;
+		float openSpeed = this.playersUsing > 0 ? 1F / 16F : 1F / 25F;
 		float maxExtent = 0.8F;
 		
 		if(this.playersUsing > 0) {
-			if(lowerExtent == 0F && upperExtent == 0F)
-				this.worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "hbm:block.crateOpen", 0.8F, 1.0F);
+			if(this.lowerExtent == 0F && this.upperExtent == 0F)
+				this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, "hbm:block.crateOpen", 0.8F, 1.0F);
 			else {
-				if(upperExtent + openSpeed >= maxExtent && lowerExtent < maxExtent)
-					this.worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "hbm:block.crateOpen", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.7F);
+				if(this.upperExtent + openSpeed >= maxExtent && this.lowerExtent < maxExtent)
+					this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, "hbm:block.crateOpen", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.7F);
 				
-				if(lowerExtent + openSpeed >= maxExtent && lowerExtent < maxExtent)
-					this.worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "hbm:block.crateOpen", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.7F);
+				if(this.lowerExtent + openSpeed >= maxExtent && this.lowerExtent < maxExtent)
+					this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, "hbm:block.crateOpen", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.7F);
 			}
 			
 			this.lowerExtent += openSpeed;
 			
-			if(timer >= 10)
+			if(this.timer >= 10)
 				this.upperExtent += openSpeed;
 			
-		} else if(lowerExtent > 0) {
-			if(upperExtent - openSpeed < maxExtent / 2 && upperExtent >= maxExtent / 2 && upperExtent != lowerExtent)
-				this.worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "hbm:block.crateClose", 0.8F, 1.0F);
+		} else if(this.lowerExtent > 0) {
+			if(this.upperExtent - openSpeed < maxExtent / 2 && this.upperExtent >= maxExtent / 2 && this.upperExtent != this.lowerExtent)
+				this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, "hbm:block.crateClose", 0.8F, 1.0F);
 			
-			if(lowerExtent - openSpeed < maxExtent / 2 && lowerExtent >= maxExtent / 2)
-				this.worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "hbm:block.crateClose", 0.8F, 1.0F);
+			if(this.lowerExtent - openSpeed < maxExtent / 2 && this.lowerExtent >= maxExtent / 2)
+				this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, "hbm:block.crateClose", 0.8F, 1.0F);
 			
 			this.upperExtent -= openSpeed;
 			this.lowerExtent -= openSpeed;
 		}
 		
-		this.lowerExtent = MathHelper.clamp_float(lowerExtent, 0F, maxExtent);
-		this.upperExtent = MathHelper.clamp_float(upperExtent, 0F, maxExtent);
+		this.lowerExtent = MathHelper.clamp_float(this.lowerExtent, 0F, maxExtent);
+		this.upperExtent = MathHelper.clamp_float(this.upperExtent, 0F, maxExtent);
 	}
 	
 	@Override
@@ -141,18 +141,18 @@ public class TileEntityFileCabinet extends TileEntityCrateBase implements IGUIPr
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 1,
-					yCoord,
-					zCoord - 1,
-					xCoord + 1,
-					yCoord + 1,
-					zCoord + 1
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 1,
+					this.yCoord,
+					this.zCoord - 1,
+					this.xCoord + 1,
+					this.yCoord + 1,
+					this.zCoord + 1
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override

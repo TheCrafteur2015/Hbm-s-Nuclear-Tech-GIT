@@ -40,17 +40,17 @@ public class EntityPinkCloudFX extends EntityModFX {
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
 
-		if (maxAge < 900) {
-			maxAge = rand.nextInt(301) + 900;
+		if (this.maxAge < 900) {
+			this.maxAge = this.rand.nextInt(301) + 900;
 		}
 
-		if (!worldObj.isRemote && rand.nextInt(50) == 0)
-			ExplosionChaos.pc(worldObj, (int) posX, (int) posY, (int) posZ, 2);
+		if (!this.worldObj.isRemote && this.rand.nextInt(50) == 0)
+			ExplosionChaos.pc(this.worldObj, (int) this.posX, (int) this.posY, (int) this.posZ, 2);
 
 		this.particleAge++;
 
-		if (this.particleAge >= maxAge) {
-			this.setDead();
+		if (this.particleAge >= this.maxAge) {
+			setDead();
 		}
 
 		this.motionX *= 0.7599999785423279D;
@@ -62,7 +62,7 @@ public class EntityPinkCloudFX extends EntityModFX {
 			this.motionZ *= 0.699999988079071D;
 		}
 		
-		if(worldObj.isRaining() && worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ))) {
+		if(this.worldObj.isRaining() && this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ))) {
 			this.motionY -= 0.01;
 		}
 		
@@ -74,16 +74,16 @@ public class EntityPinkCloudFX extends EntityModFX {
 			this.posY += this.motionY/subdivisions;
 			this.posZ += this.motionZ/subdivisions;
 			
-			if(worldObj.getBlock((int) posX, (int) posY, (int) posZ) == ModBlocks.radiorec) {
-				this.setDead();
-				int meta = worldObj.getBlockMetadata((int) posX, (int) posY, (int) posZ);
-				worldObj.setBlock((int) posX, (int) posY, (int) posZ, ModBlocks.broadcaster_pc, meta, 2);
+			if(this.worldObj.getBlock((int) this.posX, (int) this.posY, (int) this.posZ) == ModBlocks.radiorec) {
+				setDead();
+				int meta = this.worldObj.getBlockMetadata((int) this.posX, (int) this.posY, (int) this.posZ);
+				this.worldObj.setBlock((int) this.posX, (int) this.posY, (int) this.posZ, ModBlocks.broadcaster_pc, meta, 2);
 			}
 			
-			if (worldObj.getBlock((int) posX, (int) posY, (int) posZ).isNormalCube()) {
+			if (this.worldObj.getBlock((int) this.posX, (int) this.posY, (int) this.posZ).isNormalCube()) {
 	
-				if(rand.nextInt(5) != 0)
-					this.setDead();
+				if(this.rand.nextInt(5) != 0)
+					setDead();
 				
 				this.posX -= this.motionX/subdivisions;
 				this.posY -= this.motionY/subdivisions;

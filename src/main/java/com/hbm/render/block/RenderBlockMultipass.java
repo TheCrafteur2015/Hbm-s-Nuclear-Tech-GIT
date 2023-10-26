@@ -70,9 +70,9 @@ public class RenderBlockMultipass implements ISimpleBlockRenderingHandler {
 		/** terrible hack to make this shit work */
 		if(block == ModBlocks.ore_random) {
 
-			this.currentPass = 1;
+			RenderBlockMultipass.currentPass = 1;
 			renderer.setOverrideBlockTexture(block.getIcon(0, metadata));
-			this.currentPass = 0;
+			RenderBlockMultipass.currentPass = 0;
 			ComparableStack stack = BlockMotherOfAllOres.itemMap.get(metadata);
 			int color = ColorUtil.getAverageColorFromStack(stack != null ? stack.toStack() : new ItemStack(ModItems.nothing));
 			color = ColorUtil.amplifyColor(color);
@@ -82,7 +82,8 @@ public class RenderBlockMultipass implements ISimpleBlockRenderingHandler {
 			int g = col.getGreen();
 			int b = col.getBlue();
 			
-			float[] hsb = new Color(color).RGBtoHSB(r, g, b, new float[3]);
+			new Color(color);
+			float[] hsb = Color.RGBtoHSB(r, g, b, new float[3]);
 			
 			if(hsb[1] > 0F && hsb[1] < 0.75F)
 				hsb[1] = 0.75F;
@@ -142,11 +143,11 @@ public class RenderBlockMultipass implements ISimpleBlockRenderingHandler {
 		int passes = multi.getPasses();
 		
 		for(int i = 0; i < passes; i++) {
-			currentPass = i;
+			RenderBlockMultipass.currentPass = i;
 			renderer.renderStandardBlock(block, x, y, z);
 		}
 		
-		currentPass = 0;
+		RenderBlockMultipass.currentPass = 0;
 
 		return true;
 	}

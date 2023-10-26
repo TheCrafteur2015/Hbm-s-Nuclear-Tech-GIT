@@ -16,12 +16,12 @@ import net.minecraft.world.World;
 
 public class ItemAmmoContainer extends Item {
 	
-	public static final List<Integer> configBlacklist = new ArrayList();
+	public static final List<Integer> configBlacklist = new ArrayList<>();
 
 	public ItemAmmoContainer() {
-		this.setMaxDamage(1);
+		setMaxDamage(1);
 		
-		configBlacklist.add(BulletConfigSyncingUtil.SCHRABIDIUM_REVOLVER);
+		ItemAmmoContainer.configBlacklist.add(BulletConfigSyncingUtil.SCHRABIDIUM_REVOLVER);
 	}
 	
 	@Override
@@ -30,7 +30,7 @@ public class ItemAmmoContainer extends Item {
 		for(ItemStack slot : player.inventory.mainInventory) {
 			
 			if(slot == null || !(slot.getItem() instanceof ItemGunBase)) continue;
-			List<GunConfiguration> cfgs = new ArrayList();
+			List<GunConfiguration> cfgs = new ArrayList<>();
 			ItemGunBase gun = (ItemGunBase) slot.getItem();
 			if(gun.mainConfig != null) cfgs.add(gun.mainConfig);
 			if(gun.altConfig != null) cfgs.add(gun.altConfig);
@@ -38,15 +38,14 @@ public class ItemAmmoContainer extends Item {
 			for(GunConfiguration cfg : cfgs) {
 				if(cfg.config.isEmpty()) continue;
 				Integer first = cfg.config.get(0);
-				if(configBlacklist.contains(first)) continue;
+				if(ItemAmmoContainer.configBlacklist.contains(first)) continue;
 				BulletConfiguration bullet = BulletConfigSyncingUtil.pullConfig(first);
-				if(bullet == null) continue;
-				if(bullet.ammo == null) continue;
+				if((bullet == null) || (bullet.ammo == null)) continue;
 				
 				ItemStack ammo = bullet.ammo.toStack();
 				//for belt-fed guns: 64 is main config, 1 if alt config
 				//for reloaded guns: mag capacity divided by reload amount (equals one stack)
-				ammo.stackSize = cfg.reloadType == cfg.RELOAD_NONE ? cfg == gun.mainConfig ? 64 : 1 : (int) Math.ceil((double) cfg.ammoCap / (double) bullet.ammoCount);
+				ammo.stackSize = cfg.reloadType == GunConfiguration.RELOAD_NONE ? cfg == gun.mainConfig ? 64 : 1 : (int) Math.ceil((double) cfg.ammoCap / (double) bullet.ammoCount);
 				player.inventory.addItemStackToInventory(ammo);
 			}
 		}
@@ -58,6 +57,7 @@ public class ItemAmmoContainer extends Item {
 		return stack;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		if(this == ModItems.ammo_container) {

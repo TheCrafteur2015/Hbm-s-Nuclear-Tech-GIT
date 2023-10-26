@@ -26,9 +26,9 @@ public class ArcWelderHandler extends NEIUniversalHandler {
 	@Override
 	public void loadTransferRects() {
 		super.loadTransferRects();
-		transferRectsGui.add(new RecipeTransferRect(new Rectangle(67, 26, 32, 14), "ntmArcWelder"));
-		guiGui.add(GUIMachineArcWelder.class);
-		RecipeTransferRectHandler.registerRectsToGuis(guiGui, transferRectsGui);
+		this.transferRectsGui.add(new RecipeTransferRect(new Rectangle(67, 26, 32, 14), "ntmArcWelder"));
+		this.guiGui.add(GUIMachineArcWelder.class);
+		RecipeTransferRectHandler.registerRectsToGuis(this.guiGui, this.transferRectsGui);
 	}
 
 	@Override

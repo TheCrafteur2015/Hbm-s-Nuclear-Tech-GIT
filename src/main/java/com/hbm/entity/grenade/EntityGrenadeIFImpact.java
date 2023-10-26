@@ -1,6 +1,7 @@
 package com.hbm.entity.grenade;
 
 import com.hbm.explosion.ExplosionLarge;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
 
@@ -26,10 +27,10 @@ public class EntityGrenadeIFImpact extends EntityGrenadeBase {
     	
         if (!this.worldObj.isRemote)
         {
-            this.setDead();
+            setDead();
     		
-    		ExplosionLarge.jolt(worldObj, posX, posY, posZ, 5, 200, 0.25);
-    		ExplosionLarge.explode(worldObj, posX, posY, posZ, 5, true, true, true);
+    		ExplosionLarge.jolt(this.worldObj, this.posX, this.posY, this.posZ, 5, 200, 0.25);
+    		ExplosionLarge.explode(this.worldObj, this.posX, this.posY, this.posZ, 5, true, true, true);
         }
     }
 }

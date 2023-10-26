@@ -22,23 +22,23 @@ public class TileEntityMachineBAT9000 extends TileEntityBarrel {
 	@Override
 	public void checkFluidInteraction() {
 		
-		if(tank.getTankType().isAntimatter()) {
-			worldObj.func_147480_a(xCoord, yCoord, zCoord, false);
-			worldObj.newExplosion(null, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, 10, true, true);
+		if(this.tank.getTankType().isAntimatter()) {
+			this.worldObj.func_147480_a(this.xCoord, this.yCoord, this.zCoord, false);
+			this.worldObj.newExplosion(null, this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, 10, true, true);
 		}
 	}
 	
 	@Override
 	protected DirPos[] getConPos() {
 		return new DirPos[] {
-				new DirPos(xCoord + 1, yCoord, zCoord + 3, Library.POS_Z),
-				new DirPos(xCoord - 1, yCoord, zCoord + 3, Library.POS_Z),
-				new DirPos(xCoord + 1, yCoord, zCoord - 3, Library.NEG_Z),
-				new DirPos(xCoord - 1, yCoord, zCoord - 3, Library.NEG_Z),
-				new DirPos(xCoord + 3, yCoord, zCoord + 1, Library.POS_X),
-				new DirPos(xCoord - 3, yCoord, zCoord + 1, Library.NEG_X),
-				new DirPos(xCoord + 3, yCoord, zCoord - 1, Library.POS_X),
-				new DirPos(xCoord - 3, yCoord, zCoord - 1, Library.NEG_X)
+				new DirPos(this.xCoord + 1, this.yCoord, this.zCoord + 3, Library.POS_Z),
+				new DirPos(this.xCoord - 1, this.yCoord, this.zCoord + 3, Library.POS_Z),
+				new DirPos(this.xCoord + 1, this.yCoord, this.zCoord - 3, Library.NEG_Z),
+				new DirPos(this.xCoord - 1, this.yCoord, this.zCoord - 3, Library.NEG_Z),
+				new DirPos(this.xCoord + 3, this.yCoord, this.zCoord + 1, Library.POS_X),
+				new DirPos(this.xCoord - 3, this.yCoord, this.zCoord + 1, Library.NEG_X),
+				new DirPos(this.xCoord + 3, this.yCoord, this.zCoord - 1, Library.POS_X),
+				new DirPos(this.xCoord - 3, this.yCoord, this.zCoord - 1, Library.NEG_X)
 		};
 	}
 
@@ -59,18 +59,18 @@ public class TileEntityMachineBAT9000 extends TileEntityBarrel {
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 2,
-					yCoord,
-					zCoord - 2,
-					xCoord + 3,
-					yCoord + 5,
-					zCoord + 3
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 2,
+					this.yCoord,
+					this.zCoord - 2,
+					this.xCoord + 3,
+					this.yCoord + 5,
+					this.zCoord + 3
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override

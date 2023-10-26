@@ -37,7 +37,7 @@ public class AnvilSmithingRecipe {
 		if(doesStackMatch(left, this.left) && doesStackMatch(right, this.right))
 			return 0;
 		
-		if(shapeless) {
+		if(this.shapeless) {
 			return doesStackMatch(right, this.left) && doesStackMatch(left, this.right) ? 1 : -1;
 		}
 		
@@ -49,15 +49,15 @@ public class AnvilSmithingRecipe {
 	}
 	
 	public List<ItemStack> getLeft() {
-		return left.extractForNEI();
+		return this.left.extractForNEI();
 	}
 	
 	public List<ItemStack> getRight() {
-		return right.extractForNEI();
+		return this.right.extractForNEI();
 	}
 	
 	public ItemStack getSimpleOutput() {
-		return output.copy();
+		return this.output.copy();
 	}
 	
 	public ItemStack getOutput(ItemStack left, ItemStack right) {
@@ -67,9 +67,9 @@ public class AnvilSmithingRecipe {
 	public int amountConsumed(int index, boolean mirrored) {
 		
 		if(index == 0)
-			return mirrored ? right.stacksize : left.stacksize;
+			return mirrored ? this.right.stacksize : this.left.stacksize;
 		if(index == 1)
-			return mirrored ? left.stacksize : right.stacksize;
+			return mirrored ? this.left.stacksize : this.right.stacksize;
 		
 		return 0;
 	}

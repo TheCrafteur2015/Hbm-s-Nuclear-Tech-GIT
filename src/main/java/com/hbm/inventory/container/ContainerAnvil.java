@@ -23,9 +23,9 @@ public class ContainerAnvil extends Container {
 	public ContainerAnvil(InventoryPlayer inventory, int tier) {
 		this.tier = tier;
 		
-		this.addSlotToContainer(new SmithingSlot(input, 0, 17, 27));
-		this.addSlotToContainer(new SmithingSlot(input, 1, 53, 27));
-		this.addSlotToContainer(new SlotCraftingOutput(inventory.player, output, 0, 89, 27) {
+		addSlotToContainer(new SmithingSlot(this.input, 0, 17, 27));
+		addSlotToContainer(new SmithingSlot(this.input, 1, 53, 27));
+		addSlotToContainer(new SlotCraftingOutput(inventory.player, this.output, 0, 89, 27) {
 			
 			@Override
 			public void onPickupFromSlot(EntityPlayer player, ItemStack stack) {
@@ -55,15 +55,15 @@ public class ContainerAnvil extends Container {
 		
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 56));
+				addSlotToContainer(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 56));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++) {
-			this.addSlotToContainer(new Slot(inventory, i, 8 + i * 18, 142 + 56));
+			addSlotToContainer(new Slot(inventory, i, 8 + i * 18, 142 + 56));
 		}
 		
-		this.onCraftMatrixChanged(this.input);
+		onCraftMatrixChanged(this.input);
 	}
 	
 	@Override
@@ -82,20 +82,20 @@ public class ContainerAnvil extends Container {
 			
 			if(par2 == 2) {
 				
-				if(!this.mergeItemStack(var5, 3, this.inventorySlots.size(), true)) {
+				if(!mergeItemStack(var5, 3, this.inventorySlots.size(), true)) {
 					return null;
 				}
 				var4.onSlotChange(var5, var3);
 				
 			} else if(par2 <= 1) {
-				if(!this.mergeItemStack(var5, 3, this.inventorySlots.size(), true)) {
+				if(!mergeItemStack(var5, 3, this.inventorySlots.size(), true)) {
 					return null;
 				} else {
 					var4.onPickupFromSlot(p_82846_1_, var5);
 				}
 			} else {
 				
-				if(!this.mergeItemStack(var5, 0, 2, false))
+				if(!mergeItemStack(var5, 0, 2, false))
 					return null;
 			}
 			
@@ -132,9 +132,10 @@ public class ContainerAnvil extends Container {
 			super(inventory, index, x, y);
 		}
 		
+		@Override
 		public void onSlotChanged() {
 			super.onSlotChanged();
-			ContainerAnvil.this.updateSmithing();
+			updateSmithing();
 		}
 		
 		@Override
@@ -142,9 +143,10 @@ public class ContainerAnvil extends Container {
 			super.putStack(stack);
 		}
 		
+		@Override
 		public void onPickupFromSlot(EntityPlayer player, ItemStack stack) {
 			super.onPickupFromSlot(player, stack);
-			ContainerAnvil.this.updateSmithing();
+			updateSmithing();
 		}
 	}
 	

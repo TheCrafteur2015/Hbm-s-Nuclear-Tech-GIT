@@ -21,7 +21,7 @@ public class GUIMachineFluidTank extends GuiInfoContainer {
 
 	public GUIMachineFluidTank(InventoryPlayer invPlayer, TileEntityMachineFluidTank tedf) {
 		super(new ContainerMachineFluidTank(invPlayer, tedf));
-		tank = tedf;
+		this.tank = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 166;
@@ -31,7 +31,7 @@ public class GUIMachineFluidTank extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		tank.tank.renderTankInfo(this, mouseX, mouseY, guiLeft + 71, guiTop + 69 - 52, 34, 52);
+		this.tank.tank.renderTankInfo(this, mouseX, mouseY, this.guiLeft + 71, this.guiTop + 69 - 52, 34, 52);
 	}
 	
 	@Override
@@ -42,25 +42,26 @@ public class GUIMachineFluidTank extends GuiInfoContainer {
 		this.fontRendererObj.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
+	@Override
 	protected void mouseClicked(int x, int y, int i) {
     	super.mouseClicked(x, y, i);
 		
-    	if(guiLeft + 151 <= x && guiLeft + 151 + 18 > x && guiTop + 35 < y && guiTop + 35 + 18 >= y) {
+    	if(this.guiLeft + 151 <= x && this.guiLeft + 151 + 18 > x && this.guiTop + 35 < y && this.guiTop + 35 + 18 >= y) {
     		
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
-    		PacketDispatcher.wrapper.sendToServer(new AuxButtonPacket(tank.xCoord, tank.yCoord, tank.zCoord, 0, 0));
+			this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+    		PacketDispatcher.wrapper.sendToServer(new AuxButtonPacket(this.tank.xCoord, this.tank.yCoord, this.tank.zCoord, 0, 0));
     	}
 	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIMachineFluidTank.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		int i = tank.mode;
-		drawTexturedModalRect(guiLeft + 151, guiTop + 34, 176, i * 18, 18, 18);
+		int i = this.tank.mode;
+		drawTexturedModalRect(this.guiLeft + 151, this.guiTop + 34, 176, i * 18, 18, 18);
 		
-		tank.tank.renderTank(guiLeft + 71, guiTop + 69, this.zLevel, 34, 52);
+		this.tank.tank.renderTank(this.guiLeft + 71, this.guiTop + 69, this.zLevel, 34, 52);
 	}
 }

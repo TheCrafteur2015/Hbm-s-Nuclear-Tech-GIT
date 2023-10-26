@@ -23,7 +23,7 @@ public class RenderArtilleryRocket extends Render {
 		GL11.glRotated(90, 0, 1, 0);
 		GL11.glRotated(90, 1, 0, 0);
 		
-		this.bindEntityTexture(entity);
+		bindEntityTexture(entity);
 		
 		boolean fog = GL11.glIsEnabled(GL11.GL_FOG);
 		

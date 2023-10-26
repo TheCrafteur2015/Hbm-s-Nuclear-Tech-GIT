@@ -45,14 +45,14 @@ public class BlockGraphiteBreedingFuel extends BlockGraphiteDrilledTE implements
 				
 				if(side == cfg * 2 || side == cfg * 2 + 1) {
 					world.setBlock(x, y, z, ModBlocks.block_graphite_drilled, meta, 3);
-					this.ejectItem(world, x, y, z, ForgeDirection.getOrientation(side), new ItemStack(ModItems.pile_rod_lithium));
+					ejectItem(world, x, y, z, ForgeDirection.getOrientation(side), new ItemStack(ModItems.pile_rod_lithium));
 				}
 			}
 			
 			if(tool == ToolType.HAND_DRILL) {
 				TileEntityPileBreedingFuel pile = (TileEntityPileBreedingFuel) world.getTileEntity(x, y, z);
 				player.addChatComponentMessage(new ChatComponentText("CP1 FUEL ASSEMBLY " + x + " " + y + " " + z).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));
-				player.addChatComponentMessage(new ChatComponentText("DEPLETION: " + pile.progress + "/" + pile.maxProgress).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+				player.addChatComponentMessage(new ChatComponentText("DEPLETION: " + pile.progress + "/" + TileEntityPileBreedingFuel.maxProgress).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
 				player.addChatComponentMessage(new ChatComponentText("FLUX: " + pile.lastNeutrons).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
 			}
 		}

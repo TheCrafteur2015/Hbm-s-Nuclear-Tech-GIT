@@ -26,15 +26,15 @@ import net.minecraft.world.World;
 
 public class TileEntityTurretHoward extends TileEntityTurretBaseNT {
 
-	static List<Integer> configs = new ArrayList();
+	static List<Integer> configs = new ArrayList<>();
 	
 	static {
-		configs.add(BulletConfigSyncingUtil.DGK_NORMAL);
+		TileEntityTurretHoward.configs.add(BulletConfigSyncingUtil.DGK_NORMAL);
 	}
 	
 	@Override
 	protected List<Integer> getAmmoList() {
-		return configs;
+		return TileEntityTurretHoward.configs;
 	}
 
 	@Override
@@ -100,7 +100,7 @@ public class TileEntityTurretHoward extends TileEntityTurretBaseNT {
 	@Override
 	public void updateEntity() {
 		
-		if(worldObj.isRemote) {
+		if(this.worldObj.isRemote) {
 			
 			this.lastSpin = this.spin;
 			
@@ -114,13 +114,13 @@ public class TileEntityTurretHoward extends TileEntityTurretBaseNT {
 			}
 		} else {
 			
-			if(loaded <= 0) {
-				BulletConfiguration conf = this.getFirstConfigLoaded();
+			if(this.loaded <= 0) {
+				BulletConfiguration conf = getFirstConfigLoaded();
 				
 				if(conf != null) {
-					this.conusmeAmmo(conf.ammo);
-					this.worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:turret.howard_reload", 4.0F, 1F);
-					loaded = 200;
+					conusmeAmmo(conf.ammo);
+					this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:turret.howard_reload", 4.0F, 1F);
+					this.loaded = 200;
 				}
 			}
 		}
@@ -131,28 +131,28 @@ public class TileEntityTurretHoward extends TileEntityTurretBaseNT {
 	@Override
 	public void updateFiringTick() {
 		
-		timer++;
+		this.timer++;
 		
-		if(loaded > 0 && this.tPos != null) {
+		if(this.loaded > 0 && this.tPos != null) {
 			
 			SpentCasing cfg = GunDGKFactory.CASINGDGK;
 			
-			this.worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:turret.howard_fire", 4.0F, 0.9F + worldObj.rand.nextFloat() * 0.3F);
-			this.worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:turret.howard_fire", 4.0F, 1F + worldObj.rand.nextFloat() * 0.3F);
+			this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:turret.howard_fire", 4.0F, 0.9F + this.worldObj.rand.nextFloat() * 0.3F);
+			this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:turret.howard_fire", 4.0F, 1F + this.worldObj.rand.nextFloat() * 0.3F);
 			
 			for(int i = 0; i < 2; i++) {
 				this.cachedCasingConfig = cfg;
-				this.spawnCasing();
+				spawnCasing();
 			}
 			
-			if(timer % 2 == 0) {
-				loaded--;
+			if(this.timer % 2 == 0) {
+				this.loaded--;
 				
-				if(worldObj.rand.nextInt(100) + 1 <= WeaponConfig.ciwsHitrate)
-					EntityDamageUtil.attackEntityFromIgnoreIFrame(this.target, ModDamageSource.shrapnel, 2F + worldObj.rand.nextInt(2));
+				if(this.worldObj.rand.nextInt(100) + 1 <= WeaponConfig.ciwsHitrate)
+					EntityDamageUtil.attackEntityFromIgnoreIFrame(this.target, ModDamageSource.shrapnel, 2F + this.worldObj.rand.nextInt(2));
 					
-				Vec3 pos = this.getTurretPos();
-				Vec3 vec = Vec3.createVectorHelper(this.getBarrelLength(), 0, 0);
+				Vec3 pos = getTurretPos();
+				Vec3 vec = Vec3.createVectorHelper(getBarrelLength(), 0, 0);
 				vec.rotateAroundZ((float) -this.rotationPitch);
 				vec.rotateAroundY((float) -(this.rotationYaw + Math.PI * 0.5));
 				
@@ -173,7 +173,7 @@ public class TileEntityTurretHoward extends TileEntityTurretBaseNT {
 					data.setString("mode", "largeexplode");
 					data.setFloat("size", 1.5F);
 					data.setByte("count", (byte)1);
-					PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, pos.xCoord + vec.xCoord + hOff.xCoord, pos.yCoord + vec.yCoord + hOff.yCoord, pos.zCoord + vec.zCoord + hOff.zCoord), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 50));
+					PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, pos.xCoord + vec.xCoord + hOff.xCoord, pos.yCoord + vec.yCoord + hOff.yCoord, pos.zCoord + vec.zCoord + hOff.zCoord), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 50));
 				}
 			}
 		}
@@ -188,13 +188,13 @@ public class TileEntityTurretHoward extends TileEntityTurretBaseNT {
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setInteger("loaded", loaded);
+		nbt.setInteger("loaded", this.loaded);
 	}
 
 	@Override
 	protected Vec3 getCasingSpawnPos() {
 		
-		Vec3 pos = this.getTurretPos();
+		Vec3 pos = getTurretPos();
 		Vec3 vec = Vec3.createVectorHelper(-0.875, 0.2, -0.125);
 		vec.rotateAroundZ((float) -this.rotationPitch);
 		vec.rotateAroundY((float) -(this.rotationYaw + Math.PI * 0.5));
@@ -206,7 +206,7 @@ public class TileEntityTurretHoward extends TileEntityTurretBaseNT {
 	
 	@Override
 	protected CasingEjector getEjector() {
-		return ejector.setMotion(0.4, 0, 0).setAngleRange(0.02F, 0.03F);
+		return TileEntityTurretHoward.ejector.setMotion(0.4, 0, 0).setAngleRange(0.02F, 0.03F);
 	}
 	
 	@Override

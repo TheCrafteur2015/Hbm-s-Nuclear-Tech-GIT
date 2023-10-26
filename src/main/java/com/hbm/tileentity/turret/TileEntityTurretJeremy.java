@@ -21,19 +21,19 @@ import net.minecraft.world.World;
 
 public class TileEntityTurretJeremy extends TileEntityTurretBaseNT {
 
-	static List<Integer> configs = new ArrayList();
+	static List<Integer> configs = new ArrayList<>();
 	
 	static {
-		configs.add(BulletConfigSyncingUtil.SHELL_NORMAL);
-		configs.add(BulletConfigSyncingUtil.SHELL_EXPLOSIVE);
-		configs.add(BulletConfigSyncingUtil.SHELL_AP);
-		configs.add(BulletConfigSyncingUtil.SHELL_DU);
-		configs.add(BulletConfigSyncingUtil.SHELL_W9);
+		TileEntityTurretJeremy.configs.add(BulletConfigSyncingUtil.SHELL_NORMAL);
+		TileEntityTurretJeremy.configs.add(BulletConfigSyncingUtil.SHELL_EXPLOSIVE);
+		TileEntityTurretJeremy.configs.add(BulletConfigSyncingUtil.SHELL_AP);
+		TileEntityTurretJeremy.configs.add(BulletConfigSyncingUtil.SHELL_DU);
+		TileEntityTurretJeremy.configs.add(BulletConfigSyncingUtil.SHELL_W9);
 	}
 	
 	@Override
 	protected List<Integer> getAmmoList() {
-		return configs;
+		return TileEntityTurretJeremy.configs;
 	}
 
 	@Override
@@ -72,11 +72,11 @@ public class TileEntityTurretJeremy extends TileEntityTurretBaseNT {
 	@Override
 	public void updateEntity() {
 		
-		if(reload > 0)
-			reload--;
+		if(this.reload > 0)
+			this.reload--;
 		
-		if(reload == 1)
-			this.worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:turret.jeremy_reload", 2.0F, 1.0F);
+		if(this.reload == 1)
+			this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:turret.jeremy_reload", 2.0F, 1.0F);
 		
 		super.updateEntity();
 	}
@@ -84,30 +84,30 @@ public class TileEntityTurretJeremy extends TileEntityTurretBaseNT {
 	@Override
 	public void updateFiringTick() {
 		
-		timer++;
+		this.timer++;
 		
-		if(timer % 40 == 0) {
+		if(this.timer % 40 == 0) {
 			
-			BulletConfiguration conf = this.getFirstConfigLoaded();
+			BulletConfiguration conf = getFirstConfigLoaded();
 			
 			if(conf != null) {
 				this.cachedCasingConfig = conf.spentCasing;
-				this.spawnBullet(conf);
-				this.conusmeAmmo(conf.ammo);
-				this.worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:turret.jeremy_fire", 4.0F, 1.0F);
-				Vec3 pos = this.getTurretPos();
-				Vec3 vec = Vec3.createVectorHelper(this.getBarrelLength(), 0, 0);
+				spawnBullet(conf);
+				conusmeAmmo(conf.ammo);
+				this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:turret.jeremy_fire", 4.0F, 1.0F);
+				Vec3 pos = getTurretPos();
+				Vec3 vec = Vec3.createVectorHelper(getBarrelLength(), 0, 0);
 				vec.rotateAroundZ((float) -this.rotationPitch);
 				vec.rotateAroundY((float) -(this.rotationYaw + Math.PI * 0.5));
 				
-				reload = 20;
+				this.reload = 20;
 				
 				NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "vanillaExt");
 				data.setString("mode", "largeexplode");
 				data.setFloat("size", 0F);
 				data.setByte("count", (byte)5);
-				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, pos.xCoord + vec.xCoord, pos.yCoord + vec.yCoord, pos.zCoord + vec.zCoord), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 50));
+				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, pos.xCoord + vec.xCoord, pos.yCoord + vec.yCoord, pos.zCoord + vec.zCoord), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 50));
 			}
 		}
 	}
@@ -115,7 +115,7 @@ public class TileEntityTurretJeremy extends TileEntityTurretBaseNT {
 	@Override
 	protected Vec3 getCasingSpawnPos() {
 		
-		Vec3 pos = this.getTurretPos();
+		Vec3 pos = getTurretPos();
 		Vec3 vec = Vec3.createVectorHelper(-2, 0, 0);
 		vec.rotateAroundZ((float) -this.rotationPitch);
 		vec.rotateAroundY((float) -(this.rotationYaw + Math.PI * 0.5));
@@ -127,7 +127,7 @@ public class TileEntityTurretJeremy extends TileEntityTurretBaseNT {
 	
 	@Override
 	protected CasingEjector getEjector() {
-		return ejector;
+		return TileEntityTurretJeremy.ejector;
 	}
 	
 	@Override

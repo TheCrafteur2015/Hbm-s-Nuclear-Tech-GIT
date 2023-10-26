@@ -43,10 +43,12 @@ public class RenderTelex extends TileEntitySpecialRenderer implements IItemRende
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase( ) {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(0, -2, 0);
 				GL11.glScaled(6, 6, 6);
 			}
+			@Override
 			public void renderCommon() {
 				GL11.glTranslated(0, 0, -0.5);
 				bindTexture(ResourceManager.telex_tex);

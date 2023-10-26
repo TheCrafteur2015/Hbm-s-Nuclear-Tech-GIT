@@ -44,7 +44,7 @@ public class HazardSystem {
 	/*
 	 * List of hazard transformers, called in order before and after unrolling all the HazardEntries.
 	 */
-	public static final List<HazardTransformerBase> trafos = new ArrayList();
+	public static final List<HazardTransformerBase> trafos = new ArrayList<>();
 	
 	/**
 	 * Automatically casts the first parameter and registers it to the HazSys
@@ -54,15 +54,15 @@ public class HazardSystem {
 	public static void register(Object o, HazardData data) {
 
 		if(o instanceof String)
-			oreMap.put((String)o, data);
+			HazardSystem.oreMap.put((String)o, data);
 		if(o instanceof Item)
-			itemMap.put((Item)o, data);
+			HazardSystem.itemMap.put((Item)o, data);
 		if(o instanceof Block)
-			itemMap.put(Item.getItemFromBlock((Block)o), data);
+			HazardSystem.itemMap.put(Item.getItemFromBlock((Block)o), data);
 		if(o instanceof ItemStack)
-			stackMap.put(new ComparableStack((ItemStack)o), data);
+			HazardSystem.stackMap.put(new ComparableStack((ItemStack)o), data);
 		if(o instanceof ComparableStack)
-			stackMap.put((ComparableStack)o, data);
+			HazardSystem.stackMap.put((ComparableStack)o, data);
 	}
 	
 	/**
@@ -72,22 +72,22 @@ public class HazardSystem {
 	public static void blacklist(Object o) {
 		
 		if(o instanceof ItemStack) {
-			stackBlacklist.add(new ComparableStack((ItemStack) o).makeSingular());
+			HazardSystem.stackBlacklist.add(new ComparableStack((ItemStack) o).makeSingular());
 		} else if(o instanceof String) {
-			dictBlacklist.add((String) o);
+			HazardSystem.dictBlacklist.add((String) o);
 		}
 	}
 	
 	public static boolean isItemBlacklisted(ItemStack stack) {
 		
-		if(stackBlacklist.contains(new ComparableStack(stack).makeSingular()))
+		if(HazardSystem.stackBlacklist.contains(new ComparableStack(stack).makeSingular()))
 			return true;
 
 		int[] ids = OreDictionary.getOreIDs(stack);
 		for(int id : ids) {
 			String name = OreDictionary.getOreName(id);
 			
-			if(dictBlacklist.contains(name))
+			if(HazardSystem.dictBlacklist.contains(name))
 				return true;
 		}
 		
@@ -112,33 +112,33 @@ public class HazardSystem {
 	 */
 	public static List<HazardEntry> getHazardsFromStack(ItemStack stack) {
 		
-		if(isItemBlacklisted(stack)) {
-			return new ArrayList();
+		if(HazardSystem.isItemBlacklisted(stack)) {
+			return new ArrayList<>();
 		}
 		
-		List<HazardData> chronological = new ArrayList();
+		List<HazardData> chronological = new ArrayList<>();
 		
 		/// ORE DICT ///
 		int[] ids = OreDictionary.getOreIDs(stack);
 		for(int id : ids) {
 			String name = OreDictionary.getOreName(id);
 			
-			if(oreMap.containsKey(name))
-				chronological.add(oreMap.get(name));
+			if(HazardSystem.oreMap.containsKey(name))
+				chronological.add(HazardSystem.oreMap.get(name));
 		}
 		
 		/// ITEM ///
-		if(itemMap.containsKey(stack.getItem()))
-			chronological.add(itemMap.get(stack.getItem()));
+		if(HazardSystem.itemMap.containsKey(stack.getItem()))
+			chronological.add(HazardSystem.itemMap.get(stack.getItem()));
 		
 		/// STACK ///
 		ComparableStack comp = new ComparableStack(stack).makeSingular();
-		if(stackMap.containsKey(comp))
-			chronological.add(stackMap.get(comp));
+		if(HazardSystem.stackMap.containsKey(comp))
+			chronological.add(HazardSystem.stackMap.get(comp));
 		
-		List<HazardEntry> entries = new ArrayList();
+		List<HazardEntry> entries = new ArrayList<>();
 		
-		for(HazardTransformerBase trafo : trafos) {
+		for(HazardTransformerBase trafo : HazardSystem.trafos) {
 			trafo.transformPre(stack, entries);
 		}
 		
@@ -155,7 +155,7 @@ public class HazardSystem {
 			}
 		}
 		
-		for(HazardTransformerBase trafo : trafos) {
+		for(HazardTransformerBase trafo : HazardSystem.trafos) {
 			trafo.transformPost(stack, entries);
 		}
 		
@@ -163,7 +163,7 @@ public class HazardSystem {
 	}
 	
 	public static float getHazardLevelFromStack(ItemStack stack, HazardTypeBase hazard) {
-		List<HazardEntry> entries = getHazardsFromStack(stack);
+		List<HazardEntry> entries = HazardSystem.getHazardsFromStack(stack);
 		
 		for(HazardEntry entry : entries) {
 			if(entry.type == hazard) {
@@ -180,7 +180,7 @@ public class HazardSystem {
 	 * @param entity
 	 */
 	public static void applyHazards(ItemStack stack, EntityLivingBase entity) {
-		List<HazardEntry> hazards = getHazardsFromStack(stack);
+		List<HazardEntry> hazards = HazardSystem.getHazardsFromStack(stack);
 		
 		for(HazardEntry hazard : hazards) {
 			hazard.applyHazard(stack, entity);
@@ -197,7 +197,7 @@ public class HazardSystem {
 			
 			ItemStack stack = player.inventory.mainInventory[i];
 			if(stack != null) {
-				applyHazards(stack, player);
+				HazardSystem.applyHazards(stack, player);
 				
 				if(stack.stackSize == 0) {
 					player.inventory.mainInventory[i] = null;
@@ -207,7 +207,7 @@ public class HazardSystem {
 		
 		for(ItemStack stack : player.inventory.armorInventory) {
 			if(stack != null) {
-				applyHazards(stack, player);
+				HazardSystem.applyHazards(stack, player);
 			}
 		}
 	}
@@ -218,7 +218,7 @@ public class HazardSystem {
 			ItemStack stack = entity.getEquipmentInSlot(i);
 
 			if(stack != null) {
-				applyHazards(stack, entity);
+				HazardSystem.applyHazards(stack, entity);
 			}
 		}
 	}
@@ -229,7 +229,7 @@ public class HazardSystem {
 		
 		if(entity.isDead || stack == null || stack.getItem() == null || stack.stackSize <= 0) return;
 		
-		List<HazardEntry> hazards = getHazardsFromStack(stack);
+		List<HazardEntry> hazards = HazardSystem.getHazardsFromStack(stack);
 		for(HazardEntry entry : hazards) {
 			entry.type.updateEntity(entity, HazardModifier.evalAllModifiers(stack, null, entry.baseLevel, entry.mods));
 		}
@@ -238,7 +238,7 @@ public class HazardSystem {
 	@SideOnly(Side.CLIENT)
 	public static void addFullTooltip(ItemStack stack, EntityPlayer player, List list) {
 		
-		List<HazardEntry> hazards = getHazardsFromStack(stack);
+		List<HazardEntry> hazards = HazardSystem.getHazardsFromStack(stack);
 		
 		for(HazardEntry hazard : hazards) {
 			hazard.type.addHazardInformation(player, list, hazard.baseLevel, stack, hazard.mods);

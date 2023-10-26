@@ -23,10 +23,10 @@ public class EntityGrenadePC extends EntityGrenadeBase {
 	public void explode() {
 
 		if (!this.worldObj.isRemote) {
-			this.setDead();
+			setDead();
 
             this.worldObj.playAuxSFX(2002, (int)Math.round(this.posX), (int)Math.round(this.posY), (int)Math.round(this.posZ), 0);
-			ExplosionChaos.spawnChlorine(worldObj, posX, posY, posZ, 500, 2, 2);
+			ExplosionChaos.spawnChlorine(this.worldObj, this.posX, this.posY, this.posZ, 500, 2, 2);
 		}
 	}
 }

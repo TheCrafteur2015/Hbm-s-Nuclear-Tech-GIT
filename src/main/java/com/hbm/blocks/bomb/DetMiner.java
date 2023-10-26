@@ -45,13 +45,13 @@ public class DetMiner extends BlockPillar implements IBomb {
 
 	@Override
 	public void onBlockDestroyedByExplosion(World world, int x, int y, int z, Explosion p_149723_5_) {
-		this.explode(world, x, y, z);
+		explode(world, x, y, z);
 	}
 
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block p_149695_5_) {
 		if(world.isBlockIndirectlyGettingPowered(x, y, z)) {
-			this.explode(world, x, y, z);
+			explode(world, x, y, z);
 		}
 	}
 }

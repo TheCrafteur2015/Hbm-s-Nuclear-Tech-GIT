@@ -26,14 +26,14 @@ public class TileEntityMachineOrbus extends TileEntityBarrel {
 	@Override
 	public void fillFluidInit(FluidType type) {
 		
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset).getOpposite();
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset).getOpposite();
 		ForgeDirection rot = dir.getRotation(ForgeDirection.DOWN);
 
 		for(int i = -1; i < 6; i += 6) {
-			this.fillFluid(xCoord, yCoord + i, zCoord, this.getTact(), this.tank.getTankType());
-			this.fillFluid(xCoord + dir.offsetX, yCoord + i, zCoord + dir.offsetZ, this.getTact(), this.tank.getTankType());
-			this.fillFluid(xCoord + rot.offsetX, yCoord + i, zCoord + rot.offsetZ, this.getTact(), this.tank.getTankType());
-			this.fillFluid(xCoord + dir.offsetX + rot.offsetX, yCoord + i, zCoord + dir.offsetZ + rot.offsetZ, this.getTact(), this.tank.getTankType());
+			fillFluid(this.xCoord, this.yCoord + i, this.zCoord, getTact(), this.tank.getTankType());
+			fillFluid(this.xCoord + dir.offsetX, this.yCoord + i, this.zCoord + dir.offsetZ, getTact(), this.tank.getTankType());
+			fillFluid(this.xCoord + rot.offsetX, this.yCoord + i, this.zCoord + rot.offsetZ, getTact(), this.tank.getTankType());
+			fillFluid(this.xCoord + dir.offsetX + rot.offsetX, this.yCoord + i, this.zCoord + dir.offsetZ + rot.offsetZ, getTact(), this.tank.getTankType());
 		}
 	}
 	
@@ -42,24 +42,24 @@ public class TileEntityMachineOrbus extends TileEntityBarrel {
 	@Override
 	protected DirPos[] getConPos() {
 		
-		if(conPos != null)
-			return conPos;
+		if(this.conPos != null)
+			return this.conPos;
 		
-		conPos = new DirPos[8];
+		this.conPos = new DirPos[8];
 		
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset).getOpposite();
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset).getOpposite();
 		ForgeDirection rot = dir.getRotation(ForgeDirection.DOWN);
 
 		for(int i = -1; i < 6; i += 6) {
 			ForgeDirection out = i == -1 ? ForgeDirection.DOWN : ForgeDirection.UP;
 			int index = i == -1 ? 0 : 4;
-			conPos[index + 0] = new DirPos(xCoord,								yCoord + i,	zCoord,								out);
-			conPos[index + 1] = new DirPos(xCoord + dir.offsetX,				yCoord + i,	zCoord + dir.offsetZ,				out);
-			conPos[index + 2] = new DirPos(xCoord + rot.offsetX,				yCoord + i,	zCoord + rot.offsetZ,				out);
-			conPos[index + 3] = new DirPos(xCoord + dir.offsetX + rot.offsetX,	yCoord + i,	zCoord + dir.offsetZ + rot.offsetZ,	out);
+			this.conPos[index + 0] = new DirPos(this.xCoord,								this.yCoord + i,	this.zCoord,								out);
+			this.conPos[index + 1] = new DirPos(this.xCoord + dir.offsetX,				this.yCoord + i,	this.zCoord + dir.offsetZ,				out);
+			this.conPos[index + 2] = new DirPos(this.xCoord + rot.offsetX,				this.yCoord + i,	this.zCoord + rot.offsetZ,				out);
+			this.conPos[index + 3] = new DirPos(this.xCoord + dir.offsetX + rot.offsetX,	this.yCoord + i,	this.zCoord + dir.offsetZ + rot.offsetZ,	out);
 		}
 		
-		return conPos;
+		return this.conPos;
 	}
 	
 	AxisAlignedBB bb = null;
@@ -67,18 +67,18 @@ public class TileEntityMachineOrbus extends TileEntityBarrel {
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord - 2,
-					yCoord,
-					zCoord - 2,
-					xCoord + 2,
-					yCoord + 5,
-					zCoord + 2
+		if(this.bb == null) {
+			this.bb = AxisAlignedBB.getBoundingBox(
+					this.xCoord - 2,
+					this.yCoord,
+					this.zCoord - 2,
+					this.xCoord + 2,
+					this.yCoord + 5,
+					this.zCoord + 2
 					);
 		}
 		
-		return bb;
+		return this.bb;
 	}
 	
 	@Override

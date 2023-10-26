@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import api.hbm.block.IToolable;
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ILookOverlay;
 import com.hbm.blocks.ITooltipProvider;
@@ -12,6 +11,7 @@ import com.hbm.tileentity.TileEntityProxyCombo;
 import com.hbm.tileentity.machine.TileEntityHeaterElectric;
 import com.hbm.util.I18nUtil;
 
+import api.hbm.block.IToolable;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -52,18 +52,18 @@ public class HeaterElectric extends BlockDummyable implements ILookOverlay, IToo
 	@Override
 	public void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		super.fillSpace(world, x, y, z, dir, o);
-		this.makeExtra(world, x, y, z);
+		makeExtra(world, x, y, z);
 	}
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		this.addStandardInfo(stack, player, list, ext);
+		addStandardInfo(stack, player, list, ext);
 	}
 
 	@Override
 	public void printHook(Pre event, World world, int x, int y, int z) {
 		
-		int[] pos = this.findCore(world, x, y, z);
+		int[] pos = findCore(world, x, y, z);
 		
 		if(pos == null)
 			return;
@@ -75,7 +75,7 @@ public class HeaterElectric extends BlockDummyable implements ILookOverlay, IToo
 		
 		TileEntityHeaterElectric heater = (TileEntityHeaterElectric) te;
 
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		text.add(String.format(Locale.US, "%,d", heater.heatEnergy) + " TU");
 		text.add(EnumChatFormatting.GREEN + "-> " + EnumChatFormatting.RESET + heater.getConsumption() + " HE/t");
 		text.add(EnumChatFormatting.RED + "<- " + EnumChatFormatting.RESET + heater.getHeatGen() + " TU/t");
@@ -91,7 +91,7 @@ public class HeaterElectric extends BlockDummyable implements ILookOverlay, IToo
 		
 		if(world.isRemote) return true;
 		
-		int[] pos = this.findCore(world, x, y, z);
+		int[] pos = findCore(world, x, y, z);
 		
 		if(pos == null) return false;
 		

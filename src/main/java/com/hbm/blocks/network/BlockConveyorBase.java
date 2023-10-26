@@ -62,9 +62,9 @@ public abstract class BlockConveyorBase extends Block implements IConveyorBelt, 
 	@Override
 	public Vec3 getTravelLocation(World world, int x, int y, int z, Vec3 itemPos, double speed) {
 		
-		ForgeDirection dir = this.getTravelDirection(world, x, y, z, itemPos);
+		ForgeDirection dir = getTravelDirection(world, x, y, z, itemPos);
 		//snapping point
-		Vec3 snap = this.getClosestSnappingPosition(world, x, y, z, itemPos);
+		Vec3 snap = getClosestSnappingPosition(world, x, y, z, itemPos);
 		//snapping point + speed
 		Vec3 dest = Vec3.createVectorHelper(snap.xCoord - dir.offsetX * speed, snap.yCoord - dir.offsetY * speed, snap.zCoord - dir.offsetZ * speed);
 		//delta to get to that point
@@ -82,7 +82,7 @@ public abstract class BlockConveyorBase extends Block implements IConveyorBelt, 
 	@Override
 	public Vec3 getClosestSnappingPosition(World world, int x, int y, int z, Vec3 itemPos) {
 
-		ForgeDirection dir = this.getTravelDirection(world, x, y, z, itemPos);
+		ForgeDirection dir = getTravelDirection(world, x, y, z, itemPos);
 		
 		itemPos.xCoord = MathHelper.clamp_double(itemPos.xCoord, x, x + 1);
 		itemPos.zCoord = MathHelper.clamp_double(itemPos.zCoord, z, z + 1);
@@ -110,7 +110,7 @@ public abstract class BlockConveyorBase extends Block implements IConveyorBelt, 
 				EntityMovingItem item = new EntityMovingItem(world);
 				item.setItemStack(((EntityItem) entity).getEntityItem().copy());
 				Vec3 pos = Vec3.createVectorHelper(entity.posX, entity.posY, entity.posZ);
-				Vec3 snap = this.getClosestSnappingPosition(world, x, y, z, pos);
+				Vec3 snap = getClosestSnappingPosition(world, x, y, z, pos);
 				item.setPositionAndRotation(snap.xCoord, snap.yCoord, snap.zCoord, 0, 0);
 				world.spawnEntityInWorld(item);
 
@@ -123,7 +123,7 @@ public abstract class BlockConveyorBase extends Block implements IConveyorBelt, 
 
 	@Override
 	public int getRenderType() {
-		return renderID;
+		return BlockConveyorBase.renderID;
 	}
 
 	@Override
@@ -138,7 +138,7 @@ public abstract class BlockConveyorBase extends Block implements IConveyorBelt, 
 
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
-		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.25F, 1.0F);
+		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.25F, 1.0F);
 	}
 
 	@Override
@@ -166,6 +166,6 @@ public abstract class BlockConveyorBase extends Block implements IConveyorBelt, 
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		this.addStandardInfo(stack, player, list, ext);
+		addStandardInfo(stack, player, list, ext);
 	}
 }

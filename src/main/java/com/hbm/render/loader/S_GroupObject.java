@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.Tessellator;
 
 public class S_GroupObject {
 	public String name;
-	public ArrayList<S_Face> faces = new ArrayList();
+	public ArrayList<S_Face> faces = new ArrayList<>();
 	public int glDrawingMode;
 
 	public S_GroupObject() {

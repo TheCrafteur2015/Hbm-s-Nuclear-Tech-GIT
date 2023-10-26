@@ -35,30 +35,29 @@ public class TileEntityRadioTorchCounter extends TileEntityMachineBase implement
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
-			ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata()).getOpposite();
+		if(!this.worldObj.isRemote) {
+			ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata()).getOpposite();
 			
-			TileEntity tile = Compat.getTileStandard(worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
+			TileEntity tile = Compat.getTileStandard(this.worldObj, this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
 			if(tile instanceof IInventory) {
 				IInventory inv = (IInventory) tile;
 				ItemStack[] invSlots = new ItemStack[inv.getSizeInventory()];
 				for(int i = 0; i < invSlots.length; i++) invSlots[i] = inv.getStackInSlot(i);
 				
 				for(int i = 0; i < 3; i++) {
-					if(channel[i].isEmpty()) continue;
-					if(slots[i] == null) continue;
-					ItemStack pattern = slots[i];
+					if(this.channel[i].isEmpty() || (this.slots[i] == null)) continue;
+					ItemStack pattern = this.slots[i];
 					
 					int count = 0;
 
-					for(int j = 0; j < invSlots.length; j++) {
-						if(invSlots[j] != null && matcher.isValidForFilter(pattern, i, invSlots[j])) {
-							count += invSlots[j].stackSize;
+					for (ItemStack invSlot : invSlots) {
+						if(invSlot != null && this.matcher.isValidForFilter(pattern, i, invSlot)) {
+							count += invSlot.stackSize;
 						}
 					}
 					
 					if(this.polling || this.lastCount[i] != count) {
-						RTTYSystem.broadcast(worldObj, this.channel[i], count);
+						RTTYSystem.broadcast(this.worldObj, this.channel[i], count);
 					}
 					
 					this.lastCount[i] = count;
@@ -66,14 +65,15 @@ public class TileEntityRadioTorchCounter extends TileEntityMachineBase implement
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setBoolean("polling", polling);
-			data.setIntArray("last", lastCount);
+			data.setBoolean("polling", this.polling);
+			data.setIntArray("last", this.lastCount);
 			this.matcher.writeToNBT(data);
-			for(int i = 0; i < 3; i++) if(channel[i] != null) data.setString("c" + i, channel[i]);
-			this.networkPack(data, 15);
+			for(int i = 0; i < 3; i++) if(this.channel[i] != null) data.setString("c" + i, this.channel[i]);
+			networkPack(data, 15);
 		}
 	}
 	
+	@Override
 	public void networkUnpack(NBTTagCompound nbt) {
 		this.polling = nbt.getBoolean("polling");
 		this.lastCount = nbt.getIntArray("last");
@@ -96,30 +96,30 @@ public class TileEntityRadioTorchCounter extends TileEntityMachineBase implement
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setBoolean("p", polling);
+		nbt.setBoolean("p", this.polling);
 		for(int i = 0; i < 3; i++) {
-			if(channel[i] != null) nbt.setString("c" + i, channel[i]);
-			nbt.setInteger("l" + i, lastCount[i]);
+			if(this.channel[i] != null) nbt.setString("c" + i, this.channel[i]);
+			nbt.setInteger("l" + i, this.lastCount[i]);
 		}
 		this.matcher.writeToNBT(nbt);
 	}
 
 	@Override
 	public boolean hasPermission(EntityPlayer player) {
-		return this.isUseableByPlayer(player);
+		return isUseableByPlayer(player);
 	}
 
 	@Override
 	public void receiveControl(NBTTagCompound data) {
 		if(data.hasKey("polling")) {
 			this.polling = !this.polling;
-			this.markChanged();
+			markChanged();
 		} else {
 			System.out.println("guh");
 			for(int i = 0; i < 3; i++) {
 				this.channel[i] = data.getString("c" + i);
 			}
-			this.markChanged();
+			markChanged();
 		}
 	}
 }

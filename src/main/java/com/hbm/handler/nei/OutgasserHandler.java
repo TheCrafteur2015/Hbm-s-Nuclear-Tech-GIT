@@ -20,8 +20,8 @@ public class OutgasserHandler extends NEIUniversalHandler {
 	@Override
 	public void loadTransferRects() {
 		super.loadTransferRects();
-		transferRectsGui.add(new RecipeTransferRect(new Rectangle(75, 26, 16, 32), "ntmOutgasser"));
-		guiGui.add(GUIRBMKOutgasser.class);
-		RecipeTransferRectHandler.registerRectsToGuis(guiGui, transferRectsGui);
+		this.transferRectsGui.add(new RecipeTransferRect(new Rectangle(75, 26, 16, 32), "ntmOutgasser"));
+		this.guiGui.add(GUIRBMKOutgasser.class);
+		RecipeTransferRectHandler.registerRectsToGuis(this.guiGui, this.transferRectsGui);
 	}
 }

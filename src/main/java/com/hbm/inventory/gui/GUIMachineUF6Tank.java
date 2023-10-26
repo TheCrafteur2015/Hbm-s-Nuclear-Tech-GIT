@@ -18,7 +18,7 @@ public class GUIMachineUF6Tank extends GuiInfoContainer {
 	
 	public GUIMachineUF6Tank(InventoryPlayer invPlayer, TileEntityMachineUF6Tank tedf) {
 		super(new ContainerUF6Tank(invPlayer, tedf));
-		tank = tedf;
+		this.tank = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 166;
@@ -28,7 +28,7 @@ public class GUIMachineUF6Tank extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 		
-		tank.tank.renderTankInfo(this, mouseX, mouseY, guiLeft + 80, guiTop + 69 - 52, 16, 52);
+		this.tank.tank.renderTankInfo(this, mouseX, mouseY, this.guiLeft + 80, this.guiTop + 69 - 52, 16, 52);
 	}
 
 	@Override
@@ -42,9 +42,9 @@ public class GUIMachineUF6Tank extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIMachineUF6Tank.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		tank.tank.renderTank(guiLeft + 80, guiTop + 69, this.zLevel, 16, 52);
+		this.tank.tank.renderTank(this.guiLeft + 80, this.guiTop + 69, this.zLevel, 16, 52);
 	}
 }

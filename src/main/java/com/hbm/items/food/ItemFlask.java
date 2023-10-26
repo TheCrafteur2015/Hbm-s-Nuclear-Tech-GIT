@@ -24,15 +24,16 @@ public class ItemFlask extends ItemEnumMulti {
 		super(EnumInfusion.class, true, true);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister reg) {
 		
-		Enum[] enums = theEnum.getEnumConstants();
+		Enum[] enums = this.theEnum.getEnumConstants();
 		this.icons = new IIcon[enums.length];
 
-		for(int i = 0; i < icons.length; i++) {
+		for(int i = 0; i < this.icons.length; i++) {
 			Enum num = enums[i];
-			this.icons[i] = reg.registerIcon(this.getIconString() + "_" + num.name().toLowerCase(Locale.US));
+			this.icons[i] = reg.registerIcon(getIconString() + "_" + num.name().toLowerCase(Locale.US));
 		}
 	}
 
@@ -49,7 +50,7 @@ public class ItemFlask extends ItemEnumMulti {
 		if(stack.getItemDamage() == EnumInfusion.SHIELD.ordinal()) {
 			float infusion = 5F;
 			HbmPlayerProps props = HbmPlayerProps.getData(player);
-			props.maxShield = Math.min(props.shieldCap, props.maxShield + infusion);
+			props.maxShield = Math.min(HbmPlayerProps.shieldCap, props.maxShield + infusion);
 			props.shield = Math.min(props.shield + infusion, props.maxShield);
 		}
 		
@@ -72,7 +73,7 @@ public class ItemFlask extends ItemEnumMulti {
 		if(stack.getItemDamage() == EnumInfusion.SHIELD.ordinal() && HbmPlayerProps.getData(player).maxShield >= HbmPlayerProps.shieldCap)
 			return stack;
 		
-		player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
+		player.setItemInUse(stack, getMaxItemUseDuration(stack));
 		return stack;
 	}
 }

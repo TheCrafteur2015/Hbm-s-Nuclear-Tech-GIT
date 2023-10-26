@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.hbm.lib.RefStrings;
 import com.hbm.render.model.ModelBFLauncher;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
@@ -15,7 +16,7 @@ public class ItemRenderBFLauncher implements IItemRenderer {
 	protected ModelBFLauncher swordModel;
 	
 	public ItemRenderBFLauncher() {
-		swordModel = new ModelBFLauncher();
+		this.swordModel = new ModelBFLauncher();
 	}
 
 	@Override
@@ -43,7 +44,7 @@ public class ItemRenderBFLauncher implements IItemRenderer {
 				Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(RefStrings.MODID +":textures/models/BFLauncher.png"));
 				GL11.glRotatef(-150.0F, 0.0F, 0.0F, 1.0F);
 				GL11.glTranslatef(-0.8F, -0.1F, -0.2F);
-				swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, item);
+				this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, item);
 			GL11.glPopMatrix();
 			break;
 		case EQUIPPED:
@@ -58,7 +59,7 @@ public class ItemRenderBFLauncher implements IItemRenderer {
 				GL11.glRotatef(-5.0F, 0.0F, 0.0F, 1.0F);
 				GL11.glTranslatef(0.5F, -0.2F, 0.0F);
 				GL11.glScalef(1.5F, 1.5F, 1.5F);
-				swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, item);
+				this.swordModel.render((Entity)data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, item);
 			GL11.glPopMatrix();
 		default: break;
 		}

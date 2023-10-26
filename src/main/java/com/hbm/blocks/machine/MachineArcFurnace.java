@@ -42,7 +42,7 @@ public class MachineArcFurnace extends BlockContainer {
 
 	public MachineArcFurnace(boolean blockState) {
 		super(Material.iron);
-		isActive = blockState;
+		this.isActive = blockState;
 	}
 	
 	@Override
@@ -62,7 +62,7 @@ public class MachineArcFurnace extends BlockContainer {
 		if(this == ModBlocks.machine_arc_furnace_off) {
 			
 			if(side == 1 && metadata > 5) {
-				return iconRods;
+				return this.iconRods;
 			}
 		}
 		
@@ -86,7 +86,7 @@ public class MachineArcFurnace extends BlockContainer {
 	@Override
 	public void onBlockAdded(World world, int x, int y, int z) {
 		super.onBlockAdded(world, x, y, z);
-		this.setDefaultDirection(world, x, y, z);
+		setDefaultDirection(world, x, y, z);
 	}
 	
 	private void setDefaultDirection(World world, int x, int y, int z) {
@@ -173,7 +173,7 @@ public class MachineArcFurnace extends BlockContainer {
 	public static void updateBlockState(boolean isProcessing, World world, int x, int y, int z) {
 		int i = world.getBlockMetadata(x, y, z);
 		TileEntity entity = world.getTileEntity(x, y, z);
-		keepInventory = true;
+		MachineArcFurnace.keepInventory = true;
 		
 		if(isProcessing)
 		{
@@ -182,7 +182,7 @@ public class MachineArcFurnace extends BlockContainer {
 			world.setBlock(x, y, z, ModBlocks.machine_arc_furnace_off);
 		}
 		
-		keepInventory = false;
+		MachineArcFurnace.keepInventory = false;
 		world.setBlockMetadataWithNotify(x, y, z, i, 2);
 		
 		if(entity != null) {
@@ -194,7 +194,7 @@ public class MachineArcFurnace extends BlockContainer {
 	@Override
 	public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_)
     {
-        if (!keepInventory)
+        if (!MachineArcFurnace.keepInventory)
         {
         	TileEntityMachineArcFurnace tileentityfurnace = (TileEntityMachineArcFurnace)p_149749_1_.getTileEntity(p_149749_2_, p_149749_3_, p_149749_4_);
 
@@ -247,7 +247,7 @@ public class MachineArcFurnace extends BlockContainer {
 	@SideOnly(Side.CLIENT)
     public void randomDisplayTick(World p_149734_1_, int x, int y, int z, Random rand)
     {
-        if (isActive)
+        if (this.isActive)
         {
             int l = p_149734_1_.getBlockMetadata(x, y, z);
             float f = x + 0.5F;

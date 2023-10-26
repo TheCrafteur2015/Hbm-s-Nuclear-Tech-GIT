@@ -32,8 +32,8 @@ public class Tuple {
 		public int hashCode() {
 			final int prime = 31;
 			int result = 1;
-			result = prime * result + ((key == null) ? 0 : key.hashCode());
-			result = prime * result + ((value == null) ? 0 : value.hashCode());
+			result = prime * result + ((this.key == null) ? 0 : this.key.hashCode());
+			result = prime * result + ((this.value == null) ? 0 : this.value.hashCode());
 			return result;
 		}
 
@@ -41,20 +41,18 @@ public class Tuple {
 		public boolean equals(Object obj) {
 			if(this == obj)
 				return true;
-			if(obj == null)
+			if((obj == null) || (getClass() != obj.getClass()))
 				return false;
-			if(getClass() != obj.getClass())
-				return false;
-			Pair other = (Pair) obj;
-			if(key == null) {
+			Pair<?, ?> other = (Pair<?, ?>) obj;
+			if(this.key == null) {
 				if(other.key != null)
 					return false;
-			} else if(!key.equals(other.key))
+			} else if(!this.key.equals(other.key))
 				return false;
-			if(value == null) {
+			if(this.value == null) {
 				if(other.value != null)
 					return false;
-			} else if(!value.equals(other.value))
+			} else if(!this.value.equals(other.value))
 				return false;
 			return true;
 		}
@@ -88,9 +86,9 @@ public class Tuple {
 		public int hashCode() {
 			final int prime = 31;
 			int result = 1;
-			result = prime * result + ((x == null) ? 0 : x.hashCode());
-			result = prime * result + ((y == null) ? 0 : y.hashCode());
-			result = prime * result + ((z == null) ? 0 : z.hashCode());
+			result = prime * result + ((this.x == null) ? 0 : this.x.hashCode());
+			result = prime * result + ((this.y == null) ? 0 : this.y.hashCode());
+			result = prime * result + ((this.z == null) ? 0 : this.z.hashCode());
 			return result;
 		}
 
@@ -98,25 +96,23 @@ public class Tuple {
 		public boolean equals(Object obj) {
 			if(this == obj)
 				return true;
-			if(obj == null)
+			if((obj == null) || (getClass() != obj.getClass()))
 				return false;
-			if(getClass() != obj.getClass())
-				return false;
-			Triplet other = (Triplet) obj;
-			if(x == null) {
+			Triplet<?, ?, ?> other = (Triplet<?, ?, ?>) obj;
+			if(this.x == null) {
 				if(other.x != null)
 					return false;
-			} else if(!x.equals(other.x))
+			} else if(!this.x.equals(other.x))
 				return false;
-			if(y == null) {
+			if(this.y == null) {
 				if(other.y != null)
 					return false;
-			} else if(!y.equals(other.y))
+			} else if(!this.y.equals(other.y))
 				return false;
-			if(z == null) {
+			if(this.z == null) {
 				if(other.z != null)
 					return false;
-			} else if(!z.equals(other.z))
+			} else if(!this.z.equals(other.z))
 				return false;
 			return true;
 		}
@@ -128,10 +124,10 @@ public class Tuple {
 		public int hashCode() {
 			final int prime = 31;
 			int result = 1;
-			result = prime * result + ((w == null) ? 0 : w.hashCode());
-			result = prime * result + ((x == null) ? 0 : x.hashCode());
-			result = prime * result + ((y == null) ? 0 : y.hashCode());
-			result = prime * result + ((z == null) ? 0 : z.hashCode());
+			result = prime * result + ((this.w == null) ? 0 : this.w.hashCode());
+			result = prime * result + ((this.x == null) ? 0 : this.x.hashCode());
+			result = prime * result + ((this.y == null) ? 0 : this.y.hashCode());
+			result = prime * result + ((this.z == null) ? 0 : this.z.hashCode());
 			return result;
 		}
 
@@ -139,30 +135,28 @@ public class Tuple {
 		public boolean equals(Object obj) {
 			if(this == obj)
 				return true;
-			if(obj == null)
+			if((obj == null) || (getClass() != obj.getClass()))
 				return false;
-			if(getClass() != obj.getClass())
-				return false;
-			Quartet other = (Quartet) obj;
-			if(w == null) {
+			Quartet<?, ?, ?, ?> other = (Quartet<?, ?, ?, ?>) obj;
+			if(this.w == null) {
 				if(other.w != null)
 					return false;
-			} else if(!w.equals(other.w))
+			} else if(!this.w.equals(other.w))
 				return false;
-			if(x == null) {
+			if(this.x == null) {
 				if(other.x != null)
 					return false;
-			} else if(!x.equals(other.x))
+			} else if(!this.x.equals(other.x))
 				return false;
-			if(y == null) {
+			if(this.y == null) {
 				if(other.y != null)
 					return false;
-			} else if(!y.equals(other.y))
+			} else if(!this.y.equals(other.y))
 				return false;
-			if(z == null) {
+			if(this.z == null) {
 				if(other.z != null)
 					return false;
-			} else if(!z.equals(other.z))
+			} else if(!this.z.equals(other.z))
 				return false;
 			return true;
 		}
@@ -202,11 +196,11 @@ public class Tuple {
 		public int hashCode() {
 			final int prime = 31;
 			int result = 1;
-			result = prime * result + ((v == null) ? 0 : v.hashCode());
-			result = prime * result + ((w == null) ? 0 : w.hashCode());
-			result = prime * result + ((x == null) ? 0 : x.hashCode());
-			result = prime * result + ((y == null) ? 0 : y.hashCode());
-			result = prime * result + ((z == null) ? 0 : z.hashCode());
+			result = prime * result + ((this.v == null) ? 0 : this.v.hashCode());
+			result = prime * result + ((this.w == null) ? 0 : this.w.hashCode());
+			result = prime * result + ((this.x == null) ? 0 : this.x.hashCode());
+			result = prime * result + ((this.y == null) ? 0 : this.y.hashCode());
+			result = prime * result + ((this.z == null) ? 0 : this.z.hashCode());
 			return result;
 		}
 
@@ -214,35 +208,33 @@ public class Tuple {
 		public boolean equals(Object obj) {
 			if(this == obj)
 				return true;
-			if(obj == null)
+			if((obj == null) || (getClass() != obj.getClass()))
 				return false;
-			if(getClass() != obj.getClass())
-				return false;
-			Quintet other = (Quintet) obj;
-			if(v == null) {
+			Quintet<?, ?, ?, ?, ?> other = (Quintet<?, ?, ?, ?, ?>) obj;
+			if(this.v == null) {
 				if(other.v != null)
 					return false;
-			} else if(!v.equals(other.w))
+			} else if(!this.v.equals(other.w))
 				return false;
-			if(w == null) {
+			if(this.w == null) {
 				if(other.w != null)
 					return false;
-			} else if(!w.equals(other.w))
+			} else if(!this.w.equals(other.w))
 				return false;
-			if(x == null) {
+			if(this.x == null) {
 				if(other.x != null)
 					return false;
-			} else if(!x.equals(other.x))
+			} else if(!this.x.equals(other.x))
 				return false;
-			if(y == null) {
+			if(this.y == null) {
 				if(other.y != null)
 					return false;
-			} else if(!y.equals(other.y))
+			} else if(!this.y.equals(other.y))
 				return false;
-			if(z == null) {
+			if(this.z == null) {
 				if(other.z != null)
 					return false;
-			} else if(!z.equals(other.z))
+			} else if(!this.z.equals(other.z))
 				return false;
 			return true;
 		}

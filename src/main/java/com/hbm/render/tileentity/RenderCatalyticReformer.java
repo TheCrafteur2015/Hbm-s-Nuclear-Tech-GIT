@@ -56,7 +56,7 @@ public class RenderCatalyticReformer extends TileEntitySpecialRenderer implement
 			GL11.glRotated(System.currentTimeMillis() / 5D % 360D, 0, -1, 0);
 			GL11.glTranslated(0, 0.1, -0.5);
 	
-			this.bindTexture(extra);
+			bindTexture(RenderCatalyticReformer.extra);
 			HorsePronter.reset();
 			double r = 60;
 			HorsePronter.pose(HorsePronter.id_body, 0, -r, 0);
@@ -93,10 +93,12 @@ public class RenderCatalyticReformer extends TileEntitySpecialRenderer implement
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase() {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(0, -3, 0);
 				GL11.glScaled(3.5, 3.5, 3.5);
 			}
+			@Override
 			public void renderCommon() {
 				GL11.glScaled(0.5, 0.5, 0.5);
 				GL11.glShadeModel(GL11.GL_SMOOTH);

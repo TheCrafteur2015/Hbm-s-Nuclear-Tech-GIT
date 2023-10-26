@@ -22,10 +22,12 @@ public class ParticleAmatFlash extends EntityFX {
 		this.particleScale = scale;
 	}
 
+	@Override
 	public int getFXLayer() {
 		return 3;
 	}
 
+	@Override
 	public void renderParticle(Tessellator tess, float interp, float x, float y, float z, float tx, float tz) {
 
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
@@ -41,7 +43,7 @@ public class ParticleAmatFlash extends EntityFX {
 		GL11.glPushMatrix();
 		GL11.glTranslatef(pX, pY, pZ);
 
-		GL11.glScalef(0.2F * particleScale, 0.2F * particleScale, 0.2F * particleScale);
+		GL11.glScalef(0.2F * this.particleScale, 0.2F * this.particleScale, 0.2F * this.particleScale);
 
 		double intensity = (double) (this.particleAge + interp) / (double) this.particleMaxAge;
 		double inverse = 1.0D - intensity;

@@ -117,9 +117,9 @@ public class ItemRenderWeaponFFMaresLeg implements IItemRenderer {
 		default: break;
 		}
 		
-		Minecraft.getMinecraft().renderEngine.bindTexture(grip);
+		Minecraft.getMinecraft().renderEngine.bindTexture(this.grip);
 		ResourceManager.ff_maresleg.renderPart("Grip");
-		Minecraft.getMinecraft().renderEngine.bindTexture(main);
+		Minecraft.getMinecraft().renderEngine.bindTexture(this.main);
 		ResourceManager.ff_maresleg.renderPart("Gun");
 		GL11.glTranslated(0, 0.1, 0.25);
 		GL11.glRotated(lever * 1.5, 1, 0, 0);

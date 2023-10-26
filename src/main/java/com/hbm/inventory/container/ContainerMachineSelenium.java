@@ -15,41 +15,41 @@ private TileEntityMachineSeleniumEngine seleniumEngine;
 	
 	public ContainerMachineSelenium(InventoryPlayer invPlayer, TileEntityMachineSeleniumEngine tedf) {
 		
-		seleniumEngine = tedf;
+		this.seleniumEngine = tedf;
 		
 		//Pistons
-		this.addSlotToContainer(new Slot(tedf, 0, 8, 18));
-		this.addSlotToContainer(new Slot(tedf, 1, 26, 18));
-		this.addSlotToContainer(new Slot(tedf, 2, 44, 18));
-		this.addSlotToContainer(new Slot(tedf, 3, 8, 36));
-		this.addSlotToContainer(new Slot(tedf, 4, 26, 36));
-		this.addSlotToContainer(new Slot(tedf, 5, 44, 36));
-		this.addSlotToContainer(new Slot(tedf, 6, 8, 54));
-		this.addSlotToContainer(new Slot(tedf, 7, 26, 54));
-		this.addSlotToContainer(new Slot(tedf, 8, 44, 54));
+		addSlotToContainer(new Slot(tedf, 0, 8, 18));
+		addSlotToContainer(new Slot(tedf, 1, 26, 18));
+		addSlotToContainer(new Slot(tedf, 2, 44, 18));
+		addSlotToContainer(new Slot(tedf, 3, 8, 36));
+		addSlotToContainer(new Slot(tedf, 4, 26, 36));
+		addSlotToContainer(new Slot(tedf, 5, 44, 36));
+		addSlotToContainer(new Slot(tedf, 6, 8, 54));
+		addSlotToContainer(new Slot(tedf, 7, 26, 54));
+		addSlotToContainer(new Slot(tedf, 8, 44, 54));
 		
 		//Fluid IO
-		this.addSlotToContainer(new Slot(tedf, 9, 80, 18));
-		this.addSlotToContainer(new SlotTakeOnly(tedf, 10, 80, 54));
+		addSlotToContainer(new Slot(tedf, 9, 80, 18));
+		addSlotToContainer(new SlotTakeOnly(tedf, 10, 80, 54));
 		
 		//Fluid IDs
-		this.addSlotToContainer(new Slot(tedf, 11, 152, 18));
-		this.addSlotToContainer(new SlotTakeOnly(tedf, 12, 152, 54));
+		addSlotToContainer(new Slot(tedf, 11, 152, 18));
+		addSlotToContainer(new SlotTakeOnly(tedf, 12, 152, 54));
 		
 		//Battery
-		this.addSlotToContainer(new Slot(tedf, 13, 116, 90));
+		addSlotToContainer(new Slot(tedf, 13, 116, 90));
 		
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 56));
+				addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 56));
 			}
 		}
 		
 		for(int i = 0; i < 9; i++)
 		{
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 56));
+			addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 56));
 		}
 	}
 	
@@ -65,7 +65,7 @@ private TileEntityMachineSeleniumEngine seleniumEngine;
 			var3 = var5.copy();
 			
             if (par2 <= 13) {
-				if (!this.mergeItemStack(var5, 14, this.inventorySlots.size(), true))
+				if (!mergeItemStack(var5, 14, this.inventorySlots.size(), true))
 				{
 					return null;
 				}
@@ -88,6 +88,6 @@ private TileEntityMachineSeleniumEngine seleniumEngine;
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return seleniumEngine.isUseableByPlayer(player);
+		return this.seleniumEngine.isUseableByPlayer(player);
 	}
 }

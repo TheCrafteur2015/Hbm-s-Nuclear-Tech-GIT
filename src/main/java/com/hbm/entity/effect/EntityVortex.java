@@ -20,7 +20,7 @@ public class EntityVortex extends EntityBlackHole {
 		
 		this.dataWatcher.updateObject(16, this.dataWatcher.getWatchableObjectFloat(16) - 0.0025F);
 		if(this.dataWatcher.getWatchableObjectFloat(16) <= 0) {
-			this.setDead();
+			setDead();
 			return;
 		}
 		

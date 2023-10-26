@@ -13,15 +13,15 @@ public class TileEntityCableBaseNT extends TileEntity implements IEnergyConducto
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote && canUpdate()) {
+		if(!this.worldObj.isRemote && canUpdate()) {
 			
 			//we got here either because the net doesn't exist or because it's not valid, so that's safe to assume
-			this.setPowerNet(null);
+			setPowerNet(null);
 			
-			this.connect();
+			connect();
 			
-			if(this.getPowerNet() == null) {
-				this.setPowerNet(new PowerNet().joinLink(this));
+			if(getPowerNet() == null) {
+				setPowerNet(new PowerNet().joinLink(this));
 			}
 		}
 	}
@@ -30,7 +30,7 @@ public class TileEntityCableBaseNT extends TileEntity implements IEnergyConducto
 		
 		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 			
-			TileEntity te = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
+			TileEntity te = this.worldObj.getTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
 			
 			if(te instanceof IEnergyConductor) {
 				
@@ -39,12 +39,12 @@ public class TileEntityCableBaseNT extends TileEntity implements IEnergyConducto
 				if(!conductor.canConnect(dir.getOpposite()))
 					continue;
 				
-				if(this.getPowerNet() == null && conductor.getPowerNet() != null) {
+				if(getPowerNet() == null && conductor.getPowerNet() != null) {
 					conductor.getPowerNet().joinLink(this);
 				}
 				
-				if(this.getPowerNet() != null && conductor.getPowerNet() != null && this.getPowerNet() != conductor.getPowerNet()) {
-					conductor.getPowerNet().joinNetworks(this.getPowerNet());
+				if(getPowerNet() != null && conductor.getPowerNet() != null && getPowerNet() != conductor.getPowerNet()) {
+					conductor.getPowerNet().joinNetworks(getPowerNet());
 				}
 			}
 		}
@@ -54,7 +54,7 @@ public class TileEntityCableBaseNT extends TileEntity implements IEnergyConducto
 	public void invalidate() {
 		super.invalidate();
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			if(this.network != null) {
 				this.network.reevaluate();
 				this.network = null;
@@ -67,7 +67,7 @@ public class TileEntityCableBaseNT extends TileEntity implements IEnergyConducto
 	 */
 	@Override
 	public boolean canUpdate() {
-		return (this.network == null || !this.network.isValid()) && !this.isInvalid();
+		return (this.network == null || !this.network.isValid()) && !isInvalid();
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package com.hbm.blocks.machine.rbmk;
 
+import com.hbm.blocks.BlockDummyable;
 import com.hbm.tileentity.machine.rbmk.TileEntityRBMKControlAuto;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,7 +13,7 @@ public class RBMKControlAuto extends RBMKBase {
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
 		
-		if(meta >= this.offset)
+		if(meta >= BlockDummyable.offset)
 			return new TileEntityRBMKControlAuto();
 		return null;
 	}
@@ -29,6 +30,6 @@ public class RBMKControlAuto extends RBMKBase {
 	
 	@Override
 	public int getRenderType(){
-		return this.renderIDControl;
+		return RBMKBase.renderIDControl;
 	}
 }

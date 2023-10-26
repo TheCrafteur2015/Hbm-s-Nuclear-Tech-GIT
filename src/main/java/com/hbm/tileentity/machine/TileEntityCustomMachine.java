@@ -50,7 +50,7 @@ public class TileEntityCustomMachine extends TileEntityMachineBase implements IF
 	public boolean structureOK = false;
 	public CustomMachineRecipe cachedRecipe;
 	
-	public List<DirPos> connectionPos = new ArrayList();
+	public List<DirPos> connectionPos = new ArrayList<>();
 
 	public TileEntityCustomMachine() {
 		/*
@@ -69,97 +69,97 @@ public class TileEntityCustomMachine extends TileEntityMachineBase implements IF
 		if(config != null) {
 			this.config = config;
 
-			inputTanks = new FluidTank[config.fluidInCount];
-			for(int i = 0; i < inputTanks.length; i++) inputTanks[i] = new FluidTank(Fluids.NONE, config.fluidInCap);
-			outputTanks = new FluidTank[config.fluidOutCount];
-			for(int i = 0; i < outputTanks.length; i++) outputTanks[i] = new FluidTank(Fluids.NONE, config.fluidOutCap);
+			this.inputTanks = new FluidTank[config.fluidInCount];
+			for(int i = 0; i < this.inputTanks.length; i++) this.inputTanks[i] = new FluidTank(Fluids.NONE, config.fluidInCap);
+			this.outputTanks = new FluidTank[config.fluidOutCount];
+			for(int i = 0; i < this.outputTanks.length; i++) this.outputTanks[i] = new FluidTank(Fluids.NONE, config.fluidOutCap);
 			
-			matcher = new ModulePatternMatcher(config.itemInCount);
+			this.matcher = new ModulePatternMatcher(config.itemInCount);
 			
 		} else {
-			worldObj.func_147480_a(xCoord, yCoord, zCoord, false);
+			this.worldObj.func_147480_a(this.xCoord, this.yCoord, this.zCoord, false);
 		}
 	}
 
 	@Override
 	public String getName() {
-		return config != null ? config.localizedName : "INVALID";
+		return this.config != null ? this.config.localizedName : "INVALID";
 	}
 
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			if(config == null) {
-				worldObj.func_147480_a(xCoord, yCoord, zCoord, false);
+			if(this.config == null) {
+				this.worldObj.func_147480_a(this.xCoord, this.yCoord, this.zCoord, false);
 				return;
 			}
 
-			this.power = Library.chargeTEFromItems(slots, 0, power, this.config.maxPower);
+			this.power = Library.chargeTEFromItems(this.slots, 0, this.power, this.config.maxPower);
 			
-			if(this.inputTanks.length > 0) this.inputTanks[0].setType(1, slots);
-			if(this.inputTanks.length > 1) this.inputTanks[1].setType(2, slots);
-			if(this.inputTanks.length > 2) this.inputTanks[2].setType(3, slots);
+			if(this.inputTanks.length > 0) this.inputTanks[0].setType(1, this.slots);
+			if(this.inputTanks.length > 1) this.inputTanks[1].setType(2, this.slots);
+			if(this.inputTanks.length > 2) this.inputTanks[2].setType(3, this.slots);
 			
 			this.structureCheckDelay--;
-			if(this.structureCheckDelay <= 0) this.checkStructure();
+			if(this.structureCheckDelay <= 0) checkStructure();
 			
 			if(this.worldObj.getTotalWorldTime() % 20 == 0) {
 				for(DirPos pos : this.connectionPos) {
 					for(FluidTank tank : this.inputTanks) {
-						this.trySubscribe(tank.getTankType(), worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+						this.trySubscribe(tank.getTankType(), this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 					}
-					if(!config.generatorMode) this.trySubscribe(worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+					if(!this.config.generatorMode) this.trySubscribe(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 				}
 			}
 			
 			for(DirPos pos : this.connectionPos) {
-				if(config.generatorMode && power > 0) this.sendPower(worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
-				for(FluidTank tank : this.outputTanks) if(tank.getFill() > 0) this.sendFluid(tank, worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+				if(this.config.generatorMode && this.power > 0) sendPower(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+				for(FluidTank tank : this.outputTanks) if(tank.getFill() > 0) this.sendFluid(tank, this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 			}
 			
 			if(this.structureOK) {
 				
-				if(config.generatorMode) {
+				if(this.config.generatorMode) {
 					if(this.cachedRecipe == null) {
-						CustomMachineRecipe recipe = this.getMatchingRecipe();
-						if(recipe != null && this.hasRequiredQuantities(recipe) && this.hasSpace(recipe)) {
+						CustomMachineRecipe recipe = getMatchingRecipe();
+						if(recipe != null && hasRequiredQuantities(recipe) && hasSpace(recipe)) {
 							this.cachedRecipe = recipe;
-							this.useUpInput(recipe);
+							useUpInput(recipe);
 						}
 					}
 					
 					if(this.cachedRecipe != null) {
-						this.maxProgress = (int) Math.max(cachedRecipe.duration / this.config.recipeSpeedMult, 1);
-						int powerReq = (int) Math.max(cachedRecipe.consumptionPerTick * this.config.recipeConsumptionMult, 1);
+						this.maxProgress = (int) Math.max(this.cachedRecipe.duration / this.config.recipeSpeedMult, 1);
+						int powerReq = (int) Math.max(this.cachedRecipe.consumptionPerTick * this.config.recipeConsumptionMult, 1);
 						
 						this.progress++;
 						this.power += powerReq;
-						if(power > config.maxPower) power = config.maxPower;
+						if(this.power > this.config.maxPower) this.power = this.config.maxPower;
 						
-						if(progress >= this.maxProgress) {
+						if(this.progress >= this.maxProgress) {
 							this.progress = 0;
-							this.processRecipe(cachedRecipe);
+							processRecipe(this.cachedRecipe);
 							this.cachedRecipe = null;
 						}
 					}
 					
 				} else {
-					CustomMachineRecipe recipe = this.getMatchingRecipe();
+					CustomMachineRecipe recipe = getMatchingRecipe();
 					
 					if(recipe != null) {
 						this.maxProgress = (int) Math.max(recipe.duration / this.config.recipeSpeedMult, 1);
 						int powerReq = (int) Math.max(recipe.consumptionPerTick * this.config.recipeConsumptionMult, 1);
 						
-						if(this.power >= powerReq && this.hasRequiredQuantities(recipe) && this.hasSpace(recipe)) {
+						if(this.power >= powerReq && hasRequiredQuantities(recipe) && hasSpace(recipe)) {
 							this.progress++;
 							this.power -= powerReq;
 							
-							if(progress >= this.maxProgress) {
+							if(this.progress >= this.maxProgress) {
 								this.progress = 0;
-								this.useUpInput(recipe);
-								this.processRecipe(recipe);
+								useUpInput(recipe);
+								processRecipe(recipe);
 							}
 						}
 					} else {
@@ -172,14 +172,14 @@ public class TileEntityCustomMachine extends TileEntityMachineBase implements IF
 			
 			NBTTagCompound data = new NBTTagCompound();
 			data.setString("type", this.machineType);
-			data.setLong("power", power);
-			data.setBoolean("structureOK", structureOK);
-			data.setInteger("progress", progress);
-			data.setInteger("maxProgress", maxProgress);
-			for(int i = 0; i < inputTanks.length; i++) inputTanks[i].writeToNBT(data, "i" + i);
-			for(int i = 0; i < outputTanks.length; i++) outputTanks[i].writeToNBT(data, "o" + i);
+			data.setLong("power", this.power);
+			data.setBoolean("structureOK", this.structureOK);
+			data.setInteger("progress", this.progress);
+			data.setInteger("maxProgress", this.maxProgress);
+			for(int i = 0; i < this.inputTanks.length; i++) this.inputTanks[i].writeToNBT(data, "i" + i);
+			for(int i = 0; i < this.outputTanks.length; i++) this.outputTanks[i].writeToNBT(data, "o" + i);
 			this.matcher.writeToNBT(data);
-			this.networkPack(data, 50);
+			networkPack(data, 50);
 		}
 	}
 	
@@ -195,8 +195,7 @@ public class TileEntityCustomMachine extends TileEntityMachineBase implements IF
 			}
 			
 			for(int i = 0; i < recipe.inputItems.length; i++) {
-				if(recipe.inputItems[i] != null && slots[i + 4] == null) continue outer;
-				if(!recipe.inputItems[i].matchesRecipe(slots[i + 4], true)) continue outer;
+				if((recipe.inputItems[i] != null && this.slots[i + 4] == null) || !recipe.inputItems[i].matchesRecipe(this.slots[i + 4], true)) continue outer;
 			}
 			
 			return recipe;
@@ -212,7 +211,7 @@ public class TileEntityCustomMachine extends TileEntityMachineBase implements IF
 		}
 		
 		for(int i = 0; i < recipe.inputItems.length; i++) {
-			if(slots[i + 4] != null && slots[i + 4].stackSize < recipe.inputItems[i].stacksize) return false;
+			if(this.slots[i + 4] != null && this.slots[i + 4].stackSize < recipe.inputItems[i].stacksize) return false;
 		}
 		
 		return true;
@@ -225,8 +224,8 @@ public class TileEntityCustomMachine extends TileEntityMachineBase implements IF
 		}
 		
 		for(int i = 0; i < recipe.outputItems.length; i++) {
-			if(slots[i + 16] != null && (slots[i + 16].getItem() != recipe.outputItems[i].key.getItem() || slots[i + 16].getItemDamage() != recipe.outputItems[i].key.getItemDamage())) return false;
-			if(slots[i + 16] != null && slots[16 + i].stackSize + recipe.outputItems[i].key.stackSize > slots[i + 16].getMaxStackSize()) return false;
+			if(this.slots[i + 16] != null && (this.slots[i + 16].getItem() != recipe.outputItems[i].key.getItem() || this.slots[i + 16].getItemDamage() != recipe.outputItems[i].key.getItemDamage())) return false;
+			if(this.slots[i + 16] != null && this.slots[16 + i].stackSize + recipe.outputItems[i].key.stackSize > this.slots[i + 16].getMaxStackSize()) return false;
 		}
 		
 		return true;
@@ -239,7 +238,7 @@ public class TileEntityCustomMachine extends TileEntityMachineBase implements IF
 		}
 		
 		for(int i = 0; i < recipe.inputItems.length; i++) {
-			this.decrStackSize(i + 4, recipe.inputItems[i].stacksize);
+			decrStackSize(i + 4, recipe.inputItems[i].stacksize);
 		}
 	}
 	
@@ -252,11 +251,11 @@ public class TileEntityCustomMachine extends TileEntityMachineBase implements IF
 		
 		for(int i = 0; i < recipe.outputItems.length; i++) {
 			
-			if(worldObj.rand.nextFloat() < recipe.outputItems[i].value) {
-				if(slots[i + 16] == null) {
-					slots[i + 16] = recipe.outputItems[i].key.copy();
+			if(this.worldObj.rand.nextFloat() < recipe.outputItems[i].value) {
+				if(this.slots[i + 16] == null) {
+					this.slots[i + 16] = recipe.outputItems[i].key.copy();
 				} else {
-					slots[i + 16].stackSize += recipe.outputItems[i].key.stackSize;
+					this.slots[i + 16].stackSize += recipe.outputItems[i].key.stackSize;
 				}
 			}
 		}
@@ -269,33 +268,33 @@ public class TileEntityCustomMachine extends TileEntityMachineBase implements IF
 		this.structureOK = false;
 		if(this.config == null) return false;
 		
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata());
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata());
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 		
-		for(ComponentDefinition comp : config.components) {
+		for(ComponentDefinition comp : this.config.components) {
 			
 			/* vvv precisely the same method used for defining ports vvv */
-			int x = xCoord - dir.offsetX * comp.x + rot.offsetX * comp.x;
-			int y = yCoord + comp.y;
-			int z = zCoord - dir.offsetZ * comp.z + rot.offsetZ * comp.z;
+			int x = this.xCoord - dir.offsetX * comp.x + rot.offsetX * comp.x;
+			int y = this.yCoord + comp.y;
+			int z = this.zCoord - dir.offsetZ * comp.z + rot.offsetZ * comp.z;
 			/* but for EW directions it just stops working entirely */
 			/* there is absolutely zero reason why this should be required */
 			if(dir == ForgeDirection.EAST || dir == ForgeDirection.WEST) {
-				x = xCoord + dir.offsetZ * comp.z - rot.offsetZ * comp.z;
-				z = zCoord + dir.offsetX * comp.x - rot.offsetX * comp.x;
+				x = this.xCoord + dir.offsetZ * comp.z - rot.offsetZ * comp.z;
+				z = this.zCoord + dir.offsetX * comp.x - rot.offsetX * comp.x;
 			}
 			/* i wholeheartedly believe it is the computer who is wrong here */
 			
-			Block b = worldObj.getBlock(x, y, z);
+			Block b = this.worldObj.getBlock(x, y, z);
 			if(b != comp.block) return false;
 			
-			int meta = worldObj.getBlockMetadata(x, y, z);
+			int meta = this.worldObj.getBlockMetadata(x, y, z);
 			if(!comp.allowedMetas.contains(meta)) return false;
 			
-			TileEntity tile = Compat.getTileStandard(worldObj, x, y, z);
+			TileEntity tile = Compat.getTileStandard(this.worldObj, x, y, z);
 			if(tile instanceof TileEntityProxyBase) {
 				TileEntityProxyBase proxy = (TileEntityProxyBase) tile;
-				proxy.cachedPosition = new BlockPos(xCoord, yCoord, zCoord);
+				proxy.cachedPosition = new BlockPos(this.xCoord, this.yCoord, this.zCoord);
 				proxy.markDirty();
 				
 				for(ForgeDirection facing : ForgeDirection.VALID_DIRECTIONS) {
@@ -305,7 +304,7 @@ public class TileEntityCustomMachine extends TileEntityMachineBase implements IF
 		}
 		
 		for(ForgeDirection facing : ForgeDirection.VALID_DIRECTIONS) {
-			this.connectionPos.add(new DirPos(xCoord + facing.offsetX, yCoord + facing.offsetY, zCoord + facing.offsetZ, facing));
+			this.connectionPos.add(new DirPos(this.xCoord + facing.offsetX, this.yCoord + facing.offsetY, this.zCoord + facing.offsetZ, facing));
 		}
 		
 		this.structureOK = true;
@@ -316,20 +315,20 @@ public class TileEntityCustomMachine extends TileEntityMachineBase implements IF
 		
 		if(this.config == null) return;
 		
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata());
+		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata());
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 		
-		for(ComponentDefinition comp : config.components) {
+		for(ComponentDefinition comp : this.config.components) {
 			
-			int x = xCoord - dir.offsetX * comp.x + rot.offsetX * comp.x;
-			int y = yCoord + comp.y;
-			int z = zCoord - dir.offsetZ * comp.z + rot.offsetZ * comp.z;
+			int x = this.xCoord - dir.offsetX * comp.x + rot.offsetX * comp.x;
+			int y = this.yCoord + comp.y;
+			int z = this.zCoord - dir.offsetZ * comp.z + rot.offsetZ * comp.z;
 			if(dir == ForgeDirection.EAST || dir == ForgeDirection.WEST) {
-				x = xCoord + dir.offsetZ * comp.z - rot.offsetZ * comp.z;
-				z = zCoord + dir.offsetX * comp.x - rot.offsetX * comp.x;
+				x = this.xCoord + dir.offsetZ * comp.z - rot.offsetZ * comp.z;
+				z = this.zCoord + dir.offsetX * comp.x - rot.offsetX * comp.x;
 			}
 			
-			worldObj.setBlock(x, y, z, comp.block, (int) comp.allowedMetas.toArray()[0], 3);
+			this.worldObj.setBlock(x, y, z, comp.block, (int) comp.allowedMetas.toArray()[0], 3);
 		}
 	}
 
@@ -357,22 +356,22 @@ public class TileEntityCustomMachine extends TileEntityMachineBase implements IF
 		int index = slot - 4;
 		int filterSlot = slot + 6;
 		
-		if(slots[filterSlot] == null) return true;
+		if(this.slots[filterSlot] == null) return true;
 		
-		return matcher.isValidForFilter(slots[filterSlot], index, stack);
+		return this.matcher.isValidForFilter(this.slots[filterSlot], index, stack);
 	}
 
 	@Override
 	public void networkUnpack(NBTTagCompound nbt) {
 		this.machineType = nbt.getString("type");
-		if(this.config == null) this.init();
+		if(this.config == null) init();
 		
 		this.power = nbt.getLong("power");
 		this.progress = nbt.getInteger("progress");
 		this.structureOK = nbt.getBoolean("structureOK");
 		this.maxProgress = nbt.getInteger("maxProgress");
-		for(int i = 0; i < inputTanks.length; i++) inputTanks[i].readFromNBT(nbt, "i" + i);
-		for(int i = 0; i < outputTanks.length; i++) outputTanks[i].readFromNBT(nbt, "o" + i);
+		for(int i = 0; i < this.inputTanks.length; i++) this.inputTanks[i].readFromNBT(nbt, "i" + i);
+		for(int i = 0; i < this.outputTanks.length; i++) this.outputTanks[i].readFromNBT(nbt, "o" + i);
 		
 		this.matcher.readFromNBT(nbt);
 	}
@@ -381,14 +380,14 @@ public class TileEntityCustomMachine extends TileEntityMachineBase implements IF
 	public void readFromNBT(NBTTagCompound nbt) {
 		
 		this.machineType = nbt.getString("machineType");
-		this.init();
+		init();
 		
 		super.readFromNBT(nbt);
 		
 		if(this.config != null) {
 	
-			for(int i = 0; i < inputTanks.length; i++) inputTanks[i].readFromNBT(nbt, "i" + i);
-			for(int i = 0; i < outputTanks.length; i++) outputTanks[i].readFromNBT(nbt, "o" + i);
+			for(int i = 0; i < this.inputTanks.length; i++) this.inputTanks[i].readFromNBT(nbt, "i" + i);
+			for(int i = 0; i < this.outputTanks.length; i++) this.outputTanks[i].readFromNBT(nbt, "o" + i);
 			
 			this.matcher.readFromNBT(nbt);
 		}
@@ -402,17 +401,17 @@ public class TileEntityCustomMachine extends TileEntityMachineBase implements IF
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		
-		if(machineType == null || this.config == null) {
+		if(this.machineType == null || this.config == null) {
 			super.writeToNBT(nbt);
 			return;
 		}
 		
-		nbt.setString("machineType", machineType);
+		nbt.setString("machineType", this.machineType);
 		
 		super.writeToNBT(nbt);
 
-		for(int i = 0; i < inputTanks.length; i++) inputTanks[i].writeToNBT(nbt, "i" + i);
-		for(int i = 0; i < outputTanks.length; i++) outputTanks[i].writeToNBT(nbt, "o" + i);
+		for(int i = 0; i < this.inputTanks.length; i++) this.inputTanks[i].writeToNBT(nbt, "i" + i);
+		for(int i = 0; i < this.outputTanks.length; i++) this.outputTanks[i].writeToNBT(nbt, "o" + i);
 		
 		this.matcher.writeToNBT(nbt);
 		
@@ -427,22 +426,22 @@ public class TileEntityCustomMachine extends TileEntityMachineBase implements IF
 	@Override
 	public FluidTank[] getAllTanks() {
 		
-		FluidTank[] all = new FluidTank[inputTanks.length + outputTanks.length];
+		FluidTank[] all = new FluidTank[this.inputTanks.length + this.outputTanks.length];
 
-		for(int i = 0; i < inputTanks.length; i++) all[i] = inputTanks[i];
-		for(int i = 0; i < outputTanks.length; i++) all[inputTanks.length + i] = outputTanks[i];
+		for(int i = 0; i < this.inputTanks.length; i++) all[i] = this.inputTanks[i];
+		for(int i = 0; i < this.outputTanks.length; i++) all[this.inputTanks.length + i] = this.outputTanks[i];
 		
 		return all;
 	}
 
 	@Override
 	public FluidTank[] getSendingTanks() {
-		return outputTanks != null ? outputTanks : new FluidTank[0];
+		return this.outputTanks != null ? this.outputTanks : new FluidTank[0];
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return inputTanks != null ? inputTanks : new FluidTank[0];
+		return this.inputTanks != null ? this.inputTanks : new FluidTank[0];
 	}
 
 	@Override
@@ -477,12 +476,12 @@ public class TileEntityCustomMachine extends TileEntityMachineBase implements IF
 	public long transferPower(long power) {
 		if(this.config != null && this.config.generatorMode) return power;
 		
-		this.setPower(this.getPower() + power);
+		setPower(getPower() + power);
 		
-		if(this.getPower() > this.getMaxPower()) {
+		if(getPower() > getMaxPower()) {
 			
-			long overshoot = this.getPower() - this.getMaxPower();
-			this.setPower(this.getMaxPower());
+			long overshoot = getPower() - getMaxPower();
+			setPower(getMaxPower());
 			return overshoot;
 		}
 		

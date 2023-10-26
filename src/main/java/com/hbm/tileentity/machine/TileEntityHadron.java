@@ -71,7 +71,7 @@ public class TileEntityHadron extends TileEntityMachineBase implements IEnergyUs
 	
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
-        return access;
+        return TileEntityHadron.access;
     }
 
 	@Override
@@ -87,82 +87,83 @@ public class TileEntityHadron extends TileEntityMachineBase implements IEnergyUs
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
-			power = Library.chargeTEFromItems(slots, 4, power, maxPower);
+			this.power = Library.chargeTEFromItems(this.slots, 4, this.power, TileEntityHadron.maxPower);
 			drawPower();
 			
-			if(delay <= 0 && this.isOn && particles.size() < maxParticles && slots[0] != null && slots[1] != null && power >= maxPower * 0.75) {
+			if(this.delay <= 0 && this.isOn && this.particles.size() < TileEntityHadron.maxParticles && this.slots[0] != null && this.slots[1] != null && this.power >= TileEntityHadron.maxPower * 0.75) {
 				
-				if(!hopperMode || (slots[0].stackSize > 1 && slots[1].stackSize > 1)) {
-					ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata());
-					particles.add(new Particle(slots[0], slots[1], dir, xCoord, yCoord, zCoord));
-					this.decrStackSize(0, 1);
-					this.decrStackSize(1, 1);
-					power -= maxPower * 0.75;
+				if(!this.hopperMode || (this.slots[0].stackSize > 1 && this.slots[1].stackSize > 1)) {
+					ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata());
+					this.particles.add(new Particle(this.slots[0], this.slots[1], dir, this.xCoord, this.yCoord, this.zCoord));
+					decrStackSize(0, 1);
+					decrStackSize(1, 1);
+					this.power -= TileEntityHadron.maxPower * 0.75;
 					this.state = EnumHadronState.PROGRESS;
 				}
 			}
 			
-			if(delay > 0)
-				delay--;
-			else if(particles.isEmpty()) {
+			if(this.delay > 0)
+				this.delay--;
+			else if(this.particles.isEmpty()) {
 				this.state = EnumHadronState.IDLE;
 			}
 			
-			if(!particles.isEmpty())
+			if(!this.particles.isEmpty())
 				updateParticles();
 			
-			for(Particle p : particlesToRemove) {
-				particles.remove(p);
+			for(Particle p : this.particlesToRemove) {
+				this.particles.remove(p);
 			}
 			
-			particlesToRemove.clear();
+			this.particlesToRemove.clear();
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setBoolean("isOn", isOn);
-			data.setLong("power", power);
-			data.setBoolean("analysis", analysisOnly);
-			data.setBoolean("hopperMode", hopperMode);
-			data.setByte("state", (byte) state.ordinal());
+			data.setBoolean("isOn", this.isOn);
+			data.setLong("power", this.power);
+			data.setBoolean("analysis", this.analysisOnly);
+			data.setBoolean("hopperMode", this.hopperMode);
+			data.setByte("state", (byte) this.state.ordinal());
 			
-			data.setBoolean("stat_success", stat_success);
-			data.setByte("stat_state", (byte) stat_state.ordinal());
-			data.setInteger("stat_charge", stat_charge);
-			data.setInteger("stat_x", stat_x);
-			data.setInteger("stat_y", stat_y);
-			data.setInteger("stat_z", stat_z);
-			this.networkPack(data, 50);
+			data.setBoolean("stat_success", this.stat_success);
+			data.setByte("stat_state", (byte) this.stat_state.ordinal());
+			data.setInteger("stat_charge", this.stat_charge);
+			data.setInteger("stat_x", this.stat_x);
+			data.setInteger("stat_y", this.stat_y);
+			data.setInteger("stat_z", this.stat_z);
+			networkPack(data, 50);
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void process(Particle p) {
 		
-		ItemStack[] result = HadronRecipes.getOutput(p.item1, p.item2, p.momentum, analysisOnly);
+		ItemStack[] result = HadronRecipes.getOutput(p.item1, p.item2, p.momentum, this.analysisOnly);
 		
 		if(result == null) {
 			this.state = HadronRecipes.returnCode;
-			this.setStats(this.state, p.momentum, false);
-			this.delay = delayNoResult;
-			worldObj.playSoundEffect(p.posX, p.posY, p.posZ, "random.orb", 2, 0.5F);
+			setStats(this.state, p.momentum, false);
+			this.delay = TileEntityHadron.delayNoResult;
+			this.worldObj.playSoundEffect(p.posX, p.posY, p.posZ, "random.orb", 2, 0.5F);
 			return;
 		}
 		
-		if((slots[2] == null || (slots[2].getItem() == result[0].getItem() && slots[2].stackSize < slots[2].getMaxStackSize())) &&
-				(slots[3] == null || (slots[3].getItem() == result[1].getItem() && slots[3].stackSize < slots[3].getMaxStackSize()))) {
+		if((this.slots[2] == null || (this.slots[2].getItem() == result[0].getItem() && this.slots[2].stackSize < this.slots[2].getMaxStackSize())) &&
+				(this.slots[3] == null || (this.slots[3].getItem() == result[1].getItem() && this.slots[3].stackSize < this.slots[3].getMaxStackSize()))) {
 			
 			for(int i = 2; i <= 3; i++ ) {
 				
 				//System.out.println("yes");
-				if(slots[i] == null)
-					slots[i] = result[i - 2].copy();
+				if(this.slots[i] == null)
+					this.slots[i] = result[i - 2].copy();
 				else
-					slots[i].stackSize++;
+					this.slots[i].stackSize++;
 			}
 			
 			if(result[0].getItem() == ModItems.particle_digamma) {
-				List<EntityPlayer> players = worldObj.getEntitiesWithinAABB(EntityPlayer.class,
-						AxisAlignedBB.getBoundingBox(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5)
+				List<EntityPlayer> players = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class,
+						AxisAlignedBB.getBoundingBox(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5)
 						.expand(128, 50, 128));
 				
 				for(EntityPlayer player : players)
@@ -170,10 +171,10 @@ public class TileEntityHadron extends TileEntityMachineBase implements IEnergyUs
 			}
 		}
 		
-		worldObj.playSoundEffect(p.posX, p.posY, p.posZ, "random.orb", 2, 1F);
-		this.delay = delaySuccess;
+		this.worldObj.playSoundEffect(p.posX, p.posY, p.posZ, "random.orb", 2, 1F);
+		this.delay = TileEntityHadron.delaySuccess;
 		this.state = EnumHadronState.SUCCESS;
-		this.setStats(this.state, p.momentum, true);
+		setStats(this.state, p.momentum, true);
 	}
 
 	@Override
@@ -207,28 +208,28 @@ public class TileEntityHadron extends TileEntityMachineBase implements IEnergyUs
 		
 		for(ForgeDirection dir : getRandomDirs()) {
 			
-			if(power == maxPower)
+			if(this.power == TileEntityHadron.maxPower)
 				return;
 
-			int x = xCoord + dir.offsetX * 2;
-			int y = yCoord + dir.offsetY * 2;
-			int z = zCoord + dir.offsetZ * 2;
+			int x = this.xCoord + dir.offsetX * 2;
+			int y = this.yCoord + dir.offsetY * 2;
+			int z = this.zCoord + dir.offsetZ * 2;
 			
-			TileEntity te = worldObj.getTileEntity(x, y, z);
+			TileEntity te = this.worldObj.getTileEntity(x, y, z);
 			
 			if(te instanceof TileEntityHadronPower) {
 				
 				TileEntityHadronPower plug = (TileEntityHadronPower)te;
 				
-				long toDraw = Math.min(maxPower - power, plug.getPower());
-				this.setPower(power + toDraw);
+				long toDraw = Math.min(TileEntityHadron.maxPower - this.power, plug.getPower());
+				setPower(this.power + toDraw);
 				plug.setPower(plug.getPower() - toDraw);
 			}
 		}
 	}
 	
 	private void finishParticle(Particle p) {
-		particlesToRemove.add(p);
+		this.particlesToRemove.add(p);
 		
 		if(!p.isExpired())
 			process(p);
@@ -237,12 +238,12 @@ public class TileEntityHadron extends TileEntityMachineBase implements IEnergyUs
 	}
 	
 	static final int maxParticles = 1;
-	List<Particle> particles = new ArrayList();
-	List<Particle> particlesToRemove = new ArrayList();
+	List<Particle> particles = new ArrayList<>();
+	List<Particle> particlesToRemove = new ArrayList<>();
 	
 	private void updateParticles() {
 		
-		for(Particle particle : particles) {
+		for(Particle particle : this.particles) {
 			particle.update();
 		}
 	}
@@ -261,30 +262,30 @@ public class TileEntityHadron extends TileEntityMachineBase implements IEnergyUs
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 
-		nbt.setBoolean("isOn", isOn);
-		nbt.setLong("power", power);
-		nbt.setBoolean("analysis", analysisOnly);
-		nbt.setBoolean("hopperMode", hopperMode);
+		nbt.setBoolean("isOn", this.isOn);
+		nbt.setLong("power", this.power);
+		nbt.setBoolean("analysis", this.analysisOnly);
+		nbt.setBoolean("hopperMode", this.hopperMode);
 	}
 	
 	public int getPowerScaled(int i) {
-		return (int)(power * i / maxPower);
+		return (int)(this.power * i / TileEntityHadron.maxPower);
 	}
 
 	@Override
 	public void setPower(long i) {
-		power = i;
-		this.markDirty();
+		this.power = i;
+		markDirty();
 	}
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 
 	@Override
 	public long getMaxPower() {
-		return maxPower;
+		return TileEntityHadron.maxPower;
 	}
 	
 	@Override
@@ -343,19 +344,19 @@ public class TileEntityHadron extends TileEntityMachineBase implements IEnergyUs
 		
 		public void expire(EnumHadronState reason) {
 			
-			if(expired)
+			if(this.expired)
 				return;
 			
 			this.expired = true;
-			particlesToRemove.add(this);
-			worldObj.newExplosion(null, posX + 0.5, posY + 0.5, posZ + 0.5, 10, false, false);
+			TileEntityHadron.this.particlesToRemove.add(this);
+			TileEntityHadron.this.worldObj.newExplosion(null, this.posX + 0.5, this.posY + 0.5, this.posZ + 0.5, 10, false, false);
 			//System.out.println("Last dir: " + dir.name());
 			//System.out.println("Last pos: " + posX + " " + posY + " " + posZ);
 			//Thread.currentThread().dumpStack();
 
 			TileEntityHadron.this.state = reason;
-			TileEntityHadron.this.delay = delayError;
-			TileEntityHadron.this.setExpireStats(reason, this.momentum, posX, posY, posZ);
+			TileEntityHadron.this.delay = TileEntityHadron.delayError;
+			setExpireStats(reason, this.momentum, this.posX, this.posY, this.posZ);
 		}
 		
 		public boolean isExpired() {
@@ -364,40 +365,40 @@ public class TileEntityHadron extends TileEntityMachineBase implements IEnergyUs
 		
 		public void update() {
 			
-			if(expired) //just in case
+			if(this.expired) //just in case
 				return;
 
 			changeDirection(this);
 			makeSteppy(this);
 			
-			if(!this.isExpired()) //only important for when the current segment is the core
+			if(!isExpired()) //only important for when the current segment is the core
 				checkSegment(this);
 			
-			isCheckExempt = false; //clearing up the exemption we might have held from the previous turn, AFTER stepping
+			this.isCheckExempt = false; //clearing up the exemption we might have held from the previous turn, AFTER stepping
 			
-			if(charge < 0)
-				this.expire(EnumHadronState.ERROR_NO_CHARGE);
+			if(this.charge < 0)
+				expire(EnumHadronState.ERROR_NO_CHARGE);
 
-			if(cl0 > 0) cl0--;
-			if(cl1 > 0) cl1--;
+			if(this.cl0 > 0) this.cl0--;
+			if(this.cl1 > 0) this.cl1--;
 		}
 
 		public void incrementCharge(Block block, int meta, int coilVal) {
 
 			if(block == ModBlocks.hadron_cooler) {
-				if(meta == 0) cl0 += 10;
-				if(meta == 1) cl1 += 5;
+				if(meta == 0) this.cl0 += 10;
+				if(meta == 1) this.cl1 += 5;
 			}
 			
 			//not the best code ever made but it works, dammit
-			if(cl1 > 0) {
+			if(this.cl1 > 0) {
 				
-				double mult = 2D - (cl1 - 15D) * (cl1 - 15D) / 225D;
+				double mult = 2D - (this.cl1 - 15D) * (this.cl1 - 15D) / 225D;
 				mult = Math.max(mult, 0.1D);
 				coilVal *= mult;
 				
-			} else if(cl0 > 0) {
-				if(cl0 > 10) {
+			} else if(this.cl0 > 0) {
+				if(this.cl0 > 10) {
 					coilVal *= 0.75;
 				} else {
 					coilVal *= 1.10;
@@ -425,15 +426,15 @@ public class TileEntityHadron extends TileEntityMachineBase implements IEnergyUs
 		int y = p.posY;
 		int z = p.posZ;
 		
-		Block block = worldObj.getBlock(x, y, z);
-		TileEntity te = worldObj.getTileEntity(x, y, z);
+		Block block = this.worldObj.getBlock(x, y, z);
+		TileEntity te = this.worldObj.getTileEntity(x, y, z);
 		
 		if(te instanceof TileEntityHadron) {
 
 			if(p.analysis != 3)
 				p.expire(EnumHadronState.ERROR_NO_ANALYSIS);
 			else
-				this.finishParticle(p);
+				finishParticle(p);
 			
 			return;
 		}
@@ -444,7 +445,7 @@ public class TileEntityHadron extends TileEntityMachineBase implements IEnergyUs
 		if(block == ModBlocks.hadron_diode)
 			p.isCheckExempt = true;
 		
-		if(isValidCoil(worldObj.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ)))
+		if(isValidCoil(this.worldObj.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ)))
 			p.isCheckExempt = true;
 	}
 	
@@ -474,8 +475,8 @@ public class TileEntityHadron extends TileEntityMachineBase implements IEnergyUs
 			for(int b = y - dY * 2; b <= y + dY * 2; b++) {
 				for(int c = z - dZ * 2; c <= z + dZ * 2;c++) {
 					
-					Block block = worldObj.getBlock(a, b, c);
-					int meta = worldObj.getBlockMetadata(a, b, c);
+					Block block = this.worldObj.getBlock(a, b, c);
+					int meta = this.worldObj.getBlockMetadata(a, b, c);
 					
 					/** ignore the center for now */
 					if(a == x && b == y && c == z) {
@@ -495,12 +496,8 @@ public class TileEntityHadron extends TileEntityMachineBase implements IEnergyUs
 					if(ix <= 1 && iy <= 1 && iz <= 1) {
 						
 						//are we exempt from the coil examination? nice, skip checks only for inner magnets, not the corners!
-						if(p.isCheckExempt && ix + iy + iz == 1) {
-							continue;
-						}
-						
 						//coil is air, analysis can remain true
-						if(block.getMaterial() == Material.air && analysis) {
+						if((p.isCheckExempt && ix + iy + iz == 1) || (block.getMaterial() == Material.air && analysis)) {
 							continue;
 						}
 						
@@ -534,7 +531,7 @@ public class TileEntityHadron extends TileEntityMachineBase implements IEnergyUs
 						if(isPlating(block))
 							continue;
 						
-						TileEntity te = worldObj.getTileEntity(a, b, c);
+						TileEntity te = this.worldObj.getTileEntity(a, b, c);
 						
 						//power plugs are also ok, might as well succ some energy when passing
 						if(te instanceof TileEntityHadronPower) {
@@ -577,12 +574,12 @@ public class TileEntityHadron extends TileEntityMachineBase implements IEnergyUs
 				this.state = EnumHadronState.ANALYSIS;
 				NBTTagCompound data = new NBTTagCompound();
 				data.setString("type", "hadron");
-				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, p.posX + 0.5, p.posY + 0.5, p.posZ + 0.5), new TargetPoint(worldObj.provider.dimensionId, p.posX + 0.5, p.posY + 0.5, p.posZ + 0.5, 25));
+				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacketNT(data, p.posX + 0.5, p.posY + 0.5, p.posZ + 0.5), new TargetPoint(this.worldObj.provider.dimensionId, p.posX + 0.5, p.posY + 0.5, p.posZ + 0.5, 25));
 			}
 
 			//if operating in line accelerator mode, halt after 2 blocks and staart the reading
 			if(this.analysisOnly && p.analysis == 2) {
-				this.finishParticle(p);
+				finishParticle(p);
 			}
 			
 		} else {
@@ -610,9 +607,9 @@ public class TileEntityHadron extends TileEntityMachineBase implements IEnergyUs
 		int ny = y + dir.offsetY;
 		int nz = z + dir.offsetZ;
 		
-		Block next = worldObj.getBlock(nx, ny, nz);
+		Block next = this.worldObj.getBlock(nx, ny, nz);
 		
-		TileEntity te = worldObj.getTileEntity(nx, ny, nz);
+		TileEntity te = this.worldObj.getTileEntity(nx, ny, nz);
 		
 		//the next block appears to be a diode, let's see if we can enter
 		if(te instanceof TileEntityHadronDiode) {
@@ -631,7 +628,7 @@ public class TileEntityHadron extends TileEntityMachineBase implements IEnergyUs
 		}
 		
 		//instead of the next TE, we are looking at the current one - the diode (maybe)
-		te = worldObj.getTileEntity(x, y, z);
+		te = this.worldObj.getTileEntity(x, y, z);
 		
 		//if we are currently in a diode, we might want to consider changing dirs
 		if(te instanceof TileEntityHadronDiode) {
@@ -685,7 +682,7 @@ public class TileEntityHadron extends TileEntityMachineBase implements IEnergyUs
 					continue;
 				
 				//there is air! we can pass!
-				if(worldObj.getBlock(x + d.offsetX, y + d.offsetY, z + d.offsetZ).getMaterial() == Material.air) {
+				if(this.worldObj.getBlock(x + d.offsetX, y + d.offsetY, z + d.offsetZ).getMaterial() == Material.air) {
 					
 					if(validDir == ForgeDirection.UNKNOWN) {
 						validDir = d;
@@ -716,7 +713,7 @@ public class TileEntityHadron extends TileEntityMachineBase implements IEnergyUs
 		
 		List<Integer> rands = Arrays.asList(new Integer[] {0, 1, 2, 3, 4, 5} );
 		Collections.shuffle(rands);
-		List<ForgeDirection> dirs = new ArrayList();
+		List<ForgeDirection> dirs = new ArrayList<>();
 		for(Integer i : rands) {
 			dirs.add(ForgeDirection.getOrientation(i));
 		}
@@ -724,9 +721,7 @@ public class TileEntityHadron extends TileEntityMachineBase implements IEnergyUs
 	}
 	
 	public boolean isValidCoil(Block b) {
-		if(coilValue(b) > 0) return true;
-		
-		if(b == ModBlocks.hadron_cooler) return true;
+		if((coilValue(b) > 0) || (b == ModBlocks.hadron_cooler)) return true;
 		
 		return false;
 	}

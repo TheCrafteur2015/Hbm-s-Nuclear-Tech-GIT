@@ -44,10 +44,12 @@ public class RenderNukeMike extends TileEntitySpecialRenderer implements IItemRe
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase() {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(0, -5, 0);
 				GL11.glScaled(2.25, 2.25, 2.25);
 			}
+			@Override
 			public void renderCommon() {
 				GL11.glShadeModel(GL11.GL_SMOOTH);
 				bindTexture(ResourceManager.bomb_mike_tex);

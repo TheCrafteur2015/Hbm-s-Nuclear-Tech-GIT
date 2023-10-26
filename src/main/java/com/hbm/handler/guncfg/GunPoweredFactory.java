@@ -30,7 +30,7 @@ public class GunPoweredFactory {
 		config.name = "LIY2001 Anti-Material Electromagnetic Rifle Prototype";
 		config.manufacturer = EnumGunManufacturer.OXFORD;
 		
-		config.config = new ArrayList<Integer>();
+		config.config = new ArrayList<>();
 		config.config.add(BulletConfigSyncingUtil.GLASS_EMRADIO);
 		config.config.add(BulletConfigSyncingUtil.GLASS_EMMICRO);
 		config.config.add(BulletConfigSyncingUtil.GLASS_EMIR);

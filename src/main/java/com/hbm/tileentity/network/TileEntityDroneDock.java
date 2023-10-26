@@ -43,12 +43,12 @@ public class TileEntityDroneDock extends TileEntityRequestNetworkContainer imple
 	public void updateEntity() {
 		super.updateEntity();
 		
-		if(!worldObj.isRemote && worldObj.getTotalWorldTime() % 100 == 0 && this.hasDrone()) {
+		if(!this.worldObj.isRemote && this.worldObj.getTotalWorldTime() % 100 == 0 && hasDrone()) {
 			
 			// grab all nodes in a 5 chunk radius
-			HashedSet<PathNode> localNodes = this.getAllLocalNodes(worldObj, xCoord, zCoord, 5);
-			List<RequestNode> requests = new ArrayList();
-			List<OfferNode> offers = new ArrayList();
+			HashedSet<PathNode> localNodes = getAllLocalNodes(this.worldObj, this.xCoord, this.zCoord, 5);
+			List<RequestNode> requests = new ArrayList<>();
+			List<OfferNode> offers = new ArrayList<>();
 			
 			for(PathNode local : localNodes) {
 				if(local instanceof RequestNode) requests.add((RequestNode) local);
@@ -72,8 +72,8 @@ public class TileEntityDroneDock extends TileEntityRequestNetworkContainer imple
 				
 				if(firstRequest != null) {
 
-					PathNode own = localNodes.getMap().get(new BlockPos(xCoord, yCoord + 1, zCoord).hashCode());
-					AStack request = firstRequest.request.get(worldObj.rand.nextInt(firstRequest.request.size()));
+					PathNode own = localNodes.getMap().get(new BlockPos(this.xCoord, this.yCoord + 1, this.zCoord).hashCode());
+					AStack request = firstRequest.request.get(this.worldObj.rand.nextInt(firstRequest.request.size()));
 					
 					outer: for(OfferNode offer : offers) {
 						
@@ -89,7 +89,8 @@ public class TileEntityDroneDock extends TileEntityRequestNetworkContainer imple
 		}
 	}
 	
-	public boolean tryEmbark(PathNode dock, RequestNode request, OfferNode offer, AStack item, HashedSet localNodes) {
+	@SuppressWarnings("unchecked")
+	public boolean tryEmbark(PathNode dock, RequestNode request, OfferNode offer, AStack item, HashedSet<PathNode> localNodes) {
 
 		List<PathNode> dockToOffer = generatePath(dock, offer, localNodes);
 		if(dockToOffer == null) return false;
@@ -100,15 +101,15 @@ public class TileEntityDroneDock extends TileEntityRequestNetworkContainer imple
 
 		
 		for(int i = 0; i < this.slots.length; i++) {
-			ItemStack stack = slots[i];
+			ItemStack stack = this.slots[i];
 			if(stack != null && stack.getItem() == ModItems.drone && stack.getItemDamage() == EnumDroneType.REQUEST.ordinal()) {
-				this.decrStackSize(i, 1);
+				decrStackSize(i, 1);
 				break;
 			}
 		}
 		
-		EntityRequestDrone drone = new EntityRequestDrone(worldObj);
-		drone.setPosition(xCoord + 0.5, yCoord + 1, zCoord + 0.5);
+		EntityRequestDrone drone = new EntityRequestDrone(this.worldObj);
+		drone.setPosition(this.xCoord + 0.5, this.yCoord + 1, this.zCoord + 0.5);
 		
 		// write programming
 		for(PathNode node : dockToOffer) drone.program.add(node.pos);
@@ -121,23 +122,23 @@ public class TileEntityDroneDock extends TileEntityRequestNetworkContainer imple
 		drone.program.add(dock.pos);
 		drone.program.add(DroneProgram.DOCK);
 		
-		worldObj.spawnEntityInWorld(drone);
-		this.worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "hbm:block.storageOpen", 2.0F, 1.0F);
+		this.worldObj.spawnEntityInWorld(drone);
+		this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, "hbm:block.storageOpen", 2.0F, 1.0F);
 		
 		return true;
 	}
 	
 	public List<PathNode> generatePath(PathNode start, PathNode end, HashedSet<PathNode> localNodes) {
 		
-		List<List<PathNode>> paths = new ArrayList();
-		List<PathNode> init = new ArrayList();
+		List<List<PathNode>> paths = new ArrayList<>();
+		List<PathNode> init = new ArrayList<>();
 		init.add(start);
 		paths.add(init);
 		
 		// breadth-first search
-		for(int i = 0; i < pathingDepth; i++) {
+		for(int i = 0; i < TileEntityDroneDock.pathingDepth; i++) {
 			
-			List<List<PathNode>> newPaths = new ArrayList();
+			List<List<PathNode>> newPaths = new ArrayList<>();
 			
 			for(List<PathNode> oldPath : paths) {
 				for(PathNode connectedUnsafe : oldPath.get(oldPath.size() - 1).reachableNodes) {
@@ -145,7 +146,7 @@ public class TileEntityDroneDock extends TileEntityRequestNetworkContainer imple
 					PathNode connectedSafe = localNodes.getMap().get(connectedUnsafe.hashCode()); // lookup to translate potentially outdated nodes into current ones
 					if(connectedSafe != null) {
 						
-						List<PathNode> newPath = new ArrayList();
+						List<PathNode> newPath = new ArrayList<>();
 						newPath.addAll(oldPath);
 						
 						if(connectedSafe.hashCode() == end.hashCode()) {
@@ -167,8 +168,7 @@ public class TileEntityDroneDock extends TileEntityRequestNetworkContainer imple
 	
 	public boolean hasDrone() {
 		
-		for(int i = 0; i < this.slots.length; i++) {
-			ItemStack stack = slots[i];
+		for (ItemStack stack : this.slots) {
 			if(stack != null && stack.getItem() == ModItems.drone && stack.getItemDamage() == EnumDroneType.REQUEST.ordinal()) return true;
 		}
 		

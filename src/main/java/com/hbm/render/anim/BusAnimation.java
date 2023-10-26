@@ -10,7 +10,7 @@ import java.util.Map.Entry;
 public class BusAnimation {
 	
 	//"buses" with one S since it's not a vehicle
-	private final HashMap<String, BusAnimationSequence> animationBuses= new HashMap();
+	private final HashMap<String, BusAnimationSequence> animationBuses= new HashMap<>();
 	//multiples buses exist simultaneously and start with 0.
 	//a bus has one authority, i.e. the translation of a single part of a model or the rotation of the entire thing.
 	//imagine the busses being film strips that hang from the ceiling, with the tape player
@@ -29,12 +29,12 @@ public class BusAnimation {
 	 */
 	public BusAnimation addBus(String name, BusAnimationSequence bus) {
 		
-		animationBuses.put(name, bus);
+		this.animationBuses.put(name, bus);
 		
 		int duration = bus.getTotalTime();
 		
-		if(duration > totalTime)
-			totalTime = duration;
+		if(duration > this.totalTime)
+			this.totalTime = duration;
 		
 		return this;
 	}
@@ -45,12 +45,12 @@ public class BusAnimation {
 	 */
 	public void updateTime() {
 		
-		for(Entry<String, BusAnimationSequence> sequence : animationBuses.entrySet()) {
+		for(Entry<String, BusAnimationSequence> sequence : this.animationBuses.entrySet()) {
 			
 			int time = sequence.getValue().getTotalTime();
 			
-			if(time > totalTime)
-				totalTime = time;
+			if(time > this.totalTime)
+				this.totalTime = time;
 		}
 	}
 	
@@ -61,7 +61,7 @@ public class BusAnimation {
 	 * @return
 	 */
 	public BusAnimationSequence getBus(String name) {
-		return animationBuses.get(name);
+		return this.animationBuses.get(name);
 	}
 	
 	/**
@@ -73,7 +73,7 @@ public class BusAnimation {
 	public double[] getTimedTransformation(String name, int millis) {
 		
 		if(this.animationBuses.containsKey(name))
-			return animationBuses.get(name).getTransformation(millis);
+			return this.animationBuses.get(name).getTransformation(millis);
 		
 		return null;
 	}
@@ -88,7 +88,7 @@ public class BusAnimation {
 	}
 	
 	public int getDuration() {
-		return totalTime;
+		return this.totalTime;
 	}
 
 }

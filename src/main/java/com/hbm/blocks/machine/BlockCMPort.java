@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 
 public class BlockCMPort extends BlockCM implements ITileEntityProvider {
 
-	public BlockCMPort(Material mat, Class<? extends Enum> theEnum, boolean multiName, boolean multiTexture) {
+	public BlockCMPort(Material mat, Class<? extends Enum<?>> theEnum, boolean multiName, boolean multiTexture) {
 		super(mat, theEnum, multiName, multiTexture);
 	}
 

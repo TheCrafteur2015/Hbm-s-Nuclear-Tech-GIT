@@ -20,7 +20,7 @@ public class BlockFallingNT extends Block {
 
 	public BlockFallingNT() {
 		super(Material.sand);
-		this.setCreativeTab(CreativeTabs.tabBlock);
+		setCreativeTab(CreativeTabs.tabBlock);
 	}
 
 	public BlockFallingNT(Material mat) {
@@ -29,36 +29,36 @@ public class BlockFallingNT extends Block {
 
 	@Override
 	public void onBlockAdded(World world, int x, int y, int z) {
-		world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
+		world.scheduleBlockUpdate(x, y, z, this, tickRate(world));
 	}
 
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
-		world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
+		world.scheduleBlockUpdate(x, y, z, this, tickRate(world));
 	}
 
 	@Override
 	public void updateTick(World world, int x, int y, int z, Random rand) {
 		if(!world.isRemote) {
-			this.fall(world, x, y, z);
+			fall(world, x, y, z);
 		}
 	}
 
 	protected void fall(World world, int x, int y, int z) {
 		
-		if(canFallThrough(world, x, y - 1, z) && y >= 0) {
+		if(BlockFallingNT.canFallThrough(world, x, y - 1, z) && y >= 0) {
 			byte range = 32;
 
-			if(!fallInstantly && world.checkChunksExist(x - range, y - range, z - range, x + range, y + range, z + range)) {
+			if(!BlockFallingNT.fallInstantly && world.checkChunksExist(x - range, y - range, z - range, x + range, y + range, z + range)) {
 				if(!world.isRemote) {
 					EntityFallingBlockNT entityfallingblock = new EntityFallingBlockNT(world, x + 0.5D, y + 0.5D, z + 0.5D, this, world.getBlockMetadata(x, y, z));
-					this.modifyFallingBlock(entityfallingblock);
+					modifyFallingBlock(entityfallingblock);
 					world.spawnEntityInWorld(entityfallingblock);
 				}
 			} else {
 				world.setBlockToAir(x, y, z);
 
-				while(canFallThrough(world, x, y - 1, z) && y > 0) {
+				while(BlockFallingNT.canFallThrough(world, x, y - 1, z) && y > 0) {
 					--y;
 				}
 

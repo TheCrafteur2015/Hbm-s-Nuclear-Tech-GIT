@@ -19,20 +19,20 @@ public class ModelArmorWings extends ModelArmorBase {
 	public ModelArmorWings(int type) {
 		super(type);
 
-		wingLB = new ModelRendererObj(ResourceManager.armor_wings, "LeftBase");
-		wingLT = new ModelRendererObj(ResourceManager.armor_wings, "LeftTip");
-		wingRB = new ModelRendererObj(ResourceManager.armor_wings, "RightBase");
-		wingRT = new ModelRendererObj(ResourceManager.armor_wings, "RightTip");
+		this.wingLB = new ModelRendererObj(ResourceManager.armor_wings, "LeftBase");
+		this.wingLT = new ModelRendererObj(ResourceManager.armor_wings, "LeftTip");
+		this.wingRB = new ModelRendererObj(ResourceManager.armor_wings, "RightBase");
+		this.wingRT = new ModelRendererObj(ResourceManager.armor_wings, "RightTip");
 
 		//i should really stop doing that
-		head = new ModelRendererObj(ResourceManager.anvil);
-		body = new ModelRendererObj(ResourceManager.anvil);
-		leftArm = new ModelRendererObj(ResourceManager.anvil).setRotationPoint(-5.0F, 2.0F, 0.0F);
-		rightArm = new ModelRendererObj(ResourceManager.anvil).setRotationPoint(5.0F, 2.0F, 0.0F);
-		leftLeg = new ModelRendererObj(ResourceManager.anvil).setRotationPoint(1.9F, 12.0F, 0.0F);
-		rightLeg = new ModelRendererObj(ResourceManager.anvil).setRotationPoint(-1.9F, 12.0F, 0.0F);
-		leftFoot = new ModelRendererObj(ResourceManager.anvil).setRotationPoint(1.9F, 12.0F, 0.0F);
-		rightFoot = new ModelRendererObj(ResourceManager.anvil).setRotationPoint(-1.9F, 12.0F, 0.0F);
+		this.head = new ModelRendererObj(ResourceManager.anvil);
+		this.body = new ModelRendererObj(ResourceManager.anvil);
+		this.leftArm = new ModelRendererObj(ResourceManager.anvil).setRotationPoint(-5.0F, 2.0F, 0.0F);
+		this.rightArm = new ModelRendererObj(ResourceManager.anvil).setRotationPoint(5.0F, 2.0F, 0.0F);
+		this.leftLeg = new ModelRendererObj(ResourceManager.anvil).setRotationPoint(1.9F, 12.0F, 0.0F);
+		this.rightLeg = new ModelRendererObj(ResourceManager.anvil).setRotationPoint(-1.9F, 12.0F, 0.0F);
+		this.leftFoot = new ModelRendererObj(ResourceManager.anvil).setRotationPoint(1.9F, 12.0F, 0.0F);
+		this.rightFoot = new ModelRendererObj(ResourceManager.anvil).setRotationPoint(-1.9F, 12.0F, 0.0F);
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class ModelArmorWings extends ModelArmorBase {
 		
 		GL11.glPushMatrix();
 		
-		Minecraft.getMinecraft().renderEngine.bindTexture(this.getTexture());
+		Minecraft.getMinecraft().renderEngine.bindTexture(getTexture());
 		
 		double px = 0.0625D;
 
@@ -62,19 +62,19 @@ public class ModelArmorWings extends ModelArmorBase {
 		
 		GL11.glPushMatrix();
 
-		GL11.glTranslatef(body.offsetX * (float) px, body.offsetY * (float) px, body.offsetZ * (float) px);
-		GL11.glTranslatef(body.rotationPointX * (float) px, body.rotationPointY * (float) px, body.rotationPointZ * (float) px);
+		GL11.glTranslatef(this.body.offsetX * (float) px, this.body.offsetY * (float) px, this.body.offsetZ * (float) px);
+		GL11.glTranslatef(this.body.rotationPointX * (float) px, this.body.rotationPointY * (float) px, this.body.rotationPointZ * (float) px);
 
-		if(body.rotateAngleZ != 0.0F) {
-			GL11.glRotatef(body.rotateAngleZ * (180F / (float) Math.PI), 0.0F, 0.0F, 1.0F);
+		if(this.body.rotateAngleZ != 0.0F) {
+			GL11.glRotatef(this.body.rotateAngleZ * (180F / (float) Math.PI), 0.0F, 0.0F, 1.0F);
 		}
 
-		if(body.rotateAngleY != 0.0F) {
-			GL11.glRotatef(body.rotateAngleY * (180F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
+		if(this.body.rotateAngleY != 0.0F) {
+			GL11.glRotatef(this.body.rotateAngleY * (180F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
 		}
 
-		if(body.rotateAngleX != 0.0F) {
-			GL11.glRotatef(body.rotateAngleX * (180F / (float) Math.PI), 1.0F, 0.0F, 0.0F);
+		if(this.body.rotateAngleX != 0.0F) {
+			GL11.glRotatef(this.body.rotateAngleX * (180F / (float) Math.PI), 1.0F, 0.0F, 0.0F);
 		}
 		
 		if(this.type != 1 && entity.onGround) {
@@ -114,14 +114,14 @@ public class ModelArmorWings extends ModelArmorBase {
 			GL11.glTranslated(pivotSideOffset * px, pivotFrontOffset * px, pivotZOffset * px);
 			GL11.glRotated(rot, 0, 0, 1);
 			GL11.glTranslated(-pivotSideOffset * px, -pivotFrontOffset * px, -pivotZOffset * px);
-			wingLB.render(par7);
+			this.wingLB.render(par7);
 			
 			GL11.glTranslated(tipSideOffset * px, pivotFrontOffset * px, tipZOffset * px);
 			GL11.glRotated(rot2, 0, 1, 0);
 			if(doesRotateZ())
 				GL11.glRotated(rot2 * 0.25 + 5, 0, 0, 1);
 			GL11.glTranslated(-tipSideOffset * px, -pivotFrontOffset * px, -tipZOffset * px);
-			wingLT.render(par7);
+			this.wingLT.render(par7);
 			
 		GL11.glPopMatrix();
 		
@@ -138,14 +138,14 @@ public class ModelArmorWings extends ModelArmorBase {
 			GL11.glTranslated(-pivotSideOffset * px, pivotFrontOffset * px, pivotZOffset * px);
 			GL11.glRotated(-rot, 0, 0, 1);
 			GL11.glTranslated(pivotSideOffset * px, -pivotFrontOffset * px, -pivotZOffset * px);
-			wingRB.render(par7);
+			this.wingRB.render(par7);
 			
 			GL11.glTranslated(-tipSideOffset * px, pivotFrontOffset * px, tipZOffset * px);
 			GL11.glRotated(-rot2, 0, 1, 0);
 			if(doesRotateZ())
 				GL11.glRotated(-rot2 * 0.25 - 5, 0, 0, 1);
 			GL11.glTranslated(tipSideOffset * px, -pivotFrontOffset * px, -tipZOffset * px);
-			wingRT.render(par7);
+			this.wingRT.render(par7);
 			
 		GL11.glPopMatrix();
 		GL11.glDisable(GL11.GL_CULL_FACE);

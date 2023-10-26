@@ -39,11 +39,13 @@ public class RenderWatzPump extends TileEntitySpecialRenderer implements IItemRe
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase() {
+			@Override
 			public void renderInventory() {
 				GL11.glTranslated(0, -1.5, 0);
 				double scale = 5;
 				GL11.glScaled(scale, scale, scale);
 			}
+			@Override
 			public void renderCommon() {
 				GL11.glShadeModel(GL11.GL_SMOOTH);
 				bindTexture(ResourceManager.watz_pump_tex);

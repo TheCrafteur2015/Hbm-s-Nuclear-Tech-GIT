@@ -1,12 +1,12 @@
 package com.hbm.entity.grenade;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.world.World;
-
 import com.hbm.explosion.ExplosionLarge;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.ItemGrenade;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.World;
 
 public class EntityGrenadeShrapnel extends EntityGrenadeBouncyBase {
 	public Entity shooter;
@@ -27,10 +27,10 @@ public class EntityGrenadeShrapnel extends EntityGrenadeBouncyBase {
 	public void explode() {
 
 		if(!this.worldObj.isRemote) {
-			this.setDead();
+			setDead();
 			this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 2.0F, true);
 			for(int i = 0; i < 5; i++) {
-				ExplosionLarge.spawnShrapnels(worldObj, this.posX, this.posY, this.posZ, 5);
+				ExplosionLarge.spawnShrapnels(this.worldObj, this.posX, this.posY, this.posZ, 5);
 			}
 		}
 	}

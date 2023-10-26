@@ -29,46 +29,48 @@ public class ParticleMukeCloud extends EntityFX {
 		this.motionY = my;
 		this.motionZ = mz;
 		
-		if(motionY > 0) {
+		if(this.motionY > 0) {
 			this.friction = 0.9F;
 			
-			if(motionY > 0.1)
-				this.particleMaxAge = 92 + rand.nextInt(11) + (int)(motionY * 20);
+			if(this.motionY > 0.1)
+				this.particleMaxAge = 92 + this.rand.nextInt(11) + (int)(this.motionY * 20);
 			else
-				this.particleMaxAge = 72 + rand.nextInt(11);
+				this.particleMaxAge = 72 + this.rand.nextInt(11);
 			
-		} else if (motionY == 0) {
+		} else if (this.motionY == 0) {
 			
 			this.friction = 0.95F;
-			this.particleMaxAge = 52 + rand.nextInt(11);
+			this.particleMaxAge = 52 + this.rand.nextInt(11);
 			
 		} else {
 			
 			this.friction = 0.85F;
-			this.particleMaxAge = 122 + rand.nextInt(31);
+			this.particleMaxAge = 122 + this.rand.nextInt(31);
 			this.particleAge = 80;
 		}
 	}
 
+	@Override
 	public int getFXLayer() {
 		return 3;
 	}
 	
-    public void onUpdate() {
+    @Override
+	public void onUpdate() {
     	
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
 
         if (this.particleAge++ >= this.particleMaxAge - 2) {
-            this.setDead();
+            setDead();
         }
 
         this.motionY -= 0.04D * (double)this.particleGravity;
-        this.moveEntity(this.motionX, this.motionY, this.motionZ);
-        this.motionX *= friction;
-        this.motionY *= friction;
-        this.motionZ *= friction;
+        moveEntity(this.motionX, this.motionY, this.motionZ);
+        this.motionX *= this.friction;
+        this.motionY *= this.friction;
+        this.motionZ *= this.friction;
 
         if (this.onGround) {
             this.motionX *= 0.7D;
@@ -76,6 +78,7 @@ public class ParticleMukeCloud extends EntityFX {
         }
     }
 
+	@Override
 	public void renderParticle(Tessellator tess, float interp, float x, float y, float z, float tx, float tz) {
 
 		this.theRenderEngine.bindTexture(getTexture());
@@ -109,9 +112,9 @@ public class ParticleMukeCloud extends EntityFX {
 		
 		tess.setColorRGBA_F(1.0F, 1.0F, 1.0F, this.particleAlpha);
 
-		float pX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) interp - interpPosX);
-		float pY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) interp - interpPosY);
-		float pZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) interp - interpPosZ);
+		float pX = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) interp - EntityFX.interpPosX);
+		float pY = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) interp - EntityFX.interpPosY);
+		float pZ = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) interp - EntityFX.interpPosZ);
 
 		tess.addVertexWithUV((double) (pX - x * this.particleScale - tx * this.particleScale), (double) (pY - 1 * this.particleScale), (double) (pZ - z * this.particleScale - tz * this.particleScale), uMax, vMax);
 		tess.addVertexWithUV((double) (pX - x * this.particleScale + tx * this.particleScale), (double) (pY + 1 * this.particleScale), (double) (pZ - z * this.particleScale + tz * this.particleScale), uMax, vMin);
@@ -126,6 +129,6 @@ public class ParticleMukeCloud extends EntityFX {
 	}
 	
 	protected ResourceLocation getTexture() {
-		return texture;
+		return ParticleMukeCloud.texture;
 	}
 }

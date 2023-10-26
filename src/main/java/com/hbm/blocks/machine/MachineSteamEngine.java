@@ -29,7 +29,7 @@ public class MachineSteamEngine extends BlockDummyable implements ILookOverlay, 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
 		if(meta >= 12) return new TileEntitySteamEngine();
-		if(meta >= extra) return new TileEntityProxyCombo().power().fluid();
+		if(meta >= BlockDummyable.extra) return new TileEntityProxyCombo().power().fluid();
 		return null;
 	}
 
@@ -52,15 +52,15 @@ public class MachineSteamEngine extends BlockDummyable implements ILookOverlay, 
 		
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 
-		this.makeExtra(world, x + rot.offsetX, y + 1, z + rot.offsetZ);
-		this.makeExtra(world, x + rot.offsetX + dir.offsetX, y + 1, z + rot.offsetZ + dir.offsetZ);
-		this.makeExtra(world, x + rot.offsetX - dir.offsetX, y + 1, z + rot.offsetZ - dir.offsetZ);
+		makeExtra(world, x + rot.offsetX, y + 1, z + rot.offsetZ);
+		makeExtra(world, x + rot.offsetX + dir.offsetX, y + 1, z + rot.offsetZ + dir.offsetZ);
+		makeExtra(world, x + rot.offsetX - dir.offsetX, y + 1, z + rot.offsetZ - dir.offsetZ);
 	}
 
 	@Override
 	public void printHook(Pre event, World world, int x, int y, int z) {
 		
-		int[] pos = this.findCore(world, x, y, z);
+		int[] pos = findCore(world, x, y, z);
 		
 		if(pos == null)
 			return;
@@ -72,7 +72,7 @@ public class MachineSteamEngine extends BlockDummyable implements ILookOverlay, 
 		
 		TileEntitySteamEngine engine = (TileEntitySteamEngine) te;
 
-		List<String> text = new ArrayList();
+		List<String> text = new ArrayList<>();
 		text.add(EnumChatFormatting.GREEN + "-> " + EnumChatFormatting.RESET + engine.tanks[0].getTankType().getLocalizedName() + ": " + String.format(Locale.US, "%,d", engine.tanks[0].getFill()) + " / " + String.format(Locale.US, "%,d", engine.tanks[0].getMaxFill()) + "mB");
 		text.add(EnumChatFormatting.RED + "<- " + EnumChatFormatting.RESET + engine.tanks[1].getTankType().getLocalizedName() + ": " + String.format(Locale.US, "%,d", engine.tanks[1].getFill()) + " / " + String.format(Locale.US, "%,d", engine.tanks[1].getMaxFill()) + "mB");
 		
@@ -81,6 +81,6 @@ public class MachineSteamEngine extends BlockDummyable implements ILookOverlay, 
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		this.addStandardInfo(stack, player, list, ext);
+		addStandardInfo(stack, player, list, ext);
 	}
 }

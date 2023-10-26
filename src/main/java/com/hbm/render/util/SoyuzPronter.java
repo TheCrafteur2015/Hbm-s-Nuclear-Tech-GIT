@@ -96,8 +96,8 @@ public class SoyuzPronter {
 		if(type >= SoyuzSkin.values().length || type < 0)
 			return;
 		
-		prontMain(type);
-		prontBoosters(type);
+		SoyuzPronter.prontMain(type);
+		SoyuzPronter.prontBoosters(type);
 	}
 	
 	public static void prontMain(int type) {

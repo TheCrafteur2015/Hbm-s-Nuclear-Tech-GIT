@@ -3,6 +3,7 @@ package com.hbm.blocks.network;
 import com.hbm.lib.RefStrings;
 import com.hbm.tileentity.network.TileEntityCraneBase;
 import com.hbm.tileentity.network.TileEntityCraneExtractor;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -82,7 +83,7 @@ public class CraneExtractor extends BlockCraneBase {
 
 	@Override
 	public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-		this.dropContents(world, x, y, z, block, meta, 9, 20);
+		dropContents(world, x, y, z, block, meta, 9, 20);
 		super.breakBlock(world, x, y, z, block, meta);
 	}
 }

@@ -69,20 +69,20 @@ public class TileEntityMachineSchrabidiumTransmutator extends TileEntityMachineB
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 
-		power = nbt.getLong("power");
-		process = nbt.getInteger("process");
+		this.power = nbt.getLong("power");
+		this.process = nbt.getInteger("process");
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setLong("power", power);
-		nbt.setInteger("process", process);
+		nbt.setLong("power", this.power);
+		nbt.setInteger("process", this.process);
 	}
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(int p_94128_1_) {
-		return p_94128_1_ == 0 ? slots_bottom : (p_94128_1_ == 1 ? slots_top : slots_side);
+		return p_94128_1_ == 0 ? TileEntityMachineSchrabidiumTransmutator.slots_bottom : (p_94128_1_ == 1 ? TileEntityMachineSchrabidiumTransmutator.slots_top : TileEntityMachineSchrabidiumTransmutator.slots_side);
 	}
 
 	@Override
@@ -105,47 +105,47 @@ public class TileEntityMachineSchrabidiumTransmutator extends TileEntityMachineB
 	}
 
 	public long getPowerScaled(long i) {
-		return (power * i) / maxPower;
+		return (this.power * i) / TileEntityMachineSchrabidiumTransmutator.maxPower;
 	}
 
 	public int getProgressScaled(int i) {
-		return (process * i) / processSpeed;
+		return (this.process * i) / TileEntityMachineSchrabidiumTransmutator.processSpeed;
 	}
 
 	public boolean canProcess() {
-		if (power >= 4990000 && slots[0] != null && MachineRecipes.mODE(slots[0], OreDictManager.U.ingot()) && slots[2] != null
-				&& (slots[2].getItem() == ModItems.redcoil_capacitor && slots[2].getItemDamage() < slots[2].getMaxDamage() || slots[2].getItem() == ModItems.euphemium_capacitor)
-				&& (slots[1] == null || (slots[1] != null && slots[1].getItem() == VersatileConfig.getTransmutatorItem()
-						&& slots[1].stackSize < slots[1].getMaxStackSize()))) {
+		if (this.power >= 4990000 && this.slots[0] != null && MachineRecipes.mODE(this.slots[0], OreDictManager.U.ingot()) && this.slots[2] != null
+				&& (this.slots[2].getItem() == ModItems.redcoil_capacitor && this.slots[2].getItemDamage() < this.slots[2].getMaxDamage() || this.slots[2].getItem() == ModItems.euphemium_capacitor)
+				&& (this.slots[1] == null || (this.slots[1] != null && this.slots[1].getItem() == VersatileConfig.getTransmutatorItem()
+						&& this.slots[1].stackSize < this.slots[1].getMaxStackSize()))) {
 			return true;
 		}
 		return false;
 	}
 
 	public boolean isProcessing() {
-		return process > 0;
+		return this.process > 0;
 	}
 
 	public void process() {
-		process++;
+		this.process++;
 
-		if (process >= processSpeed) {
+		if (this.process >= TileEntityMachineSchrabidiumTransmutator.processSpeed) {
 
-			power = 0;
-			process = 0;
+			this.power = 0;
+			this.process = 0;
 
-			slots[0].stackSize--;
-			if (slots[0].stackSize <= 0) {
-				slots[0] = null;
+			this.slots[0].stackSize--;
+			if (this.slots[0].stackSize <= 0) {
+				this.slots[0] = null;
 			}
 
-			if (slots[1] == null) {
-				slots[1] = new ItemStack(VersatileConfig.getTransmutatorItem());
+			if (this.slots[1] == null) {
+				this.slots[1] = new ItemStack(VersatileConfig.getTransmutatorItem());
 			} else {
-				slots[1].stackSize++;
+				this.slots[1].stackSize++;
 			}
-			if (slots[2] != null && slots[2].getItem() == ModItems.redcoil_capacitor) {
-				slots[2].setItemDamage(slots[2].getItemDamage() + 1);
+			if (this.slots[2] != null && this.slots[2].getItem() == ModItems.redcoil_capacitor) {
+				this.slots[2].setItemDamage(this.slots[2].getItemDamage() + 1);
 			}
 
 			this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "ambient.weather.thunder", 10000.0F,
@@ -156,38 +156,38 @@ public class TileEntityMachineSchrabidiumTransmutator extends TileEntityMachineB
 	@Override
 	public void updateEntity() {
 
-		if (!worldObj.isRemote) {
+		if (!this.worldObj.isRemote) {
 			
-			this.updateConnections();
+			updateConnections();
 			
-			power = Library.chargeTEFromItems(slots, 3, power, maxPower);
+			this.power = Library.chargeTEFromItems(this.slots, 3, this.power, TileEntityMachineSchrabidiumTransmutator.maxPower);
 
 			if(canProcess()) {
 				process();
 			} else {
-				process = 0;
+				this.process = 0;
 			}
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setLong("power", power);
-			data.setInteger("progress", process);
-			this.networkPack(data, 50);
+			data.setLong("power", this.power);
+			data.setInteger("progress", this.process);
+			networkPack(data, 50);
 			
 		} else {
 
-			if(process > 0) {
+			if(this.process > 0) {
 				
-				if(audio == null) {
-					audio = createAudioLoop();
-					audio.startSound();
-				} else if(!audio.isPlaying()) {
-					audio = rebootAudio(audio);
+				if(this.audio == null) {
+					this.audio = createAudioLoop();
+					this.audio.startSound();
+				} else if(!this.audio.isPlaying()) {
+					this.audio = rebootAudio(this.audio);
 				}
 			} else {
 				
-				if(audio != null) {
-					audio.stopSound();
-					audio = null;
+				if(this.audio != null) {
+					this.audio.stopSound();
+					this.audio = null;
 				}
 			}
 		}
@@ -195,21 +195,21 @@ public class TileEntityMachineSchrabidiumTransmutator extends TileEntityMachineB
 	
 	@Override
 	public AudioWrapper createAudioLoop() {
-		return MainRegistry.proxy.getLoopedSound("hbm:weapon.tauChargeLoop", xCoord, yCoord, zCoord, 1.0F, 10F, 1.0F);
+		return MainRegistry.proxy.getLoopedSound("hbm:weapon.tauChargeLoop", this.xCoord, this.yCoord, this.zCoord, 1.0F, 10F, 1.0F);
 	}
 	
 	private void updateConnections() {
 		
 		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-			this.trySubscribe(worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, dir);
+			trySubscribe(this.worldObj, this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ, dir);
 	}
 
 	@Override
 	public void onChunkUnload() {
 
-		if(audio != null) {
-			audio.stopSound();
-			audio = null;
+		if(this.audio != null) {
+			this.audio.stopSound();
+			this.audio = null;
 		}
 	}
 
@@ -218,9 +218,9 @@ public class TileEntityMachineSchrabidiumTransmutator extends TileEntityMachineB
 
 		super.invalidate();
 
-		if(audio != null) {
-			audio.stopSound();
-			audio = null;
+		if(this.audio != null) {
+			this.audio.stopSound();
+			this.audio = null;
 		}
 	}
 	
@@ -233,17 +233,17 @@ public class TileEntityMachineSchrabidiumTransmutator extends TileEntityMachineB
 
 	@Override
 	public void setPower(long i) {
-		power = i;
+		this.power = i;
 	}
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 
 	@Override
 	public long getMaxPower() {
-		return maxPower;
+		return TileEntityMachineSchrabidiumTransmutator.maxPower;
 	}
 
 	@Override

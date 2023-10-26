@@ -28,24 +28,24 @@ public class TileEntityMachineFENSU extends TileEntityMachineBattery {
 	@Override
 	public void updateEntity() {
 		
-		if(!worldObj.isRemote) {
+		if(!this.worldObj.isRemote) {
 			
 			long prevPower = this.power;
 			
-			power = Library.chargeItemsFromTE(slots, 1, power, getMaxPower());
+			this.power = Library.chargeItemsFromTE(this.slots, 1, this.power, getMaxPower());
 			
 			//////////////////////////////////////////////////////////////////////
-			this.transmitPower();
+			transmitPower();
 			//////////////////////////////////////////////////////////////////////
 			
-			byte comp = this.getComparatorPower();
+			byte comp = getComparatorPower();
 			if(comp != this.lastRedstone)
-				this.markDirty();
+				markDirty();
 			this.lastRedstone = comp;
 			
-			power = Library.chargeTEFromItems(slots, 0, power, getMaxPower());
+			this.power = Library.chargeTEFromItems(this.slots, 0, this.power, getMaxPower());
 
-			long avg = (power / 2 + prevPower / 2);
+			long avg = (this.power / 2 + prevPower / 2);
 			this.delta = avg - this.log[0];
 			
 			for(int i = 1; i < this.log.length; i++) {
@@ -56,36 +56,38 @@ public class TileEntityMachineFENSU extends TileEntityMachineBattery {
 			
 			NBTTagCompound nbt = new NBTTagCompound();
 			nbt.setLong("power", avg);
-			nbt.setLong("delta", delta);
-			nbt.setShort("redLow", redLow);
-			nbt.setShort("redHigh", redHigh);
+			nbt.setLong("delta", this.delta);
+			nbt.setShort("redLow", this.redLow);
+			nbt.setShort("redHigh", this.redHigh);
 			nbt.setByte("priority", (byte) this.priority.ordinal());
-			this.networkPack(nbt, 20);
+			networkPack(nbt, 20);
 		}
 		
-		if(worldObj.isRemote) {
+		if(this.worldObj.isRemote) {
 			this.prevRotation = this.rotation;
-			this.rotation += this.getSpeed();
+			this.rotation += getSpeed();
 			
-			if(rotation >= 360) {
-				rotation -= 360;
-				prevRotation -= 360;
+			if(this.rotation >= 360) {
+				this.rotation -= 360;
+				this.prevRotation -= 360;
 			}
 		}
 	}
 	
-	@Deprecated protected void transmitPower() {
+	@Override
+	@Deprecated
+	protected void transmitPower() {
 		
-		short mode = (short) this.getRelevantMode();
+		short mode = getRelevantMode();
 		
 		//HasSets to we don'T have any duplicates
-		Set<IPowerNet> nets = new HashSet();
-		Set<IEnergyConnector> consumers = new HashSet();
+		Set<IPowerNet> nets = new HashSet<>();
+		Set<IEnergyConnector> consumers = new HashSet<>();
 		
 		//iterate over all sides
 		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 			
-			TileEntity te = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
+			TileEntity te = this.worldObj.getTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
 			
 			//if it's a cable, buffer both the network and all subscribers of the net
 			if(te instanceof IEnergyConductor) {
@@ -106,12 +108,12 @@ public class TileEntityMachineFENSU extends TileEntityMachineBattery {
 		}
 
 		//send power to buffered consumers, independent of nets
-		if(this.power > 0 && (mode == mode_buffer || mode == mode_output)) {
-			List<IEnergyConnector> con = new ArrayList();
+		if(this.power > 0 && (mode == TileEntityMachineBattery.mode_buffer || mode == TileEntityMachineBattery.mode_output)) {
+			List<IEnergyConnector> con = new ArrayList<>();
 			con.addAll(consumers);
 			
 			if(PowerNet.trackingInstances == null) {
-				PowerNet.trackingInstances = new ArrayList();
+				PowerNet.trackingInstances = new ArrayList<>();
 			}
 			PowerNet.trackingInstances.clear();
 			
@@ -119,20 +121,20 @@ public class TileEntityMachineFENSU extends TileEntityMachineBattery {
 				if(x instanceof PowerNet) PowerNet.trackingInstances.add((PowerNet) x);
 			});
 			
-			long toSend = Math.min(this.power, maxTransfer);
+			long toSend = Math.min(this.power, TileEntityMachineFENSU.maxTransfer);
 			long powerRemaining = this.power - toSend;
 			this.power = PowerNet.fairTransfer(con, toSend) + powerRemaining;
 		}
 		
 		//resubscribe to buffered nets, if necessary
-		if(mode == mode_buffer || mode == mode_input) {
+		if(mode == TileEntityMachineBattery.mode_buffer || mode == TileEntityMachineBattery.mode_input) {
 			nets.forEach(x -> x.subscribe(this));
 		}
 	}
 
 	@Override
 	public long getPowerRemainingScaled(long i) {
-		double powerScaled = (double)power / (double)getMaxPower();
+		double powerScaled = (double)this.power / (double)getMaxPower();
 		return (long)(i * powerScaled);
 	}
 
@@ -143,11 +145,11 @@ public class TileEntityMachineFENSU extends TileEntityMachineBattery {
 
 	@Override
 	public long getTransferWeight() {
-		return Math.min(Math.max(this.getMaxPower() - getPower(), 0), maxTransfer);
+		return Math.min(Math.max(getMaxPower() - getPower(), 0), TileEntityMachineFENSU.maxTransfer);
 	}
 	
 	public float getSpeed() {
-		return (float) Math.pow(Math.log(power * 0.75 + 1) * 0.05F, 5);
+		return (float) Math.pow(Math.log(this.power * 0.75 + 1) * 0.05F, 5);
 	}
 	
 	@Override
@@ -167,14 +169,14 @@ public class TileEntityMachineFENSU extends TileEntityMachineBattery {
 		long overshoot = 0;
 		
 		// if power exceeds our transfer limit, truncate
-		if(power > maxTransfer) {
-			overshoot += power - maxTransfer;
-			power = maxTransfer;
+		if(power > TileEntityMachineFENSU.maxTransfer) {
+			overshoot += power - TileEntityMachineFENSU.maxTransfer;
+			power = TileEntityMachineFENSU.maxTransfer;
 		}
 		
 		// this check is in essence the same as the default implementation, but re-arranged to never overflow the int64 range
 		// if the remaining power exceeds the power cap, truncate again
-		long freespace = this.getMaxPower() - this.getPower();
+		long freespace = getMaxPower() - getPower();
 		
 		if(freespace < power) {
 			overshoot += power - freespace;
@@ -182,7 +184,7 @@ public class TileEntityMachineFENSU extends TileEntityMachineBattery {
 		}
 		
 		// what remains is sure to not exceed the transfer limit and the power cap (and therefore the int64 range)
-		this.setPower(this.getPower() + power);
+		setPower(getPower() + power);
 		
 		return overshoot;
 	}

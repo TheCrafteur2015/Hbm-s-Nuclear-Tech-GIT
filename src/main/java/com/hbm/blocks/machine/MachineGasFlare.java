@@ -37,7 +37,7 @@ public class MachineGasFlare extends BlockDummyable implements ITooltipProvider 
 	
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-		return this.standardOpenBehavior(world, x, y, z, player, 0);
+		return standardOpenBehavior(world, x, y, z, player, 0);
 	}
 
 	@Override
@@ -53,12 +53,13 @@ public class MachineGasFlare extends BlockDummyable implements ITooltipProvider 
 	@Override
 	public void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		super.fillSpace(world, x, y, z, dir, o);
-		this.makeExtra(world, x + dir.offsetX * o + 1, y, z + dir.offsetZ * o);
-		this.makeExtra(world, x + dir.offsetX * o - 1, y, z + dir.offsetZ * o);
-		this.makeExtra(world, x + dir.offsetX * o, y, z + dir.offsetZ * o + 1);
-		this.makeExtra(world, x + dir.offsetX * o, y, z + dir.offsetZ * o - 1);
+		makeExtra(world, x + dir.offsetX * o + 1, y, z + dir.offsetZ * o);
+		makeExtra(world, x + dir.offsetX * o - 1, y, z + dir.offsetZ * o);
+		makeExtra(world, x + dir.offsetX * o, y, z + dir.offsetZ * o + 1);
+		makeExtra(world, x + dir.offsetX * o, y, z + dir.offsetZ * o - 1);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 

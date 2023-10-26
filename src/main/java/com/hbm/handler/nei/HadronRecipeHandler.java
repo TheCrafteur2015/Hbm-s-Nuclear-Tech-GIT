@@ -1,7 +1,5 @@
 package com.hbm.handler.nei;
 
-import static codechicken.lib.gui.GuiDraw.drawTexturedModalRect;
-
 import java.awt.Rectangle;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -13,6 +11,7 @@ import com.hbm.inventory.recipes.HadronRecipes;
 import com.hbm.inventory.recipes.HadronRecipes.HadronRecipe;
 import com.hbm.lib.RefStrings;
 
+import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
@@ -23,10 +22,10 @@ import net.minecraft.item.ItemStack;
 
 public class HadronRecipeHandler extends TemplateRecipeHandler {
 
-	public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<RecipeTransferRect>();
-	public LinkedList<RecipeTransferRect> transferRectsGui = new LinkedList<RecipeTransferRect>();
-	public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<Class<? extends GuiContainer>>();
-	public LinkedList<Class<? extends GuiContainer>> guiGui = new LinkedList<Class<? extends GuiContainer>>();
+	public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<>();
+	public LinkedList<RecipeTransferRect> transferRectsGui = new LinkedList<>();
+	public LinkedList<Class<? extends GuiContainer>> guiRec = new LinkedList<>();
+	public LinkedList<Class<? extends GuiContainer>> guiGui = new LinkedList<>();
 
 	public class RecipeSet extends TemplateRecipeHandler.CachedRecipe {
 
@@ -49,17 +48,17 @@ public class HadronRecipeHandler extends TemplateRecipeHandler {
 
 		@Override
 		public List<PositionedStack> getIngredients() {
-			return Arrays.asList(new PositionedStack[] { input1, input2 });
+			return Arrays.asList(new PositionedStack[] { this.input1, this.input2 });
 		}
 
 		@Override
 		public List<PositionedStack> getOtherStacks() {
-			return Arrays.asList(new PositionedStack[] { output1, output2 });
+			return Arrays.asList(new PositionedStack[] { this.output1, this.output2 });
 		}
 
 		@Override
 		public PositionedStack getResult() {
-			return output1;
+			return this.output1;
 		}
 	}
 
@@ -122,14 +121,14 @@ public class HadronRecipeHandler extends TemplateRecipeHandler {
 
 	@Override
 	public void loadTransferRects() {
-		transferRectsGui = new LinkedList<RecipeTransferRect>();
-		guiGui = new LinkedList<Class<? extends GuiContainer>>();
+		this.transferRectsGui = new LinkedList<>();
+		this.guiGui = new LinkedList<>();
 
-		transferRects.add(new RecipeTransferRect(new Rectangle(58 - 5, 34 - 11, 24, 18), "hadron"));
-		transferRectsGui.add(new RecipeTransferRect(new Rectangle(72 - 5, 28 - 11, 30, 30), "hadron"));
-		guiGui.add(GUIHadron.class);
-		RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), transferRects);
-		RecipeTransferRectHandler.registerRectsToGuis(guiGui, transferRectsGui);
+		this.transferRects.add(new RecipeTransferRect(new Rectangle(58 - 5, 34 - 11, 24, 18), "hadron"));
+		this.transferRectsGui.add(new RecipeTransferRect(new Rectangle(72 - 5, 28 - 11, 30, 30), "hadron"));
+		this.guiGui.add(GUIHadron.class);
+		RecipeTransferRectHandler.registerRectsToGuis(getRecipeTransferRectGuis(), this.transferRects);
+		RecipeTransferRectHandler.registerRectsToGuis(this.guiGui, this.transferRectsGui);
 	}
 
 	@Override
@@ -138,7 +137,7 @@ public class HadronRecipeHandler extends TemplateRecipeHandler {
 		RecipeSet rec = (RecipeSet) this.arecipes.get(recipe);
 
 		if(rec.analysisOnly)
-			drawTexturedModalRect(128, 23, 0, 86, 18, 18);
+			GuiDraw.drawTexturedModalRect(128, 23, 0, 86, 18, 18);
 
 		FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
 

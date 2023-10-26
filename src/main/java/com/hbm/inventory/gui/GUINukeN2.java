@@ -6,6 +6,7 @@ import com.hbm.inventory.container.ContainerNukeN2;
 import com.hbm.items.ModItems;
 import com.hbm.lib.RefStrings;
 import com.hbm.tileentity.bomb.TileEntityNukeN2;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
@@ -19,7 +20,7 @@ public class GUINukeN2 extends GuiContainer {
 	
 	public GUINukeN2(InventoryPlayer invPlayer, TileEntityNukeN2 tedf) {
 		super(new ContainerNukeN2(invPlayer, tedf));
-		testNuke = tedf;
+		this.testNuke = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 222;
@@ -36,8 +37,8 @@ public class GUINukeN2 extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUINukeN2.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
 		int count = 0;
 		
@@ -48,7 +49,7 @@ public class GUINukeN2 extends GuiContainer {
 		
 		if(count > 0)
 		{
-			drawTexturedModalRect(guiLeft + 35, guiTop + 120 - 6 * count, 176, 0, 34, 6 * count);
+			drawTexturedModalRect(this.guiLeft + 35, this.guiTop + 120 - 6 * count, 176, 0, 34, 6 * count);
 		}
 	}
 }

@@ -56,27 +56,25 @@ import com.hbm.sound.MovingSoundChopper;
 import com.hbm.sound.MovingSoundChopperMine;
 import com.hbm.sound.MovingSoundCrashing;
 import com.hbm.sound.MovingSoundPlayerLoop;
+import com.hbm.sound.MovingSoundPlayerLoop.EnumHbmSound;
 import com.hbm.sound.MovingSoundXVL1456;
 import com.hbm.tileentity.bomb.TileEntityNukeCustom;
 import com.hbm.tileentity.bomb.TileEntityNukeCustom.CustomNukeEntry;
 import com.hbm.tileentity.bomb.TileEntityNukeCustom.EnumEntryType;
 import com.hbm.tileentity.machine.TileEntityNukeFurnace;
+import com.hbm.util.ArmorRegistry;
+import com.hbm.util.ArmorRegistry.HazardClass;
+import com.hbm.util.ArmorUtil;
 import com.hbm.util.I18nUtil;
 import com.hbm.util.ItemStackUtil;
 import com.hbm.util.LoggingUtil;
 import com.hbm.wiaj.GuiWorldInAJar;
 import com.hbm.wiaj.cannery.CanneryBase;
 import com.hbm.wiaj.cannery.Jars;
-import com.hbm.util.ArmorRegistry;
-import com.hbm.util.ArmorUtil;
-import com.hbm.util.ArmorRegistry.HazardClass;
-import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
+import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 
 import api.hbm.item.IButtonReceiver;
 import api.hbm.item.IClickReceiver;
-
-import com.hbm.sound.MovingSoundPlayerLoop.EnumHbmSound;
-
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.EventPriority;
@@ -149,7 +147,7 @@ public class ModEventHandlerClient {
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 		
 		/// NUKE FLASH ///
-		if(event.type == ElementType.CROSSHAIRS && (flashTimestamp + flashDuration - System.currentTimeMillis()) > 0) {
+		if(event.type == ElementType.CROSSHAIRS && (ModEventHandlerClient.flashTimestamp + ModEventHandlerClient.flashDuration - System.currentTimeMillis()) > 0) {
 			int width = event.resolution.getScaledWidth();
 			int height = event.resolution.getScaledHeight();
 			Tessellator tess = Tessellator.instance;
@@ -159,7 +157,7 @@ public class ModEventHandlerClient {
 			GL11.glAlphaFunc(GL11.GL_GEQUAL, 0.0F);
 			GL11.glDepthMask(false);
 			tess.startDrawingQuads();
-			float brightness = (flashTimestamp + flashDuration - System.currentTimeMillis()) / (float) flashDuration;
+			float brightness = (ModEventHandlerClient.flashTimestamp + ModEventHandlerClient.flashDuration - System.currentTimeMillis()) / (float) ModEventHandlerClient.flashDuration;
 			tess.setColorRGBA_F(1F, 1F, 1F, brightness * 0.8F);
 			tess.addVertex(width, 0, 0);
 			tess.addVertex(0, 0, 0);
@@ -200,7 +198,7 @@ public class ModEventHandlerClient {
 			
 			if(mop != null) {
 				
-				if(mop.typeOfHit == mop.typeOfHit.BLOCK) {
+				if(mop.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
 					
 					if(player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ILookOverlay) {
 						((ILookOverlay) player.getHeldItem().getItem()).printHook(event, world, mop.blockX, mop.blockY, mop.blockZ);
@@ -208,7 +206,7 @@ public class ModEventHandlerClient {
 					} else if(world.getBlock(mop.blockX, mop.blockY, mop.blockZ) instanceof ILookOverlay) {
 						((ILookOverlay) world.getBlock(mop.blockX, mop.blockY, mop.blockZ)).printHook(event, world, mop.blockX, mop.blockY, mop.blockZ);
 					}
-				} else if(mop.typeOfHit == mop.typeOfHit.ENTITY) {
+				} else if(mop.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY) { 
 					Entity entity = mop.entityHit;
 					
 					if(entity instanceof ILookOverlay) {
@@ -217,7 +215,7 @@ public class ModEventHandlerClient {
 				}
 			}
 			
-			/*List<String> text = new ArrayList();
+			/*List<String> text = new ArrayList<>();
 			text.add("IMPACT: " + ImpactWorldHandler.getImpactForClient(world));
 			text.add("DUST: " + ImpactWorldHandler.getDustForClient(world));
 			text.add("FIRE: " + ImpactWorldHandler.getFireForClient(world));
@@ -235,7 +233,7 @@ public class ModEventHandlerClient {
 				Minecraft.getMinecraft().renderEngine.bindTexture(Gui.icons);
 			}*/
 			
-			/*List<String> text = new ArrayList();
+			/*List<String> text = new ArrayList<>();
 			MovingObjectPosition pos = Library.rayTrace(player, 500, 1, false, true, false);
 			
 			for(int i = 0; i < 2; i++) if(pos != null && pos.typeOfHit == pos.typeOfHit.BLOCK) {
@@ -316,15 +314,15 @@ public class ModEventHandlerClient {
 				HbmAnimations.hotbar[i] = null;
 		}
 			
-		if(!ducked && Keyboard.isKeyDown(Keyboard.KEY_O) && Minecraft.getMinecraft().currentScreen == null) {
-			ducked = true;
+		if(!ModEventHandlerClient.ducked && Keyboard.isKeyDown(Keyboard.KEY_O) && Minecraft.getMinecraft().currentScreen == null) {
+			ModEventHandlerClient.ducked = true;
 			PacketDispatcher.wrapper.sendToServer(new AuxButtonPacket(0, 0, 0, 999, 0));
 		}
 		
 		/// HANDLE SCOPE OVERLAY ///
 		ItemStack held = player.getHeldItem();
 		
-		if(player.isSneaking() && held != null && held.getItem() instanceof ItemGunBase && event.type == event.type.HOTBAR)  {
+		if(player.isSneaking() && held != null && held.getItem() instanceof ItemGunBase && event.type == RenderGameOverlayEvent.ElementType.HOTBAR)  {
 			GunConfiguration config = ((ItemGunBase) held.getItem()).mainConfig;
 			
 			if(config.scopeTexture != null) {
@@ -339,7 +337,7 @@ public class ModEventHandlerClient {
 		if(helmet != null && helmet.getItem() instanceof ArmorFSB) {
 			((ArmorFSB)helmet.getItem()).handleOverlay(event, player);
 		}
-		if(!event.isCanceled() && event.type == event.type.HOTBAR) {
+		if(!event.isCanceled() && event.type == RenderGameOverlayEvent.ElementType.HOTBAR) {
 			
 			HbmPlayerProps props = HbmPlayerProps.getData(player);
 			if(props.getDashCount() > 0) {
@@ -357,14 +355,14 @@ public class ModEventHandlerClient {
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 		Tessellator tess = Tessellator.instance;
 		
-		if(!event.isCanceled() && event.type == event.type.HEALTH) {
+		if(!event.isCanceled() && event.type == RenderGameOverlayEvent.ElementType.HEALTH) {
 			HbmPlayerProps props = HbmPlayerProps.getData(player);
 			if(props.maxShield > 0) {
 				RenderScreenOverlay.renderShieldBar(event.resolution, Minecraft.getMinecraft().ingameGUI);
 			}
 		}
 		
-		if(!event.isCanceled() && event.type == event.type.ARMOR) {
+		if(!event.isCanceled() && event.type == RenderGameOverlayEvent.ElementType.ARMOR) {
 			
 			if(ForgeHooks.getTotalArmorValue(player) == 0/* && GuiIngameForge.left_height == 59*/) {
 				GuiIngameForge.left_height -= 10;
@@ -415,7 +413,7 @@ public class ModEventHandlerClient {
 
 				ItemStack stack = player.inventory.armorInventory[2];
 
-				float tot = (float) ((JetpackBase) stack.getItem()).getFuel(stack) / (float) ((JetpackBase) stack.getItem()).getMaxFill(stack);
+				float tot = (float) JetpackBase.getFuel(stack) / (float) ((JetpackBase) stack.getItem()).getMaxFill(stack);
 				
 				int top = height - GuiIngameForge.left_height + 3;
 
@@ -447,8 +445,7 @@ public class ModEventHandlerClient {
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 		ItemStack held = player.getHeldItem();
 		
-		if(held == null) return;
-		if(!(held.getItem() instanceof ItemGunBase)) return;
+		if((held == null) || !(held.getItem() instanceof ItemGunBase)) return;
 		
 		GunConfiguration config = ((ItemGunBase) held.getItem()).mainConfig;
 		
@@ -479,13 +476,13 @@ public class ModEventHandlerClient {
 			
 			event.setCanceled(true);
 			
-			float pX = (float) (player.prevPosX + (player.posX - player.prevPosX) * (double)event.partialRenderTick);
-			float pY = (float) (player.prevPosY + (player.posY - player.prevPosY) * (double)event.partialRenderTick);
-			float pZ = (float) (player.prevPosZ + (player.posZ - player.prevPosZ) * (double)event.partialRenderTick);
+			float pX = (float) (player.prevPosX + (player.posX - player.prevPosX) * event.partialRenderTick);
+			float pY = (float) (player.prevPosY + (player.posY - player.prevPosY) * event.partialRenderTick);
+			float pZ = (float) (player.prevPosZ + (player.posZ - player.prevPosZ) * event.partialRenderTick);
 			EntityPlayer me = Minecraft.getMinecraft().thePlayer;
-			float mX = (float) (me.prevPosX + (me.posX - me.prevPosX) * (double)event.partialRenderTick);
-			float mY = (float) (me.prevPosY + (me.posY - me.prevPosY) * (double)event.partialRenderTick);
-			float mZ = (float) (me.prevPosZ + (me.posZ - me.prevPosZ) * (double)event.partialRenderTick);
+			float mX = (float) (me.prevPosX + (me.posX - me.prevPosX) * event.partialRenderTick);
+			float mY = (float) (me.prevPosY + (me.posY - me.prevPosY) * event.partialRenderTick);
+			float mZ = (float) (me.prevPosZ + (me.posZ - me.prevPosZ) * event.partialRenderTick);
 
 			Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(RefStrings.MODID + ":textures/particle/fart.png"));
 			GL11.glPushMatrix();
@@ -511,7 +508,7 @@ public class ModEventHandlerClient {
 		ResourceLocation cloak = RenderAccessoryUtility.getCloakFromPlayer(player);
 		
 		if(cloak != null)
-			player.func_152121_a(Type.CAPE, cloak);
+			player.func_152121_a(MinecraftProfileTexture.Type.CAPE, cloak);
 		
 		if(player.getHeldItem() != null && player.getHeldItem().getItem() instanceof IHoldableWeapon) {
 			renderer.modelBipedMain.aimedBow = true;
@@ -824,8 +821,8 @@ public class ModEventHandlerClient {
 		
 		Minecraft mc = Minecraft.getMinecraft();
 
-		GL11.glRotatef((float)-mc.thePlayer.rotationYaw, 0, 1, 0);
-		GL11.glRotatef((float)(mc.thePlayer.rotationPitch), 1, 0, 0);
+		GL11.glRotatef(-mc.thePlayer.rotationYaw, 0, 1, 0);
+		GL11.glRotatef((mc.thePlayer.rotationPitch), 1, 0, 0);
 		
 		ScaledResolution resolution = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
 
@@ -843,20 +840,20 @@ public class ModEventHandlerClient {
 		Tessellator tessellator = Tessellator.instance;
 
 		//int d = mc.theWorld.getLightBrightnessForSkyBlocks(MathHelper.floor_double(mc.thePlayer.posX), MathHelper.floor_double(mc.thePlayer.posY), MathHelper.floor_double(mc.thePlayer.posZ), 0);
-		int cX = currentBrightness % 65536;
-		int cY = currentBrightness / 65536;
-		int lX = lastBrightness % 65536;
-		int lY = lastBrightness / 65536;
+		int cX = ModEventHandlerClient.currentBrightness % 65536;
+		int cY = ModEventHandlerClient.currentBrightness / 65536;
+		int lX = ModEventHandlerClient.lastBrightness % 65536;
+		int lY = ModEventHandlerClient.lastBrightness / 65536;
 		float interp = (mc.theWorld.getTotalWorldTime() % 20) * 0.05F;
 		
 		if(mc.theWorld.getTotalWorldTime() == 1)
-			lastBrightness = currentBrightness;
+			ModEventHandlerClient.lastBrightness = ModEventHandlerClient.currentBrightness;
 		
-		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)(lX + (cX - lX) * interp) / 1.0F, (float)(lY + (cY - lY) * interp) / 1.0F);
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (lX + (cX - lX) * interp) / 1.0F, (lY + (cY - lY) * interp) / 1.0F);
 
-		mc.entityRenderer.enableLightmap((double)event.partialTicks);
+		mc.entityRenderer.enableLightmap(event.partialTicks);
 		
-		mc.getTextureManager().bindTexture(ashes);
+		mc.getTextureManager().bindTexture(this.ashes);
 		
 		for(int i = 1; i < 3; i++) {
 			
@@ -871,7 +868,7 @@ public class ModEventHandlerClient {
 			tessellator.draw();
 		}
 
-		mc.entityRenderer.disableLightmap((double)event.partialTicks);
+		mc.entityRenderer.disableLightmap(event.partialTicks);
 		
 		GL11.glDepthMask(true);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -911,12 +908,12 @@ public class ModEventHandlerClient {
 			if(BlockAshes.ashes < 0) BlockAshes.ashes = 0;
 			
 			if(mc.theWorld.getTotalWorldTime() % 20 == 0) {
-				this.lastBrightness = this.currentBrightness;
-				currentBrightness = mc.theWorld.getLightBrightnessForSkyBlocks(MathHelper.floor_double(mc.thePlayer.posX), MathHelper.floor_double(mc.thePlayer.posY), MathHelper.floor_double(mc.thePlayer.posZ), 0);
+				ModEventHandlerClient.lastBrightness = ModEventHandlerClient.currentBrightness;
+				ModEventHandlerClient.currentBrightness = mc.theWorld.getLightBrightnessForSkyBlocks(MathHelper.floor_double(mc.thePlayer.posX), MathHelper.floor_double(mc.thePlayer.posY), MathHelper.floor_double(mc.thePlayer.posZ), 0);
 			}
 			
 			if(ArmorUtil.isWearingEmptyMask(mc.thePlayer)) {
-				MainRegistry.proxy.displayTooltip(EnumChatFormatting.RED + "Your mask has no filter!", MainRegistry.proxy.ID_FILTER);
+				MainRegistry.proxy.displayTooltip(EnumChatFormatting.RED + "Your mask has no filter!", ServerProxy.ID_FILTER);
 			}
 		}
 		
@@ -963,7 +960,7 @@ public class ModEventHandlerClient {
 			
 			if(player.inventory.armorInventory[2] != null && player.inventory.armorInventory[2].getItem() instanceof ArmorFSB) {
 				ArmorFSB plate = (ArmorFSB) player.inventory.armorInventory[2].getItem();
-				if(plate.hasFSBArmor(player)) newStepSize = plate.stepSize;
+				if(ArmorFSB.hasFSBArmor(player)) newStepSize = plate.stepSize;
 			}
 			
 			if(newStepSize > 0) {
@@ -1210,8 +1207,8 @@ public class ModEventHandlerClient {
 	public void onTextureStitch(TextureStitchEvent.Pre event) {
 		
 		if(event.map.getTextureType() == 0) {
-			particleBase = event.map.registerIcon(RefStrings.MODID + ":particle/particle_base");
-			particleLeaf = event.map.registerIcon(RefStrings.MODID + ":particle/dead_leaf");
+			ModEventHandlerClient.particleBase = event.map.registerIcon(RefStrings.MODID + ":particle/particle_base");
+			ModEventHandlerClient.particleLeaf = event.map.registerIcon(RefStrings.MODID + ":particle/dead_leaf");
 		}
 	}
 
@@ -1233,7 +1230,7 @@ public class ModEventHandlerClient {
 			double o = p * 2.75D;
 			
 			GL11.glDisable(GL11.GL_LIGHTING);
-			Minecraft.getMinecraft().renderEngine.bindTexture(poster);
+			Minecraft.getMinecraft().renderEngine.bindTexture(ModEventHandlerClient.poster);
 			Tessellator tess = Tessellator.instance;
 			tess.startDrawingQuads();
 			tess.addVertexWithUV(0.5, 0.5 + o, p * 0.5, 1, 0);
@@ -1251,7 +1248,7 @@ public class ModEventHandlerClient {
 			double o = p * 2.75D;
 
 			GL11.glDisable(GL11.GL_LIGHTING);
-			Minecraft.getMinecraft().renderEngine.bindTexture(poster_cat);
+			Minecraft.getMinecraft().renderEngine.bindTexture(ModEventHandlerClient.poster_cat);
 			Tessellator tess = Tessellator.instance;
 			tess.startDrawingQuads();
 			tess.addVertexWithUV(0.5, 0.5 + o, p * 0.5, 1, 0);

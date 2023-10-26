@@ -51,11 +51,11 @@ public class RenderVaultDoor extends TileEntitySpecialRenderer {
         if(tileEntity.state == 0)
         	timer = new double[] { 0, 0, 0, 0, 0 };
         else if(tileEntity.state == 2)
-        	timer = getAnimationFromSysTime((2000 + 800 * 5));
+        	timer = RenderVaultDoor.getAnimationFromSysTime((2000 + 800 * 5));
         else if(tileEntity.isOpening)
-        	timer = getAnimationFromSysTime(System.currentTimeMillis() - tileEntity.sysTime);
+        	timer = RenderVaultDoor.getAnimationFromSysTime(System.currentTimeMillis() - tileEntity.sysTime);
         else
-        	timer = getAnimationFromSysTime(tileEntity.sysTime + (2000 + 800 * 5) - System.currentTimeMillis());
+        	timer = RenderVaultDoor.getAnimationFromSysTime(tileEntity.sysTime + (2000 + 800 * 5) - System.currentTimeMillis());
 
         GL11.glTranslated(-timer[0], 0, timer[1]);
         

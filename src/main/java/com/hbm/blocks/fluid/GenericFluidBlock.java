@@ -37,35 +37,36 @@ public class GenericFluidBlock extends BlockFluidClassic {
 	public GenericFluidBlock(Fluid fluid, Material material, String still, String flowing) {
 		super(fluid, material);
 		setCreativeTab(null);
-		stillName = still;
-		flowingName = flowing;
-		displacements.put(this, false);
+		this.stillName = still;
+		this.flowingName = flowing;
+		this.displacements.put(this, false);
 	}
 
 	public GenericFluidBlock setDamage(DamageSource source, float amount) {
-		damageSource = source;
-		damage = amount;
+		this.damageSource = source;
+		this.damage = amount;
 		return this;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
-		return (side == 0 || side == 1) ? stillIcon : flowingIcon;
+		return (side == 0 || side == 1) ? GenericFluidBlock.stillIcon : GenericFluidBlock.flowingIcon;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister register) {
-		stillIcon = register.registerIcon(RefStrings.MODID + ":" + stillName);
-		flowingIcon = register.registerIcon(RefStrings.MODID + ":" + flowingName);
+		GenericFluidBlock.stillIcon = register.registerIcon(RefStrings.MODID + ":" + this.stillName);
+		GenericFluidBlock.flowingIcon = register.registerIcon(RefStrings.MODID + ":" + this.flowingName);
 	}
 
 	/** Only temporary, will be moved into a subclass */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
 		
-		if(damageSource != null) {
+		if(this.damageSource != null) {
 			
 			if(entity instanceof EntityItem) {
 
@@ -74,7 +75,7 @@ public class GenericFluidBlock extends BlockFluidClassic {
 				entity.motionZ = 0;
 				
 				if(entity.ticksExisted % 20 == 0 && !world.isRemote) {
-					entity.attackEntityFrom(damageSource, damage * 0.1F);
+					entity.attackEntityFrom(this.damageSource, this.damage * 0.1F);
 					
 					if(entity.isDead && ((EntityItem)entity).getEntityItem().getItem() == Items.slime_ball) {
 						List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, entity.boundingBox.expand(10, 10, 10));
@@ -92,7 +93,7 @@ public class GenericFluidBlock extends BlockFluidClassic {
 					entity.motionY *= 0.5;
 				
 				if(!world.isRemote) {
-					entity.attackEntityFrom(damageSource, damage);
+					entity.attackEntityFrom(this.damageSource, this.damage);
 				}
 			}
 			

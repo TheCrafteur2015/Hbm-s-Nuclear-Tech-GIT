@@ -22,7 +22,7 @@ public class GUIDroneRequester extends GuiInfoContainer {
 
 	public GUIDroneRequester(InventoryPlayer invPlayer, TileEntityDroneRequester tedf) {
 		super(new ContainerDroneRequester(invPlayer, tedf));
-		diFurnace = tedf;
+		this.diFurnace = tedf;
 		
 		this.xSize = 176;
 		this.ySize = 186;
@@ -36,17 +36,17 @@ public class GUIDroneRequester extends GuiInfoContainer {
 			for(int i = 0; i < 9; ++i) {
 				Slot slot = (Slot) this.inventorySlots.inventorySlots.get(i);
 	
-				if(this.isMouseOverSlot(slot, x, y) && diFurnace.matcher.modes[i] != null) {
+				if(isMouseOverSlot(slot, x, y) && this.diFurnace.matcher.modes[i] != null) {
 					
 					String label = EnumChatFormatting.YELLOW + "";
 					
-					switch(diFurnace.matcher.modes[i]) {
+					switch(this.diFurnace.matcher.modes[i]) {
 					case "exact": label += "Item and meta match"; break;
 					case "wildcard": label += "Item matches"; break;
-					default: label += "Ore dict key matches: " + diFurnace.matcher.modes[i]; break;
+					default: label += "Ore dict key matches: " + this.diFurnace.matcher.modes[i]; break;
 					}
 					
-					this.func_146283_a(Arrays.asList(new String[] { EnumChatFormatting.RED + "Right click to change", label }), x, y - 30);
+					func_146283_a(Arrays.asList(new String[] { EnumChatFormatting.RED + "Right click to change", label }), x, y - 30);
 				}
 			}
 		}
@@ -63,7 +63,7 @@ public class GUIDroneRequester extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(GUIDroneRequester.texture);
+		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 	}
 }

@@ -52,6 +52,7 @@ public class FoundryTank extends BlockContainer implements ICrucibleAcceptor {
 		this.iconLava = iconRegister.registerIcon(RefStrings.MODID + ":lava_gray");
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
 		return true;
@@ -79,7 +80,7 @@ public class FoundryTank extends BlockContainer implements ICrucibleAcceptor {
 
 	@Override
 	public int getRenderType() {
-		return renderID;
+		return FoundryTank.renderID;
 	}
 	
 	@Override

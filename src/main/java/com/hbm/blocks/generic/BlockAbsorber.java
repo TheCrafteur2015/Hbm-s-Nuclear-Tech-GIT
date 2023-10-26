@@ -14,8 +14,8 @@ public class BlockAbsorber extends Block {
 
 	public BlockAbsorber(Material mat, float ab) {
 		super(mat);
-		this.setTickRandomly(true);
-		absorb = ab;
+		setTickRandomly(true);
+		this.absorb = ab;
 	}
 
 	@Override
@@ -27,13 +27,14 @@ public class BlockAbsorber extends Block {
 	@Override
 	public void updateTick(World world, int x, int y, int z, Random rand) {
 
-		ChunkRadiationManager.proxy.decrementRad(world, x, y, z, absorb);
-		world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
+		ChunkRadiationManager.proxy.decrementRad(world, x, y, z, this.absorb);
+		world.scheduleBlockUpdate(x, y, z, this, tickRate(world));
 	}
 
+	@Override
 	public void onBlockAdded(World world, int x, int y, int z) {
 		super.onBlockAdded(world, x, y, z);
 
-		world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
+		world.scheduleBlockUpdate(x, y, z, this, tickRate(world));
 	}
 }

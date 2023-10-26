@@ -38,7 +38,7 @@ public class TileEntityCoreReceiver extends TileEntityMachineBase implements IEn
 
 	public TileEntityCoreReceiver() {
 		super(0);
-		tank = new FluidTank(Fluids.CRYOGEL, 64000, 0);
+		this.tank = new FluidTank(Fluids.CRYOGEL, 64000, 0);
 	}
 
 	@Override
@@ -49,41 +49,42 @@ public class TileEntityCoreReceiver extends TileEntityMachineBase implements IEn
 	@Override
 	public void updateEntity() {
 
-		if (!worldObj.isRemote) {
+		if (!this.worldObj.isRemote) {
 			
-			tank.updateTank(xCoord, yCoord, zCoord, worldObj.provider.dimensionId);
-			this.subscribeToAllAround(tank.getTankType(), this);
+			this.tank.updateTank(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId);
+			this.subscribeToAllAround(this.tank.getTankType(), this);
 			
-			power = joules * 5000;
+			this.power = this.joules * 5000;
 			
 			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-				this.sendPower(worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, dir);
+				sendPower(this.worldObj, this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ, dir);
 			
-			if(joules > 0) {
+			if(this.joules > 0) {
 
-				if(tank.getFill() >= 20) {
-					tank.setFill(tank.getFill() - 20);
+				if(this.tank.getFill() >= 20) {
+					this.tank.setFill(this.tank.getFill() - 20);
 				} else {
-					worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.flowing_lava);
+					this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, Blocks.flowing_lava);
 					return;
 				}
 			}
 
 			NBTTagCompound data = new NBTTagCompound();
-			data.setLong("joules", joules);
-			this.networkPack(data, 50);
+			data.setLong("joules", this.joules);
+			networkPack(data, 50);
 			
-			joules = 0;
+			this.joules = 0;
 		}
 	}
 	
+	@Override
 	public void networkUnpack(NBTTagCompound data) {
-		joules = data.getLong("joules");
+		this.joules = data.getLong("joules");
 	}
 
 	@Override
 	public long getPower() {
-		return power;
+		return this.power;
 	}
 
 	@Override
@@ -103,45 +104,45 @@ public class TileEntityCoreReceiver extends TileEntityMachineBase implements IEn
 
 	@Override
 	public void setFluidFill(int i, FluidType type) {
-		if(type.name().equals(tank.getTankType().name()))
-			tank.setFill(i);
+		if(type.name().equals(this.tank.getTankType().name()))
+			this.tank.setFill(i);
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		if(type.name().equals(tank.getTankType().name()))
-			return tank.getFill();
+		if(type.name().equals(this.tank.getTankType().name()))
+			return this.tank.getFill();
 		else
 			return 0;
 	}
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		if(type.name().equals(tank.getTankType().name()))
-			return tank.getMaxFill();
+		if(type.name().equals(this.tank.getTankType().name()))
+			return this.tank.getMaxFill();
 		else
 			return 0;
 	}
 
 	@Override
 	public void setFillForSync(int fill, int index) {
-		tank.setFill(fill);
+		this.tank.setFill(fill);
 	}
 
 	@Override
 	public void setTypeForSync(FluidType type, int index) {
-		tank.setTankType(type);
+		this.tank.setTankType(type);
 	}
 
 	@Override
 	public void addEnergy(World world, int x, int y, int z, long energy, ForgeDirection dir) {
 		
 		//only accept lasers from the front
-		if(dir.getOpposite().ordinal() == this.getBlockMetadata()) {
-			joules += energy;
+		if(dir.getOpposite().ordinal() == getBlockMetadata()) {
+			this.joules += energy;
 		} else {
-			worldObj.func_147480_a(xCoord, yCoord, zCoord, false);
-			worldObj.createExplosion(null, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, 2.5F, true);
+			this.worldObj.func_147480_a(this.xCoord, this.yCoord, this.zCoord, false);
+			this.worldObj.createExplosion(null, this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, 2.5F, true);
 		}
 	}
 	
@@ -161,28 +162,28 @@ public class TileEntityCoreReceiver extends TileEntityMachineBase implements IEn
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		
-		power = nbt.getLong("power");
-		joules = nbt.getLong("joules");
-		tank.readFromNBT(nbt, "tank");
+		this.power = nbt.getLong("power");
+		this.joules = nbt.getLong("joules");
+		this.tank.readFromNBT(nbt, "tank");
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		
-		nbt.setLong("power", power);
-		nbt.setLong("joules", joules);
-		tank.writeToNBT(nbt, "tank");
+		nbt.setLong("power", this.power);
+		nbt.setLong("joules", this.joules);
+		this.tank.writeToNBT(nbt, "tank");
 	}
 
 	@Override
 	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] { tank };
+		return new FluidTank[] { this.tank };
 	}
 
 	@Override
 	public FluidTank[] getAllTanks() {
-		return new FluidTank[] { tank };
+		return new FluidTank[] { this.tank };
 	}
 
 	// do some opencomputer stuff
@@ -194,19 +195,19 @@ public class TileEntityCoreReceiver extends TileEntityMachineBase implements IEn
 	@Callback(direct = true, limit = 4)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getEnergyInfo(Context context, Arguments args) {
-		return new Object[] {joules, getPower()}; //literally only doing this for the consistency between components
+		return new Object[] {this.joules, getPower()}; //literally only doing this for the consistency between components
 	}
 
 	@Callback(direct = true, limit = 4)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getCryogel(Context context, Arguments args) {
-		return new Object[] {tank.getFill()};
+		return new Object[] {this.tank.getFill()};
 	}
 
 	@Callback(direct = true, limit = 4)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getInfo(Context context, Arguments args) {
-		return new Object[] {joules, getPower(), tank.getFill()};
+		return new Object[] {this.joules, getPower(), this.tank.getFill()};
 	}
 
 	@Override
