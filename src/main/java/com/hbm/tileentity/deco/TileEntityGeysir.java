@@ -75,7 +75,7 @@ public class TileEntityGeysir extends TileEntity {
 		
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	private void vapor() {
 
 		List<Entity> entities = this.worldObj.getEntitiesWithinAABB(Entity.class,

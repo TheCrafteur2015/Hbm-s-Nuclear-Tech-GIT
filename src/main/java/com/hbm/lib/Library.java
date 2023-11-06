@@ -452,7 +452,7 @@ public class Library {
 		
 		if(tileentity instanceof IFluidDuct)
 		{
-			if(tileentity instanceof TileEntityFluidDuctSimple && ((TileEntityFluidDuctSimple)tileentity).getType().name().equals(type.name()))
+			if(tileentity instanceof TileEntityFluidDuctSimple && ((TileEntityFluidDuctSimple)tileentity).getType().getName().equals(type.getName()))
 			{
 				if(Library.checkUnionListForFluids(((TileEntityFluidDuctSimple)tileentity).uoteab, that))
 				{

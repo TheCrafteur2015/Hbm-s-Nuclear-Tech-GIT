@@ -48,6 +48,18 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 		return this;
 	}
 	
+	public boolean useInventory() {
+		return this.inventory;
+	}
+	
+	public boolean usePower() {
+		return this.power;
+	}
+	
+	public boolean useFluid() {
+		return this.fluid;
+	}
+	
 	public TileEntityProxyCombo heatSource() {
 		this.heat = true;
 		return this;

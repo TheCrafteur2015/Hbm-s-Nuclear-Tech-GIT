@@ -322,7 +322,7 @@ public class TileEntityForceField extends TileEntityLoadedBase implements ISided
 	List<Entity> outside = new ArrayList<>();
 	List<Entity> inside = new ArrayList<>();
 	
-	@SuppressWarnings("unchecked")
+	
 	private void doField(float rad) {
 
 		List<Entity> oLegacy = new ArrayList<>(this.outside);

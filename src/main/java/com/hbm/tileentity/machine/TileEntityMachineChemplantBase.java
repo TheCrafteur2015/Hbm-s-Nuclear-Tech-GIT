@@ -54,7 +54,7 @@ public abstract class TileEntityMachineChemplantBase extends TileEntityMachineBa
 		
 		this.tanks = new FluidTank[4 * count];
 		for(int i = 0; i < 4 * count; i++) {
-			this.tanks[i] = new FluidTank(Fluids.NONE, getTankCapacity(), i);
+			this.tanks[i] = new FluidTank(Fluids.NONE, getTankCapacity());
 		}
 	}
 
@@ -525,7 +525,7 @@ public abstract class TileEntityMachineChemplantBase extends TileEntityMachineBa
 			
 			FluidTank tank = rec.get(i);
 			int fillWeight = weight.get(i);
-			int part = (int) (Math.min((long)amount, (long)demand) * (long)fillWeight / (long)demand);
+			int part = (int) (Math.min((long)amount, (long)demand) * fillWeight / demand);
 			
 			tank.setFill(tank.getFill() + part);
 			fluid -= part;

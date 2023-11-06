@@ -61,7 +61,7 @@ public class BlockMassStorage extends BlockContainer implements IBlockMulti, ILo
 		this.iconSide[3] = iconRegister.registerIcon(RefStrings.MODID + ":mass_storage_side_wood");
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
@@ -279,7 +279,7 @@ public class BlockMassStorage extends BlockContainer implements IBlockMulti, ILo
 		ILookOverlay.printGeneric(event, title, full ? 0xffff00 : 0x00ffff, full ? 0x404000 : 0x004040, text);
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		

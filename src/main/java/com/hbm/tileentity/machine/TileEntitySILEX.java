@@ -51,7 +51,7 @@ public class TileEntitySILEX extends TileEntityMachineBase implements IFluidAcce
 
 	public TileEntitySILEX() {
 		super(11);
-		this.tank = new FluidTank(Fluids.ACID, 16000, 0);
+		this.tank = new FluidTank(Fluids.ACID, 16000);
 	}
 
 	@Override

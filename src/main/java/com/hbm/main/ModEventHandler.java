@@ -552,7 +552,7 @@ public class ModEventHandler {
 		BobmazonOfferFactory.init();
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@SubscribeEvent
 	public void worldTick(WorldTickEvent event) {
 		
@@ -974,7 +974,7 @@ public class ModEventHandler {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@SubscribeEvent
 	public void onPlayerTick(TickEvent.PlayerTickEvent event) {
 		

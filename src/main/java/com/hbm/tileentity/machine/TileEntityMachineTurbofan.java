@@ -111,7 +111,7 @@ public class TileEntityMachineTurbofan extends TileEntityMachinePolluting implem
 		};
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void updateEntity() {
 		

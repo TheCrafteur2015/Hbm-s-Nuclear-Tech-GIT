@@ -109,7 +109,7 @@ public class CableDiode extends BlockContainer implements IEnergyConnectorBlock,
 		return false;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		list.add(EnumChatFormatting.GOLD + "Limits throughput and restricts flow direction");

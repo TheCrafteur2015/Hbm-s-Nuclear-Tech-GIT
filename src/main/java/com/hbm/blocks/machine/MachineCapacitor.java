@@ -103,13 +103,13 @@ public class MachineCapacitor extends BlockContainer implements ILookOverlay, IP
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, NBTTagCompound persistentTag, EntityPlayer player, List list, boolean ext) {
 		list.add(EnumChatFormatting.YELLOW + "" + BobMathUtil.getShortNumber(persistentTag.getLong("power")) + "/" + BobMathUtil.getShortNumber(persistentTag.getLong("maxPower")) + "HE");
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		

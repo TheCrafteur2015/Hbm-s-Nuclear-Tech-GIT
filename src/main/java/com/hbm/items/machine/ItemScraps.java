@@ -43,7 +43,7 @@ public class ItemScraps extends ItemAutogen {
 		this.addiviceIcon = reg.registerIcon(RefStrings.MODID + ":scraps_additive");
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tab, List list) {
@@ -100,7 +100,7 @@ public class ItemScraps extends ItemAutogen {
 		return ("" + StatCollector.translateToLocal(getUnlocalizedNameInefficiently(stack) + ".name")).trim();
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		MaterialStack contents = ItemScraps.getMats(stack);

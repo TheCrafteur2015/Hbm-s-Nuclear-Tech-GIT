@@ -83,7 +83,7 @@ public class HbmWorldGen implements IWorldGenerator {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	private void generateSurface(World world, Random rand, int i, int j) {
 
 		BiomeGenBase biome = world.getWorldChunkManager().getBiomeGenAt(i, j);
@@ -746,7 +746,7 @@ public class HbmWorldGen implements IWorldGenerator {
 
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	private void generateNether(World world, Random rand, int i, int j) {
 
 		if(WorldConfig.netherOre) {

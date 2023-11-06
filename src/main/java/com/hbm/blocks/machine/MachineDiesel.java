@@ -61,7 +61,7 @@ public class MachineDiesel extends BlockMachineBase implements ITooltipProvider 
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		

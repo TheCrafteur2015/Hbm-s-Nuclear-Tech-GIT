@@ -45,7 +45,7 @@ public class TileEntityMachineLiquefactor extends TileEntityMachineBase implemen
 	
 	public TileEntityMachineLiquefactor() {
 		super(4);
-		this.tank = new FluidTank(Fluids.NONE, 24000, 0);
+		this.tank = new FluidTank(Fluids.NONE, 24000);
 	}
 
 	@Override

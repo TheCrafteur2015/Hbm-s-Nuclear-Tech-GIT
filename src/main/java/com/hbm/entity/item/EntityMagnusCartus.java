@@ -31,7 +31,7 @@ public class EntityMagnusCartus extends EntityMinecart {
 	@Override
 	protected void entityInit() {
 		super.entityInit();
-		this.dataWatcher.addObject(25, new Integer(0));
+		this.dataWatcher.addObject(25, 0);
 	}
 	
 	public void setBogie(EntityMinecartBogie bogie) {

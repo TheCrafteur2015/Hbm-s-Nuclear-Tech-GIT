@@ -59,7 +59,7 @@ public class ItemAmmoHIMARS extends Item {
 		init();
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tab, List list) {
@@ -73,7 +73,7 @@ public class ItemAmmoHIMARS extends Item {
 		list.add(new ItemStack(item, 1, ItemAmmoHIMARS.LARGE_TB));
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 
@@ -192,7 +192,7 @@ public class ItemAmmoHIMARS extends Item {
 		};
 		
 		ItemAmmoHIMARS.itemTypes[ItemAmmoHIMARS.SMALL_WP] = new HIMARSRocket("standard_wp", "himars_standard_wp", 0) {
-			@SuppressWarnings("unchecked")
+			
 			@Override
 			public void onImpact(EntityArtilleryRocket rocket, MovingObjectPosition mop) {
 				ItemAmmoHIMARS.standardExplosion(rocket, mop, 20F, 3F, false, ModBlocks.block_slag, 1);

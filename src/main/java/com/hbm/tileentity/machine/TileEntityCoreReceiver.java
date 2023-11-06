@@ -38,7 +38,7 @@ public class TileEntityCoreReceiver extends TileEntityMachineBase implements IEn
 
 	public TileEntityCoreReceiver() {
 		super(0);
-		this.tank = new FluidTank(Fluids.CRYOGEL, 64000, 0);
+		this.tank = new FluidTank(Fluids.CRYOGEL, 64000);
 	}
 
 	@Override
@@ -104,13 +104,13 @@ public class TileEntityCoreReceiver extends TileEntityMachineBase implements IEn
 
 	@Override
 	public void setFluidFill(int i, FluidType type) {
-		if(type.name().equals(this.tank.getTankType().name()))
+		if(type.getName().equals(this.tank.getTankType().getName()))
 			this.tank.setFill(i);
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		if(type.name().equals(this.tank.getTankType().name()))
+		if(type.getName().equals(this.tank.getTankType().getName()))
 			return this.tank.getFill();
 		else
 			return 0;
@@ -118,7 +118,7 @@ public class TileEntityCoreReceiver extends TileEntityMachineBase implements IEn
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		if(type.name().equals(this.tank.getTankType().name()))
+		if(type.getName().equals(this.tank.getTankType().getName()))
 			return this.tank.getMaxFill();
 		else
 			return 0;

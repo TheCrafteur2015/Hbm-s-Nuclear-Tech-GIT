@@ -49,7 +49,7 @@ public class TileEntityCoreEmitter extends TileEntityMachineBase implements IEne
 
 	public TileEntityCoreEmitter() {
 		super(0);
-		this.tank = new FluidTank(Fluids.CRYOGEL, 64000, 0);
+		this.tank = new FluidTank(Fluids.CRYOGEL, 64000);
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class TileEntityCoreEmitter extends TileEntityMachineBase implements IEne
 		return "container.dfcEmitter";
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void updateEntity() {
 

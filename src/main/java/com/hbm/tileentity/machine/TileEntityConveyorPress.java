@@ -121,7 +121,7 @@ public class TileEntityConveyorPress extends TileEntityMachineBase implements IE
 		};
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	public boolean canExtend() {
 		
 		if((this.power < this.usage) || (this.slots[0] == null)) return false;
@@ -146,7 +146,7 @@ public class TileEntityConveyorPress extends TileEntityMachineBase implements IE
 		return false;
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	public void process() {
 		
 		List<EntityMovingItem> items = this.worldObj.getEntitiesWithinAABB(EntityMovingItem.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord + 1, this.zCoord, this.xCoord + 1, this.yCoord + 1.5, this.zCoord + 1));

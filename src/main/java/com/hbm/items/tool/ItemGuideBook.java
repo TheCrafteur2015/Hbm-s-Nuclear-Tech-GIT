@@ -36,7 +36,7 @@ public class ItemGuideBook extends Item implements IGUIProvider {
 		return stack;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tab, List list) {
@@ -45,7 +45,7 @@ public class ItemGuideBook extends Item implements IGUIProvider {
 			list.add(new ItemStack(item, 1, i));
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		list.add(String.join(" ", I18nUtil.resolveKeyArray(BookType.getType(stack.getItemDamage()).title)));

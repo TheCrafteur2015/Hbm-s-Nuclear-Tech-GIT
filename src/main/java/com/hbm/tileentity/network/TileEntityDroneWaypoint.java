@@ -20,7 +20,7 @@ public class TileEntityDroneWaypoint extends TileEntity implements INBTPacketRec
 	public int nextY = -1;
 	public int nextZ = -1;
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void updateEntity() {
 		

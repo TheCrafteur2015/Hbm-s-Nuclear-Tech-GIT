@@ -45,8 +45,8 @@ public class TileEntityCore extends TileEntityMachineBase implements IGUIProvide
 	public TileEntityCore() {
 		super(3);
 		this.tanks = new FluidTank[2];
-		this.tanks[0] = new FluidTank(Fluids.DEUTERIUM, 128000, 0);
-		this.tanks[1] = new FluidTank(Fluids.TRITIUM, 128000, 1);
+		this.tanks[0] = new FluidTank(Fluids.DEUTERIUM, 128000);
+		this.tanks[1] = new FluidTank(Fluids.TRITIUM, 128000);
 	}
 
 	@Override
@@ -133,8 +133,8 @@ public class TileEntityCore extends TileEntityMachineBase implements IGUIProvide
 				radiation();
 			
 			NBTTagCompound data = new NBTTagCompound();
-			data.setInteger("tank0", this.tanks[0].getTankType().ordinal());
-			data.setInteger("tank1", this.tanks[1].getTankType().ordinal());
+			data.setInteger("tank0", this.tanks[0].getTankType().getID());
+			data.setInteger("tank1", this.tanks[1].getTankType().getID());
 			data.setInteger("fill0", this.tanks[0].getFill());
 			data.setInteger("fill1", this.tanks[1].getFill());
 			data.setInteger("field", this.field);
@@ -170,7 +170,6 @@ public class TileEntityCore extends TileEntityMachineBase implements IGUIProvide
 		this.meltdownTick = data.getBoolean("melt");
 	}
 	
-	@SuppressWarnings("unchecked")
 	private void radiation() {
 		
 		double scale = this.meltdownTick ? 5 : 3;

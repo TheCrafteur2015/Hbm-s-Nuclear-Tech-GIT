@@ -97,7 +97,7 @@ public class EntityAI_MLPF extends EntityAIBase {
 	}
 	
 	//scans the area and determines a new target entity
-	@SuppressWarnings("unchecked")
+	
 	private void calculateTarget() {
 		
 		List<Entity> list = this.mover.worldObj.getEntitiesWithinAABB(this.targetClass, AxisAlignedBB.getBoundingBox(

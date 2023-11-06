@@ -34,7 +34,7 @@ public class BlockSpeedy extends Block implements IStepTickReceiver, ITooltipPro
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		list.add(EnumChatFormatting.BLUE + "Increases speed by " + (MathHelper.floor_double((this.speed - 1) * 100)) + "%");

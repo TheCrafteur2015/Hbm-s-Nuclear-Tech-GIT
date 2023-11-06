@@ -48,8 +48,8 @@ public class TileEntityStorageDrum extends TileEntityMachineBase implements IFlu
 	public TileEntityStorageDrum() {
 		super(24);
 		this.tanks = new FluidTank[2];
-		this.tanks[0] = new FluidTank(Fluids.WASTEFLUID, 16000, 0);
-		this.tanks[1] = new FluidTank(Fluids.WASTEGAS, 16000, 1);
+		this.tanks[0] = new FluidTank(Fluids.WASTEFLUID, 16000);
+		this.tanks[1] = new FluidTank(Fluids.WASTEGAS, 16000);
 	}
 
 	@Override
@@ -167,7 +167,7 @@ public class TileEntityStorageDrum extends TileEntityMachineBase implements IFlu
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	private void radiate(World world, int x, int y, int z, float rads) {
 		
 		double range = 32D;

@@ -28,7 +28,7 @@ public class SiegeHole extends BlockBase {
 		return 90 + world.rand.nextInt(20);
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void updateTick(World world, int x, int y, int z, Random rand) {
 		world.scheduleBlockUpdate(x, y, z, this, tickRate(world));

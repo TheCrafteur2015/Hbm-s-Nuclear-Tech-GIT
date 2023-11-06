@@ -42,9 +42,9 @@ public class TileEntityMachineFrackingTower extends TileEntityOilDrillBase imple
 	public TileEntityMachineFrackingTower() {
 		super();
 		this.tanks = new FluidTank[3];
-		this.tanks[0] = new FluidTank(Fluids.OIL, 64_000, 0);
-		this.tanks[1] = new FluidTank(Fluids.GAS, 64_000, 1);
-		this.tanks[2] = new FluidTank(Fluids.FRACKSOL, 64_000, 2);
+		this.tanks[0] = new FluidTank(Fluids.OIL, 64_000);
+		this.tanks[1] = new FluidTank(Fluids.GAS, 64_000);
+		this.tanks[2] = new FluidTank(Fluids.FRACKSOL, 64_000);
 	}
 
 	@Override

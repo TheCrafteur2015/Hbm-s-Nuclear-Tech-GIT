@@ -25,7 +25,6 @@ public class ProceduralStructureStart extends StructureStart {
 	}
 	
 	/** 'starter' is just the starting component, so like a village well. meant to be nice and convenient and not needing a super necessarily. */
-	@SuppressWarnings("unchecked")
 	public ProceduralStructureStart buildStart(World world, Random rand, StructureComponent starter, Weight...weights) {
 		prepareWeights(weights);
 		
@@ -116,7 +115,6 @@ public class ProceduralStructureStart extends StructureStart {
 	protected int distanceLimit = 64;
 	
 	/** Gets the next valid component based on the structure start's members */
-	@SuppressWarnings("unchecked")
 	protected StructureComponent getNextValidComponent(StructureComponent last, Random rand, int minX, int minY, int minZ, int coordMode, int componentType) {
 		
 		if(this.components.size() > this.sizeLimit) //Hard limit on amount of components
@@ -215,7 +213,6 @@ public class ProceduralStructureStart extends StructureStart {
 	/** Returns a new instance of this structureComponent, or null if not able to be placed.<br>Based on bounding box checks. Please use a method reference in the component. */
 	@FunctionalInterface
 	protected static interface instantiateStructure {
-		@SuppressWarnings("rawtypes")
 		StructureComponent findValidPlacement(List components, Random rand, int minX, int minY, int minZ, int coordMode, int componentType);
 	}
 	

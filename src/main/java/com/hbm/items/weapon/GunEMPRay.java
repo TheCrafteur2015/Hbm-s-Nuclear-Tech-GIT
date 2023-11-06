@@ -131,7 +131,7 @@ public class GunEMPRay extends Item {
 		return 0;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
@@ -143,7 +143,7 @@ public class GunEMPRay extends Item {
 		list.add("Damage: 25 - 35");
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public Multimap getItemAttributeModifiers() {
 		Multimap multimap = super.getItemAttributeModifiers();

@@ -47,7 +47,7 @@ public class EntityZirnoxDebris extends EntityDebrisBase {
 		return false;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void onUpdate() {
 

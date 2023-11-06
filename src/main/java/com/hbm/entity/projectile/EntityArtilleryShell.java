@@ -59,7 +59,7 @@ public class EntityArtilleryShell extends EntityThrowableNT implements IChunkLoa
 	protected void entityInit() {
 		super.entityInit();
 		init(ForgeChunkManager.requestTicket(MainRegistry.instance, this.worldObj, Type.ENTITY));
-		this.dataWatcher.addObject(10, new Integer(0));
+		this.dataWatcher.addObject(10, 0);
 	}
 	
 	@Override
@@ -130,12 +130,12 @@ public class EntityArtilleryShell extends EntityThrowableNT implements IChunkLoa
 			
 		} else {
 			if(this.turnProgress > 0) {
-				double interpX = this.posX + (this.syncPosX - this.posX) / (double) this.turnProgress;
-				double interpY = this.posY + (this.syncPosY - this.posY) / (double) this.turnProgress;
-				double interpZ = this.posZ + (this.syncPosZ - this.posZ) / (double) this.turnProgress;
-				double d = MathHelper.wrapAngleTo180_double(this.syncYaw - (double) this.rotationYaw);
-				this.rotationYaw = (float) ((double) this.rotationYaw + d / (double) this.turnProgress);
-				this.rotationPitch = (float)((double)this.rotationPitch + (this.syncPitch - (double)this.rotationPitch) / (double)this.turnProgress);
+				double interpX = this.posX + (this.syncPosX - this.posX) / this.turnProgress;
+				double interpY = this.posY + (this.syncPosY - this.posY) / this.turnProgress;
+				double interpZ = this.posZ + (this.syncPosZ - this.posZ) / this.turnProgress;
+				double d = MathHelper.wrapAngleTo180_double(this.syncYaw - this.rotationYaw);
+				this.rotationYaw = (float) (this.rotationYaw + d / this.turnProgress);
+				this.rotationPitch = (float)(this.rotationPitch + (this.syncPitch - this.rotationPitch) / this.turnProgress);
 				--this.turnProgress;
 				setPosition(interpX, interpY, interpZ);
 			} else {

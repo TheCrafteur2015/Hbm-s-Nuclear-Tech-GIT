@@ -20,7 +20,7 @@ public class RadiolysisRecipes {
 	private static Map<FluidType, Pair<FluidStack, FluidStack>> radiolysis = new HashMap<>(); //fluidstacks :reimumunch:
 	
 	/* I am proud of this */
-	@SuppressWarnings("unchecked")
+	
 	public static Map<Object, Object[]> getRecipesForNEI() {
 		Map<Object, Object[]> recipes = new HashMap<>();
 		Iterator itr = RadiolysisRecipes.radiolysis.entrySet().iterator();

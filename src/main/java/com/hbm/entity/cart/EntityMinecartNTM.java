@@ -29,7 +29,7 @@ public abstract class EntityMinecartNTM extends EntityMinecart {
 	@Override
 	protected void entityInit() {
 		super.entityInit();
-		this.dataWatcher.addObject(EntityMinecartNTM.cart_base_id, new Integer(0)); //EnumCartBase
+		this.dataWatcher.addObject(EntityMinecartNTM.cart_base_id, 0); //EnumCartBase
 	}
 	
 	public void setBase(EnumCartBase type) {

@@ -278,7 +278,6 @@ public class MachineBattery extends BlockContainer implements ILookOverlay, IPer
 		player.addExhaustion(0.025F);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, NBTTagCompound persistentTag, EntityPlayer player, List list, boolean ext) {
 		list.add(EnumChatFormatting.YELLOW + "" + BobMathUtil.getShortNumber(persistentTag.getLong("power")) + "/" + BobMathUtil.getShortNumber(this.maxPower) + "HE");

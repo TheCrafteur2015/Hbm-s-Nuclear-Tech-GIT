@@ -22,7 +22,7 @@ public class PylonRedWire extends PylonBase {
 		return new TileEntityPylon();
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		list.add(EnumChatFormatting.GOLD + "Connection Type: " + EnumChatFormatting.YELLOW + "Single");

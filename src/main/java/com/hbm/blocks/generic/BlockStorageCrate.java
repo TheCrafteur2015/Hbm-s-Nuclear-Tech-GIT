@@ -292,7 +292,7 @@ public class BlockStorageCrate extends BlockContainer implements IBlockMulti, IT
 		return Container.calcRedstoneFromInventory((IInventory) world.getTileEntity(x, y, z));
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		if(stack.hasTagCompound()) {

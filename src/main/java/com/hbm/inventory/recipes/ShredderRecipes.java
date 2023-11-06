@@ -457,7 +457,7 @@ public class ShredderRecipes extends SerializableRecipe {
 		ShredderRecipes.shredderRecipes.put(comp, out);
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void writeRecipe(Object recipe, JsonWriter writer) throws IOException {
 		Entry<ComparableStack, ItemStack> entry = (Entry<ComparableStack, ItemStack>) recipe;

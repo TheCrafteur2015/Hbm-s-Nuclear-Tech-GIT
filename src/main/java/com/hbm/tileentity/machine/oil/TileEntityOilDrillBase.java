@@ -47,8 +47,8 @@ public abstract class TileEntityOilDrillBase extends TileEntityMachineBase imple
 	public TileEntityOilDrillBase() {
 		super(8);
 		this.tanks = new FluidTank[2];
-		this.tanks[0] = new FluidTank(Fluids.OIL, 64_000, 0);
-		this.tanks[1] = new FluidTank(Fluids.GAS, 64_000, 1);
+		this.tanks[0] = new FluidTank(Fluids.OIL, 64_000);
+		this.tanks[1] = new FluidTank(Fluids.GAS, 64_000);
 	}
 	
 	@Override

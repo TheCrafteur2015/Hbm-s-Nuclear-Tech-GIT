@@ -17,7 +17,7 @@ public class TileEntityLandmine extends TileEntity {
 	
 	private boolean isPrimed = false;
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void updateEntity() {
 

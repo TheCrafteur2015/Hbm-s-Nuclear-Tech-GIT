@@ -17,7 +17,7 @@ public class ItemModCladding extends ItemArmorMod {
 		this.rad = rad;
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		list.add(EnumChatFormatting.YELLOW + "+" + this.rad + " rad-resistance");
@@ -25,7 +25,7 @@ public class ItemModCladding extends ItemArmorMod {
 		super.addInformation(itemstack, player, list, bool);
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addDesc(List list, ItemStack stack, ItemStack armor) {
 		list.add(EnumChatFormatting.YELLOW + "  " + stack.getDisplayName() + " (+" + this.rad + " radiation resistence)");

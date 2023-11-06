@@ -291,7 +291,7 @@ public abstract class TileEntityRBMKBase extends TileEntityLoadedBase implements
 		TileEntityRBMKBase.diag = false;
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@SideOnly(Side.CLIENT)
 	public static void diagnosticPrintHook(RenderGameOverlayEvent.Pre event, World world, int x, int y, int z) {
 
@@ -407,7 +407,7 @@ public abstract class TileEntityRBMKBase extends TileEntityLoadedBase implements
 	public static HashSet<IPipeNet> pipes = new HashSet<>();
 	
 	//assumes that !worldObj.isRemote
-	@SuppressWarnings("unchecked")
+	
 	public void meltdown() {
 		
 		RBMKBase.dropLids = false;

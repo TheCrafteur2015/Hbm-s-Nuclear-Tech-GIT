@@ -241,7 +241,7 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 		return Vec3.createVectorHelper(this.xCoord - player.posX, this.yCoord - player.posY, this.zCoord - player.posZ).lengthVector() < 20;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void receiveControl(NBTTagCompound data) {
 		

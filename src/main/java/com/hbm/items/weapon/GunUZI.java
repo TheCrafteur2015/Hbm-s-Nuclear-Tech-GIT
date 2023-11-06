@@ -87,7 +87,7 @@ public class GunUZI extends Item implements IHoldableWeapon {
 		return 0;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
@@ -121,7 +121,7 @@ public class GunUZI extends Item implements IHoldableWeapon {
 		return EnumRarity.common;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public Multimap getItemAttributeModifiers() {
 		Multimap multimap = super.getItemAttributeModifiers();

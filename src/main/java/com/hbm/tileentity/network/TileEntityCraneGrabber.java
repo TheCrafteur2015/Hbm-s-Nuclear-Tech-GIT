@@ -47,7 +47,7 @@ public class TileEntityCraneGrabber extends TileEntityCraneBase implements IGUIP
 		return "container.craneGrabber";
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void updateEntity() {
 		super.updateEntity();

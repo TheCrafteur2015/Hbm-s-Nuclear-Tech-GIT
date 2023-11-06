@@ -183,7 +183,7 @@ public class ItemBlowtorch extends Item implements IFillableItem {
 		return 1 - frac;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {

@@ -25,7 +25,7 @@ public class TileEntityDemonLamp extends TileEntity {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	private void radiate(World world, int x, int y, int z) {
 		
 		float rads = 100000F;

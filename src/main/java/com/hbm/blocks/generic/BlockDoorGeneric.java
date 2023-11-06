@@ -73,7 +73,7 @@ public class BlockDoorGeneric extends BlockDummyable {
 		return this.type.isLadder(open);
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addCollisionBoxesToList(World worldIn, int x, int y, int z, AxisAlignedBB entityBox, List collidingBoxes, Entity entityIn) {
 		AxisAlignedBB box = getBoundingBox(worldIn, x, y ,z);

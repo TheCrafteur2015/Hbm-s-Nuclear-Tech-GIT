@@ -111,7 +111,7 @@ public class ItemModMinecart extends Item {
 		return super.getUnlocalizedName() + "." + cart.name().toLowerCase(Locale.US);
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tab, List list) {

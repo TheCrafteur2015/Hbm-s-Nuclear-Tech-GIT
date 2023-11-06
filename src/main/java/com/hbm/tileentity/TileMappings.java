@@ -529,7 +529,7 @@ public class TileMappings {
 		TileMappings.put(TileEntityDroneRequester.class, "tileentity_drone_requester");
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	private static void put(Class<? extends TileEntity> clazz, String... names) {
 		TileMappings.map.put(clazz, names);
 

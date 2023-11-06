@@ -57,8 +57,8 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IS
 	public TileEntitySoyuzLauncher() {
 		super(27);
 		this.tanks = new FluidTank[2];
-		this.tanks[0] = new FluidTank(Fluids.KEROSENE, 128000, 0);
-		this.tanks[1] = new FluidTank(Fluids.OXYGEN, 128000, 1);
+		this.tanks[0] = new FluidTank(Fluids.KEROSENE, 128000);
+		this.tanks[1] = new FluidTank(Fluids.OXYGEN, 128000);
 	}
 
 	@Override
@@ -66,7 +66,6 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IS
 		return "container.soyuzLauncher";
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void updateEntity() {
 
@@ -404,9 +403,9 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IS
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		if (type.name().equals(this.tanks[0].getTankType().name()))
+		if (type.getName().equals(this.tanks[0].getTankType().getName()))
 			return this.tanks[0].getMaxFill();
-		else if (type.name().equals(this.tanks[1].getTankType().name()))
+		else if (type.getName().equals(this.tanks[1].getTankType().getName()))
 			return this.tanks[1].getMaxFill();
 		else
 			return 0;
@@ -420,9 +419,9 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IS
 
 	@Override
 	public void setFluidFill(int fill, FluidType type) {
-		if (type.name().equals(this.tanks[0].getTankType().name()))
+		if (type.getName().equals(this.tanks[0].getTankType().getName()))
 			this.tanks[0].setFill(fill);
-		else if (type.name().equals(this.tanks[1].getTankType().name()))
+		else if (type.getName().equals(this.tanks[1].getTankType().getName()))
 			this.tanks[1].setFill(fill);
 	}
 
@@ -434,9 +433,9 @@ public class TileEntitySoyuzLauncher extends TileEntityMachineBase implements IS
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		if (type.name().equals(this.tanks[0].getTankType().name()))
+		if (type.getName().equals(this.tanks[0].getTankType().getName()))
 			return this.tanks[0].getFill();
-		else if (type.name().equals(this.tanks[1].getTankType().name()))
+		else if (type.getName().equals(this.tanks[1].getTankType().getName()))
 			return this.tanks[1].getFill();
 		else
 			return 0;

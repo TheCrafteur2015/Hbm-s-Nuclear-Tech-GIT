@@ -426,7 +426,7 @@ public class TestEventTester extends Block {
     	}
     }
 	
-	@SuppressWarnings("unchecked")
+	
 	public void killEvent(World world, int x, int y, int z) {
 		
 			world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.break", 1.0F, TestEventTester.itemRand.nextFloat() * 0.4F + 0.8F);

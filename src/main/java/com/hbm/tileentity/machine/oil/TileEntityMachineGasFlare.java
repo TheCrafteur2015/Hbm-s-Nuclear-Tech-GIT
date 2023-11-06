@@ -49,7 +49,7 @@ public class TileEntityMachineGasFlare extends TileEntityMachineBase implements 
 
 	public TileEntityMachineGasFlare() {
 		super(6);
-		this.tank = new FluidTank(Fluids.GAS, 64000, 0);
+		this.tank = new FluidTank(Fluids.GAS, 64000);
 	}
 
 	@Override
@@ -91,7 +91,6 @@ public class TileEntityMachineGasFlare extends TileEntityMachineBase implements 
 		this.worldObj.markTileEntityChunkModified(this.xCoord, this.yCoord, this.zCoord, this);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void updateEntity() {
 
@@ -274,17 +273,17 @@ public class TileEntityMachineGasFlare extends TileEntityMachineBase implements 
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		return type.name().equals(this.tank.getTankType().name()) ? this.tank.getMaxFill() : 0;
+		return type.getName().equals(this.tank.getTankType().getName()) ? this.tank.getMaxFill() : 0;
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		return type.name().equals(this.tank.getTankType().name()) ? this.tank.getFill() : 0;
+		return type.getName().equals(this.tank.getTankType().getName()) ? this.tank.getFill() : 0;
 	}
 
 	@Override
 	public void setFluidFill(int i, FluidType type) {
-		if(type.name().equals(this.tank.getTankType().name()))
+		if(type.getName().equals(this.tank.getTankType().getName()))
 			this.tank.setFill(i);
 	}
 

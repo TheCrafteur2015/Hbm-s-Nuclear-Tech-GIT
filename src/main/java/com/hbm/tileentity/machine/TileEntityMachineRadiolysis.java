@@ -53,9 +53,9 @@ public class TileEntityMachineRadiolysis extends TileEntityMachineBase implement
 	public TileEntityMachineRadiolysis() {
 		super(15); //10 rtg slots, 2 fluid ID slots (io), 2 irradiation slots (io), battery slot
 		this.tanks = new FluidTank[3];
-		this.tanks[0] = new FluidTank(Fluids.NONE, 2000, 0);
-		this.tanks[1] = new FluidTank(Fluids.NONE, 2000, 1);
-		this.tanks[2] = new FluidTank(Fluids.NONE, 2000, 2);
+		this.tanks[0] = new FluidTank(Fluids.NONE, 2000);
+		this.tanks[1] = new FluidTank(Fluids.NONE, 2000);
+		this.tanks[2] = new FluidTank(Fluids.NONE, 2000);
 	}
 	
 	@Override

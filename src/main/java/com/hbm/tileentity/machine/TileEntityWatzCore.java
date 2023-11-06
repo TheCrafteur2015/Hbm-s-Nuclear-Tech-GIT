@@ -633,7 +633,7 @@ public class TileEntityWatzCore extends TileEntityLoadedBase implements ISidedIn
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	public void emptyWaste() {
 		this.tank.setFill(this.tank.getFill() / 4);
 		this.tank.setFill(this.tank.getFill() * 3);

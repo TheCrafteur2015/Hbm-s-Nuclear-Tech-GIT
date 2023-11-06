@@ -180,7 +180,7 @@ public class TileEntityMachineFluidTank extends TileEntityMachineBase implements
 	}
 	
 	/** called every tick post explosion, used for leaking fluid and spawning particles */
-	@SuppressWarnings("unchecked")
+	
 	public void updateLeak(int amount) {
 		if(!this.hasExploded || (amount <= 0)) return;
 		

@@ -37,7 +37,10 @@ public class FusionRecipeHandler extends TemplateRecipeHandler {
         @Override
 		public List<PositionedStack> getIngredients() {
         	
-            return new ArrayList() {{ add(SmeltingSet.this.input); }};
+            return new ArrayList() {
+            	private static final long serialVersionUID = 1L;
+            	{
+            		add(SmeltingSet.this.input); }};
         }
 
         @Override

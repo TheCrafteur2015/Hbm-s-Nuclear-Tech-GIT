@@ -53,7 +53,7 @@ public class TileEntityMachineCombustionEngine extends TileEntityMachinePollutin
 
 	public TileEntityMachineCombustionEngine() {
 		super(5, 50);
-		this.tank = new FluidTank(Fluids.DIESEL, 24_000, 0);
+		this.tank = new FluidTank(Fluids.DIESEL, 24_000);
 	}
 
 	@Override

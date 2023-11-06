@@ -38,8 +38,8 @@ public class TileEntityMachineChemfac extends TileEntityMachineChemplantBase {
 	public TileEntityMachineChemfac() {
 		super(77);
 
-		this.water = new FluidTank(Fluids.WATER, 64_000, this.tanks.length);
-		this.steam = new FluidTank(Fluids.SPENTSTEAM, 64_000, this.tanks.length + 1);
+		this.water = new FluidTank(Fluids.WATER, 64_000);
+		this.steam = new FluidTank(Fluids.SPENTSTEAM, 64_000);
 	}
 
 	@Override

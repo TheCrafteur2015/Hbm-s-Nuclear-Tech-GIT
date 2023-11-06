@@ -156,7 +156,7 @@ public class GunXVL1456 extends Item {
 		return 0;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
@@ -171,7 +171,7 @@ public class GunXVL1456 extends Item {
 		list.add("Projectiles penetrate walls.");
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public Multimap getItemAttributeModifiers() {
 		Multimap multimap = super.getItemAttributeModifiers();

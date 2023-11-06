@@ -121,7 +121,7 @@ public class ItemPlasmaSpear extends Item implements IFillableItem, ISyncButtons
 		return false;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void receiveMouse(EntityPlayer player, ItemStack stack, int button, boolean buttonstate) {
 		Vec3 start = Vec3.createVectorHelper(player.posX, player.posY + player.getEyeHeight() - player.yOffset, player.posZ);

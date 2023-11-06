@@ -119,7 +119,7 @@ public class FluidDuctBox extends FluidDuctBase implements IBlockMulti, ILookOve
 		return this.iconJunction[m];
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
@@ -161,7 +161,7 @@ public class FluidDuctBox extends FluidDuctBase implements IBlockMulti, ILookOve
 		return 3;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB entityBounding, List list, Entity entity) {
 		

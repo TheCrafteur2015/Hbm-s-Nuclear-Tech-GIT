@@ -53,7 +53,7 @@ public class BlockHadronCooler extends BlockMulti implements ITooltipProvider {
 		return this.getUnlocalizedName();
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		

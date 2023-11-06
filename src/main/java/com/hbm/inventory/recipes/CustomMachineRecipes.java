@@ -28,7 +28,9 @@ public class CustomMachineRecipes extends SerializableRecipe {
 	@Override
 	public void registerDefaults() {
 		
-		CustomMachineRecipes.recipes.put("paperPress", new ArrayList() {{
+		CustomMachineRecipes.recipes.put("paperPress", new ArrayList() {
+			private static final long serialVersionUID = 1L;
+			{
 			CustomMachineRecipe recipe = new CustomMachineRecipe();
 			recipe.inputFluids = new FluidStack[] {new FluidStack(Fluids.WATER, 250)};
 			recipe.inputItems = new AStack[] {new ComparableStack(ModItems.powder_sawdust)};

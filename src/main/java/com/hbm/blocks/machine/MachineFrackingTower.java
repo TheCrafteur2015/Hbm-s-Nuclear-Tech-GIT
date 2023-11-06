@@ -102,7 +102,7 @@ public class MachineFrackingTower extends BlockDummyable implements IPersistentI
 		return IPersistentNBT.getDrops(world, x, y, z, this);
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, NBTTagCompound persistentTag, EntityPlayer player, List list, boolean ext) {
 		list.add(EnumChatFormatting.GREEN + BobMathUtil.getShortNumber(persistentTag.getLong("power")) + "HE");

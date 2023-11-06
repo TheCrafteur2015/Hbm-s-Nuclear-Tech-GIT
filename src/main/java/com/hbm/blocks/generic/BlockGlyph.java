@@ -46,7 +46,7 @@ public class BlockGlyph extends Block {
         return p_149692_1_;
     }
 	
-    @SuppressWarnings("unchecked")
+    
 	@Override
 	@SideOnly(Side.CLIENT)
     public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List p_149666_3_) {

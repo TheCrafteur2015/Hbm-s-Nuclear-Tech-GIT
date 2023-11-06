@@ -69,7 +69,7 @@ public class FluidDuctBoxExhaust extends FluidDuctBox {
 		return 1;
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {

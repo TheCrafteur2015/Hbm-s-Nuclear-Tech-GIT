@@ -459,7 +459,7 @@ public class ItemGunBase extends Item implements IHoldableWeapon, IItemHUD, IEqu
 	}
 	
 	//item mouseover text
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		

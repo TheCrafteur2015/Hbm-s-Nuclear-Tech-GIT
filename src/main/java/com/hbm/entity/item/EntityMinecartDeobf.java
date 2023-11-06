@@ -124,11 +124,11 @@ public abstract class EntityMinecartDeobf extends Entity {
 
 	@Override
 	protected void entityInit() {
-		this.dataWatcher.addObject(17, new Integer(0));
-		this.dataWatcher.addObject(18, new Integer(1));
-		this.dataWatcher.addObject(19, new Float(0.0F));
-		this.dataWatcher.addObject(20, new Integer(0));
-		this.dataWatcher.addObject(21, new Integer(6));
+		this.dataWatcher.addObject(17, 0);
+		this.dataWatcher.addObject(18, 1);
+		this.dataWatcher.addObject(19, 0.0F);
+		this.dataWatcher.addObject(20, 0);
+		this.dataWatcher.addObject(21, 6);
 		this.dataWatcher.addObject(22, Byte.valueOf((byte) 0));
 	}
 
@@ -176,7 +176,7 @@ public abstract class EntityMinecartDeobf extends Entity {
 	 */
 	@Override
 	public double getMountedYOffset() {
-		return (double) this.height * 0.0D - 0.3D;
+		return this.height * 0.0D - 0.3D;
 	}
 
 	/**
@@ -317,12 +317,12 @@ public abstract class EntityMinecartDeobf extends Entity {
 		 */
 		if(this.worldObj.isRemote) {
 			if(this.turnProgress > 0) {
-				double interpX = this.posX + (this.syncPosX - this.posX) / (double) this.turnProgress;
-				double interpY = this.posY + (this.syncPosY - this.posY) / (double) this.turnProgress;
-				double interpZ = this.posZ + (this.syncPosZ - this.posZ) / (double) this.turnProgress;
-				double deltaYaw = MathHelper.wrapAngleTo180_double(this.minecartYaw - (double) this.rotationYaw);
-				this.rotationYaw = (float) ((double) this.rotationYaw + deltaYaw / (double) this.turnProgress);
-				this.rotationPitch = (float) ((double) this.rotationPitch + (this.minecartPitch - (double) this.rotationPitch) / (double) this.turnProgress);
+				double interpX = this.posX + (this.syncPosX - this.posX) / this.turnProgress;
+				double interpY = this.posY + (this.syncPosY - this.posY) / this.turnProgress;
+				double interpZ = this.posZ + (this.syncPosZ - this.posZ) / this.turnProgress;
+				double deltaYaw = MathHelper.wrapAngleTo180_double(this.minecartYaw - this.rotationYaw);
+				this.rotationYaw = (float) (this.rotationYaw + deltaYaw / this.turnProgress);
+				this.rotationPitch = (float) (this.rotationPitch + (this.minecartPitch - this.rotationPitch) / this.turnProgress);
 				--this.turnProgress;
 				setPosition(interpX, interpY, interpZ);
 				setRotation(this.rotationYaw, this.rotationPitch);
@@ -374,7 +374,7 @@ public abstract class EntityMinecartDeobf extends Entity {
 				}
 			}
 
-			double deltaYaw = (double) MathHelper.wrapAngleTo180_float(this.rotationYaw - this.prevRotationYaw);
+			double deltaYaw = MathHelper.wrapAngleTo180_float(this.rotationYaw - this.prevRotationYaw);
 
 			if(deltaYaw < -170.0D || deltaYaw >= 170.0D) {
 				this.rotationYaw += 180.0F;
@@ -459,7 +459,7 @@ public abstract class EntityMinecartDeobf extends Entity {
 	protected void useRail(int railX, int railY, int railZ, double maxSpeed, double slopeAdjustment, Block rail, int meta) {
 		this.fallDistance = 0.0F;
 		Vec3 vec3 = getClosestPositionOnRail(this.posX, this.posY, this.posZ);
-		this.posY = (double) railY;
+		this.posY = railY;
 		boolean flag = false;
 		boolean flag1 = false;
 
@@ -473,7 +473,7 @@ public abstract class EntityMinecartDeobf extends Entity {
 		}
 
 		if(meta >= 2 && meta <= 5) {
-			this.posY = (double) (railY + 1);
+			this.posY = railY + 1;
 		}
 
 		if(meta == 2) {
@@ -493,8 +493,8 @@ public abstract class EntityMinecartDeobf extends Entity {
 		}
 
 		int[][] curveData = EntityMinecartDeobf.matrix[meta];
-		double sideDeltaX = (double) (curveData[1][0] - curveData[0][0]);
-		double sideDeltaZ = (double) (curveData[1][2] - curveData[0][2]);
+		double sideDeltaX = curveData[1][0] - curveData[0][0];
+		double sideDeltaZ = curveData[1][2] - curveData[0][2];
 		double sideDelta = Math.sqrt(sideDeltaX * sideDeltaX + sideDeltaZ * sideDeltaZ);
 		double d5 = this.motionX * sideDeltaX + this.motionZ * sideDeltaZ;
 
@@ -517,11 +517,11 @@ public abstract class EntityMinecartDeobf extends Entity {
 		double d10;
 
 		if(this.riddenByEntity != null && this.riddenByEntity instanceof EntityLivingBase) {
-			motion = (double) ((EntityLivingBase) this.riddenByEntity).moveForward;
+			motion = ((EntityLivingBase) this.riddenByEntity).moveForward;
 
 			if(motion > 0.0D) {
-				d8 = -Math.sin((double) (this.riddenByEntity.rotationYaw * (float) Math.PI / 180.0F));
-				d9 = Math.cos((double) (this.riddenByEntity.rotationYaw * (float) Math.PI / 180.0F));
+				d8 = -Math.sin(this.riddenByEntity.rotationYaw * (float) Math.PI / 180.0F);
+				d9 = Math.cos(this.riddenByEntity.rotationYaw * (float) Math.PI / 180.0F);
 				d10 = this.motionX * this.motionX + this.motionZ * this.motionZ;
 
 				if(d10 < 0.01D) {
@@ -547,21 +547,21 @@ public abstract class EntityMinecartDeobf extends Entity {
 		}
 
 		motion = 0.0D;
-		d8 = (double) railX + 0.5D + (double) curveData[0][0] * 0.5D;
-		d9 = (double) railZ + 0.5D + (double) curveData[0][2] * 0.5D;
-		d10 = (double) railX + 0.5D + (double) curveData[1][0] * 0.5D;
-		double d11 = (double) railZ + 0.5D + (double) curveData[1][2] * 0.5D;
+		d8 = railX + 0.5D + curveData[0][0] * 0.5D;
+		d9 = railZ + 0.5D + curveData[0][2] * 0.5D;
+		d10 = railX + 0.5D + curveData[1][0] * 0.5D;
+		double d11 = railZ + 0.5D + curveData[1][2] * 0.5D;
 		sideDeltaX = d10 - d8;
 		sideDeltaZ = d11 - d9;
 		double d12;
 		double d13;
 
 		if(sideDeltaX == 0.0D) {
-			this.posX = (double) railX + 0.5D;
-			motion = this.posZ - (double) railZ;
+			this.posX = railX + 0.5D;
+			motion = this.posZ - railZ;
 		} else if(sideDeltaZ == 0.0D) {
-			this.posZ = (double) railZ + 0.5D;
-			motion = this.posX - (double) railX;
+			this.posZ = railZ + 0.5D;
+			motion = this.posX - railX;
 		} else {
 			d12 = this.posX - d8;
 			d13 = this.posZ - d9;
@@ -570,14 +570,14 @@ public abstract class EntityMinecartDeobf extends Entity {
 
 		this.posX = d8 + sideDeltaX * motion;
 		this.posZ = d9 + sideDeltaZ * motion;
-		setPosition(this.posX, this.posY + (double) this.yOffset, this.posZ);
+		setPosition(this.posX, this.posY + this.yOffset, this.posZ);
 
 		moveMinecartOnRail(railX, railY, railZ, maxSpeed);
 
 		if(curveData[0][1] != 0 && MathHelper.floor_double(this.posX) - railX == curveData[0][0] && MathHelper.floor_double(this.posZ) - railZ == curveData[0][2]) {
-			setPosition(this.posX, this.posY + (double) curveData[0][1], this.posZ);
+			setPosition(this.posX, this.posY + curveData[0][1], this.posZ);
 		} else if(curveData[1][1] != 0 && MathHelper.floor_double(this.posX) - railX == curveData[1][0] && MathHelper.floor_double(this.posZ) - railZ == curveData[1][2]) {
-			setPosition(this.posX, this.posY + (double) curveData[1][1], this.posZ);
+			setPosition(this.posX, this.posY + curveData[1][1], this.posZ);
 		}
 
 		applyDrag();
@@ -600,8 +600,8 @@ public abstract class EntityMinecartDeobf extends Entity {
 
 		if(j1 != railX || i1 != railZ) {
 			d6 = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
-			this.motionX = d6 * (double) (j1 - railX);
-			this.motionZ = d6 * (double) (i1 - railZ);
+			this.motionX = d6 * (j1 - railX);
+			this.motionZ = d6 * (i1 - railZ);
 		}
 
 		if(shouldDoRailFunctions()) {
@@ -660,15 +660,15 @@ public abstract class EntityMinecartDeobf extends Entity {
 		} else {
 			int meta = this.worldObj.getBlockMetadata(x, y, z);
 
-			interpY = (double) y;
+			interpY = y;
 
 			if(meta >= 2 && meta <= 5) {
-				interpY = (double) (y + 1);
+				interpY = y + 1;
 			}
 
 			int[][] curveData = EntityMinecartDeobf.matrix[meta];
-			double curveX = (double) (curveData[1][0] - curveData[0][0]);
-			double curveZ = (double) (curveData[1][2] - curveData[0][2]);
+			double curveX = curveData[1][0] - curveData[0][0];
+			double curveZ = curveData[1][2] - curveData[0][2];
 			double curveSq = Math.sqrt(curveX * curveX + curveZ * curveZ);
 			curveX /= curveSq;
 			curveZ /= curveSq;
@@ -676,9 +676,9 @@ public abstract class EntityMinecartDeobf extends Entity {
 			interpZ += curveZ * constant;
 
 			if(curveData[0][1] != 0 && MathHelper.floor_double(interpX) - x == curveData[0][0] && MathHelper.floor_double(interpZ) - z == curveData[0][2]) {
-				interpY += (double) curveData[0][1];
+				interpY += curveData[0][1];
 			} else if(curveData[1][1] != 0 && MathHelper.floor_double(interpX) - x == curveData[1][0] && MathHelper.floor_double(interpZ) - z == curveData[1][2]) {
-				interpY += (double) curveData[1][1];
+				interpY += curveData[1][1];
 			}
 
 			return getClosestPositionOnRail(interpX, interpY, interpZ);
@@ -698,30 +698,30 @@ public abstract class EntityMinecartDeobf extends Entity {
 
 		if(BlockRailBase.func_150051_a(block)) {
 			int l = this.worldObj.getBlockMetadata(railX, railY, railZ);
-			y = (double) railY;
+			y = railY;
 
 			if(l >= 2 && l <= 5) {
-				y = (double) (railY + 1);
+				y = railY + 1;
 			}
 
 			int[][] aint = EntityMinecartDeobf.matrix[l];
 			double delta = 0.0D;
-			double side1X = (double) railX + 0.5D + (double) aint[0][0] * 0.5D;
-			double side1Y = (double) railY + 0.5D + (double) aint[0][1] * 0.5D;
-			double side1Z = (double) railZ + 0.5D + (double) aint[0][2] * 0.5D;
-			double side2X = (double) railX + 0.5D + (double) aint[1][0] * 0.5D;
-			double side2Y = (double) railY + 0.5D + (double) aint[1][1] * 0.5D;
-			double side2Z = (double) railZ + 0.5D + (double) aint[1][2] * 0.5D;
+			double side1X = railX + 0.5D + aint[0][0] * 0.5D;
+			double side1Y = railY + 0.5D + aint[0][1] * 0.5D;
+			double side1Z = railZ + 0.5D + aint[0][2] * 0.5D;
+			double side2X = railX + 0.5D + aint[1][0] * 0.5D;
+			double side2Y = railY + 0.5D + aint[1][1] * 0.5D;
+			double side2Z = railZ + 0.5D + aint[1][2] * 0.5D;
 			double sideDeltaX = side2X - side1X;
 			double sideDeltaYx2 = (side2Y - side1Y) * 2.0D;
 			double sideDeltaZ = side2Z - side1Z;
 
 			if(sideDeltaX == 0.0D) { /* straight path along Z */
-				x = (double) railX + 0.5D;
-				delta = z - (double) railZ;
+				x = railX + 0.5D;
+				delta = z - railZ;
 			} else if(sideDeltaZ == 0.0D) { /* straight path along X */
-				z = (double) railZ + 0.5D;
-				delta = x - (double) railX;
+				z = railZ + 0.5D;
+				delta = x - railX;
 			} else {
 				double deltaX = x - side1X;
 				double deltaZ = z - side1Z;
@@ -805,7 +805,7 @@ public abstract class EntityMinecartDeobf extends Entity {
 
 				if(delta >= 10E-5D) {
 					
-					delta = (double) MathHelper.sqrt_double(delta);
+					delta = MathHelper.sqrt_double(delta);
 					deltaX /= delta;
 					deltaZ /= delta;
 					double pushForce = 1.0D / delta;
@@ -818,8 +818,8 @@ public abstract class EntityMinecartDeobf extends Entity {
 					deltaZ *= pushForce;
 					deltaX *= 0.1D;
 					deltaZ *= 0.1D;
-					deltaX *= (double) (1.0F - this.entityCollisionReduction);
-					deltaZ *= (double) (1.0F - this.entityCollisionReduction);
+					deltaX *= 1.0F - this.entityCollisionReduction;
+					deltaZ *= 1.0F - this.entityCollisionReduction;
 					deltaX *= 0.5D;
 					deltaZ *= 0.5D;
 
@@ -828,7 +828,7 @@ public abstract class EntityMinecartDeobf extends Entity {
 						double d5 = entity.posZ - this.posZ;
 						Vec3 vec3 = Vec3.createVectorHelper(d4, 0.0D, d5).normalize();
 						Vec3 vec31 = Vec3
-								.createVectorHelper((double) MathHelper.cos(this.rotationYaw * (float) Math.PI / 180.0F), 0.0D, (double) MathHelper.sin(this.rotationYaw * (float) Math.PI / 180.0F))
+								.createVectorHelper(MathHelper.cos(this.rotationYaw * (float) Math.PI / 180.0F), 0.0D, MathHelper.sin(this.rotationYaw * (float) Math.PI / 180.0F))
 								.normalize();
 						double d6 = Math.abs(vec3.dotProduct(vec31));
 
@@ -882,8 +882,8 @@ public abstract class EntityMinecartDeobf extends Entity {
 		this.syncPosX = x;
 		this.syncPosY = y;
 		this.syncPosZ = z;
-		this.minecartYaw = (double) yaw;
-		this.minecartPitch = (double) pitch;
+		this.minecartYaw = yaw;
+		this.minecartPitch = pitch;
 		/* According to EntityLivingBase.class: The number of updates over which the new position and rotation are to be applied to the entity.
 		 * The packet always passes the */
 		this.turnProgress = theNumberThree + 2;

@@ -97,7 +97,7 @@ public class ItemGunChemthrower extends ItemGunBase implements IFillableItem {
 			PacketDispatcher.wrapper.sendTo(new GunAnimationPacket(AnimType.CYCLE.ordinal()), (EntityPlayerMP) player);
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		

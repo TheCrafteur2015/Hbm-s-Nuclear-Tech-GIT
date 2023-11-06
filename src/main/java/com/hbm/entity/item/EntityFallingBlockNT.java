@@ -173,7 +173,6 @@ public class EntityFallingBlockNT extends Entity {
 		return this.worldObj.getBlock(x, y, z).isReplaceable(this.worldObj, x, y, z) && getBlock().canBlockStay(this.worldObj, x, y, z);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	protected void fall(float fallDistance) {
 		

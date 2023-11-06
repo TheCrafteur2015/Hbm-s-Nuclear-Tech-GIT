@@ -41,7 +41,7 @@ public class TileEntityMachineSolidifier extends TileEntityMachineBase implement
 
 	public TileEntityMachineSolidifier() {
 		super(5);
-		this.tank = new FluidTank(Fluids.NONE, 24000, 0);
+		this.tank = new FluidTank(Fluids.NONE, 24000);
 	}
 
 	@Override

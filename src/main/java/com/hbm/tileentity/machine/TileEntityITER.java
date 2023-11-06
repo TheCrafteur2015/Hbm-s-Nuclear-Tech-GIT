@@ -66,9 +66,9 @@ public class TileEntityITER extends TileEntityMachineBase implements IEnergyUser
 	public TileEntityITER() {
 		super(5);
 		this.tanks = new FluidTank[2];
-		this.tanks[0] = new FluidTank(Fluids.WATER, 1280000, 0);
-		this.tanks[1] = new FluidTank(Fluids.ULTRAHOTSTEAM, 128000, 1);
-		this.plasma = new FluidTank(Fluids.PLASMA_DT, 16000, 2);
+		this.tanks[0] = new FluidTank(Fluids.WATER, 1280000);
+		this.tanks[1] = new FluidTank(Fluids.ULTRAHOTSTEAM, 128000);
+		this.plasma = new FluidTank(Fluids.PLASMA_DT, 16000);
 	}
 
 	@Override
@@ -399,11 +399,11 @@ public class TileEntityITER extends TileEntityMachineBase implements IEnergyUser
 
 	@Override
 	public void setFluidFill(int i, FluidType type) {
-		if (type.name().equals(this.tanks[0].getTankType().name()))
+		if (type.getName().equals(this.tanks[0].getTankType().getName()))
 			this.tanks[0].setFill(i);
-		else if (type.name().equals(this.tanks[1].getTankType().name()))
+		else if (type.getName().equals(this.tanks[1].getTankType().getName()))
 			this.tanks[1].setFill(i);
-		else if (type.name().equals(this.plasma.getTankType().name()))
+		else if (type.getName().equals(this.plasma.getTankType().getName()))
 			this.plasma.setFill(i);
 	}
 
@@ -418,11 +418,11 @@ public class TileEntityITER extends TileEntityMachineBase implements IEnergyUser
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		if (type.name().equals(this.tanks[0].getTankType().name()))
+		if (type.getName().equals(this.tanks[0].getTankType().getName()))
 			return this.tanks[0].getFill();
-		else if (type.name().equals(this.tanks[1].getTankType().name()))
+		else if (type.getName().equals(this.tanks[1].getTankType().getName()))
 			return this.tanks[1].getFill();
-		else if (type.name().equals(this.plasma.getTankType().name()))
+		else if (type.getName().equals(this.plasma.getTankType().getName()))
 			return this.plasma.getFill();
 		else
 			return 0;
@@ -460,11 +460,11 @@ public class TileEntityITER extends TileEntityMachineBase implements IEnergyUser
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		if (type.name().equals(this.tanks[0].getTankType().name()))
+		if (type.getName().equals(this.tanks[0].getTankType().getName()))
 			return this.tanks[0].getMaxFill();
-		else if (type.name().equals(this.tanks[1].getTankType().name()))
+		else if (type.getName().equals(this.tanks[1].getTankType().getName()))
 			return this.tanks[1].getMaxFill();
-		else if (type.name().equals(this.plasma.getTankType().name()))
+		else if (type.getName().equals(this.plasma.getTankType().getName()))
 			return this.plasma.getMaxFill();
 		else
 			return 0;
@@ -519,7 +519,6 @@ public class TileEntityITER extends TileEntityMachineBase implements IEnergyUser
 		return 65536.0D;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void disassemble() {
 		
 		MachineITER.drop = false;

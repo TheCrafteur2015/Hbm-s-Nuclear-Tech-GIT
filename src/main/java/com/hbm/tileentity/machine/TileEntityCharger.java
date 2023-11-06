@@ -27,7 +27,7 @@ public class TileEntityCharger extends TileEntityLoadedBase implements IEnergyUs
 	public int lastUsingTicks;
 	public static final int delay = 20;
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void updateEntity() {
 		

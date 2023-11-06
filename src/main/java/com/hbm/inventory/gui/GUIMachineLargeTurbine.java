@@ -32,7 +32,7 @@ public class GUIMachineLargeTurbine extends GuiInfoContainer {
 		this.turbine.tanks[0].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 62, this.guiTop + 69 - 52, 16, 52);
 		this.turbine.tanks[1].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 134, this.guiTop + 69 - 52, 16, 52);
 		
-		if(this.turbine.tanks[1].getTankType().name().equals(Fluids.NONE.name())) {
+		if(this.turbine.tanks[1].getTankType().getName().equals(Fluids.NONE.getName())) {
 			
 			String[] text2 = new String[] { "Error: Invalid fluid!" };
 			this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft - 16, this.guiTop + 36 + 32, 16, 16, this.guiLeft - 8, this.guiTop + 36 + 16 + 32, text2);

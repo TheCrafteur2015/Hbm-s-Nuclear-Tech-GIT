@@ -114,7 +114,7 @@ public class BlockGrate extends Block implements ITooltipProvider {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		list.add(I18nUtil.resolveKey(getUnlocalizedName() + ".desc"));

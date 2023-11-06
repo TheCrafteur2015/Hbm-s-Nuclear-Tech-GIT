@@ -134,7 +134,7 @@ public class CokerRecipes extends SerializableRecipe {
 		CokerRecipes.recipes.put(in.type, new Triplet<>(in.fill, out, byproduct));
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void writeRecipe(Object recipe, JsonWriter writer) throws IOException {
 		Entry<FluidType, Triplet<Integer, ItemStack, FluidStack>> rec = (Entry<FluidType, Triplet<Integer, ItemStack, FluidStack>>) recipe;

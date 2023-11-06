@@ -33,7 +33,7 @@ public class BlockDepth extends Block implements ITooltipProvider {
 		return super.getPlayerRelativeBlockHardness(player, world, x, y, z);
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("trait.tile.depth"));

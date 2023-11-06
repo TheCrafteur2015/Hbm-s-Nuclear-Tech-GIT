@@ -162,7 +162,7 @@ public class GunLeverActionS extends Item {
 			return ("" + StatCollector.translateToLocal(this.getUnlocalizedName() + ".name")).trim();
     }
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
@@ -177,7 +177,7 @@ public class GunLeverActionS extends Item {
 		list.add("[LEGENDARY WEAPON]");
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public Multimap getItemAttributeModifiers() {
 		Multimap multimap = super.getItemAttributeModifiers();

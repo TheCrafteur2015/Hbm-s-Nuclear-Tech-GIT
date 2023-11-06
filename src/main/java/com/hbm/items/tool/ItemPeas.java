@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 public class ItemPeas extends Item{
 
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
 		

@@ -180,7 +180,7 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
 		return getDigSpeed(stack, block, 0) > 1;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public Multimap getItemAttributeModifiers() {
 
@@ -196,7 +196,7 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
 		return getCurrentAbility(stack) != null || stack.isItemEnchanted();
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {

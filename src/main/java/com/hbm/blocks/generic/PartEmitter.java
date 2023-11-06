@@ -117,7 +117,7 @@ public class PartEmitter extends BlockContainer implements IToolable, ITooltipPr
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		list.add(EnumChatFormatting.GOLD + "Use hand drill to cycle special effects");

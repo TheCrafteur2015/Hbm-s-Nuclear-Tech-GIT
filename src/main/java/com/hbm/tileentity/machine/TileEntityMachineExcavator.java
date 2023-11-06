@@ -386,7 +386,7 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	public void tryMineAtLocation(int x ,int y, int z) {
 
 		Block b = this.worldObj.getBlock(x, y, z);
@@ -595,7 +595,7 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 	}
 	
 	/** pulls up an AABB around the drillbit and tries to either conveyor output or buffer collected items */
-	@SuppressWarnings("unchecked")
+	
 	protected void tryCollect(int radius) {
 		int yLevel = getY();
 		

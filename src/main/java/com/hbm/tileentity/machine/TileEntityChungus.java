@@ -46,8 +46,8 @@ public class TileEntityChungus extends TileEntityLoadedBase implements IFluidAcc
 	public TileEntityChungus() {
 		
 		this.tanks = new FluidTank[2];
-		this.tanks[0] = new FluidTank(Fluids.STEAM, 1000000000, 0);
-		this.tanks[1] = new FluidTank(Fluids.SPENTSTEAM, 1000000000, 1);
+		this.tanks[0] = new FluidTank(Fluids.STEAM, 1000000000);
+		this.tanks[1] = new FluidTank(Fluids.SPENTSTEAM, 1000000000);
 	}
 
 	@Override

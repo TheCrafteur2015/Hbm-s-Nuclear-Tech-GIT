@@ -29,7 +29,7 @@ public class EntityProcessorCross implements IEntityProcessor {
 		this.nodeDist = nodeDist;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public HashMap<EntityPlayer, Vec3> process(ExplosionVNT explosion, World world, double x, double y, double z, float size) {
 

@@ -19,7 +19,7 @@ public abstract class EntityRailCarCargo extends EntityRailCarBase implements II
 	@Override
 	protected void entityInit() {
 		super.entityInit();
-		this.dataWatcher.addObject(10, new Integer(0));
+		this.dataWatcher.addObject(10, 0);
 	}
 	
 	public int countVacantSlots() {

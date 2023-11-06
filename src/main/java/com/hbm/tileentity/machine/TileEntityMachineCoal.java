@@ -52,7 +52,7 @@ public class TileEntityMachineCoal extends TileEntityMachinePolluting implements
 	
 	public TileEntityMachineCoal() {
 		super(4, 50);
-		this.tank = new FluidTank(Fluids.WATER, TileEntityMachineCoal.waterCap, 0);
+		this.tank = new FluidTank(Fluids.WATER, TileEntityMachineCoal.waterCap);
 	}
 
 	@Override

@@ -50,8 +50,8 @@ public class EntityGlyphid extends EntityMob {
 	@Override
 	protected void entityInit() {
 		super.entityInit();
-		this.dataWatcher.addObject(16, new Byte((byte) 0)); //wall climbing
-		this.dataWatcher.addObject(17, new Byte((byte) 0b11111)); //armor
+		this.dataWatcher.addObject(16, (byte) 0); //wall climbing
+		this.dataWatcher.addObject(17, (byte) 0b11111); //armor
 	}
 
 	@Override

@@ -78,9 +78,9 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 	public TileEntityMachineReactorLarge() {
 		this.slots = new ItemStack[8];
 		this.tanks = new FluidTank[3];
-		this.tanks[0] = new FluidTank(Fluids.WATER, 128000, 0);
-		this.tanks[1] = new FluidTank(Fluids.COOLANT, 64000, 1);
-		this.tanks[2] = new FluidTank(Fluids.STEAM, 32000, 2);
+		this.tanks[0] = new FluidTank(Fluids.WATER, 128000);
+		this.tanks[1] = new FluidTank(Fluids.COOLANT, 64000);
+		this.tanks[2] = new FluidTank(Fluids.STEAM, 32000);
 		this.type = ReactorFuelType.URANIUM;
 	}
 
@@ -694,7 +694,6 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 		
 	}
 
-	@SuppressWarnings("unchecked")
 	private void explode() {
 		for (int i = 0; i < this.slots.length; i++) {
 			this.slots[i] = null;
@@ -789,9 +788,9 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		if (type.name().equals(this.tanks[0].getTankType().name()))
+		if (type.getName().equals(this.tanks[0].getTankType().getName()))
 			return this.tanks[0].getMaxFill();
-		else if (type.name().equals(this.tanks[1].getTankType().name()))
+		else if (type.getName().equals(this.tanks[1].getTankType().getName()))
 			return this.tanks[1].getMaxFill();
 		else
 			return 0;
@@ -799,21 +798,21 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 
 	@Override
 	public void setFluidFill(int i, FluidType type) {
-		if (type.name().equals(this.tanks[0].getTankType().name()))
+		if (type.getName().equals(this.tanks[0].getTankType().getName()))
 			this.tanks[0].setFill(i);
-		else if (type.name().equals(this.tanks[1].getTankType().name()))
+		else if (type.getName().equals(this.tanks[1].getTankType().getName()))
 			this.tanks[1].setFill(i);
-		else if (type.name().equals(this.tanks[2].getTankType().name()))
+		else if (type.getName().equals(this.tanks[2].getTankType().getName()))
 			this.tanks[2].setFill(i);
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		if (type.name().equals(this.tanks[0].getTankType().name()))
+		if (type.getName().equals(this.tanks[0].getTankType().getName()))
 			return this.tanks[0].getFill();
-		else if (type.name().equals(this.tanks[1].getTankType().name()))
+		else if (type.getName().equals(this.tanks[1].getTankType().getName()))
 			return this.tanks[1].getFill();
-		else if (type.name().equals(this.tanks[2].getTankType().name()))
+		else if (type.getName().equals(this.tanks[2].getTankType().getName()))
 			return this.tanks[2].getFill();
 		else
 			return 0;

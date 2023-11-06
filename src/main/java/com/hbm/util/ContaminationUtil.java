@@ -12,6 +12,8 @@ import com.hbm.potion.HbmPotion;
 import com.hbm.util.ArmorRegistry.HazardClass;
 
 import api.hbm.entity.IRadiationImmune;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -26,6 +28,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 public class ContaminationUtil {
+	
+	public static int geigerChatLineIndex = -1;
 	
 	/**
 	 * Calculates how much radiation can be applied to this entity by calculating resistance
@@ -170,7 +174,7 @@ public class ContaminationUtil {
 		
 		if(resKoeff > 0)
 			resPrefix += EnumChatFormatting.GREEN;
-
+		
 		//localization and server-side restrictions have turned this into a painful mess
 		//a *functioning* painful mess, nonetheless
 		player.addChatMessage(new ChatComponentText("===== ☢ ").appendSibling(new ChatComponentTranslation("geiger.title")).appendSibling(new ChatComponentText(" ☢ =====")).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));
@@ -178,6 +182,21 @@ public class ContaminationUtil {
 		player.addChatMessage(new ChatComponentTranslation("geiger.envRad").appendSibling(new ChatComponentText(" " + envPrefix + env + " RAD/s")).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
 		player.addChatMessage(new ChatComponentTranslation("geiger.playerRad").appendSibling(new ChatComponentText(" " + radPrefix + eRad + " RAD")).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
 		player.addChatMessage(new ChatComponentTranslation("geiger.playerRes").appendSibling(new ChatComponentText(" " + resPrefix + res + "% (" + resKoeff + ")")).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+		
+		GuiNewChat chat = Minecraft.getMinecraft().ingameGUI.getChatGUI();
+		
+		if (ContaminationUtil.geigerChatLineIndex == -1) {
+			ContaminationUtil.geigerChatLineIndex = chat.getSentMessages().size() - 5;
+		} else {
+			chat.deleteChatLine(ContaminationUtil.geigerChatLineIndex);
+			chat.deleteChatLine(ContaminationUtil.geigerChatLineIndex + 1);
+			chat.deleteChatLine(ContaminationUtil.geigerChatLineIndex + 2);
+			chat.deleteChatLine(ContaminationUtil.geigerChatLineIndex + 3);
+			chat.deleteChatLine(ContaminationUtil.geigerChatLineIndex + 4);
+			chat.refreshChat();
+			ContaminationUtil.geigerChatLineIndex = chat.getSentMessages().size() - 5;
+		}
+		
 	}
 	
 	public static void printDosimeterData(EntityPlayer player) {

@@ -51,7 +51,7 @@ public class TileEntityFurnaceCombination extends TileEntityMachinePolluting imp
 		return "container.furnaceCombination";
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void updateEntity() {
 		

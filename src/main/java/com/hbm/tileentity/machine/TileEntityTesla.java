@@ -89,7 +89,7 @@ public class TileEntityTesla extends TileEntityMachineBase implements IEnergyUse
 			trySubscribe(this.worldObj, this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ, dir);
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	public static List<double[]> zap(World worldObj, double x, double y, double z, double radius, Entity source) {
 
 		List<double[]> ret = new ArrayList<>();

@@ -283,7 +283,6 @@ public class BunkerComponents {
 			return true;
 		}
 		
-		@SuppressWarnings("rawtypes")
 		public static StructureComponent findValidPlacement(List components, Random rand, int x, int y, int z, int coordMode, int type) {
 			StructureBoundingBox box = ProceduralStructureStart.getComponentToAddBoundingBox(x, y, z, -3, -1, 0, 6, 6, 7, coordMode);
 			return box.minY > 10 && StructureComponent.findIntersecting(components, box) == null ? new Corridor(type, box, coordMode, rand) : null;
@@ -392,7 +391,6 @@ public class BunkerComponents {
 			return true;
 		}
 		
-		@SuppressWarnings("rawtypes")
 		public static StructureComponent findValidPlacement(List components, Random rand, int x, int y, int z, int coordMode, int type) {
 			StructureBoundingBox box = ProceduralStructureStart.getComponentToAddBoundingBox(x, y, z, -8, -1, 0, 10, 6, 11, coordMode);
 			return box.minY > 10 && StructureComponent.findIntersecting(components, box) == null ? new BedroomL(type, box, coordMode) : null;
@@ -499,7 +497,6 @@ public class BunkerComponents {
 			return true;
 		}
 		
-		@SuppressWarnings("rawtypes")
 		public static StructureComponent findValidPlacement(List components, Random rand, int x, int y, int z, int coordMode, int type) {
 			StructureBoundingBox box = ProceduralStructureStart.getComponentToAddBoundingBox(x, y, z, -5, -1, 0, 8, 6, 12, coordMode);
 			return box.minY > 10 && StructureComponent.findIntersecting(components, box) == null ? new FunJunction(type, box, coordMode) : null;
@@ -592,7 +589,6 @@ public class BunkerComponents {
 			return true;
 		}
 		
-		@SuppressWarnings("rawtypes")
 		public static StructureComponent findValidPlacement(List components, Random rand, int x, int y, int z, int coordMode, int type) {
 			StructureBoundingBox box = ProceduralStructureStart.getComponentToAddBoundingBox(x, y, z, -3, -1, 0, 9, 6, 11, coordMode);
 			return box.minY > 10 && StructureComponent.findIntersecting(components, box) == null ? new BathroomL(type, box, coordMode) : null;
@@ -718,7 +714,6 @@ public class BunkerComponents {
 			return true;
 		}
 		
-		@SuppressWarnings("rawtypes")
 		public static StructureComponent findValidPlacement(List components, Random rand, int x, int y, int z, int coordMode, int type) {
 			StructureBoundingBox box = ProceduralStructureStart.getComponentToAddBoundingBox(x, y, z, -6, -1, 0, 9, 6, 12, coordMode);
 			return box.minY > 10 && StructureComponent.findIntersecting(components, box) == null ? new Laboratory(type, box, coordMode) : null;
@@ -921,7 +916,6 @@ public class BunkerComponents {
 			return true;
 		}
 		
-		@SuppressWarnings("rawtypes")
 		public static StructureComponent findValidPlacement(List components, Random rand, int x, int y, int z, int coordMode, int type) {
 			StructureBoundingBox box = ProceduralStructureStart.getComponentToAddBoundingBox(x, y, z, -4, -1, 0, 12, 6, 12, coordMode);
 			return box.minY > 10 && StructureComponent.findIntersecting(components, box) == null ? new PowerRoom(type, box, coordMode, rand) : null;

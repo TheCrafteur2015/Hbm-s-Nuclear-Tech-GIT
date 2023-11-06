@@ -41,7 +41,7 @@ public class EntityAINearestAttackableTargetNT extends EntityAITarget {
 		return this.searchRange;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public boolean shouldExecute() {
 

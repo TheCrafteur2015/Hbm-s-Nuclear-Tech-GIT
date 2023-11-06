@@ -23,7 +23,7 @@ public class ItemBombCaller extends Item {
 		setHasSubtypes(true);
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool)
 	{

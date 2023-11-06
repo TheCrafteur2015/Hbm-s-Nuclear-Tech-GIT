@@ -34,7 +34,7 @@ public class EntitySpear extends Entity {
 	@Override
 	protected void entityInit() { }
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void onUpdate() {
 		

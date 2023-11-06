@@ -38,7 +38,7 @@ public class TileEntityMachineTeleporter extends TileEntityLoadedBase implements
 	public static final int maxPower = 1_500_000;
 	public static final int consumption = 1_000_000;
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void updateEntity() {
 		

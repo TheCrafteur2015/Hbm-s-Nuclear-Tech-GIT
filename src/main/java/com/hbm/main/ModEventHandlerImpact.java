@@ -44,7 +44,7 @@ public class ModEventHandlerImpact {
 	private static Random rand = new Random();
 	//////////////////////////////////////////
 	
-	@SuppressWarnings("unchecked")
+	
 	@SubscribeEvent
 	public void worldTick(WorldTickEvent event) {
 

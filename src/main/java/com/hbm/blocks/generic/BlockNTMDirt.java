@@ -14,7 +14,7 @@ import net.minecraft.util.StatCollector;
 
 public class BlockNTMDirt extends BlockDirt {
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List p_149666_3_)

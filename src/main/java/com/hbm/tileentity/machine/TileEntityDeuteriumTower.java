@@ -17,8 +17,8 @@ public class TileEntityDeuteriumTower extends TileEntityDeuteriumExtractor {
 
 	public TileEntityDeuteriumTower() {
 		super();
-		this.tanks[0] = new FluidTank(Fluids.WATER, 50000, 0);
-		this.tanks[1] = new FluidTank(Fluids.HEAVYWATER, 5000, 1);
+		this.tanks[0] = new FluidTank(Fluids.WATER, 50000);
+		this.tanks[1] = new FluidTank(Fluids.HEAVYWATER, 5000);
 	}
 
 	@Override

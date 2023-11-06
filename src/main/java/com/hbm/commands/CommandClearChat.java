@@ -1,5 +1,7 @@
 package com.hbm.commands;
 
+import com.hbm.util.ContaminationUtil;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.command.CommandBase;
@@ -28,11 +30,12 @@ public class CommandClearChat extends CommandBase {
 	@Override
 	public void processCommand(ICommandSender sender, String[] args) {
 		if (sender instanceof EntityPlayer) {
-			GuiNewChat chat = new GuiNewChat(Minecraft.getMinecraft());
+			GuiNewChat chat = Minecraft.getMinecraft().ingameGUI.getChatGUI();
 			chat.clearChatMessages();
 			chat.refreshChat();
 			if (CommandDebug.isEnabled())
 				chat.printChatMessage(new ChatComponentText("Clearing..."));
+			ContaminationUtil.geigerChatLineIndex = -1;	
 		}
 	}
 	

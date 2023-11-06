@@ -69,7 +69,6 @@ public class CommandSatellites extends CommandBase {
         }
     }
 
-    @SuppressWarnings("rawtypes")
 	@Override
     public List addTabCompletionOptions(ICommandSender sender, String[] args) {
         if(!(sender instanceof EntityPlayer) || (args.length < 1)) {

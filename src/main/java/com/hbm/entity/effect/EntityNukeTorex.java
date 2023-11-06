@@ -35,8 +35,8 @@ public class EntityNukeTorex extends Entity {
 
 	@Override
 	protected void entityInit() {
-		this.dataWatcher.addObject(10, new Float(1));
-		this.dataWatcher.addObject(11, new Integer(0));
+		this.dataWatcher.addObject(10, 1.0F);
+		this.dataWatcher.addObject(11, 0);
 	}
 
 	@Override

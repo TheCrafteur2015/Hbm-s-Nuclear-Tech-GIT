@@ -71,7 +71,7 @@ public abstract class EntityRailCarBase extends Entity implements ILookOverlay {
 	@Override protected void readEntityFromNBT(NBTTagCompound nbt) { }
 	@Override protected void writeEntityToNBT(NBTTagCompound nbt) { }
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public boolean interactFirst(EntityPlayer player) {
 		
@@ -441,9 +441,9 @@ public abstract class EntityRailCarBase extends Entity implements ILookOverlay {
 		}
 		
 		@Override protected void entityInit() {
-			this.dataWatcher.addObject(3, new Integer(0));
-			this.dataWatcher.addObject(4, new Float(1F));
-			this.dataWatcher.addObject(5, new Float(1F));
+			this.dataWatcher.addObject(3, 0);
+			this.dataWatcher.addObject(4, 1.0F);
+			this.dataWatcher.addObject(5, 1.0F);
 		}
 		
 		@Override protected void writeEntityToNBT(NBTTagCompound nbt) { }
@@ -748,7 +748,7 @@ public abstract class EntityRailCarBase extends Entity implements ILookOverlay {
 		}
 		
 		/** Determines the "front" wagon based on the movement and moves it, then moves all other wagons towards that */
-		@SuppressWarnings("unchecked")
+		
 		public void moveTrainByApproach(double speed) {
 			boolean forward = speed < 0;
 			speed = Math.abs(speed);
@@ -835,7 +835,7 @@ public abstract class EntityRailCarBase extends Entity implements ILookOverlay {
 			current.velocityChanged = true;
 		}
 		
-		@SuppressWarnings("unchecked")
+		
 		public void collideTrain(double speed) {
 			EntityRailCarBase collidingTrain = speed > 0 ? this.trains[0] : this.trains[this.trains.length - 1];
 			List<EntityRailCarBase> intersect = collidingTrain.worldObj.getEntitiesWithinAABB(EntityRailCarBase.class, collidingTrain.boundingBox.expand(1, 1, 1));

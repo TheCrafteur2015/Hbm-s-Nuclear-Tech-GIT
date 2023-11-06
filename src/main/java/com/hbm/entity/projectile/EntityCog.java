@@ -34,8 +34,8 @@ public class EntityCog extends EntityThrowableInterp {
 	@Override
 	protected void entityInit() {
 		super.entityInit();
-		this.dataWatcher.addObject(10, new Integer(0));
-		this.dataWatcher.addObject(11, new Integer(0));
+		this.dataWatcher.addObject(10, 0);
+		this.dataWatcher.addObject(11, 0);
 	}
 	
 	public EntityCog setOrientation(int rot) {

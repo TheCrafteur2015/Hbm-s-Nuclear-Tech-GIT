@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 
 public class ItemMultiDetonator extends Item {
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		list.add("Shift right-click block to add position,");

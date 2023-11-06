@@ -60,7 +60,7 @@ public class StatHelper {
 	 *    32k potential items, most of which are going to be null anyway
 	 * 2) The system just will never work with items that don't have crafting table recipes
 	 */
-	@SuppressWarnings("unchecked")
+	
 	private static void initCraftItemStats() {
 		Iterator<Item> iterator = Item.itemRegistry.iterator();
 		while(iterator.hasNext()) {
@@ -77,7 +77,7 @@ public class StatHelper {
 		StatHelper.replaceAllSimilarBlocks(StatList.objectCraftStats);
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	private static void initBlockMineStats() {
 		Iterator<Block> iterator = Block.blockRegistry.iterator();
 
@@ -98,7 +98,7 @@ public class StatHelper {
 		StatHelper.replaceAllSimilarBlocks(StatList.mineBlockStatArray);
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	private static void initItemUseStats() {
 		Iterator<Item> iterator = Item.itemRegistry.iterator();
 
@@ -119,7 +119,7 @@ public class StatHelper {
 		StatHelper.replaceAllSimilarBlocks(StatList.objectUseStats);
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	private static void initItemBreakStats() {
 		Iterator<Item> iterator = Item.itemRegistry.iterator();
 
@@ -170,7 +170,7 @@ public class StatHelper {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	private static StatBase registerStat(StatBase stat) {
 		if(StatHelper.publicReferenceToOneshotStatListPleaseAllPointAndLaugh.containsKey(stat.statId)) {
 			StatHelper.publicReferenceToOneshotStatListPleaseAllPointAndLaugh.remove(stat.statId);

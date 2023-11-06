@@ -28,8 +28,8 @@ public class TileEntityCondenser extends TileEntityLoadedBase implements IFluidA
 	
 	public TileEntityCondenser() {
 		this.tanks = new FluidTank[2];
-		this.tanks[0] = new FluidTank(Fluids.SPENTSTEAM, 100, 0);
-		this.tanks[1] = new FluidTank(Fluids.WATER, 100, 1);
+		this.tanks[0] = new FluidTank(Fluids.SPENTSTEAM, 100);
+		this.tanks[1] = new FluidTank(Fluids.WATER, 100);
 	}
 	
 	@Override
@@ -127,17 +127,17 @@ public class TileEntityCondenser extends TileEntityLoadedBase implements IFluidA
 
 	@Override
 	public void setFluidFill(int i, FluidType type) {
-		if(type.name().equals(this.tanks[0].getTankType().name()))
+		if(type.getName().equals(this.tanks[0].getTankType().getName()))
 			this.tanks[0].setFill(i);
-		else if(type.name().equals(this.tanks[1].getTankType().name()))
+		else if(type.getName().equals(this.tanks[1].getTankType().getName()))
 			this.tanks[1].setFill(i);
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		if(type.name().equals(this.tanks[0].getTankType().name()))
+		if(type.getName().equals(this.tanks[0].getTankType().getName()))
 			return this.tanks[0].getFill();
-		else if(type.name().equals(this.tanks[1].getTankType().name()))
+		else if(type.getName().equals(this.tanks[1].getTankType().getName()))
 			return this.tanks[1].getFill();
 		
 		return 0;
@@ -145,7 +145,7 @@ public class TileEntityCondenser extends TileEntityLoadedBase implements IFluidA
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		if(type.name().equals(this.tanks[0].getTankType().name()))
+		if(type.getName().equals(this.tanks[0].getTankType().getName()))
 			return this.tanks[0].getMaxFill();
 		
 		return 0;

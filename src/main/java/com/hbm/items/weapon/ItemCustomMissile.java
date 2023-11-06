@@ -51,7 +51,7 @@ public class ItemCustomMissile extends Item {
 		return stack.stackTagCompound.getInteger(key);
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		

@@ -49,9 +49,9 @@ public class EntityMist extends Entity {
 
 	@Override
 	protected void entityInit() {
-		this.dataWatcher.addObject(10, new Integer(0));
-		this.dataWatcher.addObject(11, new Float(0));
-		this.dataWatcher.addObject(12, new Float(0));
+		this.dataWatcher.addObject(10, 0);
+		this.dataWatcher.addObject(11, 0.0F);
+		this.dataWatcher.addObject(12, 0.0F);
 	}
 	
 	public EntityMist setType(FluidType fluid) {
@@ -64,7 +64,7 @@ public class EntityMist extends Entity {
 	}
 	
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void onEntityUpdate() {
 		

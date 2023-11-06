@@ -64,7 +64,7 @@ public class TileEntityCraneConsole extends TileEntity implements INBTPacketRece
 	public double loadedHeat;
 	public double loadedEnrichment;
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void updateEntity() {
 

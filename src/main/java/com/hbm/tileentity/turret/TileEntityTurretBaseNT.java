@@ -441,7 +441,7 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	/**
 	 * Finds the nearest acceptable target within range and in line of sight
 	 */
-	@SuppressWarnings("unchecked")
+	
 	protected void seekNewTarget() {
 		
 		Vec3 pos = getTurretPos();

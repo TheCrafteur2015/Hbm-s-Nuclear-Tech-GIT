@@ -38,7 +38,7 @@ public class EntityBlackHole extends Entity {
 		this.dataWatcher.updateObject(16, size);
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void onUpdate() {
 		super.onUpdate();

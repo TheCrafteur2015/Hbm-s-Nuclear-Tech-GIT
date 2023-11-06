@@ -57,7 +57,7 @@ public class ItemAmmoContainer extends Item {
 		return stack;
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		if(this == ModItems.ammo_container) {

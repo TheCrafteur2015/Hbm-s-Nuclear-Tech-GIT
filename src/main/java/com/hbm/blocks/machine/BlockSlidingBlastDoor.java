@@ -48,7 +48,7 @@ public class BlockSlidingBlastDoor extends BlockDummyable implements IRadResista
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override 
 	public void addInformation(ItemStack stack, EntityPlayer player, List tooltip, boolean ext) {
 		float hardness = this.getExplosionResistance(null);

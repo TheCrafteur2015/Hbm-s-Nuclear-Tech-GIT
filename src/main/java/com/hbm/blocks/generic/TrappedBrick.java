@@ -38,7 +38,7 @@ public class TrappedBrick extends BlockContainer {
 		return null;
 	}
 	
-    @SuppressWarnings("unchecked")
+    
 	@Override
 	@SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs tab, List list) {

@@ -20,7 +20,7 @@ public abstract class TileEntityPileBase extends TileEntity {
 	@Override
 	public abstract void updateEntity();
 	
-	@SuppressWarnings("unchecked")
+	
 	protected void castRay(int flux, int range) {
 		Random rand = this.worldObj.rand;
 		Vec3 vec = Vec3.createVectorHelper(1, 0, 0);

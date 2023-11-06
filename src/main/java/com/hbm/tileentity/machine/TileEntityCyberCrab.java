@@ -14,7 +14,7 @@ public class TileEntityCyberCrab extends TileEntity {
 	
 	int age = 0;
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void updateEntity() {
 		

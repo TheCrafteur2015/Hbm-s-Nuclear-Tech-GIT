@@ -206,7 +206,7 @@ public class GUIRBMKConsole extends GuiScreen {
 			
 			double level;
 			
-			if(NumberUtils.isNumber(this.field.getText())) {
+			if(NumberUtils.isCreatable(this.field.getText())) {
 				int j = (int)MathHelper.clamp_double(Double.parseDouble(this.field.getText()), 0, 100);
 				this.field.setText(j + "");
 				level = j * 0.01D;
@@ -336,13 +336,13 @@ public class GUIRBMKConsole extends GuiScreen {
 				int fs = (int)Math.ceil((col.data.getInteger("steam")) * 8 / col.data.getDouble("maxSteam"));
 				drawTexturedModalRect(this.guiLeft + x + 6, this.guiTop + y + size - fs - 1, 46, 191 - fs, 3, fs);
 
-				if(col.data.getShort("type") == Fluids.STEAM.ordinal())
+				if(col.data.getShort("type") == Fluids.STEAM.getID())
 					drawTexturedModalRect(this.guiLeft + x + 4, this.guiTop + y + 1, 44, 183, 2, 2);
-				if(col.data.getShort("type") == Fluids.HOTSTEAM.ordinal())
+				if(col.data.getShort("type") == Fluids.HOTSTEAM.getID())
 					drawTexturedModalRect(this.guiLeft + x + 4, this.guiTop + y + 3, 44, 185, 2, 2);
-				if(col.data.getShort("type") == Fluids.SUPERHOTSTEAM.ordinal())
+				if(col.data.getShort("type") == Fluids.SUPERHOTSTEAM.getID())
 					drawTexturedModalRect(this.guiLeft + x + 4, this.guiTop + y + 5, 44, 187, 2, 2);
-				if(col.data.getShort("type") == Fluids.ULTRAHOTSTEAM.ordinal())
+				if(col.data.getShort("type") == Fluids.ULTRAHOTSTEAM.getID())
 					drawTexturedModalRect(this.guiLeft + x + 4, this.guiTop + y + 7, 44, 189, 2, 2);
 				
 				break;

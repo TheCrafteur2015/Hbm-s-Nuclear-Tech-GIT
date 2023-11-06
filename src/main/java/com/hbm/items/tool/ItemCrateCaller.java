@@ -22,7 +22,7 @@ public class ItemCrateCaller extends Item {
 		setMaxDamage(4);
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool)
 	{

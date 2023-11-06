@@ -18,7 +18,7 @@ public class ItemAnchorRemote extends ItemBattery {
 		super(1_000_000, 10_000, 0);
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		

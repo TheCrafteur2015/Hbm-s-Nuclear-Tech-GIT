@@ -45,7 +45,7 @@ public class ItemEnergyGunBase extends ItemGunBase implements IBatteryItem {
 		super(config, alt);
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		list.add("Energy Stored: " + BobMathUtil.getShortNumber(getCharge(stack)) + "/" + BobMathUtil.getShortNumber(this.mainConfig.maxCharge) + "HE");
@@ -276,7 +276,7 @@ public class ItemEnergyGunBase extends ItemGunBase implements IBatteryItem {
 		return BulletConfigSyncingUtil.pullConfig(this.mainConfig.config.get(mode));
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tab, List list) {

@@ -55,7 +55,7 @@ public class TileEntityZirnoxDestroyed extends TileEntity {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	private void radiate(World world, int x, int y, int z) {
 
 		float rads = this.onFire ? 500000F : 75000F;

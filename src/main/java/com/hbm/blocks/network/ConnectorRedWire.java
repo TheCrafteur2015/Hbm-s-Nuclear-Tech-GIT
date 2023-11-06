@@ -60,7 +60,7 @@ public class ConnectorRedWire extends PylonBase {
 		this.setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		list.add(EnumChatFormatting.GOLD + "Connection Type: " + EnumChatFormatting.YELLOW + "Single");

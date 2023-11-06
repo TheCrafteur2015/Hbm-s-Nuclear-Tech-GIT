@@ -196,7 +196,7 @@ public class TileEntityNukeN45 extends TileEntity implements ISidedInventory, IG
 		nbt.setTag("items", list);
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void updateEntity() {
 		

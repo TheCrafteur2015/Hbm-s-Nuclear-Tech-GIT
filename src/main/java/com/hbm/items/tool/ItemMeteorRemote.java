@@ -20,7 +20,7 @@ public class ItemMeteorRemote extends Item {
 		setMaxDamage(2);
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		list.add("Right click to summon a meteorite!");

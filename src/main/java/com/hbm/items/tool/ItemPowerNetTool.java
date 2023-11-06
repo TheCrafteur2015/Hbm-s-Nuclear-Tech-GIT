@@ -99,7 +99,7 @@ public class ItemPowerNetTool extends Item {
 	
 	private static final int radius = 20;
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		list.add(EnumChatFormatting.RED + "Right-click cable to analyze the power net.");

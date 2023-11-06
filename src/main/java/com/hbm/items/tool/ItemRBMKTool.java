@@ -85,7 +85,7 @@ public class ItemRBMKTool extends Item {
 		return false;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		
@@ -93,7 +93,7 @@ public class ItemRBMKTool extends Item {
 			list.add(EnumChatFormatting.YELLOW + s);
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public Multimap getAttributeModifiers(ItemStack stack) {
 		

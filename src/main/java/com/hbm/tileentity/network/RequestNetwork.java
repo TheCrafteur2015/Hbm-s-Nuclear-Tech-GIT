@@ -19,7 +19,7 @@ public class RequestNetwork {
 	public static HashMap<World, HashMap<ChunkCoordIntPair, HashedSet<PathNode>>> activeWaypoints = new HashMap<>();
 	public static final int maxAge = 2_000;
 
-	@SuppressWarnings("unchecked")
+	
 	public static void updateEntries() {
 		
 		if(RequestNetwork.timer < 0) {

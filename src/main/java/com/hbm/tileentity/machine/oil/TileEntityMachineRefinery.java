@@ -79,11 +79,11 @@ public class TileEntityMachineRefinery extends TileEntityMachineBase implements 
 	public TileEntityMachineRefinery() {
 		super(12);
 		this.tanks = new FluidTank[5];
-		this.tanks[0] = new FluidTank(Fluids.HOTOIL, 64_000, 0);
-		this.tanks[1] = new FluidTank(Fluids.HEAVYOIL, 24_000, 1);
-		this.tanks[2] = new FluidTank(Fluids.NAPHTHA, 24_000, 2);
-		this.tanks[3] = new FluidTank(Fluids.LIGHTOIL, 24_000, 3);
-		this.tanks[4] = new FluidTank(Fluids.PETROLEUM, 24_000, 4);
+		this.tanks[0] = new FluidTank(Fluids.HOTOIL, 64_000);
+		this.tanks[1] = new FluidTank(Fluids.HEAVYOIL, 24_000);
+		this.tanks[2] = new FluidTank(Fluids.NAPHTHA, 24_000);
+		this.tanks[3] = new FluidTank(Fluids.LIGHTOIL, 24_000);
+		this.tanks[4] = new FluidTank(Fluids.PETROLEUM, 24_000);
 	}
 
 	@Override
@@ -141,7 +141,6 @@ public class TileEntityMachineRefinery extends TileEntityMachineBase implements 
 		return i == 11;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public void updateEntity() {
 

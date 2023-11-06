@@ -52,7 +52,7 @@ public class FalloutConfigJSON {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	private static void initDefault() {
 		
 		double woodEffectRange = 65D;
@@ -215,9 +215,9 @@ public class FalloutConfigJSON {
 		public FalloutEntry mMa(Material mat) { this.matchesMaterial = mat; return this; }
 		public FalloutEntry mO(boolean opaque) { this.matchesOpaque = opaque; return this; }
 
-		@SuppressWarnings("unchecked")
+		
 		public FalloutEntry prim(Triplet<Block, Integer, Integer>... blocks) { this.primaryBlocks = blocks; return this; }
-		@SuppressWarnings("unchecked")
+		
 		public FalloutEntry sec(Triplet<Block, Integer, Integer>... blocks) { this.secondaryBlocks = blocks; return this; }
 		public FalloutEntry c(double chance) { this.primaryChance = chance; return this; }
 		public FalloutEntry min(double min) { this.minDist = min; return this; }
@@ -336,7 +336,7 @@ public class FalloutConfigJSON {
 			writer.setIndent("  ");
 		}
 		
-		@SuppressWarnings("unchecked")
+		
 		private static Triplet<Block, Integer, Integer>[] readMetaArray(JsonElement jsonElement) {
 			
 			if(!jsonElement.isJsonArray()) return null;

@@ -217,7 +217,7 @@ public abstract class EntityRailCarRidable extends EntityRailCarCargo {
 			this.dataWatcher.updateObject(4, index);
 		}
 		
-		@Override protected void entityInit() { this.dataWatcher.addObject(3, new Integer(0)); this.dataWatcher.addObject(4, new Integer(0)); }
+		@Override protected void entityInit() { this.dataWatcher.addObject(3, 0); this.dataWatcher.addObject(4, 0); }
 		@Override protected void writeEntityToNBT(NBTTagCompound nbt) { }
 		@Override public boolean writeToNBTOptional(NBTTagCompound nbt) { return false; }
 		@Override public void readEntityFromNBT(NBTTagCompound nbt) { setDead(); }
@@ -231,9 +231,9 @@ public abstract class EntityRailCarRidable extends EntityRailCarCargo {
 				
 				if(this.turnProgress > 0) {
 					this.prevRotationYaw = this.rotationYaw;
-					double x = this.posX + (this.trainX - this.posX) / (double) this.turnProgress;
-					double y = this.posY + (this.trainY - this.posY) / (double) this.turnProgress;
-					double z = this.posZ + (this.trainZ - this.posZ) / (double) this.turnProgress;
+					double x = this.posX + (this.trainX - this.posX) / this.turnProgress;
+					double y = this.posY + (this.trainY - this.posY) / this.turnProgress;
+					double z = this.posZ + (this.trainZ - this.posZ) / this.turnProgress;
 					--this.turnProgress;
 					setPosition(x, y, z);
 				} else {

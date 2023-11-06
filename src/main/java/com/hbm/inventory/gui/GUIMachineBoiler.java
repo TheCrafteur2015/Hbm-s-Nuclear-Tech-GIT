@@ -37,8 +37,8 @@ public class GUIMachineBoiler extends GuiInfoContainer {
 		dud.tanks[0].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 62, this.guiTop + 69 - 52, 16, 52);
 		dud.tanks[1].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 134, this.guiTop + 69 - 52, 16, 52);
 
-		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 102, this.guiTop + 16, 8, 18, mouseX, mouseY, new String[] { String.valueOf((int)((double)dud.heat / 100D)) + "°C"});
-		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 97, this.guiTop + 34, 18, 18, mouseX, mouseY, new String[] { String.valueOf((int)(Math.ceil((double)dud.burnTime / 20D))) + "s"});
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 102, this.guiTop + 16, 8, 18, mouseX, mouseY, new String[] { String.valueOf((int)(dud.heat / 100D)) + "°C"});
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 97, this.guiTop + 34, 18, 18, mouseX, mouseY, new String[] { String.valueOf((int)(Math.ceil(dud.burnTime / 20D))) + "s"});
 		
 		String[] text = new String[] { "Heat produced:",
 				"  0.5°C/t",
@@ -57,7 +57,7 @@ public class GUIMachineBoiler extends GuiInfoContainer {
 				"  of boiling points reached" };
 		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft - 16, this.guiTop + 36 + 16, 16, 16, this.guiLeft - 8, this.guiTop + 36 + 16, text1);
 		
-		if(dud.tanks[1].getTankType().name().equals(Fluids.NONE.name())) {
+		if(dud.tanks[1].getTankType().getName().equals(Fluids.NONE.getName())) {
 			
 			String[] text2 = new String[] { "Error: Liquid can not be boiled!" };
 			this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft - 16, this.guiTop + 36 + 32, 16, 16, this.guiLeft - 8, this.guiTop + 36 + 16 + 32, text2);
@@ -87,13 +87,13 @@ public class GUIMachineBoiler extends GuiInfoContainer {
 		if(dud.burnTime > 0)
 			drawTexturedModalRect(this.guiLeft + 97, this.guiTop + 34, 176, 0, 18, 18);
 
-		int j = (int)dud.getHeatScaled(17);
+		int j = dud.getHeatScaled(17);
 		drawTexturedModalRect(this.guiLeft + 103, this.guiTop + 33 - j, 194, 16 - j, 6, j);
 
 		drawInfoPanel(this.guiLeft - 16, this.guiTop + 36, 16, 16, 2);
 		drawInfoPanel(this.guiLeft - 16, this.guiTop + 36 + 16, 16, 16, 3);
 		
-		if(dud.tanks[1].getTankType().name().equals(Fluids.NONE.name())) {
+		if(dud.tanks[1].getTankType().getName().equals(Fluids.NONE.getName())) {
 			drawInfoPanel(this.guiLeft - 16, this.guiTop + 36 + 32, 16, 16, 6);
 		}
 		

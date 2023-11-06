@@ -66,8 +66,8 @@ public class TileEntityCompactLauncher extends TileEntityLoadedBase implements I
 	public TileEntityCompactLauncher() {
 		this.slots = new ItemStack[8];
 		this.tanks = new FluidTank[2];
-		this.tanks[0] = new FluidTank(Fluids.NONE, 25000, 0);
-		this.tanks[1] = new FluidTank(Fluids.NONE, 25000, 1);
+		this.tanks[0] = new FluidTank(Fluids.NONE, 25000);
+		this.tanks[1] = new FluidTank(Fluids.NONE, 25000);
 	}
 
 	@Override
@@ -168,7 +168,6 @@ public class TileEntityCompactLauncher extends TileEntityLoadedBase implements I
 		return (this.solid * i) / TileEntityCompactLauncher.maxSolid;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void updateEntity() {
 
@@ -525,9 +524,9 @@ public class TileEntityCompactLauncher extends TileEntityLoadedBase implements I
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		if (type.name().equals(this.tanks[0].getTankType().name()))
+		if (type.getName().equals(this.tanks[0].getTankType().getName()))
 			return this.tanks[0].getMaxFill();
-		else if (type.name().equals(this.tanks[1].getTankType().name()))
+		else if (type.getName().equals(this.tanks[1].getTankType().getName()))
 			return this.tanks[1].getMaxFill();
 		else
 			return 0;
@@ -541,9 +540,9 @@ public class TileEntityCompactLauncher extends TileEntityLoadedBase implements I
 
 	@Override
 	public void setFluidFill(int fill, FluidType type) {
-		if (type.name().equals(this.tanks[0].getTankType().name()))
+		if (type.getName().equals(this.tanks[0].getTankType().getName()))
 			this.tanks[0].setFill(fill);
-		else if (type.name().equals(this.tanks[1].getTankType().name()))
+		else if (type.getName().equals(this.tanks[1].getTankType().getName()))
 			this.tanks[1].setFill(fill);
 	}
 
@@ -555,9 +554,9 @@ public class TileEntityCompactLauncher extends TileEntityLoadedBase implements I
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		if (type.name().equals(this.tanks[0].getTankType().name()))
+		if (type.getName().equals(this.tanks[0].getTankType().getName()))
 			return this.tanks[0].getFill();
-		else if (type.name().equals(this.tanks[1].getTankType().name()))
+		else if (type.getName().equals(this.tanks[1].getTankType().getName()))
 			return this.tanks[1].getFill();
 		else
 			return 0;

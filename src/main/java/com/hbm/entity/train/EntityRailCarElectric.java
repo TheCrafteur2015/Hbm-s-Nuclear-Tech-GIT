@@ -20,7 +20,7 @@ public abstract class EntityRailCarElectric extends EntityRailCarRidable {
 	
 	@Override protected void entityInit() {
 		super.entityInit();
-		this.dataWatcher.addObject(3, new Integer(0));
+		this.dataWatcher.addObject(3, 0);
 	}
 	
 	@Override public boolean canAccelerate() {

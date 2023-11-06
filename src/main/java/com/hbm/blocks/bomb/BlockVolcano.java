@@ -44,7 +44,6 @@ public class BlockVolcano extends BlockContainer implements ITooltipProvider, IB
 		return 5;
 	}
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {

@@ -106,7 +106,7 @@ public class ItemCrucible extends ItemSwordAbility implements IEquipReceiver {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public Multimap getAttributeModifiers(ItemStack stack) {
 
@@ -120,7 +120,7 @@ public class ItemCrucible extends ItemSwordAbility implements IEquipReceiver {
 		return multimap;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {

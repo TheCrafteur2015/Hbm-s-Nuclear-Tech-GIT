@@ -95,7 +95,7 @@ public class BlockSnowglobe extends BlockContainer {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {

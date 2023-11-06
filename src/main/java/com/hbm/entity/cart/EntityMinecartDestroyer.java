@@ -77,7 +77,7 @@ public class EntityMinecartDestroyer extends EntityMinecartContainerBase impleme
 		return this.boundingBox;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void onUpdate() {
 		super.onUpdate();

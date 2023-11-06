@@ -494,7 +494,9 @@ public class Gun4GaugeFactory {
 							BulletConfigFactory.nuclearExplosion(creature, 0, 0, 0, ExplosionNukeSmall.PARAMS_TOTS);
 
 							bulletnt.worldObj.removeEntity(creature);
-							bulletnt.worldObj.unloadEntities(new ArrayList() {{ add(creature); }});
+							bulletnt.worldObj.unloadEntities(new ArrayList() {
+								private static final long serialVersionUID = 1L;
+								{ add(creature); }});
 						}
 					}
 				}

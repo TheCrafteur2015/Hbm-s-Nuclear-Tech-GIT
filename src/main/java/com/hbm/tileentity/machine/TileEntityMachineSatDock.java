@@ -207,7 +207,7 @@ public class TileEntityMachineSatDock extends TileEntity implements ISidedInvent
                 }
             }
 
-            @SuppressWarnings("unchecked")
+            
             List<EntityMinerRocket> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(
                     null,
                     AxisAlignedBB.getBoundingBox(this.xCoord - 0.25 + 0.5, this.yCoord + 0.75, this.zCoord - 0.25 + 0.5, this.xCoord + 0.25 + 0.5, this.yCoord + 2, this.zCoord + 0.25 + 0.5),

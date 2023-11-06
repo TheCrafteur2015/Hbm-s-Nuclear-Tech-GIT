@@ -58,7 +58,7 @@ public class TileEntityAMSLimiter extends TileEntity implements ISidedInventory,
 	
 	public TileEntityAMSLimiter() {
 		this.slots = new ItemStack[4];
-		this.tank = new FluidTank(Fluids.COOLANT, 8000, 0);
+		this.tank = new FluidTank(Fluids.COOLANT, 8000);
 	}
 
 	@Override
@@ -380,13 +380,13 @@ public class TileEntityAMSLimiter extends TileEntity implements ISidedInventory,
 
 	@Override
 	public void setFluidFill(int i, FluidType type) {
-		if(type.name().equals(this.tank.getTankType().name()))
+		if(type.getName().equals(this.tank.getTankType().getName()))
 			this.tank.setFill(i);
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		if(type.name().equals(this.tank.getTankType().name()))
+		if(type.getName().equals(this.tank.getTankType().getName()))
 			return this.tank.getFill();
 		else
 			return 0;
@@ -394,7 +394,7 @@ public class TileEntityAMSLimiter extends TileEntity implements ISidedInventory,
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		if(type.name().equals(this.tank.getTankType().name()))
+		if(type.getName().equals(this.tank.getTankType().getName()))
 			return this.tank.getMaxFill();
 		else
 			return 0;

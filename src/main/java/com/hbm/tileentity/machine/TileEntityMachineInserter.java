@@ -42,9 +42,9 @@ public class TileEntityMachineInserter extends TileEntity implements ISidedInven
 	public TileEntityMachineInserter() {
 		this.slots = new ItemStack[9];
 		this.tanks = new FluidTank[3];
-		this.tanks[0] = new FluidTank(Fluids.NONE, 32000, 0);
-		this.tanks[1] = new FluidTank(Fluids.NONE, 32000, 0);
-		this.tanks[2] = new FluidTank(Fluids.NONE, 32000, 0);
+		this.tanks[0] = new FluidTank(Fluids.NONE, 32000);
+		this.tanks[1] = new FluidTank(Fluids.NONE, 32000);
+		this.tanks[2] = new FluidTank(Fluids.NONE, 32000);
 	}
 
 	@Override
@@ -296,21 +296,21 @@ public class TileEntityMachineInserter extends TileEntity implements ISidedInven
 
 	@Override
 	public void setFluidFill(int i, FluidType type) {
-		if(type.name().equals(this.tanks[0].getTankType().name()))
+		if(type.getName().equals(this.tanks[0].getTankType().getName()))
 			this.tanks[0].setFill(i);
-		else if(type.name().equals(this.tanks[1].getTankType().name()))
+		else if(type.getName().equals(this.tanks[1].getTankType().getName()))
 			this.tanks[1].setFill(i);
-		else if(type.name().equals(this.tanks[2].getTankType().name()))
+		else if(type.getName().equals(this.tanks[2].getTankType().getName()))
 			this.tanks[2].setFill(i);
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		if(type.name().equals(this.tanks[0].getTankType().name()))
+		if(type.getName().equals(this.tanks[0].getTankType().getName()))
 			return this.tanks[0].getFill();
-		else if(type.name().equals(this.tanks[1].getTankType().name()))
+		else if(type.getName().equals(this.tanks[1].getTankType().getName()))
 			return this.tanks[1].getFill();
-		else if(type.name().equals(this.tanks[2].getTankType().name()))
+		else if(type.getName().equals(this.tanks[2].getTankType().getName()))
 			return this.tanks[2].getFill();
 		else
 			return 0;
@@ -318,11 +318,11 @@ public class TileEntityMachineInserter extends TileEntity implements ISidedInven
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		if(type.name().equals(this.tanks[0].getTankType().name()))
+		if(type.getName().equals(this.tanks[0].getTankType().getName()))
 			return this.tanks[0].getMaxFill();
-		else if(type.name().equals(this.tanks[1].getTankType().name()))
+		else if(type.getName().equals(this.tanks[1].getTankType().getName()))
 			return this.tanks[1].getMaxFill();
-		else if(type.name().equals(this.tanks[2].getTankType().name()))
+		else if(type.getName().equals(this.tanks[2].getTankType().getName()))
 			return this.tanks[2].getMaxFill();
 		else
 			return 0;
@@ -330,22 +330,22 @@ public class TileEntityMachineInserter extends TileEntity implements ISidedInven
 
 	@Override
 	public List<IFluidAcceptor> getFluidList(FluidType type) {
-		if(type.name().equals(this.tanks[0].getTankType().name()))
+		if(type.getName().equals(this.tanks[0].getTankType().getName()))
 			return this.list1;
-		if(type.name().equals(this.tanks[1].getTankType().name()))
+		if(type.getName().equals(this.tanks[1].getTankType().getName()))
 			return this.list2;
-		if(type.name().equals(this.tanks[2].getTankType().name()))
+		if(type.getName().equals(this.tanks[2].getTankType().getName()))
 			return this.list3;
 		return new ArrayList<>();
 	}
 
 	@Override
 	public void clearFluidList(FluidType type) {
-		if(type.name().equals(this.tanks[0].getTankType().name()))
+		if(type.getName().equals(this.tanks[0].getTankType().getName()))
 			this.list1.clear();
-		if(type.name().equals(this.tanks[1].getTankType().name()))
+		if(type.getName().equals(this.tanks[1].getTankType().getName()))
 			this.list2.clear();
-		if(type.name().equals(this.tanks[2].getTankType().name()))
+		if(type.getName().equals(this.tanks[2].getTankType().getName()))
 			this.list3.clear();
 	}
 }

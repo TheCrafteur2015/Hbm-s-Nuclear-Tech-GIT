@@ -171,7 +171,7 @@ public class NTMAnvil extends BlockFallingNT implements ITooltipProvider, IGUIPr
 		return AxisAlignedBB.getBoundingBox(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		list.add(EnumChatFormatting.GOLD + "Tier " + this.tier + " Anvil");

@@ -41,7 +41,7 @@ public class WorldUtil {
 	/*fun fact: this is based off of joinEntityInSurroundings in World
 	  however, since mojang is staffed by field mice, that function is client side only and half-baked
 	 */
-	@SuppressWarnings("unchecked")
+	
 	public static void loadAndSpawnEntityInWorld(Entity entity) {
 
 		World world = entity.worldObj;

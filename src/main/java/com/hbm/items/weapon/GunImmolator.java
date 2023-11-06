@@ -104,7 +104,7 @@ public class GunImmolator extends Item {
 		return 0;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
@@ -118,7 +118,7 @@ public class GunImmolator extends Item {
 		list.add("Secondary Damage: 25 - 45");
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public Multimap getItemAttributeModifiers() {
 		Multimap multimap = super.getItemAttributeModifiers();

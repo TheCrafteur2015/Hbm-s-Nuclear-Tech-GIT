@@ -76,7 +76,7 @@ public class BlockMultiSlab extends BlockSlab {
 		return (super.getDamageValue(world, x, y, z) & 7) % this.slabMaterials.length;
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {

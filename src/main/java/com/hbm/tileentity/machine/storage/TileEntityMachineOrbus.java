@@ -21,7 +21,7 @@ public class TileEntityMachineOrbus extends TileEntityBarrel {
 	}
 	
 	@Override
-	public void checkFluidInteraction() { } //NO!
+	public void checkFluidInteraction() {} //NO!
 
 	@Override
 	public void fillFluidInit(FluidType type) {

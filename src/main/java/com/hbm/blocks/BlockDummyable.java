@@ -429,7 +429,6 @@ public abstract class BlockDummyable extends BlockContainer implements ICustomBl
 	
 	public List<AxisAlignedBB> bounding = new ArrayList<>();
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB entityBounding, List list, Entity entity) {
 		

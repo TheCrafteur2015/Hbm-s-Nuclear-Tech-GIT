@@ -4332,6 +4332,7 @@ item.wrench_flipped.name=Blade on a Wrench
 item.xanax.name=NAXA Anti-Digamma Medication
 item.xanax.desc=Removes 500mDRX
 item.zirconium_legs.name=Zirconium Pants
+item.debug_stick.name=Debug Wand
 
 itemGroup.tabBlocks=NTM Ores and Blocks
 itemGroup.tabConsumable=NTM Consumables and Gear

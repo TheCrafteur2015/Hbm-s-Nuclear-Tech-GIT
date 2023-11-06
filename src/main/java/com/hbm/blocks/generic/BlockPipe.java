@@ -88,7 +88,7 @@ public class BlockPipe extends Block implements ITooltipProvider {
 		return j1 | b0;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		list.add("Purely decorative");

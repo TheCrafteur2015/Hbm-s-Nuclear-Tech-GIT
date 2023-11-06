@@ -18,7 +18,7 @@ import net.minecraft.util.AxisAlignedBB;
 
 public class TileEntityBroadcaster extends TileEntity {
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void updateEntity() {
 		

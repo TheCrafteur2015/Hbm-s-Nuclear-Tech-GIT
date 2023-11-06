@@ -206,7 +206,7 @@ public class ItemMultitoolPassive extends Item {
 		return false;
     }
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public Multimap getItemAttributeModifiers() {
 		Multimap multimap = super.getItemAttributeModifiers();
@@ -238,7 +238,7 @@ public class ItemMultitoolPassive extends Item {
 		return multimap;
 	}
     
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool)
 	{

@@ -25,7 +25,7 @@ public class NoteBuilder {
 		return this.beat;
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	public static Triplet<Instrument, Note, Octave>[] translate(String beat) {
 		String[] hits = beat.split("-");
 		Triplet<Instrument, Note, Octave>[] notes = new Triplet[hits.length];

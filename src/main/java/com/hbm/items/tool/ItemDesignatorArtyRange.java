@@ -23,7 +23,7 @@ public class ItemDesignatorArtyRange extends Item {
 		setMaxStackSize(1);
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		if(itemstack.getTagCompound() == null) {

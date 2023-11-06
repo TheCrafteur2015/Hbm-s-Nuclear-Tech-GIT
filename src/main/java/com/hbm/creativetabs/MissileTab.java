@@ -29,7 +29,7 @@ public class MissileTab extends CreativeTabs {
 		return Items.iron_pickaxe;
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
     @SideOnly(Side.CLIENT)
 	public void displayAllReleventItems(List list) {

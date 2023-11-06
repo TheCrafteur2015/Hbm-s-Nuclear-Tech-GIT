@@ -47,7 +47,7 @@ public class BlockGlyphidSpawner extends BlockContainer {
 
 	public static class TileEntityGlpyhidSpawner extends TileEntity {
 		
-		@SuppressWarnings("unchecked")
+		
 		@Override
 		public void updateEntity() {
 			

@@ -24,7 +24,6 @@ public abstract class BlockMulti extends BlockBase implements IBlockMulti {
 		return rectify(meta);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {

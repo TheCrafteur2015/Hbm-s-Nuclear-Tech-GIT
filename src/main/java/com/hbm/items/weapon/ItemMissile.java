@@ -178,7 +178,7 @@ public class ItemMissile extends Item {
 		return this;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool)
 	{

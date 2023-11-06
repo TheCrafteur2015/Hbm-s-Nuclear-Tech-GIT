@@ -64,7 +64,7 @@ public class FoundryChannel extends BlockContainer implements ICrucibleAcceptor 
 		return new TileEntityFoundryChannel();
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB entityBounding, List list, Entity entity) {
 		

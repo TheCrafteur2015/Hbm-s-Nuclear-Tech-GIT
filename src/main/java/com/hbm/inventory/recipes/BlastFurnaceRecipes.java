@@ -137,7 +137,7 @@ public class BlastFurnaceRecipes extends SerializableRecipe {
 		return recipeItem1;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	public static Map<List<ItemStack>[], ItemStack> getRecipesForNEI() {
 		HashMap<List<ItemStack>[], ItemStack> recipes = new HashMap<>();
 
@@ -234,7 +234,7 @@ public class BlastFurnaceRecipes extends SerializableRecipe {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void writeRecipe(Object recipe, JsonWriter writer) throws IOException {
 		Triplet<Object, Object, ItemStack> rec = (Triplet<Object, Object, ItemStack>) recipe;

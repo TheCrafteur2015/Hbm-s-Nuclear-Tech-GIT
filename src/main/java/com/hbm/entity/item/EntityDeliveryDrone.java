@@ -31,7 +31,7 @@ public class EntityDeliveryDrone extends EntityDroneBase implements IInventory, 
 	@Override
 	protected void entityInit() {
 		super.entityInit();
-		this.dataWatcher.addObject(11, new Byte((byte) 0));
+		this.dataWatcher.addObject(11, (byte) 0);
 	}
 	
 	public EntityDeliveryDrone setChunkLoading() {

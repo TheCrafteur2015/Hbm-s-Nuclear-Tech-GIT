@@ -233,7 +233,7 @@ public class BlockEmitter extends BlockContainer implements IToolable, ITooltipP
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		list.add(EnumChatFormatting.GOLD + "Use screwdriver to widen beam");

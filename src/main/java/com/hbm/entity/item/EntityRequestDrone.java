@@ -144,7 +144,7 @@ public class EntityRequestDrone extends EntityDroneBase {
 		return 0.5D;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound nbt) {
 		super.readEntityFromNBT(nbt);

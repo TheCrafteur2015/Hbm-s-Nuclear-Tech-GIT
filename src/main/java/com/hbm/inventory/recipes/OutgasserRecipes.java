@@ -133,7 +133,7 @@ public class OutgasserRecipes extends SerializableRecipe {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void writeRecipe(Object recipe, JsonWriter writer) throws IOException {
 		Entry<AStack, Pair<ItemStack, FluidStack>> rec = (Entry<AStack, Pair<ItemStack, FluidStack>>) recipe;

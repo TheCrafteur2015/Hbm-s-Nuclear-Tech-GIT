@@ -84,9 +84,9 @@ public class TileEntityReactorZirnox extends TileEntityMachineBase implements IF
 
 	public TileEntityReactorZirnox() {
 		super(28);
-		this.steam = new FluidTank(Fluids.SUPERHOTSTEAM, 8000, 0);
-		this.carbonDioxide = new FluidTank(Fluids.CARBONDIOXIDE, 16000, 1);
-		this.water = new FluidTank(Fluids.WATER, 32000, 2);
+		this.steam = new FluidTank(Fluids.SUPERHOTSTEAM, 8000);
+		this.carbonDioxide = new FluidTank(Fluids.CARBONDIOXIDE, 16000);
+		this.water = new FluidTank(Fluids.WATER, 32000);
 	}
 
 	@Override
@@ -361,7 +361,6 @@ public class TileEntityReactorZirnox extends TileEntityMachineBase implements IF
 
 	}
 
-	@SuppressWarnings("unchecked")
 	private void meltdown() {
 
 		for(int i = 0; i < this.slots.length; i++) {

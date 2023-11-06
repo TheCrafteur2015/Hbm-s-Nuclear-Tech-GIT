@@ -155,7 +155,7 @@ public class TileEntityMachinePlasmaHeater extends TileEntityMachineBase impleme
 		this.power = nbt.getLong("power");
 	}
 	
-	@SuppressWarnings({ "unchecked", "serial", "rawtypes" })
+	@SuppressWarnings({ "serial" })
 	private void updateType() {
 		
 		List<FluidType> types = new ArrayList() {{ add(TileEntityMachinePlasmaHeater.this.tanks[0].getTankType()); add(TileEntityMachinePlasmaHeater.this.tanks[1].getTankType()); }};
@@ -214,11 +214,11 @@ public class TileEntityMachinePlasmaHeater extends TileEntityMachineBase impleme
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		if (type.name().equals(this.tanks[0].getTankType().name()))
+		if (type.getName().equals(this.tanks[0].getTankType().getName()))
 			return this.tanks[0].getMaxFill();
-		else if (type.name().equals(this.tanks[1].getTankType().name()))
+		else if (type.getName().equals(this.tanks[1].getTankType().getName()))
 			return this.tanks[1].getMaxFill();
-		else if (type.name().equals(this.plasma.getTankType().name()))
+		else if (type.getName().equals(this.plasma.getTankType().getName()))
 			return this.plasma.getMaxFill();
 		else
 			return 0;
@@ -226,21 +226,21 @@ public class TileEntityMachinePlasmaHeater extends TileEntityMachineBase impleme
 
 	@Override
 	public void setFluidFill(int i, FluidType type) {
-		if (type.name().equals(this.tanks[0].getTankType().name()))
+		if (type.getName().equals(this.tanks[0].getTankType().getName()))
 			this.tanks[0].setFill(i);
-		else if (type.name().equals(this.tanks[1].getTankType().name()))
+		else if (type.getName().equals(this.tanks[1].getTankType().getName()))
 			this.tanks[1].setFill(i);
-		else if (type.name().equals(this.plasma.getTankType().name()))
+		else if (type.getName().equals(this.plasma.getTankType().getName()))
 			this.plasma.setFill(i);
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		if (type.name().equals(this.tanks[0].getTankType().name()))
+		if (type.getName().equals(this.tanks[0].getTankType().getName()))
 			return this.tanks[0].getFill();
-		else if (type.name().equals(this.tanks[1].getTankType().name()))
+		else if (type.getName().equals(this.tanks[1].getTankType().getName()))
 			return this.tanks[1].getFill();
-		else if (type.name().equals(this.plasma.getTankType().name()))
+		else if (type.getName().equals(this.plasma.getTankType().getName()))
 			return this.plasma.getFill();
 		else
 			return 0;

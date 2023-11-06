@@ -94,7 +94,7 @@ public class GunLacunae extends Item implements IHoldableWeapon {
 		return 0;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
@@ -125,7 +125,7 @@ public class GunLacunae extends Item implements IHoldableWeapon {
 		return super.getItemStackDisplayName(stack);
     }
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public Multimap getItemAttributeModifiers() {
 		Multimap multimap = super.getItemAttributeModifiers();

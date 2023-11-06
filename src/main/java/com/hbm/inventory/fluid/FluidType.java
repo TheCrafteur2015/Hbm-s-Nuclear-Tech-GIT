@@ -106,7 +106,6 @@ public class FluidType {
 		return this;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public <T> T getContainer(Class<? extends T> container) {
 		return (T) this.containers.get(container);
 	}
@@ -120,7 +119,6 @@ public class FluidType {
 		return this.traits.containsKey(trait);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public <T extends FluidTrait> T getTrait(Class<? extends T> trait) { //generics, yeah!
 		return (T) this.traits.get(trait);
 	}
@@ -242,16 +240,9 @@ public class FluidType {
 	public static FluidType getEnumFromName(String s) {
 		return Fluids.fromName(s);
 	}
-	@Deprecated //reason: not an enum, again, fuck you
-	public int ordinal() {
-		return getID();
-	}
 	@Deprecated
 	public int getMSAColor() {
 		return this.color;
 	}
-	@Deprecated
-	public String name() {
-		return this.stringId;
-	}
+	
 }

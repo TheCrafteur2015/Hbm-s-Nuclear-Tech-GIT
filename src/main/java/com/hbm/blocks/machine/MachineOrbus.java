@@ -7,6 +7,7 @@ import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.IPersistentInfoProvider;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTank;
+import com.hbm.items.machine.ItemFluidIdentifier;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.IPersistentNBT;
 import com.hbm.tileentity.TileEntityProxyCombo;
@@ -48,21 +49,21 @@ public class MachineOrbus extends BlockDummyable implements IPersistentInfoProvi
 	
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-		
-		if(world.isRemote) {
+		if(world.isRemote)
 			return true;
-		} else if(!player.isSneaking()) {
-			
-			int[] pos = findCore(world, x, y, z);
-			
-			if(pos == null)
-				return false;
-			
-			FMLNetworkHandler.openGui(player, MainRegistry.instance, 0, world, pos[0], pos[1], pos[2]);
-			return true;
+		int[] pos = findCore(world, x, y, z);
+		if(pos == null)
+			return false;
+		if(!player.isSneaking()) {
+			FMLNetworkHandler.openGui(player, MainRegistry.instance, 0, world, pos[0], pos[1], pos[2]); //we can do this because nobody is stopping me from doing this
 		} else {
-			return true;
+			ItemStack item = player.getHeldItem();
+			if (item.getItem() instanceof ItemFluidIdentifier) {
+				TileEntityMachineOrbus tile = (TileEntityMachineOrbus) world.getTileEntity(pos[0], pos[1], pos[2]);
+				tile.setTypeForSync(Fluids.fromID(item.getItemDamage()), 0);
+			}
 		}
+		return true;
 	}
 
 	@Override

@@ -51,9 +51,9 @@ public class TileEntityFWatzCore extends TileEntityLoadedBase implements ISidedI
 	public TileEntityFWatzCore() {
 		this.slots = new ItemStack[7];
 		this.tanks = new FluidTank[3];
-		this.tanks[0] = new FluidTank(Fluids.COOLANT, 128000, 0);
-		this.tanks[1] = new FluidTank(Fluids.AMAT, 64000, 1);
-		this.tanks[2] = new FluidTank(Fluids.ASCHRAB, 64000, 2);
+		this.tanks[0] = new FluidTank(Fluids.COOLANT, 128000);
+		this.tanks[1] = new FluidTank(Fluids.AMAT, 64000);
+		this.tanks[2] = new FluidTank(Fluids.ASCHRAB, 64000);
 	}
 	@Override
 	public int getSizeInventory() {
@@ -417,17 +417,17 @@ public class TileEntityFWatzCore extends TileEntityLoadedBase implements ISidedI
 
 	@Override
 	public void setFluidFill(int i, FluidType type) {
-		if(type.name().equals(this.tanks[1].getTankType().name()))
+		if(type.getName().equals(this.tanks[1].getTankType().getName()))
 			this.tanks[1].setFill(i);
-		else if(type.name().equals(this.tanks[2].getTankType().name()))
+		else if(type.getName().equals(this.tanks[2].getTankType().getName()))
 			this.tanks[2].setFill(i);
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		if(type.name().equals(this.tanks[1].getTankType().name()))
+		if(type.getName().equals(this.tanks[1].getTankType().getName()))
 			return this.tanks[1].getFill();
-		else if(type.name().equals(this.tanks[2].getTankType().name()))
+		else if(type.getName().equals(this.tanks[2].getTankType().getName()))
 			return this.tanks[2].getFill();
 		else
 			return 0;
@@ -435,9 +435,9 @@ public class TileEntityFWatzCore extends TileEntityLoadedBase implements ISidedI
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		if(type.name().equals(this.tanks[1].getTankType().name()))
+		if(type.getName().equals(this.tanks[1].getTankType().getName()))
 			return this.tanks[1].getMaxFill();
-		else if(type.name().equals(this.tanks[2].getTankType().name()))
+		else if(type.getName().equals(this.tanks[2].getTankType().getName()))
 			return this.tanks[2].getMaxFill();
 		else
 			return 0;

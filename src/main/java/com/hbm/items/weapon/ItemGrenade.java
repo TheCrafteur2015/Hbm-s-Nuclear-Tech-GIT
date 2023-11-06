@@ -247,7 +247,7 @@ public class ItemGrenade extends Item {
 		return this.fuse + "s";
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 

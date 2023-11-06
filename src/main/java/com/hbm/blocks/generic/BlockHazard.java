@@ -160,7 +160,6 @@ public class BlockHazard extends Block implements ITooltipProvider {
 		LAVAPOP
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) { }
 

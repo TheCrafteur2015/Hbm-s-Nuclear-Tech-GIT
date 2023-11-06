@@ -47,7 +47,7 @@ public class EntityArtilleryRocket extends EntityThrowableInterp implements IChu
 	@Override
 	protected void entityInit() {
 		init(ForgeChunkManager.requestTicket(MainRegistry.instance, this.worldObj, Type.ENTITY));
-		this.dataWatcher.addObject(10, new Integer(0));
+		this.dataWatcher.addObject(10, 0);
 	}
 	
 	@Override

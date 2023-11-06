@@ -81,7 +81,7 @@ public class FoundryOutlet extends BlockContainer implements ICrucibleAcceptor, 
 		return new TileEntityFoundryOutlet();
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB entityBounding, List list, Entity entity) {
 		

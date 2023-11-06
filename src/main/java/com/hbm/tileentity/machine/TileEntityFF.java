@@ -35,7 +35,7 @@ public class TileEntityFF extends TileEntity {
 			prototype(10F);
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	public void prototype(float rad) {
 
 		List<Entity> oLegacy = new ArrayList<>(this.outside);

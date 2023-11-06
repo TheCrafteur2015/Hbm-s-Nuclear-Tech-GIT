@@ -154,7 +154,7 @@ public class ItemCMStructure extends Item implements ILookOverlay {
 		return true;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		super.addInformation(stack, player, list, ext);

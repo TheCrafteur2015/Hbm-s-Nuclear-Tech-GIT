@@ -74,7 +74,7 @@ public class ItemAmmoArty extends Item {
 		init();
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tab, List list) {
@@ -92,7 +92,7 @@ public class ItemAmmoArty extends Item {
 		list.add(new ItemStack(item, 1, this.MUSTARD));
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 
@@ -278,7 +278,7 @@ public class ItemAmmoArty extends Item {
 		
 		/* PHOSPHORUS */
 		ItemAmmoArty.itemTypes[this.PHOSPHORUS] = new ArtilleryShell("ammo_arty_phosphorus", SpentCasing.COLOR_CASE_16INCH_PHOS) {
-			@SuppressWarnings("unchecked")
+			
 			@Override
 			public void onImpact(EntityArtilleryShell shell, MovingObjectPosition mop) {
 				ItemAmmoArty.standardExplosion(shell, mop, 10F, 3F, false);

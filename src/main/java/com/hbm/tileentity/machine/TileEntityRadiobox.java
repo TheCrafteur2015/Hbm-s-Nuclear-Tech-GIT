@@ -28,7 +28,7 @@ public class TileEntityRadiobox extends TileEntityLoadedBase implements IEnergyU
 	public static long maxPower = 500000;
 	public boolean infinite = false;
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void updateEntity() {
 		

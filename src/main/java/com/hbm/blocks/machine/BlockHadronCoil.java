@@ -53,7 +53,7 @@ public class BlockHadronCoil extends Block implements IBlockCT, ITooltipProvider
 		return block instanceof BlockHadronCoil;
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		list.add(I18nUtil.resolveKey("info.coil") + ": " + String.format(Locale.US, "%,d", this.factor));

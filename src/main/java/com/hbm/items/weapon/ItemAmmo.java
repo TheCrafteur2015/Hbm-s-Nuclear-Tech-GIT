@@ -126,7 +126,6 @@ public class ItemAmmo extends ItemEnumMulti {
 		this.altName = altName;
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		super.addInformation(stack, player, list, ext);

@@ -1164,7 +1164,7 @@ public class CraftingManager {
 		CraftingManager.addRecipeAuto(new ItemStack(ModBlocks.cm_circuit, 1, 4), " I ", "IMI", " I ", 'I', OreDictManager.STEEL.ingot(), 'M', ModItems.circuit_schrabidium);
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	public static void crumple() {
 		
 		if(Loader.isModLoaded("Mekanism")) {

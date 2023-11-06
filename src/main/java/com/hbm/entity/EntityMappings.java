@@ -485,7 +485,7 @@ public class EntityMappings {
 		EntityMappings.mobMappings.add(new Quartet<>(clazz, name, color1, color2));
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	public static void addSpawn(Class<? extends EntityLiving> entityClass, int weightedProb, int min, int max, EnumCreatureType typeOfCreature, BiomeGenBase... biomes) {
 		
 		for(BiomeGenBase biome : biomes) {

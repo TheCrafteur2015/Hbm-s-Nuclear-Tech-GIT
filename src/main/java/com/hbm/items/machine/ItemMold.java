@@ -91,7 +91,7 @@ public class ItemMold extends Item {
 		ItemMold.moldById.put(mold.id, mold);
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tab, List list) {
@@ -124,7 +124,7 @@ public class ItemMold extends Item {
 		return this.icons[0];
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		Mold mold = getMold(stack);

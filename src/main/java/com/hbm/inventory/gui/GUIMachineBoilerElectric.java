@@ -32,7 +32,7 @@ public class GUIMachineBoilerElectric extends GuiInfoContainer {
 		this.diFurnace.tanks[0].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 62, this.guiTop + 69 - 52, 16, 52);
 		this.diFurnace.tanks[1].renderTankInfo(this, mouseX, mouseY, this.guiLeft + 134, this.guiTop + 69 - 52, 16, 52);
 
-		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 102, this.guiTop + 16, 8, 18, mouseX, mouseY, new String[] { String.valueOf((int)((double)this.diFurnace.heat / 100D)) + "°C"});
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 102, this.guiTop + 16, 8, 18, mouseX, mouseY, new String[] { String.valueOf((int)(this.diFurnace.heat / 100D)) + "°C"});
 		
 		String[] text = new String[] { "Heat produced:",
 				"  1.5°C/t",
@@ -51,7 +51,7 @@ public class GUIMachineBoilerElectric extends GuiInfoContainer {
 				"  of boiling points reached" };
 		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft - 16, this.guiTop + 36 + 16, 16, 16, this.guiLeft - 8, this.guiTop + 36 + 16, text1);
 		
-		if(this.diFurnace.tanks[1].getTankType().name().equals(Fluids.NONE.name())) {
+		if(this.diFurnace.tanks[1].getTankType().getName().equals(Fluids.NONE.getName())) {
 			
 			String[] text2 = new String[] { "Error: Liquid can not be boiled!" };
 			this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft - 16, this.guiTop + 36 + 32, 16, 16, this.guiLeft - 8, this.guiTop + 36 + 16 + 32, text2);
@@ -80,7 +80,7 @@ public class GUIMachineBoilerElectric extends GuiInfoContainer {
 		if(this.diFurnace.power > 0)
 			drawTexturedModalRect(this.guiLeft + 97, this.guiTop + 34, 176, 0, 18, 18);
 
-		int j = (int)this.diFurnace.getHeatScaled(17);
+		int j = this.diFurnace.getHeatScaled(17);
 		drawTexturedModalRect(this.guiLeft + 103, this.guiTop + 33 - j, 194, 16 - j, 6, j);
 
 		int i = (int)this.diFurnace.getPowerScaled(34);
@@ -89,7 +89,7 @@ public class GUIMachineBoilerElectric extends GuiInfoContainer {
 		drawInfoPanel(this.guiLeft - 16, this.guiTop + 36, 16, 16, 2);
 		drawInfoPanel(this.guiLeft - 16, this.guiTop + 36 + 16, 16, 16, 3);
 		
-		if(this.diFurnace.tanks[1].getTankType().name().equals(Fluids.NONE.name())) {
+		if(this.diFurnace.tanks[1].getTankType().getName().equals(Fluids.NONE.getName())) {
 			drawInfoPanel(this.guiLeft - 16, this.guiTop + 36 + 32, 16, 16, 6);
 		}
 		

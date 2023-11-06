@@ -146,7 +146,7 @@ public class SiegeTier {
 	/*
 	 * DELEGATIONS
 	 */
-	@SuppressWarnings("unchecked")
+	
 	private static void doAura(EntityLivingBase entity, int range, PotionEffect... effects) {
 		
 		List<EntityPlayer> players = entity.worldObj.getEntitiesWithinAABB(EntityPlayer.class, entity.boundingBox.expand(range, range, range));

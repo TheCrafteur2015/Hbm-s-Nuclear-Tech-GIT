@@ -108,7 +108,7 @@ public class MapGenNTMFeatures extends MapGenStructure {
 		
 		public Start() {}
 		
-		@SuppressWarnings("unchecked")
+		
 		public Start(World world, Random rand, int chunkX, int chunkZ) {
 			super(chunkX, chunkZ);
 			

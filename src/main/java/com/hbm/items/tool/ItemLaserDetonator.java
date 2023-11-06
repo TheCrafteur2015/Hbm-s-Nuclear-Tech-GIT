@@ -27,7 +27,7 @@ import net.minecraft.world.World;
 
 public class ItemLaserDetonator extends Item implements IHoldableWeapon {
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		list.add("Aim & click to detonate!");

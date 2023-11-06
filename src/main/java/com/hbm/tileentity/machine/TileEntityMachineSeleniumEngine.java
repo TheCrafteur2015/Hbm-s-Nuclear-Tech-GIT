@@ -71,7 +71,7 @@ public class TileEntityMachineSeleniumEngine extends TileEntityLoadedBase implem
 
 	public TileEntityMachineSeleniumEngine() {
 		this.slots = new ItemStack[14];
-		this.tank = new FluidTank(Fluids.DIESEL, TileEntityMachineSeleniumEngine.fluidCap, 0);
+		this.tank = new FluidTank(Fluids.DIESEL, TileEntityMachineSeleniumEngine.fluidCap);
 	}
 
 	@Override

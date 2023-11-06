@@ -465,7 +465,7 @@ public class ChunkRadiationHandlerNT extends ChunkRadiationHandler {
 		public int index;
 		public float radiation;
 		private float accumulatedRads = 0;
-		@SuppressWarnings("unchecked")
+		
 		public List<Integer>[] connectionIndices = new List[ForgeDirection.VALID_DIRECTIONS.length];
 		
 		public RadPocket(SubChunkRadiationStorage parent, int index) {

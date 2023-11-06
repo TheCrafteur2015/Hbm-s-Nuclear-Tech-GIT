@@ -54,8 +54,8 @@ public class TileEntityMachineTurbine extends TileEntityLoadedBase implements IS
 	public TileEntityMachineTurbine() {
 		this.slots = new ItemStack[7];
 		this.tanks = new FluidTank[2];
-		this.tanks[0] = new FluidTank(Fluids.STEAM, 64000, 0);
-		this.tanks[1] = new FluidTank(Fluids.SPENTSTEAM, 128000, 1);
+		this.tanks[0] = new FluidTank(Fluids.STEAM, 64000);
+		this.tanks[1] = new FluidTank(Fluids.SPENTSTEAM, 128000);
 	}
 
 	@Override
@@ -300,17 +300,17 @@ public class TileEntityMachineTurbine extends TileEntityLoadedBase implements IS
 
 	@Override
 	public void setFluidFill(int i, FluidType type) {
-		if(type.name().equals(this.tanks[0].getTankType().name()))
+		if(type.getName().equals(this.tanks[0].getTankType().getName()))
 			this.tanks[0].setFill(i);
-		else if(type.name().equals(this.tanks[1].getTankType().name()))
+		else if(type.getName().equals(this.tanks[1].getTankType().getName()))
 			this.tanks[1].setFill(i);
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		if(type.name().equals(this.tanks[0].getTankType().name()))
+		if(type.getName().equals(this.tanks[0].getTankType().getName()))
 			return this.tanks[0].getFill();
-		else if(type.name().equals(this.tanks[1].getTankType().name()))
+		else if(type.getName().equals(this.tanks[1].getTankType().getName()))
 			return this.tanks[1].getFill();
 		
 		return 0;
@@ -318,9 +318,8 @@ public class TileEntityMachineTurbine extends TileEntityLoadedBase implements IS
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		if(type.name().equals(this.tanks[0].getTankType().name()))
+		if(type.getName().equals(this.tanks[0].getTankType().getName()))
 			return this.tanks[0].getMaxFill();
-		
 		return 0;
 	}
 

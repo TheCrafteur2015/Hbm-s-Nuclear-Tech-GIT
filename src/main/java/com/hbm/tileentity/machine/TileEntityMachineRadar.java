@@ -121,7 +121,7 @@ public class TileEntityMachineRadar extends TileEntityTickingBase implements IEn
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	private void allocateMissiles() {
 		
 		this.nearbyMissiles.clear();

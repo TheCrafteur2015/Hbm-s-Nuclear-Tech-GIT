@@ -34,6 +34,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
+@SuppressWarnings("deprecation")
 public class TileEntityAMSBase extends TileEntity implements ISidedInventory, IFluidContainer, IFluidAcceptor, IGUIProvider {
 
 	private ItemStack slots[];
@@ -64,10 +65,10 @@ public class TileEntityAMSBase extends TileEntity implements ISidedInventory, IF
 	public TileEntityAMSBase() {
 		this.slots = new ItemStack[16];
 		this.tanks = new FluidTank[4];
-		this.tanks[0] = new FluidTank(Fluids.COOLANT, 8000, 0);
-		this.tanks[1] = new FluidTank(Fluids.CRYOGEL, 8000, 1);
-		this.tanks[2] = new FluidTank(Fluids.DEUTERIUM, 8000, 2);
-		this.tanks[3] = new FluidTank(Fluids.TRITIUM, 8000, 3);
+		this.tanks[0] = new FluidTank(Fluids.COOLANT, 8000);
+		this.tanks[1] = new FluidTank(Fluids.CRYOGEL, 8000);
+		this.tanks[2] = new FluidTank(Fluids.DEUTERIUM, 8000);
+		this.tanks[3] = new FluidTank(Fluids.TRITIUM, 8000);
 	}
 
 	@Override
@@ -345,7 +346,7 @@ public class TileEntityAMSBase extends TileEntity implements ISidedInventory, IF
 							this.tanks[2].getFill() > 0 && this.tanks[3].getFill() > 0) {
 
 						//power += (powerBase * powerMod * gauss(1, (heat - (maxHeat / 2)) / maxHeat)) / 1000 * getFuelPower(tanks[2].getTankType()) * getFuelPower(tanks[3].getTankType());
-						this.heat += (heatBase * heatMod) / (float)(this.field / 100F);
+						this.heat += (heatBase * heatMod) / (this.field / 100F);
 						this.tanks[2].setFill((int)(this.tanks[2].getFill() - fuelBase * fuelMod));
 						this.tanks[3].setFill((int)(this.tanks[3].getFill() - fuelBase * fuelMod));
 						if(this.tanks[2].getFill() <= 0)
@@ -473,13 +474,13 @@ public class TileEntityAMSBase extends TileEntity implements ISidedInventory, IF
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		if(type.name().equals(this.tanks[0].getTankType().name()))
+		if(type.getName().equals(this.tanks[0].getTankType().getName()))
 			return this.tanks[0].getMaxFill();
-		else if(type.name().equals(this.tanks[1].getTankType().name()))
+		else if(type.getName().equals(this.tanks[1].getTankType().getName()))
 			return this.tanks[1].getMaxFill();
-		else if(type.name().equals(this.tanks[2].getTankType().name()))
+		else if(type.getName().equals(this.tanks[2].getTankType().getName()))
 			return this.tanks[2].getMaxFill();
-		else if(type.name().equals(this.tanks[3].getTankType().name()))
+		else if(type.getName().equals(this.tanks[3].getTankType().getName()))
 			return this.tanks[3].getMaxFill();
 		else
 			return 0;
@@ -487,25 +488,25 @@ public class TileEntityAMSBase extends TileEntity implements ISidedInventory, IF
 
 	@Override
 	public void setFluidFill(int i, FluidType type) {
-		if(type.name().equals(this.tanks[0].getTankType().name()))
+		if(type.getName().equals(this.tanks[0].getTankType().getName()))
 			this.tanks[0].setFill(i);
-		else if(type.name().equals(this.tanks[1].getTankType().name()))
+		else if(type.getName().equals(this.tanks[1].getTankType().getName()))
 			this.tanks[1].setFill(i);
-		else if(type.name().equals(this.tanks[2].getTankType().name()))
+		else if(type.getName().equals(this.tanks[2].getTankType().getName()))
 			this.tanks[2].setFill(i);
-		else if(type.name().equals(this.tanks[3].getTankType().name()))
+		else if(type.getName().equals(this.tanks[3].getTankType().getName()))
 			this.tanks[3].setFill(i);
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		if(type.name().equals(this.tanks[0].getTankType().name()))
+		if(type.getName().equals(this.tanks[0].getTankType().getName()))
 			return this.tanks[0].getFill();
-		else if(type.name().equals(this.tanks[1].getTankType().name()))
+		else if(type.getName().equals(this.tanks[1].getTankType().getName()))
 			return this.tanks[1].getFill();
-		else if(type.name().equals(this.tanks[2].getTankType().name()))
+		else if(type.getName().equals(this.tanks[2].getTankType().getName()))
 			return this.tanks[2].getFill();
-		else if(type.name().equals(this.tanks[3].getTankType().name()))
+		else if(type.getName().equals(this.tanks[3].getTankType().getName()))
 			return this.tanks[3].getFill();
 		else
 			return 0;

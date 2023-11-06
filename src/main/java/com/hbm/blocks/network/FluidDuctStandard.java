@@ -60,7 +60,7 @@ public class FluidDuctStandard extends FluidDuctBase implements IBlockMulti, ILo
 		return side == 0 ? this.icon[rectify(metadata)] : this.overlay[rectify(metadata)];
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
@@ -94,7 +94,7 @@ public class FluidDuctStandard extends FluidDuctBase implements IBlockMulti, ILo
 		return 3;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB entityBounding, List list, Entity entity) {
 		

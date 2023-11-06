@@ -62,7 +62,7 @@ public class TileEntityMachineDiesel extends TileEntityMachinePolluting implemen
 
 	public TileEntityMachineDiesel() {
 		super(5, 100);
-		this.tank = new FluidTank(Fluids.DIESEL, 4_000, 0);
+		this.tank = new FluidTank(Fluids.DIESEL, 4000);
 	}
 
 	@Override

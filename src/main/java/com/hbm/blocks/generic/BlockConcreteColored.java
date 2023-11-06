@@ -43,7 +43,7 @@ public class BlockConcreteColored extends Block {
 		return ~p_150031_0_ & 15;
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List p_149666_3_) {

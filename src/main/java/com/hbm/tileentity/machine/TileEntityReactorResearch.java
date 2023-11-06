@@ -289,7 +289,7 @@ public class TileEntityReactorResearch extends TileEntityMachineBase implements 
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	private void explode() {
 		
 		for(int i = 0; i < this.slots.length; i++) {

@@ -13,7 +13,7 @@ import net.minecraft.util.AxisAlignedBB;
 
 public class TileEntityLantern extends TileEntity {
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void updateEntity() {
 		

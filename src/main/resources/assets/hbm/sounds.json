@@ -268,6 +268,7 @@
     "alarm.easAlarm": {"category": "record", "sounds": [{"name": "alarm/easAlarm", "stream": false}]},
     "alarm.airRaid": {"category": "record", "sounds": [{"name": "alarm/airRaid", "stream": true}]},
     "alarm.classic": {"category": "record", "sounds": [{"name": "alarm/classicSiren", "stream": false}]},
+    "alarm.containmentBreach": {"category": "record", "sounds": [{"name": "alarm/containmentBreach", "stream": false}]},
     "alarm.gambit": {"category": "record", "sounds": [{"name": "alarm/gambit", "stream": true}]},
     "alarm.soyuzed": {"category": "record", "sounds": [{"name": "alarm/soyuzed", "stream": false}]},
     "alarm.chime": {"category": "record", "sounds": [{"name": "alarm/chime", "stream": false}]}

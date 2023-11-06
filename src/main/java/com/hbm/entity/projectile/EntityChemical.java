@@ -74,7 +74,7 @@ public class EntityChemical extends EntityThrowableNT {
 
 	@Override
 	protected void entityInit() {
-		this.dataWatcher.addObject(10, new Integer(0));
+		this.dataWatcher.addObject(10, 0);
 	}
 	
 	public EntityChemical setFluid(FluidType fluid) {

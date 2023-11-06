@@ -59,7 +59,7 @@ public class MachineGasFlare extends BlockDummyable implements ITooltipProvider 
 		makeExtra(world, x + dir.offsetX * o, y, z + dir.offsetZ * o - 1);
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 

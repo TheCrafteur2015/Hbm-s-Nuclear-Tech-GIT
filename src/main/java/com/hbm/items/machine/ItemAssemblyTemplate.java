@@ -179,10 +179,10 @@ public class ItemAssemblyTemplate extends Item {
 
 		if(folders == null)
 			folders = new HashSet() {
+				private static final long serialVersionUID = 1L;
 				{
 					add(ModItems.template_folder);
-				}
-			};
+				}};
 
 		String[] names = new String[folders.size()];
 

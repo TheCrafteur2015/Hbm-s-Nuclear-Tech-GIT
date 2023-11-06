@@ -24,7 +24,7 @@ public class Meteorite {
 	
 	public static boolean safeMode = false;
 
-	@SuppressWarnings("unchecked")
+	
 	public void generate(World world, Random rand, int x, int y, int z, boolean safe, boolean allowSpecials, boolean damagingImpact) {
 		Meteorite.safeMode = safe;
 		

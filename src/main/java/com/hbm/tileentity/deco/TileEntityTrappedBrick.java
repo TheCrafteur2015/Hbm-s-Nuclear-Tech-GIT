@@ -26,7 +26,6 @@ public class TileEntityTrappedBrick extends TileEntity {
 	AxisAlignedBB detector = null;
 	ForgeDirection dir = ForgeDirection.UNKNOWN;
 	
-	@SuppressWarnings("rawtypes")
 	@Override
 	public void updateEntity() {
 		

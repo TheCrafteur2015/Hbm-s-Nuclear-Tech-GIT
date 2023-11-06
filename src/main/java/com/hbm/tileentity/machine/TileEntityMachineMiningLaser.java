@@ -76,7 +76,7 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 		//slots 1 - 8: upgrades
 		//slots 9 - 29: output
 		super(30);
-		this.tank = new FluidTank(Fluids.OIL, 64000, 0);
+		this.tank = new FluidTank(Fluids.OIL, 64000);
 	}
 
 	@Override
@@ -341,7 +341,6 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 			});
 	
 	//hahahahahahahaha he said "suck"
-	@SuppressWarnings("unchecked")
 	private void suckDrops() {
 		
 		int rangeHor = 3;

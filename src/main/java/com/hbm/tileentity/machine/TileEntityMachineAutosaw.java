@@ -63,7 +63,7 @@ public class TileEntityMachineAutosaw extends TileEntityLoadedBase implements IN
 		this.tank = new FluidTank(Fluids.WOODOIL, 100);
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void updateEntity() {
 		

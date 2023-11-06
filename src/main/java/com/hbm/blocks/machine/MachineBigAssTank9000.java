@@ -8,6 +8,7 @@ import com.hbm.blocks.IPersistentInfoProvider;
 import com.hbm.handler.MultiblockHandlerXR;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTank;
+import com.hbm.items.machine.ItemFluidIdentifier;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.IPersistentNBT;
 import com.hbm.tileentity.TileEntityProxyCombo;
@@ -46,6 +47,29 @@ public class MachineBigAssTank9000 extends BlockDummyable implements IPersistent
 	public int getOffset() {
 		return 2;
 	}
+	
+	@Override
+	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
+//		ItemStack item = player.getHeldItem();
+//		if (item.getItem() instanceof ItemFluidIdentifier) {
+//			player.addChatMessage(new ChatComponentText("Debug=>" + item.getItemDamageForDisplay()));
+//			int[] i = getDimensions();
+//			for(int a = x - i[1]; a <= x + i[0]; a++) {
+//				for(int b = y - i[3]; b <= y + i[2]; b++) {
+//					for(int c = z - i[5]; c <= z + i[4]; c++) {
+//						if(!(a == x && b == y && c == z)) {
+//							TileEntityProxyCombo tile = (TileEntityProxyCombo) world.getTileEntity(x, y, z);
+//							player.addChatMessage(new ChatComponentText("Debug (TileEntity)=>" + tile));
+//						}
+//					}
+//				}
+//			}
+//		}
+//		
+		super.onBlockClicked(world, x, y, z, player);
+	}
+	
+	
 
 	@Override
 	public void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
@@ -73,21 +97,21 @@ public class MachineBigAssTank9000 extends BlockDummyable implements IPersistent
 	
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-		
-		if(world.isRemote) {
+		if(world.isRemote)
 			return true;
-		} else if(!player.isSneaking()) {
-			
-			int[] pos = findCore(world, x, y, z);
-			
-			if(pos == null)
-				return false;
-			
+		int[] pos = findCore(world, x, y, z);
+		if(pos == null)
+			return false;
+		if(!player.isSneaking()) {
 			FMLNetworkHandler.openGui(player, MainRegistry.instance, 0, world, pos[0], pos[1], pos[2]); //we can do this because nobody is stopping me from doing this
-			return true;
 		} else {
-			return true;
+			ItemStack item = player.getHeldItem();
+			if (item.getItem() instanceof ItemFluidIdentifier) {
+				TileEntityMachineBAT9000 tile = (TileEntityMachineBAT9000) world.getTileEntity(pos[0], pos[1], pos[2]);
+				tile.setTypeForSync(Fluids.fromID(item.getItemDamage()), 0);
+			}
 		}
+		return true;
 	}
 	
 	@Override
@@ -112,7 +136,6 @@ public class MachineBigAssTank9000 extends BlockDummyable implements IPersistent
 		return tank.getComparatorPower();
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(ItemStack stack, NBTTagCompound persistentTag, EntityPlayer player, List list, boolean ext) {
 		FluidTank tank = new FluidTank(Fluids.NONE, 0);

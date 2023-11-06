@@ -30,8 +30,8 @@ public class TileEntitySolarBoiler extends TileEntityLoadedBase implements IFlui
 	public HashSet<ChunkCoordinates> secondary = new HashSet<>();
 	
 	public TileEntitySolarBoiler() {
-		this.water = new FluidTank(Fluids.WATER, 16000, 0);
-		this.steam = new FluidTank(Fluids.STEAM, 1600000, 1);
+		this.water = new FluidTank(Fluids.WATER, 16000);
+		this.steam = new FluidTank(Fluids.STEAM, 1600000);
 	}
 
 	@Override

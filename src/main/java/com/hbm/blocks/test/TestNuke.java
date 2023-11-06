@@ -157,7 +157,7 @@ public class TestNuke extends BlockContainer {
 		return false;
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	public void detonateTestBomb(World world, int x, int y, int z, int bombStartStrength)
 	{
 		//Rodol's awesome destruction code

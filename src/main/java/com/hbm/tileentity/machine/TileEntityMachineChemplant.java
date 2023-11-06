@@ -550,7 +550,7 @@ public class TileEntityMachineChemplant extends TileEntityMachineBase implements
 		return this.worldObj.getTotalWorldTime() % 20 < 10;
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	List<IFluidAcceptor>[] lists = new List[] {
 		new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()
 	};

@@ -75,7 +75,7 @@ public class RBMKDebrisRadiating extends RBMKDebrisBurning {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	private void radiate(World world, int x, int y, int z) {
 		
 		float rads = 1000000F;

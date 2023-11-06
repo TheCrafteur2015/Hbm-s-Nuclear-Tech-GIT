@@ -60,7 +60,7 @@ public class TileEntityMachineGasCent extends TileEntityMachineBase implements I
 	
 	public TileEntityMachineGasCent() {
 		super(7); 
-		this.tank = new FluidTank(Fluids.UF6, 2000, 0);
+		this.tank = new FluidTank(Fluids.UF6, 2000);
 		this.inputTank = new PseudoFluidTank(PseudoFluidType.NUF6, 8000);
 		this.outputTank = new PseudoFluidTank(PseudoFluidType.LEUF6, 8000);
 	}

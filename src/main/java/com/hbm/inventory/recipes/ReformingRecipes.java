@@ -90,7 +90,7 @@ public class ReformingRecipes extends SerializableRecipe {
 		ReformingRecipes.recipes.put(input, new Triplet<>(output1, output2, output3));
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void writeRecipe(Object recipe, JsonWriter writer) throws IOException {
 		Entry<FluidType, Triplet<FluidStack, FluidStack, FluidStack>> rec = (Entry<FluidType, Triplet<FluidStack, FluidStack, FluidStack>>) recipe;

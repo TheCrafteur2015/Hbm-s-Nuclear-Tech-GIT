@@ -10,6 +10,7 @@ import com.hbm.entity.projectile.EntityBombletZeta;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTank;
 import com.hbm.inventory.fluid.trait.FT_Flammable;
+import com.hbm.items.machine.ItemFluidIdentifier;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.IPersistentNBT;
 import com.hbm.tileentity.IRepairable;
@@ -58,25 +59,24 @@ public class MachineFluidTank extends BlockDummyable implements IPersistentInfoP
 	
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-		
-		if(world.isRemote) {
+		if(world.isRemote)
 			return true;
-		} else if(!player.isSneaking()) {
-			int[] pos = findCore(world, x, y, z);
-
-			if(pos == null)
+		int[] pos = findCore(world, x, y, z);
+		if(pos == null)
+			return false;
+		TileEntityMachineFluidTank tank = (TileEntityMachineFluidTank) world.getTileEntity(pos[0], pos[1], pos[2]);
+		if (tank == null)
+			return false;
+		if(!player.isSneaking()) {
+			if (tank.hasExploded)
 				return false;
-			
-			TileEntityMachineFluidTank tank = (TileEntityMachineFluidTank) world.getTileEntity(pos[0], pos[1], pos[2]);
-			
-			if(tank != null) {
-				if(tank.hasExploded) return false;
-				FMLNetworkHandler.openGui(player, MainRegistry.instance, 0, world, pos[0], pos[1], pos[2]);
-			}
-			return true;
+			FMLNetworkHandler.openGui(player, MainRegistry.instance, 0, world, pos[0], pos[1], pos[2]);
 		} else {
-			return true;
+			ItemStack item = player.getHeldItem();
+			if (item.getItem() instanceof ItemFluidIdentifier)
+				tank.setTypeForSync(Fluids.fromID(item.getItemDamage()), 0);
 		}
+		return true;
 	}
 
 	@Override
@@ -94,7 +94,6 @@ public class MachineFluidTank extends BlockDummyable implements IPersistentInfoP
 		return IPersistentNBT.getDrops(world, x, y, z, this);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(ItemStack stack, NBTTagCompound persistentTag, EntityPlayer player, List list, boolean ext) {
 		FluidTank tank = new FluidTank(Fluids.NONE, 0);
@@ -107,7 +106,6 @@ public class MachineFluidTank extends BlockDummyable implements IPersistentInfoP
 		return false;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void onBlockExploded(World world, int x, int y, int z, Explosion explosion) {
 

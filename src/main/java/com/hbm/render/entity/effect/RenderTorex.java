@@ -42,7 +42,6 @@ public class RenderTorex extends Render {
 		GL11.glPopMatrix();
 	}
 	
-	@SuppressWarnings("rawtypes")
 	private Comparator cloudSorter = new Comparator() {
 
 		@Override
@@ -57,7 +56,6 @@ public class RenderTorex extends Render {
 		}
 	};
 
-	@SuppressWarnings("unchecked")
 	private void cloudletWrapper(EntityNukeTorex cloud, float interp) {
 
 		GL11.glPushMatrix();

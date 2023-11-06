@@ -67,7 +67,7 @@ public class ItemFluidIcon extends Item {
 	}
 
 	public static ItemStack make(FluidType fluid, int i, int pressure) {
-		return ItemFluidIcon.addPressure(ItemFluidIcon.addQuantity(new ItemStack(ModItems.fluid_icon, 1, fluid.ordinal()), i), pressure);
+		return ItemFluidIcon.addPressure(ItemFluidIcon.addQuantity(new ItemStack(ModItems.fluid_icon, 1, fluid.getID()), i), pressure);
 	}
 
 	public static int getQuantity(ItemStack stack) {

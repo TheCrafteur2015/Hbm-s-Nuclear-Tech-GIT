@@ -67,8 +67,8 @@ public class TileEntityMachineCyclotron extends TileEntityMachineBase implements
 	public TileEntityMachineCyclotron() {
 		super(16);
 
-		this.coolant = new FluidTank(Fluids.COOLANT, 32000, 0);
-		this.amat = new FluidTank(Fluids.AMAT, 8000, 1);
+		this.coolant = new FluidTank(Fluids.COOLANT, 32000);
+		this.amat = new FluidTank(Fluids.AMAT, 8000);
 	}
 
 	@Override

@@ -60,7 +60,7 @@ public abstract class EntityDroneBase extends Entity {
 
 	@Override
 	protected void entityInit() {
-		this.dataWatcher.addObject(10, new Byte((byte) 0));
+		this.dataWatcher.addObject(10, (byte) 0);
 	}
 	
 	/**
@@ -81,9 +81,9 @@ public abstract class EntityDroneBase extends Entity {
 		
 		if(this.worldObj.isRemote) {
 			if(this.turnProgress > 0) {
-				double interpX = this.posX + (this.syncPosX - this.posX) / (double) this.turnProgress;
-				double interpY = this.posY + (this.syncPosY - this.posY) / (double) this.turnProgress;
-				double interpZ = this.posZ + (this.syncPosZ - this.posZ) / (double) this.turnProgress;
+				double interpX = this.posX + (this.syncPosX - this.posX) / this.turnProgress;
+				double interpY = this.posY + (this.syncPosY - this.posY) / this.turnProgress;
+				double interpZ = this.posZ + (this.syncPosZ - this.posZ) / this.turnProgress;
 				--this.turnProgress;
 				setPosition(interpX, interpY, interpZ);
 			} else {

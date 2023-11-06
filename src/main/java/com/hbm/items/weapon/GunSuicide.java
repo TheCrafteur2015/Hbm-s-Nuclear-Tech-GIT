@@ -138,7 +138,7 @@ public class GunSuicide extends Item {
         return 1;
     }
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
@@ -149,7 +149,7 @@ public class GunSuicide extends Item {
 		list.add("Damage: Infinite");
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public Multimap getItemAttributeModifiers() {
 		Multimap multimap = super.getItemAttributeModifiers();

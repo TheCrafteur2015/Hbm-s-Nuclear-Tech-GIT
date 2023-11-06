@@ -51,8 +51,8 @@ public class TileEntitySteamEngine extends TileEntityLoadedBase implements IFlui
 	public TileEntitySteamEngine() {
 		
 		this.tanks = new FluidTank[2];
-		this.tanks[0] = new FluidTank(Fluids.STEAM, TileEntitySteamEngine.steamCap, 0);
-		this.tanks[1] = new FluidTank(Fluids.SPENTSTEAM, TileEntitySteamEngine.ldsCap, 1);
+		this.tanks[0] = new FluidTank(Fluids.STEAM, TileEntitySteamEngine.steamCap);
+		this.tanks[1] = new FluidTank(Fluids.SPENTSTEAM, TileEntitySteamEngine.ldsCap);
 	}
 
 	@Override
@@ -130,7 +130,7 @@ public class TileEntitySteamEngine extends TileEntityLoadedBase implements IFlui
 			
 			if(this.turnProgress > 0) {
 				double d = MathHelper.wrapAngleTo180_double(this.syncRotor - (double) this.rotor);
-				this.rotor = (float) ((double) this.rotor + d / (double) this.turnProgress);
+				this.rotor = (float) (this.rotor + d / this.turnProgress);
 				--this.turnProgress;
 			} else {
 				this.rotor = this.syncRotor;

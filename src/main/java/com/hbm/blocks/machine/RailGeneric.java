@@ -75,7 +75,7 @@ public class RailGeneric extends BlockRailBase implements ITooltipProvider {
 		return this;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		float speed = this.maxSpeed / RailGeneric.baseSpeed;

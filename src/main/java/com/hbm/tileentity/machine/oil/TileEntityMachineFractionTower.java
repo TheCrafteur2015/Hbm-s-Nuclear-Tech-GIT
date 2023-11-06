@@ -32,9 +32,9 @@ public class TileEntityMachineFractionTower extends TileEntityLoadedBase impleme
 	
 	public TileEntityMachineFractionTower() {
 		this.tanks = new FluidTank[3];
-		this.tanks[0] = new FluidTank(Fluids.HEAVYOIL, 4000, 0);
-		this.tanks[1] = new FluidTank(Fluids.BITUMEN, 4000, 1);
-		this.tanks[2] = new FluidTank(Fluids.SMEAR, 4000, 2);
+		this.tanks[0] = new FluidTank(Fluids.HEAVYOIL, 4000);
+		this.tanks[1] = new FluidTank(Fluids.BITUMEN, 40001);
+		this.tanks[2] = new FluidTank(Fluids.SMEAR, 4000);
 	}
 	
 	@Override

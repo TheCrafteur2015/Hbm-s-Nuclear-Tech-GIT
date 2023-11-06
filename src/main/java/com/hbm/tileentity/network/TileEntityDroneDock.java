@@ -89,7 +89,7 @@ public class TileEntityDroneDock extends TileEntityRequestNetworkContainer imple
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	public boolean tryEmbark(PathNode dock, RequestNode request, OfferNode offer, AStack item, HashedSet<PathNode> localNodes) {
 
 		List<PathNode> dockToOffer = generatePath(dock, offer, localNodes);

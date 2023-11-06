@@ -49,7 +49,7 @@ public class TileEntityMachineCMBFactory extends TileEntityLoadedBase implements
 	
 	public TileEntityMachineCMBFactory() {
 		this.slots = new ItemStack[6];
-		this.tank = new FluidTank(Fluids.WATZ, 8000, 0);
+		this.tank = new FluidTank(Fluids.WATZ, 8000);
 	}
 
 	@Override
@@ -348,17 +348,17 @@ public class TileEntityMachineCMBFactory extends TileEntityLoadedBase implements
 
 	@Override
 	public int getMaxFluidFill(FluidType type) {
-		return type.name().equals(this.tank.getTankType().name()) ? this.tank.getMaxFill() : 0;
+		return type.getName().equals(this.tank.getTankType().getName()) ? this.tank.getMaxFill() : 0;
 	}
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		return type.name().equals(this.tank.getTankType().name()) ? this.tank.getFill() : 0;
+		return type.getName().equals(this.tank.getTankType().getName()) ? this.tank.getFill() : 0;
 	}
 
 	@Override
 	public void setFluidFill(int i, FluidType type) {
-		if(type.name().equals(this.tank.getTankType().name()))
+		if(type.getName().equals(this.tank.getTankType().getName()))
 			this.tank.setFill(i);
 	}
 

@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 
 public class ItemOilDetector extends Item {
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool)
 	{

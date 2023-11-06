@@ -24,7 +24,7 @@ public class ItemCassette extends Item {
 		
 		NULL(				" ", 						null,												SoundType.SOUND,	0,			0),
 		HATCH(				"Hatch Siren", 				new ResourceLocation("hbm:alarm.hatch"),			SoundType.LOOP,		3358839,	250),
-		ATUOPILOT(			"Autopilot Disconnected", 	new ResourceLocation("hbm:alarm.autopilot"),		SoundType.LOOP,		11908533,	50),
+		AUTOPILOT(			"Autopilot Disconnected", 	new ResourceLocation("hbm:alarm.autopilot"),		SoundType.LOOP,		11908533,	50),
 		AMS_SIREN(			"AMS Siren", 				new ResourceLocation("hbm:alarm.amsSiren"),			SoundType.LOOP,		15055698,	50),
 		BLAST_DOOR(			"Blast Door Alarm", 		new ResourceLocation("hbm:alarm.blastDoorAlarm"),	SoundType.LOOP,		11665408,	50),
 		APC_LOOP(			"APC Siren", 				new ResourceLocation("hbm:alarm.apcLoop"),			SoundType.LOOP,		3565216,	50),
@@ -42,7 +42,8 @@ public class ItemCassette extends Item {
 		NOSTROMO_SIREN(		"Nostromo Self Destruct",	new ResourceLocation("hbm:alarm.nostromoSiren"),	SoundType.LOOP,		0x5dd800,	100),
 		EAS_ALARM(			"EAS Alarm Screech",		new ResourceLocation("hbm:alarm.easAlarm"),			SoundType.LOOP,		0xb3a8c1,	50),
 		APC_PASS(			"APC Pass", 				new ResourceLocation("hbm:alarm.apcPass"),			SoundType.PASS,		3422163,	50),
-		RAZORTRAIN(			"Razortrain Horn", 			new ResourceLocation("hbm:alarm.razortrainHorn"),	SoundType.SOUND,	7819501,	250);
+		RAZORTRAIN(			"Razortrain Horn", 			new ResourceLocation("hbm:alarm.razortrainHorn"),	SoundType.SOUND,	7819501,	250),
+		CONTAINMENT_BREACH(	"Containment Breach",		new ResourceLocation("hbm:alarm.containmentBreach"),SoundType.LOOP,		7638917,	150);
 		
 		//Name of the track shown in GUI
 		private String title;
@@ -103,7 +104,7 @@ public class ItemCassette extends Item {
         setMaxDamage(0);
     }
 
-    @Override
+	@Override
 	@SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs tabs, List list)
     {

@@ -66,7 +66,6 @@ public class BlockSellafield extends BlockHazard {
 		return meta;
 	}
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tabs, List list) {

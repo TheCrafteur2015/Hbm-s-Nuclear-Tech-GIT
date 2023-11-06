@@ -44,7 +44,7 @@ public class RenderInfoSystem {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@SubscribeEvent
 	public void onOverlayRender(RenderGameOverlayEvent.Pre event) {
 		

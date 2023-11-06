@@ -136,7 +136,7 @@ public class TileEntityHadron extends TileEntityMachineBase implements IEnergyUs
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	private void process(Particle p) {
 		
 		ItemStack[] result = HadronRecipes.getOutput(p.item1, p.item2, p.momentum, this.analysisOnly);

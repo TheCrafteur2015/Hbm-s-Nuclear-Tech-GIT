@@ -128,7 +128,6 @@ public class MatDistribution extends SerializableRecipe {
 		return "hbmCrucibleSmelting.json";
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public Object getRecipeObject() {
 		List entries = new ArrayList<>();

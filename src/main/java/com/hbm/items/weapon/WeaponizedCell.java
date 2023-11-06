@@ -57,7 +57,7 @@ public class WeaponizedCell extends Item {
 		return false;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 

@@ -117,7 +117,7 @@ public class FractionRecipes extends SerializableRecipe {
 		FractionRecipes.fractions.put(input, new Pair<>(output1, output2));
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void writeRecipe(Object recipe, JsonWriter writer) throws IOException {
 		Entry<FluidType, Pair<FluidStack, FluidStack>> rec = (Entry<FluidType, Pair<FluidStack, FluidStack>>) recipe;

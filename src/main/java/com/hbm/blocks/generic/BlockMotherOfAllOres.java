@@ -61,7 +61,7 @@ public class BlockMotherOfAllOres extends BlockContainer implements IBlockMultiP
 		return new TileEntityRandomOre();
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {

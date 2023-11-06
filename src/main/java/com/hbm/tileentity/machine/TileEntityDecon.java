@@ -14,7 +14,7 @@ import net.minecraft.util.AxisAlignedBB;
 
 public class TileEntityDecon extends TileEntity {
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void updateEntity() {
 

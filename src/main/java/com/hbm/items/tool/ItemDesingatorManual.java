@@ -28,7 +28,7 @@ public class ItemDesingatorManual extends Item implements IDesignatorItem, IGUIP
 		return stack;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		if(stack.stackTagCompound != null) {

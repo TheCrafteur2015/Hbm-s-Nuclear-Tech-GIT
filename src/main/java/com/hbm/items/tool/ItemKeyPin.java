@@ -11,7 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class ItemKeyPin extends Item {
 
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool)
 	{
