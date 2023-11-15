@@ -22,6 +22,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+@SuppressWarnings("deprecation")
 public class BlockHadronAccess extends BlockContainer implements IProxyController {
 
 	public BlockHadronAccess(Material mat) {

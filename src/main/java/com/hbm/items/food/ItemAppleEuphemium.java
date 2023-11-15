@@ -14,32 +14,28 @@ public class ItemAppleEuphemium extends ItemFood {
 
 	public ItemAppleEuphemium(int p_i45339_1_, float p_i45339_2_, boolean p_i45339_3_) {
 		super(p_i45339_1_, p_i45339_2_, p_i45339_3_);
-        setAlwaysEdible();
-        setCreativeTab(null);
+		this.setAlwaysEdible();
+		this.setCreativeTab(null);
 	}
 
-    @Override
+	@Override
 	@SideOnly(Side.CLIENT)
-    public boolean hasEffect(ItemStack p_77636_1_)
-    {
-        return true;
-    }
+	public boolean hasEffect(ItemStack p_77636_1_) {
+		return true;
+	}
 
-    @Override
-	protected void onFoodEaten(ItemStack p_77849_1_, World p_77849_2_, EntityPlayer p_77849_3_)
-    {
-        if (!p_77849_2_.isRemote)
-        {
-            p_77849_3_.addPotionEffect(new PotionEffect(Potion.resistance.id, 2147483647, 120));
-            p_77849_3_.addPotionEffect(new PotionEffect(Potion.fireResistance.id, 2147483647, 0));
-            p_77849_3_.addPotionEffect(new PotionEffect(Potion.field_76443_y.id, 2147483647, 120));
-        }
-    }
-    
-    @Override
-	public EnumRarity getRarity(ItemStack p_77613_1_)
-    {
+	@Override
+	protected void onFoodEaten(ItemStack p_77849_1_, World p_77849_2_, EntityPlayer p_77849_3_) {
+		if (p_77849_2_.isRemote)
+			return;
+		p_77849_3_.addPotionEffect(new PotionEffect(Potion.resistance.id, 2147483647, 120));
+		p_77849_3_.addPotionEffect(new PotionEffect(Potion.fireResistance.id, 2147483647, 0));
+		p_77849_3_.addPotionEffect(new PotionEffect(Potion.field_76443_y.id, 2147483647, 120));
+	}
+	
+	@Override
+	public EnumRarity getRarity(ItemStack p_77613_1_) {
 		return EnumRarity.epic;
-    }
-
+	}
+	
 }

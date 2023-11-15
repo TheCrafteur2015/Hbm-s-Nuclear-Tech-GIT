@@ -229,8 +229,9 @@ public abstract class SerializableRecipe {
 				String dict = array.get(1).getAsString();
 				return new OreDictStack(dict, stacksize);
 			}
-		} catch(Exception ex) { }
-		MainRegistry.logger.error("Error reading stack array " + array.toString());
+		} catch(Exception ex) {
+			MainRegistry.logger.error("Error reading stack array " + array.toString());
+		}
 		return new ComparableStack(ModItems.nothing);
 	}
 	
@@ -239,9 +240,10 @@ public abstract class SerializableRecipe {
 			AStack[] items = new AStack[array.size()];
 			for(int i = 0; i < items.length; i++) { items[i] = SerializableRecipe.readAStack((JsonArray) array.get(i)); }
 			return items;
-		} catch(Exception ex) { }
-		MainRegistry.logger.error("Error reading stack array " + array.toString());
-		return new AStack[0];
+		} catch(Exception ex) {
+			MainRegistry.logger.error("Error reading stack array " + array.toString());
+			return new AStack[0];
+		}
 	}
 	
 	public static void writeAStack(AStack astack, JsonWriter writer) throws IOException {

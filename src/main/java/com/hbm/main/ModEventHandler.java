@@ -1132,17 +1132,17 @@ public class ModEventHandler {
 	@SubscribeEvent
 	public void itemSmelted(PlayerEvent.ItemSmeltedEvent e) {
 		AchievementHandler.fire(e.player, e.smelting);
+		if (e.player.worldObj.isRemote)
+			return;
 		
-		if(!e.player.worldObj.isRemote && e.smelting.getItem() == Items.iron_ingot && e.player.getRNG().nextInt(64) == 0) {
-			
+		if(e.smelting.getItem() == Items.iron_ingot && e.player.getRNG().nextInt(64) == 0) {
 			if(!e.player.inventory.addItemStackToInventory(new ItemStack(ModItems.lodestone)))
 				e.player.dropPlayerItemWithRandomChoice(new ItemStack(ModItems.lodestone), false);
 			else
 				e.player.inventoryContainer.detectAndSendChanges();
 		}
 		
-		if(!e.player.worldObj.isRemote && e.smelting.getItem() == ModItems.ingot_uranium && e.player.getRNG().nextInt(64) == 0) {
-			
+		if(e.smelting.getItem() == ModItems.ingot_uranium && e.player.getRNG().nextInt(64) == 0) {
 			if(!e.player.inventory.addItemStackToInventory(new ItemStack(ModItems.quartz_plutonium)))
 				e.player.dropPlayerItemWithRandomChoice(new ItemStack(ModItems.quartz_plutonium), false);
 			else
@@ -1284,6 +1284,7 @@ public class ModEventHandler {
 		return "";
 	}
 	
+	@SuppressWarnings("deprecation")
 	@SubscribeEvent
 	public void chatEvent(ServerChatEvent event) {
 		

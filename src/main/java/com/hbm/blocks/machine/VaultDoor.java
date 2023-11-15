@@ -15,6 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
+@SuppressWarnings("deprecation")
 public class VaultDoor extends BlockContainer implements IBomb, IMultiblock {
 
 	public VaultDoor(Material p_i45386_1_) {
@@ -43,7 +44,6 @@ public class VaultDoor extends BlockContainer implements IBomb, IMultiblock {
 
 	@Override
 	public BombReturnCode explode(World world, int x, int y, int z) {
-
 		if(!world.isRemote) {
 			TileEntityVaultDoor te = (TileEntityVaultDoor) world.getTileEntity(x, y, z);
 
@@ -121,14 +121,12 @@ public class VaultDoor extends BlockContainer implements IBomb, IMultiblock {
 
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-		if(world.isRemote) {
+		if(world.isRemote)
 			return true;
-		} else if(player.getHeldItem() != null && (player.getHeldItem().getItem() instanceof ItemLock || player.getHeldItem().getItem() == ModItems.key_kit)) {
+		if(player.getHeldItem() != null && (player.getHeldItem().getItem() instanceof ItemLock || player.getHeldItem().getItem() == ModItems.key_kit))
 			return false;
-
-		}
+		
 		if(!player.isSneaking()) {
-
 			TileEntityVaultDoor entity = (TileEntityVaultDoor) world.getTileEntity(x, y, z);
 			if(entity != null) {
 				if(entity.isLocked()) {
@@ -138,17 +136,14 @@ public class VaultDoor extends BlockContainer implements IBomb, IMultiblock {
 					entity.tryToggle();
 				}
 			}
-
 			return true;
 		} else {
-
 			TileEntityVaultDoor entity = (TileEntityVaultDoor) world.getTileEntity(x, y, z);
 			if(entity != null) {
 				entity.type++;
 				if(entity.type >= TileEntityVaultDoor.maxTypes)
 					entity.type = 0;
 			}
-
 			return true;
 		}
 	}

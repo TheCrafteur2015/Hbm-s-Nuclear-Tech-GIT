@@ -136,6 +136,7 @@ import net.minecraftforge.client.event.sound.PlaySoundEvent17;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 
+@SuppressWarnings("deprecation")
 public class ModEventHandlerClient {
 	
 	public static final int flashDuration = 5_000;

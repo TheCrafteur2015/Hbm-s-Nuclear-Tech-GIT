@@ -17,6 +17,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
+@SuppressWarnings("deprecation")
 public class BlockAMSLimiter extends BlockContainer implements IMultiblock {
 
 	public BlockAMSLimiter(Material p_i45386_1_) {

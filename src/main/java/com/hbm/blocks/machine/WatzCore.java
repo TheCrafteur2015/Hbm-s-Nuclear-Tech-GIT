@@ -7,6 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+@SuppressWarnings("deprecation")
 public class WatzCore extends BlockContainer {
 
 	public WatzCore(Material p_i45386_1_) {

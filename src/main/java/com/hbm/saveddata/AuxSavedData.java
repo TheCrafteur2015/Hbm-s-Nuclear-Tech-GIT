@@ -15,18 +15,19 @@ public class AuxSavedData extends WorldSavedData {
 		super(p_i2141_1_);
 	}
 
-    public AuxSavedData()
-    {
+    public AuxSavedData() {
         super("hbmauxdata");
-        markDirty();
+        this.markDirty();
     }
     
     static class DataPair {
     	
-    	String key = "";
+    	String key;
     	int value;
     	
-    	public DataPair() { }
+    	public DataPair() {
+			this("", 0);
+		}
     	
     	public DataPair(String s, int i) {
     		this.key = s;
@@ -47,13 +48,11 @@ public class AuxSavedData extends WorldSavedData {
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
-		
 		int count = nbt.getInteger("dCount");
 		
 		for(int i = 0; i < count; i++) {
 			DataPair struct = new DataPair();
 			struct.readFromNBT(nbt, i);
-			
 			this.data.add(struct);
 		}
 	}

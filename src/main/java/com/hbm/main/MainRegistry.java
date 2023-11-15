@@ -20,6 +20,7 @@ import com.hbm.commands.CommandDebug;
 import com.hbm.commands.CommandDebugChunkLoad;
 import com.hbm.commands.CommandReloadRecipes;
 import com.hbm.commands.CommandSatellites;
+import com.hbm.commands.CommandSetSpeed;
 import com.hbm.config.BombConfig;
 import com.hbm.config.CustomMachineConfigJSON;
 import com.hbm.config.FalloutConfigJSON;
@@ -1059,6 +1060,7 @@ public class MainRegistry {
 		event.registerServerCommand(new CommandSatellites());
 		event.registerServerCommand(new CommandDebug());
 		event.registerServerCommand(new CommandClearChat());
+		event.registerServerCommand(new CommandSetSpeed());
 	}
 	
 	@EventHandler

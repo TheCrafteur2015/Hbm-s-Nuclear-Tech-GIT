@@ -143,6 +143,7 @@ public class BlockCustomMachine extends BlockContainer {
 		return ret;
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) { //using the deprecated one to make NEI happy
 		

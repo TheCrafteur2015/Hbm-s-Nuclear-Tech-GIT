@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+@SuppressWarnings("deprecation")
 public class RBMKRod extends RBMKBase {
 	
 	public boolean moderated = false;
@@ -17,16 +18,13 @@ public class RBMKRod extends RBMKBase {
 		super();
 		this.moderated = moderated;
 	}
-
+	
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		
 		if(meta >= BlockDummyable.offset)
 			return new TileEntityRBMKRod();
-		
 		if(hasExtra(meta))
 			return new TileEntityProxyInventory();
-		
 		return null;
 	}
 	

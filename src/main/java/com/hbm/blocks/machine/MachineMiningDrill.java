@@ -21,6 +21,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
+@SuppressWarnings("deprecation")
 public class MachineMiningDrill extends BlockContainer implements IMultiblock {
 
 	public MachineMiningDrill(Material p_i45386_1_) {

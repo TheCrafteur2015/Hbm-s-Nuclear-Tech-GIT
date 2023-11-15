@@ -23,6 +23,7 @@ public class FactoryHatch extends Block {
 		super(p_i45394_1_);
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {

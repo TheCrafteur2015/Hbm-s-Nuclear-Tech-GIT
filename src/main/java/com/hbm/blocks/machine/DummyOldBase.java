@@ -18,6 +18,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+@SuppressWarnings("deprecation")
 public abstract class DummyOldBase extends BlockContainer implements IDummy, IEnergyConnectorBlock, IFluidConnectorBlock {
 
 	public static boolean safeBreak = false;

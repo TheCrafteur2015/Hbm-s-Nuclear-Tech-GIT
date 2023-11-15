@@ -25,10 +25,8 @@ public class ItemBDCL extends Item {
 
 	@Override
 	public ItemStack onEaten(ItemStack stack, World world, EntityPlayer player) {
-
-		if(!player.capabilities.isCreativeMode) {
+		if(!player.capabilities.isCreativeMode)
 			--stack.stackSize;
-		}
 		return stack;
 	}
 }

@@ -110,6 +110,19 @@ public abstract class FoundryCastingBase extends BlockContainer implements ICruc
 			}
 		}
 		
+		//remove mold
+		if((player.getHeldItem() == null || 
+			(player.getHeldItem().getItem() != ModItems.mold && (player.getHeldItem().getItem() instanceof ItemTool && 
+			((ItemTool) player.getHeldItem().getItem()).getToolClasses(player.getHeldItem()).contains("shovel"))))
+			&& cast.slots[0] != null) {
+			player.inventory.addItemStackToInventory(cast.slots[0]);
+			cast.slots[0] = null;
+			world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, "hbm:item.upgradePlug", 1.0F, 1.0F);
+			cast.markDirty();
+			world.markBlockForUpdate(x, y, z);
+			return true;
+		}
+		
 		if(player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ItemTool && ((ItemTool) player.getHeldItem().getItem()).getToolClasses(player.getHeldItem()).contains("shovel")) {
 			if(cast.amount > 0) {
 				ItemStack scrap = ItemScraps.create(new MaterialStack(cast.type, cast.amount));

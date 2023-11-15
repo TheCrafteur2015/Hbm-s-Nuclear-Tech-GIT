@@ -26,6 +26,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
+@SuppressWarnings("deprecation")
 public class MachineUF6Tank extends BlockContainer implements IMultiblock {
 	
     private final Random field_149933_a = new Random();
@@ -71,27 +72,17 @@ public class MachineUF6Tank extends BlockContainer implements IMultiblock {
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack itemStack) {
 		int i = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 		
-		if(i == 0)
-		{
-			world.setBlockMetadataWithNotify(x, y, z, 2, 2);
+		switch (i) {
+			case 0 -> i = 2;
+			case 1 -> i = 5;
+			case 2 -> i = 3;
+			case 3 -> i = 4;
 		}
-		if(i == 1)
-		{
-			world.setBlockMetadataWithNotify(x, y, z, 5, 2);
-		}
-		if(i == 2)
-		{
-			world.setBlockMetadataWithNotify(x, y, z, 3, 2);
-		}
-		if(i == 3)
-		{
-			world.setBlockMetadataWithNotify(x, y, z, 4, 2);
-		}
+		world.setBlockMetadataWithNotify(x, y, z, i, 2);
 		
-		if(MultiblockHandler.checkSpace(world, x, y, z, MultiblockHandler.uf6Dimension)) {
+		if(MultiblockHandler.checkSpace(world, x, y, z, MultiblockHandler.uf6Dimension))
 			MultiblockHandler.fillUp(world, x, y, z, MultiblockHandler.uf6Dimension, ModBlocks.dummy_block_uf6);
-			
-		} else
+		else
 			world.func_147480_a(x, y, z, true);
 	}
 	
@@ -150,18 +141,13 @@ public class MachineUF6Tank extends BlockContainer implements IMultiblock {
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
 		if(world.isRemote)
-		{
 			return true;
-		} else if(!player.isSneaking())
-		{
+		if(!player.isSneaking()) {
 			TileEntityMachineUF6Tank entity = (TileEntityMachineUF6Tank) world.getTileEntity(x, y, z);
 			if(entity != null)
-			{
 				FMLNetworkHandler.openGui(player, MainRegistry.instance, 0, world, x, y, z);
-			}
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 }

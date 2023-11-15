@@ -113,9 +113,8 @@ public class ItemPill extends ItemFood {
 		if(!unloc.equals(loc)) {
 			String[] locs = loc.split("\\$");
 			
-			for(String s : locs) {
+			for(String s : locs)
 				list.add(s);
-			}
 		}
 	}
 
@@ -126,10 +125,8 @@ public class ItemPill extends ItemFood {
 
 	@Override
 	public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {
-
 		if(!VersatileConfig.hasPotionSickness(p_77659_3_))
 			p_77659_3_.setItemInUse(p_77659_1_, getMaxItemUseDuration(p_77659_1_));
-
 		return p_77659_1_;
 	}
 

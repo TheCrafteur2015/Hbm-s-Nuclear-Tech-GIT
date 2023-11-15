@@ -19,6 +19,7 @@ import net.minecraft.world.World;
 
 //"extends BlockContainer" um ein TileEntity zu erschaffen
 
+@SuppressWarnings("deprecation")
 public class TestBombAdvanced extends BlockContainer {
 	
 	//Lil' Boyy :3

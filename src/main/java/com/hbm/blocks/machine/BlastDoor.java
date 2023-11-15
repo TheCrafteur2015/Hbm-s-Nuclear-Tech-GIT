@@ -15,6 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
+@SuppressWarnings("deprecation")
 public class BlastDoor extends BlockContainer implements IBomb, IMultiblock {
 
 	public BlastDoor(Material p_i45386_1_) {

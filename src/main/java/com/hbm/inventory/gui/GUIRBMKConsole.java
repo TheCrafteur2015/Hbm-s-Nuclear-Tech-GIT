@@ -116,6 +116,7 @@ public class GUIRBMKConsole extends GuiScreen {
 			func_146283_a(Arrays.asList(text), tPosX, tPosY);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int i) {
 		super.mouseClicked(mouseX, mouseY, i);
@@ -206,7 +207,7 @@ public class GUIRBMKConsole extends GuiScreen {
 			
 			double level;
 			
-			if(NumberUtils.isCreatable(this.field.getText())) {
+			if(NumberUtils.isNumber(this.field.getText())) {
 				int j = (int)MathHelper.clamp_double(Double.parseDouble(this.field.getText()), 0, 100);
 				this.field.setText(j + "");
 				level = j * 0.01D;

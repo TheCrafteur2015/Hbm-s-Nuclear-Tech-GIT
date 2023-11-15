@@ -183,7 +183,6 @@ public class BossSpawnHandler {
 	}
 
 	public static void markFBI(EntityPlayer player) {
-		
 		if(!player.worldObj.isRemote)
 			player.getEntityData().getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).setLong("fbiMark", player.worldObj.getTotalWorldTime() + 20 * 60 * 20);
 	}

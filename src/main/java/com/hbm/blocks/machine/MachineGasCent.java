@@ -14,6 +14,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+@SuppressWarnings("deprecation")
 public class MachineGasCent extends BlockDummyable implements IMultiblock {
 
 	public MachineGasCent(Material mat) {

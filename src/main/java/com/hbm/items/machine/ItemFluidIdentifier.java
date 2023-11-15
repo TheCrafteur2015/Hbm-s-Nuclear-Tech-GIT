@@ -4,26 +4,21 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import com.hbm.blocks.machine.MachineBigAssTank9000;
-import com.hbm.commands.CommandDebug;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.items.ModItems;
-import com.hbm.tileentity.TileEntityProxyCombo;
 import com.hbm.tileentity.conductor.TileEntityFluidDuctSimple;
 import com.hbm.tileentity.machine.storage.TileEntityBarrel;
 import com.hbm.util.I18nUtil;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -99,55 +94,35 @@ public class ItemFluidIdentifier extends Item implements IItemFluidIdentifier {
 
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int i, float f1, float f2, float f3) {
-		Block block = world.getBlock(x, y, z);
+		if(world.isRemote)
+			return false;
+//		Block block = world.getBlock(x, y, z);
 		TileEntity te = world.getTileEntity(x, y, z);
 		FluidType type = Fluids.fromID(stack.getItemDamage());
 		if(te instanceof TileEntityFluidDuctSimple) {
-
 			TileEntityFluidDuctSimple duct = (TileEntityFluidDuctSimple) te;
-			
-			if(!world.isRemote) {
-				if (player.isSneaking()) {
-					markDuctsRecursively(world, x, y, z, type);
-				} else {
-					duct.setType(type);
-				}
-			}
-			
-			world.markBlockForUpdate(x, y, z);
-
+			if (player.isSneaking())
+				markDuctsRecursively(world, x, y, z, type);
+			else
+				duct.setType(type);
 			player.swingItem();
 		}
 		if (te instanceof TileEntityBarrel) {
 			TileEntityBarrel barrel = (TileEntityBarrel) te;
-			if (!world.isRemote && player.isSneaking()) {
+			if (player.isSneaking()) {
 				barrel.setTypeForSync(type, 0);
+				barrel.markDirty();
 			}
 		}
-		if (block instanceof MachineBigAssTank9000 && te instanceof TileEntityProxyCombo) {
-			if (CommandDebug.isEnabled())
-				player.addChatMessage(new ChatComponentText("Debug=>Tank!"));
-			TileEntityProxyCombo combo = (TileEntityProxyCombo) te;
-			combo.setTypeForSync(type, 0);
-			world.markBlockForUpdate(x, y, z);
-		}
+//		if (block instanceof MachineBigAssTank9000 && te instanceof TileEntityProxyCombo) {
+//			if (CommandDebug.isEnabled())
+//				player.addChatMessage(new ChatComponentText("Debug=>Tank!"));
+//			TileEntityProxyCombo combo = (TileEntityProxyCombo) te;
+//			combo.setTypeForSync(type, 0);
+//			
+//		}
+		world.markBlockForUpdate(x, y, z);
 		return false;
-	}
-	
-	@SuppressWarnings("unused")
-	private TileEntity getClosestTileEntity(World world, int x, int y, int z, int[] dims) {
-		for(int a = x - dims[1]; a <= x + dims[0]; a++) {
-			for(int b = y - dims[3]; b <= y + dims[2]; b++) {
-				for(int c = z - dims[5]; c <= z + dims[4]; c++) {
-					if(!(a == x && b == y && c == z)) {
-						TileEntity tile = world.getTileEntity(a, b, c);
-						if (tile != null)
-							return tile;
-					}
-				}
-			}
-		}
-		return null;
 	}
 
 	private void markDuctsRecursively(World world, int x, int y, int z, FluidType type) {

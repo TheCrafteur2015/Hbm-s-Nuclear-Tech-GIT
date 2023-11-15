@@ -23,6 +23,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+@SuppressWarnings("deprecation")
 public class MachineSatDock extends BlockContainer implements IMultiblock {
 
     private final Random field_149933_a = new Random();

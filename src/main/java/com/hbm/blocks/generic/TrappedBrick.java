@@ -47,8 +47,7 @@ public class TrappedBrick extends BlockContainer {
             list.add(new ItemStack(item, 1, i));
         }
     }
-
-    @SuppressWarnings({ "incomplete-switch", "unchecked" })
+	
 	@Override
 	public void onEntityWalking(World world, int x, int y, int z, Entity entity) {
     	
@@ -117,6 +116,8 @@ public class TrappedBrick extends BlockContainer {
 			break;
 		case WEAKNESS:
 			player.addPotionEffect(new PotionEffect(Potion.weakness.id, 300, 2));
+			break;
+		default:
 			break;
 		}
 

@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+@SuppressWarnings("deprecation")
 public class BlockAMSEmitter extends BlockContainer implements IMultiblock {
 
 	public BlockAMSEmitter(Material p_i45386_1_) {

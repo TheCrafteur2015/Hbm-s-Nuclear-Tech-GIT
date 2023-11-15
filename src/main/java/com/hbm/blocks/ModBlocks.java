@@ -220,8 +220,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 public class ModBlocks {
 	
-	public static void mainRegistry()
-	{
+	public static void mainRegistry() {
 		ModBlocks.initializeBlock();
 		ModBlocks.registerBlock();
 	}

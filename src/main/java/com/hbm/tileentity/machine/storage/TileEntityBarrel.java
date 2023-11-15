@@ -58,8 +58,7 @@ public class TileEntityBarrel extends TileEntityMachineBase implements IFluidAcc
 	public byte lastRedstone = 0;
 
 	public TileEntityBarrel() {
-		super(6);
-		this.tank = new FluidTank(Fluids.NONE, 0);
+		this(0);
 	}
 
 	public TileEntityBarrel(int capacity) {
