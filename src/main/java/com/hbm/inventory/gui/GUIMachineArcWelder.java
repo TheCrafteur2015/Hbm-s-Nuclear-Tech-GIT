@@ -28,8 +28,8 @@ public class GUIMachineArcWelder extends GuiInfoContainer {
 	public void drawScreen(int x, int y, float interp) {
 		super.drawScreen(x, y, interp);
 
-		this.welder.tank.renderTankInfo(this, x, y, this.guiLeft + 35, this.guiTop + 63, 34, 16);
-		drawElectricityInfo(this, x, y, this.guiLeft + 152, this.guiTop + 18, 16, 52, this.welder.power, this.welder.maxPower);
+		welder.tank.renderTankInfo(this, x, y, guiLeft + 35, guiTop + 63, 34, 16);
+		this.drawElectricityInfo(this, x, y, guiLeft + 152, guiTop + 18, 16, 52, welder.getPower(), welder.getMaxPower());
 	}
 	
 	@Override

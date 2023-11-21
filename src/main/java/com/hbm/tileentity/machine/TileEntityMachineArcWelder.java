@@ -55,14 +55,13 @@ public class TileEntityMachineArcWelder extends TileEntityMachineBase implements
 		return "container.machineArcWelder";
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void updateEntity() {
 		
 		if(!this.worldObj.isRemote) {
-			
-			this.power = Library.chargeTEFromItems(this.slots, 4, this.power, this.maxPower);
-			this.tank.setType(5, this.slots);
-			
+			this.power = Library.chargeTEFromItems(slots, 4, this.getPower(), this.getMaxPower());
+			this.tank.setType(5, slots);
 			if(this.worldObj.getTotalWorldTime() % 20 == 0) {
 				for(DirPos pos : getConPos()) {
 					this.trySubscribe(this.worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
@@ -227,7 +226,7 @@ public class TileEntityMachineArcWelder extends TileEntityMachineBase implements
 
 	@Override
 	public long getPower() {
-		return this.power;
+		return Math.max(Math.min(power, maxPower), 0);
 	}
 
 	@Override

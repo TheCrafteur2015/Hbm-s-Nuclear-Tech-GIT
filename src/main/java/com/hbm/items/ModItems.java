@@ -1121,6 +1121,7 @@ public class ModItems {
 	public static Item plate_cast;
 	public static Item plate_welded;
 	public static Item heavy_component;
+	public static Item wire_dense;
 
 	public static Item part_lithium;
 	public static Item part_beryllium;
@@ -3936,43 +3937,51 @@ public class ModItems {
 		ModItems.catalyst_clay = new Item().setUnlocalizedName("catalyst_clay").setCreativeTab(MainRegistry.partsTab)
 				.setTextureName(RefStrings.MODID + ":catalyst_clay");
 
-		ModItems.warhead_generic_small = new Item().setUnlocalizedName("warhead_generic_small")
-				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_generic_small");
-		ModItems.warhead_generic_medium = new Item().setUnlocalizedName("warhead_generic_medium")
-				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_generic_medium");
-		ModItems.warhead_generic_large = new Item().setUnlocalizedName("warhead_generic_large")
-				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_generic_large");
-		ModItems.warhead_incendiary_small = new Item().setUnlocalizedName("warhead_incendiary_small")
-				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_incendiary_small");
-		ModItems.warhead_incendiary_medium = new Item().setUnlocalizedName("warhead_incendiary_medium")
-				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_incendiary_medium");
-		ModItems.warhead_incendiary_large = new Item().setUnlocalizedName("warhead_incendiary_large")
-				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_incendiary_large");
-		ModItems.warhead_cluster_small = new Item().setUnlocalizedName("warhead_cluster_small")
-				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_cluster_small");
-		ModItems.warhead_cluster_medium = new Item().setUnlocalizedName("warhead_cluster_medium")
-				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_cluster_medium");
-		ModItems.warhead_cluster_large = new Item().setUnlocalizedName("warhead_cluster_large")
-				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_cluster_large");
-		ModItems.warhead_buster_small = new Item().setUnlocalizedName("warhead_buster_small")
-				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_buster_small");
-		ModItems.warhead_buster_medium = new Item().setUnlocalizedName("warhead_buster_medium")
-				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_buster_medium");
-		ModItems.warhead_buster_large = new Item().setUnlocalizedName("warhead_buster_large")
-				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_buster_large");
-		ModItems.warhead_nuclear = new Item().setUnlocalizedName("warhead_nuclear")
-				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_nuclear");
-		ModItems.warhead_mirvlet = new Item().setUnlocalizedName("warhead_mirvlet").setCreativeTab(null)
-				.setTextureName(RefStrings.MODID + ":warhead_mirvlet");
-		ModItems.warhead_mirv = new Item().setUnlocalizedName("warhead_mirv").setCreativeTab(MainRegistry.partsTab)
-				.setTextureName(RefStrings.MODID + ":warhead_mirv");
-		ModItems.warhead_volcano = new Item().setUnlocalizedName("warhead_volcano")
-				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_volcano");
-		ModItems.warhead_thermo_endo = new Item().setUnlocalizedName("warhead_thermo_endo")
-				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_thermo_endo");
-		ModItems.warhead_thermo_exo = new Item().setUnlocalizedName("warhead_thermo_exo")
-				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_thermo_exo");
-
+//		ModItems.warhead_generic_small = new Item().setUnlocalizedName("warhead_generic_small")
+//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_generic_small");
+//		ModItems.warhead_generic_medium = new Item().setUnlocalizedName("warhead_generic_medium")
+//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_generic_medium");
+//		ModItems.warhead_generic_large = new Item().setUnlocalizedName("warhead_generic_large")
+//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_generic_large");
+//		ModItems.warhead_incendiary_small = new Item().setUnlocalizedName("warhead_incendiary_small")
+//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_incendiary_small");
+//		ModItems.warhead_incendiary_medium = new Item().setUnlocalizedName("warhead_incendiary_medium")
+//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_incendiary_medium");
+//		ModItems.warhead_incendiary_large = new Item().setUnlocalizedName("warhead_incendiary_large")
+//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_incendiary_large");
+//		ModItems.warhead_cluster_small = new Item().setUnlocalizedName("warhead_cluster_small")
+//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_cluster_small");
+//		ModItems.warhead_cluster_medium = new Item().setUnlocalizedName("warhead_cluster_medium")
+//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_cluster_medium");
+//		ModItems.warhead_cluster_large = new Item().setUnlocalizedName("warhead_cluster_large")
+//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_cluster_large");
+//		ModItems.warhead_buster_small = new Item().setUnlocalizedName("warhead_buster_small")
+//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_buster_small");
+//		ModItems.warhead_buster_medium = new Item().setUnlocalizedName("warhead_buster_medium")
+//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_buster_medium");
+//		ModItems.warhead_buster_large = new Item().setUnlocalizedName("warhead_buster_large")
+//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_buster_large");
+//		ModItems.warhead_nuclear = new Item().setUnlocalizedName("warhead_nuclear")
+//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_nuclear");
+//		ModItems.warhead_mirvlet = new Item().setUnlocalizedName("warhead_mirvlet").setCreativeTab(null)
+//				.setTextureName(RefStrings.MODID + ":warhead_mirvlet");
+//		ModItems.warhead_mirv = new Item().setUnlocalizedName("warhead_mirv").setCreativeTab(MainRegistry.partsTab)
+//				.setTextureName(RefStrings.MODID + ":warhead_mirv");
+//		ModItems.warhead_volcano = new Item().setUnlocalizedName("warhead_volcano")
+//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_volcano");
+//		ModItems.warhead_thermo_endo = new Item().setUnlocalizedName("warhead_thermo_endo")
+//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_thermo_endo");
+//		ModItems.warhead_thermo_exo = new Item().setUnlocalizedName("warhead_thermo_exo")
+//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_thermo_exo");
+		
+		ModItems.mold_base = new Item().setUnlocalizedName("mold_base").setCreativeTab(MainRegistry.controlTab).setTextureName(RefStrings.MODID + ":mold_base");
+		ModItems.mold = new ItemMold().setUnlocalizedName("mold").setCreativeTab(MainRegistry.controlTab);
+		ModItems.scraps = new ItemScraps().aot(Mats.MAT_BISMUTH, "scraps_bismuth").setUnlocalizedName("scraps").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":scraps");
+		ModItems.plate_cast = new ItemAutogen(MaterialShapes.CASTPLATE).aot(Mats.MAT_BISMUTH, "plate_cast_bismuth").setUnlocalizedName("plate_cast").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":plate_cast");
+		ModItems.plate_welded = new ItemAutogen(MaterialShapes.WELDEDPLATE).setUnlocalizedName("plate_welded").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":plate_welded");
+		ModItems.heavy_component = new ItemAutogen(MaterialShapes.HEAVY_COMPONENT).setUnlocalizedName("heavy_component").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":heavy_component");
+		ModItems.wire_dense = new ItemAutogen(MaterialShapes.DENSEWIRE).setUnlocalizedName("wire_dense").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":wire_dense");
+		
 		ModItems.fuel_tank_small = new Item().setUnlocalizedName("fuel_tank_small")
 				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":fuel_tank_small");
 		ModItems.fuel_tank_medium = new Item().setUnlocalizedName("fuel_tank_medium")
@@ -8263,7 +8272,8 @@ public class ModItems {
 		BucketHandler.INSTANCE.buckets.put(ModBlocks.sulfuric_acid_block, ModItems.bucket_sulfuric_acid);
 		MinecraftForge.EVENT_BUS.register(BucketHandler.INSTANCE);
 	}
-
+	
+	// FIXME Delete duplicate entries
 	private static void registerItem() {
 		// Weapons
 		GameRegistry.registerItem(ModItems.redstone_sword, ModItems.redstone_sword.getUnlocalizedName());
@@ -8389,7 +8399,7 @@ public class ModItems {
 		GameRegistry.registerItem(ModItems.ingot_meteorite_forged,
 				ModItems.ingot_meteorite_forged.getUnlocalizedName());
 		GameRegistry.registerItem(ModItems.blade_meteorite, ModItems.blade_meteorite.getUnlocalizedName());
-
+		
 		// Misc Ingots
 		GameRegistry.registerItem(ModItems.ingot_phosphorus, ModItems.ingot_phosphorus.getUnlocalizedName());
 		GameRegistry.registerItem(ModItems.lithium, ModItems.lithium.getUnlocalizedName());
@@ -8408,6 +8418,289 @@ public class ModItems {
 		GameRegistry.registerItem(ModItems.rocket_fuel, ModItems.rocket_fuel.getUnlocalizedName());
 		GameRegistry.registerItem(ModItems.ingot_fiberglass, ModItems.ingot_fiberglass.getUnlocalizedName());
 		GameRegistry.registerItem(ModItems.ingot_asbestos, ModItems.ingot_asbestos.getUnlocalizedName());
+		
+		//Plates
+		GameRegistry.registerItem(plate_iron, plate_iron.getUnlocalizedName());
+		GameRegistry.registerItem(plate_gold, plate_gold.getUnlocalizedName());
+		GameRegistry.registerItem(plate_titanium, plate_titanium.getUnlocalizedName());
+		GameRegistry.registerItem(plate_aluminium, plate_aluminium.getUnlocalizedName());
+		GameRegistry.registerItem(plate_steel, plate_steel.getUnlocalizedName());
+		GameRegistry.registerItem(plate_lead, plate_lead.getUnlocalizedName());
+		GameRegistry.registerItem(plate_copper, plate_copper.getUnlocalizedName());
+		GameRegistry.registerItem(plate_advanced_alloy, plate_advanced_alloy.getUnlocalizedName());
+		GameRegistry.registerItem(neutron_reflector, neutron_reflector.getUnlocalizedName());
+		GameRegistry.registerItem(plate_schrabidium, plate_schrabidium.getUnlocalizedName());
+		GameRegistry.registerItem(plate_combine_steel, plate_combine_steel.getUnlocalizedName());
+		GameRegistry.registerItem(plate_mixed, plate_mixed.getUnlocalizedName());
+		GameRegistry.registerItem(plate_saturnite, plate_saturnite.getUnlocalizedName());
+		GameRegistry.registerItem(plate_paa, plate_paa.getUnlocalizedName());
+		GameRegistry.registerItem(plate_polymer, plate_polymer.getUnlocalizedName());
+		GameRegistry.registerItem(plate_kevlar, plate_kevlar.getUnlocalizedName());
+		GameRegistry.registerItem(plate_dalekanium, plate_dalekanium.getUnlocalizedName());
+		GameRegistry.registerItem(plate_desh, plate_desh.getUnlocalizedName());
+		GameRegistry.registerItem(plate_bismuth, plate_bismuth.getUnlocalizedName());
+		GameRegistry.registerItem(plate_euphemium, plate_euphemium.getUnlocalizedName());
+		GameRegistry.registerItem(plate_dineutronium, plate_dineutronium.getUnlocalizedName());
+		
+		//Armor Plates
+		GameRegistry.registerItem(plate_armor_titanium, plate_armor_titanium.getUnlocalizedName());
+		GameRegistry.registerItem(plate_armor_ajr, plate_armor_ajr.getUnlocalizedName());
+		GameRegistry.registerItem(plate_armor_hev, plate_armor_hev.getUnlocalizedName());
+		GameRegistry.registerItem(plate_armor_lunar, plate_armor_lunar.getUnlocalizedName());
+		GameRegistry.registerItem(plate_armor_fau, plate_armor_fau.getUnlocalizedName());
+		GameRegistry.registerItem(plate_armor_dnt, plate_armor_dnt.getUnlocalizedName());
+		
+		//Heavy/Cast Plate
+		GameRegistry.registerItem(plate_cast, plate_cast.getUnlocalizedName());
+		GameRegistry.registerItem(plate_welded, plate_welded.getUnlocalizedName());
+		GameRegistry.registerItem(heavy_component, heavy_component.getUnlocalizedName());
+		
+		//Boards
+		GameRegistry.registerItem(board_copper, board_copper.getUnlocalizedName());
+		
+		//Bolts
+		GameRegistry.registerItem(bolt_dura_steel, bolt_dura_steel.getUnlocalizedName());
+		GameRegistry.registerItem(bolt_tungsten, bolt_tungsten.getUnlocalizedName());
+		GameRegistry.registerItem(bolt_compound, bolt_compound.getUnlocalizedName());
+		
+		//Cloth
+		GameRegistry.registerItem(hazmat_cloth, hazmat_cloth.getUnlocalizedName());
+		GameRegistry.registerItem(hazmat_cloth_red, hazmat_cloth_red.getUnlocalizedName());
+		GameRegistry.registerItem(hazmat_cloth_grey, hazmat_cloth_grey.getUnlocalizedName());
+		GameRegistry.registerItem(asbestos_cloth, asbestos_cloth.getUnlocalizedName());
+		GameRegistry.registerItem(rag, rag.getUnlocalizedName());
+		GameRegistry.registerItem(rag_damp, rag_damp.getUnlocalizedName());
+		GameRegistry.registerItem(rag_piss, rag_piss.getUnlocalizedName());
+		GameRegistry.registerItem(filter_coal, filter_coal.getUnlocalizedName());
+		
+		//Wires
+		GameRegistry.registerItem(wire_aluminium, wire_aluminium.getUnlocalizedName());
+		GameRegistry.registerItem(wire_copper, wire_copper.getUnlocalizedName());
+		GameRegistry.registerItem(wire_tungsten, wire_tungsten.getUnlocalizedName());
+		GameRegistry.registerItem(wire_red_copper, wire_red_copper.getUnlocalizedName());
+		GameRegistry.registerItem(wire_advanced_alloy, wire_advanced_alloy.getUnlocalizedName());
+		GameRegistry.registerItem(wire_gold, wire_gold.getUnlocalizedName());
+		GameRegistry.registerItem(wire_schrabidium, wire_schrabidium.getUnlocalizedName());
+		GameRegistry.registerItem(wire_magnetized_tungsten, wire_magnetized_tungsten.getUnlocalizedName());
+		GameRegistry.registerItem(wire_dense, wire_dense.getUnlocalizedName());
+		
+		//Parts
+		GameRegistry.registerItem(coil_copper, coil_copper.getUnlocalizedName());
+		GameRegistry.registerItem(coil_copper_torus, coil_copper_torus.getUnlocalizedName());
+		GameRegistry.registerItem(coil_advanced_alloy, coil_advanced_alloy.getUnlocalizedName());
+		GameRegistry.registerItem(coil_advanced_torus, coil_advanced_torus.getUnlocalizedName());
+		GameRegistry.registerItem(coil_gold, coil_gold.getUnlocalizedName());
+		GameRegistry.registerItem(coil_gold_torus, coil_gold_torus.getUnlocalizedName());
+		GameRegistry.registerItem(coil_tungsten, coil_tungsten.getUnlocalizedName());
+		GameRegistry.registerItem(coil_magnetized_tungsten, coil_magnetized_tungsten.getUnlocalizedName());
+		GameRegistry.registerItem(safety_fuse, safety_fuse.getUnlocalizedName());
+		GameRegistry.registerItem(tank_steel, tank_steel.getUnlocalizedName());
+		GameRegistry.registerItem(motor, motor.getUnlocalizedName());
+		GameRegistry.registerItem(motor_desh, motor_desh.getUnlocalizedName());
+		GameRegistry.registerItem(motor_bismuth, motor_bismuth.getUnlocalizedName());
+		GameRegistry.registerItem(centrifuge_element, centrifuge_element.getUnlocalizedName());
+		//GameRegistry.registerItem(centrifuge_tower, centrifuge_tower.getUnlocalizedName());
+		//GameRegistry.registerItem(magnet_dee, magnet_dee.getUnlocalizedName());
+		GameRegistry.registerItem(magnet_circular, magnet_circular.getUnlocalizedName());
+		//GameRegistry.registerItem(cyclotron_tower, cyclotron_tower.getUnlocalizedName());
+		GameRegistry.registerItem(reactor_core, reactor_core.getUnlocalizedName());
+		GameRegistry.registerItem(rtg_unit, rtg_unit.getUnlocalizedName());
+		//GameRegistry.registerItem(thermo_unit_empty, thermo_unit_empty.getUnlocalizedName());
+		//GameRegistry.registerItem(thermo_unit_endo, thermo_unit_endo.getUnlocalizedName());
+		//GameRegistry.registerItem(thermo_unit_exo, thermo_unit_exo.getUnlocalizedName());
+		GameRegistry.registerItem(levitation_unit, levitation_unit.getUnlocalizedName());
+		GameRegistry.registerItem(pipes_steel, pipes_steel.getUnlocalizedName());
+		GameRegistry.registerItem(drill_titanium, drill_titanium.getUnlocalizedName());
+		GameRegistry.registerItem(photo_panel, photo_panel.getUnlocalizedName());
+		GameRegistry.registerItem(chlorine_pinwheel, chlorine_pinwheel.getUnlocalizedName());
+		GameRegistry.registerItem(ring_starmetal, ring_starmetal.getUnlocalizedName());
+		GameRegistry.registerItem(deuterium_filter, deuterium_filter.getUnlocalizedName());
+		GameRegistry.registerItem(chemical_dye, chemical_dye.getUnlocalizedName());
+		GameRegistry.registerItem(crayon, crayon.getUnlocalizedName());
+		GameRegistry.registerItem(part_generic, part_generic.getUnlocalizedName());
+		GameRegistry.registerItem(parts_legendary, parts_legendary.getUnlocalizedName());
+		GameRegistry.registerItem(gear_large, gear_large.getUnlocalizedName());
+		GameRegistry.registerItem(sawblade, sawblade.getUnlocalizedName());
+		
+		//Plant Products
+		GameRegistry.registerItem(plant_item, plant_item.getUnlocalizedName());
+		
+		//Teleporter Parts
+		//GameRegistry.registerItem(telepad, telepad.getUnlocalizedName());
+		GameRegistry.registerItem(entanglement_kit, entanglement_kit.getUnlocalizedName());
+		
+		//AMS Parts
+		GameRegistry.registerItem(component_limiter, component_limiter.getUnlocalizedName());
+		GameRegistry.registerItem(component_emitter, component_emitter.getUnlocalizedName());
+		
+		//Bomb Parts
+		GameRegistry.registerItem(hull_small_steel, hull_small_steel.getUnlocalizedName());
+		GameRegistry.registerItem(hull_small_aluminium, hull_small_aluminium.getUnlocalizedName());
+		GameRegistry.registerItem(hull_big_steel, hull_big_steel.getUnlocalizedName());
+		GameRegistry.registerItem(hull_big_aluminium, hull_big_aluminium.getUnlocalizedName());
+		GameRegistry.registerItem(hull_big_titanium, hull_big_titanium.getUnlocalizedName());
+		GameRegistry.registerItem(fins_flat, fins_flat.getUnlocalizedName());
+		GameRegistry.registerItem(fins_small_steel, fins_small_steel.getUnlocalizedName());
+		GameRegistry.registerItem(fins_big_steel, fins_big_steel.getUnlocalizedName());
+		GameRegistry.registerItem(fins_tri_steel, fins_tri_steel.getUnlocalizedName());
+		GameRegistry.registerItem(fins_quad_titanium, fins_quad_titanium.getUnlocalizedName());
+		GameRegistry.registerItem(sphere_steel, sphere_steel.getUnlocalizedName());
+		GameRegistry.registerItem(pedestal_steel, pedestal_steel.getUnlocalizedName());
+		GameRegistry.registerItem(dysfunctional_reactor, dysfunctional_reactor.getUnlocalizedName());
+		GameRegistry.registerItem(rotor_steel, rotor_steel.getUnlocalizedName());
+		GameRegistry.registerItem(generator_steel, generator_steel.getUnlocalizedName());
+		GameRegistry.registerItem(blade_titanium, blade_titanium.getUnlocalizedName());
+		GameRegistry.registerItem(blade_tungsten, blade_tungsten.getUnlocalizedName());
+		GameRegistry.registerItem(turbine_titanium, turbine_titanium.getUnlocalizedName());
+		GameRegistry.registerItem(turbine_tungsten, turbine_tungsten.getUnlocalizedName());
+		GameRegistry.registerItem(flywheel_beryllium, flywheel_beryllium.getUnlocalizedName());
+		GameRegistry.registerItem(generator_front, generator_front.getUnlocalizedName());
+		GameRegistry.registerItem(toothpicks, toothpicks.getUnlocalizedName());
+		GameRegistry.registerItem(ducttape, ducttape.getUnlocalizedName());
+		GameRegistry.registerItem(catalyst_clay, catalyst_clay.getUnlocalizedName());
+		GameRegistry.registerItem(missile_assembly, missile_assembly.getUnlocalizedName());
+		GameRegistry.registerItem(warhead_generic_small, warhead_generic_small.getUnlocalizedName());
+		GameRegistry.registerItem(warhead_generic_medium, warhead_generic_medium.getUnlocalizedName());
+		GameRegistry.registerItem(warhead_generic_large, warhead_generic_large.getUnlocalizedName());
+		GameRegistry.registerItem(warhead_incendiary_small, warhead_incendiary_small.getUnlocalizedName());
+		GameRegistry.registerItem(warhead_incendiary_medium, warhead_incendiary_medium.getUnlocalizedName());
+		GameRegistry.registerItem(warhead_incendiary_large, warhead_incendiary_large.getUnlocalizedName());
+		GameRegistry.registerItem(warhead_cluster_small, warhead_cluster_small.getUnlocalizedName());
+		GameRegistry.registerItem(warhead_cluster_medium, warhead_cluster_medium.getUnlocalizedName());
+		GameRegistry.registerItem(warhead_cluster_large, warhead_cluster_large.getUnlocalizedName());
+		GameRegistry.registerItem(warhead_buster_small, warhead_buster_small.getUnlocalizedName());
+		GameRegistry.registerItem(warhead_buster_medium, warhead_buster_medium.getUnlocalizedName());
+		GameRegistry.registerItem(warhead_buster_large, warhead_buster_large.getUnlocalizedName());
+		GameRegistry.registerItem(warhead_nuclear, warhead_nuclear.getUnlocalizedName());
+		GameRegistry.registerItem(warhead_mirvlet, warhead_mirvlet.getUnlocalizedName());
+		GameRegistry.registerItem(warhead_mirv, warhead_mirv.getUnlocalizedName());
+		GameRegistry.registerItem(warhead_volcano, warhead_volcano.getUnlocalizedName());
+		GameRegistry.registerItem(warhead_thermo_endo, warhead_thermo_endo.getUnlocalizedName());
+		GameRegistry.registerItem(warhead_thermo_exo, warhead_thermo_exo.getUnlocalizedName());
+		GameRegistry.registerItem(fuel_tank_small, fuel_tank_small.getUnlocalizedName());
+		GameRegistry.registerItem(fuel_tank_medium, fuel_tank_medium.getUnlocalizedName());
+		GameRegistry.registerItem(fuel_tank_large, fuel_tank_large.getUnlocalizedName());
+		GameRegistry.registerItem(thruster_small, thruster_small.getUnlocalizedName());
+		GameRegistry.registerItem(thruster_medium, thruster_medium.getUnlocalizedName());
+		GameRegistry.registerItem(thruster_large, thruster_large.getUnlocalizedName());
+		GameRegistry.registerItem(thruster_nuclear, thruster_nuclear.getUnlocalizedName());
+		GameRegistry.registerItem(sat_base, sat_base.getUnlocalizedName());
+		GameRegistry.registerItem(sat_head_mapper, sat_head_mapper.getUnlocalizedName());
+		GameRegistry.registerItem(sat_head_scanner, sat_head_scanner.getUnlocalizedName());
+		GameRegistry.registerItem(sat_head_radar, sat_head_radar.getUnlocalizedName());
+		GameRegistry.registerItem(sat_head_laser, sat_head_laser.getUnlocalizedName());
+		GameRegistry.registerItem(sat_head_resonator, sat_head_resonator.getUnlocalizedName());
+		GameRegistry.registerItem(seg_10, seg_10.getUnlocalizedName());
+		GameRegistry.registerItem(seg_15, seg_15.getUnlocalizedName());
+		GameRegistry.registerItem(seg_20, seg_20.getUnlocalizedName());
+		
+		//Hammer Parts
+		GameRegistry.registerItem(shimmer_head, shimmer_head.getUnlocalizedName());
+		GameRegistry.registerItem(shimmer_axe_head, shimmer_axe_head.getUnlocalizedName());
+		GameRegistry.registerItem(shimmer_handle, shimmer_handle.getUnlocalizedName());
+		
+		//Circuits
+		GameRegistry.registerItem(circuit_raw, circuit_raw.getUnlocalizedName());
+		GameRegistry.registerItem(circuit_aluminium, circuit_aluminium.getUnlocalizedName());
+		GameRegistry.registerItem(circuit_copper, circuit_copper.getUnlocalizedName());
+		GameRegistry.registerItem(circuit_red_copper, circuit_red_copper.getUnlocalizedName());
+		GameRegistry.registerItem(circuit_gold, circuit_gold.getUnlocalizedName());
+		GameRegistry.registerItem(circuit_schrabidium, circuit_schrabidium.getUnlocalizedName());
+		GameRegistry.registerItem(circuit_bismuth_raw, circuit_bismuth_raw.getUnlocalizedName());
+		GameRegistry.registerItem(circuit_bismuth, circuit_bismuth.getUnlocalizedName());
+		GameRegistry.registerItem(circuit_arsenic_raw, circuit_arsenic_raw.getUnlocalizedName());
+		GameRegistry.registerItem(circuit_arsenic, circuit_arsenic.getUnlocalizedName());
+		GameRegistry.registerItem(circuit_tantalium_raw, circuit_tantalium_raw.getUnlocalizedName());
+		GameRegistry.registerItem(circuit_tantalium, circuit_tantalium.getUnlocalizedName());
+		GameRegistry.registerItem(crt_display, crt_display.getUnlocalizedName());
+		GameRegistry.registerItem(circuit_star_piece, circuit_star_piece.getUnlocalizedName());
+		GameRegistry.registerItem(circuit_star_component, circuit_star_component.getUnlocalizedName());
+		GameRegistry.registerItem(circuit_star, circuit_star.getUnlocalizedName());
+		
+		//Military Circuits
+		GameRegistry.registerItem(circuit_targeting_tier1, circuit_targeting_tier1.getUnlocalizedName());
+		GameRegistry.registerItem(circuit_targeting_tier2, circuit_targeting_tier2.getUnlocalizedName());
+		GameRegistry.registerItem(circuit_targeting_tier3, circuit_targeting_tier3.getUnlocalizedName());
+		GameRegistry.registerItem(circuit_targeting_tier4, circuit_targeting_tier4.getUnlocalizedName());
+		GameRegistry.registerItem(circuit_targeting_tier5, circuit_targeting_tier5.getUnlocalizedName());
+		GameRegistry.registerItem(circuit_targeting_tier6, circuit_targeting_tier6.getUnlocalizedName());
+		
+		//Gun Mechanisms
+		GameRegistry.registerItem(mechanism_revolver_1, mechanism_revolver_1.getUnlocalizedName());
+		GameRegistry.registerItem(mechanism_revolver_2, mechanism_revolver_2.getUnlocalizedName());
+		GameRegistry.registerItem(mechanism_rifle_1, mechanism_rifle_1.getUnlocalizedName());
+		GameRegistry.registerItem(mechanism_rifle_2, mechanism_rifle_2.getUnlocalizedName());
+		GameRegistry.registerItem(mechanism_launcher_1, mechanism_launcher_1.getUnlocalizedName());
+		GameRegistry.registerItem(mechanism_launcher_2, mechanism_launcher_2.getUnlocalizedName());
+		GameRegistry.registerItem(mechanism_special, mechanism_special.getUnlocalizedName());
+		
+		//Casings
+		GameRegistry.registerItem(casing_357, casing_357.getUnlocalizedName());
+		GameRegistry.registerItem(casing_44, casing_44.getUnlocalizedName());
+		GameRegistry.registerItem(casing_9, casing_9.getUnlocalizedName());
+		GameRegistry.registerItem(casing_50, casing_50.getUnlocalizedName());
+		GameRegistry.registerItem(casing_buckshot, casing_buckshot.getUnlocalizedName());
+		
+		//Bullet Assemblies
+		GameRegistry.registerItem(assembly_iron, assembly_iron.getUnlocalizedName());
+		GameRegistry.registerItem(assembly_steel, assembly_steel.getUnlocalizedName());
+		GameRegistry.registerItem(assembly_lead, assembly_lead.getUnlocalizedName());
+		GameRegistry.registerItem(assembly_gold, assembly_gold.getUnlocalizedName());
+		GameRegistry.registerItem(assembly_schrabidium, assembly_schrabidium.getUnlocalizedName());
+		GameRegistry.registerItem(assembly_nightmare, assembly_nightmare.getUnlocalizedName());
+		GameRegistry.registerItem(assembly_desh, assembly_desh.getUnlocalizedName());
+		//GameRegistry.registerItem(assembly_pip, assembly_pip.getUnlocalizedName());
+		GameRegistry.registerItem(assembly_nopip, assembly_nopip.getUnlocalizedName());
+		GameRegistry.registerItem(assembly_smg, assembly_smg.getUnlocalizedName());
+		GameRegistry.registerItem(assembly_556, assembly_556.getUnlocalizedName());
+		GameRegistry.registerItem(assembly_762, assembly_762.getUnlocalizedName());
+		GameRegistry.registerItem(assembly_45, assembly_45.getUnlocalizedName());
+		GameRegistry.registerItem(assembly_uzi, assembly_uzi.getUnlocalizedName());
+		GameRegistry.registerItem(assembly_lacunae, assembly_lacunae.getUnlocalizedName());
+		GameRegistry.registerItem(assembly_actionexpress, assembly_actionexpress.getUnlocalizedName());
+		GameRegistry.registerItem(assembly_calamity, assembly_calamity.getUnlocalizedName());
+		GameRegistry.registerItem(assembly_nuke, assembly_nuke.getUnlocalizedName());
+		GameRegistry.registerItem(assembly_luna, assembly_luna.getUnlocalizedName());
+		
+		//Folly Parts
+		GameRegistry.registerItem(folly_shell, folly_shell.getUnlocalizedName());
+		GameRegistry.registerItem(folly_bullet, folly_bullet.getUnlocalizedName());
+		GameRegistry.registerItem(folly_bullet_nuclear, folly_bullet_nuclear.getUnlocalizedName());
+		GameRegistry.registerItem(folly_bullet_du, folly_bullet_du.getUnlocalizedName());
+		
+		//Wiring
+		GameRegistry.registerItem(wiring_red_copper, wiring_red_copper.getUnlocalizedName());
+		
+		//Flame War in a Box
+		GameRegistry.registerItem(flame_pony, flame_pony.getUnlocalizedName());
+		GameRegistry.registerItem(flame_conspiracy, flame_conspiracy.getUnlocalizedName());
+		GameRegistry.registerItem(flame_politics, flame_politics.getUnlocalizedName());
+		GameRegistry.registerItem(flame_opinion, flame_opinion.getUnlocalizedName());
+		
+		//Pellets
+		GameRegistry.registerItem(pellet_rtg_radium, pellet_rtg_radium.getUnlocalizedName());
+		GameRegistry.registerItem(pellet_rtg_weak, pellet_rtg_weak.getUnlocalizedName());
+		GameRegistry.registerItem(pellet_rtg, pellet_rtg.getUnlocalizedName());
+		GameRegistry.registerItem(pellet_rtg_strontium, pellet_rtg_strontium.getUnlocalizedName());
+		GameRegistry.registerItem(pellet_rtg_cobalt, pellet_rtg_cobalt.getUnlocalizedName());
+		GameRegistry.registerItem(pellet_rtg_actinium, pellet_rtg_actinium.getUnlocalizedName());
+		GameRegistry.registerItem(pellet_rtg_polonium, pellet_rtg_polonium.getUnlocalizedName());
+		GameRegistry.registerItem(pellet_rtg_americium, pellet_rtg_americium.getUnlocalizedName());
+		GameRegistry.registerItem(pellet_rtg_berkelium, pellet_rtg_berkelium.getUnlocalizedName());
+		GameRegistry.registerItem(pellet_rtg_gold, pellet_rtg_gold.getUnlocalizedName());
+		GameRegistry.registerItem(pellet_rtg_lead, pellet_rtg_lead.getUnlocalizedName());
+		GameRegistry.registerItem(pellet_rtg_depleted, pellet_rtg_depleted.getUnlocalizedName());
+		GameRegistry.registerItem(tritium_deuterium_cake, tritium_deuterium_cake.getUnlocalizedName());
+		GameRegistry.registerItem(pellet_cluster, pellet_cluster.getUnlocalizedName());
+		GameRegistry.registerItem(pellet_buckshot, pellet_buckshot.getUnlocalizedName());
+		GameRegistry.registerItem(pellet_flechette, pellet_flechette.getUnlocalizedName());
+		GameRegistry.registerItem(pellet_chlorophyte, pellet_chlorophyte.getUnlocalizedName());
+		GameRegistry.registerItem(pellet_mercury, pellet_mercury.getUnlocalizedName());
+		GameRegistry.registerItem(pellet_meteorite, pellet_meteorite.getUnlocalizedName());
+		GameRegistry.registerItem(pellet_canister, pellet_canister.getUnlocalizedName());
+		GameRegistry.registerItem(pellet_claws, pellet_claws.getUnlocalizedName());
+		GameRegistry.registerItem(pellet_charged, pellet_charged.getUnlocalizedName());
+		GameRegistry.registerItem(pellet_gas, pellet_gas.getUnlocalizedName());
 
 		// Billets
 		GameRegistry.registerItem(ModItems.billet_uranium, ModItems.billet_uranium.getUnlocalizedName());
@@ -8730,30 +9023,7 @@ public class ModItems {
 		GameRegistry.registerItem(ModItems.nugget_euphemium, ModItems.nugget_euphemium.getUnlocalizedName());
 		GameRegistry.registerItem(ModItems.nugget_dineutronium, ModItems.nugget_dineutronium.getUnlocalizedName());
 		GameRegistry.registerItem(ModItems.nugget_osmiridium, ModItems.nugget_osmiridium.getUnlocalizedName());
-
-		// Plates
-		GameRegistry.registerItem(ModItems.plate_iron, ModItems.plate_iron.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.plate_gold, ModItems.plate_gold.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.plate_titanium, ModItems.plate_titanium.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.plate_aluminium, ModItems.plate_aluminium.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.plate_steel, ModItems.plate_steel.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.plate_lead, ModItems.plate_lead.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.plate_copper, ModItems.plate_copper.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.plate_advanced_alloy, ModItems.plate_advanced_alloy.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.neutron_reflector, ModItems.neutron_reflector.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.plate_schrabidium, ModItems.plate_schrabidium.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.plate_combine_steel, ModItems.plate_combine_steel.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.plate_mixed, ModItems.plate_mixed.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.plate_saturnite, ModItems.plate_saturnite.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.plate_paa, ModItems.plate_paa.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.plate_polymer, ModItems.plate_polymer.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.plate_kevlar, ModItems.plate_kevlar.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.plate_dalekanium, ModItems.plate_dalekanium.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.plate_desh, ModItems.plate_desh.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.plate_bismuth, ModItems.plate_bismuth.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.plate_euphemium, ModItems.plate_euphemium.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.plate_dineutronium, ModItems.plate_dineutronium.getUnlocalizedName());
-
+		
 		// Armor Plates
 		GameRegistry.registerItem(ModItems.plate_armor_titanium, ModItems.plate_armor_titanium.getUnlocalizedName());
 		GameRegistry.registerItem(ModItems.plate_armor_ajr, ModItems.plate_armor_ajr.getUnlocalizedName());
@@ -8766,35 +9036,6 @@ public class ModItems {
 		GameRegistry.registerItem(ModItems.plate_cast, ModItems.plate_cast.getUnlocalizedName());
 		GameRegistry.registerItem(ModItems.plate_welded, ModItems.plate_welded.getUnlocalizedName());
 		GameRegistry.registerItem(ModItems.heavy_component, ModItems.heavy_component.getUnlocalizedName());
-
-		// Boards
-		GameRegistry.registerItem(ModItems.board_copper, ModItems.board_copper.getUnlocalizedName());
-
-		// Bolts
-		GameRegistry.registerItem(ModItems.bolt_dura_steel, ModItems.bolt_dura_steel.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.bolt_tungsten, ModItems.bolt_tungsten.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.bolt_compound, ModItems.bolt_compound.getUnlocalizedName());
-
-		// Cloth
-		GameRegistry.registerItem(ModItems.hazmat_cloth, ModItems.hazmat_cloth.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.hazmat_cloth_red, ModItems.hazmat_cloth_red.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.hazmat_cloth_grey, ModItems.hazmat_cloth_grey.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.asbestos_cloth, ModItems.asbestos_cloth.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.rag, ModItems.rag.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.rag_damp, ModItems.rag_damp.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.rag_piss, ModItems.rag_piss.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.filter_coal, ModItems.filter_coal.getUnlocalizedName());
-
-		// Wires
-		GameRegistry.registerItem(ModItems.wire_aluminium, ModItems.wire_aluminium.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.wire_copper, ModItems.wire_copper.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.wire_tungsten, ModItems.wire_tungsten.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.wire_red_copper, ModItems.wire_red_copper.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.wire_advanced_alloy, ModItems.wire_advanced_alloy.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.wire_gold, ModItems.wire_gold.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.wire_schrabidium, ModItems.wire_schrabidium.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.wire_magnetized_tungsten,
-				ModItems.wire_magnetized_tungsten.getUnlocalizedName());
 
 		// Parts
 		GameRegistry.registerItem(ModItems.coil_copper, ModItems.coil_copper.getUnlocalizedName());
@@ -8846,77 +9087,7 @@ public class ModItems {
 		// Teleporter Parts
 		// GameRegistry.registerItem(telepad, telepad.getUnlocalizedName());
 		GameRegistry.registerItem(ModItems.entanglement_kit, ModItems.entanglement_kit.getUnlocalizedName());
-
-		// AMS Parts
-		GameRegistry.registerItem(ModItems.component_limiter, ModItems.component_limiter.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.component_emitter, ModItems.component_emitter.getUnlocalizedName());
-
-		// Bomb Parts
-		GameRegistry.registerItem(ModItems.hull_small_steel, ModItems.hull_small_steel.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.hull_small_aluminium, ModItems.hull_small_aluminium.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.hull_big_steel, ModItems.hull_big_steel.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.hull_big_aluminium, ModItems.hull_big_aluminium.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.hull_big_titanium, ModItems.hull_big_titanium.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.fins_flat, ModItems.fins_flat.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.fins_small_steel, ModItems.fins_small_steel.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.fins_big_steel, ModItems.fins_big_steel.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.fins_tri_steel, ModItems.fins_tri_steel.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.fins_quad_titanium, ModItems.fins_quad_titanium.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.sphere_steel, ModItems.sphere_steel.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.pedestal_steel, ModItems.pedestal_steel.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.dysfunctional_reactor, ModItems.dysfunctional_reactor.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.rotor_steel, ModItems.rotor_steel.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.generator_steel, ModItems.generator_steel.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.blade_titanium, ModItems.blade_titanium.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.blade_tungsten, ModItems.blade_tungsten.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.turbine_titanium, ModItems.turbine_titanium.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.turbine_tungsten, ModItems.turbine_tungsten.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.flywheel_beryllium, ModItems.flywheel_beryllium.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.generator_front, ModItems.generator_front.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.toothpicks, ModItems.toothpicks.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.ducttape, ModItems.ducttape.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.catalyst_clay, ModItems.catalyst_clay.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.missile_assembly, ModItems.missile_assembly.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.warhead_generic_small, ModItems.warhead_generic_small.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.warhead_generic_medium,
-				ModItems.warhead_generic_medium.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.warhead_generic_large, ModItems.warhead_generic_large.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.warhead_incendiary_small,
-				ModItems.warhead_incendiary_small.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.warhead_incendiary_medium,
-				ModItems.warhead_incendiary_medium.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.warhead_incendiary_large,
-				ModItems.warhead_incendiary_large.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.warhead_cluster_small, ModItems.warhead_cluster_small.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.warhead_cluster_medium,
-				ModItems.warhead_cluster_medium.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.warhead_cluster_large, ModItems.warhead_cluster_large.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.warhead_buster_small, ModItems.warhead_buster_small.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.warhead_buster_medium, ModItems.warhead_buster_medium.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.warhead_buster_large, ModItems.warhead_buster_large.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.warhead_nuclear, ModItems.warhead_nuclear.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.warhead_mirvlet, ModItems.warhead_mirvlet.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.warhead_mirv, ModItems.warhead_mirv.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.warhead_volcano, ModItems.warhead_volcano.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.warhead_thermo_endo, ModItems.warhead_thermo_endo.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.warhead_thermo_exo, ModItems.warhead_thermo_exo.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.fuel_tank_small, ModItems.fuel_tank_small.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.fuel_tank_medium, ModItems.fuel_tank_medium.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.fuel_tank_large, ModItems.fuel_tank_large.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.thruster_small, ModItems.thruster_small.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.thruster_medium, ModItems.thruster_medium.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.thruster_large, ModItems.thruster_large.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.thruster_nuclear, ModItems.thruster_nuclear.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.sat_base, ModItems.sat_base.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.sat_head_mapper, ModItems.sat_head_mapper.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.sat_head_scanner, ModItems.sat_head_scanner.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.sat_head_radar, ModItems.sat_head_radar.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.sat_head_laser, ModItems.sat_head_laser.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.sat_head_resonator, ModItems.sat_head_resonator.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.seg_10, ModItems.seg_10.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.seg_15, ModItems.seg_15.getUnlocalizedName());
-		GameRegistry.registerItem(ModItems.seg_20, ModItems.seg_20.getUnlocalizedName());
-
+		
 		// Chopper parts
 		GameRegistry.registerItem(ModItems.chopper_head, ModItems.chopper_head.getUnlocalizedName());
 		GameRegistry.registerItem(ModItems.chopper_gun, ModItems.chopper_gun.getUnlocalizedName());

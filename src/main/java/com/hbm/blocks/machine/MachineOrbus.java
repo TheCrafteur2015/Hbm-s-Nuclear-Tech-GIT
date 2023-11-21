@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.IPersistentInfoProvider;
+import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTank;
 import com.hbm.items.machine.ItemFluidIdentifier;
@@ -19,6 +20,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -60,7 +62,9 @@ public class MachineOrbus extends BlockDummyable implements IPersistentInfoProvi
 			ItemStack item = player.getHeldItem();
 			if (item.getItem() instanceof ItemFluidIdentifier) {
 				TileEntityMachineOrbus tile = (TileEntityMachineOrbus) world.getTileEntity(pos[0], pos[1], pos[2]);
-				tile.setTypeForSync(Fluids.fromID(item.getItemDamage()), 0);
+				FluidType type = Fluids.fromID(item.getItemDamage());
+				tile.tank.setTankType(type);
+				player.addChatComponentMessage(new ChatComponentText("Changed type to " + EnumChatFormatting.YELLOW + type.getConditionalName() +"!"));
 			}
 		}
 		return true;

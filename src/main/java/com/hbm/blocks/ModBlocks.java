@@ -957,8 +957,9 @@ public class ModBlocks {
 	public static Block capacitor_tantalium;
 	public static Block capacitor_schrabidate;
 	
-	public static Block machine_coal_off;
-	public static Block machine_coal_on;
+	@Deprecated public static Block machine_coal_off;
+	@Deprecated public static Block machine_coal_on;
+	public static Block machine_wood_burner;
 	
 	public static Block red_wire_coated;
 	public static Block red_cable;
@@ -1082,13 +1083,13 @@ public class ModBlocks {
 	public static Block pwr_controller;
 	public static Block pwr_block;
 
-	public static Block reactor_element;
-	public static Block reactor_control;
-	public static Block reactor_hatch;
-	public static Block reactor_ejector;
-	public static Block reactor_inserter;
-	public static Block reactor_conductor;
-	public static Block reactor_computer;
+	@Deprecated public static Block reactor_element;
+	@Deprecated public static Block reactor_control;
+	@Deprecated public static Block reactor_hatch;
+	@Deprecated public static Block reactor_ejector;
+	@Deprecated public static Block reactor_inserter;
+	@Deprecated public static Block reactor_conductor;
+	@Deprecated public static Block reactor_computer;
 	
 	public static Block fusion_conductor;
 	public static Block fusion_center;
@@ -2117,8 +2118,9 @@ public class ModBlocks {
 		ModBlocks.capacitor_tantalium = new MachineCapacitor(Material.iron, 150_000_000L, "tantalium").setBlockName("capacitor_tantalium").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":block_tantalium");
 		ModBlocks.capacitor_schrabidate = new MachineCapacitor(Material.iron, 50_000_000_000L, "schrabidate").setBlockName("capacitor_schrabidate").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":block_schrabidate");
 		
-		ModBlocks.machine_coal_off = new MachineCoal(false).setBlockName("machine_coal_off").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
-		ModBlocks.machine_coal_on = new MachineCoal(true).setBlockName("machine_coal_on").setHardness(5.0F).setLightLevel(1.0F).setResistance(10.0F);
+		machine_coal_off = new MachineCoal(false).setBlockName("machine_coal_off").setHardness(5.0F).setResistance(10.0F).setBlockTextureName(RefStrings.MODID + ":block_copper");
+		machine_coal_on = new MachineCoal(true).setBlockName("machine_coal_on").setHardness(5.0F).setLightLevel(1.0F).setResistance(10.0F).setBlockTextureName(RefStrings.MODID + ":block_copper");
+		machine_wood_burner = new MachineWoodBurner(Material.iron).setBlockName("machine_wood_burner").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":block_steel");
 
 		ModBlocks.machine_diesel = new MachineDiesel().setBlockName("machine_diesel").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":block_steel");
 		ModBlocks.machine_combustion_engine = new MachineCombustionEngine().setBlockName("machine_combustion_engine").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":block_steel");
@@ -2259,23 +2261,22 @@ public class ModBlocks {
 		ModBlocks.pwr_controller = new MachinePWRController(Material.iron).setBlockName("pwr_controller").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":pwr_casing_blank");
 		ModBlocks.pwr_block = new BlockPWR(Material.iron).setBlockName("pwr_block").setHardness(5.0F).setResistance(10.0F).setCreativeTab(null).setBlockTextureName(RefStrings.MODID + ":pwr_block");
 		
-		ModBlocks.reactor_element = new BlockPillar(Material.iron, RefStrings.MODID + ":reactor_element_top", RefStrings.MODID + ":reactor_element_base").setBlockName("reactor_element").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":reactor_element_side");
-		ModBlocks.reactor_control = new BlockPillar(Material.iron, RefStrings.MODID + ":reactor_control_top").setBlockName("reactor_control").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":reactor_control_side");
-		ModBlocks.reactor_hatch = new ReactorHatch(Material.iron).setBlockName("reactor_hatch").setHardness(5.0F).setResistance(1000.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":brick_concrete");
-		ModBlocks.reactor_ejector = new BlockRotatable(Material.iron).setBlockName("reactor_ejector").setHardness(5.0F).setResistance(1000.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":brick_concrete");
-		ModBlocks.reactor_inserter = new BlockRotatable(Material.iron).setBlockName("reactor_inserter").setHardness(5.0F).setResistance(1000.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":brick_concrete");
-		ModBlocks.reactor_conductor = new BlockPillar(Material.iron, RefStrings.MODID + ":reactor_conductor_top").setBlockName("reactor_conductor").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":reactor_conductor_side");
-		ModBlocks.reactor_computer = new ReactorCore(Material.iron).setBlockName("reactor_computer").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":reactor_computer");
+		reactor_element = new BlockPillar(Material.iron, RefStrings.MODID + ":reactor_element_top", RefStrings.MODID + ":reactor_element_base").setBlockName("reactor_element").setHardness(5.0F).setResistance(10.0F).setBlockTextureName(RefStrings.MODID + ":reactor_element_side");
+		reactor_control = new BlockPillar(Material.iron, RefStrings.MODID + ":reactor_control_top").setBlockName("reactor_control").setHardness(5.0F).setResistance(10.0F).setBlockTextureName(RefStrings.MODID + ":reactor_control_side");
+		reactor_hatch = new ReactorHatch(Material.iron).setBlockName("reactor_hatch").setHardness(5.0F).setResistance(1000.0F).setBlockTextureName(RefStrings.MODID + ":brick_concrete");
+		reactor_ejector = new BlockRotatable(Material.iron).setBlockName("reactor_ejector").setHardness(5.0F).setResistance(1000.0F).setBlockTextureName(RefStrings.MODID + ":brick_concrete");
+		reactor_inserter = new BlockRotatable(Material.iron).setBlockName("reactor_inserter").setHardness(5.0F).setResistance(1000.0F).setBlockTextureName(RefStrings.MODID + ":brick_concrete");
+		reactor_conductor = new BlockPillar(Material.iron, RefStrings.MODID + ":reactor_conductor_top").setBlockName("reactor_conductor").setHardness(5.0F).setResistance(10.0F).setBlockTextureName(RefStrings.MODID + ":reactor_conductor_side");
+		reactor_computer = new ReactorCore(Material.iron).setBlockName("reactor_computer").setHardness(5.0F).setResistance(10.0F).setBlockTextureName(RefStrings.MODID + ":reactor_computer");
 
-		ModBlocks.fusion_conductor = new BlockToolConversionPillar(Material.iron).addVariant("_welded").setBlockName("fusion_conductor").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":fusion_conductor");
-		ModBlocks.fusion_center = new BlockPillar(Material.iron, RefStrings.MODID + ":fusion_center_top_alt").setBlockName("fusion_center").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":fusion_center_side_alt");
-		ModBlocks.fusion_motor = new BlockPillar(Material.iron, RefStrings.MODID + ":fusion_motor_top_alt").setBlockName("fusion_motor").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":fusion_motor_side_alt");
-		ModBlocks.fusion_heater = new BlockPillar(Material.iron, RefStrings.MODID + ":fusion_heater_top").setBlockName("fusion_heater").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":fusion_heater_side");
-		ModBlocks.fusion_hatch = new FusionHatch(Material.iron).setBlockName("fusion_hatch").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":fusion_hatch");
-		//fusion_core = new FusionCore(Material.iron).setBlockName("fusion_core").setHardness(5.0F).setResistance(10.0F).setCreativeTab(null).setBlockTextureName(RefStrings.MODID + ":fusion_core_side");
-		ModBlocks.plasma = new BlockPlasma(Material.iron).setBlockName("plasma").setHardness(5.0F).setResistance(6000.0F).setLightLevel(1.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":plasma");
-		ModBlocks.iter = new MachineITER().setBlockName("iter").setHardness(5.0F).setResistance(60.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":iter");
-		ModBlocks.plasma_heater = new MachinePlasmaHeater().setBlockName("plasma_heater").setHardness(5.0F).setResistance(60.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":plasma_heater");
+		fusion_conductor = new BlockToolConversionPillar(Material.iron).addVariant("_welded").setBlockName("fusion_conductor").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":fusion_conductor");
+		fusion_center = new BlockPillar(Material.iron, RefStrings.MODID + ":fusion_center_top_alt").setBlockName("fusion_center").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":fusion_center_side_alt");
+		fusion_motor = new BlockPillar(Material.iron, RefStrings.MODID + ":fusion_motor_top_alt").setBlockName("fusion_motor").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":fusion_motor_side_alt");
+		fusion_heater = new BlockPillar(Material.iron, RefStrings.MODID + ":fusion_heater_top").setBlockName("fusion_heater").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":fusion_heater_side");
+		fusion_hatch = new FusionHatch(Material.iron).setBlockName("fusion_hatch").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":fusion_hatch");
+		plasma = new BlockPlasma(Material.iron).setBlockName("plasma").setHardness(5.0F).setResistance(6000.0F).setLightLevel(1.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":plasma");
+		iter = new MachineITER().setBlockName("iter").setHardness(5.0F).setResistance(60.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":iter");
+		plasma_heater = new MachinePlasmaHeater().setBlockName("plasma_heater").setHardness(5.0F).setResistance(60.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":plasma_heater");
 
 		ModBlocks.watz_element = new BlockPillar(Material.iron, RefStrings.MODID + ":watz_element_top").setBlockName("watz_element").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":watz_element_side");
 		ModBlocks.watz_control = new BlockPillar(Material.iron, RefStrings.MODID + ":watz_control_top").setBlockName("watz_control").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":watz_control_side");
@@ -3295,6 +3296,7 @@ public class ModBlocks {
 		GameRegistry.registerBlock(ModBlocks.anvil_osmiridium, ItemBlockBase.class, ModBlocks.anvil_osmiridium.getUnlocalizedName());
 		GameRegistry.registerBlock(ModBlocks.anvil_murky, ItemBlockBase.class, ModBlocks.anvil_murky.getUnlocalizedName());
 		
+		// START
 		GameRegistry.registerBlock(ModBlocks.press_preheater, ModBlocks.press_preheater.getUnlocalizedName());
 		GameRegistry.registerBlock(ModBlocks.machine_press, ModBlocks.machine_press.getUnlocalizedName());
 		GameRegistry.registerBlock(ModBlocks.machine_epress, ModBlocks.machine_epress.getUnlocalizedName());
@@ -3343,6 +3345,7 @@ public class ModBlocks {
 		GameRegistry.registerBlock(ModBlocks.machine_rtg_furnace_on, ModBlocks.machine_rtg_furnace_on.getUnlocalizedName());
 		GameRegistry.registerBlock(ModBlocks.machine_coal_off, ModBlocks.machine_coal_off.getUnlocalizedName());
 		GameRegistry.registerBlock(ModBlocks.machine_coal_on, ModBlocks.machine_coal_on.getUnlocalizedName());
+		ModBlocks.register(ModBlocks.machine_wood_burner);
 		ModBlocks.register(ModBlocks.machine_diesel);
 		ModBlocks.register(ModBlocks.machine_selenium);
 		ModBlocks.register(ModBlocks.machine_combustion_engine);
@@ -3363,7 +3366,7 @@ public class ModBlocks {
 		GameRegistry.registerBlock(ModBlocks.machine_hephaestus, ModBlocks.machine_hephaestus.getUnlocalizedName());
 		GameRegistry.registerBlock(ModBlocks.machine_spp_bottom, ModBlocks.machine_spp_bottom.getUnlocalizedName());
 		GameRegistry.registerBlock(ModBlocks.machine_spp_top, ModBlocks.machine_spp_top.getUnlocalizedName());
-
+		
 		GameRegistry.registerBlock(ModBlocks.hadron_plating, ModBlocks.hadron_plating.getUnlocalizedName());
 		GameRegistry.registerBlock(ModBlocks.hadron_plating_blue, ModBlocks.hadron_plating_blue.getUnlocalizedName());
 		GameRegistry.registerBlock(ModBlocks.hadron_plating_black, ModBlocks.hadron_plating_black.getUnlocalizedName());
@@ -3641,7 +3644,6 @@ public class ModBlocks {
 		GameRegistry.registerBlock(ModBlocks.fusion_motor, ModBlocks.fusion_motor.getUnlocalizedName());
 		GameRegistry.registerBlock(ModBlocks.fusion_heater, ModBlocks.fusion_heater.getUnlocalizedName());
 		GameRegistry.registerBlock(ModBlocks.fusion_hatch, ModBlocks.fusion_hatch.getUnlocalizedName());
-		//GameRegistry.registerBlock(fusion_core, fusion_core.getUnlocalizedName());
 		GameRegistry.registerBlock(ModBlocks.plasma, ItemBlockLore.class, ModBlocks.plasma.getUnlocalizedName());
 		GameRegistry.registerBlock(ModBlocks.iter, ModBlocks.iter.getUnlocalizedName());
 		GameRegistry.registerBlock(ModBlocks.plasma_heater, ModBlocks.plasma_heater.getUnlocalizedName());

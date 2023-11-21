@@ -53,12 +53,12 @@ public class CokerRecipes extends SerializableRecipe {
 		CokerRecipes.registerAuto(Fluids.SUNFLOWEROIL,			Fluids.GAS_COKER);
 
 		CokerRecipes.registerSFAuto(Fluids.WOODOIL, 340_000L, new ItemStack(Items.coal, 1, 1), Fluids.GAS_COKER);
-
-		CokerRecipes.registerRecipe(Fluids.WATZ, 4_000, new ItemStack(ModItems.ingot_mud, 4), null);
-		CokerRecipes.registerRecipe(Fluids.REDMUD, 1_000, new ItemStack(Items.iron_ingot, 2), new FluidStack(Fluids.MERCURY, 50));
-		CokerRecipes.registerRecipe(Fluids.BITUMEN, 16_000, DictFrame.fromOne(ModItems.coke, EnumCokeType.PETROLEUM), new FluidStack(Fluids.OIL_COKER, 1_600));
-		CokerRecipes.registerRecipe(Fluids.LUBRICANT, 12_000, DictFrame.fromOne(ModItems.coke, EnumCokeType.PETROLEUM), new FluidStack(Fluids.OIL_COKER, 1_200));
-		CokerRecipes.registerRecipe(Fluids.CALCIUM_SOLUTION, 125, new ItemStack(ModItems.powder_calcium), new FluidStack(Fluids.SPENTSTEAM, 100));
+		
+		registerRecipe(Fluids.WATZ, 4_000, new ItemStack(ModItems.ingot_mud, 4), null);
+		registerRecipe(Fluids.REDMUD, 1_000, new ItemStack(Items.iron_ingot, 1), new FluidStack(Fluids.MERCURY, 50));
+		registerRecipe(Fluids.BITUMEN, 16_000, DictFrame.fromOne(ModItems.coke, EnumCokeType.PETROLEUM), new FluidStack(Fluids.OIL_COKER, 1_600));
+		registerRecipe(Fluids.LUBRICANT, 12_000, DictFrame.fromOne(ModItems.coke, EnumCokeType.PETROLEUM), new FluidStack(Fluids.OIL_COKER, 1_200));
+		registerRecipe(Fluids.CALCIUM_SOLUTION, 125, new ItemStack(ModItems.powder_calcium), new FluidStack(Fluids.SPENTSTEAM, 100));
 	}
 
 	private static void registerAuto(FluidType fluid, FluidType type) {

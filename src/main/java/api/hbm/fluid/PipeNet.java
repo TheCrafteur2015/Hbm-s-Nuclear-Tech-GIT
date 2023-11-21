@@ -132,6 +132,11 @@ public class PipeNet implements IPipeNet {
 			if(given > 0) {
 				
 				totalGiven += (given - con.transferFluid(type, pressure, given));
+				
+				if(con instanceof TileEntity) {
+					TileEntity tile = (TileEntity) con;
+					tile.getWorldObj().markTileEntityChunkModified(tile.xCoord, tile.yCoord, tile.zCoord, tile);
+				}
 	
 				if(PipeNet.trackingInstances != null) {
 					for (PipeNet net : PipeNet.trackingInstances) {

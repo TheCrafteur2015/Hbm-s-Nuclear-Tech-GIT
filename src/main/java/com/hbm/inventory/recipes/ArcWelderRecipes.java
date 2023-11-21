@@ -28,11 +28,15 @@ public class ArcWelderRecipes extends SerializableRecipe {
 
 	@Override
 	public void registerDefaults() {
-
-		ArcWelderRecipes.recipes.add(new ArcWelderRecipe(new ItemStack(ModItems.motor), 100, 200L,
+		ArcWelderRecipes.recipes.add(new ArcWelderRecipe(new ItemStack(ModItems.motor, 2), 100, 200L,
 				new OreDictStack(OreDictManager.IRON.plate(), 2), new ComparableStack(ModItems.coil_copper), new ComparableStack(ModItems.coil_copper_torus)));
-		ArcWelderRecipes.recipes.add(new ArcWelderRecipe(new ItemStack(ModItems.motor), 100, 400L,
+		ArcWelderRecipes.recipes.add(new ArcWelderRecipe(new ItemStack(ModItems.motor, 2), 100, 400L,
 				new OreDictStack(OreDictManager.STEEL.plate(), 1), new ComparableStack(ModItems.coil_copper), new ComparableStack(ModItems.coil_copper_torus)));
+
+		ArcWelderRecipes.recipes.add(new ArcWelderRecipe(new ItemStack(ModItems.wire_dense, 1, Mats.MAT_ALLOY.id), 100, 10_000L,
+				new ComparableStack(ModItems.wire_advanced_alloy, 8)));
+		ArcWelderRecipes.recipes.add(new ArcWelderRecipe(new ItemStack(ModItems.wire_dense, 1, Mats.MAT_GOLD.id), 100, 10_000L,
+				new ComparableStack(ModItems.wire_gold, 8)));
 
 		ArcWelderRecipes.recipes.add(new ArcWelderRecipe(new ItemStack(ModItems.circuit_copper), 100, 1_000L, new FluidStack(Fluids.GAS, 250),
 				new ComparableStack(ModItems.circuit_aluminium, 1), new OreDictStack(OreDictManager.NETHERQUARTZ.dust()), new ComparableStack(ModItems.wire_copper, 8)));
@@ -49,6 +53,10 @@ public class ArcWelderRecipes extends SerializableRecipe {
 		//high-demand mid-game parts
 		ArcWelderRecipes.recipes.add(new ArcWelderRecipe(new ItemStack(ModItems.plate_welded, 1, Mats.MAT_STEEL.id), 100, 500L,
 				new OreDictStack(OreDictManager.STEEL.plateCast(), 2)));
+		//literally just the combination oven
+		ArcWelderRecipes.recipes.add(new ArcWelderRecipe(new ItemStack(ModItems.plate_welded, 1, Mats.MAT_COPPER.id), 200, 1_000L,
+				new OreDictStack(OreDictManager.CU.plateCast(), 2)));
+		
 		//mid-game, single combustion engine running on LPG
 		ArcWelderRecipes.recipes.add(new ArcWelderRecipe(new ItemStack(ModItems.plate_welded, 1, Mats.MAT_TITANIUM.id), 600, 50_000L,
 				new OreDictStack(OreDictManager.TI.plateCast(), 2)));
@@ -140,9 +148,9 @@ public class ArcWelderRecipes extends SerializableRecipe {
 	public void readRecipe(JsonElement recipe) {
 		JsonObject obj = (JsonObject) recipe;
 		
-		AStack[] inputs = readAStackArray(obj.get("inputs").getAsJsonArray());
-		FluidStack fluid = obj.has("fluid") ? readFluidStack(obj.get("fluid").getAsJsonArray()) : null;
-		ItemStack output = readItemStack(obj.get("output").getAsJsonArray());
+		AStack[] inputs = SerializableRecipe.readAStackArray(obj.get("inputs").getAsJsonArray());
+		FluidStack fluid = obj.has("fluid") ? SerializableRecipe.readFluidStack(obj.get("fluid").getAsJsonArray()) : null;
+		ItemStack output = SerializableRecipe.readItemStack(obj.get("output").getAsJsonArray());
 		int duration = obj.get("duration").getAsInt();
 		long consumption = obj.get("consumption").getAsLong();
 		
@@ -155,17 +163,17 @@ public class ArcWelderRecipes extends SerializableRecipe {
 		
 		writer.name("inputs").beginArray();
 		for(AStack aStack : recipe.ingredients) {
-			writeAStack(aStack, writer);
+			SerializableRecipe.writeAStack(aStack, writer);
 		}
 		writer.endArray();
 		
 		if(recipe.fluid != null) {
 			writer.name("fluid");
-			writeFluidStack(recipe.fluid, writer);
+			SerializableRecipe.writeFluidStack(recipe.fluid, writer);
 		}
 		
 		writer.name("output");
-		writeItemStack(recipe.output, writer);
+		SerializableRecipe.writeItemStack(recipe.output, writer);
 
 		writer.name("duration").value(recipe.duration);
 		writer.name("consumption").value(recipe.consumption);

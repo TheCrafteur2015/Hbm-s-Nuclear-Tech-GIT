@@ -168,6 +168,7 @@ import com.hbm.util.LoggingUtil;
 import api.hbm.fluid.IFluidConnector;
 import net.minecraft.tileentity.TileEntity;
 
+@SuppressWarnings("deprecation")
 public class TileMappings {
 
 	public static HashMap<Class<? extends TileEntity>, String[]> map = new HashMap<>();
@@ -194,6 +195,7 @@ public class TileMappings {
 		TileMappings.put(TileEntityMachineBattery.class, "tileentity_battery");
 		TileMappings.put(TileEntityCapacitor.class, "tileentity_capacitor");
 		TileMappings.put(TileEntityMachineCoal.class, "tileentity_coal");
+		TileMappings.put(TileEntityMachineWoodBurner.class, "tileentity_wood_burner");
 		TileMappings.put(TileEntityRedBarrel.class, "tileentity_barrel");
 		TileMappings.put(TileEntityYellowBarrel.class, "tileentity_nukebarrel");
 		TileMappings.put(TileEntityLaunchPad.class, "tileentity_launch1");
@@ -357,6 +359,9 @@ public class TileMappings {
 		TileMappings.putMachines();
 		TileMappings.putPile();
 		TileMappings.putRBMK();
+
+		TileEntityMachineRadarNT.registerEntityClasses();
+		TileEntityMachineRadarNT.registerConverters();
 	}
 	
 	private static void putBombs() {

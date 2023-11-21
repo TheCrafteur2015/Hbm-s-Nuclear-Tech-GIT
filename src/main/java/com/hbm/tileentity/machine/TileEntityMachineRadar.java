@@ -31,11 +31,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
+@SuppressWarnings("deprecation")
 @Optional.InterfaceList({@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "OpenComputers")})
 public class TileEntityMachineRadar extends TileEntityTickingBase implements IEnergyUser, IGUIProvider, SimpleComponent {
 
-	public List<Entity> entList = new ArrayList<>();
-	public List<int[]> nearbyMissiles = new ArrayList<>();
+	public List<Entity> detectedEntities = new ArrayList();
+	public List<int[]> nearbyMissiles = new ArrayList();
+	
 	int pingTimer = 0;
 	int lastPower;
 	final static int maxTimer = 80;
@@ -61,8 +63,7 @@ public class TileEntityMachineRadar extends TileEntityTickingBase implements IEn
 	@Override
 	public void updateEntity() {
 		
-		if(this.yCoord < WeaponConfig.radarAltitude)
-			return;
+		if(this.yCoord < WeaponConfig.radarAltitude) return;
 		
 		if(!this.worldObj.isRemote) {
 			
@@ -71,17 +72,13 @@ public class TileEntityMachineRadar extends TileEntityTickingBase implements IEn
 			this.nearbyMissiles.clear();
 			
 			if(this.power > 0) {
-				
 				allocateMissiles();
-				
 				this.power -= 500;
 				
-				if(this.power < 0)
-					this.power = 0;
+				if(this.power < 0) this.power = 0;
 			}
 			
-			if(this.lastPower != getRedPower())
-				this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, getBlockType());
+			if(this.lastPower != getRedPower()) this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, getBlockType());
 			
 			sendMissileData();
 			this.lastPower = getRedPower();
@@ -96,12 +93,8 @@ public class TileEntityMachineRadar extends TileEntityTickingBase implements IEn
 				}
 			}
 		} else {
-
 			this.prevRotation = this.rotation;
-			
-			if(this.power > 0) {
-				this.rotation += 5F;
-			}
+			if(this.power > 0) this.rotation += 5F;
 			
 			if(this.rotation >= 360) {
 				this.rotation -= 360F;
@@ -121,11 +114,9 @@ public class TileEntityMachineRadar extends TileEntityTickingBase implements IEn
 		}
 	}
 	
-	
 	private void allocateMissiles() {
-		
 		this.nearbyMissiles.clear();
-		this.entList.clear();
+		this.detectedEntities.clear();
 		this.jammed = false;
 		
 		List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBox(this.xCoord + 0.5 - WeaponConfig.radarRange, 0, this.zCoord + 0.5 - WeaponConfig.radarRange, this.xCoord + 0.5 + WeaponConfig.radarRange, 5000, this.zCoord + 0.5 + WeaponConfig.radarRange));
@@ -138,36 +129,33 @@ public class TileEntityMachineRadar extends TileEntityTickingBase implements IEn
 			if(e instanceof EntityLivingBase && HbmLivingProps.getDigamma((EntityLivingBase) e) > 0.001) {
 				this.jammed = true;
 				this.nearbyMissiles.clear();
-				this.entList.clear();
+				this.detectedEntities.clear();
 				return;
 			}
 
 			if(e instanceof EntityPlayer && this.scanPlayers) {
 				this.nearbyMissiles.add(new int[] { (int)e.posX, (int)e.posZ, RadarTargetType.PLAYER.ordinal(), (int)e.posY });
-				this.entList.add(e);
+				this.detectedEntities.add(e);
 			}
 			
 			if(e instanceof IRadarDetectable && this.scanMissiles) {
 				this.nearbyMissiles.add(new int[] { (int)e.posX, (int)e.posZ, ((IRadarDetectable)e).getTargetType().ordinal(), (int)e.posY });
 				
 				if(!this.smartMode || e.motionY <= 0)
-					this.entList.add(e);
+					this.detectedEntities.add(e);
 			}
 		}
 	}
 	
 	public int getRedPower() {
-		
-		if(!this.entList.isEmpty()) {
+		if(!this.detectedEntities.isEmpty()) {
 			
 			/// PROXIMITY ///
 			if(this.redMode) {
-				
 				double maxRange = WeaponConfig.radarRange * Math.sqrt(2D);
-				
 				int power = 0;
 				
-				for (Entity e : this.entList) {
+				for (Entity e : this.detectedEntities) {
 					
 					double dist = Math.sqrt(Math.pow(e.posX - this.xCoord, 2) + Math.pow(e.posZ - this.zCoord, 2));
 					int p = 15 - (int)Math.floor(dist / maxRange * 15);
@@ -316,9 +304,9 @@ public class TileEntityMachineRadar extends TileEntityTickingBase implements IEn
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getEntities(Context context, Arguments args) { //fuck fuck fuck
 		if(!this.jammed) {
-			List<Object> list = new ArrayList<>();
-			list.add(this.entList.size());     // small header of how many entities in the list
-			for (Entity e : this.entList) {
+			List<Object> list = new ArrayList();
+			list.add(this.detectedEntities.size());     // small header of how many entities in the list
+			for (Entity e : this.detectedEntities) {
 				list.add(e.posX);   	  //  positions
 				list.add(e.posY);
 				list.add(e.posZ);

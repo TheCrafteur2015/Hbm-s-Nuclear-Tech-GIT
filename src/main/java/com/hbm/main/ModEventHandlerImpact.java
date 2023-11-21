@@ -31,11 +31,12 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent.CheckSpawn;
 import net.minecraftforge.event.terraingen.BiomeEvent;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
+import net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate;
 import net.minecraftforge.event.world.WorldEvent;
 
 public class ModEventHandlerImpact {
@@ -101,24 +102,38 @@ public class ModEventHandlerImpact {
 	}*/
 
 	@SubscribeEvent
-	public void extinction(EntityJoinWorldEvent event) {
+	public void extinction(CheckSpawn event) {
 		
 		TomSaveData data = TomSaveData.forWorld(event.world);
 		
 		if(data.impact) {
-			if(!(event.entity instanceof EntityPlayer) && event.entity instanceof EntityLivingBase) {
-				EntityLivingBase living = (EntityLivingBase) event.entity;
+			if(!(event.entityLiving instanceof EntityPlayer) && event.entityLiving instanceof EntityLivingBase) {
 				if(event.world.provider.dimensionId == 0) {
-					if(event.entity.height >= 0.85f || event.entity.width >= 0.85f && event.entity.ticksExisted < 20 && !(event.entity instanceof EntityWaterMob) && !living.isChild()) {
-						event.setCanceled(true);
+					if(event.entityLiving.height >= 0.85F || event.entityLiving.width >= 0.85F && !(event.entity instanceof EntityWaterMob) && !event.entityLiving.isChild()) {
+						event.setResult(Result.DENY);
+						event.entityLiving.setDead();
 					}
 				}
-				if(event.entity instanceof EntityWaterMob && event.entity.ticksExisted < 20) {
+				if(event.entityLiving instanceof EntityWaterMob) {
 					Random rand = new Random();
-					if(rand.nextInt(9) != 0) {
-						event.setCanceled(true);
+					if(rand.nextInt(5) != 0) {
+						event.setResult(Result.DENY);
+						event.entityLiving.setDead();
 					}
 				}
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public void onPopulate(Populate event) {
+		
+		if(event.type == Populate.EventType.ANIMALS) {
+			
+			TomSaveData data = TomSaveData.forWorld(event.world);
+			
+			if(data.impact) {
+				event.setResult(Result.DENY);
 			}
 		}
 	}

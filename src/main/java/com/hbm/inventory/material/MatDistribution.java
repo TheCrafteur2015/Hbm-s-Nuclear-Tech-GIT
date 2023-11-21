@@ -40,24 +40,32 @@ public class MatDistribution extends SerializableRecipe {
 		MatDistribution.registerEntry(Blocks.golden_rail, Mats.MAT_GOLD, MaterialShapes.INGOT.q(6, 6), Mats.MAT_REDSTONE, MaterialShapes.DUST.q(1, 6));
 		MatDistribution.registerEntry(Blocks.detector_rail, Mats.MAT_IRON, MaterialShapes.INGOT.q(6, 6), Mats.MAT_REDSTONE, MaterialShapes.DUST.q(1, 6));
 		MatDistribution.registerEntry(Items.minecart, Mats.MAT_IRON, MaterialShapes.INGOT.q(5));
-		
+
 		//castables
-		MatDistribution.registerEntry(ModItems.blade_titanium,			Mats.MAT_TITANIUM,		MaterialShapes.INGOT.q(2));
-		MatDistribution.registerEntry(ModItems.blade_tungsten,			Mats.MAT_TUNGSTEN,		MaterialShapes.INGOT.q(2));
-		MatDistribution.registerEntry(ModItems.blades_steel,			Mats.MAT_STEEL,			MaterialShapes.INGOT.q(4));
-		MatDistribution.registerEntry(ModItems.blades_titanium,			Mats.MAT_TITANIUM, 		MaterialShapes.INGOT.q(4));
-		MatDistribution.registerEntry(ModItems.blades_advanced_alloy,	Mats.MAT_ALLOY,			MaterialShapes.INGOT.q(4));
-		MatDistribution.registerEntry(ModItems.stamp_stone_flat,		Mats.MAT_STONE,			MaterialShapes.INGOT.q(3));
-		MatDistribution.registerEntry(ModItems.stamp_iron_flat,			Mats.MAT_IRON,			MaterialShapes.INGOT.q(3));
-		MatDistribution.registerEntry(ModItems.stamp_steel_flat,		Mats.MAT_STEEL,			MaterialShapes.INGOT.q(3));
-		MatDistribution.registerEntry(ModItems.stamp_titanium_flat,		Mats.MAT_TITANIUM,		MaterialShapes.INGOT.q(3));
-		MatDistribution.registerEntry(ModItems.stamp_obsidian_flat,		Mats.MAT_OBSIDIAN,		MaterialShapes.INGOT.q(3));
-		MatDistribution.registerEntry(ModItems.hull_small_steel,		Mats.MAT_STEEL,			MaterialShapes.INGOT.q(2));
-		MatDistribution.registerEntry(ModItems.hull_small_aluminium,	Mats.MAT_ALUMINIUM,		MaterialShapes.INGOT.q(2));
-		MatDistribution.registerEntry(ModItems.hull_big_steel,			Mats.MAT_STEEL,			MaterialShapes.INGOT.q(6));
-		MatDistribution.registerEntry(ModItems.hull_big_aluminium,		Mats.MAT_ALUMINIUM,		MaterialShapes.INGOT.q(6));
-		MatDistribution.registerEntry(ModItems.hull_big_titanium,		Mats.MAT_TITANIUM,		MaterialShapes.INGOT.q(6));
-		MatDistribution.registerEntry(ModItems.pipes_steel,				Mats.MAT_STEEL,			MaterialShapes.BLOCK.q(3));
+		MatDistribution.registerEntry(ModItems.blade_titanium,				Mats.MAT_TITANIUM,		MaterialShapes.INGOT.q(2));
+		MatDistribution.registerEntry(ModItems.blade_tungsten,				Mats.MAT_TUNGSTEN,		MaterialShapes.INGOT.q(2));
+		MatDistribution.registerEntry(ModItems.blades_steel,				Mats.MAT_STEEL,			MaterialShapes.INGOT.q(4));
+		MatDistribution.registerEntry(ModItems.blades_titanium,				Mats.MAT_TITANIUM, 		MaterialShapes.INGOT.q(4));
+		MatDistribution.registerEntry(ModItems.blades_advanced_alloy,		Mats.MAT_ALLOY,			MaterialShapes.INGOT.q(4));
+		MatDistribution.registerEntry(ModItems.stamp_stone_flat,			Mats.MAT_STONE,			MaterialShapes.INGOT.q(3));
+		MatDistribution.registerEntry(ModItems.stamp_iron_flat,				Mats.MAT_IRON,			MaterialShapes.INGOT.q(3));
+		MatDistribution.registerEntry(ModItems.stamp_steel_flat,			Mats.MAT_STEEL,			MaterialShapes.INGOT.q(3));
+		MatDistribution.registerEntry(ModItems.stamp_titanium_flat,			Mats.MAT_TITANIUM,		MaterialShapes.INGOT.q(3));
+		MatDistribution.registerEntry(ModItems.stamp_obsidian_flat,			Mats.MAT_OBSIDIAN,		MaterialShapes.INGOT.q(3));
+		MatDistribution.registerEntry(ModItems.hull_small_steel,			Mats.MAT_STEEL,			MaterialShapes.INGOT.q(2));
+		MatDistribution.registerEntry(ModItems.hull_small_aluminium,		Mats.MAT_ALUMINIUM,		MaterialShapes.INGOT.q(2));
+		MatDistribution.registerEntry(ModItems.hull_big_steel,				Mats.MAT_STEEL,			MaterialShapes.INGOT.q(6));
+		MatDistribution.registerEntry(ModItems.hull_big_aluminium,			Mats.MAT_ALUMINIUM,		MaterialShapes.INGOT.q(6));
+		MatDistribution.registerEntry(ModItems.hull_big_titanium,			Mats.MAT_TITANIUM,		MaterialShapes.INGOT.q(6));
+		MatDistribution.registerEntry(ModItems.pipes_steel,					Mats.MAT_STEEL,			MaterialShapes.BLOCK.q(3));
+		MatDistribution.registerEntry(ModItems.wire_aluminium,				Mats.MAT_ALUMINIUM,		MaterialShapes.WIRE.q(1));
+		MatDistribution.registerEntry(ModItems.wire_copper,					Mats.MAT_COPPER,			MaterialShapes.WIRE.q(1));
+		MatDistribution.registerEntry(ModItems.wire_red_copper,				Mats.MAT_MINGRADE,		MaterialShapes.WIRE.q(1));
+		MatDistribution.registerEntry(ModItems.wire_tungsten,				Mats.MAT_TUNGSTEN,		MaterialShapes.WIRE.q(1));
+		MatDistribution.registerEntry(ModItems.wire_gold,					Mats.MAT_GOLD,			MaterialShapes.WIRE.q(1));
+		MatDistribution.registerEntry(ModItems.wire_advanced_alloy,			Mats.MAT_ALLOY,			MaterialShapes.WIRE.q(1));
+		MatDistribution.registerEntry(ModItems.wire_magnetized_tungsten,	Mats.MAT_MAGTUNG,		MaterialShapes.WIRE.q(1));
+		MatDistribution.registerEntry(ModItems.wire_schrabidium,			Mats.MAT_SCHRABIDIUM,	MaterialShapes.WIRE.q(1));
 
 		//actual ores
 		if(!Compat.isModLoaded(Compat.MOD_GT6)) {
@@ -66,7 +74,7 @@ public class MatDistribution extends SerializableRecipe {
 			MatDistribution.registerOre(OreDictManager.W.ore(), Mats.MAT_TUNGSTEN, MaterialShapes.INGOT.q(2), Mats.MAT_STONE, MaterialShapes.QUART.q(1));
 			MatDistribution.registerOre(OreDictManager.AL.ore(), Mats.MAT_ALUMINIUM, MaterialShapes.INGOT.q(2), Mats.MAT_STONE, MaterialShapes.QUART.q(1));
 		}
-		
+
 		MatDistribution.registerOre(OreDictManager.COAL.ore(), Mats.MAT_CARBON, MaterialShapes.GEM.q(3), Mats.MAT_STONE, MaterialShapes.QUART.q(1));
 		MatDistribution.registerOre(OreDictManager.GOLD.ore(), Mats.MAT_GOLD, MaterialShapes.INGOT.q(2), Mats.MAT_LEAD, MaterialShapes.NUGGET.q(3), Mats.MAT_STONE, MaterialShapes.QUART.q(1));
 		MatDistribution.registerOre(OreDictManager.U.ore(), Mats.MAT_URANIUM, MaterialShapes.INGOT.q(2), Mats.MAT_LEAD, MaterialShapes.NUGGET.q(3), Mats.MAT_STONE, MaterialShapes.QUART.q(1));
@@ -77,9 +85,9 @@ public class MatDistribution extends SerializableRecipe {
 		MatDistribution.registerOre(OreDictManager.CO.ore(), Mats.MAT_COBALT, MaterialShapes.INGOT.q(1), Mats.MAT_STONE, MaterialShapes.QUART.q(1));
 		MatDistribution.registerOre(OreDictManager.REDSTONE.ore(), Mats.MAT_REDSTONE, MaterialShapes.INGOT.q(4), Mats.MAT_STONE, MaterialShapes.QUART.q(1));
 
-		MatDistribution.registerOre(OreDictManager.HEMATITE.ore(), Mats.MAT_HEMATITE, MaterialShapes.INGOT.q(4));
-		MatDistribution.registerOre(OreDictManager.MALACHITE.ore(), Mats.MAT_MALACHITE, MaterialShapes.INGOT.q(4));
-		
+		MatDistribution.registerOre(OreDictManager.HEMATITE.ore(), Mats.MAT_HEMATITE, MaterialShapes.INGOT.q(1));
+		MatDistribution.registerOre(OreDictManager.MALACHITE.ore(), Mats.MAT_MALACHITE, MaterialShapes.INGOT.q(1));
+
 		MatDistribution.registerEntry(DictFrame.fromOne(ModBlocks.stone_resource, EnumStoneType.LIMESTONE), Mats.MAT_FLUX, MaterialShapes.DUST.q(10));
 		MatDistribution.registerEntry(ModItems.powder_flux, Mats.MAT_FLUX, MaterialShapes.DUST.q(1));
 		MatDistribution.registerEntry(new ItemStack(Items.coal, 1, 1), Mats.MAT_CARBON, MaterialShapes.NUGGET.q(3));
@@ -88,38 +96,38 @@ public class MatDistribution extends SerializableRecipe {
 		MatDistribution.registerEntry(DictFrame.fromOne(ModItems.powder_ash, EnumAshType.COAL), Mats.MAT_CARBON, MaterialShapes.NUGGET.q(2));
 		MatDistribution.registerEntry(DictFrame.fromOne(ModItems.powder_ash, EnumAshType.MISC), Mats.MAT_CARBON, MaterialShapes.NUGGET.q(1));
 	}
-	
+
 	public static void registerEntry(Object key, Object... matDef) {
 		ComparableStack comp = null;
 
 		if(key instanceof Item) comp = new ComparableStack((Item) key);
 		if(key instanceof Block) comp = new ComparableStack((Block) key);
 		if(key instanceof ItemStack) comp = new ComparableStack((ItemStack) key);
-		
+
 		if((comp == null) || (matDef.length % 2 == 1)) return;
-		
+
 		List<MaterialStack> stacks = new ArrayList<>();
-		
+
 		for(int i = 0; i < matDef.length; i += 2) {
 			stacks.add(new MaterialStack((NTMMaterial) matDef[i], (int) matDef[i + 1]));
 		}
-		
+
 		if(stacks.isEmpty()) return;
-		
+
 		Mats.materialEntries.put(comp, stacks);
 	}
-	
+
 	public static void registerOre(String key, Object... matDef) {
 		if(matDef.length % 2 == 1) return;
-		
+
 		List<MaterialStack> stacks = new ArrayList<>();
-		
+
 		for(int i = 0; i < matDef.length; i += 2) {
 			stacks.add(new MaterialStack((NTMMaterial) matDef[i], (int) matDef[i + 1]));
 		}
-		
+
 		if(stacks.isEmpty()) return;
-		
+
 		Mats.materialOreEntries.put(key, stacks);
 	}
 
@@ -139,7 +147,7 @@ public class MatDistribution extends SerializableRecipe {
 	@Override
 	public void readRecipe(JsonElement recipe) {
 		JsonObject obj = (JsonObject) recipe;
-		AStack input = readAStack(obj.get("input").getAsJsonArray());
+		AStack input = SerializableRecipe.readAStack(obj.get("input").getAsJsonArray());
 		List<MaterialStack> materials = new ArrayList<>();
 		JsonArray output = obj.get("output").getAsJsonArray();
 		for(int i = 0; i < output.size(); i++) {
@@ -155,7 +163,6 @@ public class MatDistribution extends SerializableRecipe {
 		}
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void writeRecipe(Object recipe, JsonWriter writer) throws IOException {
 		AStack toSmelt = null;
@@ -168,7 +175,7 @@ public class MatDistribution extends SerializableRecipe {
 		}
 		if(toSmelt == null) return;
 		writer.name("input");
-		writeAStack(toSmelt, writer);
+		SerializableRecipe.writeAStack(toSmelt, writer);
 		writer.name("output").beginArray();
 		writer.setIndent("");
 		for(MaterialStack stack : materials) {
@@ -185,12 +192,12 @@ public class MatDistribution extends SerializableRecipe {
 		Mats.materialEntries.clear();
 		Mats.materialOreEntries.clear();
 	}
-	
+
 	@Override
 	public String getComment() {
 		return 
-			"Defines a set of items that can be smelted. Smelting generated from the ore dictionary (prefix + material) is auto-generated and cannot be\n" +
-			"changed. This config only changes fixed items (like recycling for certain metallic objects) and ores (with variable byproducts).\n" +
-			"Amounts used are in quanta (1 quantum is 1/72 of an ingot or 1/8 of a nugget). Material names are the ore dict suffixes, case-sensitive.";
+				"Defines a set of items that can be smelted. Smelting generated from the ore dictionary (prefix + material) is auto-generated and cannot be\n" +
+				"changed. This config only changes fixed items (like recycling for certain metallic objects) and ores (with variable byproducts).\n" +
+				"Amounts used are in quanta (1 quantum is 1/72 of an ingot or 1/8 of a nugget). Material names are the ore dict suffixes, case-sensitive.";
 	}
 }

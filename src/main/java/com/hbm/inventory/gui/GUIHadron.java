@@ -21,6 +21,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 
+@SuppressWarnings("deprecation")
 public class GUIHadron extends GuiInfoContainer {
 
 	public static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/machine/gui_hadron.png");
@@ -40,8 +41,10 @@ public class GUIHadron extends GuiInfoContainer {
 		
 		drawElectricityInfo(this, mouseX, mouseY, this.guiLeft + 62, this.guiTop + 108, 70, 16, this.hadron.power, TileEntityHadron.maxPower);
 
-		if(this.hadron.hopperMode)
+		if(this.hadron.ioMode == 1)
 			this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 142, this.guiTop + 89, 18, 18, mouseX, mouseY, I18nUtil.resolveKeyArray("hadron.hopper1"));
+		else if(this.hadron.ioMode == 2)
+			this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 142, this.guiTop + 89, 18, 18, mouseX, mouseY, I18nUtil.resolveKeyArray("hadron.hopper2"));
 		else
 			this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 142, this.guiTop + 89, 18, 18, mouseX, mouseY, I18nUtil.resolveKeyArray("hadron.hopper0"));
 		
@@ -59,7 +62,7 @@ public class GUIHadron extends GuiInfoContainer {
 
 		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft - 4, this.guiTop + 36, 16, 16, this.guiLeft + 4, this.guiTop + 36 + 16, new String[] {"Initial particle momentum: 750"});
 	}
-
+	
 	@Override
 	protected void mouseClicked(int x, int y, int i) {
 		super.mouseClicked(x, y, i);
@@ -105,9 +108,9 @@ public class GUIHadron extends GuiInfoContainer {
 		
 		if(this.hadron.analysisOnly)
 			drawTexturedModalRect(this.guiLeft + 142, this.guiTop + 107, 206, 18, 18, 18);
-		
-		if(this.hadron.hopperMode)
-			drawTexturedModalRect(this.guiLeft + 142, this.guiTop + 89, 206, 36, 18, 18);
+
+		if(this.hadron.ioMode == TileEntityHadron.MODE_HOPPER) drawTexturedModalRect(this.guiLeft + 142, this.guiTop + 89, 206, 36, 18, 18);
+		if(this.hadron.ioMode == TileEntityHadron.MODE_SINGLE) drawTexturedModalRect(this.guiLeft + 142, this.guiTop + 89, 224, 36, 18, 18);
 
 		if(this.hadron.state == EnumHadronState.SUCCESS) {
 			drawTexturedModalRect(this.guiLeft + 73, this.guiTop + 29, 176, 0, 30, 30);

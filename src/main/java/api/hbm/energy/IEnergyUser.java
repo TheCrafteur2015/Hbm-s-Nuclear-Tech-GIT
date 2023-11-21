@@ -27,15 +27,15 @@ public interface IEnergyUser extends IEnergyConnector {
 	 */
 	@Override
 	public default long transferPower(long power) {
-		
-		setPower(getPower() + power);
-		
-		if(getPower() > getMaxPower()) {
-			
-			long overshoot = getPower() - getMaxPower();
-			setPower(getMaxPower());
+		if(this.getPower() + power > this.getMaxPower()) {
+			long overshoot = this.getPower() + power - this.getMaxPower();
+			this.setPower(this.getMaxPower());
 			return overshoot;
 		}
+		
+		if(this.getPower() + power < 0) return 0; //safeguard for negative energy or overflows
+		
+		this.setPower(this.getPower() + power);
 		
 		return 0;
 	}

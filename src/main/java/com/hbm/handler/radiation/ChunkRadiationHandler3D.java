@@ -111,6 +111,15 @@ public class ChunkRadiationHandler3D extends ChunkRadiationHandler {
 	}
 
 	@Override
+	public void clearSystem(World world) {
+		ThreeDimRadiationPerWorld radWorld = perWorld.get(world);
+		
+		if(radWorld != null) {
+			radWorld.radiation.clear();
+		}
+	}
+
+	@Override
 	public void receiveWorldLoad(WorldEvent.Load event) {
 		if(!event.world.isRemote)
 			this.perWorld.put(event.world, new ThreeDimRadiationPerWorld());

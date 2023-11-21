@@ -25,6 +25,7 @@ public class TileEntityMachineFENSU extends TileEntityMachineBattery {
 	
 	public static final long maxTransfer = 10_000_000_000_000_000L;
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public void updateEntity() {
 		
@@ -35,7 +36,7 @@ public class TileEntityMachineFENSU extends TileEntityMachineBattery {
 			this.power = Library.chargeItemsFromTE(this.slots, 1, this.power, getMaxPower());
 			
 			//////////////////////////////////////////////////////////////////////
-			transmitPower();
+			transmitPowerFairly();
 			//////////////////////////////////////////////////////////////////////
 			
 			byte comp = getComparatorPower();
@@ -144,8 +145,8 @@ public class TileEntityMachineFENSU extends TileEntityMachineBattery {
 	}
 
 	@Override
-	public long getTransferWeight() {
-		return Math.min(Math.max(getMaxPower() - getPower(), 0), TileEntityMachineFENSU.maxTransfer);
+	public long getMaxTransfer() {
+		return TileEntityMachineFENSU.maxTransfer;
 	}
 	
 	public float getSpeed() {

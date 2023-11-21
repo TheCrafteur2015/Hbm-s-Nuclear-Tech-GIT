@@ -18,6 +18,7 @@ import com.hbm.blocks.generic.BlockToolConversion;
 import com.hbm.commands.CommandClearChat;
 import com.hbm.commands.CommandDebug;
 import com.hbm.commands.CommandDebugChunkLoad;
+import com.hbm.commands.CommandRadiation;
 import com.hbm.commands.CommandReloadRecipes;
 import com.hbm.commands.CommandSatellites;
 import com.hbm.commands.CommandSetSpeed;
@@ -1061,6 +1062,7 @@ public class MainRegistry {
 		event.registerServerCommand(new CommandDebug());
 		event.registerServerCommand(new CommandClearChat());
 		event.registerServerCommand(new CommandSetSpeed());
+		event.registerServerCommand(new CommandRadiation());
 	}
 	
 	@EventHandler

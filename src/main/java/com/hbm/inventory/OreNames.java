@@ -16,6 +16,7 @@ public class OreNames {
 	public static final String PLATE = "plate";
 	public static final String PLATECAST = "plateTriple"; //cast plates are solid plates made from 3 ingots, turns out that's literally just a GT triple plate
 	public static final String PLATEWELDED = "plateSextuple";
+	public static final String WIREDENSE = "wireDense";
 	public static final String BILLET = "billet";
 	public static final String BLOCK = "block";
 	public static final String ORE = "ore";
@@ -23,6 +24,9 @@ public class OreNames {
 	public static final String HEAVY_COMPONENT = "componentHeavy";
 	
 	public static final String[] prefixes = new String[] {
-			OreNames.ANY, OreNames.NUGGET, OreNames.TINY, OreNames.INGOT, OreNames.DUSTTINY, OreNames.DUST, OreNames.GEM, OreNames.CRYSTAL, OreNames.PLATE, OreNames.PLATECAST, OreNames.BILLET, OreNames.BLOCK, OreNames.ORE, OreNames.ORENETHER, OreNames.HEAVY_COMPONENT
+		OreNames.ANY, OreNames.NUGGET, OreNames.TINY, OreNames.INGOT,
+		OreNames.DUSTTINY, OreNames.DUST, OreNames.GEM, OreNames.CRYSTAL,
+		OreNames.PLATE, OreNames.PLATECAST, OreNames.BILLET, OreNames.BLOCK,
+		OreNames.ORE, OreNames.ORENETHER, OreNames.HEAVY_COMPONENT, OreNames.WIREDENSE
 	};
 }

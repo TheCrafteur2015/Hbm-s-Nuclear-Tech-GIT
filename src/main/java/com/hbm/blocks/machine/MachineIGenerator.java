@@ -20,13 +20,10 @@ public class MachineIGenerator extends BlockDummyable {
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		
 		if(meta >= 12)
 			return new TileEntityMachineIGenerator();
-		
 		if(meta >= BlockDummyable.extra)
 			return new TileEntityProxyCombo(false, true, true);
-		
 		return new TileEntityProxyCombo(true, false, false);
 	}
 
@@ -71,8 +68,10 @@ public class MachineIGenerator extends BlockDummyable {
 	@Override
 	public void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		super.fillSpace(world, x, y, z, dir, o);
-		makeExtra(world, x + dir.offsetX * (o - 3), y, z + dir.offsetZ * (o - 3));
-		makeExtra(world, x + dir.offsetX * (o + 2), y, z + dir.offsetZ * (o + 2));
+		this.makeExtra(world, x + dir.offsetX * (o - 3), y, z + dir.offsetZ * (o - 3));
+		this.makeExtra(world, x + dir.offsetX * (o - 2), y, z + dir.offsetZ * (o - 2));
+		this.makeExtra(world, x + dir.offsetX * (o - 1), y, z + dir.offsetZ * (o - 1));
+		this.makeExtra(world, x + dir.offsetX * (o + 2), y, z + dir.offsetZ * (o + 2));
 	}
 
 	@Override

@@ -17,6 +17,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 
+@SuppressWarnings("deprecation")
 public class TileEntityMachineShredderLarge extends TileEntity implements ISidedInventory {
 
 	private ItemStack slots[];
@@ -46,23 +47,19 @@ public class TileEntityMachineShredderLarge extends TileEntity implements ISided
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
-		if(this.slots[i] != null)
-		{
+		if(this.slots[i] != null) {
 			ItemStack itemStack = this.slots[i];
 			this.slots[i] = null;
 			return itemStack;
-		} else {
-		return null;
 		}
+		return null;
 	}
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemStack) {
 		this.slots[i] = itemStack;
 		if(itemStack != null && itemStack.stackSize > getInventoryStackLimit())
-		{
 			itemStack.stackSize = getInventoryStackLimit();
-		}
 	}
 
 	@Override
@@ -87,11 +84,9 @@ public class TileEntityMachineShredderLarge extends TileEntity implements ISided
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
 		if(this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this)
-		{
 			return false;
-		}else{
-			return player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <=128;
-		}
+		else
+			return player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 128;
 	}
 	
 	//You scrubs aren't needed for anything (right now)
@@ -105,33 +100,25 @@ public class TileEntityMachineShredderLarge extends TileEntity implements ISided
 		if(i == 0)
 			if(itemStack.getItem() instanceof IBatteryItem)
 				return true;
-		
 		if(i == 1)
 			return true;
-		
 		return false;
 	}
 	
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		if(this.slots[i] != null)
-		{
-			if(this.slots[i].stackSize <= j)
-			{
+		if(this.slots[i] != null) {
+			if(this.slots[i].stackSize <= j) {
 				ItemStack itemStack = this.slots[i];
 				this.slots[i] = null;
 				return itemStack;
 			}
 			ItemStack itemStack1 = this.slots[i].splitStack(j);
 			if (this.slots[i].stackSize == 0)
-			{
 				this.slots[i] = null;
-			}
-			
 			return itemStack1;
-		} else {
+		} else
 			return null;
-		}
 	}
 	
 	@Override
@@ -142,14 +129,11 @@ public class TileEntityMachineShredderLarge extends TileEntity implements ISided
 		this.power = nbt.getLong("powerTime");
 		this.slots = new ItemStack[getSizeInventory()];
 		
-		for(int i = 0; i < list.tagCount(); i++)
-		{
+		for(int i = 0; i < list.tagCount(); i++) {
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("slot");
 			if(b0 >= 0 && b0 < this.slots.length)
-			{
 				this.slots[b0] = ItemStack.loadItemStackFromNBT(nbt1);
-			}
 		}
 	}
 	
@@ -159,10 +143,8 @@ public class TileEntityMachineShredderLarge extends TileEntity implements ISided
 		nbt.setLong("powerTime", this.power);
 		NBTTagList list = new NBTTagList();
 		
-		for(int i = 0; i < this.slots.length; i++)
-		{
-			if(this.slots[i] != null)
-			{
+		for(int i = 0; i < this.slots.length; i++) {
+			if(this.slots[i] != null) {
 				NBTTagCompound nbt1 = new NBTTagCompound();
 				nbt1.setByte("slot", (byte)i);
 				this.slots[i].writeToNBT(nbt1);
@@ -173,9 +155,8 @@ public class TileEntityMachineShredderLarge extends TileEntity implements ISided
 	}
 	
 	@Override
-	public int[] getAccessibleSlotsFromSide(int p_94128_1_)
-    {
-        return new int[] { 0 };
+	public int[] getAccessibleSlotsFromSide(int p_94128_1_) {
+		return new int[] {0};
     }
 
 	@Override
@@ -198,11 +179,8 @@ public class TileEntityMachineShredderLarge extends TileEntity implements ISided
 	
 	@Override
 	public void updateEntity() {
-		
-		if(!this.worldObj.isRemote) {
+		if(!this.worldObj.isRemote)
 			PacketDispatcher.wrapper.sendToAllAround(new AuxElectricityPacket(this.xCoord, this.yCoord, this.zCoord, this.power), new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 150));
-		}
-		
 	}
 	
 	@Override
@@ -212,8 +190,7 @@ public class TileEntityMachineShredderLarge extends TileEntity implements ISided
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public double getMaxRenderDistanceSquared()
-	{
+	public double getMaxRenderDistanceSquared() {
 		return 65536.0D;
 	}
 

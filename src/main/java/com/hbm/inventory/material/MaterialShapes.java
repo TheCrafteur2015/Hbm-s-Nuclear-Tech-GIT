@@ -21,6 +21,7 @@ public class MaterialShapes {
 	public static final MaterialShapes PLATE = new MaterialShapes(MaterialShapes.INGOT.quantity, "plate");
 	public static final MaterialShapes CASTPLATE = new MaterialShapes(MaterialShapes.INGOT.quantity * 3, "plateTriple");
 	public static final MaterialShapes WELDEDPLATE = new MaterialShapes(MaterialShapes.INGOT.quantity * 6, "plateSextuple");
+	public static final MaterialShapes DENSEWIRE = new MaterialShapes(MaterialShapes.INGOT.quantity, "wireDense");
 	public static final MaterialShapes QUART = new MaterialShapes(162);
 	public static final MaterialShapes BLOCK = new MaterialShapes(MaterialShapes.INGOT.quantity * 9, "block");
 	public static final MaterialShapes HEAVY_COMPONENT = new MaterialShapes(MaterialShapes.CASTPLATE.quantity * 256, "componentHeavy");

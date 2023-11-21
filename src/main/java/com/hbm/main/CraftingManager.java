@@ -301,7 +301,8 @@ public class CraftingManager {
 		CraftingManager.addRecipeAuto(new ItemStack(ModBlocks.capacitor_niobium, 1), new Object[] { "PPP", "ICI", "WWW", 'P', OreDictManager.STEEL.plate(), 'I', OreDictManager.RUBBER.ingot(), 'C', OreDictManager.NB.block(), 'W', OreDictManager.STEEL.ingot() });
 		CraftingManager.addRecipeAuto(new ItemStack(ModBlocks.capacitor_tantalium, 1), new Object[] { "PPP", "ICI", "WWW", 'P', OreDictManager.STEEL.plate(), 'I', OreDictManager.ANY_RESISTANTALLOY.ingot(), 'C', OreDictManager.TA.block(), 'W', OreDictManager.STEEL.ingot() });
 		CraftingManager.addRecipeAuto(new ItemStack(ModBlocks.capacitor_schrabidate, 1), new Object[] { "PPP", "ICI", "WWW", 'P', OreDictManager.STEEL.plate(), 'I', OreDictManager.ANY_RESISTANTALLOY.ingot(), 'C', OreDictManager.SBD.block(), 'W', OreDictManager.STEEL.ingot() });
-		CraftingManager.addRecipeAuto(new ItemStack(ModBlocks.machine_coal_off, 1), new Object[] { "STS", "SCS", "SFS", 'S', OreDictManager.STEEL.ingot(), 'T', ModItems.tank_steel, 'C', OreDictManager.MINGRADE.ingot(), 'F', Blocks.furnace });
+		//addRecipeAuto(new ItemStack(ModBlocks.machine_coal_off, 1), new Object[] { "STS", "SCS", "SFS", 'S', STEEL.ingot(), 'T', ModItems.tank_steel, 'C', MINGRADE.ingot(), 'F', Blocks.furnace });
+		CraftingManager.addRecipeAuto(new ItemStack(ModBlocks.machine_wood_burner, 1), new Object[] { "PPP", "CFC", "I I" , 'P', OreDictManager.STEEL.plate528(), 'C', ModItems.coil_copper, 'I', OreDictManager.IRON.ingot(), 'F', Blocks.furnace});
 		CraftingManager.addRecipeAuto(new ItemStack(ModBlocks.machine_boiler_off, 1), new Object[] { "SPS", "TFT", "SPS", 'S', OreDictManager.STEEL.ingot(), 'P', ModItems.board_copper, 'T', ModItems.tank_steel, 'F', Blocks.furnace });
 		CraftingManager.addRecipeAuto(new ItemStack(ModBlocks.machine_boiler_electric_off, 1), new Object[] { "SPS", "TFT", "SPS", 'S', OreDictManager.DESH.ingot(), 'P', ModItems.board_copper, 'T', ModItems.tank_steel, 'F', ModBlocks.machine_electric_furnace_off });
 		CraftingManager.addRecipeAuto(new ItemStack(ModBlocks.machine_turbine, 1), new Object[] { "SMS", "PTP", "SMS", 'S', OreDictManager.STEEL.ingot(), 'T', ModItems.turbine_titanium, 'M', ModItems.coil_copper, 'P', OreDictManager.ANY_PLASTIC.ingot() });
@@ -830,18 +831,26 @@ public class CraftingManager {
 		CraftingManager.addRecipeAuto(new ItemStack(ModItems.upgrade_ejector, 1, 0), new Object[] { " C ", "PUP", " C ", 'C', ModItems.plate_copper, 'P', ModItems.motor, 'U', ModItems.upgrade_template });
 		CraftingManager.addRecipeAuto(new ItemStack(ModItems.upgrade_ejector, 1, 1), new Object[] { " C ", "PUP", " C ", 'C', ModItems.plate_gold, 'P', ModItems.motor, 'U', new ItemStack(ModItems.upgrade_ejector, 1, 0) });
 		CraftingManager.addRecipeAuto(new ItemStack(ModItems.upgrade_ejector, 1, 2), new Object[] { " C ", "PUP", " C ", 'C', ModItems.plate_saturnite, 'P', ModItems.motor, 'U', new ItemStack(ModItems.upgrade_ejector, 1, 1) });
-
+		
 		CraftingManager.addRecipeAuto(new ItemStack(ModItems.mech_key, 1), new Object[] { "MCM", "MKM", "MMM", 'M', ModItems.ingot_meteorite_forged, 'C', ModItems.coin_maskman, 'K', ModItems.key });
 		CraftingManager.addRecipeAuto(new ItemStack(ModItems.spawn_ufo, 1), new Object[] { "MMM", "DCD", "MMM", 'M', ModItems.ingot_meteorite, 'D', OreDictManager.DNT.ingot(), 'C', ModItems.coin_worm });
-
+		
 		CraftingManager.addRecipeAuto(new ItemStack(ModBlocks.hadron_coil_alloy, 1), new Object[] { "WWW", "WCW", "WWW", 'W', ModItems.wire_advanced_alloy, 'C', ModBlocks.fusion_conductor });
+		CraftingManager.addRecipeAuto(new ItemStack(ModBlocks.hadron_coil_alloy, 1), new Object[] { "WW", "WW", 'W', OreDictManager.ALLOY.wireDense() });
 		CraftingManager.addRecipeAuto(new ItemStack(ModBlocks.hadron_coil_gold, 1), new Object[] { "PGP", "PCP", "PGP", 'G', OreDictManager.GOLD.dust(), 'C', ModBlocks.hadron_coil_alloy, 'P', OreDictManager.IRON.plate() });
+		CraftingManager.addRecipeAuto(new ItemStack(ModBlocks.hadron_coil_gold, 1), new Object[] { "WG", "GW", 'W', OreDictManager.ALLOY.wireDense(), 'G', OreDictManager.GOLD.wireDense() });
 		CraftingManager.addRecipeAuto(new ItemStack(ModBlocks.hadron_coil_neodymium, 1), new Object[] { "G", "C", "G", 'G', OreDictManager.ND.dust(), 'C', ModBlocks.hadron_coil_gold });
+		CraftingManager.addRecipeAuto(new ItemStack(ModBlocks.hadron_coil_neodymium, 1), new Object[] { "WG", "GW", 'W', OreDictManager.ND.wireDense(), 'G', OreDictManager.GOLD.wireDense() });
 		CraftingManager.addRecipeAuto(new ItemStack(ModBlocks.hadron_coil_magtung, 1), new Object[] { "WWW", "WCW", "WWW", 'W', ModItems.wire_magnetized_tungsten, 'C', ModBlocks.fwatz_conductor });
+		CraftingManager.addRecipeAuto(new ItemStack(ModBlocks.hadron_coil_magtung, 1), new Object[] { "WW", "WW", 'W', OreDictManager.MAGTUNG.wireDense() });
 		CraftingManager.addRecipeAuto(new ItemStack(ModBlocks.hadron_coil_schrabidium, 1), new Object[] { "WWW", "WCW", "WWW", 'W', ModItems.wire_schrabidium, 'C', ModBlocks.hadron_coil_magtung });
+		CraftingManager.addRecipeAuto(new ItemStack(ModBlocks.hadron_coil_schrabidium, 1), new Object[] { "WS", "SW", 'W', OreDictManager.MAGTUNG.wireDense(), 'S', OreDictManager.SA326.wireDense() });
 		CraftingManager.addRecipeAuto(new ItemStack(ModBlocks.hadron_coil_schrabidate, 1), new Object[] { " S ", "SCS", " S ", 'S', OreDictManager.SBD.dust(), 'C', ModBlocks.hadron_coil_schrabidium });
+		CraftingManager.addRecipeAuto(new ItemStack(ModBlocks.hadron_coil_schrabidate, 1), new Object[] { "WS", "SW", 'W', OreDictManager.SBD.wireDense(), 'S', OreDictManager.SA326.wireDense() });
 		CraftingManager.addRecipeAuto(new ItemStack(ModBlocks.hadron_coil_starmetal, 1), new Object[] { "SNS", "SCS", "SNS", 'S', OreDictManager.STAR.ingot(), 'N', ModBlocks.hadron_coil_neodymium, 'C', ModBlocks.hadron_coil_schrabidate });
+		CraftingManager.addRecipeAuto(new ItemStack(ModBlocks.hadron_coil_starmetal, 1), new Object[] { "SW", "WS", 'W', OreDictManager.SBD.wireDense(), 'S', OreDictManager.STAR.wireDense() });
 		CraftingManager.addRecipeAuto(new ItemStack(ModBlocks.hadron_coil_chlorophyte, 1), new Object[] { "TCT", "TST", "TCT", 'T', ModItems.coil_tungsten, 'C', ModItems.powder_chlorophyte, 'S', ModBlocks.hadron_coil_starmetal });
+		CraftingManager.addRecipeAuto(new ItemStack(ModBlocks.hadron_coil_chlorophyte, 1), new Object[] { "TC", "CT", 'T', OreDictManager.W.wireDense(), 'C', ModItems.powder_chlorophyte });
 		CraftingManager.addRecipeAuto(new ItemStack(ModBlocks.hadron_diode, 1), new Object[] { "CIC", "ISI", "CIC", 'C', ModBlocks.hadron_coil_alloy, 'I', OreDictManager.STEEL.ingot(), 'S', ModItems.circuit_gold });
 		CraftingManager.addRecipeAuto(new ItemStack(ModBlocks.hadron_plating, 16), new Object[] { "CC", "CC", 'C', OreDictManager.STEEL.plateCast()});
 		CraftingManager.addShapelessAuto(new ItemStack(ModBlocks.hadron_plating_blue, 1), new Object[] { ModBlocks.hadron_plating, OreDictManager.KEY_BLUE });

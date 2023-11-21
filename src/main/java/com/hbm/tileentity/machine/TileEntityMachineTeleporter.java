@@ -104,22 +104,18 @@ public class TileEntityMachineTeleporter extends TileEntityLoadedBase implements
 	}
 
 	public void teleport(Entity entity) {
-		
-		if(this.power < TileEntityMachineTeleporter.consumption) return;
+		if(this.power < TileEntityMachineTeleporter.consumption)
+			return;
 		
 		this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 1.5, this.zCoord + 0.5, "mob.endermen.portal", 1.0F, 1.0F);
 		
 		if((entity instanceof EntityPlayerMP)) {
-			
 			EntityPlayerMP player = (EntityPlayerMP) entity;
-			if(entity.dimension == this.targetDim) {
+			if(entity.dimension == this.targetDim)
 				player.setPositionAndUpdate(this.targetX + 0.5D, this.targetY + 1.5D + entity.getYOffset(), this.targetZ + 0.5D);
-			} else {
+			else
 				TileEntityMachineTeleporter.teleportPlayerInterdimensionally(player, this.targetX + 0.5D, this.targetY + 1.5D + entity.getYOffset(), this.targetZ + 0.5D, this.targetDim);
-			}
-			
 		} else {
-			
 			if(entity.dimension == this.targetDim) {
 				entity.setPositionAndRotation(this.targetX + 0.5D, this.targetY + 1.5D + entity.getYOffset(), this.targetZ + 0.5D, entity.rotationYaw, entity.rotationPitch);
 				
@@ -153,7 +149,8 @@ public class TileEntityMachineTeleporter extends TileEntityLoadedBase implements
 		WorldServer newWorld = player.mcServer.worldServerForDimension(dim);
 		player.dimension = dim;
 		
-		if(newWorld == null) return false;
+		if(newWorld == null)
+			return false;
 
 		ServerConfigurationManager man = player.mcServer.getConfigurationManager();
 		NetHandlerPlayServer net = player.playerNetServerHandler;

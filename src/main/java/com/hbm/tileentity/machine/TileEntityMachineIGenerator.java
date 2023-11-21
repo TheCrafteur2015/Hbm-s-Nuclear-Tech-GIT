@@ -37,6 +37,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+@SuppressWarnings("deprecation")
 public class TileEntityMachineIGenerator extends TileEntityMachineBase implements IFluidAcceptor, IEnergyGenerator, IFluidStandardReceiver, IConfigurableMachine, IGUIProvider {
 	
 	public long power;
@@ -123,8 +124,11 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	protected DirPos[] getConPos() {
 		ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
 		return new DirPos[] {
-				new DirPos(this.xCoord + dir.offsetX * -4, this.yCoord, this.zCoord + dir.offsetZ * -4, dir.getOpposite()),
-				new DirPos(this.xCoord + dir.offsetX * 3, this.yCoord, this.zCoord + dir.offsetZ * 3, dir),
+			new DirPos(xCoord + dir.offsetX * -4, yCoord, zCoord + dir.offsetZ * -4, dir.getOpposite()),
+			new DirPos(xCoord + dir.offsetX * -2, yCoord - 1, zCoord + dir.offsetZ * -2, ForgeDirection.DOWN),
+			new DirPos(xCoord + dir.offsetX * -1, yCoord - 1, zCoord + dir.offsetZ * -1, ForgeDirection.DOWN),
+			new DirPos(xCoord, yCoord - 1, zCoord, ForgeDirection.DOWN),
+			new DirPos(xCoord + dir.offsetX * 3, yCoord, zCoord + dir.offsetZ * 3, dir),
 		};
 	}
 

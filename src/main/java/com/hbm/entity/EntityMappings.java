@@ -147,6 +147,7 @@ import com.hbm.entity.mob.EntityGlyphidNuclear;
 import com.hbm.entity.mob.EntityGlyphidScout;
 import com.hbm.entity.mob.EntityHunterChopper;
 import com.hbm.entity.mob.EntityMaskMan;
+import com.hbm.entity.mob.EntityPigeon;
 import com.hbm.entity.mob.EntityPlasticBag;
 import com.hbm.entity.mob.EntityQuackos;
 import com.hbm.entity.mob.EntityRADBeast;
@@ -231,6 +232,7 @@ import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 
+@SuppressWarnings("deprecation")
 public class EntityMappings {
 
 	public static List<Quartet<Class<? extends Entity>, String, Integer, Boolean>> entityMappings = new ArrayList<>();
@@ -441,6 +443,7 @@ public class EntityMappings {
 		EntityMappings.addMob(EntityMaskMan.class, "entity_mob_mask_man", 0x818572, 0xC7C1B7);
 		EntityMappings.addMob(EntityDuck.class, "entity_fucc_a_ducc", 0xd0d0d0, 0xFFBF00);
 		EntityMappings.addMob(EntityQuackos.class, "entity_elder_one", 0xd0d0d0, 0xFFBF00);
+		EntityMappings.addMob(EntityPigeon.class, "entity_pigeon", 0xC8C9CD, 0x858894);
 		EntityMappings.addMob(EntityFBI.class, "entity_ntm_fbi", 0x008000, 0x404040);
 		EntityMappings.addMob(EntityFBIDrone.class, "entity_ntm_fbi_drone", 0x008000, 0x404040);
 		EntityMappings.addMob(EntityRADBeast.class, "entity_ntm_radiation_blaze", 0x303030, 0x008000);
@@ -462,6 +465,7 @@ public class EntityMappings {
 		EntityMappings.addSpawn(EntityCreeperVolatile.class, 10, 1, 1, EnumCreatureType.monster, BiomeGenBase.getBiomeGenArray());
 		EntityMappings.addSpawn(EntityCreeperGold.class, 1, 1, 1, EnumCreatureType.monster, BiomeGenBase.getBiomeGenArray());
 		EntityMappings.addSpawn(EntityPlasticBag.class, 1, 1, 3, EnumCreatureType.waterCreature, BiomeDictionary.getBiomesForType(Type.OCEAN));
+		EntityMappings.addSpawn(EntityPigeon.class, 1, 5, 10, EnumCreatureType.creature, BiomeDictionary.getBiomesForType(Type.PLAINS));
 		
 		int id = 0;
 		for(Quartet<Class<? extends Entity>, String, Integer, Boolean> entry : EntityMappings.entityMappings) {

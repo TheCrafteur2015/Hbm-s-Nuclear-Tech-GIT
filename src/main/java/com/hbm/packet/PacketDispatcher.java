@@ -11,6 +11,7 @@ public class PacketDispatcher {
 	//Mark 1 Packet Sending Device
 	public static final SimpleNetworkWrapper wrapper = NetworkRegistry.INSTANCE.newSimpleChannel(RefStrings.MODID);
 
+	@SuppressWarnings("deprecation")
 	public static final void registerPackets()
 	{
 		int i = 0;
@@ -21,8 +22,7 @@ public class PacketDispatcher {
 		PacketDispatcher.wrapper.registerMessage(TEDrillPacket.Handler.class, TEDrillPacket.class, i++, Side.CLIENT);
 		//Mining drill torque for sounds
 		PacketDispatcher.wrapper.registerMessage(TEDrillSoundPacket.Handler.class, TEDrillSoundPacket.class, i++, Side.CLIENT);
-		//Assembler cog rotation for rendering
-		PacketDispatcher.wrapper.registerMessage(TEAssemblerPacket.Handler.class, TEAssemblerPacket.class, i++, Side.CLIENT);
+		
 		//Missile type for rendering
 		PacketDispatcher.wrapper.registerMessage(TEMissilePacket.Handler.class, TEMissilePacket.class, i++, Side.CLIENT);
 		//Fluid packet for GUI
@@ -33,16 +33,12 @@ public class PacketDispatcher {
 		PacketDispatcher.wrapper.registerMessage(ItemFolderPacket.Handler.class, ItemFolderPacket.class, i++, Side.SERVER);
 		//Electricity gauge for GUI rendering
 		PacketDispatcher.wrapper.registerMessage(AuxElectricityPacket.Handler.class, AuxElectricityPacket.class, i++, Side.CLIENT);
-		//Universal package for machine gauges and states
-		PacketDispatcher.wrapper.registerMessage(AuxGaugePacket.Handler.class, AuxGaugePacket.class, i++, Side.CLIENT);
 		//Siren packet for looped sounds
 		PacketDispatcher.wrapper.registerMessage(TESirenPacket.Handler.class, TESirenPacket.class, i++, Side.CLIENT);
 		//Signals server to change ItemStacks
 		PacketDispatcher.wrapper.registerMessage(ItemDesignatorPacket.Handler.class, ItemDesignatorPacket.class, i++, Side.SERVER);
 		//Siren packet for looped sounds
 		PacketDispatcher.wrapper.registerMessage(TERadarPacket.Handler.class, TERadarPacket.class, i++, Side.CLIENT);
-		//Siren packet for looped sounds
-		PacketDispatcher.wrapper.registerMessage(TERadarDestructorPacket.Handler.class, TERadarDestructorPacket.class, i++, Side.CLIENT);
 		//Signals server to perform orbital strike, among other things
 		PacketDispatcher.wrapper.registerMessage(SatLaserPacket.Handler.class, SatLaserPacket.class, i++, Side.SERVER);
 		//Universal package for sending small info packs back to server
@@ -57,7 +53,7 @@ public class PacketDispatcher {
 		PacketDispatcher.wrapper.registerMessage(ExtPropPacket.Handler.class, ExtPropPacket.class, i++, Side.CLIENT);
 		//Entity sound packet that keeps client and server separated
 		PacketDispatcher.wrapper.registerMessage(LoopedEntitySoundPacket.Handler.class, LoopedEntitySoundPacket.class, i++, Side.CLIENT);
-		//Entity sound packet that keeps client and server separated
+		//Packet for force fields
 		PacketDispatcher.wrapper.registerMessage(TEFFPacket.Handler.class, TEFFPacket.class, i++, Side.CLIENT);
 		//Sends button information for ItemGunBase
 		PacketDispatcher.wrapper.registerMessage(GunButtonPacket.Handler.class, GunButtonPacket.class, i++, Side.SERVER);
@@ -67,8 +63,6 @@ public class PacketDispatcher {
 		PacketDispatcher.wrapper.registerMessage(ItemBobmazonPacket.Handler.class, ItemBobmazonPacket.class, i++, Side.SERVER);
 		//Packet to send missile multipart information to TEs
 		PacketDispatcher.wrapper.registerMessage(TEMissileMultipartPacket.Handler.class, TEMissileMultipartPacket.class, i++, Side.CLIENT);
-		//Packet to send NBT data to tile entities
-		PacketDispatcher.wrapper.registerMessage(NBTPacket.Handler.class, NBTPacket.class, i++, Side.CLIENT);
 		//Aux Particle Packet, New Technology: like the APP but with NBT
 		PacketDispatcher.wrapper.registerMessage(AuxParticlePacketNT.Handler.class, AuxParticlePacketNT.class, i++, Side.CLIENT);
 		//Signals server to do coord based satellite stuff
@@ -97,6 +91,11 @@ public class PacketDispatcher {
 		PacketDispatcher.wrapper.registerMessage(PermaSyncPacket.Handler.class, PermaSyncPacket.class, i++, Side.CLIENT);
 		//Syncs biome information for single positions or entire chunks
 		PacketDispatcher.wrapper.registerMessage(BiomeSyncPacket.Handler.class, BiomeSyncPacket.class, i++, Side.CLIENT);
+
+		//Tile sync
+		PacketDispatcher.wrapper.registerMessage(AuxGaugePacket.Handler.class, AuxGaugePacket.class, i++, Side.CLIENT);	//The horrid one
+		PacketDispatcher.wrapper.registerMessage(NBTPacket.Handler.class, NBTPacket.class, i++, Side.CLIENT);			//The convenient but laggy one
+		PacketDispatcher.wrapper.registerMessage(BufPacket.Handler.class, BufPacket.class, i++, Side.CLIENT);			//The not-so-convenient but not laggy one
 	}
 	
 }

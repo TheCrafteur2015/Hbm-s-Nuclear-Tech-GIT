@@ -7,6 +7,7 @@ import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ILookOverlay;
 import com.hbm.blocks.IPersistentInfoProvider;
 import com.hbm.entity.projectile.EntityBombletZeta;
+import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTank;
 import com.hbm.inventory.fluid.trait.FT_Flammable;
@@ -28,6 +29,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
@@ -64,17 +66,21 @@ public class MachineFluidTank extends BlockDummyable implements IPersistentInfoP
 		int[] pos = findCore(world, x, y, z);
 		if(pos == null)
 			return false;
-		TileEntityMachineFluidTank tank = (TileEntityMachineFluidTank) world.getTileEntity(pos[0], pos[1], pos[2]);
-		if (tank == null)
+		TileEntityMachineFluidTank tile = (TileEntityMachineFluidTank) world.getTileEntity(pos[0], pos[1], pos[2]);
+		if (tile == null)
 			return false;
 		if(!player.isSneaking()) {
-			if (tank.hasExploded)
+			if (tile.hasExploded)
 				return false;
 			FMLNetworkHandler.openGui(player, MainRegistry.instance, 0, world, pos[0], pos[1], pos[2]);
 		} else {
 			ItemStack item = player.getHeldItem();
-			if (item.getItem() instanceof ItemFluidIdentifier)
-				tank.setTypeForSync(Fluids.fromID(item.getItemDamage()), 0);
+			if (item.getItem() instanceof ItemFluidIdentifier) {
+				FluidType type = Fluids.fromID(item.getItemDamage());
+				tile.tank.setTankType(type);
+				tile.markDirty();
+				player.addChatComponentMessage(new ChatComponentText("Changed type to " + EnumChatFormatting.YELLOW + type.getConditionalName() + "!"));
+			}
 		}
 		return true;
 	}
