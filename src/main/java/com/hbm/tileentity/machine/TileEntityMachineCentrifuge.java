@@ -137,6 +137,7 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 		return this.progress > 0;
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public void updateEntity() {
 

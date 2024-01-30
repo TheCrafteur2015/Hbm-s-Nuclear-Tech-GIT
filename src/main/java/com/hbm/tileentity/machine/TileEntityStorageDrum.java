@@ -37,6 +37,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
+@SuppressWarnings("deprecation")
 public class TileEntityStorageDrum extends TileEntityMachineBase implements IFluidSource, IFluidStandardSender, IGUIProvider {
 
 	public FluidTank[] tanks;

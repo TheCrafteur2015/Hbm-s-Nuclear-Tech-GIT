@@ -48,6 +48,7 @@ import com.hbm.util.ArmorRegistry.HazardClass;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 
+@SuppressWarnings("deprecation")
 public class Fluids {
 
 	public static final Gson gson = new Gson();

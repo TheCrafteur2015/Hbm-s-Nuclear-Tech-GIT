@@ -188,14 +188,14 @@ public class RendererObjTester extends TileEntitySpecialRenderer {
 		float dif = 2F;
 		float spe = 2F;
 		float shi = 1F;
-		FloatBuffer iamb = BufferUtils.createFloatBuffer(8).put(new float[] { amb, amb, amb, 1F }).flip();
-		FloatBuffer idif = BufferUtils.createFloatBuffer(8).put(new float[] { dif, dif, dif, 1F }).flip();
-		FloatBuffer ispe = BufferUtils.createFloatBuffer(8).put(new float[] { spe, spe, spe, 1F }).flip();
-		FloatBuffer mamb = BufferUtils.createFloatBuffer(8).put(new float[] { amb, amb, amb, 1F }).flip();
-		FloatBuffer mdif = BufferUtils.createFloatBuffer(8).put(new float[] { dif, dif, dif, 1F }).flip();
-		FloatBuffer mspe = BufferUtils.createFloatBuffer(8).put(new float[] { spe, spe, spe, 1F }).flip();
+		FloatBuffer iamb = (FloatBuffer) BufferUtils.createFloatBuffer(8).put(new float[] { amb, amb, amb, 1F }).flip();
+		FloatBuffer idif = (FloatBuffer) BufferUtils.createFloatBuffer(8).put(new float[] { dif, dif, dif, 1F }).flip();
+		FloatBuffer ispe = (FloatBuffer) BufferUtils.createFloatBuffer(8).put(new float[] { spe, spe, spe, 1F }).flip();
+		FloatBuffer mamb = (FloatBuffer) BufferUtils.createFloatBuffer(8).put(new float[] { amb, amb, amb, 1F }).flip();
+		FloatBuffer mdif = (FloatBuffer) BufferUtils.createFloatBuffer(8).put(new float[] { dif, dif, dif, 1F }).flip();
+		FloatBuffer mspe = (FloatBuffer) BufferUtils.createFloatBuffer(8).put(new float[] { spe, spe, spe, 1F }).flip();
 		float msh = 128F * shi;
-		FloatBuffer mem = BufferUtils.createFloatBuffer(8).put(new float[] { 1F, 1F, 1F, 1F }).flip();
+		FloatBuffer mem = (FloatBuffer) BufferUtils.createFloatBuffer(8).put(new float[] { 1F, 1F, 1F, 1F }).flip();
 		
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glShadeModel(GL11.GL_SMOOTH);

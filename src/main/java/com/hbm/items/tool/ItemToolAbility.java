@@ -44,7 +44,7 @@ public class ItemToolAbility extends ItemTool implements IItemAbility, IDepthRoc
 	//was there a reason for this to be private?
 	protected float damage;
 	protected double movement;
-	@SuppressWarnings({ "unchecked", "serial", "rawtypes" })
+	@SuppressWarnings({ "serial" })
 	protected List<ToolAbility> breakAbility = new ArrayList() {{ add(null); }};
 	protected List<WeaponAbility> hitAbility = new ArrayList<>();
 	

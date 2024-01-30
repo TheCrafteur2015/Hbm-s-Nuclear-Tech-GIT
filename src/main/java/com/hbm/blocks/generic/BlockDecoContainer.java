@@ -33,7 +33,6 @@ public class BlockDecoContainer extends BlockDecoModel implements ITileEntityPro
 		return -1;
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
 		try {

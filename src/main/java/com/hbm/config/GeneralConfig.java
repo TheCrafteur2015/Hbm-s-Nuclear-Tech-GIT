@@ -98,11 +98,10 @@ public class GeneralConfig {
 		final String CATEGORY_528 = CommonConfig.CATEGORY_528;
 
 		config.addCustomCategoryComment(CATEGORY_528, 
-			"""
-				CAUTION
-				528 Mode: Please proceed with caution!
-				528-Modus: Lassen Sie Vorsicht walten!\
-				способ-528: действовать с осторожностью!""");
+			"	CAUTION\n" +
+			"	528 Mode: Please proceed with caution!\n" +
+			"	528-Modus: Lassen Sie Vorsicht walten!\n" +
+			"	способ-528: действовать с осторожностью!");
 		
 		GeneralConfig.enable528 = CommonConfig.createConfigBool(config, CATEGORY_528, "enable528Mode", "The central toggle for 528 mode.", false);
 		GeneralConfig.enable528ReasimBoilers = CommonConfig.createConfigBool(config, CATEGORY_528, "X528_forceReasimBoilers", "Keeps the RBMK dial for ReaSim boilers on, preventing use of non-ReaSim boiler columns and forcing the use of steam in-/outlets", true);
@@ -118,10 +117,9 @@ public class GeneralConfig {
 		final String CATEGORY_LBSM = CommonConfig.CATEGORY_LBSM;
 
 		config.addCustomCategoryComment(CATEGORY_LBSM,
-				"""
-						Will most likely break standard progression!
-						However, the game gets generally easier and more enjoyable for casual players.
-						Progression-braking recipes are usually not too severe, so the mode is generally server-friendly!""");
+				"		Will most likely break standard progression!\n" +
+				"		However, the game gets generally easier and more enjoyable for casual players.\n" +
+				"		Progression-braking recipes are usually not too severe, so the mode is generally server-friendly!");
 		
 		GeneralConfig.enableLBSM = CommonConfig.createConfigBool(config, CATEGORY_LBSM, "enableLessBullshitMode", "The central toggle for LBS mode. Forced OFF when 528 is enabled!", false);
 		GeneralConfig.enableLBSMFullSchrab = CommonConfig.createConfigBool(config, CATEGORY_LBSM, "LBSM_fullSchrab", "When enabled, this will replace schraranium with full schrabidium ingots in the transmutator's output", true);

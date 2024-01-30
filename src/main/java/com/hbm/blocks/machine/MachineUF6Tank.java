@@ -73,10 +73,10 @@ public class MachineUF6Tank extends BlockContainer implements IMultiblock {
 		int i = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 		
 		switch (i) {
-			case 0 -> i = 2;
-			case 1 -> i = 5;
-			case 2 -> i = 3;
-			case 3 -> i = 4;
+			case 0: i = 2;
+			case 1: i = 5;
+			case 2: i = 3;
+			case 3: i = 4;
 		}
 		world.setBlockMetadataWithNotify(x, y, z, i, 2);
 		

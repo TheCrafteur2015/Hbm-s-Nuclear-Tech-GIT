@@ -52,6 +52,7 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 		return "container.crystallizer";
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void updateEntity() {
 		

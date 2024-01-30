@@ -105,6 +105,7 @@ public class TileEntityReactorControl extends TileEntityMachineBase implements I
 	public double heatUpper;
 	public RodFunction function = RodFunction.LINEAR;
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public void updateEntity() {
 

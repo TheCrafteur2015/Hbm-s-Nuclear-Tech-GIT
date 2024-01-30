@@ -27,8 +27,10 @@ public class GUINukeFurnace extends GuiInfoContainer {
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
-
-		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 55, this.guiTop + 34, 18, 18, mouseX, mouseY, new String[] { this.furnace.dualPower + " operation(s) left" });
+		String[] text = new String[1];
+		int power = this.furnace.dualPower;
+		text[0] = power + " operation" + (power > 1 ? "s" : "") + " left";
+		this.drawCustomInfoStat(mouseX, mouseY, this.guiLeft + 55, this.guiTop + 34, 18, 18, mouseX, mouseY, text);
 	}
 	
 	@Override

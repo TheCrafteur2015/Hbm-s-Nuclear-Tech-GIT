@@ -172,6 +172,7 @@ public class GUIPWR extends GuiInfoContainer {
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}*/
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int i) {
 		super.mouseClicked(mouseX, mouseY, i);
@@ -194,7 +195,8 @@ public class GUIPWR extends GuiInfoContainer {
 
 	@Override
 	protected void keyTyped(char c, int i) {
-		if(this.field.textboxKeyTyped(c, i)) return;
+		if(this.field.textboxKeyTyped(c, i))
+			return;
 		super.keyTyped(c, i);
 	}
 }

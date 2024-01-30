@@ -1457,6 +1457,10 @@ public class ModBlocks {
 	
 	public static Material materialGas = new MaterialGas();
 	
+	// My blocks
+	
+	public static Block reactor_monitor_1;
+	
 	@SuppressWarnings("deprecation")
 	private static void initializeBlock() {
 		
@@ -2634,6 +2638,11 @@ public class ModBlocks {
 		ModBlocks.pink_stairs = new BlockGenericStairs(ModBlocks.pink_planks, 0).setBlockName("pink_stairs").setStepSound(Block.soundTypeWood).setCreativeTab(null).setBlockTextureName(RefStrings.MODID + ":pink_planks");
 		
 		ModBlocks.ff = new BlockFF(Material.iron).setBlockName("ff").setHardness(0.5F).setStepSound(Block.soundTypeGravel).setCreativeTab(null).setBlockTextureName(RefStrings.MODID + ":code");
+		
+		// My blocks
+		
+		ModBlocks.reactor_monitor_1 = new BlockGeneric(Material.rock).setBlockName("pwr_monitor").setHardness(1F).setCreativeTab(MainRegistry.blockTab).setBlockTextureName("minecraft:stone");		
+		
 	}
 
 	private static void registerBlock() {
@@ -3797,6 +3806,11 @@ public class ModBlocks {
 		GameRegistry.registerBlock(ModBlocks.pink_double_slab, ModBlocks.pink_double_slab.getUnlocalizedName());
 		GameRegistry.registerBlock(ModBlocks.pink_stairs, ModBlocks.pink_stairs.getUnlocalizedName());
 		GameRegistry.registerBlock(ModBlocks.ff, ModBlocks.ff.getUnlocalizedName());
+		
+		// My blocks
+		
+		GameRegistry.registerBlock(ModBlocks.reactor_monitor_1, ModBlocks.reactor_monitor_1.getUnlocalizedName());
+		
 	}
 	
 	private static void register(Block b) {

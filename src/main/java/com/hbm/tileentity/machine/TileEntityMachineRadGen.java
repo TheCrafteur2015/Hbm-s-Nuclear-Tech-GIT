@@ -48,6 +48,7 @@ public class TileEntityMachineRadGen extends TileEntityMachineBase implements IE
 		return "container.radGen";
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void updateEntity() {
 		

@@ -11,14 +11,15 @@ import net.minecraft.world.World;
 
 public class BlockBase extends Block {
 	
-	private boolean beaconable = false;
+	private boolean beaconable;
 
 	public BlockBase() {
-		super(Material.rock);
+		this(Material.rock);
 	}
 
 	public BlockBase(Material material) {
 		super(material);
+		this.beaconable = false;
 	}
 	
 	@Override

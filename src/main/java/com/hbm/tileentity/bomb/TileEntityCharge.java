@@ -9,6 +9,7 @@ import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
+@SuppressWarnings("deprecation")
 public class TileEntityCharge extends TileEntity implements INBTPacketReceiver {
 	
 	public boolean started;

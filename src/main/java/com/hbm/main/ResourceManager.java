@@ -1451,6 +1451,15 @@ public class ResourceManager {
 	public static final IModelCustom deb_zirnox_exchanger = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/zirnox/deb_exchanger.obj"));
 	public static final IModelCustom deb_zirnox_shrapnel = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/zirnox/deb_shrapnel.obj"));
 	
+	// My models
+	
+	public static final IModelCustom monitor_1 = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/monitors/reactor_monitor_1.obj"));
+	
+	// My textures
+	
+	public static final ResourceLocation monitor_1_tex = new ResourceLocation(RefStrings.MODID, "textures/models/monitors/screen.png");
+	public static final ResourceLocation monitor_1_keyboard_tex = new ResourceLocation(RefStrings.MODID, "textures/models/monitors/keyboard.png");
+	
 	public static void loadAnimatedModels(){
 		ResourceManager.transition_seal = ColladaLoader.load(new ResourceLocation(RefStrings.MODID, "models/doors/seal.dae"), true);
 		ResourceManager.transition_seal_anim = ColladaLoader.loadAnim(24040, new ResourceLocation(RefStrings.MODID, "models/doors/seal.dae"));

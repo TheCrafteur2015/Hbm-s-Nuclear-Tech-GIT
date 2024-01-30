@@ -1,0 +1,6 @@
+# Made in Blockbench 4.8.3
+newmtl m_ab5c32f9-87dd-edd1-aec2-6c62da5388ac
+map_Kd keyboard 
+newmtl m_5f96f6ef-35f6-0f0c-b866-faaaa9c9211c
+map_Kd screen 
+newmtl none

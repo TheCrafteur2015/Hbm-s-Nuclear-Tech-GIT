@@ -167,7 +167,7 @@ public class BlockDynamicSlag extends BlockContainer {
 		}
 		
 		/* Flow sideways, no neighbors */
-		ForgeDirection[] sides = new ForgeDirection[] { ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.EAST, ForgeDirection.WEST };
+		ForgeDirection[] sides = { ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.EAST, ForgeDirection.WEST };
 		int count = 0;
 		for(ForgeDirection dir : sides) {
 			int iX = x + dir.offsetX;

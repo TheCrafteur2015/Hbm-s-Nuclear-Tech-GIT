@@ -66,7 +66,6 @@ public class EntityFallingBlockNT extends Entity {
 		this.prevPosZ = z;
 	}
 
-	@SuppressWarnings("removal")
 	@Override protected void entityInit() {
 		this.dataWatcher.addObject(10, new Integer(0));
 		this.dataWatcher.addObject(11, new Integer(0));

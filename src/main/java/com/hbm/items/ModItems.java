@@ -3937,42 +3937,42 @@ public class ModItems {
 		ModItems.catalyst_clay = new Item().setUnlocalizedName("catalyst_clay").setCreativeTab(MainRegistry.partsTab)
 				.setTextureName(RefStrings.MODID + ":catalyst_clay");
 
-//		ModItems.warhead_generic_small = new Item().setUnlocalizedName("warhead_generic_small")
-//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_generic_small");
-//		ModItems.warhead_generic_medium = new Item().setUnlocalizedName("warhead_generic_medium")
-//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_generic_medium");
-//		ModItems.warhead_generic_large = new Item().setUnlocalizedName("warhead_generic_large")
-//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_generic_large");
-//		ModItems.warhead_incendiary_small = new Item().setUnlocalizedName("warhead_incendiary_small")
-//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_incendiary_small");
-//		ModItems.warhead_incendiary_medium = new Item().setUnlocalizedName("warhead_incendiary_medium")
-//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_incendiary_medium");
-//		ModItems.warhead_incendiary_large = new Item().setUnlocalizedName("warhead_incendiary_large")
-//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_incendiary_large");
-//		ModItems.warhead_cluster_small = new Item().setUnlocalizedName("warhead_cluster_small")
-//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_cluster_small");
-//		ModItems.warhead_cluster_medium = new Item().setUnlocalizedName("warhead_cluster_medium")
-//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_cluster_medium");
-//		ModItems.warhead_cluster_large = new Item().setUnlocalizedName("warhead_cluster_large")
-//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_cluster_large");
-//		ModItems.warhead_buster_small = new Item().setUnlocalizedName("warhead_buster_small")
-//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_buster_small");
-//		ModItems.warhead_buster_medium = new Item().setUnlocalizedName("warhead_buster_medium")
-//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_buster_medium");
-//		ModItems.warhead_buster_large = new Item().setUnlocalizedName("warhead_buster_large")
-//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_buster_large");
-//		ModItems.warhead_nuclear = new Item().setUnlocalizedName("warhead_nuclear")
-//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_nuclear");
-//		ModItems.warhead_mirvlet = new Item().setUnlocalizedName("warhead_mirvlet").setCreativeTab(null)
-//				.setTextureName(RefStrings.MODID + ":warhead_mirvlet");
-//		ModItems.warhead_mirv = new Item().setUnlocalizedName("warhead_mirv").setCreativeTab(MainRegistry.partsTab)
-//				.setTextureName(RefStrings.MODID + ":warhead_mirv");
-//		ModItems.warhead_volcano = new Item().setUnlocalizedName("warhead_volcano")
-//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_volcano");
-//		ModItems.warhead_thermo_endo = new Item().setUnlocalizedName("warhead_thermo_endo")
-//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_thermo_endo");
-//		ModItems.warhead_thermo_exo = new Item().setUnlocalizedName("warhead_thermo_exo")
-//				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_thermo_exo");
+		ModItems.warhead_generic_small = new Item().setUnlocalizedName("warhead_generic_small")
+				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_generic_small");
+		ModItems.warhead_generic_medium = new Item().setUnlocalizedName("warhead_generic_medium")
+				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_generic_medium");
+		ModItems.warhead_generic_large = new Item().setUnlocalizedName("warhead_generic_large")
+				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_generic_large");
+		ModItems.warhead_incendiary_small = new Item().setUnlocalizedName("warhead_incendiary_small")
+				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_incendiary_small");
+		ModItems.warhead_incendiary_medium = new Item().setUnlocalizedName("warhead_incendiary_medium")
+				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_incendiary_medium");
+		ModItems.warhead_incendiary_large = new Item().setUnlocalizedName("warhead_incendiary_large")
+				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_incendiary_large");
+		ModItems.warhead_cluster_small = new Item().setUnlocalizedName("warhead_cluster_small")
+				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_cluster_small");
+		ModItems.warhead_cluster_medium = new Item().setUnlocalizedName("warhead_cluster_medium")
+				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_cluster_medium");
+		ModItems.warhead_cluster_large = new Item().setUnlocalizedName("warhead_cluster_large")
+				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_cluster_large");
+		ModItems.warhead_buster_small = new Item().setUnlocalizedName("warhead_buster_small")
+				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_buster_small");
+		ModItems.warhead_buster_medium = new Item().setUnlocalizedName("warhead_buster_medium")
+				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_buster_medium");
+		ModItems.warhead_buster_large = new Item().setUnlocalizedName("warhead_buster_large")
+				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_buster_large");
+		ModItems.warhead_nuclear = new Item().setUnlocalizedName("warhead_nuclear")
+				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_nuclear");
+		ModItems.warhead_mirvlet = new Item().setUnlocalizedName("warhead_mirvlet").setCreativeTab(null)
+				.setTextureName(RefStrings.MODID + ":warhead_mirvlet");
+		ModItems.warhead_mirv = new Item().setUnlocalizedName("warhead_mirv").setCreativeTab(MainRegistry.partsTab)
+				.setTextureName(RefStrings.MODID + ":warhead_mirv");
+		ModItems.warhead_volcano = new Item().setUnlocalizedName("warhead_volcano")
+				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_volcano");
+		ModItems.warhead_thermo_endo = new Item().setUnlocalizedName("warhead_thermo_endo")
+				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_thermo_endo");
+		ModItems.warhead_thermo_exo = new Item().setUnlocalizedName("warhead_thermo_exo")
+				.setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":warhead_thermo_exo");
 		
 		ModItems.mold_base = new Item().setUnlocalizedName("mold_base").setCreativeTab(MainRegistry.controlTab).setTextureName(RefStrings.MODID + ":mold_base");
 		ModItems.mold = new ItemMold().setUnlocalizedName("mold").setCreativeTab(MainRegistry.controlTab);

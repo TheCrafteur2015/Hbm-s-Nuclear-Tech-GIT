@@ -16,6 +16,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+@SuppressWarnings("deprecation")
 public class MachineCrystallizer extends BlockDummyable {
 	
 	@SideOnly(Side.CLIENT)
@@ -24,19 +25,15 @@ public class MachineCrystallizer extends BlockDummyable {
 	public MachineCrystallizer(Material mat) {
 		super(mat);
 	}
-
+	
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-
 		if(meta >= 12)
 			return new TileEntityMachineCrystallizer();
-		
 		if(meta >= 8 && meta <= 11)
 			return new TileEntityProxyInventory();
-
 		if(meta == 7)
 			return new TileEntityProxyCombo(false, true, true);
-		
 		return null;
 	}
 	

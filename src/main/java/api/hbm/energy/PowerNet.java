@@ -160,7 +160,7 @@ public class PowerNet implements IPowerNet {
 		
 		PowerNet.cleanup(subscribers);
 		
-		ConnectionPriority[] priorities = new ConnectionPriority[] {ConnectionPriority.HIGH, ConnectionPriority.NORMAL, ConnectionPriority.LOW};
+		ConnectionPriority[] priorities = {ConnectionPriority.HIGH, ConnectionPriority.NORMAL, ConnectionPriority.LOW};
 		
 		long totalTransfer = 0;
 		

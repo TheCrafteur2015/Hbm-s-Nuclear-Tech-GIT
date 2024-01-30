@@ -50,8 +50,10 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityMachineMiningLaser extends TileEntityMachineBase implements IEnergyUser, IFluidSource, IMiningDrill, IFluidStandardSender, IGUIProvider {
-	
+@SuppressWarnings("deprecation")
+public class TileEntityMachineMiningLaser extends TileEntityMachineBase
+		implements IEnergyUser, IFluidSource, IMiningDrill, IFluidStandardSender, IGUIProvider {
+
 	public long power;
 	public int age = 0;
 	public static final long maxPower = 100000000;
@@ -71,99 +73,98 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 	double breakProgress;
 
 	public TileEntityMachineMiningLaser() {
-		
-		//slot 0: battery
-		//slots 1 - 8: upgrades
-		//slots 9 - 29: output
+		// slot 0: battery
+		// slots 1 - 8: upgrades
+		// slots 9 - 29: output
 		super(30);
 		this.tank = new FluidTank(Fluids.OIL, 64000);
 	}
-
+	
 	@Override
 	public String getName() {
 		return "container.miningLaser";
 	}
-
+	
 	@Override
 	public void updateEntity() {
-		
-		if(!this.worldObj.isRemote) {
-			
-			updateConnections();
+
+		if (!this.worldObj.isRemote) {
+
+			this.updateConnections();
 
 			this.age++;
-			if (this.age >= 20) {
+			if (this.age >= 20)
 				this.age = 0;
-			}
 
 			if (this.age == 9 || this.age == 19)
-				fillFluidInit(this.tank.getTankType());
+				this.fillFluidInit(this.tank.getTankType());
 
 			this.sendFluid(this.tank, this.worldObj, this.xCoord + 2, this.yCoord, this.zCoord, Library.POS_X);
 			this.sendFluid(this.tank, this.worldObj, this.xCoord - 2, this.yCoord, this.zCoord, Library.NEG_X);
 			this.sendFluid(this.tank, this.worldObj, this.xCoord, this.yCoord + 2, this.zCoord, Library.POS_Z);
 			this.sendFluid(this.tank, this.worldObj, this.xCoord, this.yCoord - 2, this.zCoord, Library.NEG_Z);
-			
+
 			this.power = Library.chargeTEFromItems(this.slots, 0, this.power, TileEntityMachineMiningLaser.maxPower);
 			this.tank.updateTank(this.xCoord, this.yCoord, this.zCoord, this.worldObj.provider.dimensionId);
-			
-			//reset progress if the position changes
-			if(this.lastTargetX != this.targetX ||
-					this.lastTargetY != this.targetY ||
-					this.lastTargetZ != this.targetZ)
+
+			// reset progress if the position changes
+			if (this.lastTargetX != this.targetX || this.lastTargetY != this.targetY
+					|| this.lastTargetZ != this.targetZ)
 				this.breakProgress = 0;
-			
-			//set last positions for interpolation and the like
+
+			// set last positions for interpolation and the like
 			this.lastTargetX = this.targetX;
 			this.lastTargetY = this.targetY;
 			this.lastTargetZ = this.targetZ;
-			
+
 			double clientBreakProgress = 0;
-			
-			if(this.isOn) {
-				
+
+			if (this.isOn) {
+
 				UpgradeManager.eval(this.slots, 1, 8);
 				int cycles = 1 + UpgradeManager.getLevel(UpgradeType.OVERDRIVE);
 				int speed = 1 + Math.min(UpgradeManager.getLevel(UpgradeType.SPEED), 12);
 				int range = 1 + Math.min(UpgradeManager.getLevel(UpgradeType.EFFECT) * 2, 24);
 				int fortune = Math.min(UpgradeManager.getLevel(UpgradeType.FORTUNE), 3);
 				int consumption = TileEntityMachineMiningLaser.consumption
-						- (TileEntityMachineMiningLaser.consumption * Math.min(UpgradeManager.getLevel(UpgradeType.POWER), 12) / 16)
-						+ (TileEntityMachineMiningLaser.consumption * Math.min(UpgradeManager.getLevel(UpgradeType.SPEED), 12) / 16);
-				
-				for(int i = 0; i < cycles; i++) {
-					
-					if(this.power < consumption) {
+						- (TileEntityMachineMiningLaser.consumption
+								* Math.min(UpgradeManager.getLevel(UpgradeType.POWER), 12) / 16)
+						+ (TileEntityMachineMiningLaser.consumption
+								* Math.min(UpgradeManager.getLevel(UpgradeType.SPEED), 12) / 16);
+
+				for (int i = 0; i < cycles; i++) {
+
+					if (this.power < consumption) {
 						this.beam = false;
 						break;
 					}
-					
+
 					this.power -= consumption;
-					
-					if(this.targetY <= 0)
+
+					if (this.targetY <= 0)
 						this.targetY = this.yCoord - 2;
-					
-					scan(range);
-					
-					
+
+					this.scan(range);
+
 					Block block = this.worldObj.getBlock(this.targetX, this.targetY, this.targetZ);
-					
-					if(block.getMaterial().isLiquid()) {
+
+					if (block.getMaterial().isLiquid()) {
 						this.worldObj.setBlockToAir(this.targetX, this.targetY, this.targetZ);
-						buildDam();
+						this.buildDam();
 						continue;
 					}
-					
-					if(this.beam && canBreak(block, this.targetX, this.targetY, this.targetZ)) {
-						
-						this.breakProgress += getBreakSpeed(speed);
+
+					if (this.beam && this.canBreak(block, this.targetX, this.targetY, this.targetZ)) {
+
+						this.breakProgress += this.getBreakSpeed(speed);
 						clientBreakProgress = Math.min(this.breakProgress, 1);
-						
-						if(this.breakProgress < 1) {
-							this.worldObj.destroyBlockInWorldPartially(-1, this.targetX, this.targetY, this.targetZ, (int) Math.floor(this.breakProgress * 10));
+
+						if (this.breakProgress < 1) {
+							this.worldObj.destroyBlockInWorldPartially(-1, this.targetX, this.targetY, this.targetZ,
+									(int) Math.floor(this.breakProgress * 10));
 						} else {
-							breakBlock(fortune);
-							buildDam();
+							this.breakBlock(fortune);
+							this.buildDam();
 						}
 					}
 				}
@@ -172,11 +173,11 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 				this.beam = false;
 			}
 
-			tryFillContainer(this.xCoord + 2, this.yCoord, this.zCoord);
-			tryFillContainer(this.xCoord - 2, this.yCoord, this.zCoord);
-			tryFillContainer(this.xCoord, this.yCoord, this.zCoord + 2);
-			tryFillContainer(this.xCoord, this.yCoord, this.zCoord - 2);
-			
+			this.tryFillContainer(this.xCoord + 2, this.yCoord, this.zCoord);
+			this.tryFillContainer(this.xCoord - 2, this.yCoord, this.zCoord);
+			this.tryFillContainer(this.xCoord, this.yCoord, this.zCoord + 2);
+			this.tryFillContainer(this.xCoord, this.yCoord, this.zCoord - 2);
+
 			NBTTagCompound data = new NBTTagCompound();
 			data.setLong("power", this.power);
 			data.setInteger("lastX", this.lastTargetX);
@@ -188,15 +189,15 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 			data.setBoolean("beam", this.beam);
 			data.setBoolean("isOn", this.isOn);
 			data.setDouble("progress", clientBreakProgress);
-			
-			networkPack(data, 250);
+
+			this.networkPack(data, 250);
 		}
 	}
-	
+
 	private void updateConnections() {
 		this.trySubscribe(this.worldObj, this.xCoord, this.yCoord + 2, this.zCoord, ForgeDirection.UP);
 	}
-	
+
 	@Override
 	public void networkUnpack(NBTTagCompound data) {
 
@@ -211,214 +212,210 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 		this.isOn = data.getBoolean("isOn");
 		this.breakProgress = data.getDouble("progress");
 	}
-	
+
 	private void buildDam() {
 
-		if(this.worldObj.getBlock(this.targetX + 1, this.targetY, this.targetZ).getMaterial().isLiquid())
+		if (this.worldObj.getBlock(this.targetX + 1, this.targetY, this.targetZ).getMaterial().isLiquid())
 			this.worldObj.setBlock(this.targetX + 1, this.targetY, this.targetZ, ModBlocks.barricade);
-		if(this.worldObj.getBlock(this.targetX - 1, this.targetY, this.targetZ).getMaterial().isLiquid())
+		if (this.worldObj.getBlock(this.targetX - 1, this.targetY, this.targetZ).getMaterial().isLiquid())
 			this.worldObj.setBlock(this.targetX - 1, this.targetY, this.targetZ, ModBlocks.barricade);
-		if(this.worldObj.getBlock(this.targetX, this.targetY, this.targetZ + 1).getMaterial().isLiquid())
+		if (this.worldObj.getBlock(this.targetX, this.targetY, this.targetZ + 1).getMaterial().isLiquid())
 			this.worldObj.setBlock(this.targetX, this.targetY, this.targetZ + 1, ModBlocks.barricade);
-		if(this.worldObj.getBlock(this.targetX, this.targetY, this.targetZ - 1).getMaterial().isLiquid())
+		if (this.worldObj.getBlock(this.targetX, this.targetY, this.targetZ - 1).getMaterial().isLiquid())
 			this.worldObj.setBlock(this.targetX, this.targetY, this.targetZ - 1, ModBlocks.barricade);
 	}
-	
+
 	private void tryFillContainer(int x, int y, int z) {
-		
+
 		Block b = this.worldObj.getBlock(x, y, z);
-		if(b != Blocks.chest && b != Blocks.trapped_chest && b != ModBlocks.crate_iron && b != ModBlocks.crate_desh &&
-				b != ModBlocks.crate_steel && b != ModBlocks.safe && b != Blocks.hopper)
+		if (b != Blocks.chest && b != Blocks.trapped_chest && b != ModBlocks.crate_iron && b != ModBlocks.crate_desh
+				&& b != ModBlocks.crate_steel && b != ModBlocks.safe && b != Blocks.hopper)
 			return;
-		
-		IInventory inventory = (IInventory)this.worldObj.getTileEntity(x, y, z);
-		if(inventory == null)
+
+		IInventory inventory = (IInventory) this.worldObj.getTileEntity(x, y, z);
+		if (inventory == null)
 			return;
-		
-		for(int i = 9; i <= 29; i++) {
-			
-			if(this.slots[i] != null) {
+
+		for (int i = 9; i <= 29; i++) {
+
+			if (this.slots[i] != null) {
 				int prev = this.slots[i].stackSize;
-				this.slots[i] = InventoryUtil.tryAddItemToInventory(inventory, 0, inventory.getSizeInventory() - 1, this.slots[i]);
-				
-				if(this.slots[i] == null || this.slots[i].stackSize < prev)
+				this.slots[i] = InventoryUtil.tryAddItemToInventory(inventory, 0, inventory.getSizeInventory() - 1,
+						this.slots[i]);
+
+				if (this.slots[i] == null || this.slots[i].stackSize < prev)
 					return;
 			}
 		}
 	}
-	
+
 	private void breakBlock(int fortune) {
-		
+
 		Block b = this.worldObj.getBlock(this.targetX, this.targetY, this.targetZ);
 		int meta = this.worldObj.getBlockMetadata(this.targetX, this.targetY, this.targetZ);
 		boolean normal = true;
 		boolean doesBreak = true;
-		
-		if(b == Blocks.lit_redstone_ore)
+
+		if (b == Blocks.lit_redstone_ore)
 			b = Blocks.redstone_ore;
-		
+
 		ItemStack stack = new ItemStack(b, 1, meta);
-		
-		if(stack != null && stack.getItem() != null) {
-			if(hasCrystallizer()) {
+
+		if (stack != null && stack.getItem() != null) {
+			if (this.hasCrystallizer()) {
 
 				CrystallizerRecipe result = CrystallizerRecipes.getOutput(stack, Fluids.ACID);
-				if(result == null) result = CrystallizerRecipes.getOutput(stack, Fluids.SULFURIC_ACID);
-				
-				if(result != null) {
-					this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.targetX + 0.5, this.targetY + 0.5, this.targetZ + 0.5, result.output.copy()));
+				if (result == null)
+					result = CrystallizerRecipes.getOutput(stack, Fluids.SULFURIC_ACID);
+
+				if (result != null) {
+					this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.targetX + 0.5,
+							this.targetY + 0.5, this.targetZ + 0.5, result.output.copy()));
 					normal = false;
 				}
-				
-			} else if(hasCentrifuge()) {
-				
+
+			} else if (this.hasCentrifuge()) {
+
 				ItemStack[] result = CentrifugeRecipes.getOutput(stack);
-				if(result != null) {
-					for(ItemStack sta : result) {
-						
-						if(sta != null) {
-							this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.targetX + 0.5, this.targetY + 0.5, this.targetZ + 0.5, sta.copy()));
+				if (result != null) {
+					for (ItemStack sta : result) {
+
+						if (sta != null) {
+							this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.targetX + 0.5,
+									this.targetY + 0.5, this.targetZ + 0.5, sta.copy()));
 							normal = false;
 						}
 					}
 				}
-				
-			} else if(hasShredder()) {
-				
+
+			} else if (this.hasShredder()) {
+
 				ItemStack result = ShredderRecipes.getShredderResult(stack);
-				if(result != null && result.getItem() != ModItems.scrap) {
-					this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.targetX + 0.5, this.targetY + 0.5, this.targetZ + 0.5, result.copy()));
+				if (result != null && result.getItem() != ModItems.scrap) {
+					this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.targetX + 0.5,
+							this.targetY + 0.5, this.targetZ + 0.5, result.copy()));
 					normal = false;
 				}
-				
-			} else if(hasSmelter()) {
-				
+
+			} else if (this.hasSmelter()) {
+
 				ItemStack result = FurnaceRecipes.smelting().getSmeltingResult(stack);
-				if(result != null) {
-					this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.targetX + 0.5, this.targetY + 0.5, this.targetZ + 0.5, result.copy()));
+				if (result != null) {
+					this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.targetX + 0.5,
+							this.targetY + 0.5, this.targetZ + 0.5, result.copy()));
 					normal = false;
 				}
 			}
 		}
-		
-		if(normal && b instanceof IDrillInteraction) {
+
+		if (normal && b instanceof IDrillInteraction) {
 			IDrillInteraction in = (IDrillInteraction) b;
 			ItemStack drop = in.extractResource(this.worldObj, this.targetX, this.targetY, this.targetZ, meta, this);
-			
-			if(drop != null) {
-				this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.targetX + 0.5, this.targetY + 0.5, this.targetZ + 0.5, drop.copy()));
+
+			if (drop != null) {
+				this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.targetX + 0.5, this.targetY + 0.5,
+						this.targetZ + 0.5, drop.copy()));
 			}
-			
+
 			doesBreak = in.canBreak(this.worldObj, this.targetX, this.targetY, this.targetZ, meta, this);
 		}
-		
-		if(doesBreak) {
-			if(normal) b.dropBlockAsItem(this.worldObj, this.targetX, this.targetY, this.targetZ, meta, fortune);
+
+		if (doesBreak) {
+			if (normal)
+				b.dropBlockAsItem(this.worldObj, this.targetX, this.targetY, this.targetZ, meta, fortune);
 			this.worldObj.func_147480_a(this.targetX, this.targetY, this.targetZ, false);
 		}
-		
-		suckDrops();
 
-		if(doesScream()) {
-			this.worldObj.playSoundEffect(this.targetX + 0.5, this.targetY + 0.5, this.targetZ + 0.5, "hbm:block.screm", 2000.0F, 1.0F);
+		this.suckDrops();
+
+		if (this.doesScream()) {
+			this.worldObj.playSoundEffect(this.targetX + 0.5, this.targetY + 0.5, this.targetZ + 0.5, "hbm:block.screm",
+					2000.0F, 1.0F);
 		}
-		
+
 		this.breakProgress = 0;
 	}
-	
-	private static final Set<Item> bad = Sets.newHashSet(new Item[] {
-			Item.getItemFromBlock(Blocks.dirt),
-			Item.getItemFromBlock(Blocks.stone),
-			Item.getItemFromBlock(Blocks.cobblestone),
-			Item.getItemFromBlock(Blocks.sand),
-			Item.getItemFromBlock(Blocks.sandstone),
-			Item.getItemFromBlock(Blocks.gravel),
-			Item.getItemFromBlock(ModBlocks.basalt),
-			Item.getItemFromBlock(ModBlocks.stone_gneiss),
-			Items.flint,
-			Items.snowball,
-			Items.wheat_seeds
-			});
-	
-	//hahahahahahahaha he said "suck"
+
+	private static final Set<Item> bad = Sets.newHashSet(new Item[] { Item.getItemFromBlock(Blocks.dirt),
+			Item.getItemFromBlock(Blocks.stone), Item.getItemFromBlock(Blocks.cobblestone),
+			Item.getItemFromBlock(Blocks.sand), Item.getItemFromBlock(Blocks.sandstone),
+			Item.getItemFromBlock(Blocks.gravel), Item.getItemFromBlock(ModBlocks.basalt),
+			Item.getItemFromBlock(ModBlocks.stone_gneiss), Items.flint, Items.snowball, Items.wheat_seeds });
+
+	// hahahahahahahaha he said "suck"
 	private void suckDrops() {
-		
+
 		int rangeHor = 3;
 		int rangeVer = 1;
-		boolean nullifier = hasNullifier();
-		
-		List<EntityItem> items = this.worldObj.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(
-				this.targetX + 0.5 - rangeHor,
-				this.targetY + 0.5 - rangeVer,
-				this.targetZ + 0.5 - rangeHor,
-				this.targetX + 0.5 + rangeHor,
-				this.targetY + 0.5 + rangeVer,
-				this.targetZ + 0.5 + rangeHor
-				));
-		
-		for(EntityItem item : items) {
-			
-			if(item.isDead) continue;
-			
-			if(nullifier && TileEntityMachineMiningLaser.bad.contains(item.getEntityItem().getItem())) {
+		boolean nullifier = this.hasNullifier();
+
+		List<EntityItem> items = this.worldObj.getEntitiesWithinAABB(EntityItem.class,
+				AxisAlignedBB.getBoundingBox(this.targetX + 0.5 - rangeHor, this.targetY + 0.5 - rangeVer,
+						this.targetZ + 0.5 - rangeHor, this.targetX + 0.5 + rangeHor, this.targetY + 0.5 + rangeVer,
+						this.targetZ + 0.5 + rangeHor));
+
+		for (EntityItem item : items) {
+
+			if (item.isDead)
+				continue;
+
+			if (nullifier && TileEntityMachineMiningLaser.bad.contains(item.getEntityItem().getItem())) {
 				item.setDead();
 				continue;
 			}
-			
-			if(item.getEntityItem().getItem() == Item.getItemFromBlock(ModBlocks.ore_oil)) {
-				
-				this.tank.setTankType(Fluids.OIL); //just to be sure
-				
+
+			if (item.getEntityItem().getItem() == Item.getItemFromBlock(ModBlocks.ore_oil)) {
+
+				this.tank.setTankType(Fluids.OIL); // just to be sure
+
 				this.tank.setFill(this.tank.getFill() + 500);
-				if(this.tank.getFill() > this.tank.getMaxFill())
+				if (this.tank.getFill() > this.tank.getMaxFill())
 					this.tank.setFill(this.tank.getMaxFill());
-				
+
 				item.setDead();
 				continue;
 			}
-			
+
 			ItemStack stack = InventoryUtil.tryAddItemToInventory(this.slots, 9, 29, item.getEntityItem().copy());
-			
-			if(stack == null)
+
+			if (stack == null)
 				item.setDead();
 			else
-				item.setEntityItemStack(stack.copy()); //copy is not necessary but i'm paranoid due to the kerfuffle of the old drill
+				item.setEntityItemStack(stack.copy()); // copy is not necessary but i'm paranoid due to the kerfuffle of
+														// the old drill
 		}
-		
-		List<EntityLivingBase> mobs = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(
-				this.targetX + 0.5 - 1,
-				this.targetY + 0.5 - 1,
-				this.targetZ + 0.5 - 1,
-				this.targetX + 0.5 + 1,
-				this.targetY + 0.5 + 1,
-				this.targetZ + 0.5 + 1
-				));
-		
-		for(EntityLivingBase mob : mobs) {
+
+		List<EntityLivingBase> mobs = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class,
+				AxisAlignedBB.getBoundingBox(this.targetX + 0.5 - 1, this.targetY + 0.5 - 1, this.targetZ + 0.5 - 1,
+						this.targetX + 0.5 + 1, this.targetY + 0.5 + 1, this.targetZ + 0.5 + 1));
+
+		for (EntityLivingBase mob : mobs) {
 			mob.setFire(5);
 		}
 	}
-	
+
 	public double getBreakSpeed(int speed) {
-		
-		float hardness = this.worldObj.getBlock(this.targetX, this.targetY, this.targetZ).getBlockHardness(this.worldObj, this.targetX, this.targetY, this.targetZ) * 15 / speed;
-		
-		if(hardness == 0)
+
+		float hardness = this.worldObj.getBlock(this.targetX, this.targetY, this.targetZ)
+				.getBlockHardness(this.worldObj, this.targetX, this.targetY, this.targetZ) * 15 / speed;
+
+		if (hardness == 0)
 			return 1;
-		
+
 		return 1 / hardness;
 	}
-	
+
 	public void scan(int range) {
-		
-		for(int x = -range; x <= range; x++) {
-			for(int z = -range; z <= range; z++) {
-				
-				if(this.worldObj.getBlock(x + this.xCoord, this.targetY, z + this.zCoord).getMaterial().isLiquid()) {
+
+		for (int x = -range; x <= range; x++) {
+			for (int z = -range; z <= range; z++) {
+
+				if (this.worldObj.getBlock(x + this.xCoord, this.targetY, z + this.zCoord).getMaterial().isLiquid()) {
 					continue;
 				}
-				
-				if(canBreak(this.worldObj.getBlock(x + this.xCoord, this.targetY, z + this.zCoord), x + this.xCoord, this.targetY, z + this.zCoord)) {
+
+				if (this.canBreak(this.worldObj.getBlock(x + this.xCoord, this.targetY, z + this.zCoord),
+						x + this.xCoord, this.targetY, z + this.zCoord)) {
 					this.targetX = x + this.xCoord;
 					this.targetZ = z + this.zCoord;
 					this.beam = true;
@@ -426,151 +423,151 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 				}
 			}
 		}
-		
+
 		this.beam = false;
 		this.targetY--;
 	}
-	
+
 	private boolean canBreak(Block block, int x, int y, int z) {
-		return !block.isAir(this.worldObj, x, y, z) && block.getBlockHardness(this.worldObj, x, y, z) >= 0 && !block.getMaterial().isLiquid() && block != Blocks.bedrock;
+		return !block.isAir(this.worldObj, x, y, z) && block.getBlockHardness(this.worldObj, x, y, z) >= 0
+				&& !block.getMaterial().isLiquid() && block != Blocks.bedrock;
 	}
-	
+
 	public int getRange() {
-		
+
 		int range = 1;
-		
-		for(int i = 1; i < 9; i++) {
-			
-			if(this.slots[i] != null) {
-				
-				if(this.slots[i].getItem() == ModItems.upgrade_effect_1)
+
+		for (int i = 1; i < 9; i++) {
+
+			if (this.slots[i] != null) {
+
+				if (this.slots[i].getItem() == ModItems.upgrade_effect_1)
 					range += 2;
-				else if(this.slots[i].getItem() == ModItems.upgrade_effect_2)
+				else if (this.slots[i].getItem() == ModItems.upgrade_effect_2)
 					range += 4;
-				else if(this.slots[i].getItem() == ModItems.upgrade_effect_3)
+				else if (this.slots[i].getItem() == ModItems.upgrade_effect_3)
 					range += 6;
 			}
 		}
-		
+
 		return Math.min(range, 25);
 	}
-	
+
 	public boolean hasNullifier() {
-		
-		for(int i = 1; i < 9; i++) {
-			
-			if(this.slots[i] != null) {
-				
-				if(this.slots[i].getItem() == ModItems.upgrade_nullifier)
+
+		for (int i = 1; i < 9; i++) {
+
+			if (this.slots[i] != null) {
+
+				if (this.slots[i].getItem() == ModItems.upgrade_nullifier)
 					return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	public boolean hasSmelter() {
-		
-		for(int i = 1; i < 9; i++) {
-			
-			if(this.slots[i] != null) {
-				
-				if(this.slots[i].getItem() == ModItems.upgrade_smelter)
+
+		for (int i = 1; i < 9; i++) {
+
+			if (this.slots[i] != null) {
+
+				if (this.slots[i].getItem() == ModItems.upgrade_smelter)
 					return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	public boolean hasShredder() {
-		
-		for(int i = 1; i < 9; i++) {
-			
-			if(this.slots[i] != null) {
-				
-				if(this.slots[i].getItem() == ModItems.upgrade_shredder)
+
+		for (int i = 1; i < 9; i++) {
+
+			if (this.slots[i] != null) {
+
+				if (this.slots[i].getItem() == ModItems.upgrade_shredder)
 					return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	public boolean hasCentrifuge() {
-		
-		for(int i = 1; i < 9; i++) {
-			
-			if(this.slots[i] != null) {
-				
-				if(this.slots[i].getItem() == ModItems.upgrade_centrifuge)
+
+		for (int i = 1; i < 9; i++) {
+
+			if (this.slots[i] != null) {
+
+				if (this.slots[i].getItem() == ModItems.upgrade_centrifuge)
 					return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	public boolean hasCrystallizer() {
-		
-		for(int i = 1; i < 9; i++) {
-			
-			if(this.slots[i] != null) {
-				
-				if(this.slots[i].getItem() == ModItems.upgrade_crystallizer)
+
+		for (int i = 1; i < 9; i++) {
+
+			if (this.slots[i] != null) {
+
+				if (this.slots[i].getItem() == ModItems.upgrade_crystallizer)
 					return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	public boolean doesScream() {
-		
-		for(int i = 1; i < 9; i++) {
-			
-			if(this.slots[i] != null) {
-				
-				if(this.slots[i].getItem() == ModItems.upgrade_screm)
+
+		for (int i = 1; i < 9; i++) {
+
+			if (this.slots[i] != null) {
+
+				if (this.slots[i].getItem() == ModItems.upgrade_screm)
 					return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	public int getConsumption() {
 		return TileEntityMachineMiningLaser.consumption;
 	}
-	
+
 	public int getWidth() {
-		
-		return 1 + getRange() * 2;
+
+		return 1 + this.getRange() * 2;
 	}
 
 	public int getPowerScaled(int i) {
-		return (int)((this.power * i) / TileEntityMachineMiningLaser.maxPower);
+		return (int) ((this.power * i) / TileEntityMachineMiningLaser.maxPower);
 	}
 
 	public int getProgressScaled(int i) {
 		return (int) (this.breakProgress * i);
 	}
-	
+
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		return TileEntity.INFINITE_EXTENT_AABB;
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
-	public double getMaxRenderDistanceSquared()
-	{
+	public double getMaxRenderDistanceSquared() {
 		return 65536.0D;
 	}
 
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemStack, int j) {
-		return isItemValidForSlot(i, itemStack);
+		return this.isItemValidForSlot(i, itemStack);
 	}
 
 	@Override
@@ -580,22 +577,23 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(int slot) {
-		
+
 		int[] slots = new int[21];
-		
-		for(int i = 0; i < 21; i++) {
+
+		for (int i = 0; i < 21; i++) {
 			slots[i] = i + 9;
 		}
-		
+
 		return slots;
 	}
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack stack) {
 		super.setInventorySlotContents(i, stack);
-		
-		if(stack != null && i >= 1 && i <= 8 && stack.getItem() instanceof ItemMachineUpgrade)
-			this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 1.5, this.zCoord + 0.5, "hbm:item.upgradePlug", 1.0F, 1.0F);
+
+		if (stack != null && i >= 1 && i <= 8 && stack.getItem() instanceof ItemMachineUpgrade)
+			this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 1.5, this.zCoord + 0.5,
+					"hbm:item.upgradePlug", 1.0F, 1.0F);
 	}
 
 	@Override
@@ -620,7 +618,7 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 
 	@Override
 	public void setFluidFill(int fill, FluidType type) {
-		if(type == Fluids.OIL)
+		if (type == Fluids.OIL)
 			this.tank.setFill(fill);
 	}
 
@@ -631,7 +629,7 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 
 	@Override
 	public int getFluidFill(FluidType type) {
-		if(type == Fluids.OIL)
+		if (type == Fluids.OIL)
 			return this.tank.getFill();
 		return 0;
 	}
@@ -639,10 +637,10 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 	@Override
 	public void fillFluidInit(FluidType type) {
 
-		fillFluid(this.xCoord + 2, this.yCoord, this.zCoord, getTact(), type);
-		fillFluid(this.xCoord - 2, this.yCoord, this.zCoord, getTact(), type);
-		fillFluid(this.xCoord, this.yCoord, this.zCoord + 2, getTact(), type);
-		fillFluid(this.xCoord, this.yCoord, this.zCoord - 2, getTact(), type);
+		this.fillFluid(this.xCoord + 2, this.yCoord, this.zCoord, this.getTact(), type);
+		this.fillFluid(this.xCoord - 2, this.yCoord, this.zCoord, this.getTact(), type);
+		this.fillFluid(this.xCoord, this.yCoord, this.zCoord + 2, this.getTact(), type);
+		this.fillFluid(this.xCoord, this.yCoord, this.zCoord - 2, this.getTact(), type);
 	}
 
 	@Override
@@ -674,6 +672,7 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 		super.readFromNBT(nbt);
 		
 		this.tank.readFromNBT(nbt, "oil");
+		this.power = nbt.getLong("p");
 		this.isOn = nbt.getBoolean("isOn");
 	}
 
@@ -682,6 +681,7 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 		super.writeToNBT(nbt);
 		
 		this.tank.writeToNBT(nbt, "oil");
+		nbt.setLong("p", this.power);
 		nbt.setBoolean("isOn", this.isOn);
 	}
 

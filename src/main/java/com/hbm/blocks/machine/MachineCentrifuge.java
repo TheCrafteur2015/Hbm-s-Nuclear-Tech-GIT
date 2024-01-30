@@ -23,12 +23,10 @@ public class MachineCentrifuge extends BlockDummyable {
 	
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-
 		if(meta >= 12)
 			return new TileEntityMachineCentrifuge();
 		if(meta >= 6)
 			return new TileEntityProxyCombo(false, true, true);
-
 		return null;
 	}
 	

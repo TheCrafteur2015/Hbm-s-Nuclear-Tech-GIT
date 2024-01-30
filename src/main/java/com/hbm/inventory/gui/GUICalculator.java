@@ -98,7 +98,7 @@ public class GUICalculator extends GuiScreen {
 		for (int i = 0; i < tokens.length; i++) {
 			if (tokens[i] == ' ') continue;
 
-			if (tokens[i] >= '0' && tokens[i] <= '9' || tokens[i] == '.' || (tokens[i] == '-' && (i == 0 || "+-*/^(".contains(String.valueOf(tokens[i - 1]))))) {
+			if (tokens[i] >= '0' && tokens[i] <= '9' || tokens[i] == '.' || (tokens[i] == '-' && (i == 0 || "+-*/^%(".contains(String.valueOf(tokens[i - 1]))))) {
 				StringBuilder buffer = new StringBuilder();
 				if (tokens[i] == '-') {
 					buffer.append('-'); // for negative numbers
@@ -114,7 +114,7 @@ public class GUICalculator extends GuiScreen {
 				operators.pop();
 				if (!operators.isEmpty() && operators.peek().length() > 1)
 					values.push(GUICalculator.evaluateFunction(operators.pop(), values.pop()));
-			} else if (tokens[i] == '+' || tokens[i] == '-' || tokens[i] == '*' || tokens[i] == '/' || tokens[i] == '^') {
+			} else if (tokens[i] == '+' || tokens[i] == '-' || tokens[i] == '*' || tokens[i] == '/' || tokens[i] == '^' || tokens[i] == '%') {
 				while (!operators.isEmpty() && GUICalculator.hasPrecedence(String.valueOf(tokens[i]), operators.peek()))
 					values.push(GUICalculator.evaluateOperator(operators.pop().charAt(0), values.pop(), values.pop()));
 				operators.push(Character.toString(tokens[i]));
@@ -144,7 +144,7 @@ public class GUICalculator extends GuiScreen {
 			case '-': return y - x;
 			case '*': return y * x;
 			case '/': return y / x;
-
+			case '%': return y % x;
 			case '^': return Math.pow(y, x); // should not happen here, but oh well
 		}
 		return 0;
@@ -179,7 +179,7 @@ public class GUICalculator extends GuiScreen {
 		char secondChar = second.charAt(0);
 
 		if (secondChar == '(' || secondChar == ')') return false;
-		else return (firstChar != '*' && firstChar != '/' && firstChar != '^') || (secondChar != '+' && secondChar != '-');
+		else return (firstChar != '*' && firstChar != '/' && firstChar != '^' && firstChar != '%') || (secondChar != '+' && secondChar != '-');
 	}
 
 	/** Returns the input with all powers evaluated */

@@ -86,7 +86,8 @@ public class GUIReactorResearch extends GuiInfoContainer {
 		this.fontRendererObj.drawString(labels[2], 6, 89, 15066597);
 	}
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int i) {
     	super.mouseClicked(mouseX, mouseY, i);
     	this.field.mouseClicked(mouseX, mouseY, i);

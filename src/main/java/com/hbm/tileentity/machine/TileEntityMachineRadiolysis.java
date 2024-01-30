@@ -37,6 +37,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+@SuppressWarnings("deprecation")
 public class TileEntityMachineRadiolysis extends TileEntityMachineBase implements IEnergyGenerator, IFluidAcceptor, IFluidSource, IFluidContainer, IFluidStandardTransceiver, IGUIProvider {
 	
 	public long power;
@@ -44,6 +45,7 @@ public class TileEntityMachineRadiolysis extends TileEntityMachineBase implement
 	public int heat;
 
 	public FluidTank[] tanks;
+	
 	public List<IFluidAcceptor> list1 = new ArrayList<>();
 	public List<IFluidAcceptor> list2 = new ArrayList<>();
 	

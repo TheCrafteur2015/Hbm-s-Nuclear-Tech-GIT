@@ -1531,6 +1531,29 @@ public class ItemRenderLibrary {
 		
 		//hi there! it seems you are trying to register a new item renderer, most likely for a tile entity.
 		//please refer to the comment at the start of the file on how to do this without adding to this gigantic pile of feces.
+	
+		// My renders
+		
+		ItemRenderLibrary.renderers.put(Item.getItemFromBlock(ModBlocks.reactor_monitor_1), new ItemRenderBase() {
+			@Override
+			public void renderNonInv() {
+				GL11.glScaled(0.5, 0.5, 0.5);
+			}
+			@Override
+			public void renderInventory() {
+				GL11.glTranslated(0, -4, 0);
+				GL11.glScaled(1.75, 1.75, 1.75);
+			}
+			@Override
+			public void renderCommon() {
+				GL11.glShadeModel(GL11.GL_SMOOTH);
+		        ItemRenderLibrary.bindTexture(ResourceManager.monitor_1_keyboard_tex);
+		        ItemRenderLibrary.bindTexture(ResourceManager.monitor_1_tex);
+		        ResourceManager.monitor_1.renderPart("Body");
+		        GL11.glShadeModel(GL11.GL_FLAT);
+			}
+		});
+		
 	}
 	
 	private static void bindTexture(ResourceLocation res) {
